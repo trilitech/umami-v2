@@ -4946,22 +4946,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@microsoft/tsdoc-config@npm:0.16.2":
-  version: 0.16.2
-  resolution: "@microsoft/tsdoc-config@npm:0.16.2"
+"@microsoft/tsdoc-config@npm:0.17.0":
+  version: 0.17.0
+  resolution: "@microsoft/tsdoc-config@npm:0.17.0"
   dependencies:
-    "@microsoft/tsdoc": "npm:0.14.2"
-    ajv: "npm:~6.12.6"
+    "@microsoft/tsdoc": "npm:0.15.0"
+    ajv: "npm:~8.12.0"
     jju: "npm:~1.4.0"
-    resolve: "npm:~1.19.0"
-  checksum: 10/37fc35d83dab66771502165fad6a8380ec6d47e0fdaadcb60c09792e5b8172feea42f327ebf4e6026c3b22448e5e73d9ee53948a2d877ee00257679b162f3490
+    resolve: "npm:~1.22.2"
+  checksum: 10/6e20f9b917d20e517b6752cbb46c84ccc4c8be7ce82d7424e413bd7111a2f1497714a72e61ac1a96df97d0050cb98b3a53006316eeb0cfea9bb6d7131432c7a8
   languageName: node
   linkType: hard
 
-"@microsoft/tsdoc@npm:0.14.2":
-  version: 0.14.2
-  resolution: "@microsoft/tsdoc@npm:0.14.2"
-  checksum: 10/00c3d4fc184e8e09e17aef57e4a990402bd9752607a5d50bd62a9e85bc4b8791c985a51e238affa6b9a2d23110f24d373becbfc84e1e6e9a84cf977822e3b00a
+"@microsoft/tsdoc@npm:0.15.0":
+  version: 0.15.0
+  resolution: "@microsoft/tsdoc@npm:0.15.0"
+  checksum: 10/fd025e5e3966248cd5477b9ddad4e9aa0dd69291f372a207f18a686b3097dcf5ecf38325caf0f4ad2697f1f39fd45b536e4ada6756008b8bcc5eccbc3201313d
   languageName: node
   linkType: hard
 
@@ -7167,7 +7167,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ajv@npm:^6.10.0, ajv@npm:^6.12.0, ajv@npm:^6.12.4, ajv@npm:~6.12.6":
+"ajv@npm:^6.10.0, ajv@npm:^6.12.0, ajv@npm:^6.12.4":
   version: 6.12.6
   resolution: "ajv@npm:6.12.6"
   dependencies:
@@ -7179,7 +7179,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ajv@npm:^8.6.3":
+"ajv@npm:^8.6.3, ajv@npm:~8.12.0":
   version: 8.12.0
   resolution: "ajv@npm:8.12.0"
   dependencies:
@@ -10434,13 +10434,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-tsdoc@npm:^0.2.17":
-  version: 0.2.17
-  resolution: "eslint-plugin-tsdoc@npm:0.2.17"
+"eslint-plugin-tsdoc@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "eslint-plugin-tsdoc@npm:0.3.0"
   dependencies:
-    "@microsoft/tsdoc": "npm:0.14.2"
-    "@microsoft/tsdoc-config": "npm:0.16.2"
-  checksum: 10/b2b3a1517a2e8ba01eb65ddfb29992a9141954a883935cac069477659647dcb83603b6661d1ee16f9919007f5082cad0fc2532f5d95620fcc3fb239bde820fe3
+    "@microsoft/tsdoc": "npm:0.15.0"
+    "@microsoft/tsdoc-config": "npm:0.17.0"
+  checksum: 10/a04cb666733b116db7bb680648737f8f725520463021672c97b668ec83248b94364cb461a5f36016a9b95399365b8827246ee9728f7492e23ccd83f8d4747233
   languageName: node
   linkType: hard
 
@@ -12048,7 +12048,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-core-module@npm:^2.1.0, is-core-module@npm:^2.11.0, is-core-module@npm:^2.13.1":
+"is-core-module@npm:^2.11.0, is-core-module@npm:^2.13.1":
   version: 2.13.1
   resolution: "is-core-module@npm:2.13.1"
   dependencies:
@@ -14595,7 +14595,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"path-parse@npm:^1.0.6, path-parse@npm:^1.0.7":
+"path-parse@npm:^1.0.7":
   version: 1.0.7
   resolution: "path-parse@npm:1.0.7"
   checksum: 10/49abf3d81115642938a8700ec580da6e830dde670be21893c62f4e10bd7dd4c3742ddc603fe24f898cba7eb0c6bc1777f8d9ac14185d34540c6d4d80cd9cae8a
@@ -15737,7 +15737,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"resolve@npm:^1.10.0, resolve@npm:^1.17.0, resolve@npm:^1.22.4":
+"resolve@npm:^1.10.0, resolve@npm:^1.17.0, resolve@npm:^1.22.4, resolve@npm:~1.22.2":
   version: 1.22.8
   resolution: "resolve@npm:1.22.8"
   dependencies:
@@ -15776,17 +15776,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"resolve@npm:~1.19.0":
-  version: 1.19.0
-  resolution: "resolve@npm:1.19.0"
-  dependencies:
-    is-core-module: "npm:^2.1.0"
-    path-parse: "npm:^1.0.6"
-  checksum: 10/b0f326a85422ebc4db8524957990d49d89e028bd6c10f23f2e89db5ee923678c6c08eae596e594031a5cda20f1e19d4a371e22cd772907b0bcf3c932e2205753
-  languageName: node
-  linkType: hard
-
-"resolve@patch:resolve@npm%3A^1.10.0#optional!builtin<compat/resolve>, resolve@patch:resolve@npm%3A^1.17.0#optional!builtin<compat/resolve>, resolve@patch:resolve@npm%3A^1.22.4#optional!builtin<compat/resolve>":
+"resolve@patch:resolve@npm%3A^1.10.0#optional!builtin<compat/resolve>, resolve@patch:resolve@npm%3A^1.17.0#optional!builtin<compat/resolve>, resolve@patch:resolve@npm%3A^1.22.4#optional!builtin<compat/resolve>, resolve@patch:resolve@npm%3A~1.22.2#optional!builtin<compat/resolve>":
   version: 1.22.8
   resolution: "resolve@patch:resolve@npm%3A1.22.8#optional!builtin<compat/resolve>::version=1.22.8&hash=c3c19d"
   dependencies:
@@ -15822,16 +15812,6 @@ __metadata:
   bin:
     resolve: bin/resolve
   checksum: 10/05fa778de9d0347c8b889eb7a18f1f06bf0f801b0eb4610b4871a4b2f22e220900cf0ad525e94f990bb8d8921c07754ab2122c0c225ab4cdcea98f36e64fa4c2
-  languageName: node
-  linkType: hard
-
-"resolve@patch:resolve@npm%3A~1.19.0#optional!builtin<compat/resolve>":
-  version: 1.19.0
-  resolution: "resolve@patch:resolve@npm%3A1.19.0#optional!builtin<compat/resolve>::version=1.19.0&hash=c3c19d"
-  dependencies:
-    is-core-module: "npm:^2.1.0"
-    path-parse: "npm:^1.0.6"
-  checksum: 10/eb8853b1b7b9ef25f0156304c7c21e2a0d2b2ce247169282542e76565f460986e10adbb770eeb2549c06197fb546b433906cbf3700a3232c567aaaaa53490b88
   languageName: node
   linkType: hard
 
@@ -17636,7 +17616,7 @@ __metadata:
     eslint-plugin-react-hooks: "npm:^4.6.2"
     eslint-plugin-react-redux: "npm:^4.1.0"
     eslint-plugin-testing-library: "npm:^6.2.2"
-    eslint-plugin-tsdoc: "npm:^0.2.17"
+    eslint-plugin-tsdoc: "npm:^0.3.0"
     eslint-plugin-unused-imports: "npm:^3.2.0"
     framer-motion: "npm:^11.2.9"
     http-server: "npm:^14.1.1"
