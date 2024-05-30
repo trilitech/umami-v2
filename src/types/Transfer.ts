@@ -3,7 +3,7 @@ import * as tzktApi from "@tzkt/sdk-api";
 import { TzktAlias } from "./Address";
 import { RawTokenInfo } from "./Token";
 
-export type TokenTransfer = tzktApi.TokenTransfer & {
+export type TokenTransfer = {
   id: number;
   amount: string;
   token: RawTokenInfo;
@@ -14,6 +14,7 @@ export type TokenTransfer = tzktApi.TokenTransfer & {
   originationId?: number;
   transactionId?: number;
   initiator?: undefined;
+  timestamp: string;
 };
 
 export type TezTransfer = tzktApi.TransactionOperation;

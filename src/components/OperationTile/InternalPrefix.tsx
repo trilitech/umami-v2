@@ -31,6 +31,11 @@ export const InternalPrefix: React.FC<{
       target = operation.to?.address;
       sender = operation.from?.address;
       break;
+    case "stake":
+    case "unstake":
+    case "finalize":
+      target = operation.sender.address;
+      sender = operation.sender.address;
   }
 
   const operationDestination = useGetOperationDestination(sender, target);

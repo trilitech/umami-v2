@@ -13,7 +13,7 @@ import {
 } from "@tzkt/sdk-api";
 import * as tzktApi from "@tzkt/sdk-api";
 import axios from "axios";
-import { sortBy } from "lodash";
+import { identity, pickBy, sortBy } from "lodash";
 
 import { withRateLimit } from "./withRateLimit";
 import { RawPkh, TzktAlias } from "../../types/Address";
@@ -32,48 +32,70 @@ export type TzktAccount = {
   delegate: TzktAlias | null;
 };
 
-export type DelegationOperation = tzktApi.DelegationOperation & {
+type CommonOperationFields = {
   id: number;
   level: number;
   hash: string;
   counter: number;
-  type: "delegation";
+  status: "applied" | "failed" | "backtracked" | "skipped";
   sender: TzktAlias;
+  timestamp: string;
+  bakerFee?: number;
+  storageFee?: number;
+  allocationFee?: number;
+};
+export type DelegationOperation = CommonOperationFields & {
+  type: "delegation";
   newDelegate?: TzktAlias | null;
-  status: string;
   initiator?: TzktAlias | null;
   timestamp: string;
   amount: number;
 };
-export type TransactionOperation = tzktApi.TransactionOperation & {
-  id: number;
-  level: number;
-  hash: string;
-  counter: number;
+export type TransactionOperation = CommonOperationFields & {
   type: "transaction";
-  sender: TzktAlias;
   target?: TzktAlias | null;
-  status: string;
+  amount: number;
+  parameter?: { entrypoint: string; value?: any };
 };
-export type OriginationOperation = tzktApi.OriginationOperation & {
-  id: number;
-  level: number;
-  hash: string;
-  counter: number;
+export type OriginationOperation = CommonOperationFields & {
   type: "origination";
-  sender: TzktAlias;
-  status: string;
+  originatedContract: {
+    address: RawPkh;
+    codeHash: number;
+    typeHash: number;
+  };
 };
-
 export type TokenTransferOperation = TokenTransfer & {
   type: "token_transfer";
+};
+export type StakeOperation = CommonOperationFields & {
+  type: "stake";
+  amount: number;
+  baker: TzktAlias;
+};
+export type UnstakeOperation = CommonOperationFields & {
+  type: "unstake";
+  amount: number;
+  baker: TzktAlias;
+};
+export type FinalizeUnstakeOperation = CommonOperationFields & {
+  type: "finalize";
+  amount: number;
+};
+type StakingOperation = StakeOperation | UnstakeOperation | FinalizeUnstakeOperation;
+type RawTzktStakingOperation = Omit<StakingOperation, "type"> & {
+  type: "staking";
+  action: "stake" | "unstake" | "finalize";
 };
 
 export type TzktCombinedOperation =
   | DelegationOperation
   | TransactionOperation
   | OriginationOperation
-  | TokenTransferOperation;
+  | TokenTransferOperation
+  | StakeOperation
+  | UnstakeOperation
+  | FinalizeUnstakeOperation;
 
 export const getAccounts = async (pkhs: string[], network: Network) =>
   withRateLimit(() =>
@@ -159,6 +181,34 @@ export const getOriginations = async (
     )
   ) as Promise<OriginationOperation[]>;
 
+export const getStakingOperations = async (
+  addresses: RawPkh[],
+  network: Network,
+  options: {
+    offset?: OffsetParameter;
+    sort: SortParameter;
+    limit: number;
+  }
+): Promise<StakingOperation[]> =>
+  withRateLimit(async () => {
+    const params = pickBy(
+      {
+        limit: options.limit,
+        "sender.in": addresses.join(","),
+        "sort.asc": options.sort.asc,
+        "sort.desc": options.sort.desc,
+        "offset.cr": options.offset?.cr,
+        // TODO: add select.fields
+      },
+      identity
+    );
+    const { data } = await axios.get<RawTzktStakingOperation[]>(
+      network.tzktApiUrl + "/v1/operations/staking",
+      { params }
+    );
+    return data.map(operation => ({ ...operation, type: operation.action }) as StakingOperation);
+  });
+
 // It returns all transactions, delegations, contract originations & token transfers for given addresses
 // You will get them interleaved and  sorted by ID and up to the specified limit (100 by default)
 // ID is a shared sequence among all operations in TzKT so it's safe to use it for sorting & pagination
@@ -185,6 +235,7 @@ export const getCombinedOperations = async (
     getDelegations(addresses, network, tzktRequestOptions),
     getOriginations(addresses, network, tzktRequestOptions),
     getTokenTransfers(addresses, network, tzktRequestOptions),
+    getStakingOperations(addresses, network, tzktRequestOptions),
   ]);
 
   return sortBy(operations.flat(), operation =>

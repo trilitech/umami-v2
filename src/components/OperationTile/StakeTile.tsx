@@ -1,4 +1,5 @@
 import { Box, Center, Flex, Heading, Text } from "@chakra-ui/react";
+import { memo } from "react";
 
 import { Fee } from "./Fee";
 import { InternalPrefix } from "./InternalPrefix";
@@ -6,24 +7,21 @@ import { OperationStatus } from "./OperationStatus";
 import { OperationTypeWrapper } from "./OperationTypeWrapper";
 import { Timestamp } from "./Timestamp";
 import { TzktLink } from "./TzktLink";
-import { ContractIcon } from "../../assets/icons";
+import { BakerIcon } from "../../assets/icons";
 import colors from "../../style/colors";
-import { CODE_HASH, TYPE_HASH } from "../../utils/multisig/fetch";
-import { OriginationOperation } from "../../utils/tezos";
+import { parsePkh } from "../../types/Address";
+import { prettyTezAmount } from "../../utils/format";
+import { StakeOperation } from "../../utils/tezos";
 import { AddressPill } from "../AddressPill/AddressPill";
 
-export const OriginationTile: React.FC<{ operation: OriginationOperation }> = ({ operation }) => {
-  const isMultisig =
-    operation.originatedContract.codeHash === CODE_HASH &&
-    operation.originatedContract.typeHash === TYPE_HASH;
-
-  const contractTitle = isMultisig ? "Multisig Account Created" : "Contract Origination";
+export const StakeTile: React.FC<{ operation: StakeOperation }> = memo(({ operation }) => {
+  const amount = prettyTezAmount(String(operation.amount));
 
   return (
-    <Flex flexDirection="column" width="100%" data-testid="operation-tile-origination">
+    <Flex flexDirection="column" width="100%" data-testid="operation-tile-stake">
       <Flex justifyContent="space-between" marginBottom="10px">
         <Center>
-          <ContractIcon marginRight="8px" />
+          <BakerIcon marginRight="8px" />
           <InternalPrefix operation={operation} />
           <TzktLink
             marginRight="8px"
@@ -31,7 +29,10 @@ export const OriginationTile: React.FC<{ operation: OriginationOperation }> = ({
             data-testid="title"
             hash={operation.hash}
           >
-            <Heading size="md">{contractTitle}</Heading>
+            <Center gap="4px">
+              <Heading size="md">Stake:</Heading>
+              <Text>{amount}</Text>
+            </Center>
           </TzktLink>
           <Fee operation={operation} />
         </Center>
@@ -41,18 +42,23 @@ export const OriginationTile: React.FC<{ operation: OriginationOperation }> = ({
       </Flex>
       <Box>
         <Flex justifyContent="space-between">
-          <Flex data-testid="from">
-            <Text marginRight="6px" color={colors.gray[450]}>
-              From:
-            </Text>
-            <AddressPill address={operation.sender} />
+          <Flex gap="15px">
+            <Flex gap="6px" data-testid="to">
+              <Text color={colors.gray[450]}>To:</Text>
+              <AddressPill address={parsePkh(operation.baker.address)} />
+            </Flex>
+
+            <Flex gap="6px" data-testid="from">
+              <Text color={colors.gray[450]}>From:</Text>
+              <AddressPill address={parsePkh(operation.sender.address)} />
+            </Flex>
           </Flex>
           <Center>
-            <OperationTypeWrapper>Contract Origination</OperationTypeWrapper>
+            <OperationTypeWrapper>Stake</OperationTypeWrapper>
             <OperationStatus {...operation} />
           </Center>
         </Flex>
       </Box>
     </Flex>
   );
-};
+});

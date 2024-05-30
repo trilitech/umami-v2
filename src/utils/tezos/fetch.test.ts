@@ -8,6 +8,7 @@ import {
   tokensGetTokenBalances,
   tokensGetTokenTransfers,
 } from "@tzkt/sdk-api";
+import axios from "axios";
 import { sortBy } from "lodash";
 
 import {
@@ -24,8 +25,6 @@ import {
 } from "./fetch";
 import { mockImplicitAddress } from "../../mocks/factories";
 import { DefaultNetworks } from "../../types/Network";
-
-jest.mock("axios");
 
 jest.mock("@tzkt/sdk-api", () => ({
   tokensGetTokenBalances: jest.fn(),
@@ -191,6 +190,7 @@ describe("tezos utils fetch", () => {
         jest.mocked(operationsGetDelegations).mockResolvedValue([]);
         jest.mocked(operationsGetOriginations).mockResolvedValue([]);
         jest.mocked(tokensGetTokenTransfers).mockResolvedValue([]);
+        jest.spyOn(axios, "get").mockResolvedValue({ data: [] });
       });
 
       describe("request options", () => {

@@ -7,12 +7,25 @@ import { OperationTileContext } from "./OperationTileContext";
 import colors from "../../style/colors";
 import { prettyTezAmount } from "../../utils/format";
 import { useIsOwnedAddress } from "../../utils/hooks/getAccountDataHooks";
-import { DelegationOperation, OriginationOperation, TransactionOperation } from "../../utils/tezos";
+import {
+  DelegationOperation,
+  FinalizeUnstakeOperation,
+  OriginationOperation,
+  StakeOperation,
+  TransactionOperation,
+  UnstakeOperation,
+} from "../../utils/tezos";
 
 const FEE_FIELDS = ["bakerFee", "storageFee", "allocationFee"];
 
 export const Fee: React.FC<{
-  operation: TransactionOperation | DelegationOperation | OriginationOperation;
+  operation:
+    | TransactionOperation
+    | DelegationOperation
+    | OriginationOperation
+    | StakeOperation
+    | UnstakeOperation
+    | FinalizeUnstakeOperation;
 }> = ({ operation }) => {
   const tileContext = useContext(OperationTileContext);
   const isOwned = useIsOwnedAddress();

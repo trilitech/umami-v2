@@ -2,9 +2,12 @@ import React from "react";
 
 import { ContractCallTile } from "./ContractCallTile";
 import { DelegationTile } from "./DelegationTile";
+import { FinalizeUnstakeTile } from "./FinalizeUnstakeTile";
 import { OriginationTile } from "./OriginationTile";
+import { StakeTile } from "./StakeTile";
 import { TokenTransferTile } from "./TokenTransferTile";
 import { TransactionTile } from "./TransactionTile";
+import { UnstakeTile } from "./UnstakeTile";
 import { fromRaw } from "../../types/Token";
 import { useGetTokenTransfer } from "../../utils/hooks/assetsHooks";
 import { TzktCombinedOperation } from "../../utils/tezos";
@@ -49,5 +52,14 @@ export const OperationTile: React.FC<{
 
     case "origination":
       return <OriginationTile operation={operation} />;
+
+    case "stake":
+      return <StakeTile operation={operation} />;
+
+    case "unstake":
+      return <UnstakeTile operation={operation} />;
+
+    case "finalize":
+      return <FinalizeUnstakeTile operation={operation} />;
   }
 };
