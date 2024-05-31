@@ -2,12 +2,15 @@ import { Box, Button } from "@chakra-ui/react";
 import { TezosToolkit } from "@taquito/taquito";
 import BigNumber from "bignumber.js";
 import { repeat } from "lodash";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { SuccessStep } from "./SuccessStep";
 import { Account } from "../../types/Account";
-import { AccountOperations, makeAccountOperations } from "../../types/AccountOperations";
+import {
+  AccountOperations,
+  makeAccountOperations,
+} from "../../types/AccountOperations";
 import { RawPkh } from "../../types/Address";
 import { Operation } from "../../types/Operation";
 import { useClearBatch } from "../../utils/hooks/batchesHooks";
@@ -120,6 +123,10 @@ export const useSignPageHelpers = (
   const { isLoading, handleAsyncAction, handleAsyncActionUnsafe } =
     useAsyncActionHandler();
   const { openWith } = useContext(DynamicModalContext);
+
+  useEffect(() => {
+    setFee(executeParams.fee!);
+  }, [executeParams.fee]);
 
   const form = useForm<{ sender: string; signer: string }>({
     mode: "onBlur",

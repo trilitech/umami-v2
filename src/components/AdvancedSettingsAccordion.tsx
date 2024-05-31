@@ -12,6 +12,7 @@ import {
   InputRightElement,
 } from "@chakra-ui/react";
 import BigNumber from "bignumber.js";
+import { useState } from "react";
 
 import { getSmallestUnit } from "./SendFlow/utils";
 import colors from "../style/colors";
@@ -31,14 +32,22 @@ const AdvancedSettingsAccordion: React.FC<AdvancedSettingsAccordionProps> = ({
   storageLimit,
   onChange,
 }) => {
-  const handleChangeFee = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const [_fee, setFee] = useState(mutezToTez(fee));
+
+  const handleChangeFeeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const pattern = /^-?\d+(\.\d{0,6})?$/;
 
     if (!pattern.test(e.target.value) && e.target.value) {
       return;
     }
 
-    onChange("fee", tezToMutez(e.target.value));
+    setFee(e.target.value);
+  };
+
+  const handleKeyUpFeeInput = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key !== ".") {
+      onChange("fee", tezToMutez(_fee));
+    }
   };
 
   return (
@@ -61,13 +70,20 @@ const AdvancedSettingsAccordion: React.FC<AdvancedSettingsAccordionProps> = ({
               <Input
                 paddingRight="0"
                 fontSize="14px"
-                onChange={handleChangeFee}
+                onChange={handleChangeFeeInput}
+                onKeyUp={handleKeyUpFeeInput}
                 placeholder="0.000000"
                 step={getSmallestUnit(TEZ_DECIMALS)}
                 type="number"
-                value={mutezToTez(fee)}
+                value={_fee}
               />
-              <InputRightElement width="44px" height="46px" children="ꜩ" />
+              <InputRightElement
+                width="44px"
+                maxWidth="fit-content"
+                height="46px"
+                paddingRight="12px"
+                children="ꜩ"
+              />
             </InputGroup>
           </FormControl>
           <FormControl>

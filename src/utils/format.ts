@@ -6,7 +6,8 @@ import { TEZ, TEZ_DECIMALS } from "./tezos";
 export const truncate = (name: string, len: number) =>
   name.length > len ? name.slice(0, len - 3) + "..." : name;
 
-export const tezToMutez = (tez: string): BigNumber => format("tz", "mutez", tez) as BigNumber;
+export const tezToMutez = (tez: string): BigNumber =>
+  format("tz", "mutez", tez) as BigNumber;
 
 export const mutezToTez = (mutez: BigNumber | string) => format("mutez", "tz", mutez) as string;
 
