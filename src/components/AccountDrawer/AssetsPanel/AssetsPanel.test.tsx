@@ -34,8 +34,8 @@ describe("<AssetsPanel />", () => {
 
       jest.mocked(estimate).mockResolvedValueOnce({
         fee: BigNumber(33),
-        storageLimit: BigNumber(0),
-        gasLimit: BigNumber(0),
+        storageLimit: 0,
+        gasLimit: 0,
       });
       const multisig = {
         ...mockMultisigAccount(0),

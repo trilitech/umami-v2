@@ -241,12 +241,12 @@ describe("SelectApproversFormPage", () => {
         })
       );
 
-      expect(screen.getByTestId("real-address-input-signers.0.val")).toHaveValue(
-        mockImplicitAccount(0).address.pkh
-      );
-      expect(screen.getByTestId("real-address-input-signers.1.val")).toHaveValue(
-        mockImplicitAccount(1).address.pkh
-      );
+      expect(
+        screen.getByTestId("real-address-input-signers.0.val")
+      ).toHaveValue(mockImplicitAccount(0).address.pkh);
+      expect(
+        screen.getByTestId("real-address-input-signers.1.val")
+      ).toHaveValue(mockImplicitAccount(1).address.pkh);
       expect(screen.getByTestId("threshold-input")).toHaveValue(2);
 
       await waitFor(() => {
@@ -282,8 +282,8 @@ describe("SelectApproversFormPage", () => {
       ]);
       jest.mocked(estimate).mockResolvedValueOnce({
         fee: BigNumber(150),
-        storageLimit: BigNumber(0),
-        gasLimit: BigNumber(0),
+        storageLimit: 0,
+        gasLimit: 0,
       });
 
       const reviewButton = screen.getByText("Review");
@@ -295,7 +295,10 @@ describe("SelectApproversFormPage", () => {
           data={{
             sender: sender.address.pkh,
             threshold: 1,
-            signers: [{ val: mockImplicitAddress(0).pkh }, { val: mockImplicitAddress(1).pkh }],
+            signers: [
+              { val: mockImplicitAddress(0).pkh },
+              { val: mockImplicitAddress(1).pkh },
+            ],
             name: "Test account",
           }}
           fee={new BigNumber(150)}
@@ -312,10 +315,14 @@ describe("SelectApproversFormPage", () => {
       render(fixture());
 
       // select values
-      const addSignerButton = screen.getByRole("button", { name: "+ Add Approver" });
+      const addSignerButton = screen.getByRole("button", {
+        name: "+ Add Approver",
+      });
       fireEvent.click(addSignerButton);
       await waitFor(() => {
-        expect(screen.getAllByTestId(/^address-autocomplete-signer/)).toHaveLength(2);
+        expect(
+          screen.getAllByTestId(/^address-autocomplete-signer/)
+        ).toHaveLength(2);
       });
       fireEvent.change(screen.getByLabelText("Select 1st approver"), {
         target: { value: mockImplicitAddress(1).pkh },
@@ -323,7 +330,9 @@ describe("SelectApproversFormPage", () => {
       fireEvent.change(screen.getByLabelText("2nd approver"), {
         target: { value: mockImplicitAddress(2).pkh },
       });
-      fireEvent.change(screen.getByTestId("threshold-input"), { target: { value: "2" } });
+      fireEvent.change(screen.getByTestId("threshold-input"), {
+        target: { value: "2" },
+      });
 
       // open sign form
       const reviewButton = screen.getByText("Review");
@@ -345,8 +354,8 @@ describe("SelectApproversFormPage", () => {
       ]);
       jest.mocked(estimate).mockResolvedValueOnce({
         fee: BigNumber(100),
-        storageLimit: BigNumber(0),
-        gasLimit: BigNumber(0),
+        storageLimit: 0,
+        gasLimit: 0,
       });
       await waitFor(() => {
         expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
@@ -354,7 +363,10 @@ describe("SelectApproversFormPage", () => {
             data={{
               sender: SENDER.address.pkh,
               threshold: 2,
-              signers: [{ val: mockImplicitAddress(1).pkh }, { val: mockImplicitAddress(2).pkh }],
+              signers: [
+                { val: mockImplicitAddress(1).pkh },
+                { val: mockImplicitAddress(2).pkh },
+              ],
               name: MULTISIG_NAME,
             }}
             fee={new BigNumber(100)}

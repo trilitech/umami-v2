@@ -6,7 +6,7 @@ import {
   PartialTezosOperation,
   TezosOperationType,
 } from "@airgap/beacon-wallet";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 
 import { PermissionRequestModal } from "./PermissionRequestModal";
 import { SignPayloadRequestModal } from "./SignPayloadRequestModal";
@@ -22,7 +22,7 @@ import { ContractOrigination, Operation } from "../../types/Operation";
 import { useGetOwnedAccountSafe } from "../hooks/getAccountDataHooks";
 import { useFindNetwork } from "../hooks/networkHooks";
 import { useAsyncActionHandler } from "../hooks/useAsyncActionHandler";
-import { Estimation, estimate } from "../tezos";
+import { estimate } from "../tezos";
 
 /**
  * @returns a function that handles a beacon message and opens a modal with the appropriate content

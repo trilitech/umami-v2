@@ -266,8 +266,8 @@ describe("<useHandleBeaconMessage />", () => {
   it("opens a modal with the BeaconSignPage for 1 operation", async () => {
     jest.mocked(estimate).mockResolvedValueOnce({
       fee: BigNumber(100),
-      storageLimit: BigNumber(0),
-      gasLimit: BigNumber(0),
+      storageLimit: 0,
+      gasLimit: 0,
     });
 
     const message: BeaconRequestOutputMessage = {
@@ -297,8 +297,8 @@ describe("<useHandleBeaconMessage />", () => {
         <BeaconSignPage
           estimation={{
             fee: BigNumber(100),
-            storageLimit: BigNumber(0),
-            gasLimit: BigNumber(0),
+            storageLimit: 0,
+            gasLimit: 0,
           }}
           message={message}
           operation={
@@ -315,8 +315,8 @@ describe("<useHandleBeaconMessage />", () => {
   it("opens a modal with the BatchSignPage for multiple operations", async () => {
     jest.mocked(estimate).mockResolvedValueOnce({
       fee: BigNumber(100),
-      storageLimit: BigNumber(0),
-      gasLimit: BigNumber(0),
+      storageLimit: 0,
+      gasLimit: 0,
     });
 
     const message: BeaconRequestOutputMessage = {
@@ -351,8 +351,8 @@ describe("<useHandleBeaconMessage />", () => {
         <BatchSignPage
           estimation={{
             fee: BigNumber(100),
-            storageLimit: BigNumber(0),
-            gasLimit: BigNumber(0),
+            storageLimit: 0,
+            gasLimit: 0,
           }}
           message={message}
           operation={

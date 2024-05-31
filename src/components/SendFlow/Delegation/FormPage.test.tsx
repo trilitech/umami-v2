@@ -176,8 +176,8 @@ describe("<Form />", () => {
       });
       jest.mocked(estimate).mockResolvedValueOnce({
         fee: BigNumber(100),
-        storageLimit: BigNumber(0),
-        gasLimit: BigNumber(0),
+        storageLimit: 0,
+        gasLimit: 0,
       });
       const operations = makeAccountOperations(sender, sender, [
         {

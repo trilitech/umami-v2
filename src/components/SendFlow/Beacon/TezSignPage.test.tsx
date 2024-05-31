@@ -52,7 +52,17 @@ describe("<TezSignPage />", () => {
     jest.mocked(executeOperations).mockResolvedValue({ opHash: "ophash" } as BatchWalletOperation);
     jest.spyOn(WalletClient, "respond").mockResolvedValue();
 
-    render(<TezSignPage fee={BigNumber(123)} message={message} operation={operation} />);
+    render(
+      <TezSignPage
+        estimation={{
+          fee: BigNumber(123),
+          gasLimit: 0,
+          storageLimit: 0,
+        }}
+        message={message}
+        operation={operation}
+      />
+    );
 
     expect(screen.getByText("Ghostnet")).toBeVisible();
     expect(screen.queryByText("Mainnet")).not.toBeInTheDocument();

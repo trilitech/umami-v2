@@ -1,10 +1,17 @@
-import { BeaconMessageType, NetworkType, OperationRequestOutput } from "@airgap/beacon-wallet";
+import {
+  BeaconMessageType,
+  NetworkType,
+  OperationRequestOutput,
+} from "@airgap/beacon-wallet";
 import { TezosToolkit } from "@taquito/taquito";
 import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
 import BigNumber from "bignumber.js";
 
 import { OriginationOperationSignPage } from "./OriginationOperationSignPage";
-import { mockContractOrigination, mockImplicitAccount } from "../../../mocks/factories";
+import {
+  mockContractOrigination,
+  mockImplicitAccount,
+} from "../../../mocks/factories";
 import {
   act,
   dynamicModalContextMock,
@@ -50,8 +57,8 @@ describe("<OriginationOperationSignPage />", () => {
       <OriginationOperationSignPage
         estimation={{
           fee: BigNumber(123),
-          gasLimit: BigNumber(0),
-          storageLimit: BigNumber(0),
+          gasLimit: 0,
+          storageLimit: 0,
         }}
         message={message}
         operation={operation}
@@ -65,17 +72,23 @@ describe("<OriginationOperationSignPage />", () => {
     const user = userEvent.setup();
     const testToolkit = new TezosToolkit("test-tezos-toolkit");
 
-    jest.mocked(makeToolkit).mockImplementation(() => Promise.resolve(testToolkit));
-    jest.mocked(useGetSecretKey).mockImplementation(() => () => Promise.resolve("secretKey"));
-    jest.mocked(executeOperations).mockResolvedValue({ opHash: "ophash" } as BatchWalletOperation);
+    jest
+      .mocked(makeToolkit)
+      .mockImplementation(() => Promise.resolve(testToolkit));
+    jest
+      .mocked(useGetSecretKey)
+      .mockImplementation(() => () => Promise.resolve("secretKey"));
+    jest
+      .mocked(executeOperations)
+      .mockResolvedValue({ opHash: "ophash" } as BatchWalletOperation);
     jest.spyOn(WalletClient, "respond").mockResolvedValue();
 
     render(
       <OriginationOperationSignPage
         estimation={{
           fee: BigNumber(123),
-          gasLimit: BigNumber(0),
-          storageLimit: BigNumber(0),
+          gasLimit: 0,
+          storageLimit: 0,
         }}
         message={message}
         operation={operation}
@@ -95,7 +108,11 @@ describe("<OriginationOperationSignPage />", () => {
       secretKey: "secretKey",
       network: GHOSTNET,
     });
-    expect(executeOperations).toHaveBeenCalledWith(operation, testToolkit);
+    expect(executeOperations).toHaveBeenCalledWith(operation, testToolkit, {
+      fee: BigNumber(123),
+      gasLimit: 0,
+      storageLimit: 0,
+    });
 
     await waitFor(() =>
       expect(WalletClient.respond).toHaveBeenCalledWith({
@@ -104,6 +121,8 @@ describe("<OriginationOperationSignPage />", () => {
         transactionHash: "ophash",
       })
     );
-    expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(<SuccessStep hash="ophash" />);
+    expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
+      <SuccessStep hash="ophash" />
+    );
   });
 });
