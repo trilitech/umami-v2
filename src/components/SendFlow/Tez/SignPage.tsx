@@ -2,7 +2,9 @@ import { Flex, FormLabel, ModalBody, ModalContent, ModalFooter } from "@chakra-u
 import { FormProvider } from "react-hook-form";
 
 import { TezTransfer } from "../../../types/Operation";
+import { useExecuteParams } from "../../../utils/beacon/useExecuteParams";
 import { AddressTile } from "../../AddressTile/AddressTile";
+import AdvancedSettingsAccordion from "../../AdvancedSettingsAccordion";
 import { TezTile } from "../../AssetTiles/TezTile";
 import { OperationSignerSelector } from "../OperationSignerSelector";
 import { SignButton } from "../SignButton";
@@ -11,17 +13,31 @@ import { SignPageHeader, headerText } from "../SignPageHeader";
 import { SignPageProps, useSignPageHelpers } from "../utils";
 
 export const SignPage: React.FC<SignPageProps> = props => {
-  const { mode, operations: initialOperations, fee: initialFee } = props;
-  const { fee, operations, estimationFailed, isLoading, form, signer, reEstimate, onSign } =
-    useSignPageHelpers(initialFee, initialOperations, mode);
+  const { mode, operations: initialOperations, estimation } = props;
+  const [executeParams, updateExecuteParams] = useExecuteParams(estimation);
+  const {
+    fee,
+    operations,
+    estimationFailed,
+    isLoading,
+    form,
+    signer,
+    reEstimate,
+    onSign,
+  } = useSignPageHelpers(executeParams, initialOperations, mode);
 
-  const { amount: mutezAmount, recipient } = operations.operations[0] as TezTransfer;
+  const { amount: mutezAmount, recipient } = operations
+    .operations[0] as TezTransfer;
 
   return (
     <FormProvider {...form}>
       <ModalContent>
         <form>
-          <SignPageHeader {...props} operationsType={operations.type} signer={operations.signer} />
+          <SignPageHeader
+            {...props}
+            operationsType={operations.type}
+            signer={operations.signer}
+          />
           <ModalBody>
             <TezTile mutezAmount={mutezAmount} />
 
@@ -40,6 +56,11 @@ export const SignPage: React.FC<SignPageProps> = props => {
               operationType={operations.type}
               reEstimate={reEstimate}
               sender={operations.sender}
+            />
+
+            <AdvancedSettingsAccordion
+              onChange={updateExecuteParams}
+              {...executeParams}
             />
           </ModalBody>
           <ModalFooter>

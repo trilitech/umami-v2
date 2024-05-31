@@ -3,7 +3,9 @@ import { FormProvider } from "react-hook-form";
 
 import { TokenTransfer } from "../../../types/Operation";
 import { FA12TokenBalance, FA2TokenBalance } from "../../../types/TokenBalance";
+import { useExecuteParams } from "../../../utils/beacon/useExecuteParams";
 import { AddressTile } from "../../AddressTile/AddressTile";
+import AdvancedSettingsAccordion from "../../AdvancedSettingsAccordion";
 import { TokenTile } from "../../TokenTile";
 import { OperationSignerSelector } from "../OperationSignerSelector";
 import { SignButton } from "../SignButton";
@@ -17,11 +19,20 @@ export const SignPage: React.FC<
   const {
     mode,
     operations: initialOperations,
-    fee: initialFee,
+    estimation,
     data: { token },
   } = props;
-  const { fee, operations, estimationFailed, isLoading, form, signer, reEstimate, onSign } =
-    useSignPageHelpers(initialFee, initialOperations, mode);
+  const [executeParams, updateExecuteParams] = useExecuteParams(estimation);
+  const {
+    fee,
+    operations,
+    estimationFailed,
+    isLoading,
+    form,
+    signer,
+    reEstimate,
+    onSign,
+  } = useSignPageHelpers(executeParams, initialOperations, mode);
 
   const { amount, recipient } = operations.operations[0] as TokenTransfer;
 
@@ -29,7 +40,11 @@ export const SignPage: React.FC<
     <FormProvider {...form}>
       <ModalContent>
         <form>
-          <SignPageHeader {...props} operationsType={operations.type} signer={operations.signer} />
+          <SignPageHeader
+            {...props}
+            operationsType={operations.type}
+            signer={operations.signer}
+          />
           <ModalBody>
             <TokenTile amount={amount} token={token} />
 
@@ -46,7 +61,10 @@ export const SignPage: React.FC<
             </Flex>
 
             <FormLabel>From</FormLabel>
-            <AddressTile marginBottom="24px" address={operations.sender.address} />
+            <AddressTile
+              marginBottom="24px"
+              address={operations.sender.address}
+            />
             <FormLabel>To</FormLabel>
             <AddressTile address={recipient} />
 
@@ -55,6 +73,11 @@ export const SignPage: React.FC<
               operationType={operations.type}
               reEstimate={reEstimate}
               sender={operations.sender}
+            />
+
+            <AdvancedSettingsAccordion
+              onChange={updateExecuteParams}
+              {...executeParams}
             />
           </ModalBody>
           <ModalFooter>

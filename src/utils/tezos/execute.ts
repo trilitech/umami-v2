@@ -8,7 +8,7 @@ import { AccountOperations } from "../../types/AccountOperations";
 export const executeOperations = async (
   operations: AccountOperations,
   tezosToolkit: TezosToolkit,
-  executeParams?: Estimation
+  executeParams?: Partial<Estimation>
 ): Promise<BatchWalletOperation> => {
   const params = operationsToWalletParams({ ...operations, executeParams });
   console.log(params);

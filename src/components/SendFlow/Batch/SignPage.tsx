@@ -14,8 +14,16 @@ export const SignPage: React.FC<{
   initialOperations: AccountOperations;
   initialFee: BigNumber;
 }> = ({ initialOperations, initialFee }) => {
-  const { fee, operations, estimationFailed, isLoading, signer, form, reEstimate, onSign } =
-    useSignPageHelpers(initialFee, initialOperations, "batch");
+  const {
+    fee,
+    operations,
+    estimationFailed,
+    isLoading,
+    signer,
+    form,
+    reEstimate,
+    onSign,
+  } = useSignPageHelpers({ fee: initialFee }, initialOperations, "batch");
   const title = headerText(operations.type, "batch");
   return (
     <FormProvider {...form}>

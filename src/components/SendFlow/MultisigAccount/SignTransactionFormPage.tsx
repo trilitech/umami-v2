@@ -32,7 +32,7 @@ export const SignTransactionFormPage: React.FC<SignPageProps<FormValues>> = prop
   const {
     mode,
     operations: initialOperations,
-    fee: initialFee,
+    estimation: { fee: initialFee },
     data: { threshold, signers, name },
   } = props;
 
@@ -45,7 +45,7 @@ export const SignTransactionFormPage: React.FC<SignPageProps<FormValues>> = prop
     reEstimate,
     signer,
     onSign: originateContract,
-  } = useSignPageHelpers(initialFee, initialOperations, mode);
+  } = useSignPageHelpers({ fee: initialFee }, initialOperations, mode);
 
   const isLoading = contractNameObtainingIsLoading || contractCreationIsLoading;
   /**

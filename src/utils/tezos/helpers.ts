@@ -27,7 +27,7 @@ export type PublicKeyPair = {
 };
 
 export type AdvancedAccountOperations = AccountOperations & {
-  executeParams?: Estimation;
+  executeParams?: Partial<Estimation>;
 };
 
 export const addressExists = async (pkh: string, network: Network): Promise<boolean> => {
