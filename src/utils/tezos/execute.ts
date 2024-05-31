@@ -11,6 +11,5 @@ export const executeOperations = async (
   executeParams?: Partial<Estimation>
 ): Promise<BatchWalletOperation> => {
   const params = operationsToWalletParams({ ...operations, executeParams });
-  console.log(params);
   return tezosToolkit.wallet.batch(params).send();
 };

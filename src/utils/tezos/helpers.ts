@@ -135,50 +135,60 @@ export const selectRandomElements = <T>(
 export const sumTez = (items: string[]): BigNumber =>
   items.reduce((acc, curr) => acc.plus(curr), new BigNumber(0));
 
-export const operationToTaquitoOperation = (operation: Operation): ParamsWithKind => {
+export const operationToTaquitoOperation = (
+  operation: Operation
+): ParamsWithKind => {
+  let taquitoOperation = {} as ParamsWithKind;
+
   switch (operation.type) {
     case "tez":
-      return {
+      taquitoOperation = {
         kind: OpKind.TRANSACTION,
         to: operation.recipient.pkh,
         amount: parseInt(operation.amount),
         mutez: true,
       };
+      break;
     case "contract_call":
-      return {
+      taquitoOperation = {
         kind: OpKind.TRANSACTION,
         to: operation.contract.pkh,
         amount: parseInt(operation.amount),
         mutez: true,
         parameter: { entrypoint: operation.entrypoint, value: operation.args },
       };
+      break;
 
     case "delegation":
-      return {
+      taquitoOperation = {
         kind: OpKind.DELEGATION,
         source: operation.sender.pkh,
         delegate: operation.recipient.pkh,
       };
+      break;
     case "undelegation":
-      return {
+      taquitoOperation = {
         kind: OpKind.DELEGATION,
         source: operation.sender.pkh,
         delegate: undefined,
       };
+      break;
     case "fa1.2":
-      return {
+      taquitoOperation = {
         kind: OpKind.TRANSACTION,
         amount: 0,
         to: operation.contract.pkh,
         parameter: makeFA12TransactionParameter(operation),
       };
+      break;
     case "fa2":
-      return {
+      taquitoOperation = {
         kind: OpKind.TRANSACTION,
         amount: 0,
         to: operation.contract.pkh,
         parameter: makeFA2TransactionParameter(operation),
       };
+      break;
     case "contract_origination": {
       // if storage is a valid Michelson we need to pass it in as init, not the storage
       if (isValidMichelson(operation.storage)) {
@@ -193,8 +203,12 @@ export const operationToTaquitoOperation = (operation: Operation): ParamsWithKin
         code: operation.code,
         storage: operation.storage,
       };
+      break;
     }
   }
+
+  // @ts-expect-error
+  return { ...taquitoOperation, ...operation.executeParams };
 };
 
 const isValidMichelson = (rawStorage: any): boolean => {
@@ -212,16 +226,23 @@ export const operationsToBatchParams = ({
   sender,
   executeParams,
 }: AdvancedAccountOperations): ParamsWithKind[] => {
-  let _operations = originalOperations;
+  let operations: Operation[] = [];
 
-  if (originalOperations.length === 1) {
-    _operations = [{ ...originalOperations[0], ...executeParams }];
+  if (operationsType === "implicit") {
+    operations = originalOperations;
+  }
+  if (operationsType === "implicit" && originalOperations.length === 1) {
+    operations = [{ ...originalOperations[0], executeParams }];
+  }
+  if (operationsType === "proposal") {
+    operations = [
+      {
+        ...makeMultisigProposeOperation(sender.address, originalOperations),
+        executeParams,
+      },
+    ];
   }
 
-  const operations =
-    operationsType === "implicit"
-      ? _operations
-      : [makeMultisigProposeOperation(sender.address, _operations)];
   return operations.map(operationToTaquitoOperation);
 };
 

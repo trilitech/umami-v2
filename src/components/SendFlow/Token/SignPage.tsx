@@ -76,8 +76,9 @@ export const SignPage: React.FC<
             />
 
             <AdvancedSettingsAccordion
-              onChange={updateExecuteParams}
               {...executeParams}
+              fee={fee}
+              onChange={updateExecuteParams}
             />
           </ModalBody>
           <ModalFooter>

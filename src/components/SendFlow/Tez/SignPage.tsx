@@ -59,8 +59,9 @@ export const SignPage: React.FC<SignPageProps> = props => {
             />
 
             <AdvancedSettingsAccordion
-              onChange={updateExecuteParams}
               {...executeParams}
+              fee={fee}
+              onChange={updateExecuteParams}
             />
           </ModalBody>
           <ModalFooter>

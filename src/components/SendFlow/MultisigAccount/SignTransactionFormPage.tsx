@@ -15,24 +15,29 @@ import { FormProvider } from "react-hook-form";
 import { FormValues } from "./FormValues";
 import colors from "../../../style/colors";
 import { parsePkh } from "../../../types/Address";
+import { useExecuteParams } from "../../../utils/beacon/useExecuteParams";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
 import { useAppDispatch } from "../../../utils/redux/hooks";
 import { multisigActions } from "../../../utils/redux/slices/multisigsSlice";
 import { OwnedImplicitAccountsAutocomplete } from "../../AddressAutocomplete";
 import { AddressTile } from "../../AddressTile/AddressTile";
+import AdvancedSettingsAccordion from "../../AdvancedSettingsAccordion";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
 import { SignPageHeader } from "../SignPageHeader";
 import { SignPageProps, useSignPageHelpers } from "../utils";
 
-export const SignTransactionFormPage: React.FC<SignPageProps<FormValues>> = props => {
+export const SignTransactionFormPage: React.FC<
+  SignPageProps<FormValues>
+> = props => {
   const dispatch = useAppDispatch();
-  const { isLoading: contractNameObtainingIsLoading, handleAsyncAction } = useAsyncActionHandler();
+  const [executeParams, updateExecuteParams] = useExecuteParams(props.estimation);
+  const { isLoading: contractNameObtainingIsLoading, handleAsyncAction } =
+    useAsyncActionHandler();
 
   const {
     mode,
     operations: initialOperations,
-    estimation: { fee: initialFee },
     data: { threshold, signers, name },
   } = props;
 
@@ -45,7 +50,7 @@ export const SignTransactionFormPage: React.FC<SignPageProps<FormValues>> = prop
     reEstimate,
     signer,
     onSign: originateContract,
-  } = useSignPageHelpers({ fee: initialFee }, initialOperations, mode);
+  } = useSignPageHelpers(executeParams, initialOperations, mode);
 
   const isLoading = contractNameObtainingIsLoading || contractCreationIsLoading;
   /**
@@ -95,8 +100,19 @@ export const SignTransactionFormPage: React.FC<SignPageProps<FormValues>> = prop
               {name}
             </Text>
 
+            <AdvancedSettingsAccordion
+              {...executeParams}
+              fee={fee}
+              onChange={updateExecuteParams}
+            />
+
             <FormLabel>Approvers</FormLabel>
-            <Flex flexDirection="column" gap="12px" marginBottom="12px" data-testid="approvers">
+            <Flex
+              flexDirection="column"
+              gap="12px"
+              marginBottom="12px"
+              data-testid="approvers"
+            >
               {signers.map(signer => (
                 <AddressTile
                   key={signer.val}

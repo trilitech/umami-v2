@@ -1,4 +1,10 @@
-import { Flex, FormLabel, ModalBody, ModalContent, ModalFooter } from "@chakra-ui/react";
+import {
+  Flex,
+  FormLabel,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+} from "@chakra-ui/react";
 import { FormProvider } from "react-hook-form";
 
 import { Delegation } from "../../../types/Operation";
@@ -61,8 +67,9 @@ export const SignPage: React.FC<SignPageProps> = props => {
             />
 
             <AdvancedSettingsAccordion
-              onChange={updateExecuteParams}
               {...executeParams}
+              fee={fee}
+              onChange={updateExecuteParams}
             />
           </ModalBody>
           <ModalFooter>

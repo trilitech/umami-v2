@@ -3,6 +3,7 @@ import { MANAGER_LAMBDA } from "@taquito/taquito";
 import { isEqual } from "lodash";
 
 import { Address, ContractAddress, ImplicitAddress } from "./Address";
+import { Estimation } from "../utils/tezos";
 
 export type TezTransfer = {
   type: "tez";
@@ -52,14 +53,17 @@ export type ContractCall = {
   args: MichelsonV1Expression;
 };
 
-export type Operation =
+export type Operation = (
   | TezTransfer
   | FA12Transfer
   | FA2Transfer
   | Delegation
   | Undelegation
   | ContractOrigination
-  | ContractCall;
+  | ContractCall
+) & {
+  executeParams?: Partial<Estimation>;
+};
 
 export type ApproveOrExecute = "approve" | "execute";
 

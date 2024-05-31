@@ -113,8 +113,9 @@ export const SignPage: React.FC<SignPageProps<{ nft: NFTBalance }>> = props => {
             />
 
             <AdvancedSettingsAccordion
-              onChange={updateExecuteParams}
               {...executeParams}
+              fee={fee}
+              onChange={updateExecuteParams}
             />
           </ModalBody>
           <ModalFooter>
