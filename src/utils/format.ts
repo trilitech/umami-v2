@@ -12,7 +12,7 @@ export const tezToMutez = (tez: string): BigNumber =>
 export const mutezToTez = (mutez: BigNumber | string) => format("mutez", "tz", mutez) as string;
 
 const formatTezAmount = (mutez: BigNumber | string): string => {
-  const tezAmount = BigNumber(mutezToTez(mutez)).toNumber();
+  const tezAmount = BigNumber(mutezToTez(mutez || "0")).toNumber();
   // make sure we always show 6 digits after the decimal point
   const formatter = new Intl.NumberFormat("en-US", {
     minimumFractionDigits: TEZ_DECIMALS,
