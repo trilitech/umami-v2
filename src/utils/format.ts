@@ -6,12 +6,12 @@ import { TEZ, TEZ_DECIMALS } from "./tezos";
 export const truncate = (name: string, len: number) =>
   name.length > len ? name.slice(0, len - 3) + "..." : name;
 
-export const tezToMutez = (tez: string): BigNumber =>
-  format("tz", "mutez", tez) as BigNumber;
+export const tezToMutez = (tez: string): BigNumber => format("tz", "mutez", tez) as BigNumber;
 
-export const mutezToTez = (mutez: BigNumber | string) => format("mutez", "tz", mutez) as string;
+export const mutezToTez = (mutez: BigNumber | string | number) =>
+  format("mutez", "tz", mutez) as string;
 
-const formatTezAmount = (mutez: BigNumber | string): string => {
+const formatTezAmount = (mutez: BigNumber | string | number): string => {
   const tezAmount = BigNumber(mutezToTez(mutez || "0")).toNumber();
   // make sure we always show 6 digits after the decimal point
   const formatter = new Intl.NumberFormat("en-US", {
@@ -22,7 +22,7 @@ const formatTezAmount = (mutez: BigNumber | string): string => {
   return formatter.format(tezAmount);
 };
 
-export const prettyTezAmount = (mutez: BigNumber | string): string => {
+export const prettyTezAmount = (mutez: BigNumber | string | number): string => {
   const fee = formatTezAmount(mutez);
   return `${fee} ${TEZ}`;
 };

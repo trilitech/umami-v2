@@ -1,16 +1,12 @@
 import { Box, Button } from "@chakra-ui/react";
 import { TezosToolkit } from "@taquito/taquito";
-import BigNumber from "bignumber.js";
 import { repeat } from "lodash";
 import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { SuccessStep } from "./SuccessStep";
 import { Account } from "../../types/Account";
-import {
-  AccountOperations,
-  makeAccountOperations,
-} from "../../types/AccountOperations";
+import { AccountOperations, makeAccountOperations } from "../../types/AccountOperations";
 import { RawPkh } from "../../types/Address";
 import { Operation } from "../../types/Operation";
 import { useClearBatch } from "../../utils/hooks/batchesHooks";
@@ -35,10 +31,7 @@ export type FormPageProps<T> = { sender?: Account; form?: T };
 // FormPagePropsWithSender is the same as FormPageProps but with sender required,
 // Use this when we don't want to give the users options to select the sender
 // (e.g. the nft and token form)
-export type FormPagePropsWithSender<T> = RequiredFields<
-  FormPageProps<T>,
-  "sender"
->;
+export type FormPagePropsWithSender<T> = RequiredFields<FormPageProps<T>, "sender">;
 
 // Form values should always have a sender field.
 export type BaseFormValues = { sender: RawPkh };
@@ -109,19 +102,17 @@ export const formDefaultValues = <T,>({ sender, form }: FormPageProps<T>) => {
 // TODO: test this
 export const useSignPageHelpers = (
   // the fee & operations you've got from the form
-  executeParams: Partial<Estimation>,
+  executeParams: Estimation,
   initialOperations: AccountOperations,
   mode: SignPageMode
 ) => {
   const [estimationFailed, setEstimationFailed] = useState(false);
   const getSigner = useGetImplicitAccount();
-  const [fee, setFee] = useState<BigNumber>(executeParams.fee!);
-  const [operations, setOperations] =
-    useState<AccountOperations>(initialOperations);
+  const [fee, setFee] = useState(executeParams.fee);
+  const [operations, setOperations] = useState<AccountOperations>(initialOperations);
   const network = useSelectedNetwork();
   const clearBatch = useClearBatch();
-  const { isLoading, handleAsyncAction, handleAsyncActionUnsafe } =
-    useAsyncActionHandler();
+  const { isLoading, handleAsyncAction, handleAsyncActionUnsafe } = useAsyncActionHandler();
   const { openWith } = useContext(DynamicModalContext);
 
   useEffect(() => {
@@ -162,11 +153,7 @@ export const useSignPageHelpers = (
 
   const onSign = async (tezosToolkit: TezosToolkit) =>
     handleAsyncAction(async () => {
-      const operation = await executeOperations(
-        operations,
-        tezosToolkit,
-        executeParams
-      );
+      const operation = await executeOperations(operations, tezosToolkit, executeParams);
       if (mode === "batch") {
         clearBatch(operations.sender);
       }

@@ -20,7 +20,6 @@ export const DelegationSignPage: React.FC<BeaconSignPageProps> = ({
 
   const { isSigning, onSign, network } = useSignWithBeacon(operation, message, estimation);
   const [executeParams, updateExecuteParams] = useExecuteParams(estimation);
-  const { fee, gasLimit, storageLimit } = executeParams;
 
   return (
     <ModalContent>
@@ -38,18 +37,14 @@ export const DelegationSignPage: React.FC<BeaconSignPageProps> = ({
             paddingX="4px"
           >
             <Flex alignItems="center">
-              <SignPageFee fee={fee} />
+              <SignPageFee fee={estimation.fee} />
             </Flex>
           </Flex>
 
           <FormLabel>To</FormLabel>
           <AddressTile address={recipient} />
-          <AdvancedSettingsAccordion
-            fee={fee}
-            gasLimit={gasLimit}
-            onChange={updateExecuteParams}
-            storageLimit={storageLimit}
-          />
+
+          <AdvancedSettingsAccordion estimation={executeParams} onChange={updateExecuteParams} />
         </ModalBody>
         <ModalFooter>
           <SignButton

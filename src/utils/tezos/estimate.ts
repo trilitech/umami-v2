@@ -1,13 +1,11 @@
-import BigNumber from "bignumber.js";
-
 import { addressExists, makeToolkit, operationsToBatchParams, sumTez } from "./helpers";
 import { AccountOperations } from "../../types/AccountOperations";
 import { Network } from "../../types/Network";
 
 export type Estimation = {
-  storageLimit: number;
-  gasLimit: number;
-  fee: BigNumber;
+  storageLimit?: number;
+  gasLimit?: number;
+  fee: number;
 };
 
 export const estimate = async (

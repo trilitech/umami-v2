@@ -1,5 +1,4 @@
 import { ModalContent, ModalFooter } from "@chakra-ui/react";
-import { BigNumber } from "bignumber.js";
 import React from "react";
 import { FormProvider } from "react-hook-form";
 
@@ -12,25 +11,17 @@ import { useSignPageHelpers } from "../utils";
 
 export const SignPage: React.FC<{
   initialOperations: AccountOperations;
-  initialFee: BigNumber;
+  initialFee: number;
 }> = ({ initialOperations, initialFee }) => {
-  const {
-    fee,
-    operations,
-    estimationFailed,
-    isLoading,
-    signer,
-    form,
-    reEstimate,
-    onSign,
-  } = useSignPageHelpers({ fee: initialFee }, initialOperations, "batch");
+  const { fee, operations, estimationFailed, isLoading, signer, form, reEstimate, onSign } =
+    useSignPageHelpers({ fee: initialFee }, initialOperations, "batch");
   const title = headerText(operations.type, "batch");
   return (
     <FormProvider {...form}>
       <ModalContent>
         <form>
           <BatchModalBody
-            fee={fee}
+            fee={fee!}
             signer={signer}
             title={title}
             transactionCount={operations.operations.length}

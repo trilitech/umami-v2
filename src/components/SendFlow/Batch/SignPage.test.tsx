@@ -1,5 +1,3 @@
-import BigNumber from "bignumber.js";
-
 import { SignPage } from "./SignPage";
 import {
   mockImplicitAccount,
@@ -28,7 +26,7 @@ const operation = makeAccountOperations(account, account, [
   },
 ]);
 
-const fee = BigNumber(1234567);
+const fee = 1234567;
 const fixture = () => <SignPage initialFee={fee} initialOperations={operation} />;
 
 beforeEach(() => addAccount(mockMnemonicAccount(0)));

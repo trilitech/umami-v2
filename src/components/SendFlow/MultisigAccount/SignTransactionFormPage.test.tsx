@@ -1,5 +1,4 @@
 import { Modal } from "@chakra-ui/react";
-import BigNumber from "bignumber.js";
 
 import { FormValues } from "./FormValues";
 import { SignTransactionFormPage } from "./SignTransactionFormPage";
@@ -27,7 +26,7 @@ const props: SignPageProps<FormValues> = {
   operations: makeAccountOperations(mockImplicitAccount(0), mockImplicitAccount(0), [
     mockContractOrigination(0),
   ]),
-  fee: new BigNumber(1234567),
+  estimation: { fee: 100, gasLimit: 0, storageLimit: 0 },
   mode: "single",
   data: {
     name: "Contract name",

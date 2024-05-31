@@ -1,5 +1,3 @@
-import BigNumber from "bignumber.js";
-
 import { SignPage } from "./SignPage";
 import { mockImplicitAccount, mockMultisigAccount } from "../../../mocks/factories";
 import { render, screen } from "../../../mocks/testUtils";
@@ -16,7 +14,7 @@ const fixture = () => {
   return (
     <SignPage
       actionType="approve"
-      fee={new BigNumber(1234567)}
+      fee={1234567}
       operation={operation}
       signer={account}
       transactionCount={1}

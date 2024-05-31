@@ -1,5 +1,4 @@
 import { Flex, FormLabel, ModalBody, Text } from "@chakra-ui/react";
-import { BigNumber } from "bignumber.js";
 import React from "react";
 
 import { FormPageHeader } from "./FormPageHeader";
@@ -10,7 +9,7 @@ import { ImplicitAccount } from "../../types/Account";
 import { AddressTile } from "../AddressTile/AddressTile";
 
 export const BatchModalBody: React.FC<{
-  fee: BigNumber;
+  fee: number;
   title: string;
   signer: ImplicitAccount;
   transactionCount: number;

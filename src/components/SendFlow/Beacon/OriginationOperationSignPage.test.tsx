@@ -1,17 +1,10 @@
-import {
-  BeaconMessageType,
-  NetworkType,
-  OperationRequestOutput,
-} from "@airgap/beacon-wallet";
+import { BeaconMessageType, NetworkType, OperationRequestOutput } from "@airgap/beacon-wallet";
 import { TezosToolkit } from "@taquito/taquito";
 import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
 import BigNumber from "bignumber.js";
 
 import { OriginationOperationSignPage } from "./OriginationOperationSignPage";
-import {
-  mockContractOrigination,
-  mockImplicitAccount,
-} from "../../../mocks/factories";
+import { mockContractOrigination, mockImplicitAccount } from "../../../mocks/factories";
 import {
   act,
   dynamicModalContextMock,
@@ -56,7 +49,7 @@ describe("<OriginationOperationSignPage />", () => {
     render(
       <OriginationOperationSignPage
         estimation={{
-          fee: BigNumber(123),
+          fee: 123,
           gasLimit: 0,
           storageLimit: 0,
         }}
@@ -72,21 +65,15 @@ describe("<OriginationOperationSignPage />", () => {
     const user = userEvent.setup();
     const testToolkit = new TezosToolkit("test-tezos-toolkit");
 
-    jest
-      .mocked(makeToolkit)
-      .mockImplementation(() => Promise.resolve(testToolkit));
-    jest
-      .mocked(useGetSecretKey)
-      .mockImplementation(() => () => Promise.resolve("secretKey"));
-    jest
-      .mocked(executeOperations)
-      .mockResolvedValue({ opHash: "ophash" } as BatchWalletOperation);
+    jest.mocked(makeToolkit).mockImplementation(() => Promise.resolve(testToolkit));
+    jest.mocked(useGetSecretKey).mockImplementation(() => () => Promise.resolve("secretKey"));
+    jest.mocked(executeOperations).mockResolvedValue({ opHash: "ophash" } as BatchWalletOperation);
     jest.spyOn(WalletClient, "respond").mockResolvedValue();
 
     render(
       <OriginationOperationSignPage
         estimation={{
-          fee: BigNumber(123),
+          fee: 123,
           gasLimit: 0,
           storageLimit: 0,
         }}
@@ -121,8 +108,6 @@ describe("<OriginationOperationSignPage />", () => {
         transactionHash: "ophash",
       })
     );
-    expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
-      <SuccessStep hash="ophash" />
-    );
+    expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(<SuccessStep hash="ophash" />);
   });
 });

@@ -1,5 +1,4 @@
 import { Modal } from "@chakra-ui/react";
-import BigNumber from "bignumber.js";
 
 import { FormPage, FormValues } from "./FormPage";
 import { SignPage } from "./SignPage";
@@ -143,7 +142,9 @@ describe("<FormPage />", () => {
             sender: mockImplicitAccount(0),
           })
         );
-        fireEvent.change(screen.getByTestId("quantity-input"), { target: { value: "0" } });
+        fireEvent.change(screen.getByTestId("quantity-input"), {
+          target: { value: "0" },
+        });
         fireEvent.blur(screen.getByTestId("quantity-input"));
         await waitFor(() => {
           expect(screen.getByTestId("quantity-error")).toHaveTextContent("Min quantity is 1");
@@ -159,7 +160,9 @@ describe("<FormPage />", () => {
             mockNFT(1, "5")
           )
         );
-        fireEvent.change(screen.getByTestId("quantity-input"), { target: { value: "7" } });
+        fireEvent.change(screen.getByTestId("quantity-input"), {
+          target: { value: "7" },
+        });
         fireEvent.blur(screen.getByTestId("quantity-input"));
         await waitFor(() => {
           expect(screen.getByTestId("quantity-error")).toHaveTextContent("Max quantity is 5");
@@ -187,7 +190,7 @@ describe("<FormPage />", () => {
           expect(submitButton).toBeEnabled();
         });
         jest.mocked(estimate).mockResolvedValueOnce({
-          fee: BigNumber(100),
+          fee: 100,
           storageLimit: 0,
           gasLimit: 0,
         });
@@ -207,7 +210,7 @@ describe("<FormPage />", () => {
         expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
           <SignPage
             data={{ nft: mockNFT(1) }}
-            fee={new BigNumber(100)}
+            estimation={{ fee: 100, gasLimit: 0, storageLimit: 0 }}
             goBack={expect.any(Function)}
             mode="single"
             operations={operations}

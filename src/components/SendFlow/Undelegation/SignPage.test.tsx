@@ -1,5 +1,4 @@
 import { Modal } from "@chakra-ui/react";
-import BigNumber from "bignumber.js";
 
 import { SignPage } from "./SignPage";
 import { mockImplicitAccount, mockMnemonicAccount } from "../../../mocks/factories";
@@ -29,7 +28,7 @@ describe("<SignPage />", () => {
     it("displays the fee in tez", () => {
       const props: SignPageProps = {
         operations,
-        fee: new BigNumber(1234567),
+        estimation: { fee: 1234567, storageLimit: 0, gasLimit: 0 },
         mode: "single",
         data: undefined,
       };

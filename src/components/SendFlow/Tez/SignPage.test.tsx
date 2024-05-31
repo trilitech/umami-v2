@@ -1,5 +1,4 @@
 import { Modal } from "@chakra-ui/react";
-import BigNumber from "bignumber.js";
 
 import { SignPage } from "./SignPage";
 import {
@@ -34,7 +33,7 @@ describe("<SignPage />", () => {
             recipient: mockImplicitAddress(1),
           },
         ]),
-        fee: new BigNumber(1234567),
+        estimation: { fee: 100, gasLimit: 0, storageLimit: 0 },
         mode: "single",
         data: undefined,
       };

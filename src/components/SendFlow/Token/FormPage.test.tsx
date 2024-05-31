@@ -1,5 +1,4 @@
 import { Modal } from "@chakra-ui/react";
-import BigNumber from "bignumber.js";
 
 import { FormPage, FormValues } from "./FormPage";
 import { SignPage } from "./SignPage";
@@ -145,7 +144,9 @@ describe("<FormPage />", () => {
             mockFA2Token(1, mockAccount, 5, 0)
           )
         );
-        fireEvent.change(screen.getByLabelText("Amount"), { target: { value: "7" } });
+        fireEvent.change(screen.getByLabelText("Amount"), {
+          target: { value: "7" },
+        });
         fireEvent.blur(screen.getByLabelText("Amount"));
         await waitFor(() => {
           expect(screen.getByTestId("amount-error")).toHaveTextContent("Max amount is 5");
@@ -161,7 +162,9 @@ describe("<FormPage />", () => {
             mockFA2Token(1, mockAccount, 1234)
           )
         );
-        fireEvent.change(screen.getByLabelText("Amount"), { target: { value: "0.1235" } });
+        fireEvent.change(screen.getByLabelText("Amount"), {
+          target: { value: "0.1235" },
+        });
         fireEvent.blur(screen.getByLabelText("Amount"));
         await waitFor(() => {
           expect(screen.getByTestId("amount-error")).toHaveTextContent("Max amount is 0.1234");
@@ -178,7 +181,9 @@ describe("<FormPage />", () => {
             mockFA2Token(1, mockAccount, 1, decimals)
           )
         );
-        fireEvent.change(screen.getByLabelText("Amount"), { target: { value: "0.00007" } });
+        fireEvent.change(screen.getByLabelText("Amount"), {
+          target: { value: "0.00007" },
+        });
         fireEvent.blur(screen.getByLabelText("Amount"));
         await waitFor(() => {
           expect(screen.getByTestId("amount-error")).toHaveTextContent(
@@ -210,7 +215,7 @@ describe("<FormPage />", () => {
         const submitButton = screen.getByText("Preview");
         await waitFor(() => expect(submitButton).toBeEnabled());
         jest.mocked(estimate).mockResolvedValueOnce({
-          fee: BigNumber(100),
+          fee: 100,
           storageLimit: 0,
           gasLimit: 0,
         });
@@ -230,7 +235,7 @@ describe("<FormPage />", () => {
         expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
           <SignPage
             data={{ token: mockFA2Token(0, mockAccount, 2, 0) }}
-            fee={new BigNumber(100)}
+            estimation={{ fee: 100, gasLimit: 0, storageLimit: 0 }}
             goBack={expect.any(Function)}
             mode="single"
             operations={operations}

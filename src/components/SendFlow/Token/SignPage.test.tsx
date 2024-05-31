@@ -1,5 +1,4 @@
 import { Modal } from "@chakra-ui/react";
-import BigNumber from "bignumber.js";
 
 import { SignPage } from "./SignPage";
 import { mockFA2Token, mockImplicitAccount, mockMnemonicAccount } from "../../../mocks/factories";
@@ -35,9 +34,11 @@ describe("<SignPage />", () => {
   ]);
   describe("fee", () => {
     it("displays the fee in tez", () => {
-      const props: SignPageProps<{ token: FA12TokenBalance | FA2TokenBalance }> = {
+      const props: SignPageProps<{
+        token: FA12TokenBalance | FA2TokenBalance;
+      }> = {
         operations,
-        fee: new BigNumber(1234567),
+        estimation: { fee: 1234567, gasLimit: 0, storageLimit: 0 },
         mode: "single",
         data: { token: mockFAToken },
       };
@@ -48,9 +49,11 @@ describe("<SignPage />", () => {
 
   describe("token", () => {
     it("displays the correct symbol", () => {
-      const props: SignPageProps<{ token: FA12TokenBalance | FA2TokenBalance }> = {
+      const props: SignPageProps<{
+        token: FA12TokenBalance | FA2TokenBalance;
+      }> = {
         operations,
-        fee: new BigNumber(1234567),
+        estimation: { fee: 1234567, gasLimit: 0, storageLimit: 0 },
         mode: "single",
         data: { token: mockFAToken },
       };
@@ -61,9 +64,11 @@ describe("<SignPage />", () => {
     });
 
     it("displays the correct amount", () => {
-      const props: SignPageProps<{ token: FA12TokenBalance | FA2TokenBalance }> = {
+      const props: SignPageProps<{
+        token: FA12TokenBalance | FA2TokenBalance;
+      }> = {
         operations,
-        fee: new BigNumber(1234567),
+        estimation: { fee: 1234567, gasLimit: 0, storageLimit: 0 },
         mode: "single",
         data: { token: mockFA2Token(0, mockAccount, 1, 0) },
       };

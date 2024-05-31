@@ -1,5 +1,3 @@
-import BigNumber from "bignumber.js";
-
 import {
   mockImplicitAddress,
   mockMnemonicAccount,
@@ -20,7 +18,7 @@ jest.mock("../../../../utils/tezos/estimate");
 describe("<MultisigPendingOperations />", () => {
   it("displays multisig executable tez operations", async () => {
     jest.mocked(estimate).mockResolvedValueOnce({
-      fee: BigNumber(33),
+      fee: 33,
       storageLimit: 0,
       gasLimit: 0,
     });

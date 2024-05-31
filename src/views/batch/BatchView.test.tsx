@@ -1,6 +1,5 @@
 import { OpKind, OperationContentsAndResult } from "@taquito/rpc";
 import { TezosOperationError } from "@taquito/taquito";
-import BigNumber from "bignumber.js";
 
 import { BatchView } from "./BatchView";
 import { mockImplicitAccount, mockTezOperation } from "../../mocks/factories";
@@ -135,7 +134,7 @@ describe("<BatchView />", () => {
       const user = userEvent.setup();
       addAccount(mockImplicitAccount(0));
       jest.mocked(estimate).mockResolvedValueOnce({
-        fee: BigNumber(100),
+        fee: 100,
         storageLimit: 0,
         gasLimit: 0,
       });

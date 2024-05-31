@@ -20,19 +20,15 @@ import { mutezToTez, tezToMutez } from "../utils/format";
 import { Estimation, TEZ_DECIMALS } from "../utils/tezos";
 
 type AdvancedSettingsAccordionProps = {
-  fee: Estimation["fee"];
-  gasLimit: Estimation["gasLimit"];
-  storageLimit: Estimation["storageLimit"];
+  estimation: Estimation;
   onChange: (key: keyof Estimation, value: BigNumber | number | string) => void;
 };
 
 const AdvancedSettingsAccordion: React.FC<AdvancedSettingsAccordionProps> = ({
-  fee,
-  gasLimit,
-  storageLimit,
+  estimation,
   onChange,
 }) => {
-  const [_fee, setFee] = useState(mutezToTez(fee));
+  const [_fee, setFee] = useState(mutezToTez(estimation.fee));
 
   const handleChangeFeeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const pattern = /^-?\d+(\.\d{0,6})?$/;
@@ -52,11 +48,7 @@ const AdvancedSettingsAccordion: React.FC<AdvancedSettingsAccordionProps> = ({
 
   return (
     <Accordion marginTop="16px" allowToggle>
-      <AccordionItem
-        background={colors.gray[800]}
-        border="none"
-        borderRadius="8px"
-      >
+      <AccordionItem background={colors.gray[800]} border="none" borderRadius="8px">
         <AccordionButton>
           <Heading flex="1" textAlign="left" marginY="10px" size="md">
             Advanced
@@ -90,24 +82,20 @@ const AdvancedSettingsAccordion: React.FC<AdvancedSettingsAccordionProps> = ({
             <FormLabel fontSize="14px">Gas Limit</FormLabel>
             <Input
               fontSize="14px"
-              onChange={e =>
-                onChange("gasLimit", new BigNumber(e.target.value))
-              }
+              onChange={e => onChange("gasLimit", new BigNumber(e.target.value))}
               placeholder="0"
               type="number"
-              value={gasLimit}
+              value={estimation.gasLimit}
             />
           </FormControl>
           <FormControl>
             <FormLabel fontSize="14px">Storage Limit</FormLabel>
             <Input
               fontSize="14px"
-              onChange={e =>
-                onChange("storageLimit", new BigNumber(e.target.value))
-              }
+              onChange={e => onChange("storageLimit", new BigNumber(e.target.value))}
               placeholder="0"
               type="number"
-              value={storageLimit}
+              value={estimation.storageLimit}
             />
           </FormControl>
         </AccordionPanel>

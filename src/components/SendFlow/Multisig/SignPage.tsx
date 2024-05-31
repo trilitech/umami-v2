@@ -1,6 +1,5 @@
 import { ModalContent, ModalFooter } from "@chakra-ui/react";
 import { TezosToolkit } from "@taquito/taquito";
-import { BigNumber } from "bignumber.js";
 import { capitalize } from "lodash";
 import React, { useContext } from "react";
 
@@ -15,7 +14,7 @@ import { SignButton } from "../SignButton";
 import { SuccessStep } from "../SuccessStep";
 
 export const SignPage: React.FC<{
-  fee: BigNumber;
+  fee: number;
   operation: AccountOperations;
   actionType: ApproveOrExecute;
   signer: ImplicitAccount;

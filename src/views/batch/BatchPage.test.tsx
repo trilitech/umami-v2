@@ -1,6 +1,5 @@
 import { Modal } from "@chakra-ui/react";
 import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
-import BigNumber from "bignumber.js";
 
 import { BatchPage } from "./BatchPage";
 import { mockImplicitAccount, mockMnemonicAccount, mockTezOperation } from "../../mocks/factories";
@@ -19,20 +18,14 @@ jest.mock("../../utils/tezos", () => ({
 }));
 
 beforeEach(() => {
-  [
-    mockMnemonicAccount(1),
-    mockMnemonicAccount(2),
-    mockMnemonicAccount(3),
-  ].forEach(addAccount);
+  [mockMnemonicAccount(1), mockMnemonicAccount(2), mockMnemonicAccount(3)].forEach(addAccount);
   jest.mocked(estimate).mockResolvedValueOnce({
-    fee: BigNumber(10),
+    fee: 10,
     storageLimit: 0,
     gasLimit: 0,
   });
 
-  jest
-    .mocked(executeOperations)
-    .mockResolvedValue({ opHash: "foo" } as BatchWalletOperation);
+  jest.mocked(executeOperations).mockResolvedValue({ opHash: "foo" } as BatchWalletOperation);
 });
 
 describe("<BatchPage />", () => {
@@ -41,20 +34,17 @@ describe("<BatchPage />", () => {
 
     expect(screen.getByTestId("empty-state-message")).toBeInTheDocument();
     expect(screen.getByText("No batches to show")).toBeVisible();
-    expect(
-      screen.getByText("There are no batch transactions to show...")
-    ).toBeVisible();
+    expect(screen.getByText("There are no batch transactions to show...")).toBeVisible();
   });
 
   it("hides empty batch message when batches are present", () => {
     store.dispatch(
       batchesActions.add({
         network: MAINNET,
-        operations: makeAccountOperations(
-          mockImplicitAccount(1),
-          mockImplicitAccount(1),
-          [mockTezOperation(0), mockTezOperation(0)]
-        ),
+        operations: makeAccountOperations(mockImplicitAccount(1), mockImplicitAccount(1), [
+          mockTezOperation(0),
+          mockTezOperation(0),
+        ]),
       })
     );
 
@@ -74,11 +64,10 @@ describe("<BatchPage />", () => {
       store.dispatch(
         batchesActions.add({
           network: MAINNET,
-          operations: makeAccountOperations(
-            mockImplicitAccount(1),
-            mockImplicitAccount(1),
-            [mockTezOperation(0), mockTezOperation(0)]
-          ),
+          operations: makeAccountOperations(mockImplicitAccount(1), mockImplicitAccount(1), [
+            mockTezOperation(0),
+            mockTezOperation(0),
+          ]),
         })
       );
       render(<BatchPage />);
@@ -88,11 +77,10 @@ describe("<BatchPage />", () => {
         store.dispatch(
           batchesActions.add({
             network: MAINNET,
-            operations: makeAccountOperations(
-              mockImplicitAccount(2),
-              mockImplicitAccount(2),
-              [mockTezOperation(0), mockTezOperation(0)]
-            ),
+            operations: makeAccountOperations(mockImplicitAccount(2), mockImplicitAccount(2), [
+              mockTezOperation(0),
+              mockTezOperation(0),
+            ]),
           })
         );
       });
@@ -104,21 +92,19 @@ describe("<BatchPage />", () => {
     store.dispatch(
       batchesActions.add({
         network: MAINNET,
-        operations: makeAccountOperations(
-          mockImplicitAccount(1),
-          mockImplicitAccount(1),
-          [mockTezOperation(0), mockTezOperation(0)]
-        ),
+        operations: makeAccountOperations(mockImplicitAccount(1), mockImplicitAccount(1), [
+          mockTezOperation(0),
+          mockTezOperation(0),
+        ]),
       })
     );
     store.dispatch(
       batchesActions.add({
         network: MAINNET,
-        operations: makeAccountOperations(
-          mockImplicitAccount(2),
-          mockImplicitAccount(2),
-          [mockTezOperation(0), mockTezOperation(0)]
-        ),
+        operations: makeAccountOperations(mockImplicitAccount(2), mockImplicitAccount(2), [
+          mockTezOperation(0),
+          mockTezOperation(0),
+        ]),
       })
     );
 
@@ -128,11 +114,10 @@ describe("<BatchPage />", () => {
   });
 
   describe("action buttons", () => {
-    const operations = makeAccountOperations(
-      mockImplicitAccount(2),
-      mockImplicitAccount(2),
-      [mockTezOperation(0), mockTezOperation(0)]
-    );
+    const operations = makeAccountOperations(mockImplicitAccount(2), mockImplicitAccount(2), [
+      mockTezOperation(0),
+      mockTezOperation(0),
+    ]);
 
     beforeEach(() => {
       store.dispatch(
@@ -156,7 +141,7 @@ describe("<BatchPage />", () => {
     test("submit batch", async () => {
       const user = userEvent.setup();
       jest.mocked(estimate).mockResolvedValueOnce({
-        fee: BigNumber(10),
+        fee: 10,
         storageLimit: 0,
         gasLimit: 0,
       });
@@ -167,9 +152,7 @@ describe("<BatchPage />", () => {
         </Modal>
       );
 
-      await act(() =>
-        user.click(screen.getByRole("button", { name: "Submit Batch" }))
-      );
+      await act(() => user.click(screen.getByRole("button", { name: "Submit Batch" })));
 
       expect(jest.mocked(estimate)).toHaveBeenCalledWith(operations, MAINNET);
       expect(screen.getByRole("dialog")).toBeInTheDocument();

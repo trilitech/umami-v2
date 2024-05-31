@@ -14,35 +14,18 @@ export const SignPage: React.FC<SignPageProps> = props => {
   const { mode, operations: initialOperations, estimation } = props;
   const [executeParams, updateExecuteParams] = useExecuteParams(estimation);
 
-  const {
-    fee,
-    operations,
-    estimationFailed,
-    isLoading,
-    form,
-    signer,
-    reEstimate,
-    onSign,
-  } = useSignPageHelpers(executeParams, initialOperations, mode);
+  const { fee, operations, estimationFailed, isLoading, form, signer, reEstimate, onSign } =
+    useSignPageHelpers(executeParams, initialOperations, mode);
   return (
     <FormProvider {...form}>
       <ModalContent>
         <form>
-          <SignPageHeader
-            {...props}
-            operationsType={operations.type}
-            signer={operations.signer}
-          />
+          <SignPageHeader {...props} operationsType={operations.type} signer={operations.signer} />
           <ModalBody>
             <FormLabel>From</FormLabel>
             <AddressTile address={signer.address} />
 
-            <Flex
-              alignItems="center"
-              justifyContent="end"
-              marginTop="12px"
-              paddingX="4px"
-            >
+            <Flex alignItems="center" justifyContent="end" marginTop="12px" paddingX="4px">
               <SignPageFee fee={fee} />
             </Flex>
 
@@ -54,8 +37,7 @@ export const SignPage: React.FC<SignPageProps> = props => {
             />
 
             <AdvancedSettingsAccordion
-              {...executeParams}
-              fee={fee}
+              estimation={{ ...executeParams, fee }}
               onChange={updateExecuteParams}
             />
           </ModalBody>

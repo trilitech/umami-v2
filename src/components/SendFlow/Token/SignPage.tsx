@@ -23,16 +23,8 @@ export const SignPage: React.FC<
     data: { token },
   } = props;
   const [executeParams, updateExecuteParams] = useExecuteParams(estimation);
-  const {
-    fee,
-    operations,
-    estimationFailed,
-    isLoading,
-    form,
-    signer,
-    reEstimate,
-    onSign,
-  } = useSignPageHelpers(executeParams, initialOperations, mode);
+  const { fee, operations, estimationFailed, isLoading, form, signer, reEstimate, onSign } =
+    useSignPageHelpers(executeParams, initialOperations, mode);
 
   const { amount, recipient } = operations.operations[0] as TokenTransfer;
 
@@ -40,11 +32,7 @@ export const SignPage: React.FC<
     <FormProvider {...form}>
       <ModalContent>
         <form>
-          <SignPageHeader
-            {...props}
-            operationsType={operations.type}
-            signer={operations.signer}
-          />
+          <SignPageHeader {...props} operationsType={operations.type} signer={operations.signer} />
           <ModalBody>
             <TokenTile amount={amount} token={token} />
 
@@ -61,10 +49,7 @@ export const SignPage: React.FC<
             </Flex>
 
             <FormLabel>From</FormLabel>
-            <AddressTile
-              marginBottom="24px"
-              address={operations.sender.address}
-            />
+            <AddressTile marginBottom="24px" address={operations.sender.address} />
             <FormLabel>To</FormLabel>
             <AddressTile address={recipient} />
 
@@ -76,8 +61,7 @@ export const SignPage: React.FC<
             />
 
             <AdvancedSettingsAccordion
-              {...executeParams}
-              fee={fee}
+              estimation={{ ...executeParams, fee }}
               onChange={updateExecuteParams}
             />
           </ModalBody>

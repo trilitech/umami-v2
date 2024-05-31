@@ -1,5 +1,3 @@
-import BigNumber from "bignumber.js";
-
 import { AssetsPanel } from "./AssetsPanel";
 import { mockMultisigAccount } from "../../../mocks/factories";
 import { pendingOps } from "../../../mocks/multisig";
@@ -33,7 +31,7 @@ describe("<AssetsPanel />", () => {
       jest.mocked(getRelatedTokenTransfers).mockResolvedValue([]);
 
       jest.mocked(estimate).mockResolvedValueOnce({
-        fee: BigNumber(33),
+        fee: 33,
         storageLimit: 0,
         gasLimit: 0,
       });

@@ -1,5 +1,4 @@
 import { Modal } from "@chakra-ui/react";
-import BigNumber from "bignumber.js";
 
 import { FormPage, FormValues } from "./FormPage";
 import { SignPage } from "./SignPage";
@@ -115,7 +114,7 @@ describe("<Form />", () => {
       const submitButton = screen.getByText("Preview");
       await waitFor(() => expect(submitButton).toBeEnabled());
       jest.mocked(estimate).mockResolvedValueOnce({
-        fee: BigNumber(100),
+        fee: 100,
         storageLimit: 0,
         gasLimit: 0,
       });
@@ -131,7 +130,11 @@ describe("<Form />", () => {
       expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
         <SignPage
           data={undefined}
-          fee={new BigNumber(100)}
+          estimation={{
+            fee: 100,
+            gasLimit: 0,
+            storageLimit: 0,
+          }}
           goBack={expect.any(Function)}
           mode="single"
           operations={operations}

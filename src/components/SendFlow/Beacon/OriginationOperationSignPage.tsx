@@ -34,7 +34,6 @@ export const OriginationOperationSignPage: React.FC<BeaconSignPageProps> = ({
   message,
 }) => {
   const [executeParams, updateExecuteParams] = useExecuteParams(estimation);
-  const { fee, gasLimit, storageLimit } = executeParams;
   const { isSigning, onSign, network } = useSignWithBeacon(operation, message, executeParams);
   const { code, storage } = operation.operations[0] as ContractOrigination;
 
@@ -69,7 +68,7 @@ export const OriginationOperationSignPage: React.FC<BeaconSignPageProps> = ({
         </Flex>
 
         <Flex alignItems="center" justifyContent="end" marginTop="12px">
-          <SignPageFee fee={fee} />
+          <SignPageFee fee={estimation.fee} />
         </Flex>
 
         <Accordion marginTop="16px" allowToggle={true}>
@@ -98,12 +97,8 @@ export const OriginationOperationSignPage: React.FC<BeaconSignPageProps> = ({
             </AccordionPanel>
           </AccordionItem>
         </Accordion>
-        <AdvancedSettingsAccordion
-          fee={fee}
-          gasLimit={gasLimit}
-          onChange={updateExecuteParams}
-          storageLimit={storageLimit}
-        />
+
+        <AdvancedSettingsAccordion estimation={executeParams} onChange={updateExecuteParams} />
       </ModalBody>
       <ModalFooter padding="16px 0 0 0">
         <SignButton

@@ -17,7 +17,6 @@ export const UndelegationSignPage: React.FC<BeaconSignPageProps> = ({
 }) => {
   const { isSigning, onSign, network } = useSignWithBeacon(operation, message, estimation);
   const [executeParams, updateExecuteParams] = useExecuteParams(estimation);
-  const { fee, gasLimit, storageLimit } = executeParams;
 
   return (
     <ModalContent>
@@ -28,14 +27,10 @@ export const UndelegationSignPage: React.FC<BeaconSignPageProps> = ({
           <AddressTile address={operation.signer.address} />
 
           <Flex alignItems="center" justifyContent="end" marginTop="12px" paddingX="4px">
-            <SignPageFee fee={fee} />
+            <SignPageFee fee={estimation.fee} />
           </Flex>
-          <AdvancedSettingsAccordion
-            fee={fee}
-            gasLimit={gasLimit}
-            onChange={updateExecuteParams}
-            storageLimit={storageLimit}
-          />
+
+          <AdvancedSettingsAccordion estimation={executeParams} onChange={updateExecuteParams} />
         </ModalBody>
         <ModalFooter>
           <SignButton

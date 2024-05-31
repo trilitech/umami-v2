@@ -132,12 +132,10 @@ export const selectRandomElements = <T>(
     .sort((a, b) => a.index - b.index);
 
 // for tez it will return tez, for mutez - mutez
-export const sumTez = (items: string[]): BigNumber =>
-  items.reduce((acc, curr) => acc.plus(curr), new BigNumber(0));
+export const sumTez = (items: string[]): number =>
+  items.reduce((acc, curr) => acc.plus(curr), new BigNumber(0)).toNumber();
 
-export const operationToTaquitoOperation = (
-  operation: Operation
-): ParamsWithKind => {
+export const operationToTaquitoOperation = (operation: Operation): ParamsWithKind => {
   let taquitoOperation = {} as ParamsWithKind;
 
   switch (operation.type) {
@@ -207,7 +205,6 @@ export const operationToTaquitoOperation = (
     }
   }
 
-  // @ts-expect-error
   return { ...taquitoOperation, ...operation.executeParams };
 };
 

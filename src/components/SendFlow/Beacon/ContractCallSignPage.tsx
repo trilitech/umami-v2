@@ -38,8 +38,6 @@ export const ContractCallSignPage: React.FC<BeaconSignPageProps> = ({
     args,
   } = operation.operations[0] as ContractCall;
   const [executeParams, updateExecuteParams] = useExecuteParams(estimation);
-  const { fee, gasLimit, storageLimit } = executeParams;
-
   const { isSigning, onSign, network } = useSignWithBeacon(operation, message, estimation);
 
   return (
@@ -50,7 +48,7 @@ export const ContractCallSignPage: React.FC<BeaconSignPageProps> = ({
           <TezTile mutezAmount={mutezAmount} />
 
           <Flex alignItems="center" justifyContent="end" marginTop="12px">
-            <SignPageFee fee={fee} />
+            <SignPageFee fee={estimation.fee} />
           </Flex>
 
           <FormLabel marginTop="24px">From </FormLabel>
@@ -73,12 +71,7 @@ export const ContractCallSignPage: React.FC<BeaconSignPageProps> = ({
               </AccordionPanel>
             </AccordionItem>
           </Accordion>
-          <AdvancedSettingsAccordion
-            fee={fee}
-            gasLimit={gasLimit}
-            onChange={updateExecuteParams}
-            storageLimit={storageLimit}
-          />
+          <AdvancedSettingsAccordion estimation={executeParams} onChange={updateExecuteParams} />
         </ModalBody>
         <ModalFooter padding="16px 0 0 0">
           <SignButton

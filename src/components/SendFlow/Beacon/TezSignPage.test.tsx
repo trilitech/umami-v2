@@ -1,6 +1,5 @@
 import { BeaconMessageType, NetworkType, OperationRequestOutput } from "@airgap/beacon-wallet";
 import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
-import BigNumber from "bignumber.js";
 
 import { TezSignPage } from "./TezSignPage";
 import { mockImplicitAccount, mockTezOperation } from "../../../mocks/factories";
@@ -55,7 +54,7 @@ describe("<TezSignPage />", () => {
     render(
       <TezSignPage
         estimation={{
-          fee: BigNumber(123),
+          fee: 123,
           gasLimit: 0,
           storageLimit: 0,
         }}
@@ -69,7 +68,9 @@ describe("<TezSignPage />", () => {
 
     await act(() => user.type(screen.getByLabelText("Password"), "Password"));
 
-    const signButton = screen.getByRole("button", { name: "Confirm Transaction" });
+    const signButton = screen.getByRole("button", {
+      name: "Confirm Transaction",
+    });
     await waitFor(() => expect(signButton).toBeEnabled());
     await act(() => user.click(signButton));
 

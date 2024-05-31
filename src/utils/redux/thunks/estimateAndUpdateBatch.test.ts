@@ -1,5 +1,3 @@
-import BigNumber from "bignumber.js";
-
 import { estimateAndUpdateBatch } from "./estimateAndUpdateBatch";
 import {
   mockDelegationOperation,
@@ -20,7 +18,7 @@ describe("estimateAndUpdateBatch", () => {
       const operation = mockTezOperation(1);
 
       jest.mocked(estimate).mockResolvedValueOnce({
-        fee: BigNumber(1000),
+        fee: 1000,
         storageLimit: 0,
         gasLimit: 0,
       });
@@ -29,21 +27,17 @@ describe("estimateAndUpdateBatch", () => {
         mockImplicitAccount(1),
         [operation]
       );
-      await act(() =>
-        store.dispatch(estimateAndUpdateBatch(accountOperations, network))
-      );
+      await act(() => store.dispatch(estimateAndUpdateBatch(accountOperations, network)));
 
       expect(estimate).toHaveBeenCalledWith(accountOperations, network);
-      expect(store.getState().batches[network.name]).toEqual([
-        accountOperations,
-      ]);
+      expect(store.getState().batches[network.name]).toEqual([accountOperations]);
     });
 
     it("doesn't add an operation to batch if the estimation fails", async () => {
       // add one operation to avoid false negatives
       const operation = mockTezOperation(1);
       jest.mocked(estimate).mockResolvedValueOnce({
-        fee: BigNumber(1000),
+        fee: 1000,
         storageLimit: 0,
         gasLimit: 0,
       });
@@ -53,13 +47,9 @@ describe("estimateAndUpdateBatch", () => {
         mockImplicitAccount(1),
         [operation]
       );
-      await act(() =>
-        store.dispatch(estimateAndUpdateBatch(accountOperations, network))
-      );
+      await act(() => store.dispatch(estimateAndUpdateBatch(accountOperations, network)));
 
-      expect(store.getState().batches[network.name]).toEqual([
-        accountOperations,
-      ]);
+      expect(store.getState().batches[network.name]).toEqual([accountOperations]);
 
       const failedOperation = mockDelegationOperation(0);
       const failedFormOperations = {
@@ -67,20 +57,11 @@ describe("estimateAndUpdateBatch", () => {
         operations: [failedOperation],
       };
       const action = estimateAndUpdateBatch(failedFormOperations, network);
-      jest
-        .mocked(estimate)
-        .mockRejectedValueOnce(new Error("Estimation failed"));
+      jest.mocked(estimate).mockRejectedValueOnce(new Error("Estimation failed"));
 
-      await expect(() => store.dispatch(action)).rejects.toThrow(
-        "Estimation failed"
-      );
-      expect(jest.mocked(estimate)).toHaveBeenCalledWith(
-        accountOperations,
-        network
-      );
-      expect(store.getState().batches[network.name]).toEqual([
-        accountOperations,
-      ]);
+      await expect(() => store.dispatch(action)).rejects.toThrow("Estimation failed");
+      expect(jest.mocked(estimate)).toHaveBeenCalledWith(accountOperations, network);
+      expect(store.getState().batches[network.name]).toEqual([accountOperations]);
     });
   });
 });

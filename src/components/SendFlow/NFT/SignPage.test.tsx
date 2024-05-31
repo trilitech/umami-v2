@@ -1,5 +1,4 @@
 import { Modal } from "@chakra-ui/react";
-import BigNumber from "bignumber.js";
 
 import { SignPage } from "./SignPage";
 import { mockImplicitAccount, mockMnemonicAccount, mockNFT } from "../../../mocks/factories";
@@ -35,7 +34,7 @@ describe("<SignPage />", () => {
     it("displays the fee in tez", () => {
       const props: SignPageProps<{ nft: NFTBalance }> = {
         operations,
-        fee: new BigNumber(1234567),
+        estimation: { fee: 100, gasLimit: 0, storageLimit: 0 },
         mode: "single",
         data: { nft: mockNFT(1) },
       };
@@ -47,7 +46,7 @@ describe("<SignPage />", () => {
     it("displays the correct name", () => {
       const props: SignPageProps<{ nft: NFTBalance }> = {
         operations,
-        fee: new BigNumber(1234567),
+        estimation: { fee: 100, gasLimit: 0, storageLimit: 0 },
         mode: "single",
         data: { nft: mockNFT(1) },
       };
@@ -58,7 +57,7 @@ describe("<SignPage />", () => {
     it("displays the correct balance", () => {
       const props: SignPageProps<{ nft: NFTBalance }> = {
         operations,
-        fee: new BigNumber(1234567),
+        estimation: { fee: 100, gasLimit: 0, storageLimit: 0 },
         mode: "single",
         data: { nft: mockNFT(1) },
       };
