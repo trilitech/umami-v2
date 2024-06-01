@@ -23,8 +23,14 @@ setDefaultTimeout(secondsToMilliseconds(15));
 
 let browser: ChromiumBrowser;
 
+const resourceCleanup = () => {
+  void browser.close();
+  killNode();
+};
+
 BeforeAll({ timeout: secondsToMilliseconds(20) }, async function () {
   browser = await chromium.launch({ headless: !!process.env.CI });
+  process.on("SIGINT", resourceCleanup);
 
   Object.defineProperty(global, "crypto", crypto);
 });
@@ -106,13 +112,14 @@ Before(async function (this: CustomWorld) {
 After(async function (this: CustomWorld) {
   // helps with debugging failing tests
   // the screenshot is in the cucumber report
-  this.attach(await this.page.screenshot(), "image/png");
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  if (this.page) {
+    this.attach(await this.page.screenshot(), "image/png");
 
-  await this.page.close();
-  await this.context.close();
+    await this.page.close();
+  }
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  await this.context?.close();
 });
 
-AfterAll(async function () {
-  await browser.close();
-  killNode();
-});
+AfterAll(resourceCleanup);

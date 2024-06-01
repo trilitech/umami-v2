@@ -8,11 +8,14 @@ jobs:
     timeout-minutes: 20
     runs-on: ubuntu-latest-m
     env:
-      TZKT_SYNC_IMAGE: bakingbad/tzkt-sync:1.13.4
-      TZKT_API_IMAGE: serjonya/tzkt-api:1.13.4-linux
+      TZKT_SYNC_IMAGE: bakingbad/tzkt-sync:1.14.1
+      TZKT_API_IMAGE: serjonya/tzkt-api:1.14.1-linux
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Pull docker images
+        run: docker compose pull --quiet &
 
       - name: Setup yarn
         run: |
@@ -21,11 +24,8 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20.12.x
+          node-version: 20.x
           cache: "yarn"
-
-      - name: Pull docker images
-        run: docker compose pull --quiet &
 
       - name: Install dependencies
         run: yarn install --immutable
