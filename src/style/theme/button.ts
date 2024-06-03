@@ -142,7 +142,15 @@ export const buttonTheme = defineStyleConfig({
       background: "white",
       borderWidth: "0",
       borderRadius: "full",
+      _loading: {
+        color: "white",
+        background: colors.gray[600],
+        _hover: {
+          background: colors.gray[600],
+        },
+      },
       _hover: {
+        color: "white",
         background: colors.gray[600],
       },
     },

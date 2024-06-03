@@ -4,6 +4,7 @@ import { useOnboardWithSocial } from "./useOnboardWithSocial";
 import { EmailIcon } from "../../../assets/icons";
 import colors from "../../../style/colors";
 
+// eslint-disable-next-line import/no-unused-modules
 export const OnboardWithEmailButton = ({ onAuth }: { onAuth: () => void }) => {
   const { isLoading, onboard } = useOnboardWithSocial("email", onAuth);
 
