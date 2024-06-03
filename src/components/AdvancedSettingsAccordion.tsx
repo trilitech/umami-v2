@@ -33,7 +33,7 @@ export const AdvancedSettingsAccordion = () => {
 
     if (makeValidateDecimals(TEZ_DECIMALS)(newFeeValue) === true) {
       setTezFee(newFeeValue);
-      setValue("executeParams.fee", tezToMutez(newFeeValue).toNumber());
+      setValue("executeParams.fee", tezToMutez(newFeeValue) as number);
     }
   };
 
