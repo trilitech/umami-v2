@@ -58,7 +58,7 @@
     "@tanstack/eslint-plugin-query": "^5.35.6",
     "@tanstack/react-query": "^5.40.0",
     "@tanstack/react-query-devtools": "^5.40.0",
-    "@taquito/ledger-signer": "^19.2.1",
+    "@taquito/ledger-signer": "^20.0.0",
     "@taquito/michel-codec": "^19.2.1",
     "@taquito/rpc": "^19.2.1",
     "@taquito/signer": "^19.2.1",
