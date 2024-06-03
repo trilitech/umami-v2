@@ -5627,6 +5627,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@taquito/core@npm:^20.0.0":
+  version: 20.0.0
+  resolution: "@taquito/core@npm:20.0.0"
+  dependencies:
+    json-stringify-safe: "npm:^5.0.1"
+  checksum: 10/f39eff52987003afd3a4fef1627cb308475f5bc5148fe606a5f9abc050778d2d7a8149ce73172ebf01c39a164018d1b34e5efe2cf33ed187de2f3966d13c3c50
+  languageName: node
+  linkType: hard
+
 "@taquito/http-utils@npm:^19.2.1":
   version: 19.2.1
   resolution: "@taquito/http-utils@npm:19.2.1"
@@ -5750,6 +5759,24 @@ __metadata:
     elliptic: "npm:^6.5.4"
     typedarray-to-buffer: "npm:^4.0.0"
   checksum: 10/fffc5ed734c15f33510ed46ff0f1fb6a2cfadc6c2ee179cdd1fcca6ef44ed7b010c0ee2ace61b48d16341d71a09efd1b28f0d51405f9323ae8eab8a46052f6ef
+  languageName: node
+  linkType: hard
+
+"@taquito/utils@npm:^20.0.0":
+  version: 20.0.0
+  resolution: "@taquito/utils@npm:20.0.0"
+  dependencies:
+    "@stablelib/blake2b": "npm:^1.0.1"
+    "@stablelib/ed25519": "npm:^1.0.3"
+    "@taquito/core": "npm:^20.0.0"
+    "@types/bs58check": "npm:^2.1.0"
+    bignumber.js: "npm:^9.1.2"
+    blakejs: "npm:^1.2.1"
+    bs58check: "npm:^3.0.1"
+    buffer: "npm:^6.0.3"
+    elliptic: "npm:^6.5.4"
+    typedarray-to-buffer: "npm:^4.0.0"
+  checksum: 10/cea5a7367d98eb7cccc70e866a56f82d26854b0408e4f29526769f37c10bf23f90502d8951d48b39359435b0b443d63f3e96abd77d578ce3e7565cca4e08607f
   languageName: node
   linkType: hard
 
@@ -17572,7 +17599,7 @@ __metadata:
     "@taquito/rpc": "npm:^19.2.1"
     "@taquito/signer": "npm:^19.2.1"
     "@taquito/taquito": "npm:19.2.1"
-    "@taquito/utils": "npm:^19.2.1"
+    "@taquito/utils": "npm:^20.0.0"
     "@testing-library/dom": "npm:^10.1.0"
     "@testing-library/jest-dom": "npm:6.4.5"
     "@testing-library/react": "npm:14.3.0"
