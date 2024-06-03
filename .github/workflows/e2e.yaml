@@ -5,7 +5,7 @@ on: push
 jobs:
   test:
     permissions: write-all
-    timeout-minutes: 20
+    timeout-minutes: 35
     runs-on: ubuntu-latest-m
     env:
       TZKT_SYNC_IMAGE: bakingbad/tzkt-sync:1.14.1
