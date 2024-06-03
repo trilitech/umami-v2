@@ -26,7 +26,7 @@ const props: SignPageProps<FormValues> = {
   operations: makeAccountOperations(mockImplicitAccount(0), mockImplicitAccount(0), [
     mockContractOrigination(0),
   ]),
-  estimation: { fee: 100, gasLimit: 0, storageLimit: 0 },
+  executeParams: { fee: 1234567, gasLimit: 0, storageLimit: 0 },
   mode: "single",
   data: {
     name: "Contract name",

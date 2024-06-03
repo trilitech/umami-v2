@@ -210,7 +210,7 @@ describe("<FormPage />", () => {
         expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
           <SignPage
             data={{ nft: mockNFT(1) }}
-            estimation={{ fee: 100, gasLimit: 0, storageLimit: 0 }}
+            executeParams={{ fee: 100, gasLimit: 0, storageLimit: 0 }}
             goBack={expect.any(Function)}
             mode="single"
             operations={operations}

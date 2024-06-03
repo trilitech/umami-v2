@@ -4,22 +4,24 @@ import { BeaconSignPageProps } from "./BeaconSignPageProps";
 import { Header } from "./Header";
 import { useSignWithBeacon } from "./useSignWithBeacon";
 import { Delegation } from "../../../types/Operation";
-import { useExecuteParams } from "../../../utils/beacon/useExecuteParams";
 import { AddressTile } from "../../AddressTile/AddressTile";
-import AdvancedSettingsAccordion from "../../AdvancedSettingsAccordion";
+import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
 import { headerText } from "../SignPageHeader";
 
 export const DelegationSignPage: React.FC<BeaconSignPageProps> = ({
   operation,
-  estimation,
+  executeParams,
   message,
 }) => {
   const { recipient } = operation.operations[0] as Delegation;
 
-  const { isSigning, onSign, network } = useSignWithBeacon(operation, message, estimation);
-  const [executeParams, updateExecuteParams] = useExecuteParams(estimation);
+  const { isSigning, onSign, network } = useSignWithBeacon(
+    operation,
+    message,
+    executeParams
+  );
 
   return (
     <ModalContent>
@@ -37,14 +39,14 @@ export const DelegationSignPage: React.FC<BeaconSignPageProps> = ({
             paddingX="4px"
           >
             <Flex alignItems="center">
-              <SignPageFee fee={estimation.fee} />
+              <SignPageFee fee={executeParams.fee} />
             </Flex>
           </Flex>
 
           <FormLabel>To</FormLabel>
           <AddressTile address={recipient} />
 
-          <AdvancedSettingsAccordion estimation={executeParams} onChange={updateExecuteParams} />
+          <AdvancedSettingsAccordion />
         </ModalBody>
         <ModalFooter>
           <SignButton

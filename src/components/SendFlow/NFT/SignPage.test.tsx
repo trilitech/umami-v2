@@ -34,7 +34,7 @@ describe("<SignPage />", () => {
     it("displays the fee in tez", () => {
       const props: SignPageProps<{ nft: NFTBalance }> = {
         operations,
-        estimation: { fee: 100, gasLimit: 0, storageLimit: 0 },
+        executeParams: { fee: 1234567, gasLimit: 0, storageLimit: 0 },
         mode: "single",
         data: { nft: mockNFT(1) },
       };
@@ -46,7 +46,7 @@ describe("<SignPage />", () => {
     it("displays the correct name", () => {
       const props: SignPageProps<{ nft: NFTBalance }> = {
         operations,
-        estimation: { fee: 100, gasLimit: 0, storageLimit: 0 },
+        executeParams: { fee: 100, gasLimit: 0, storageLimit: 0 },
         mode: "single",
         data: { nft: mockNFT(1) },
       };
@@ -57,7 +57,7 @@ describe("<SignPage />", () => {
     it("displays the correct balance", () => {
       const props: SignPageProps<{ nft: NFTBalance }> = {
         operations,
-        estimation: { fee: 100, gasLimit: 0, storageLimit: 0 },
+        executeParams: { fee: 100, gasLimit: 0, storageLimit: 0 },
         mode: "single",
         data: { nft: mockNFT(1) },
       };

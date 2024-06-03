@@ -294,7 +294,7 @@ describe("<useHandleBeaconMessage />", () => {
     await waitFor(() =>
       expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
         <BeaconSignPage
-          estimation={{
+          executeParams={{
             fee: 100,
             storageLimit: 0,
             gasLimit: 0,
@@ -348,7 +348,7 @@ describe("<useHandleBeaconMessage />", () => {
     await waitFor(() =>
       expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
         <BatchSignPage
-          estimation={{
+          executeParams={{
             fee: 100,
             storageLimit: 0,
             gasLimit: 0,

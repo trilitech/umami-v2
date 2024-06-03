@@ -298,7 +298,7 @@ describe("SelectApproversFormPage", () => {
         ),
       ]);
       jest.mocked(estimate).mockResolvedValueOnce({
-        fee: 150,
+        fee: 100,
         storageLimit: 0,
         gasLimit: 0,
       });
@@ -315,7 +315,7 @@ describe("SelectApproversFormPage", () => {
             signers: [{ val: mockImplicitAddress(0).pkh }, { val: mockImplicitAddress(1).pkh }],
             name: "Test account",
           }}
-          estimation={{ fee: 100, gasLimit: 0, storageLimit: 0 }}
+          executeParams={{ fee: 100, gasLimit: 0, storageLimit: 0 }}
           goBack={expect.any(Function)}
           mode="single"
           operations={operations}
@@ -378,7 +378,7 @@ describe("SelectApproversFormPage", () => {
               signers: [{ val: mockImplicitAddress(1).pkh }, { val: mockImplicitAddress(2).pkh }],
               name: MULTISIG_NAME,
             }}
-            estimation={{ fee: 100, gasLimit: 0, storageLimit: 0 }}
+            executeParams={{ fee: 100, gasLimit: 0, storageLimit: 0 }}
             goBack={expect.any(Function)}
             mode="single"
             operations={operations}

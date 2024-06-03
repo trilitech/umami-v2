@@ -21,20 +21,22 @@ import { BeaconSignPageProps } from "./BeaconSignPageProps";
 import { useSignWithBeacon } from "./useSignWithBeacon";
 import colors from "../../../style/colors";
 import { ContractOrigination } from "../../../types/Operation";
-import { useExecuteParams } from "../../../utils/beacon/useExecuteParams";
 import { JsValueWrap } from "../../AccountDrawer/JsValueWrap";
-import AdvancedSettingsAccordion from "../../AdvancedSettingsAccordion";
+import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
 import { headerText } from "../SignPageHeader";
 
 export const OriginationOperationSignPage: React.FC<BeaconSignPageProps> = ({
   operation,
-  estimation,
+  executeParams,
   message,
 }) => {
-  const [executeParams, updateExecuteParams] = useExecuteParams(estimation);
-  const { isSigning, onSign, network } = useSignWithBeacon(operation, message, executeParams);
+  const { isSigning, onSign, network } = useSignWithBeacon(
+    operation,
+    message,
+    executeParams
+  );
   const { code, storage } = operation.operations[0] as ContractOrigination;
 
   return (
@@ -68,11 +70,15 @@ export const OriginationOperationSignPage: React.FC<BeaconSignPageProps> = ({
         </Flex>
 
         <Flex alignItems="center" justifyContent="end" marginTop="12px">
-          <SignPageFee fee={estimation.fee} />
+          <SignPageFee fee={executeParams.fee} />
         </Flex>
 
         <Accordion marginTop="16px" allowToggle={true}>
-          <AccordionItem background={colors.gray[800]} border="none" borderRadius="8px">
+          <AccordionItem
+            background={colors.gray[800]}
+            border="none"
+            borderRadius="8px"
+          >
             <AccordionButton>
               <Heading flex="1" textAlign="left" marginY="10px" size="md">
                 Code
@@ -85,7 +91,11 @@ export const OriginationOperationSignPage: React.FC<BeaconSignPageProps> = ({
           </AccordionItem>
         </Accordion>
         <Accordion marginTop="16px" allowToggle={true}>
-          <AccordionItem background={colors.gray[800]} border="none" borderRadius="8px">
+          <AccordionItem
+            background={colors.gray[800]}
+            border="none"
+            borderRadius="8px"
+          >
             <AccordionButton>
               <Heading flex="1" textAlign="left" marginY="10px" size="md">
                 Storage
@@ -98,7 +108,7 @@ export const OriginationOperationSignPage: React.FC<BeaconSignPageProps> = ({
           </AccordionItem>
         </Accordion>
 
-        <AdvancedSettingsAccordion estimation={executeParams} onChange={updateExecuteParams} />
+        <AdvancedSettingsAccordion />
       </ModalBody>
       <ModalFooter padding="16px 0 0 0">
         <SignButton

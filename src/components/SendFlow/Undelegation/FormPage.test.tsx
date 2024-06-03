@@ -130,7 +130,7 @@ describe("<Form />", () => {
       expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
         <SignPage
           data={undefined}
-          estimation={{
+          executeParams={{
             fee: 100,
             gasLimit: 0,
             storageLimit: 0,

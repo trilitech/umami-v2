@@ -1,7 +1,7 @@
 import { Box, Button } from "@chakra-ui/react";
 import { TezosToolkit } from "@taquito/taquito";
 import { repeat } from "lodash";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { SuccessStep } from "./SuccessStep";
@@ -17,7 +17,7 @@ import {
 } from "../../utils/hooks/getAccountDataHooks";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
-import { Estimation, estimate, executeOperations } from "../../utils/tezos";
+import { Estimation, ExecuteParams, estimate, executeOperations } from "../../utils/tezos";
 import { DynamicModalContext } from "../DynamicModal";
 
 // Convert given optional fields to required
@@ -41,7 +41,7 @@ export type SignPageMode = "single" | "batch";
 export type SignPageProps<T = undefined> = {
   goBack?: () => void;
   operations: AccountOperations;
-  estimation: Estimation;
+  executeParams: ExecuteParams;
   mode: SignPageMode;
   data: T;
 };
@@ -108,22 +108,18 @@ export const useSignPageHelpers = (
 ) => {
   const [estimationFailed, setEstimationFailed] = useState(false);
   const getSigner = useGetImplicitAccount();
-  const [fee, setFee] = useState(executeParams.fee);
   const [operations, setOperations] = useState<AccountOperations>(initialOperations);
   const network = useSelectedNetwork();
   const clearBatch = useClearBatch();
   const { isLoading, handleAsyncAction, handleAsyncActionUnsafe } = useAsyncActionHandler();
   const { openWith } = useContext(DynamicModalContext);
 
-  useEffect(() => {
-    setFee(executeParams.fee!);
-  }, [executeParams.fee]);
-
-  const form = useForm<{ sender: string; signer: string }>({
+  const form = useForm<{ sender: string; signer: string; executeParams: ExecuteParams }>({
     mode: "onBlur",
     defaultValues: {
       signer: operations.signer.address.pkh,
       sender: operations.sender.address.pkh,
+      executeParams,
     },
   });
   const signer = form.watch("signer");
@@ -139,9 +135,8 @@ export const useSignPageHelpers = (
           signer: getSigner(newSigner),
         };
 
-        const { fee } = await estimate(operations, network);
-
-        setFee(fee);
+        const estimateResult = await estimate(operations, network);
+        form.setValue("executeParams", estimateResult);
         setOperations(operationsWithNewSigner);
         setEstimationFailed(false);
       },
@@ -162,7 +157,7 @@ export const useSignPageHelpers = (
     });
 
   return {
-    fee,
+    fee: form.watch("executeParams.fee"),
     estimationFailed,
     operations,
     isLoading,

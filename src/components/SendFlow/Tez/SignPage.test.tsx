@@ -33,7 +33,7 @@ describe("<SignPage />", () => {
             recipient: mockImplicitAddress(1),
           },
         ]),
-        estimation: { fee: 100, gasLimit: 0, storageLimit: 0 },
+        executeParams: { fee: 1234567, gasLimit: 0, storageLimit: 0 },
         mode: "single",
         data: undefined,
       };

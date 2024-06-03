@@ -53,7 +53,7 @@ describe("<TezSignPage />", () => {
 
     render(
       <TezSignPage
-        estimation={{
+        executeParams={{
           fee: 123,
           gasLimit: 0,
           storageLimit: 0,

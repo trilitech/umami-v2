@@ -93,11 +93,15 @@ export const useHandleBeaconMessage = () => {
 
             if (operation.operations.length === 1) {
               modal = (
-                <BeaconSignPage estimation={estimation} message={message} operation={operation} />
+                <BeaconSignPage
+                  executeParams={estimation}
+                  message={message}
+                  operation={operation}
+                />
               );
             } else {
               modal = (
-                <BatchSignPage estimation={estimation} message={message} operation={operation} />
+                <BatchSignPage executeParams={estimation} message={message} operation={operation} />
               );
             }
 

@@ -17,10 +17,9 @@ import { Header } from "./Header";
 import { useSignWithBeacon } from "./useSignWithBeacon";
 import colors from "../../../style/colors";
 import { ContractCall } from "../../../types/Operation";
-import { useExecuteParams } from "../../../utils/beacon/useExecuteParams";
 import { JsValueWrap } from "../../AccountDrawer/JsValueWrap";
 import { AddressTile } from "../../AddressTile/AddressTile";
-import AdvancedSettingsAccordion from "../../AdvancedSettingsAccordion";
+import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";
 import { TezTile } from "../../AssetTiles/TezTile";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
@@ -28,7 +27,7 @@ import { headerText } from "../SignPageHeader";
 
 export const ContractCallSignPage: React.FC<BeaconSignPageProps> = ({
   operation,
-  estimation,
+  executeParams,
   message,
 }) => {
   const {
@@ -37,8 +36,11 @@ export const ContractCallSignPage: React.FC<BeaconSignPageProps> = ({
     entrypoint,
     args,
   } = operation.operations[0] as ContractCall;
-  const [executeParams, updateExecuteParams] = useExecuteParams(estimation);
-  const { isSigning, onSign, network } = useSignWithBeacon(operation, message, estimation);
+  const { isSigning, onSign, network } = useSignWithBeacon(
+    operation,
+    message,
+    executeParams
+  );
 
   return (
     <ModalContent>
@@ -48,7 +50,7 @@ export const ContractCallSignPage: React.FC<BeaconSignPageProps> = ({
           <TezTile mutezAmount={mutezAmount} />
 
           <Flex alignItems="center" justifyContent="end" marginTop="12px">
-            <SignPageFee fee={estimation.fee} />
+            <SignPageFee fee={executeParams.fee} />
           </Flex>
 
           <FormLabel marginTop="24px">From </FormLabel>
@@ -59,7 +61,11 @@ export const ContractCallSignPage: React.FC<BeaconSignPageProps> = ({
 
           <FormLabel marginTop="24px">Contract Call Parameter</FormLabel>
           <Accordion allowToggle={true}>
-            <AccordionItem background={colors.gray[800]} border="none" borderRadius="8px">
+            <AccordionItem
+              background={colors.gray[800]}
+              border="none"
+              borderRadius="8px"
+            >
               <AccordionButton>
                 <Box flex="1" textAlign="left">
                   JSON
@@ -71,7 +77,7 @@ export const ContractCallSignPage: React.FC<BeaconSignPageProps> = ({
               </AccordionPanel>
             </AccordionItem>
           </Accordion>
-          <AdvancedSettingsAccordion estimation={executeParams} onChange={updateExecuteParams} />
+          <AdvancedSettingsAccordion />
         </ModalBody>
         <ModalFooter padding="16px 0 0 0">
           <SignButton

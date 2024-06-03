@@ -11,44 +11,39 @@ import {
   InputGroup,
   InputRightElement,
 } from "@chakra-ui/react";
-import BigNumber from "bignumber.js";
 import { useState } from "react";
+import { useFormContext } from "react-hook-form";
 
-import { getSmallestUnit } from "./SendFlow/utils";
+import { getSmallestUnit, makeValidateDecimals } from "./SendFlow/utils";
 import colors from "../style/colors";
 import { mutezToTez, tezToMutez } from "../utils/format";
 import { Estimation, TEZ_DECIMALS } from "../utils/tezos";
 
-type AdvancedSettingsAccordionProps = {
-  estimation: Estimation;
-  onChange: (key: keyof Estimation, value: BigNumber | number | string) => void;
-};
+export const AdvancedSettingsAccordion = () => {
+  const { register, getValues, setValue } = useFormContext<{
+    executeParams: Estimation;
+  }>();
 
-const AdvancedSettingsAccordion: React.FC<AdvancedSettingsAccordionProps> = ({
-  estimation,
-  onChange,
-}) => {
-  const [_fee, setFee] = useState(mutezToTez(estimation.fee));
+  const [tezFee, setTezFee] = useState<string>(
+    mutezToTez(getValues().executeParams.fee)
+  );
 
-  const handleChangeFeeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const pattern = /^-?\d+(\.\d{0,6})?$/;
+  const handleFeeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newFeeValue = event.target.value;
 
-    if (!pattern.test(e.target.value) && e.target.value) {
-      return;
-    }
-
-    setFee(e.target.value);
-  };
-
-  const handleKeyUpFeeInput = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key !== ".") {
-      onChange("fee", tezToMutez(_fee));
+    if (makeValidateDecimals(TEZ_DECIMALS)(newFeeValue) === true) {
+      setTezFee(newFeeValue);
+      setValue("executeParams.fee", tezToMutez(newFeeValue).toNumber());
     }
   };
 
   return (
     <Accordion marginTop="16px" allowToggle>
-      <AccordionItem background={colors.gray[800]} border="none" borderRadius="8px">
+      <AccordionItem
+        background={colors.gray[800]}
+        border="none"
+        borderRadius="8px"
+      >
         <AccordionButton>
           <Heading flex="1" textAlign="left" marginY="10px" size="md">
             Advanced
@@ -60,14 +55,16 @@ const AdvancedSettingsAccordion: React.FC<AdvancedSettingsAccordionProps> = ({
             <FormLabel fontSize="14px">Fee</FormLabel>
             <InputGroup>
               <Input
-                paddingRight="0"
+                paddingRight="28px"
                 fontSize="14px"
-                onChange={handleChangeFeeInput}
-                onKeyUp={handleKeyUpFeeInput}
+                onBlur={() =>
+                  setTezFee(mutezToTez(getValues().executeParams.fee))
+                }
+                onChange={handleFeeChange}
                 placeholder="0.000000"
                 step={getSmallestUnit(TEZ_DECIMALS)}
                 type="number"
-                value={_fee}
+                value={tezFee}
               />
               <InputRightElement
                 width="44px"
@@ -81,21 +78,23 @@ const AdvancedSettingsAccordion: React.FC<AdvancedSettingsAccordionProps> = ({
           <FormControl>
             <FormLabel fontSize="14px">Gas Limit</FormLabel>
             <Input
-              fontSize="14px"
-              onChange={e => onChange("gasLimit", new BigNumber(e.target.value))}
+              {...register("executeParams.gasLimit", {
+                valueAsNumber: true,
+                required: true,
+              })}
               placeholder="0"
               type="number"
-              value={estimation.gasLimit}
             />
           </FormControl>
           <FormControl>
             <FormLabel fontSize="14px">Storage Limit</FormLabel>
             <Input
-              fontSize="14px"
-              onChange={e => onChange("storageLimit", new BigNumber(e.target.value))}
+              {...register("executeParams.storageLimit", {
+                valueAsNumber: true,
+                required: true,
+              })}
               placeholder="0"
               type="number"
-              value={estimation.storageLimit}
             />
           </FormControl>
         </AccordionPanel>
@@ -103,5 +102,3 @@ const AdvancedSettingsAccordion: React.FC<AdvancedSettingsAccordionProps> = ({
     </Accordion>
   );
 };
-
-export default AdvancedSettingsAccordion;

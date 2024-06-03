@@ -28,7 +28,7 @@ describe("<SignPage />", () => {
     it("displays the fee in tez", () => {
       const props: SignPageProps = {
         operations,
-        estimation: { fee: 1234567, storageLimit: 0, gasLimit: 0 },
+        executeParams: { fee: 1234567, storageLimit: 0, gasLimit: 0 },
         mode: "single",
         data: undefined,
       };

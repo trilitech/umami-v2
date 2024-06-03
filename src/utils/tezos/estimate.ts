@@ -3,10 +3,11 @@ import { AccountOperations } from "../../types/AccountOperations";
 import { Network } from "../../types/Network";
 
 export type Estimation = {
-  storageLimit?: number;
-  gasLimit?: number;
+  storageLimit: number;
+  gasLimit: number;
   fee: number;
 };
+export type ExecuteParams = Estimation;
 
 export const estimate = async (
   operations: AccountOperations,

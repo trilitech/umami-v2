@@ -13,9 +13,8 @@ import { FormProvider } from "react-hook-form";
 import colors from "../../../style/colors";
 import { FA2Transfer } from "../../../types/Operation";
 import { NFTBalance } from "../../../types/TokenBalance";
-import { useExecuteParams } from "../../../utils/beacon/useExecuteParams";
 import { AddressTile } from "../../AddressTile/AddressTile";
-import AdvancedSettingsAccordion from "../../AdvancedSettingsAccordion";
+import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";
 import { OperationSignerSelector } from "../OperationSignerSelector";
 import { SendNFTRecapTile } from "../SendNFTRecapTile";
 import { SignButton } from "../SignButton";
@@ -27,12 +26,20 @@ export const SignPage: React.FC<SignPageProps<{ nft: NFTBalance }>> = props => {
   const {
     mode,
     operations: initialOperations,
-    estimation,
+    executeParams,
     data: { nft },
   } = props;
-  const [executeParams, updateExecuteParams] = useExecuteParams(estimation);
-  const { fee, operations, estimationFailed, isLoading, form, signer, reEstimate, onSign } =
-    useSignPageHelpers(executeParams, initialOperations, mode);
+
+  const {
+    fee,
+    operations,
+    estimationFailed,
+    isLoading,
+    form,
+    signer,
+    reEstimate,
+    onSign,
+  } = useSignPageHelpers(executeParams, initialOperations, mode);
 
   const { recipient } = operations.operations[0] as FA2Transfer;
 
@@ -40,18 +47,31 @@ export const SignPage: React.FC<SignPageProps<{ nft: NFTBalance }>> = props => {
     <FormProvider {...form}>
       <ModalContent>
         <form>
-          <SignPageHeader {...props} operationsType={operations.type} signer={operations.signer} />
+          <SignPageHeader
+            {...props}
+            operationsType={operations.type}
+            signer={operations.signer}
+          />
           <ModalBody>
             <Flex marginBottom="12px">
               <SendNFTRecapTile nft={nft} />
             </Flex>
 
-            <Flex alignItems="center" justifyContent="space-between" marginY="12px" paddingX="4px">
+            <Flex
+              alignItems="center"
+              justifyContent="space-between"
+              marginY="12px"
+              paddingX="4px"
+            >
               <Flex alignItems="center">
                 <Heading marginRight="4px" color={colors.gray[450]} size="sm">
                   Owned:
                 </Heading>
-                <Text color={colors.gray[400]} data-testid="nft-owned" size="sm">
+                <Text
+                  color={colors.gray[400]}
+                  data-testid="nft-owned"
+                  size="sm"
+                >
                   {nft.balance}
                 </Text>
               </Flex>
@@ -63,15 +83,24 @@ export const SignPage: React.FC<SignPageProps<{ nft: NFTBalance }>> = props => {
               <Heading marginRight="12px" size="md">
                 Quantity:
               </Heading>
-              <Center width="100px" height="48px" background={colors.gray[800]} borderRadius="4px">
+              <Center
+                width="100px"
+                height="48px"
+                background={colors.gray[800]}
+                borderRadius="4px"
+              >
                 <Text textAlign="center">
-                  {(operations.operations[0] as FA2Transfer).amount} out of {nft.balance}
+                  {(operations.operations[0] as FA2Transfer).amount} out of{" "}
+                  {nft.balance}
                 </Text>
               </Center>
             </Flex>
 
             <FormLabel>From</FormLabel>
-            <AddressTile marginBottom="24px" address={operations.sender.address} />
+            <AddressTile
+              marginBottom="24px"
+              address={operations.sender.address}
+            />
             <FormLabel>To</FormLabel>
             <AddressTile address={recipient} />
 
@@ -82,10 +111,7 @@ export const SignPage: React.FC<SignPageProps<{ nft: NFTBalance }>> = props => {
               sender={operations.sender}
             />
 
-            <AdvancedSettingsAccordion
-              estimation={{ ...executeParams, fee }}
-              onChange={updateExecuteParams}
-            />
+            <AdvancedSettingsAccordion />
           </ModalBody>
           <ModalFooter>
             <SignButton

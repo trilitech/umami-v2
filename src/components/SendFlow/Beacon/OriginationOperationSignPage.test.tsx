@@ -1,7 +1,6 @@
 import { BeaconMessageType, NetworkType, OperationRequestOutput } from "@airgap/beacon-wallet";
 import { TezosToolkit } from "@taquito/taquito";
 import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
-import BigNumber from "bignumber.js";
 
 import { OriginationOperationSignPage } from "./OriginationOperationSignPage";
 import { mockContractOrigination, mockImplicitAccount } from "../../../mocks/factories";
@@ -48,7 +47,7 @@ describe("<OriginationOperationSignPage />", () => {
   it("renders fee", () => {
     render(
       <OriginationOperationSignPage
-        estimation={{
+        executeParams={{
           fee: 123,
           gasLimit: 0,
           storageLimit: 0,
@@ -58,7 +57,7 @@ describe("<OriginationOperationSignPage />", () => {
       />
     );
 
-    expect(screen.getByText(prettyTezAmount(BigNumber(123)))).toBeVisible();
+    expect(screen.getByText(prettyTezAmount(123))).toBeVisible();
   });
 
   it("passes correct payload to sign handler", async () => {
@@ -72,7 +71,7 @@ describe("<OriginationOperationSignPage />", () => {
 
     render(
       <OriginationOperationSignPage
-        estimation={{
+        executeParams={{
           fee: 123,
           gasLimit: 0,
           storageLimit: 0,
@@ -96,7 +95,7 @@ describe("<OriginationOperationSignPage />", () => {
       network: GHOSTNET,
     });
     expect(executeOperations).toHaveBeenCalledWith(operation, testToolkit, {
-      fee: BigNumber(123),
+      fee: 123,
       gasLimit: 0,
       storageLimit: 0,
     });

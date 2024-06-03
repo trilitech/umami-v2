@@ -38,7 +38,7 @@ describe("<SignPage />", () => {
         token: FA12TokenBalance | FA2TokenBalance;
       }> = {
         operations,
-        estimation: { fee: 1234567, gasLimit: 0, storageLimit: 0 },
+        executeParams: { fee: 1234567, gasLimit: 0, storageLimit: 0 },
         mode: "single",
         data: { token: mockFAToken },
       };
@@ -53,7 +53,7 @@ describe("<SignPage />", () => {
         token: FA12TokenBalance | FA2TokenBalance;
       }> = {
         operations,
-        estimation: { fee: 1234567, gasLimit: 0, storageLimit: 0 },
+        executeParams: { fee: 1234567, gasLimit: 0, storageLimit: 0 },
         mode: "single",
         data: { token: mockFAToken },
       };
@@ -68,7 +68,7 @@ describe("<SignPage />", () => {
         token: FA12TokenBalance | FA2TokenBalance;
       }> = {
         operations,
-        estimation: { fee: 1234567, gasLimit: 0, storageLimit: 0 },
+        executeParams: { fee: 1234567, gasLimit: 0, storageLimit: 0 },
         mode: "single",
         data: { token: mockFA2Token(0, mockAccount, 1, 0) },
       };

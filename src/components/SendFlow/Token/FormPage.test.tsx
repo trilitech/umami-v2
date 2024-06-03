@@ -235,7 +235,7 @@ describe("<FormPage />", () => {
         expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
           <SignPage
             data={{ token: mockFA2Token(0, mockAccount, 2, 0) }}
-            estimation={{ fee: 100, gasLimit: 0, storageLimit: 0 }}
+            executeParams={{ fee: 100, gasLimit: 0, storageLimit: 0 }}
             goBack={expect.any(Function)}
             mode="single"
             operations={operations}

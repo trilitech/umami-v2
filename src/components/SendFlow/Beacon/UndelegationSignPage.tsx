@@ -3,20 +3,22 @@ import { Flex, FormLabel, ModalBody, ModalContent, ModalFooter } from "@chakra-u
 import { BeaconSignPageProps } from "./BeaconSignPageProps";
 import { Header } from "./Header";
 import { useSignWithBeacon } from "./useSignWithBeacon";
-import { useExecuteParams } from "../../../utils/beacon/useExecuteParams";
 import { AddressTile } from "../../AddressTile/AddressTile";
-import AdvancedSettingsAccordion from "../../AdvancedSettingsAccordion";
+import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
 import { headerText } from "../SignPageHeader";
 
 export const UndelegationSignPage: React.FC<BeaconSignPageProps> = ({
   operation,
-  estimation,
+  executeParams,
   message,
 }) => {
-  const { isSigning, onSign, network } = useSignWithBeacon(operation, message, estimation);
-  const [executeParams, updateExecuteParams] = useExecuteParams(estimation);
+  const { isSigning, onSign, network } = useSignWithBeacon(
+    operation,
+    message,
+    executeParams
+  );
 
   return (
     <ModalContent>
@@ -26,11 +28,16 @@ export const UndelegationSignPage: React.FC<BeaconSignPageProps> = ({
           <FormLabel>From</FormLabel>
           <AddressTile address={operation.signer.address} />
 
-          <Flex alignItems="center" justifyContent="end" marginTop="12px" paddingX="4px">
-            <SignPageFee fee={estimation.fee} />
+          <Flex
+            alignItems="center"
+            justifyContent="end"
+            marginTop="12px"
+            paddingX="4px"
+          >
+            <SignPageFee fee={executeParams.fee} />
           </Flex>
 
-          <AdvancedSettingsAccordion estimation={executeParams} onChange={updateExecuteParams} />
+          <AdvancedSettingsAccordion />
         </ModalBody>
         <ModalFooter>
           <SignButton

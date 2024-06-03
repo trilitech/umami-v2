@@ -2,9 +2,8 @@ import { Flex, FormLabel, ModalBody, ModalContent, ModalFooter } from "@chakra-u
 import { FormProvider } from "react-hook-form";
 
 import { TezTransfer } from "../../../types/Operation";
-import { useExecuteParams } from "../../../utils/beacon/useExecuteParams";
 import { AddressTile } from "../../AddressTile/AddressTile";
-import AdvancedSettingsAccordion from "../../AdvancedSettingsAccordion";
+import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";
 import { TezTile } from "../../AssetTiles/TezTile";
 import { OperationSignerSelector } from "../OperationSignerSelector";
 import { SignButton } from "../SignButton";
@@ -13,10 +12,9 @@ import { SignPageHeader, headerText } from "../SignPageHeader";
 import { SignPageProps, useSignPageHelpers } from "../utils";
 
 export const SignPage: React.FC<SignPageProps> = props => {
-  const { mode, operations: initialOperations, estimation } = props;
-  const [executeParams, updateExecuteParams] = useExecuteParams(estimation);
+  const { mode, operations: initialOperations, executeParams: initialExecuteParams } = props;
   const { fee, operations, estimationFailed, isLoading, form, signer, reEstimate, onSign } =
-    useSignPageHelpers(executeParams, initialOperations, mode);
+    useSignPageHelpers(initialExecuteParams, initialOperations, mode);
 
   const { amount: mutezAmount, recipient } = operations.operations[0] as TezTransfer;
 
@@ -45,10 +43,7 @@ export const SignPage: React.FC<SignPageProps> = props => {
               sender={operations.sender}
             />
 
-            <AdvancedSettingsAccordion
-              estimation={{ ...executeParams, fee }}
-              onChange={updateExecuteParams}
-            />
+            <AdvancedSettingsAccordion />
           </ModalBody>
           <ModalFooter>
             <SignButton

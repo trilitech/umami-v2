@@ -4,19 +4,26 @@ import { BeaconSignPageProps } from "./BeaconSignPageProps";
 import { Header } from "./Header";
 import { useSignWithBeacon } from "./useSignWithBeacon";
 import { TezTransfer } from "../../../types/Operation";
-import { useExecuteParams } from "../../../utils/beacon/useExecuteParams";
 import { AddressTile } from "../../AddressTile/AddressTile";
-import AdvancedSettingsAccordion from "../../AdvancedSettingsAccordion";
+import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";
 import { TezTile } from "../../AssetTiles/TezTile";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
 import { headerText } from "../SignPageHeader";
 
-export const TezSignPage: React.FC<BeaconSignPageProps> = ({ operation, estimation, message }) => {
-  const { amount: mutezAmount, recipient } = operation.operations[0] as TezTransfer;
-  const [executeParams, updateExecuteParams] = useExecuteParams(estimation);
+export const TezSignPage: React.FC<BeaconSignPageProps> = ({
+  operation,
+  executeParams,
+  message,
+}) => {
+  const { amount: mutezAmount, recipient } = operation
+    .operations[0] as TezTransfer;
 
-  const { isSigning, onSign, network } = useSignWithBeacon(operation, message, estimation);
+  const { isSigning, onSign, network } = useSignWithBeacon(
+    operation,
+    message,
+    executeParams
+  );
 
   return (
     <ModalContent>
@@ -26,7 +33,7 @@ export const TezSignPage: React.FC<BeaconSignPageProps> = ({ operation, estimati
           <TezTile mutezAmount={mutezAmount} />
 
           <Flex alignItems="center" justifyContent="end" marginTop="12px">
-            <SignPageFee fee={estimation.fee} />
+            <SignPageFee fee={executeParams.fee} />
           </Flex>
 
           <FormLabel marginTop="24px">From </FormLabel>
@@ -35,7 +42,7 @@ export const TezSignPage: React.FC<BeaconSignPageProps> = ({ operation, estimati
           <FormLabel marginTop="24px">To </FormLabel>
           <AddressTile address={recipient} />
 
-          <AdvancedSettingsAccordion estimation={executeParams} onChange={updateExecuteParams} />
+          <AdvancedSettingsAccordion />
         </ModalBody>
         <ModalFooter>
           <SignButton
