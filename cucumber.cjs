@@ -4,9 +4,7 @@ const config = {
   default: {
     backtrace: true,
     retry: env.CI ? 2 : 0,
-    // locally the optimal number of parallel tests is 3
-    // whilst on CI it's 2 because of the limited resources
-    parallel: env.CI ? 2 : 3,
+    parallel: 3,
     formatOptions: {
       snippetInterface: "async-await",
     },
