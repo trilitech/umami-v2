@@ -17,14 +17,9 @@ export const TezSignPage: React.FC<BeaconSignPageProps> = ({
   executeParams,
   message,
 }) => {
-  const { amount: mutezAmount, recipient } = operation
-    .operations[0] as TezTransfer;
+  const { amount: mutezAmount, recipient } = operation.operations[0] as TezTransfer;
 
-  const { isSigning, onSign, network } = useSignWithBeacon(
-    operation,
-    message,
-    executeParams
-  );
+  const { isSigning, onSign, network } = useSignWithBeacon(operation, message, executeParams);
 
   const form = useForm({
     defaultValues: {

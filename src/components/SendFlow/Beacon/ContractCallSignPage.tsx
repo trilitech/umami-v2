@@ -65,11 +65,7 @@ export const ContractCallSignPage: React.FC<BeaconSignPageProps> = ({
 
             <FormLabel marginTop="24px">Contract Call Parameter</FormLabel>
             <Accordion allowToggle={true}>
-              <AccordionItem
-                background={colors.gray[800]}
-                border="none"
-                borderRadius="8px"
-              >
+              <AccordionItem background={colors.gray[800]} border="none" borderRadius="8px">
                 <AccordionButton>
                   <Box flex="1" textAlign="left">
                     JSON

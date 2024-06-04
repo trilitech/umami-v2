@@ -31,10 +31,7 @@ export type FormPageProps<T> = { sender?: Account; form?: T };
 // FormPagePropsWithSender is the same as FormPageProps but with sender required,
 // Use this when we don't want to give the users options to select the sender
 // (e.g. the nft and token form)
-export type FormPagePropsWithSender<T> = RequiredFields<
-  FormPageProps<T>,
-  "sender"
->;
+export type FormPagePropsWithSender<T> = RequiredFields<FormPageProps<T>, "sender">;
 
 // Form values should always have a sender field.
 export type BaseFormValues = { sender: RawPkh };
@@ -111,12 +108,10 @@ export const useSignPageHelpers = (
 ) => {
   const [estimationFailed, setEstimationFailed] = useState(false);
   const getSigner = useGetImplicitAccount();
-  const [operations, setOperations] =
-    useState<AccountOperations>(initialOperations);
+  const [operations, setOperations] = useState<AccountOperations>(initialOperations);
   const network = useSelectedNetwork();
   const clearBatch = useClearBatch();
-  const { isLoading, handleAsyncAction, handleAsyncActionUnsafe } =
-    useAsyncActionHandler();
+  const { isLoading, handleAsyncAction, handleAsyncActionUnsafe } = useAsyncActionHandler();
   const { openWith } = useContext(DynamicModalContext);
 
   const form = useForm<{
@@ -157,11 +152,7 @@ export const useSignPageHelpers = (
 
   const onSign = async (tezosToolkit: TezosToolkit) =>
     handleAsyncAction(async () => {
-      const operation = await executeOperations(
-        operations,
-        tezosToolkit,
-        executeParams
-      );
+      const operation = await executeOperations(operations, tezosToolkit, executeParams);
       if (mode === "batch") {
         clearBatch(operations.sender);
       }

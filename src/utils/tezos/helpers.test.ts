@@ -263,6 +263,12 @@ describe("tezos utils helpers", () => {
   });
 
   describe("operationsToBatchParams", () => {
+    const executeParams = {
+      storageLimit: 0,
+      gasLimit: 0,
+      fee: 123,
+    };
+
     describe("implicit", () => {
       test("1 operation", () => {
         const accountOperations = makeAccountOperations(
@@ -270,12 +276,13 @@ describe("tezos utils helpers", () => {
           mockImplicitAccount(0),
           [mockTezOperation(0)]
         );
-        expect(operationsToBatchParams(accountOperations)).toEqual([
+        expect(operationsToBatchParams({ ...accountOperations, executeParams })).toEqual([
           {
             amount: 0,
             kind: "transaction",
             mutez: true,
             to: "tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf",
+            ...executeParams,
           },
         ]);
       });
@@ -286,7 +293,7 @@ describe("tezos utils helpers", () => {
           mockImplicitAccount(0),
           [mockTezOperation(0), mockDelegationOperation(0)]
         );
-        expect(operationsToBatchParams(accountOperations)).toEqual([
+        expect(operationsToBatchParams({ ...accountOperations, executeParams })).toEqual([
           {
             amount: 0,
             kind: "transaction",
@@ -309,7 +316,7 @@ describe("tezos utils helpers", () => {
           mockImplicitAccount(0),
           [mockTezOperation(0)]
         );
-        expect(operationsToBatchParams(accountOperations)).toEqual([
+        expect(operationsToBatchParams({ ...accountOperations, executeParams })).toEqual([
           {
             amount: 0,
             kind: "transaction",
@@ -365,6 +372,7 @@ describe("tezos utils helpers", () => {
               ],
             },
             to: "KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG",
+            ...executeParams,
           },
         ]);
       });
@@ -375,10 +383,13 @@ describe("tezos utils helpers", () => {
           mockImplicitAccount(0),
           [
             mockTezOperation(0),
-            { ...mockDelegationOperation(0), sender: mockMultisigAccount(0).address },
+            {
+              ...mockDelegationOperation(0),
+              sender: mockMultisigAccount(0).address,
+            },
           ]
         );
-        expect(operationsToBatchParams(accountOperations)).toEqual([
+        expect(operationsToBatchParams({ ...accountOperations, executeParams })).toEqual([
           {
             amount: 0,
             kind: "transaction",
@@ -407,6 +418,7 @@ describe("tezos utils helpers", () => {
               ],
             },
             to: "KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG",
+            ...executeParams,
           },
         ]);
       });

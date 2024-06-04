@@ -15,11 +15,7 @@ export const UndelegationSignPage: React.FC<BeaconSignPageProps> = ({
   executeParams,
   message,
 }) => {
-  const { isSigning, onSign, network } = useSignWithBeacon(
-    operation,
-    message,
-    executeParams
-  );
+  const { isSigning, onSign, network } = useSignWithBeacon(operation, message, executeParams);
 
   const form = useForm({
     defaultValues: {
@@ -36,12 +32,7 @@ export const UndelegationSignPage: React.FC<BeaconSignPageProps> = ({
             <FormLabel>From</FormLabel>
             <AddressTile address={operation.signer.address} />
 
-            <Flex
-              alignItems="center"
-              justifyContent="end"
-              marginTop="12px"
-              paddingX="4px"
-            >
+            <Flex alignItems="center" justifyContent="end" marginTop="12px" paddingX="4px">
               <SignPageFee fee={executeParams.fee} />
             </Flex>
 
