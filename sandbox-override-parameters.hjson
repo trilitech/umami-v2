@@ -1,1 +1,4 @@
-minimal_block_delay: "1"
+minimal_block_delay: 3
+adaptive_issuance_force_activation: true
+blocks_per_cycle: 4
+nonce_revelation_threshold: 2
