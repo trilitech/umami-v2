@@ -17,11 +17,7 @@ export const DelegationSignPage: React.FC<BeaconSignPageProps> = ({
 }) => {
   const { recipient } = operation.operations[0] as Delegation;
 
-  const { isSigning, onSign, network } = useSignWithBeacon(
-    operation,
-    message,
-    executeParams
-  );
+  const { isSigning, onSign, network } = useSignWithBeacon(operation, message, executeParams);
 
   return (
     <ModalContent>

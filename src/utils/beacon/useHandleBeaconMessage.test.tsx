@@ -39,6 +39,10 @@ jest.mock("./WalletClient", () => ({
 }));
 jest.mock("../tezos");
 
+jest.mock("../../components/AdvancedSettingsAccordion.tsx", () => ({
+  AdvancedSettingsAccordion: () => <div>Test component</div>,
+}));
+
 const SENDER_ID = "mockSenderId";
 
 const account = mockImplicitAccount(1);

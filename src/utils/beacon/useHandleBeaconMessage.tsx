@@ -53,7 +53,9 @@ export const useHandleBeaconMessage = () => {
         errorType: BeaconErrorType.NETWORK_NOT_SUPPORTED,
       });
       throw new Error(
-        `Got Beacon request from an unknown network: ${JSON.stringify(beaconNetwork)}. Please add it to the networks list and retry.`
+        `Got Beacon request from an unknown network: ${JSON.stringify(
+          beaconNetwork
+        )}. Please add it to the networks list and retry.`
       );
     }
 

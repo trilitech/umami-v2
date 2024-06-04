@@ -15,11 +15,7 @@ export const BeaconSignPage: React.FC<BeaconSignPageProps> = ({
   switch (operationType) {
     case "tez": {
       return (
-        <BeaconTezSignPage
-          executeParams={executeParams}
-          message={message}
-          operation={operation}
-        />
+        <BeaconTezSignPage executeParams={executeParams} message={message} operation={operation} />
       );
     }
     case "contract_call": {
@@ -33,11 +29,7 @@ export const BeaconSignPage: React.FC<BeaconSignPageProps> = ({
     }
     case "delegation": {
       return (
-        <DelegationSignPage
-          executeParams={executeParams}
-          message={message}
-          operation={operation}
-        />
+        <DelegationSignPage executeParams={executeParams} message={message} operation={operation} />
       );
     }
     case "undelegation": {

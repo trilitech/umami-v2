@@ -24,9 +24,7 @@ export const AdvancedSettingsAccordion = () => {
     executeParams: Estimation;
   }>();
 
-  const [tezFee, setTezFee] = useState<string>(
-    mutezToTez(getValues().executeParams.fee)
-  );
+  const [tezFee, setTezFee] = useState<string>(mutezToTez(getValues().executeParams.fee));
 
   const handleFeeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newFeeValue = event.target.value;
@@ -39,11 +37,7 @@ export const AdvancedSettingsAccordion = () => {
 
   return (
     <Accordion marginTop="16px" allowToggle>
-      <AccordionItem
-        background={colors.gray[800]}
-        border="none"
-        borderRadius="8px"
-      >
+      <AccordionItem background={colors.gray[800]} border="none" borderRadius="8px">
         <AccordionButton>
           <Heading flex="1" textAlign="left" marginY="10px" size="md">
             Advanced
@@ -57,9 +51,7 @@ export const AdvancedSettingsAccordion = () => {
               <Input
                 paddingRight="28px"
                 fontSize="14px"
-                onBlur={() =>
-                  setTezFee(mutezToTez(getValues().executeParams.fee))
-                }
+                onBlur={() => setTezFee(mutezToTez(getValues().executeParams.fee))}
                 onChange={handleFeeChange}
                 placeholder="0.000000"
                 step={getSmallestUnit(TEZ_DECIMALS)}

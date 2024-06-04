@@ -32,11 +32,7 @@ export const OriginationOperationSignPage: React.FC<BeaconSignPageProps> = ({
   executeParams,
   message,
 }) => {
-  const { isSigning, onSign, network } = useSignWithBeacon(
-    operation,
-    message,
-    executeParams
-  );
+  const { isSigning, onSign, network } = useSignWithBeacon(operation, message, executeParams);
   const { code, storage } = operation.operations[0] as ContractOrigination;
 
   return (
@@ -74,11 +70,7 @@ export const OriginationOperationSignPage: React.FC<BeaconSignPageProps> = ({
         </Flex>
 
         <Accordion marginTop="16px" allowToggle={true}>
-          <AccordionItem
-            background={colors.gray[800]}
-            border="none"
-            borderRadius="8px"
-          >
+          <AccordionItem background={colors.gray[800]} border="none" borderRadius="8px">
             <AccordionButton>
               <Heading flex="1" textAlign="left" marginY="10px" size="md">
                 Code
@@ -91,11 +83,7 @@ export const OriginationOperationSignPage: React.FC<BeaconSignPageProps> = ({
           </AccordionItem>
         </Accordion>
         <Accordion marginTop="16px" allowToggle={true}>
-          <AccordionItem
-            background={colors.gray[800]}
-            border="none"
-            borderRadius="8px"
-          >
+          <AccordionItem background={colors.gray[800]} border="none" borderRadius="8px">
             <AccordionButton>
               <Heading flex="1" textAlign="left" marginY="10px" size="md">
                 Storage

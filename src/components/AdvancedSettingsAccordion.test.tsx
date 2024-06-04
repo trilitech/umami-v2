@@ -12,11 +12,7 @@ const TestComponent = () => {
 
   return (
     <FormProvider {...form}>
-      <input
-        {...form.register("executeParams.fee")}
-        data-testid="real-fee-input"
-        type="number"
-      />
+      <input {...form.register("executeParams.fee")} data-testid="real-fee-input" type="number" />
       <AdvancedSettingsAccordion />
     </FormProvider>
   );
@@ -39,9 +35,7 @@ describe("<AdvancedSettingsAccordion />", () => {
     const user = userEvent;
     render(<TestComponent />);
 
-    await act(() =>
-      user.click(screen.getByRole("button", { name: "Advanced" }))
-    );
+    await act(() => user.click(screen.getByRole("button", { name: "Advanced" })));
 
     const feeInput = screen.getByLabelText("Fee");
 
@@ -57,9 +51,7 @@ describe("<AdvancedSettingsAccordion />", () => {
   it("updates gas limit value on change", async () => {
     const user = userEvent;
     render(<TestComponent />);
-    await act(() =>
-      user.click(screen.getByRole("button", { name: "Advanced" }))
-    );
+    await act(() => user.click(screen.getByRole("button", { name: "Advanced" })));
 
     const gasLimitInput = screen.getByLabelText("Gas Limit");
 
@@ -71,9 +63,7 @@ describe("<AdvancedSettingsAccordion />", () => {
   it("updates storage limit value on change", async () => {
     const user = userEvent;
     render(<TestComponent />);
-    await act(() =>
-      user.click(screen.getByRole("button", { name: "Advanced" }))
-    );
+    await act(() => user.click(screen.getByRole("button", { name: "Advanced" })));
 
     const storageLimitInput = screen.getByLabelText("Storage Limit");
 

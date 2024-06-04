@@ -26,13 +26,10 @@ import { SignPageFee } from "../SignPageFee";
 import { SignPageHeader } from "../SignPageHeader";
 import { SignPageProps, useSignPageHelpers } from "../utils";
 
-export const SignTransactionFormPage: React.FC<
-  SignPageProps<FormValues>
-> = props => {
+export const SignTransactionFormPage: React.FC<SignPageProps<FormValues>> = props => {
   const dispatch = useAppDispatch();
 
-  const { isLoading: contractNameObtainingIsLoading, handleAsyncAction } =
-    useAsyncActionHandler();
+  const { isLoading: contractNameObtainingIsLoading, handleAsyncAction } = useAsyncActionHandler();
 
   const {
     mode,
@@ -103,12 +100,7 @@ export const SignTransactionFormPage: React.FC<
             <AdvancedSettingsAccordion />
 
             <FormLabel>Approvers</FormLabel>
-            <Flex
-              flexDirection="column"
-              gap="12px"
-              marginBottom="12px"
-              data-testid="approvers"
-            >
+            <Flex flexDirection="column" gap="12px" marginBottom="12px" data-testid="approvers">
               {signers.map(signer => (
                 <AddressTile
                   key={signer.val}
