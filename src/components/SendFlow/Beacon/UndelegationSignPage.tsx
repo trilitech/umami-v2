@@ -1,4 +1,5 @@
 import { Flex, FormLabel, ModalBody, ModalContent, ModalFooter } from "@chakra-ui/react";
+import { FormProvider, useForm } from "react-hook-form";
 
 import { BeaconSignPageProps } from "./BeaconSignPageProps";
 import { Header } from "./Header";
@@ -14,32 +15,49 @@ export const UndelegationSignPage: React.FC<BeaconSignPageProps> = ({
   executeParams,
   message,
 }) => {
-  const { isSigning, onSign, network } = useSignWithBeacon(operation, message, executeParams);
+  const { isSigning, onSign, network } = useSignWithBeacon(
+    operation,
+    message,
+    executeParams
+  );
+
+  const form = useForm({
+    defaultValues: {
+      executeParams,
+    },
+  });
 
   return (
-    <ModalContent>
-      <form>
-        <Header message={message} mode="single" operation={operation} />
-        <ModalBody>
-          <FormLabel>From</FormLabel>
-          <AddressTile address={operation.signer.address} />
+    <FormProvider {...form}>
+      <ModalContent>
+        <form>
+          <Header message={message} mode="single" operation={operation} />
+          <ModalBody>
+            <FormLabel>From</FormLabel>
+            <AddressTile address={operation.signer.address} />
 
-          <Flex alignItems="center" justifyContent="end" marginTop="12px" paddingX="4px">
-            <SignPageFee fee={executeParams.fee} />
-          </Flex>
+            <Flex
+              alignItems="center"
+              justifyContent="end"
+              marginTop="12px"
+              paddingX="4px"
+            >
+              <SignPageFee fee={executeParams.fee} />
+            </Flex>
 
-          <AdvancedSettingsAccordion />
-        </ModalBody>
-        <ModalFooter>
-          <SignButton
-            isLoading={isSigning}
-            network={network}
-            onSubmit={onSign}
-            signer={operation.signer}
-            text={headerText(operation.type, "single")}
-          />
-        </ModalFooter>
-      </form>
-    </ModalContent>
+            <AdvancedSettingsAccordion />
+          </ModalBody>
+          <ModalFooter>
+            <SignButton
+              isLoading={isSigning}
+              network={network}
+              onSubmit={onSign}
+              signer={operation.signer}
+              text={headerText(operation.type, "single")}
+            />
+          </ModalFooter>
+        </form>
+      </ModalContent>
+    </FormProvider>
   );
 };

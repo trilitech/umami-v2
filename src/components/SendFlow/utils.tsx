@@ -17,7 +17,7 @@ import {
 } from "../../utils/hooks/getAccountDataHooks";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
-import { Estimation, ExecuteParams, estimate, executeOperations } from "../../utils/tezos";
+import { ExecuteParams, estimate, executeOperations } from "../../utils/tezos";
 import { DynamicModalContext } from "../DynamicModal";
 
 // Convert given optional fields to required
@@ -31,7 +31,10 @@ export type FormPageProps<T> = { sender?: Account; form?: T };
 // FormPagePropsWithSender is the same as FormPageProps but with sender required,
 // Use this when we don't want to give the users options to select the sender
 // (e.g. the nft and token form)
-export type FormPagePropsWithSender<T> = RequiredFields<FormPageProps<T>, "sender">;
+export type FormPagePropsWithSender<T> = RequiredFields<
+  FormPageProps<T>,
+  "sender"
+>;
 
 // Form values should always have a sender field.
 export type BaseFormValues = { sender: RawPkh };
@@ -102,19 +105,25 @@ export const formDefaultValues = <T,>({ sender, form }: FormPageProps<T>) => {
 // TODO: test this
 export const useSignPageHelpers = (
   // the fee & operations you've got from the form
-  executeParams: Estimation,
+  executeParams: Partial<ExecuteParams>,
   initialOperations: AccountOperations,
   mode: SignPageMode
 ) => {
   const [estimationFailed, setEstimationFailed] = useState(false);
   const getSigner = useGetImplicitAccount();
-  const [operations, setOperations] = useState<AccountOperations>(initialOperations);
+  const [operations, setOperations] =
+    useState<AccountOperations>(initialOperations);
   const network = useSelectedNetwork();
   const clearBatch = useClearBatch();
-  const { isLoading, handleAsyncAction, handleAsyncActionUnsafe } = useAsyncActionHandler();
+  const { isLoading, handleAsyncAction, handleAsyncActionUnsafe } =
+    useAsyncActionHandler();
   const { openWith } = useContext(DynamicModalContext);
 
-  const form = useForm<{ sender: string; signer: string; executeParams: ExecuteParams }>({
+  const form = useForm<{
+    sender: string;
+    signer: string;
+    executeParams: ExecuteParams;
+  }>({
     mode: "onBlur",
     defaultValues: {
       signer: operations.signer.address.pkh,
@@ -148,7 +157,11 @@ export const useSignPageHelpers = (
 
   const onSign = async (tezosToolkit: TezosToolkit) =>
     handleAsyncAction(async () => {
-      const operation = await executeOperations(operations, tezosToolkit, executeParams);
+      const operation = await executeOperations(
+        operations,
+        tezosToolkit,
+        executeParams
+      );
       if (mode === "batch") {
         clearBatch(operations.sender);
       }

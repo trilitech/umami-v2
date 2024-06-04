@@ -35,7 +35,7 @@ export const parseOperation = (
     return {
       type: "tez",
       recipient,
-      amount: tezToMutez(prettyAmount).toFixed(),
+      amount: Number(tezToMutez(prettyAmount)).toFixed(),
     };
   }
 
