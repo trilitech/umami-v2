@@ -83,6 +83,7 @@ When("I wait for TZKT to process the updates", async function (this: CustomWorld
   const previous = getLastAppliedBlock();
 
   for (;;) {
+    // eslint-disable-next-line playwright/no-wait-for-timeout
     await this.page.waitForTimeout(100);
     if (getLastAppliedBlock() !== previous) {
       break;

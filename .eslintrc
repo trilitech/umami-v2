@@ -135,5 +135,12 @@
         "deprecation/deprecation": "off",
       },
     },
+    {
+      "files": "src/e2e/**",
+      "extends": "plugin:playwright/recommended",
+      "rules": {
+        "playwright/no-standalone-expect": "off",
+      },
+    },
   ],
 }
