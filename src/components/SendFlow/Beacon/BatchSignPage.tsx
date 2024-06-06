@@ -25,10 +25,10 @@ import { headerText } from "../SignPageHeader";
 
 export const BatchSignPage: React.FC<BeaconSignPageProps> = ({
   operation,
-  executeParams,
+  estimations,
   message,
 }) => {
-  const { isSigning, onSign, network } = useSignWithBeacon(operation, message);
+  const { isSigning, onSign, network, fee } = useSignWithBeacon(operation, message, estimations);
   const { signer } = operation;
   const transactionCount = operation.operations.length;
 
@@ -63,7 +63,7 @@ export const BatchSignPage: React.FC<BeaconSignPageProps> = ({
                 {transactionCount}
               </Text>
             </Flex>
-            <SignPageFee fee={executeParams.fee} />
+            <SignPageFee fee={fee} />
           </Flex>
         </ModalBody>
 

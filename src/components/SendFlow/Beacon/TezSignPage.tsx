@@ -1,5 +1,5 @@
 import { Flex, FormLabel, ModalBody, ModalContent, ModalFooter } from "@chakra-ui/react";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider } from "react-hook-form";
 
 import { BeaconSignPageProps } from "./BeaconSignPageProps";
 import { Header } from "./Header";
@@ -12,20 +12,14 @@ import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
 import { headerText } from "../SignPageHeader";
 
-export const TezSignPage: React.FC<BeaconSignPageProps> = ({
-  operation,
-  executeParams,
-  message,
-}) => {
+export const TezSignPage: React.FC<BeaconSignPageProps> = ({ operation, estimations, message }) => {
   const { amount: mutezAmount, recipient } = operation.operations[0] as TezTransfer;
 
-  const { isSigning, onSign, network } = useSignWithBeacon(operation, message, executeParams);
-
-  const form = useForm({
-    defaultValues: {
-      executeParams,
-    },
-  });
+  const { isSigning, onSign, network, fee, form } = useSignWithBeacon(
+    operation,
+    message,
+    estimations
+  );
 
   return (
     <FormProvider {...form}>
@@ -36,7 +30,7 @@ export const TezSignPage: React.FC<BeaconSignPageProps> = ({
             <TezTile mutezAmount={mutezAmount} />
 
             <Flex alignItems="center" justifyContent="end" marginTop="12px">
-              <SignPageFee fee={executeParams.fee} />
+              <SignPageFee fee={fee} />
             </Flex>
 
             <FormLabel marginTop="24px">From </FormLabel>

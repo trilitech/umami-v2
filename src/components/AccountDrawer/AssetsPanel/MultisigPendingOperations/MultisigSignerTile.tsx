@@ -11,7 +11,7 @@ import { useGetImplicitAccountSafe } from "../../../../utils/hooks/getAccountDat
 import { useSelectedNetwork } from "../../../../utils/hooks/networkHooks";
 import { useAsyncActionHandler } from "../../../../utils/hooks/useAsyncActionHandler";
 import { MultisigOperation } from "../../../../utils/multisig/types";
-import { estimate } from "../../../../utils/tezos";
+import { estimate, sumTez } from "../../../../utils/tezos";
 import { AccountTileBase, LabelAndAddress } from "../../../AccountTile/AccountTile";
 import { AddressTileIcon } from "../../../AddressTile/AddressTileIcon";
 import { useAddressKind } from "../../../AddressTile/useAddressKind";
@@ -45,7 +45,13 @@ export const MultisigSignerTile: React.FC<{
       const approveOrExecute = makeAccountOperations(signer, signer, [
         makeMultisigApproveOrExecuteOperation(sender.address, actionType, operation.id),
       ]);
-      const { fee } = await estimate(approveOrExecute, network);
+      const estimations = await estimate(approveOrExecute, network);
+
+      const fee = sumTez(
+        estimations.map(({ suggestedFeeMutez, totalCost }) =>
+          Math.max(suggestedFeeMutez, totalCost).toString()
+        )
+      );
 
       let transactionCount;
       try {

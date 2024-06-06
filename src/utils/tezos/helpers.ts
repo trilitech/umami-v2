@@ -27,7 +27,7 @@ export type PublicKeyPair = {
 };
 
 export type AdvancedAccountOperations = AccountOperations & {
-  executeParams?: Partial<Estimation>;
+  executeParams?: Estimation[];
 };
 
 export const addressExists = async (pkh: string, network: Network): Promise<boolean> => {
@@ -136,6 +136,12 @@ export const sumTez = (items: string[]): number =>
   items.reduce((acc, curr) => acc.plus(curr), new BigNumber(0)).toNumber();
 
 export const operationToTaquitoOperation = (operation: Operation): ParamsWithKind => {
+  const executeParams = {
+    fee: operation.fee,
+    gasLimit: operation.gasLimit,
+    storageLimit: operation.storageLimit,
+  };
+
   let taquitoOperation = {} as ParamsWithKind;
 
   switch (operation.type) {
@@ -145,6 +151,7 @@ export const operationToTaquitoOperation = (operation: Operation): ParamsWithKin
         to: operation.recipient.pkh,
         amount: parseInt(operation.amount),
         mutez: true,
+        ...executeParams,
       };
       break;
     case "contract_call":
@@ -154,6 +161,7 @@ export const operationToTaquitoOperation = (operation: Operation): ParamsWithKin
         amount: parseInt(operation.amount),
         mutez: true,
         parameter: { entrypoint: operation.entrypoint, value: operation.args },
+        ...executeParams,
       };
       break;
 
@@ -162,6 +170,7 @@ export const operationToTaquitoOperation = (operation: Operation): ParamsWithKin
         kind: OpKind.DELEGATION,
         source: operation.sender.pkh,
         delegate: operation.recipient.pkh,
+        ...executeParams,
       };
       break;
     case "undelegation":
@@ -169,6 +178,7 @@ export const operationToTaquitoOperation = (operation: Operation): ParamsWithKin
         kind: OpKind.DELEGATION,
         source: operation.sender.pkh,
         delegate: undefined,
+        ...executeParams,
       };
       break;
     case "fa1.2":
@@ -177,6 +187,7 @@ export const operationToTaquitoOperation = (operation: Operation): ParamsWithKin
         amount: 0,
         to: operation.contract.pkh,
         parameter: makeFA12TransactionParameter(operation),
+        ...executeParams,
       };
       break;
     case "fa2":
@@ -185,6 +196,7 @@ export const operationToTaquitoOperation = (operation: Operation): ParamsWithKin
         amount: 0,
         to: operation.contract.pkh,
         parameter: makeFA2TransactionParameter(operation),
+        ...executeParams,
       };
       break;
     case "contract_origination": {
@@ -205,7 +217,7 @@ export const operationToTaquitoOperation = (operation: Operation): ParamsWithKin
     }
   }
 
-  return { ...taquitoOperation, ...operation.executeParams };
+  return taquitoOperation;
 };
 
 const isValidMichelson = (rawStorage: any): boolean => {
@@ -221,24 +233,11 @@ export const operationsToBatchParams = ({
   type: operationsType,
   operations: originalOperations,
   sender,
-  executeParams,
 }: AdvancedAccountOperations): ParamsWithKind[] => {
-  let operations: Operation[] = [];
-
-  if (operationsType === "implicit") {
-    operations = originalOperations;
-  }
-  if (operationsType === "implicit" && originalOperations.length === 1) {
-    operations = [{ ...originalOperations[0], executeParams }];
-  }
-  if (operationsType === "proposal") {
-    operations = [
-      {
-        ...makeMultisigProposeOperation(sender.address, originalOperations),
-        executeParams,
-      },
-    ];
-  }
+  const operations =
+    operationsType === "implicit"
+      ? originalOperations
+      : ([makeMultisigProposeOperation(sender.address, originalOperations)] as Operation[]);
 
   return operations.map(operationToTaquitoOperation);
 };

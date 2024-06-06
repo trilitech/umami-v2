@@ -8,8 +8,16 @@ import { AccountOperations } from "../../types/AccountOperations";
 export const executeOperations = async (
   operations: AccountOperations,
   tezosToolkit: TezosToolkit,
-  executeParams?: Partial<Estimation>
+  executeParams?: Estimation[]
 ): Promise<BatchWalletOperation> => {
-  const params = operationsToWalletParams({ ...operations, executeParams });
+  operations.operations = operations.operations.map((operation, index) => ({
+    ...operation,
+    ...executeParams?.[index],
+  }));
+
+  const params = operationsToWalletParams(operations);
+
+  // TODO: remove after testing
+  console.log(params);
   return tezosToolkit.wallet.batch(params).send();
 };

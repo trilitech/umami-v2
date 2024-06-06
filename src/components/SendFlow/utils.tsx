@@ -1,5 +1,5 @@
 import { Box, Button } from "@chakra-ui/react";
-import { TezosToolkit } from "@taquito/taquito";
+import { Estimate, TezosToolkit } from "@taquito/taquito";
 import { repeat } from "lodash";
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -17,7 +17,7 @@ import {
 } from "../../utils/hooks/getAccountDataHooks";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
-import { ExecuteParams, estimate, executeOperations } from "../../utils/tezos";
+import { ExecuteParams, estimate, executeOperations, sumTez } from "../../utils/tezos";
 import { DynamicModalContext } from "../DynamicModal";
 
 // Convert given optional fields to required
@@ -41,7 +41,7 @@ export type SignPageMode = "single" | "batch";
 export type SignPageProps<T = undefined> = {
   goBack?: () => void;
   operations: AccountOperations;
-  executeParams: ExecuteParams;
+  executeParams: Estimate[];
   mode: SignPageMode;
   data: T;
 };
@@ -102,7 +102,7 @@ export const formDefaultValues = <T,>({ sender, form }: FormPageProps<T>) => {
 // TODO: test this
 export const useSignPageHelpers = (
   // the fee & operations you've got from the form
-  executeParams: Partial<ExecuteParams>,
+  executeParams: Estimate[],
   initialOperations: AccountOperations,
   mode: SignPageMode
 ) => {
@@ -123,7 +123,11 @@ export const useSignPageHelpers = (
     defaultValues: {
       signer: operations.signer.address.pkh,
       sender: operations.sender.address.pkh,
-      executeParams,
+      executeParams: {
+        storageLimit: executeParams[0].storageLimit,
+        gasLimit: executeParams[0].gasLimit,
+        fee: Math.max(executeParams[0].suggestedFeeMutez, executeParams[0].totalCost),
+      },
     },
   });
   const signer = form.watch("signer");
@@ -139,8 +143,17 @@ export const useSignPageHelpers = (
           signer: getSigner(newSigner),
         };
 
-        const estimateResult = await estimate(operations, network);
-        form.setValue("executeParams", estimateResult);
+        const estimations = await estimate(operations, network);
+
+        form.setValue("executeParams", {
+          storageLimit: estimations[0].storageLimit,
+          gasLimit: estimations[0].gasLimit,
+          fee: sumTez(
+            estimations.map(estimate =>
+              Math.max(estimate.suggestedFeeMutez, estimate.totalCost).toString()
+            )
+          ),
+        });
         setOperations(operationsWithNewSigner);
         setEstimationFailed(false);
       },
@@ -152,7 +165,9 @@ export const useSignPageHelpers = (
 
   const onSign = async (tezosToolkit: TezosToolkit) =>
     handleAsyncAction(async () => {
-      const operation = await executeOperations(operations, tezosToolkit, executeParams);
+      const operation = await executeOperations(operations, tezosToolkit, [
+        form.watch("executeParams"),
+      ]);
       if (mode === "batch") {
         clearBatch(operations.sender);
       }

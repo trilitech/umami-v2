@@ -1,5 +1,5 @@
 import { Flex, FormLabel, ModalBody, ModalContent, ModalFooter } from "@chakra-ui/react";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider } from "react-hook-form";
 
 import { BeaconSignPageProps } from "./BeaconSignPageProps";
 import { Header } from "./Header";
@@ -13,18 +13,16 @@ import { headerText } from "../SignPageHeader";
 
 export const DelegationSignPage: React.FC<BeaconSignPageProps> = ({
   operation,
-  executeParams,
+  estimations,
   message,
 }) => {
   const { recipient } = operation.operations[0] as Delegation;
 
-  const { isSigning, onSign, network } = useSignWithBeacon(operation, message, executeParams);
-
-  const form = useForm({
-    defaultValues: {
-      executeParams,
-    },
-  });
+  const { isSigning, onSign, network, fee, form } = useSignWithBeacon(
+    operation,
+    message,
+    estimations
+  );
 
   return (
     <FormProvider {...form}>
@@ -43,7 +41,7 @@ export const DelegationSignPage: React.FC<BeaconSignPageProps> = ({
               paddingX="4px"
             >
               <Flex alignItems="center">
-                <SignPageFee fee={executeParams.fee} />
+                <SignPageFee fee={fee} />
               </Flex>
             </Flex>
 

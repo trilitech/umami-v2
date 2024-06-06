@@ -7,7 +7,7 @@ import { UndelegationSignPage } from "./UndelegationSignPage";
 
 export const BeaconSignPage: React.FC<BeaconSignPageProps> = ({
   operation,
-  executeParams,
+  estimations,
   message,
 }) => {
   const operationType = operation.operations[0].type;
@@ -15,36 +15,28 @@ export const BeaconSignPage: React.FC<BeaconSignPageProps> = ({
   switch (operationType) {
     case "tez": {
       return (
-        <BeaconTezSignPage executeParams={executeParams} message={message} operation={operation} />
+        <BeaconTezSignPage estimations={estimations} message={message} operation={operation} />
       );
     }
     case "contract_call": {
       return (
-        <ContractCallSignPage
-          executeParams={executeParams}
-          message={message}
-          operation={operation}
-        />
+        <ContractCallSignPage estimations={estimations} message={message} operation={operation} />
       );
     }
     case "delegation": {
       return (
-        <DelegationSignPage executeParams={executeParams} message={message} operation={operation} />
+        <DelegationSignPage estimations={estimations} message={message} operation={operation} />
       );
     }
     case "undelegation": {
       return (
-        <UndelegationSignPage
-          executeParams={executeParams}
-          message={message}
-          operation={operation}
-        />
+        <UndelegationSignPage estimations={estimations} message={message} operation={operation} />
       );
     }
     case "contract_origination":
       return (
         <OriginationOperationSignPage
-          executeParams={executeParams}
+          estimations={estimations}
           message={message}
           operation={operation}
         />

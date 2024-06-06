@@ -61,9 +61,8 @@ export type Operation = (
   | Undelegation
   | ContractOrigination
   | ContractCall
-) & {
-  executeParams?: Partial<Estimation>;
-};
+) &
+  Partial<Estimation>;
 
 export type ApproveOrExecute = "approve" | "execute";
 

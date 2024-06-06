@@ -112,12 +112,14 @@ export const BatchView: React.FC<{
       setOperationsEstimationResults([]);
 
       try {
-        const { fee: initialFee } = await estimate(accountOperations, network);
+        const estimations = await estimate(accountOperations, network);
 
         // if the estimation succeeds we set all operations' statuses to successful
         setOperationsEstimationResults(operations.map(_ => SUCCESSFUL_ESTIMATION_RESULT));
 
-        return openWith(<SignPage initialFee={initialFee} initialOperations={accountOperations} />);
+        return openWith(
+          <SignPage estimations={estimations} initialOperations={accountOperations} />
+        );
       } catch (error: any) {
         // This exception contains per-operation info on its estimation status and errors if any
         // It's thrown if there were any errors during the estimation

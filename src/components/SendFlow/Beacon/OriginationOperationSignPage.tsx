@@ -16,7 +16,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { capitalize } from "lodash";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider } from "react-hook-form";
 
 import { BeaconSignPageProps } from "./BeaconSignPageProps";
 import { useSignWithBeacon } from "./useSignWithBeacon";
@@ -30,17 +30,15 @@ import { headerText } from "../SignPageHeader";
 
 export const OriginationOperationSignPage: React.FC<BeaconSignPageProps> = ({
   operation,
-  executeParams,
   message,
+  estimations,
 }) => {
-  const { isSigning, onSign, network } = useSignWithBeacon(operation, message, executeParams);
+  const { isSigning, onSign, network, form, fee } = useSignWithBeacon(
+    operation,
+    message,
+    estimations
+  );
   const { code, storage } = operation.operations[0] as ContractOrigination;
-
-  const form = useForm({
-    defaultValues: {
-      executeParams,
-    },
-  });
 
   return (
     <FormProvider {...form}>
@@ -75,7 +73,7 @@ export const OriginationOperationSignPage: React.FC<BeaconSignPageProps> = ({
             </Flex>
 
             <Flex alignItems="center" justifyContent="end" marginTop="12px">
-              <SignPageFee fee={executeParams.fee} />
+              <SignPageFee fee={fee} />
             </Flex>
 
             <Accordion marginTop="16px" allowToggle={true}>

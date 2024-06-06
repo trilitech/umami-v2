@@ -1,4 +1,6 @@
-import { addressExists, makeToolkit, operationsToBatchParams, sumTez } from "./helpers";
+import { Estimate } from "@taquito/taquito";
+
+import { addressExists, makeToolkit, operationsToBatchParams } from "./helpers";
 import { AccountOperations } from "../../types/AccountOperations";
 import { Network } from "../../types/Network";
 
@@ -12,7 +14,7 @@ export type ExecuteParams = Estimation;
 export const estimate = async (
   operations: AccountOperations,
   network: Network
-): Promise<Estimation> => {
+): Promise<Estimate[]> => {
   const tezosToolkit = await makeToolkit({
     type: "fake",
     signer: operations.signer,
@@ -20,19 +22,12 @@ export const estimate = async (
   });
   try {
     const estimations = await tezosToolkit.estimate.batch(operationsToBatchParams(operations));
+
+    return estimations;
     // The way taquito works we need to take the max of suggestedFeeMutez and totalCost
     // because the suggestedFeeMutez does not include the storage & execution cost
     // and in these cases the totalCost is the one to go (so, for contract calls)
     // though totalCost doesn't work well with simple tez transfers and suggestedFeeMutez is more accurate
-    return {
-      storageLimit: estimations.reduce((acc, curr) => acc + curr.storageLimit, 0),
-      gasLimit: estimations.reduce((acc, curr) => acc + curr.gasLimit, 0),
-      fee: sumTez(
-        estimations.map(estimate =>
-          Math.max(estimate.suggestedFeeMutez, estimate.totalCost).toString()
-        )
-      ),
-    };
   } catch (err: any) {
     const isRevealed = await addressExists(operations.signer.address.pkh, network);
 

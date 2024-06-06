@@ -91,19 +91,15 @@ export const useHandleBeaconMessage = () => {
               message.operationDetails,
               signer as ImplicitAccount
             );
-            const estimation = await estimate(operation, network);
+            const estimations = await estimate(operation, network);
 
             if (operation.operations.length === 1) {
               modal = (
-                <BeaconSignPage
-                  executeParams={estimation}
-                  message={message}
-                  operation={operation}
-                />
+                <BeaconSignPage estimations={estimations} message={message} operation={operation} />
               );
             } else {
               modal = (
-                <BatchSignPage executeParams={estimation} message={message} operation={operation} />
+                <BatchSignPage estimations={estimations} message={message} operation={operation} />
               );
             }
 
