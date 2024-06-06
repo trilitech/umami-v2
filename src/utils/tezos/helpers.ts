@@ -1,5 +1,6 @@
 import TransportWebUSB from "@ledgerhq/hw-transport-webusb";
 import { DerivationType, LedgerSigner } from "@taquito/ledger-signer";
+import { Parser } from "@taquito/michel-codec";
 import { OpKind } from "@taquito/rpc";
 import { Curves, InMemorySigner } from "@taquito/signer";
 import { ParamsWithKind, TezosToolkit, WalletParamsWithKind } from "@taquito/taquito";
@@ -174,11 +175,29 @@ export const operationToTaquitoOperation = (operation: Operation): ParamsWithKin
         parameter: makeFA2TransactionParameter(operation),
       };
     case "contract_origination": {
+      // if storage is a valid Michelson we need to pass it in as init, not the storage
+      if (isValidMichelson(operation.storage)) {
+        return {
+          kind: OpKind.ORIGINATION,
+          code: operation.code,
+          init: operation.storage,
+        };
+      }
       return {
         kind: OpKind.ORIGINATION,
-        ...operation,
+        code: operation.code,
+        storage: operation.storage,
       };
     }
+  }
+};
+
+const isValidMichelson = (rawStorage: any): boolean => {
+  try {
+    new Parser().parseJSON(rawStorage);
+    return true;
+  } catch {
+    return false;
   }
 };
 
