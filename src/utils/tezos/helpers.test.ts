@@ -160,30 +160,79 @@ describe("tezos utils helpers", () => {
       });
     });
 
-    test("contract_origination", () => {
-      const operation: ContractOrigination = {
-        type: "contract_origination",
-        sender: mockImplicitAddress(0),
-        code: [{ prim: "unit" }],
-        storage: { some: { nested: "storage" } },
-      };
-      expect(operationToTaquitoOperation(operation)).toEqual({
-        code: [
-          {
-            prim: "unit",
+    describe("contract_origination", () => {
+      it("converts an origination with a plain JS storage object", () => {
+        const operation: ContractOrigination = {
+          type: "contract_origination",
+          sender: mockImplicitAddress(0),
+          code: [{ prim: "unit" }],
+          storage: { some: { nested: "storage" } },
+        };
+
+        expect(operationToTaquitoOperation(operation)).toEqual({
+          code: [
+            {
+              prim: "unit",
+            },
+          ],
+          kind: "origination",
+          storage: {
+            some: {
+              nested: "storage",
+            },
           },
-        ],
-        kind: "origination",
-        sender: {
-          pkh: "tz1gUNyn3hmnEWqkusWPzxRaon1cs7ndWh7h",
-          type: "implicit",
-        },
-        storage: {
-          some: {
-            nested: "storage",
+        });
+      });
+
+      it("converts an origination with a valid Michelson storage object", () => {
+        const operation: ContractOrigination = {
+          type: "contract_origination",
+          sender: mockImplicitAddress(0),
+          code: [{ prim: "unit" }],
+          storage: {
+            prim: "Pair",
+            args: [
+              {
+                prim: "Pair",
+                args: [
+                  [],
+                  [
+                    {
+                      prim: "Elt",
+                      args: [
+                        {
+                          string: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
+                        },
+                        {
+                          int: "100000",
+                        },
+                      ],
+                    },
+                  ],
+                ],
+              },
+              {
+                prim: "Pair",
+                args: [
+                  {
+                    string: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
+                  },
+                  [],
+                ],
+              },
+            ],
           },
-        },
-        type: "contract_origination",
+        };
+
+        expect(operationToTaquitoOperation(operation)).toEqual({
+          code: [
+            {
+              prim: "unit",
+            },
+          ],
+          kind: "origination",
+          init: operation.storage,
+        });
       });
     });
 
