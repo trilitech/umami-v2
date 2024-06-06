@@ -41,9 +41,7 @@ export const AddressPill: React.FC<
   const ref = useRef<HTMLDivElement>(null);
   useOutsideClick({
     ref,
-    handler: () => {
-      setMouseHover(false);
-    },
+    handler: () => setMouseHover(false),
   });
 
   let bgColor, iconColor, textColor;
@@ -68,12 +66,8 @@ export const AddressPill: React.FC<
         alignItems="center"
         background={bgColor}
         borderRadius="full"
-        onMouseEnter={() => {
-          setMouseHover(true);
-        }}
-        onMouseLeave={() => {
-          setMouseHover(false);
-        }}
+        onMouseEnter={() => setMouseHover(true)}
+        onMouseLeave={() => setMouseHover(false)}
         paddingX="4px"
       >
         {showIcons && (
@@ -103,6 +97,9 @@ export const AddressPill: React.FC<
                 showPkh={!showIcons}
                 size="sm"
               />
+              <Box display="none" data-testid="address-pill-raw-address">
+                {address.pkh}
+              </Box>
             </Button>
           </PopoverTrigger>
           <PopoverContent maxWidth="max-content" background="white">

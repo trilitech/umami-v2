@@ -37,6 +37,7 @@ const RoundButton: React.FC<{
     textAlign="center"
     _hover={{ color: colors.green }}
     cursor="pointer"
+    data-testid="account-drawer-cta-button"
     marginX="24px"
     onClick={onClick}
   >

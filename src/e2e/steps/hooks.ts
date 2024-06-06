@@ -17,7 +17,8 @@ import { initialState as contactsInitialState } from "../../utils/redux/slices/c
 import { initialState as errorsInitialState } from "../../utils/redux/slices/errorsSlice";
 import { initialState as multisigsInitialState } from "../../utils/redux/slices/multisigsSlice";
 import { initialState as tokensInitialState } from "../../utils/redux/slices/tokensSlice";
-import { TEST_NETWORKS_STATE, killNode, resetBlockchain } from "../utils";
+import { TEST_NETWORKS_STATE } from "../constants";
+import { killNode, resetBlockchain } from "../utils";
 
 setDefaultTimeout(secondsToMilliseconds(15));
 

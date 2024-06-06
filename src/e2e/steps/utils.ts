@@ -8,6 +8,7 @@ import { BLOCK_TIME } from "../../utils/dataPolling/constants";
 import { State } from "../../utils/redux/slices/accountsSlice/State";
 import { makeSecretKeyAccount } from "../../utils/redux/thunks/secretKeyAccount";
 import { AccountsPage } from "../pages/AccountsPage";
+import { SignPage } from "../pages/SignPage";
 import { refetch, runDockerCommand, topUpAccount, waitUntilRefetch } from "../utils";
 
 Given(/I have accounts?/, async function (this: CustomWorld, table: DataTable) {
@@ -57,15 +58,19 @@ When("I check {string} checkbox", async function (this: CustomWorld, checkboxNam
 });
 
 When("I sign transaction with password {string}", async function (this: CustomWorld, password) {
-  await this.page.getByLabel("Password", { exact: true }).fill(password);
-  await this.page
-    .getByRole("button", { name: /^(Confirm|Propose|Submit) (Transaction|Batch|Contract)$/ })
-    .click();
+  await new SignPage(this.page, password).sign();
 });
 
 When("I close modal", async function (this: CustomWorld) {
-  const modal = this.page.getByRole("dialog");
+  const modal = this.page.locator('section[role="dialog"][id^="chakra-modal"]');
   await modal.getByRole("button", { name: "Close", exact: true }).click();
+  await expect(modal).not.toBeAttached();
+});
+
+When("I close drawer", async function (this: CustomWorld) {
+  await this.page.getByTestId("close-drawer-button").click();
+  const drawer = this.page.locator('div[role="dialog"][id^="chakra-modal"]');
+  await expect(drawer).not.toBeAttached();
 });
 
 When("I wait for TZKT to process the updates", async function (this: CustomWorld) {
@@ -80,20 +85,23 @@ When("I wait for TZKT to process the updates", async function (this: CustomWorld
     throw new Error("TZKT sync last applied block not found");
   };
 
-  const previous = getLastAppliedBlock();
+  // Wait for 2 blocks to be applied
+  for (let i = 0; i < 2; i++) {
+    const previous = getLastAppliedBlock();
 
-  for (;;) {
-    // eslint-disable-next-line playwright/no-wait-for-timeout
-    await this.page.waitForTimeout(100);
-    if (getLastAppliedBlock() !== previous) {
-      break;
+    while (getLastAppliedBlock() === previous) {
+      // eslint-disable-next-line playwright/no-wait-for-timeout
+      await this.page.waitForTimeout(100);
     }
   }
 });
 
-When("I refetch the data", async function (this: CustomWorld) {
-  await refetch(this.page);
-});
+When(
+  /I refetch the data( in the background)?/,
+  async function (this: CustomWorld, inBackground: string) {
+    await refetch(this.page, !!inBackground);
+  }
+);
 
 When(
   "{string} is topped-up with {string}",

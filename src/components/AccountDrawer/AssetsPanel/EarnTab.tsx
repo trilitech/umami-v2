@@ -117,7 +117,7 @@ export const EarnTab: React.FC<{
             {delegate ? (
               <>
                 <Center>
-                  <AddressPill address={delegate} />
+                  <AddressPill data-testid="current-baker" address={delegate} />
                 </Center>
                 <Button
                   justifyContent="space-between"
