@@ -31,13 +31,8 @@ import { headerText } from "../SignPageHeader";
 export const OriginationOperationSignPage: React.FC<BeaconSignPageProps> = ({
   operation,
   message,
-  estimations,
 }) => {
-  const { isSigning, onSign, network, form, fee } = useSignWithBeacon(
-    operation,
-    message,
-    estimations
-  );
+  const { isSigning, onSign, network, form, fee } = useSignWithBeacon(operation, message);
   const { code, storage } = operation.operations[0] as ContractOrigination;
 
   return (

@@ -10,10 +10,10 @@ import { SignPageHeader, headerText } from "../SignPageHeader";
 import { SignPageProps, useSignPageHelpers } from "../utils";
 
 export const SignPage: React.FC<SignPageProps> = props => {
-  const { mode, operations: initialOperations, executeParams } = props;
+  const { mode, operations: initialOperations } = props;
 
   const { fee, operations, estimationFailed, isLoading, form, signer, reEstimate, onSign } =
-    useSignPageHelpers(executeParams, initialOperations, mode);
+    useSignPageHelpers(initialOperations, mode);
   return (
     <FormProvider {...form}>
       <ModalContent>

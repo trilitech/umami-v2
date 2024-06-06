@@ -1,20 +1,13 @@
 import { TezosToolkit } from "@taquito/taquito";
 import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
 
-import { Estimation } from "./estimate";
 import { operationsToWalletParams } from "./helpers";
-import { AccountOperations } from "../../types/AccountOperations";
+import { EstimatedAccountOperations } from "../../types/AccountOperations";
 
 export const executeOperations = async (
-  operations: AccountOperations,
-  tezosToolkit: TezosToolkit,
-  executeParams?: Estimation[]
+  operations: EstimatedAccountOperations,
+  tezosToolkit: TezosToolkit
 ): Promise<BatchWalletOperation> => {
-  operations.operations = operations.operations.map((operation, index) => ({
-    ...operation,
-    ...executeParams?.[index],
-  }));
-
   const params = operationsToWalletParams(operations);
 
   // TODO: remove after testing

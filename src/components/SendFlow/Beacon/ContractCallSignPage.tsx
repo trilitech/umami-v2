@@ -26,22 +26,14 @@ import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
 import { headerText } from "../SignPageHeader";
 
-export const ContractCallSignPage: React.FC<BeaconSignPageProps> = ({
-  operation,
-  estimations,
-  message,
-}) => {
+export const ContractCallSignPage: React.FC<BeaconSignPageProps> = ({ operation, message }) => {
   const {
     amount: mutezAmount,
     contract,
     entrypoint,
     args,
   } = operation.operations[0] as ContractCall;
-  const { isSigning, onSign, network, fee, form } = useSignWithBeacon(
-    operation,
-    message,
-    estimations
-  );
+  const { isSigning, onSign, network, fee, form } = useSignWithBeacon(operation, message);
 
   return (
     <FormProvider {...form}>

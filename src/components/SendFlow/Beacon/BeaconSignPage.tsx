@@ -5,42 +5,24 @@ import { OriginationOperationSignPage } from "./OriginationOperationSignPage";
 import { TezSignPage as BeaconTezSignPage } from "./TezSignPage";
 import { UndelegationSignPage } from "./UndelegationSignPage";
 
-export const BeaconSignPage: React.FC<BeaconSignPageProps> = ({
-  operation,
-  estimations,
-  message,
-}) => {
+export const BeaconSignPage: React.FC<BeaconSignPageProps> = ({ operation, message }) => {
   const operationType = operation.operations[0].type;
 
   switch (operationType) {
     case "tez": {
-      return (
-        <BeaconTezSignPage estimations={estimations} message={message} operation={operation} />
-      );
+      return <BeaconTezSignPage message={message} operation={operation} />;
     }
     case "contract_call": {
-      return (
-        <ContractCallSignPage estimations={estimations} message={message} operation={operation} />
-      );
+      return <ContractCallSignPage message={message} operation={operation} />;
     }
     case "delegation": {
-      return (
-        <DelegationSignPage estimations={estimations} message={message} operation={operation} />
-      );
+      return <DelegationSignPage message={message} operation={operation} />;
     }
     case "undelegation": {
-      return (
-        <UndelegationSignPage estimations={estimations} message={message} operation={operation} />
-      );
+      return <UndelegationSignPage message={message} operation={operation} />;
     }
     case "contract_origination":
-      return (
-        <OriginationOperationSignPage
-          estimations={estimations}
-          message={message}
-          operation={operation}
-        />
-      );
+      return <OriginationOperationSignPage message={message} operation={operation} />;
     /**
      * FA1/2 are impossible to get here because we don't parse them
      * instead we get a generic contract call

@@ -1,7 +1,5 @@
-import { Estimate } from "@taquito/taquito";
-
 import { addressExists, makeToolkit, operationsToBatchParams } from "./helpers";
-import { AccountOperations } from "../../types/AccountOperations";
+import { AccountOperations, EstimatedAccountOperations } from "../../types/AccountOperations";
 import { Network } from "../../types/Network";
 
 export type Estimation = {
@@ -14,16 +12,23 @@ export type ExecuteParams = Estimation;
 export const estimate = async (
   operations: AccountOperations,
   network: Network
-): Promise<Estimate[]> => {
+): Promise<EstimatedAccountOperations> => {
   const tezosToolkit = await makeToolkit({
     type: "fake",
     signer: operations.signer,
     network,
   });
   try {
-    const estimations = await tezosToolkit.estimate.batch(operationsToBatchParams(operations));
+    const estimates = await tezosToolkit.estimate.batch(operationsToBatchParams(operations));
 
-    return estimations;
+    return {
+      ...operations,
+      estimates: estimates.map(estimate => ({
+        storageLimit: estimate.storageLimit,
+        gasLimit: estimate.gasLimit,
+        fee: Math.max(estimate.suggestedFeeMutez, estimate.totalCost),
+      })),
+    };
     // The way taquito works we need to take the max of suggestedFeeMutez and totalCost
     // because the suggestedFeeMutez does not include the storage & execution cost
     // and in these cases the totalCost is the one to go (so, for contract calls)

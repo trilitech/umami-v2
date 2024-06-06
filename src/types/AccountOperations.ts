@@ -1,5 +1,6 @@
 import { Account, ImplicitAccount, MultisigAccount } from "./Account";
 import { Operation } from "./Operation";
+import { Estimation, sumTez } from "../utils/tezos";
 
 type ProposalOperations = {
   type: "proposal";
@@ -16,6 +17,10 @@ export type ImplicitOperations = {
 };
 
 export type AccountOperations = ProposalOperations | ImplicitOperations;
+export type EstimatedAccountOperations = AccountOperations & { estimates: Estimation[] };
+
+export const totalFee = (estimates: Estimation[]): number =>
+  sumTez(estimates.map(estimate => estimate.fee.toString()));
 
 export const makeAccountOperations = (
   sender: Account,

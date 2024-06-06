@@ -11,7 +11,7 @@ import { useGetImplicitAccountSafe } from "../../../../utils/hooks/getAccountDat
 import { useSelectedNetwork } from "../../../../utils/hooks/networkHooks";
 import { useAsyncActionHandler } from "../../../../utils/hooks/useAsyncActionHandler";
 import { MultisigOperation } from "../../../../utils/multisig/types";
-import { estimate, sumTez } from "../../../../utils/tezos";
+import { estimate } from "../../../../utils/tezos";
 import { AccountTileBase, LabelAndAddress } from "../../../AccountTile/AccountTile";
 import { AddressTileIcon } from "../../../AddressTile/AddressTileIcon";
 import { useAddressKind } from "../../../AddressTile/useAddressKind";
@@ -45,18 +45,12 @@ export const MultisigSignerTile: React.FC<{
       const approveOrExecute = makeAccountOperations(signer, signer, [
         makeMultisigApproveOrExecuteOperation(sender.address, actionType, operation.id),
       ]);
-      const estimations = await estimate(approveOrExecute, network);
-
-      const fee = sumTez(
-        estimations.map(({ suggestedFeeMutez, totalCost }) =>
-          Math.max(suggestedFeeMutez, totalCost).toString()
-        )
-      );
+      const estimatedOperations = await estimate(approveOrExecute, network);
 
       let transactionCount;
       try {
         transactionCount = parseRawMichelson(operation.rawActions, sender).length;
-      } catch (_) {
+      } catch {
         // for cases when we cannot parse the actions
         transactionCount = 1;
       }
@@ -64,8 +58,7 @@ export const MultisigSignerTile: React.FC<{
       return openWith(
         <SignPage
           actionType={actionType}
-          fee={fee}
-          operation={approveOrExecute}
+          operation={estimatedOperations}
           signer={signer}
           transactionCount={transactionCount}
         />

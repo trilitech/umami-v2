@@ -12,9 +12,9 @@ import { SignPageHeader, headerText } from "../SignPageHeader";
 import { SignPageProps, useSignPageHelpers } from "../utils";
 
 export const SignPage: React.FC<SignPageProps> = props => {
-  const { mode, operations: initialOperations, executeParams: initialExecuteParams } = props;
+  const { mode, operations: initialOperations } = props;
   const { fee, operations, estimationFailed, isLoading, form, signer, reEstimate, onSign } =
-    useSignPageHelpers(initialExecuteParams, initialOperations, mode);
+    useSignPageHelpers(initialOperations, mode);
 
   const { amount: mutezAmount, recipient } = operations.operations[0] as TezTransfer;
 

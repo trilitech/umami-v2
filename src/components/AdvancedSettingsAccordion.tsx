@@ -19,19 +19,19 @@ import colors from "../style/colors";
 import { mutezToTez, tezToMutez } from "../utils/format";
 import { Estimation, TEZ_DECIMALS } from "../utils/tezos";
 
-export const AdvancedSettingsAccordion = () => {
+export const AdvancedSettingsAccordion = ({ index = 0 }) => {
   const { register, getValues, setValue } = useFormContext<{
-    executeParams: Estimation;
+    executeParams: Estimation[];
   }>();
 
-  const [tezFee, setTezFee] = useState<string>(mutezToTez(getValues().executeParams.fee));
+  const [tezFee, setTezFee] = useState<string>(mutezToTez(getValues().executeParams[index].fee));
 
   const handleFeeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newFeeValue = event.target.value;
 
     if (makeValidateDecimals(TEZ_DECIMALS)(newFeeValue) === true) {
       setTezFee(newFeeValue);
-      setValue("executeParams.fee", tezToMutez(newFeeValue) as number);
+      setValue(`executeParams.${index}.fee`, tezToMutez(newFeeValue) as number);
     }
   };
 
@@ -51,7 +51,7 @@ export const AdvancedSettingsAccordion = () => {
               <Input
                 paddingRight="28px"
                 fontSize="14px"
-                onBlur={() => setTezFee(mutezToTez(getValues().executeParams.fee))}
+                onBlur={() => setTezFee(mutezToTez(getValues().executeParams[index].fee))}
                 onChange={handleFeeChange}
                 placeholder="0.000000"
                 step={getSmallestUnit(TEZ_DECIMALS)}
@@ -70,7 +70,7 @@ export const AdvancedSettingsAccordion = () => {
           <FormControl>
             <FormLabel fontSize="14px">Gas Limit</FormLabel>
             <Input
-              {...register("executeParams.gasLimit", {
+              {...register(`executeParams.${index}.gasLimit`, {
                 valueAsNumber: true,
                 required: true,
               })}
@@ -81,7 +81,7 @@ export const AdvancedSettingsAccordion = () => {
           <FormControl>
             <FormLabel fontSize="14px">Storage Limit</FormLabel>
             <Input
-              {...register("executeParams.storageLimit", {
+              {...register(`executeParams.${index}.storageLimit`, {
                 valueAsNumber: true,
                 required: true,
               })}

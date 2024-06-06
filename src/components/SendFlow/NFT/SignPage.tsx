@@ -26,12 +26,11 @@ export const SignPage: React.FC<SignPageProps<{ nft: NFTBalance }>> = props => {
   const {
     mode,
     operations: initialOperations,
-    executeParams,
     data: { nft },
   } = props;
 
   const { fee, operations, estimationFailed, isLoading, form, signer, reEstimate, onSign } =
-    useSignPageHelpers(executeParams, initialOperations, mode);
+    useSignPageHelpers(initialOperations, mode);
 
   const { recipient } = operations.operations[0] as FA2Transfer;
 

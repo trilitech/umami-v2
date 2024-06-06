@@ -4,7 +4,7 @@ import { capitalize } from "lodash";
 import React, { useContext } from "react";
 
 import { ImplicitAccount } from "../../../types/Account";
-import { AccountOperations } from "../../../types/AccountOperations";
+import { EstimatedAccountOperations } from "../../../types/AccountOperations";
 import { ApproveOrExecute } from "../../../types/Operation";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
 import { executeOperations } from "../../../utils/tezos";
@@ -14,20 +14,24 @@ import { SignButton } from "../SignButton";
 import { SuccessStep } from "../SuccessStep";
 
 export const SignPage: React.FC<{
-  fee: number;
-  operation: AccountOperations;
+  operation: EstimatedAccountOperations;
   actionType: ApproveOrExecute;
   signer: ImplicitAccount;
   // A single approve/execute `ContractCall` operation could contain multiple transactions
   // so we need to pass the transaction count by decoding the proposed multisig action separately
   transactionCount: number;
-}> = ({ signer, fee, operation, actionType, transactionCount }) => {
+}> = ({ signer, operation, actionType, transactionCount }) => {
   const { handleAsyncAction } = useAsyncActionHandler();
   const { openWith } = useContext(DynamicModalContext);
+  // TODO: add advanced execute params component
   const approveOrExecute = (tezosToolkit: TezosToolkit) =>
     handleAsyncAction(
       async () => {
-        const { opHash } = await executeOperations(operation, tezosToolkit);
+        // TODO: add execute params
+        const { opHash } = await executeOperations(
+          { ...operation, estimates: form.watch("executeParams") },
+          tezosToolkit
+        );
 
         return openWith(<SuccessStep hash={opHash} />);
       },
@@ -39,12 +43,7 @@ export const SignPage: React.FC<{
   return (
     <ModalContent>
       <form>
-        <BatchModalBody
-          fee={fee}
-          signer={signer}
-          title={title}
-          transactionCount={transactionCount}
-        />
+        <BatchModalBody operation={operation} title={title} transactionCount={transactionCount} />
 
         <ModalFooter>
           <SignButton onSubmit={approveOrExecute} signer={signer} text={title} />

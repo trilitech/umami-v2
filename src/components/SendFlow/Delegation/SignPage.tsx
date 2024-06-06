@@ -11,9 +11,9 @@ import { SignPageHeader, headerText } from "../SignPageHeader";
 import { SignPageProps, useSignPageHelpers } from "../utils";
 
 export const SignPage: React.FC<SignPageProps> = props => {
-  const { mode, operations: initialOperations, executeParams } = props;
+  const { mode, operations: initialOperations } = props;
   const { fee, operations, estimationFailed, isLoading, form, signer, reEstimate, onSign } =
-    useSignPageHelpers(executeParams, initialOperations, mode);
+    useSignPageHelpers(initialOperations, mode);
   const baker = (operations.operations[0] as Delegation).recipient;
   return (
     <FormProvider {...form}>
@@ -21,7 +21,7 @@ export const SignPage: React.FC<SignPageProps> = props => {
         <form>
           <SignPageHeader {...props} operationsType={operations.type} signer={operations.signer} />
           <ModalBody>
-            <FormLabel>Fromfds</FormLabel>
+            <FormLabel>From</FormLabel>
             <AddressTile address={signer.address} />
 
             <Flex

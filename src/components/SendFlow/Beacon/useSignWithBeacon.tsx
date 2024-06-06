@@ -3,11 +3,11 @@ import {
   OperationRequestOutput,
   OperationResponseInput,
 } from "@airgap/beacon-wallet";
-import { Estimate, TezosToolkit } from "@taquito/taquito";
+import { TezosToolkit } from "@taquito/taquito";
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
 
-import { ImplicitOperations } from "../../../types/AccountOperations";
+import { EstimatedAccountOperations, totalFee } from "../../../types/AccountOperations";
 import { WalletClient } from "../../../utils/beacon/WalletClient";
 import { useFindNetwork } from "../../../utils/hooks/networkHooks";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
@@ -16,30 +16,22 @@ import { DynamicModalContext } from "../../DynamicModal";
 import { SuccessStep } from "../SuccessStep";
 
 export const useSignWithBeacon = (
-  operation: ImplicitOperations,
-  message: OperationRequestOutput,
-  estimations: Estimate[]
+  operation: EstimatedAccountOperations,
+  message: OperationRequestOutput
 ) => {
   const { isLoading: isSigning, handleAsyncAction } = useAsyncActionHandler();
   const { openWith } = useContext(DynamicModalContext);
   const findNetwork = useFindNetwork();
 
-  const form = useForm({
-    defaultValues: {
-      executeParams: {
-        storageLimit: estimations[0].storageLimit,
-        gasLimit: estimations[0].gasLimit,
-        fee: Math.max(estimations[0].suggestedFeeMutez, estimations[0].totalCost),
-      },
-    },
-  });
+  const form = useForm({ defaultValues: { executeParams: operation.estimates } });
 
   const onSign = async (tezosToolkit: TezosToolkit) =>
     handleAsyncAction(
       async () => {
-        const { opHash } = await executeOperations(operation, tezosToolkit, [
-          form.getValues("executeParams"),
-        ]);
+        const { opHash } = await executeOperations(
+          { ...operation, estimates: form.watch("executeParams") },
+          tezosToolkit
+        );
 
         const response: OperationResponseInput = {
           type: BeaconMessageType.OperationResponse,
@@ -56,7 +48,7 @@ export const useSignWithBeacon = (
     );
 
   return {
-    fee: form.watch("executeParams.fee"),
+    fee: totalFee(form.watch("executeParams")),
     isSigning,
     onSign,
     network: findNetwork(message.network.type),

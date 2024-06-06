@@ -19,10 +19,9 @@ export const SignPage: React.FC<
     mode,
     operations: initialOperations,
     data: { token },
-    executeParams,
   } = props;
   const { fee, operations, estimationFailed, isLoading, form, signer, reEstimate, onSign } =
-    useSignPageHelpers(executeParams, initialOperations, mode);
+    useSignPageHelpers(initialOperations, mode);
 
   const { amount, recipient } = operations.operations[0] as TokenTransfer;
 

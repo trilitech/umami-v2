@@ -6,11 +6,10 @@ import { Curves, InMemorySigner } from "@taquito/signer";
 import { ParamsWithKind, TezosToolkit, WalletParamsWithKind } from "@taquito/taquito";
 import axios from "axios";
 import BigNumber from "bignumber.js";
-import { shuffle } from "lodash";
+import { shuffle, zipWith } from "lodash";
 
-import { Estimation } from "./estimate";
 import { FakeSigner } from "./fakeSigner";
-import { AccountOperations } from "../../types/AccountOperations";
+import { AccountOperations, EstimatedAccountOperations } from "../../types/AccountOperations";
 import { Network } from "../../types/Network";
 import {
   Operation,
@@ -24,10 +23,6 @@ import { RawTzktGetAddressType } from "../tzkt/types";
 export type PublicKeyPair = {
   pk: string;
   pkh: string;
-};
-
-export type AdvancedAccountOperations = AccountOperations & {
-  executeParams?: Estimation[];
 };
 
 export const addressExists = async (pkh: string, network: Network): Promise<boolean> => {
@@ -136,69 +131,49 @@ export const sumTez = (items: string[]): number =>
   items.reduce((acc, curr) => acc.plus(curr), new BigNumber(0)).toNumber();
 
 export const operationToTaquitoOperation = (operation: Operation): ParamsWithKind => {
-  const executeParams = {
-    fee: operation.fee,
-    gasLimit: operation.gasLimit,
-    storageLimit: operation.storageLimit,
-  };
-
-  let taquitoOperation = {} as ParamsWithKind;
-
   switch (operation.type) {
     case "tez":
-      taquitoOperation = {
+      return {
         kind: OpKind.TRANSACTION,
         to: operation.recipient.pkh,
         amount: parseInt(operation.amount),
         mutez: true,
-        ...executeParams,
       };
-      break;
     case "contract_call":
-      taquitoOperation = {
+      return {
         kind: OpKind.TRANSACTION,
         to: operation.contract.pkh,
         amount: parseInt(operation.amount),
         mutez: true,
         parameter: { entrypoint: operation.entrypoint, value: operation.args },
-        ...executeParams,
       };
-      break;
 
     case "delegation":
-      taquitoOperation = {
+      return {
         kind: OpKind.DELEGATION,
         source: operation.sender.pkh,
         delegate: operation.recipient.pkh,
-        ...executeParams,
       };
-      break;
     case "undelegation":
-      taquitoOperation = {
+      return {
         kind: OpKind.DELEGATION,
         source: operation.sender.pkh,
         delegate: undefined,
-        ...executeParams,
       };
-      break;
     case "fa1.2":
-      taquitoOperation = {
+      return {
         kind: OpKind.TRANSACTION,
         amount: 0,
         to: operation.contract.pkh,
         parameter: makeFA12TransactionParameter(operation),
-        ...executeParams,
       };
-      break;
     case "fa2":
-      taquitoOperation = {
+      return {
         kind: OpKind.TRANSACTION,
         amount: 0,
         to: operation.contract.pkh,
         parameter: makeFA2TransactionParameter(operation),
-        ...executeParams,
       };
-      break;
     case "contract_origination": {
       // if storage is a valid Michelson we need to pass it in as init, not the storage
       if (isValidMichelson(operation.storage)) {
@@ -213,11 +188,8 @@ export const operationToTaquitoOperation = (operation: Operation): ParamsWithKin
         code: operation.code,
         storage: operation.storage,
       };
-      break;
     }
   }
-
-  return taquitoOperation;
 };
 
 const isValidMichelson = (rawStorage: any): boolean => {
@@ -233,7 +205,7 @@ export const operationsToBatchParams = ({
   type: operationsType,
   operations: originalOperations,
   sender,
-}: AdvancedAccountOperations): ParamsWithKind[] => {
+}: AccountOperations): ParamsWithKind[] => {
   const operations =
     operationsType === "implicit"
       ? originalOperations
@@ -242,6 +214,8 @@ export const operationsToBatchParams = ({
   return operations.map(operationToTaquitoOperation);
 };
 
-export const operationsToWalletParams = operationsToBatchParams as (
-  operations: AdvancedAccountOperations
-) => WalletParamsWithKind[];
+export const operationsToWalletParams = (operations: EstimatedAccountOperations) =>
+  zipWith(operationsToBatchParams(operations), operations.estimates, (operation, estimate) => ({
+    ...operation,
+    ...estimate,
+  })) as WalletParamsWithKind[];

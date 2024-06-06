@@ -35,7 +35,6 @@ export const SignTransactionFormPage: React.FC<SignPageProps<FormValues>> = prop
     mode,
     operations: initialOperations,
     data: { threshold, signers, name },
-    executeParams,
   } = props;
 
   const {
@@ -47,7 +46,7 @@ export const SignTransactionFormPage: React.FC<SignPageProps<FormValues>> = prop
     reEstimate,
     signer,
     onSign: originateContract,
-  } = useSignPageHelpers(executeParams, initialOperations, mode);
+  } = useSignPageHelpers(initialOperations, mode);
 
   const isLoading = contractNameObtainingIsLoading || contractCreationIsLoading;
   /**
