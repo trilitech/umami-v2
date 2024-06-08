@@ -16,7 +16,7 @@ import { BatchSignPage } from "../../components/SendFlow/Beacon/BatchSignPage";
 import { BeaconSignPage } from "../../components/SendFlow/Beacon/BeaconSignPage";
 import { ImplicitAccount } from "../../types/Account";
 import { ImplicitOperations } from "../../types/AccountOperations";
-import { parseImplicitPkh, parsePkh } from "../../types/Address";
+import { isValidImplicitPkh, parseImplicitPkh, parsePkh } from "../../types/Address";
 import { Network } from "../../types/Network";
 import { ContractOrigination, Operation } from "../../types/Operation";
 import { useGetOwnedAccountSafe } from "../hooks/getAccountDataHooks";
@@ -167,8 +167,19 @@ export const partialOperationToOperation = (
   switch (partialOperation.kind) {
     case TezosOperationType.TRANSACTION: {
       const { destination, amount, parameters } = partialOperation;
-      const isContractCall = !!parameters;
-      if (isContractCall) {
+      if (parameters) {
+        // if the destination is an implicit account then it's a pseudo operation
+        if (isValidImplicitPkh(destination)) {
+          switch (parameters.entrypoint) {
+            case "stake":
+              return { type: "stake", amount, sender: parseImplicitPkh(destination) };
+            case "unstake":
+              return { type: "unstake", amount, sender: parseImplicitPkh(destination) };
+            case "finalize_unstake":
+              return { type: "finalize_unstake", sender: parseImplicitPkh(destination) };
+          }
+        }
+
         return {
           type: "contract_call",
           amount,
@@ -176,13 +187,13 @@ export const partialOperationToOperation = (
           entrypoint: parameters.entrypoint,
           args: parameters.value,
         };
-      } else {
-        return {
-          type: "tez",
-          amount,
-          recipient: parseImplicitPkh(partialOperation.destination),
-        };
       }
+
+      return {
+        type: "tez",
+        amount,
+        recipient: parseImplicitPkh(partialOperation.destination),
+      };
     }
     case TezosOperationType.DELEGATION: {
       const { delegate } = partialOperation;
@@ -193,9 +204,8 @@ export const partialOperationToOperation = (
           sender: signer.address,
           recipient: parseImplicitPkh(delegate),
         };
-      } else {
-        return { type: "undelegation", sender: signer.address };
       }
+      return { type: "undelegation", sender: signer.address };
     }
     case TezosOperationType.ORIGINATION: {
       const { script } = partialOperation;

@@ -429,6 +429,65 @@ describe("partialOperationToOperation", () => {
     expect(result).toEqual(mockTezOperation(1));
   });
 
+  test("stake", () => {
+    const operation: PartialTezosOperation = {
+      kind: TezosOperationType.TRANSACTION,
+      amount: "1",
+      destination: mockImplicitAddress(2).pkh,
+      parameters: {
+        entrypoint: "stake",
+        value: [{ prim: "UNIT" }],
+      },
+    };
+
+    const result = partialOperationToOperation(operation, account);
+
+    expect(result).toEqual({
+      type: "stake",
+      amount: "1",
+      sender: mockImplicitAddress(2),
+    });
+  });
+
+  test("unstake", () => {
+    const operation: PartialTezosOperation = {
+      kind: TezosOperationType.TRANSACTION,
+      amount: "12",
+      destination: mockImplicitAddress(2).pkh,
+      parameters: {
+        entrypoint: "unstake",
+        value: [{ prim: "UNIT" }],
+      },
+    };
+
+    const result = partialOperationToOperation(operation, account);
+
+    expect(result).toEqual({
+      type: "unstake",
+      amount: "12",
+      sender: mockImplicitAddress(2),
+    });
+  });
+
+  test("finalize unstake", () => {
+    const operation: PartialTezosOperation = {
+      kind: TezosOperationType.TRANSACTION,
+      destination: mockImplicitAddress(2).pkh,
+      amount: "0",
+      parameters: {
+        entrypoint: "finalize_unstake",
+        value: [{ prim: "UNIT" }],
+      },
+    };
+
+    const result = partialOperationToOperation(operation, account);
+
+    expect(result).toEqual({
+      type: "finalize_unstake",
+      sender: mockImplicitAddress(2),
+    });
+  });
+
   test("contract call", () => {
     const operation: PartialTezosOperation = {
       kind: TezosOperationType.TRANSACTION,
