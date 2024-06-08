@@ -22,14 +22,15 @@ import { ExternalLinkIcon } from "../../../assets/icons";
 import colors from "../../../style/colors";
 import { Account, ImplicitAccount } from "../../../types/Account";
 import { FA12TokenBalance, FA2TokenBalance, NFTBalance } from "../../../types/TokenBalance";
-import { useGetAccountUnstakeRequests } from "../../../utils/hooks/assetsHooks";
 import { useGetPendingMultisigOperations } from "../../../utils/hooks/multisigHooks";
 import { useSelectedNetwork } from "../../../utils/hooks/networkHooks";
+import { useGetAccountUnstakeRequests } from "../../../utils/hooks/stakingHooks";
 import { buildTzktUrl } from "../../../utils/tzkt/helpers";
 import { useGetOperations } from "../../../views/operations/useGetOperations";
 import { ExternalLink } from "../../ExternalLink";
 import { OperationTileContext } from "../../OperationTile";
 import { SmallTab } from "../../SmallTab";
+
 /**
  * Component that displays account assets in the account drawer
  *
@@ -46,7 +47,7 @@ export const AssetsPanel: React.FC<{
   const getPendingOperations = useGetPendingMultisigOperations();
   const hasPendingMultisigOperations =
     account.type === "multisig" && getPendingOperations(account).length > 0;
-  const hasPendingUnstakeRequests = useGetAccountUnstakeRequests()(account.address.pkh).length > 0;
+  const hasPendingUnstakeRequests = useGetAccountUnstakeRequests(account.address.pkh).length > 0;
   const showPendingTab = hasPendingMultisigOperations || hasPendingUnstakeRequests;
 
   const network = useSelectedNetwork();

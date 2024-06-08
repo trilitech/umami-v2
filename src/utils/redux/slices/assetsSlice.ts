@@ -25,7 +25,7 @@ type State = {
     level?: number;
     cycle?: number;
   };
-  accountStates: Record<string, AccountState | undefined>;
+  accountStates: Record<RawPkh, AccountState | undefined>;
   transfers: {
     tokens: Record<TransactionId, TokenTransfer | undefined>;
   };
@@ -71,29 +71,25 @@ export const assetsSlice = createSlice({
         } as AccountState;
       });
     },
-    updateUnstakeRequests: (
-      state,
-      { payload }: { payload: Array<RawTzktUnstakeRequest & { staker: RawPkh }> }
-    ) => {
-      const groupedByPkh = groupBy(payload, req => req.staker);
+    updateUnstakeRequests: (state, { payload }: { payload: RawTzktUnstakeRequest[] }) => {
+      const groupedByPkh = groupBy(payload, req => req.staker.address);
 
       for (const accountState of Object.values(state.accountStates)) {
         accountState!.unstakeRequests = [];
       }
 
       for (const [pkh, unstakeRequests] of Object.entries(groupedByPkh)) {
-        const sortedRequests = sortBy(
-          unstakeRequests.map(req => omit(req, "staker")),
-          "timestamp"
-        );
         state.accountStates[pkh] = {
           ...state.accountStates[pkh],
-          unstakeRequests: sortedRequests,
+          unstakeRequests: sortBy(
+            unstakeRequests.map(req => omit(req, "staker")),
+            "cycle"
+          ),
         } as AccountState;
       }
     },
     // when we change networks current account states become obsolete
-    cleanAccountsState: state => {
+    cleanAccountStates: state => {
       state.accountStates = {};
     },
     updateTokenBalance: (state, { payload }: { payload: RawTokenBalance[] }) => {

@@ -76,7 +76,13 @@ describe("<AddressTileIcon />", () => {
       addAccount(account);
       store.dispatch(
         assetsActions.updateAccountStates([
-          { address: mockMnemonicAccount(0).address.pkh, balance: 5000000 } as TzktAccount,
+          {
+            address: mockMnemonicAccount(0).address.pkh,
+            balance: 5000000,
+            stakedBalance: 0,
+            unstakedBalance: 0,
+            delegate: null,
+          },
         ])
       );
 

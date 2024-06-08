@@ -97,22 +97,32 @@ describe("assetsSlice", () => {
   test("updateUnstakeRequests", () => {
     store.dispatch(
       updateUnstakeRequests([
-        { staker: "foo", requestedAmount: 123, timestamp: "2024-05-25T00:14:37Z", cycle: 5 },
-        { staker: "foo", requestedAmount: 123, timestamp: "2024-05-23T00:14:37Z", cycle: 1 },
-        { staker: "bar", requestedAmount: 321, timestamp: "2024-05-23T00:14:37Z", cycle: 1 },
+        {
+          staker: { address: "foo" },
+          finalizableAmount: 123,
+          cycle: 5,
+        },
+        {
+          staker: { address: "foo" },
+          finalizableAmount: 123,
+          cycle: 1,
+        },
+        {
+          staker: { address: "bar" },
+          finalizableAmount: 321,
+          cycle: 1,
+        },
       ])
     );
 
     expect(store.getState().assets.accountStates).toEqual({
       foo: {
         unstakeRequests: [
-          { requestedAmount: 123, timestamp: "2024-05-23T00:14:37Z", cycle: 1 },
-          { requestedAmount: 123, timestamp: "2024-05-25T00:14:37Z", cycle: 5 }, // older comes last
+          { finalizableAmount: 123, cycle: 1 },
+          { finalizableAmount: 123, cycle: 5 }, // older comes last
         ],
       },
-      bar: {
-        unstakeRequests: [{ requestedAmount: 321, timestamp: "2024-05-23T00:14:37Z", cycle: 1 }],
-      },
+      bar: { unstakeRequests: [{ finalizableAmount: 321, cycle: 1 }] },
     });
   });
 

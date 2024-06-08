@@ -41,6 +41,7 @@ type FormValues = {
   prettyAmount: string;
 };
 
+// TODO: test
 export const FormPage: React.FC<FormPageProps<FormValues> & { stakedBalance: number }> = props => {
   const stakedBalance = props.stakedBalance;
 

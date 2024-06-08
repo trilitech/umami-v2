@@ -14,13 +14,13 @@ import { FormPage } from "./FormPage";
 import { WarningIcon } from "../../../assets/icons";
 import colors from "../../../style/colors";
 import { Account } from "../../../types/Account";
-import { useGetAccountStakedBalance } from "../../../utils/hooks/assetsHooks";
+import { useGetAccountStakedBalance } from "../../../utils/hooks/stakingHooks";
 import { DynamicModalContext } from "../../DynamicModal";
 import { NoticeSteps } from "../NoticeSteps";
-
+// TODO: test
 export const NoticeModal = ({ account }: { account: Account }) => {
   const { openWith } = useContext(DynamicModalContext);
-  const stakedBalance = useGetAccountStakedBalance()(account.address.pkh);
+  const stakedBalance = useGetAccountStakedBalance(account.address.pkh);
 
   return (
     <ModalContent>

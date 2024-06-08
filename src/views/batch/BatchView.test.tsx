@@ -83,6 +83,7 @@ describe("<BatchView />", () => {
       expect(mockToast).toHaveBeenCalledWith({
         description: "something went wrong",
         status: "error",
+        isClosable: true,
       });
       expect(screen.queryByTestId("estimation-status")).not.toBeInTheDocument();
     });

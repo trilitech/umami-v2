@@ -14,11 +14,10 @@ import {
 import { mutezToTez } from "../format";
 import { useAppSelector } from "../redux/hooks";
 import { TokenTransferOperation } from "../tezos";
-import { RawTzktUnstakeRequest } from "../tzkt/types";
 
 const useGetAccountStates = () => useAppSelector(s => s.assets.accountStates);
 
-const useGetAccountState = () => {
+export const useGetAccountState = () => {
   const accountStates = useGetAccountStates();
   return (pkh: string) => accountStates[pkh];
 };
@@ -30,22 +29,14 @@ export const useGetAccountDelegate = () => {
 
 export const useGetAccountBalance = () => {
   const getAccountState = useGetAccountState();
-  return (pkh: string) => getAccountState(pkh)?.balance;
-};
 
-export const useGetAccountStakedBalance = () => {
-  const getAccountState = useGetAccountState();
-  return (pkh: string) => getAccountState(pkh)?.stakedBalance || 0;
-};
-
-export const useGetAccountUnstakedBalance = () => {
-  const getAccountState = useGetAccountState();
-  return (pkh: string) => getAccountState(pkh)?.unstakedBalance || 0;
-};
-
-export const useGetAccountUnstakeRequests = () => {
-  const getAccountState = useGetAccountState();
-  return (pkh: string) => getAccountState(pkh)?.unstakeRequests || [];
+  return (pkh: string) => {
+    const state = getAccountState(pkh);
+    if (!state) {
+      return undefined;
+    }
+    return state.balance - state.stakedBalance;
+  };
 };
 
 // Tenderbake guarantees block finality after 2 confirmations
@@ -56,21 +47,6 @@ export const useIsBlockFinalised = (level: number) => {
 };
 
 export const useGetCurrentCycle = () => useAppSelector(s => s.assets.block.cycle);
-
-export const FINALIZE_COOLDOWN_CYCLES = 4;
-
-/** Tells in how many cycles an unstake operation can be finalized
- *  If the current cycle hasn't been fetched yet it returns
- *  the maximum number of cycles {@link FINALIZE_COOLDOWN_CYCLES}
- */
-export const useGetFinalizeRemainingCycles = () => {
-  const currentCycle = useGetCurrentCycle();
-
-  return ({ cycle }: RawTzktUnstakeRequest) =>
-    currentCycle
-      ? Math.max(FINALIZE_COOLDOWN_CYCLES - currentCycle + cycle, 0)
-      : FINALIZE_COOLDOWN_CYCLES;
-};
 
 export const useAllNfts = (): Record<RawPkh, NFTBalance[] | undefined> => {
   const getAccountNFTs = useGetAccountNFTs();

@@ -55,6 +55,7 @@ describe("<RestoreMnemonic />", () => {
         description:
           'Invalid Mnemonic: "test test test test test test test test test test test test test test test test test test test test test test test test"',
         status: "error",
+        isClosable: true,
       });
     });
 
@@ -68,6 +69,7 @@ describe("<RestoreMnemonic />", () => {
       expect(mockToast).toHaveBeenCalledWith({
         description: "the mnemonic must be 12, 15, 18, 24 words long",
         status: "error",
+        isClosable: true,
       });
     });
 

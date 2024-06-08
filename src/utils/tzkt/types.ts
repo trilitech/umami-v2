@@ -1,3 +1,5 @@
+import type { TzktAlias } from "../../types/Address";
+
 export type RawTzktAccountType =
   | "user"
   | "delegate"
@@ -14,8 +16,8 @@ export type RawTzktBlock = {
 
 export type RawTzktUnstakeRequest = {
   cycle: number;
-  timestamp: string;
-  requestedAmount: number;
+  finalizableAmount: number;
+  staker: TzktAlias;
 };
 
 export type RawTzktGetSameMultisigsItem = {

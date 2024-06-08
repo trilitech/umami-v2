@@ -39,6 +39,7 @@ type FormValues = {
   prettyAmount: string;
 };
 
+// TODO: test
 export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
   const openSignPage = useOpenSignPageFormAction({
     SignPage,

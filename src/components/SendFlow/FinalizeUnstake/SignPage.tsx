@@ -19,6 +19,7 @@ import { SignPageFee } from "../SignPageFee";
 import { headerText } from "../SignPageHeader";
 import { SignPageProps, useSignPageHelpers } from "../utils";
 
+// TODO: test
 export const SignPage: React.FC<SignPageProps<{ finalizableAmount: BigNumber }>> = props => {
   const {
     mode,

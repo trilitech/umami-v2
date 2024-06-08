@@ -50,6 +50,7 @@ describe("<RestoreLedger />", () => {
     expect(mockToast).toHaveBeenCalledWith({
       description: "Ledger error. Error",
       status: "error",
+      isClosable: true,
     });
     expect(confirmBtn).toBeEnabled();
   });

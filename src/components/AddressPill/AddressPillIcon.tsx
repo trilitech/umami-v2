@@ -13,8 +13,8 @@ import {
   XMarkIcon,
 } from "../../assets/icons";
 import { useAddressExistsInContacts } from "../../utils/hooks/contactsHooks";
-import { UpsertContactModal } from "../ContactModal";
 import { DynamicModalContext } from "../DynamicModal";
+import { UpsertContactModal } from "../UpsertContactModal";
 
 export const LeftIcon: React.FC<{ addressKind: AddressKind } & IconProps> = ({
   addressKind: { type },

@@ -1,3 +1,4 @@
+import { RpcClient } from "@taquito/rpc";
 import {
   Delegate,
   OffsetParameter,
@@ -20,6 +21,7 @@ import { RawPkh, TzktAlias } from "../../types/Address";
 import { Network } from "../../types/Network";
 import { RawTokenBalance } from "../../types/TokenBalance";
 import { TokenTransfer } from "../../types/Transfer";
+import { ProtocolSettings } from "../redux/slices/protocolSettingsSlice";
 import { RawTzktBlock, RawTzktUnstakeRequest } from "../tzkt/types";
 
 // TzKT defines type Account = {type: string};
@@ -334,24 +336,32 @@ export const getBakers = async (
 export const getPendingUnstakeRequests = async (
   network: Network,
   addresses: RawPkh[]
-): Promise<Array<RawTzktUnstakeRequest & { staker: RawPkh }>> =>
+): Promise<RawTzktUnstakeRequest[]> =>
   withRateLimit(async () => {
     const { data } = await axios.get<
-      Array<{ cycle: number; firstTime: string; requestedAmount: number; staker: TzktAlias }>
+      Array<{
+        cycle: number;
+        finalizableAmount: number;
+        staker: TzktAlias;
+      }>
     >(`${network.tzktApiUrl}/v1/staking/unstake_requests`, {
       params: {
         limit: 10000,
         "staker.in": addresses.join(","),
         type: "unstake",
-        finalizedAmount: 0,
-        "select.fields": "cycle,firstTime,requestedAmount,staker",
+        isFinalized: false,
+        "select.fields": "cycle,finalizableAmount,staker",
       },
     });
 
-    return data.map(req => ({
-      cycle: req.cycle,
-      requestedAmount: req.requestedAmount,
-      staker: req.staker.address,
-      timestamp: req.firstTime,
-    }));
+    return data;
   });
+
+export const getProtocolSettings = async (network: Network): Promise<ProtocolSettings> => {
+  const settings = await new RpcClient(network.rpcUrl).getConstants();
+
+  return {
+    maxSlashingPeriod: settings.max_slashing_period!,
+    consensusRightsDelay: (settings as any).consensus_rights_delay,
+  };
+};

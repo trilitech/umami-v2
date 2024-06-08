@@ -5,7 +5,6 @@ import { render, screen } from "../../mocks/testUtils";
 import { formatPkh } from "../../utils/format";
 import { assetsActions } from "../../utils/redux/slices/assetsSlice";
 import { store } from "../../utils/redux/store";
-import { TzktAccount } from "../../utils/tezos";
 
 const account = mockMnemonicAccount(1, "Test account label");
 
@@ -40,8 +39,14 @@ describe("<AccountSmallTile />", () => {
     const account = mockImplicitAccount(1);
     store.dispatch(
       assetsActions.updateAccountStates([
-        { address: account.address.pkh, balance: 1234567 },
-      ] as TzktAccount[])
+        {
+          address: account.address.pkh,
+          balance: 1234567,
+          unstakedBalance: 0,
+          stakedBalance: 0,
+          delegate: null,
+        },
+      ])
     );
 
     render(<AccountSmallTile account={account} />);

@@ -6,11 +6,9 @@ import { ExternalLinkIcon, PenIcon, XMarkIcon } from "../../../assets/icons";
 import colors from "../../../style/colors";
 import { Account, ImplicitAccount } from "../../../types/Account";
 import { prettyTezAmount } from "../../../utils/format";
-import {
-  useGetAccountDelegate,
-  useGetAccountStakedBalance,
-} from "../../../utils/hooks/assetsHooks";
+import { useGetAccountDelegate } from "../../../utils/hooks/assetsHooks";
 import { useSelectedNetwork } from "../../../utils/hooks/networkHooks";
+import { useGetAccountStakedBalance } from "../../../utils/hooks/stakingHooks";
 import { buildTzktUrl } from "../../../utils/tzkt/helpers";
 import { AddressPill } from "../../AddressPill/AddressPill";
 import { DynamicModalContext } from "../../DynamicModal";
@@ -54,7 +52,7 @@ export const EarnTab: React.FC<{
   const network = useSelectedNetwork();
   const pkh = account.address.pkh;
   const delegate = useGetAccountDelegate()(pkh);
-  const stakedBalance = useGetAccountStakedBalance()(pkh);
+  const stakedBalance = useGetAccountStakedBalance(pkh);
 
   return (
     <Box>
@@ -117,7 +115,7 @@ export const EarnTab: React.FC<{
             {delegate ? (
               <>
                 <Center>
-                  <AddressPill data-testid="current-baker" address={delegate} />
+                  <AddressPill address={delegate} data-testid="current-baker" />
                 </Center>
                 <Button
                   justifyContent="space-between"

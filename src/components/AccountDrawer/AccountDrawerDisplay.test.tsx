@@ -67,7 +67,11 @@ describe("<AccountDrawerDisplay />", () => {
   });
 
   it("displays account tez balance", async () => {
-    store.dispatch(updateAccountStates([{ address: pkh, balance: 1234554321 } as TzktAccount]));
+    store.dispatch(
+      updateAccountStates([
+        { address: pkh, balance: 1234554321, delegate: null, stakedBalance: 0, unstakedBalance: 0 },
+      ])
+    );
 
     render(<AccountCard accountPkh={pkh} />);
 

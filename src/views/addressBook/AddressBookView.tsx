@@ -3,7 +3,7 @@ import { useContext } from "react";
 
 import { ContactTable } from "./ContactTable";
 import { AddContactIcon } from "../../assets/icons";
-import { UpsertContactModal } from "../../components/ContactModal";
+import { UpsertContactModal } from "../../components/UpsertContactModal";
 import { DynamicModalContext } from "../../components/DynamicModal";
 import { NoItems } from "../../components/NoItems";
 import { TopBar } from "../../components/TopBar";

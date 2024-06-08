@@ -104,6 +104,7 @@ describe("<useHandleBeaconMessage />", () => {
         description:
           "Error while processing Beacon request: Unknown Beacon message type: blockchain_request",
         status: "error",
+        isClosable: true,
       })
     );
     expect(dynamicModalContextMock.openWith).not.toHaveBeenCalled();
@@ -128,6 +129,7 @@ describe("<useHandleBeaconMessage />", () => {
         expect(mockToast).toHaveBeenCalledWith({
           description: "Error while processing Beacon request: Empty operation details!",
           status: "error",
+          isClosable: true,
         })
       );
       expect(dynamicModalContextMock.openWith).not.toHaveBeenCalled();
@@ -153,6 +155,7 @@ describe("<useHandleBeaconMessage />", () => {
         description:
           "Error while processing Beacon request: Unsupported operation kind: activate_account",
         status: "error",
+        isClosable: true,
       })
     );
     expect(dynamicModalContextMock.openWith).not.toHaveBeenCalled();
@@ -186,6 +189,7 @@ describe("<useHandleBeaconMessage />", () => {
         description:
           "Error while processing Beacon request: Unknown account: tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
         status: "error",
+        isClosable: true,
       })
     );
     expect(WalletClient.respond).toHaveBeenCalledWith({
@@ -225,6 +229,7 @@ describe("<useHandleBeaconMessage />", () => {
       expect(mockToast).toHaveBeenCalledWith({
         description: "Error while processing Beacon request: Something went very wrong!",
         status: "error",
+        isClosable: true,
       })
     );
     expect(dynamicModalContextMock.openWith).not.toHaveBeenCalled();
@@ -252,6 +257,7 @@ describe("<useHandleBeaconMessage />", () => {
         description:
           'Error while processing Beacon request: Got Beacon request from an unknown network: {"type":"Whatever"}. Please add it to the networks list and retry.',
         status: "error",
+        isClosable: true,
       });
     });
 

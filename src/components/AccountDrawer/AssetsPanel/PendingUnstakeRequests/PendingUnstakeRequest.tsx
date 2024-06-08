@@ -1,61 +1,27 @@
-import { Box, Button, Center, Flex, FlexProps, Heading, Text } from "@chakra-ui/react";
-import { format } from "date-fns";
-import pluralize from "pluralize";
-import { useContext } from "react";
+import { Box, Center, Flex, FlexProps, Heading, Link, Text } from "@chakra-ui/react";
 
 import { HourglassIcon } from "../../../../assets/icons";
 import colors from "../../../../style/colors";
 import { ImplicitAccount } from "../../../../types/Account";
-import { makeAccountOperations } from "../../../../types/AccountOperations";
 import { prettyTezAmount } from "../../../../utils/format";
-import {
-  useGetAccountUnstakeRequests,
-  useGetFinalizeRemainingCycles,
-} from "../../../../utils/hooks/assetsHooks";
 import { useSelectedNetwork } from "../../../../utils/hooks/networkHooks";
-import { useAsyncActionHandler } from "../../../../utils/hooks/useAsyncActionHandler";
-import { estimate, sumTez } from "../../../../utils/tezos";
+import { useGetFirstFinalizableCycle } from "../../../../utils/hooks/stakingHooks";
 import { RawTzktUnstakeRequest } from "../../../../utils/tzkt/types";
-import { DynamicModalContext } from "../../../DynamicModal";
 import { PrettyNumber } from "../../../PrettyNumber";
-import { SignPage } from "../../../SendFlow/FinalizeUnstake/SignPage";
 
+/**
+ * @param account - account to display the pending unstake request for
+ * @param request - the unstake request to display (it should not be finalizable yet)
+ */
+// TODO: test
 export const PendingUnstakeRequest: React.FC<
   {
     account: ImplicitAccount;
     request: RawTzktUnstakeRequest;
   } & FlexProps
 > = ({ request, account, ...props }) => {
-  const getFinalizeRemainingCycles = useGetFinalizeRemainingCycles();
-  const allUnstakeRequests = useGetAccountUnstakeRequests()(account.address.pkh);
-  const cyclesLeft = getFinalizeRemainingCycles(request);
-  const { openWith } = useContext(DynamicModalContext);
-  const { handleAsyncAction, isLoading } = useAsyncActionHandler();
-  const network = useSelectedNetwork();
-
-  const isFinalizable = !cyclesLeft;
-  const requestedOn = format(request.timestamp, " dd MMM yyyy");
-
-  const onFinalize = () =>
-    handleAsyncAction(async () => {
-      const totalFinalizableAmount = sumTez(
-        allUnstakeRequests
-          .filter(req => getFinalizeRemainingCycles(req) === 0)
-          .map(req => req.requestedAmount)
-      );
-      const accountOperations = makeAccountOperations(account, account, [
-        { type: "finalize_unstake", sender: account.address },
-      ]);
-      const fee = await estimate(accountOperations, network);
-      await openWith(
-        <SignPage
-          data={{ finalizableAmount: totalFinalizableAmount }}
-          fee={fee}
-          mode="single"
-          operations={accountOperations}
-        />
-      );
-    });
+  const firstFinalizableCycle = useGetFirstFinalizableCycle()(request.cycle);
+  const { tzktExplorerUrl } = useSelectedNetwork();
 
   return (
     <Flex
@@ -66,29 +32,26 @@ export const PendingUnstakeRequest: React.FC<
       {...props}
     >
       <Flex flexDirection="column" gap="8px">
-        <PrettyNumber number={prettyTezAmount(request.requestedAmount)} size="md" />
+        <PrettyNumber number={prettyTezAmount(request.finalizableAmount)} size="md" />
         <Box display="inline" color={colors.gray[450]}>
           <Text display="inline" size="sm">
-            Requested on
+            Requested in{" "}
           </Text>
           <Heading display="inline" size="sm">
-            {requestedOn}
+            cycle {request.cycle}
           </Heading>
         </Box>
       </Flex>
       <Flex flexDirection="column-reverse">
-        {isFinalizable ? (
-          <Button isLoading={isLoading} onClick={onFinalize}>
-            Finalize
-          </Button>
-        ) : (
-          <Center gap="4px">
-            <Text color={colors.gray[300]} size="sm">
-              Awaiting next cycle in {cyclesLeft} {pluralize("cycle", cyclesLeft)}
-            </Text>
-            <HourglassIcon stroke={colors.orange} />
-          </Center>
-        )}
+        <Center gap="4px">
+          <Text color={colors.gray[300]} size="sm">
+            Ready to be finalized in cycle{" "}
+            <Link href={`${tzktExplorerUrl}/cycles`} isExternal>
+              {firstFinalizableCycle}
+            </Link>
+          </Text>
+          <HourglassIcon stroke={colors.orange} />
+        </Center>
       </Flex>
     </Flex>
   );

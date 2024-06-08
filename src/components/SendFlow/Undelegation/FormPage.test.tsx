@@ -97,6 +97,7 @@ describe("<Form />", () => {
       expect(mockToast).toHaveBeenCalledWith({
         description: "Some error occurred",
         status: "error",
+        isClosable: true,
       });
     });
 

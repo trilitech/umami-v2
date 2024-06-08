@@ -1,7 +1,7 @@
 import { Box, Flex, Table, TableContainer, Tbody, Td, Text, Tr } from "@chakra-ui/react";
 import { useContext } from "react";
 
-import { DeleteContactModal, UpsertContactModal } from "../../components/ContactModal";
+import { DeleteContactModal, UpsertContactModal } from "../../components/UpsertContactModal";
 import { CopyableAddress } from "../../components/CopyableText";
 import { DynamicModalContext } from "../../components/DynamicModal";
 import { RenameRemoveMenu } from "../../components/RenameRemoveMenu";

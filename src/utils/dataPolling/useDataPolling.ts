@@ -7,6 +7,7 @@ import { usePollBlock } from "./usePollBlock";
 import { usePollConversionRate } from "./usePollConversionRate";
 import { usePollMultisigs } from "./usePollMultisigs";
 import { usePollPendingOperations } from "./usePollPendingOperations";
+import { usePollProtocolSettings } from "./usePollProtocolSettings";
 import { usePollTokenBalances } from "./usePollTokenBalances";
 import { usePollUnstakeRequests } from "./usePollUnstakeRequests";
 import { useAppDispatch } from "../redux/hooks";
@@ -29,6 +30,7 @@ export const useDataPolling = () => {
   usePollConversionRate();
   usePollBlock();
   usePollBakers();
+  usePollProtocolSettings();
 
   const isFetching =
     isMultisigsFetching ||

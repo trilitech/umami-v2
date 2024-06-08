@@ -121,6 +121,7 @@ describe("useAsyncActionHandler", () => {
         title: "testTitle",
         description: "testDescription",
         status: "error",
+        isClosable: true,
       });
     });
 
@@ -138,6 +139,7 @@ describe("useAsyncActionHandler", () => {
         title: "testTitle",
         description: "test",
         status: "error",
+        isClosable: true,
       });
     });
   });

@@ -29,6 +29,6 @@ export const useSelectNetwork = () => {
       return;
     }
     dispatch(networksActions.setCurrent(network));
-    dispatch(assetsActions.cleanAccountsState());
+    dispatch(assetsActions.cleanAccountStates());
   };
 };
