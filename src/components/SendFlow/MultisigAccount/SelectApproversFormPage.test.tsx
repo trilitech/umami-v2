@@ -3,6 +3,7 @@ import { Modal } from "@chakra-ui/react";
 import { FormValues } from "./FormValues";
 import { SelectApproversFormPage } from "./SelectApproversFormPage";
 import { SignTransactionFormPage } from "./SignTransactionFormPage";
+import { executeParams } from "../../../mocks/executeParams";
 import {
   mockContractAddress,
   mockContractOrigination,
@@ -286,22 +287,22 @@ describe("SelectApproversFormPage", () => {
         })
       );
 
-      const operations = makeAccountOperations(sender, sender, [
-        mockContractOrigination(
-          1, // sender id
-          makeStorageJSON(
-            sender.address.pkh,
-            [mockImplicitAccount(0).address.pkh, mockImplicitAddress(1).pkh],
-            "1"
+      const operations = {
+        ...makeAccountOperations(sender, sender, [
+          mockContractOrigination(
+            1, // sender id
+            makeStorageJSON(
+              sender.address.pkh,
+              [mockImplicitAccount(0).address.pkh, mockImplicitAddress(1).pkh],
+              "1"
+            ),
+            contract
           ),
-          contract
-        ),
-      ]);
-      jest.mocked(estimate).mockResolvedValueOnce({
-        fee: 100,
-        storageLimit: 0,
-        gasLimit: 0,
-      });
+        ]),
+        estimates: [executeParams({ fee: 100 })],
+      };
+
+      jest.mocked(estimate).mockResolvedValueOnce(operations);
 
       const reviewButton = screen.getByText("Review");
       await waitFor(() => expect(reviewButton).toBeEnabled());
@@ -315,7 +316,6 @@ describe("SelectApproversFormPage", () => {
             signers: [{ val: mockImplicitAddress(0).pkh }, { val: mockImplicitAddress(1).pkh }],
             name: "Test account",
           }}
-          executeParams={{ fee: 100, gasLimit: 0, storageLimit: 0 }}
           goBack={expect.any(Function)}
           mode="single"
           operations={operations}
@@ -353,22 +353,22 @@ describe("SelectApproversFormPage", () => {
       });
       fireEvent.click(reviewButton);
 
-      const operations = makeAccountOperations(SENDER, SENDER, [
-        mockContractOrigination(
-          0, // sender id
-          makeStorageJSON(
-            SENDER.address.pkh,
-            [mockImplicitAccount(1).address.pkh, mockImplicitAddress(2).pkh],
-            "2"
+      const operations = {
+        ...makeAccountOperations(SENDER, SENDER, [
+          mockContractOrigination(
+            0, // sender id
+            makeStorageJSON(
+              SENDER.address.pkh,
+              [mockImplicitAccount(1).address.pkh, mockImplicitAddress(2).pkh],
+              "2"
+            ),
+            contract
           ),
-          contract
-        ),
-      ]);
-      jest.mocked(estimate).mockResolvedValueOnce({
-        fee: 100,
-        storageLimit: 0,
-        gasLimit: 0,
-      });
+        ]),
+        estimates: [executeParams({ fee: 100 })],
+      };
+      jest.mocked(estimate).mockResolvedValueOnce(operations);
+
       await waitFor(() => {
         expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
           <SignTransactionFormPage
@@ -378,7 +378,6 @@ describe("SelectApproversFormPage", () => {
               signers: [{ val: mockImplicitAddress(1).pkh }, { val: mockImplicitAddress(2).pkh }],
               name: MULTISIG_NAME,
             }}
-            executeParams={{ fee: 100, gasLimit: 0, storageLimit: 0 }}
             goBack={expect.any(Function)}
             mode="single"
             operations={operations}

@@ -2,6 +2,7 @@ import { Modal } from "@chakra-ui/react";
 import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
 
 import { BatchPage } from "./BatchPage";
+import { executeParams } from "../../mocks/executeParams";
 import { mockImplicitAccount, mockMnemonicAccount, mockTezOperation } from "../../mocks/factories";
 import { addAccount } from "../../mocks/helpers";
 import { act, fireEvent, render, screen, userEvent } from "../../mocks/testUtils";
@@ -20,9 +21,11 @@ jest.mock("../../utils/tezos", () => ({
 beforeEach(() => {
   [mockMnemonicAccount(1), mockMnemonicAccount(2), mockMnemonicAccount(3)].forEach(addAccount);
   jest.mocked(estimate).mockResolvedValueOnce({
-    fee: 10,
-    storageLimit: 0,
-    gasLimit: 0,
+    type: "implicit",
+    operations: [],
+    sender: mockMnemonicAccount(1),
+    signer: mockMnemonicAccount(2),
+    estimates: [executeParams()],
   });
 
   jest.mocked(executeOperations).mockResolvedValue({ opHash: "foo" } as BatchWalletOperation);
@@ -141,9 +144,8 @@ describe("<BatchPage />", () => {
     test("submit batch", async () => {
       const user = userEvent.setup();
       jest.mocked(estimate).mockResolvedValueOnce({
-        fee: 10,
-        storageLimit: 0,
-        gasLimit: 0,
+        ...operations,
+        estimates: [executeParams()],
       });
 
       render(

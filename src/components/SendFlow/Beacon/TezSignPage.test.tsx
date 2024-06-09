@@ -2,6 +2,7 @@ import { BeaconMessageType, NetworkType, OperationRequestOutput } from "@airgap/
 import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
 
 import { TezSignPage } from "./TezSignPage";
+import { executeParams } from "../../../mocks/executeParams";
 import { mockImplicitAccount, mockTezOperation } from "../../../mocks/factories";
 import {
   act,
@@ -44,6 +45,7 @@ describe("<TezSignPage />", () => {
       sender: mockImplicitAccount(0),
       signer: mockImplicitAccount(0),
       operations: [mockTezOperation(0)],
+      estimates: [executeParams({ fee: 123 })],
     };
     store.dispatch(networksActions.setCurrent(MAINNET));
     jest.mocked(useGetSecretKey).mockImplementation(() => () => Promise.resolve("secretKey"));
@@ -51,17 +53,7 @@ describe("<TezSignPage />", () => {
     jest.mocked(executeOperations).mockResolvedValue({ opHash: "ophash" } as BatchWalletOperation);
     jest.spyOn(WalletClient, "respond").mockResolvedValue();
 
-    render(
-      <TezSignPage
-        executeParams={{
-          fee: 123,
-          gasLimit: 0,
-          storageLimit: 0,
-        }}
-        message={message}
-        operation={operation}
-      />
-    );
+    render(<TezSignPage message={message} operation={operation} />);
 
     expect(screen.getByText("Ghostnet")).toBeVisible();
     expect(screen.queryByText("Mainnet")).not.toBeInTheDocument();

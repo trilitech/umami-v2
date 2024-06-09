@@ -1,4 +1,5 @@
 import { estimateAndUpdateBatch } from "./estimateAndUpdateBatch";
+import { executeParams } from "../../../mocks/executeParams";
 import {
   mockDelegationOperation,
   mockImplicitAccount,
@@ -18,9 +19,11 @@ describe("estimateAndUpdateBatch", () => {
       const operation = mockTezOperation(1);
 
       jest.mocked(estimate).mockResolvedValueOnce({
-        fee: 1000,
-        storageLimit: 0,
-        gasLimit: 0,
+        type: "implicit",
+        operations: [],
+        sender: mockImplicitAccount(0),
+        signer: mockImplicitAccount(0),
+        estimates: [executeParams()],
       });
       const accountOperations = makeAccountOperations(
         mockImplicitAccount(1),
@@ -36,17 +39,17 @@ describe("estimateAndUpdateBatch", () => {
     it("doesn't add an operation to batch if the estimation fails", async () => {
       // add one operation to avoid false negatives
       const operation = mockTezOperation(1);
-      jest.mocked(estimate).mockResolvedValueOnce({
-        fee: 1000,
-        storageLimit: 0,
-        gasLimit: 0,
-      });
-
       const accountOperations = makeAccountOperations(
         mockImplicitAccount(1),
         mockImplicitAccount(1),
         [operation]
       );
+
+      jest.mocked(estimate).mockResolvedValueOnce({
+        ...accountOperations,
+        estimates: [executeParams()],
+      });
+
       await act(() => store.dispatch(estimateAndUpdateBatch(accountOperations, network)));
 
       expect(store.getState().batches[network.name]).toEqual([accountOperations]);

@@ -135,6 +135,6 @@ export const FormPage: React.FC<FormPageProps<FormValues> & { showPreview?: bool
 
 const toOperation = (formValues: FormValues): TezTransfer => ({
   type: "tez",
-  amount: Number(tezToMutez(formValues.prettyAmount)).toFixed(),
+  amount: tezToMutez(formValues.prettyAmount).toFixed(),
   recipient: parsePkh(formValues.recipient),
 });

@@ -20,7 +20,12 @@ import { mutezToTez, tezToMutez } from "../utils/format";
 import { Estimation, TEZ_DECIMALS } from "../utils/tezos";
 
 export const AdvancedSettingsAccordion = ({ index = 0 }) => {
-  const { register, getValues, setValue } = useFormContext<{
+  const {
+    register,
+    getValues,
+    setValue,
+    formState: { errors },
+  } = useFormContext<{
     executeParams: Estimation[];
   }>();
 
@@ -31,7 +36,10 @@ export const AdvancedSettingsAccordion = ({ index = 0 }) => {
 
     if (makeValidateDecimals(TEZ_DECIMALS)(newFeeValue) === true) {
       setTezFee(newFeeValue);
-      setValue(`executeParams.${index}.fee`, tezToMutez(newFeeValue) as number);
+
+      if (newFeeValue) {
+        setValue(`executeParams.${index}.fee`, tezToMutez(newFeeValue).toNumber());
+      }
     }
   };
 
@@ -67,7 +75,7 @@ export const AdvancedSettingsAccordion = ({ index = 0 }) => {
               />
             </InputGroup>
           </FormControl>
-          <FormControl>
+          <FormControl isInvalid={!!errors.executeParams?.[index]?.gasLimit}>
             <FormLabel fontSize="14px">Gas Limit</FormLabel>
             <Input
               {...register(`executeParams.${index}.gasLimit`, {
@@ -78,7 +86,7 @@ export const AdvancedSettingsAccordion = ({ index = 0 }) => {
               type="number"
             />
           </FormControl>
-          <FormControl>
+          <FormControl isInvalid={!!errors.executeParams?.[index]?.storageLimit}>
             <FormLabel fontSize="14px">Storage Limit</FormLabel>
             <Input
               {...register(`executeParams.${index}.storageLimit`, {

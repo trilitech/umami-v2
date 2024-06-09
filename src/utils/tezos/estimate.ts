@@ -2,13 +2,6 @@ import { addressExists, makeToolkit, operationsToBatchParams } from "./helpers";
 import { AccountOperations, EstimatedAccountOperations } from "../../types/AccountOperations";
 import { Network } from "../../types/Network";
 
-export type Estimation = {
-  storageLimit: number;
-  gasLimit: number;
-  fee: number;
-};
-export type ExecuteParams = Estimation;
-
 export const estimate = async (
   operations: AccountOperations,
   network: Network

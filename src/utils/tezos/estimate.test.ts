@@ -1,5 +1,6 @@
 import { estimate, handleTezError } from "./estimate";
 import { addressExists, makeToolkit } from "./helpers";
+import { executeParams } from "../../mocks/executeParams";
 import { mockImplicitAccount, mockTezOperation } from "../../mocks/factories";
 import { makeAccountOperations } from "../../types/AccountOperations";
 import { GHOSTNET } from "../../types/Network";
@@ -66,9 +67,8 @@ describe("estimate", () => {
     ];
 
     const processedEstimateResult = {
-      fee: 289,
-      gasLimit: 169,
-      storageLimit: 0,
+      ...accountOperations,
+      estimates: [executeParams({ fee: 289, gasLimit: 169 })],
     };
 
     jest.mocked(makeToolkit).mockImplementation(

@@ -3,7 +3,7 @@
   "parserOptions": {
     // tsconfig.e2e.json includes both src and src/e2e
     "project": "./tsconfig.e2e.json",
-    "parser": "@typescript-eslint/parser",
+    "parser": "@typescript-eslint/parser"
   },
   "plugins": [
     "@stylistic/eslint-plugin",
@@ -18,7 +18,7 @@
     "react-redux",
     "react",
     "testing-library",
-    "unused-imports",
+    "unused-imports"
   ],
   "extends": [
     "eslint:recommended",
@@ -30,19 +30,16 @@
     "plugin:react-hooks/recommended",
     "plugin:react-redux/recommended",
     "plugin:react/jsx-runtime",
-    "plugin:testing-library/react",
+    "plugin:testing-library/react"
   ],
   "settings": {
     "react": {
-      "version": "detect",
-    },
+      "version": "detect"
+    }
   },
   "rules": {
     "@typescript-eslint/no-explicit-any": "off", // TODO: change to error https://app.asana.com/0/0/1204322668303155/f
-    "@typescript-eslint/no-empty-function": [
-      "warn",
-      { "allow": ["arrowFunctions"] },
-    ],
+    "@typescript-eslint/no-empty-function": ["warn", { "allow": ["arrowFunctions"] }],
     "@typescript-eslint/switch-exhaustiveness-check": "warn",
 
     "react/jsx-curly-brace-presence": ["warn", "never"],
@@ -55,11 +52,11 @@
     "@typescript-eslint/await-thenable": "warn",
     "@typescript-eslint/no-unnecessary-condition": "warn",
     "unused-imports/no-unused-imports": "warn",
-    "@typescript-eslint/ban-ts-comment": [
+    "@typescript-eslint/ban-ts-comment": ["warn", { "ts-ignore": "allow-with-description" }],
+    "@typescript-eslint/no-unused-vars": [
       "warn",
-      { "ts-ignore": "allow-with-description" },
+      { "argsIgnorePattern": ".*", "varsIgnorePattern": "^_" }
     ],
-    "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": ".*", "varsIgnorePattern": "^_" }],
     "@typescript-eslint/triple-slash-reference": "off",
 
     "react/jsx-key": [
@@ -67,15 +64,12 @@
       {
         "checkFragmentShorthand": true,
         "checkKeyMustBeforeSpread": true,
-        "warnOnDuplicates": true,
-      },
+        "warnOnDuplicates": true
+      }
     ],
 
     "chakra-ui/props-order": ["warn", { "applyToAllComponents": true }],
-    "chakra-ui/props-shorthand": [
-      "warn",
-      { "noShorthand": true, "applyToAllComponents": true },
-    ],
+    "chakra-ui/props-shorthand": ["warn", { "noShorthand": true, "applyToAllComponents": true }],
     "chakra-ui/require-specific-component": "warn",
 
     "import/no-unresolved": "warn",
@@ -86,8 +80,8 @@
         "ignoreDeclarationSort": true, // don"t want to sort import lines, use eslint-plugin-import instead
         "ignoreMemberSort": false,
         "memberSyntaxSortOrder": ["none", "all", "multiple", "single"],
-        "allowSeparatedGroups": true,
-      },
+        "allowSeparatedGroups": true
+      }
     ],
     "import/order": [
       "warn",
@@ -98,14 +92,14 @@
           "internal", // <- Absolute imports
           ["sibling", "parent"], // <- Relative imports, the sibling and parent types they can be mingled together
           "index", // <- index imports
-          "unknown", // <- unknown
+          "unknown" // <- unknown
         ],
         "newlines-between": "always",
         "alphabetize": {
           "order": "asc",
-          "caseInsensitive": true,
-        },
-      },
+          "caseInsensitive": true
+        }
+      }
     ],
     "@stylistic/quotes": ["warn", "double", { "avoidEscape": true }],
     "deprecation/deprecation": "warn",
@@ -113,37 +107,40 @@
     "prefer-const": "warn",
     "@typescript-eslint/require-await": "warn",
     "@typescript-eslint/no-floating-promises": "warn",
-    "@typescript-eslint/no-misused-promises": ["warn", { "checksVoidReturn": { "attributes": false } }],
+    "@typescript-eslint/no-misused-promises": [
+      "warn",
+      { "checksVoidReturn": { "attributes": false } }
+    ],
     "tsdoc/syntax": "warn",
     "arrow-body-style": ["warn", "as-needed"],
     "react-redux/useSelector-prefer-selectors": "off",
-    "eqeqeq": ["warn", "always"],
+    "eqeqeq": ["warn", "always"]
   },
   "overrides": [
     {
       "files": ["src/e2e/**/*.ts"],
       "rules": {
-        "testing-library/prefer-screen-queries": "off",
-      },
+        "testing-library/prefer-screen-queries": "off"
+      }
     },
     {
       "files": ["react-app-env.d.ts", "jest.config.ts"],
       "rules": {
-        "import/no-unused-modules": "off",
-      },
+        "import/no-unused-modules": "off"
+      }
     },
     {
       "files": ["MultisigActionButton.tsx"],
       "rules": {
-        "deprecation/deprecation": "off",
-      },
+        "deprecation/deprecation": "off"
+      }
     },
     {
       "files": "src/e2e/**",
       "extends": "plugin:playwright/recommended",
       "rules": {
-        "playwright/no-standalone-expect": "off",
-      },
-    },
-  ],
+        "playwright/no-standalone-expect": "off"
+      }
+    }
+  ]
 }

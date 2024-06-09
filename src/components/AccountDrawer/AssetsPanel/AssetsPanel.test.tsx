@@ -1,5 +1,6 @@
 import { AssetsPanel } from "./AssetsPanel";
-import { mockMultisigAccount } from "../../../mocks/factories";
+import { executeParams } from "../../../mocks/executeParams";
+import { mockImplicitAccount, mockMultisigAccount } from "../../../mocks/factories";
 import { pendingOps } from "../../../mocks/multisig";
 import { render, screen } from "../../../mocks/testUtils";
 import { multisigsSlice } from "../../../utils/redux/slices/multisigsSlice";
@@ -31,9 +32,11 @@ describe("<AssetsPanel />", () => {
       jest.mocked(getRelatedTokenTransfers).mockResolvedValue([]);
 
       jest.mocked(estimate).mockResolvedValueOnce({
-        fee: 33,
-        storageLimit: 0,
-        gasLimit: 0,
+        type: "implicit",
+        operations: [],
+        sender: mockImplicitAccount(0),
+        signer: mockImplicitAccount(0),
+        estimates: [executeParams()],
       });
       const multisig = {
         ...mockMultisigAccount(0),

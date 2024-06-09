@@ -1,6 +1,7 @@
 import { Modal } from "@chakra-ui/react";
 
 import { SignPage } from "./SignPage";
+import { executeParams } from "../../../mocks/executeParams";
 import { mockImplicitAccount, mockMnemonicAccount } from "../../../mocks/factories";
 import { addAccount } from "../../../mocks/helpers";
 import { render, screen } from "../../../mocks/testUtils";
@@ -18,17 +19,23 @@ beforeEach(() => addAccount(mockMnemonicAccount(0)));
 
 describe("<SignPage />", () => {
   const sender = mockImplicitAccount(0);
-  const operations = makeAccountOperations(sender, mockImplicitAccount(0), [
-    {
-      type: "undelegation",
-      sender: sender.address,
-    },
-  ]);
+  const operations = {
+    ...makeAccountOperations(sender, mockImplicitAccount(0), [
+      {
+        type: "undelegation",
+        sender: sender.address,
+      },
+    ]),
+    estimates: [
+      executeParams({
+        fee: 1234567,
+      }),
+    ],
+  };
   describe("fee", () => {
     it("displays the fee in tez", () => {
       const props: SignPageProps = {
         operations,
-        executeParams: { fee: 1234567, storageLimit: 0, gasLimit: 0 },
         mode: "single",
         data: undefined,
       };

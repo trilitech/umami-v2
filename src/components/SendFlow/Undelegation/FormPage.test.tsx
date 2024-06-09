@@ -2,6 +2,7 @@ import { Modal } from "@chakra-ui/react";
 
 import { FormPage, FormValues } from "./FormPage";
 import { SignPage } from "./SignPage";
+import { executeParams } from "../../../mocks/executeParams";
 import {
   mockImplicitAccount,
   mockImplicitAddress,
@@ -113,28 +114,24 @@ describe("<Form />", () => {
       );
       const submitButton = screen.getByText("Preview");
       await waitFor(() => expect(submitButton).toBeEnabled());
-      jest.mocked(estimate).mockResolvedValueOnce({
-        fee: 100,
-        storageLimit: 0,
-        gasLimit: 0,
-      });
-      const operations = makeAccountOperations(sender, sender, [
-        {
-          type: "undelegation",
-          sender: sender.address,
-        },
-      ]);
+
+      const operations = {
+        ...makeAccountOperations(sender, sender, [
+          {
+            type: "undelegation",
+            sender: sender.address,
+          },
+        ]),
+        estimates: [executeParams()],
+      };
+
+      jest.mocked(estimate).mockResolvedValueOnce(operations);
 
       await act(() => user.click(submitButton));
 
       expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
         <SignPage
           data={undefined}
-          executeParams={{
-            fee: 100,
-            gasLimit: 0,
-            storageLimit: 0,
-          }}
           goBack={expect.any(Function)}
           mode="single"
           operations={operations}

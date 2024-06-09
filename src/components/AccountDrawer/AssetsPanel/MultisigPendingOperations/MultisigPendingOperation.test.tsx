@@ -2,6 +2,7 @@ import { TezosToolkit } from "@taquito/taquito";
 import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
 
 import { MultisigPendingOperation } from "./MultisigPendingOperation";
+import { executeParams } from "../../../../mocks/executeParams";
 import {
   mockImplicitAddress,
   mockMnemonicAccount,
@@ -75,10 +76,15 @@ describe("<MultisigPendingOperation />", () => {
       ...mockMnemonicAccount(0),
       address: parseImplicitPkh("tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3"),
     };
+    const multisig = { ...mockMultisigAccount(0), signers: [account.address] };
+
+    const operation = makeAccountOperations(account, account, [
+      makeMultisigApproveOrExecuteOperation(multisig.address, "execute", pendingOps[0].id),
+    ]);
+
     jest.mocked(estimate).mockResolvedValueOnce({
-      fee: 33,
-      storageLimit: 0,
-      gasLimit: 0,
+      ...operation,
+      estimates: [executeParams()],
     });
 
     jest.mocked(executeOperations).mockResolvedValue({
@@ -88,7 +94,6 @@ describe("<MultisigPendingOperation />", () => {
     addAccount(account);
 
     const executablePendingOp: MultisigOperation = pendingOps[0];
-    const multisig = { ...mockMultisigAccount(0), signers: [account.address] };
 
     render(<MultisigPendingOperation operation={executablePendingOp} sender={multisig} />);
 
@@ -97,10 +102,6 @@ describe("<MultisigPendingOperation />", () => {
     await act(() => user.click(within(firstPendingOp).getByText("Execute")));
 
     expect(screen.getByRole("dialog")).toBeInTheDocument();
-
-    const operation = makeAccountOperations(account, account, [
-      makeMultisigApproveOrExecuteOperation(multisig.address, "execute", pendingOps[0].id),
-    ]);
 
     expect(jest.mocked(estimate)).toHaveBeenCalledWith(operation, MAINNET);
 
@@ -115,7 +116,13 @@ describe("<MultisigPendingOperation />", () => {
 
     await screen.findByText("Operation Submitted");
 
-    expect(jest.mocked(executeOperations)).toHaveBeenCalledWith(operation, MOCK_TEZOS_TOOLKIT);
+    expect(jest.mocked(executeOperations)).toHaveBeenCalledWith(
+      {
+        ...operation,
+        estimates: [executeParams()],
+      },
+      MOCK_TEZOS_TOOLKIT
+    );
   });
 
   test("User can accomplish a proposal approval", async () => {
@@ -125,10 +132,15 @@ describe("<MultisigPendingOperation />", () => {
       address: parseImplicitPkh("tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3"),
     };
 
+    const multisig = { ...mockMultisigAccount(0), signers: [signer.address] };
+
+    const operations = makeAccountOperations(signer, signer, [
+      makeMultisigApproveOrExecuteOperation(multisig.address, "approve", pendingOps[0].id),
+    ]);
+
     jest.mocked(estimate).mockResolvedValueOnce({
-      fee: 33,
-      storageLimit: 0,
-      gasLimit: 0,
+      ...operations,
+      estimates: [executeParams()],
     });
 
     jest.mocked(executeOperations).mockResolvedValue({
@@ -136,7 +148,6 @@ describe("<MultisigPendingOperation />", () => {
     } as BatchWalletOperation);
 
     addAccount(signer);
-    const multisig = { ...mockMultisigAccount(0), signers: [signer.address] };
     const approvablePendingOp: MultisigOperation = {
       ...pendingOps[0],
       approvals: [],
@@ -147,10 +158,6 @@ describe("<MultisigPendingOperation />", () => {
     await act(() => user.click(within(firstPendingOp).getByText("Approve")));
 
     expect(screen.getByRole("dialog")).toBeInTheDocument();
-
-    const operations = makeAccountOperations(signer, signer, [
-      makeMultisigApproveOrExecuteOperation(multisig.address, "approve", pendingOps[0].id),
-    ]);
 
     expect(jest.mocked(estimate)).toHaveBeenCalledWith(operations, MAINNET);
 
@@ -165,6 +172,12 @@ describe("<MultisigPendingOperation />", () => {
 
     await screen.findByText("Operation Submitted");
 
-    expect(jest.mocked(executeOperations)).toHaveBeenCalledWith(operations, MOCK_TEZOS_TOOLKIT);
+    expect(jest.mocked(executeOperations)).toHaveBeenCalledWith(
+      {
+        ...operations,
+        estimates: [executeParams()],
+      },
+      MOCK_TEZOS_TOOLKIT
+    );
   });
 });

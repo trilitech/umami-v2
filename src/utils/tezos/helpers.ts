@@ -5,7 +5,6 @@ import { OpKind } from "@taquito/rpc";
 import { Curves, InMemorySigner } from "@taquito/signer";
 import { ParamsWithKind, TezosToolkit, WalletParamsWithKind } from "@taquito/taquito";
 import axios from "axios";
-import BigNumber from "bignumber.js";
 import { shuffle, zipWith } from "lodash";
 
 import { FakeSigner } from "./fakeSigner";
@@ -126,10 +125,6 @@ export const selectRandomElements = <T>(
     .slice(0, n)
     .sort((a, b) => a.index - b.index);
 
-// for tez it will return tez, for mutez - mutez
-export const sumTez = (items: string[]): number =>
-  items.reduce((acc, curr) => acc.plus(curr), new BigNumber(0)).toNumber();
-
 export const operationToTaquitoOperation = (operation: Operation): ParamsWithKind => {
   switch (operation.type) {
     case "tez":
@@ -209,7 +204,7 @@ export const operationsToBatchParams = ({
   const operations =
     operationsType === "implicit"
       ? originalOperations
-      : ([makeMultisigProposeOperation(sender.address, originalOperations)] as Operation[]);
+      : [makeMultisigProposeOperation(sender.address, originalOperations)];
 
   return operations.map(operationToTaquitoOperation);
 };

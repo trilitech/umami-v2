@@ -3,6 +3,7 @@ import { TezosToolkit } from "@taquito/taquito";
 import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
 
 import { OriginationOperationSignPage } from "./OriginationOperationSignPage";
+import { executeParams } from "../../../mocks/executeParams";
 import { mockContractOrigination, mockImplicitAccount } from "../../../mocks/factories";
 import {
   act,
@@ -30,6 +31,7 @@ const operation = {
   sender: mockImplicitAccount(0),
   signer: mockImplicitAccount(0),
   operations: [mockContractOrigination(0)],
+  estimates: [executeParams({ fee: 123 })],
 };
 
 jest.mock("../../../utils/tezos", () => ({
@@ -45,17 +47,7 @@ jest.mock("../../../utils/hooks/getAccountDataHooks", () => ({
 
 describe("<OriginationOperationSignPage />", () => {
   it("renders fee", () => {
-    render(
-      <OriginationOperationSignPage
-        executeParams={{
-          fee: 123,
-          gasLimit: 0,
-          storageLimit: 0,
-        }}
-        message={message}
-        operation={operation}
-      />
-    );
+    render(<OriginationOperationSignPage message={message} operation={operation} />);
 
     expect(screen.getByText(prettyTezAmount(123))).toBeVisible();
   });
@@ -69,17 +61,7 @@ describe("<OriginationOperationSignPage />", () => {
     jest.mocked(executeOperations).mockResolvedValue({ opHash: "ophash" } as BatchWalletOperation);
     jest.spyOn(WalletClient, "respond").mockResolvedValue();
 
-    render(
-      <OriginationOperationSignPage
-        executeParams={{
-          fee: 123,
-          gasLimit: 0,
-          storageLimit: 0,
-        }}
-        message={message}
-        operation={operation}
-      />
-    );
+    render(<OriginationOperationSignPage message={message} operation={operation} />);
 
     await act(() => user.type(screen.getByLabelText("Password"), "Password"));
 
@@ -94,11 +76,7 @@ describe("<OriginationOperationSignPage />", () => {
       secretKey: "secretKey",
       network: GHOSTNET,
     });
-    expect(executeOperations).toHaveBeenCalledWith(operation, testToolkit, {
-      fee: 123,
-      gasLimit: 0,
-      storageLimit: 0,
-    });
+    expect(executeOperations).toHaveBeenCalledWith(operation, testToolkit);
 
     await waitFor(() =>
       expect(WalletClient.respond).toHaveBeenCalledWith({

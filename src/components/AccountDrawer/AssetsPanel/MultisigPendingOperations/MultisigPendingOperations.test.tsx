@@ -1,4 +1,6 @@
+import { executeParams } from "../../../../mocks/executeParams";
 import {
+  mockImplicitAccount,
   mockImplicitAddress,
   mockMnemonicAccount,
   mockMultisigAccount,
@@ -18,9 +20,11 @@ jest.mock("../../../../utils/tezos/estimate");
 describe("<MultisigPendingOperations />", () => {
   it("displays multisig executable tez operations", async () => {
     jest.mocked(estimate).mockResolvedValueOnce({
-      fee: 33,
-      storageLimit: 0,
-      gasLimit: 0,
+      type: "implicit",
+      operations: [],
+      sender: mockImplicitAccount(0),
+      signer: mockImplicitAccount(0),
+      estimates: [executeParams()],
     });
     const multisig = {
       ...mockMultisigAccount(0),

@@ -1,18 +1,23 @@
 import { FormProvider, useForm } from "react-hook-form";
 
 import { AdvancedSettingsAccordion } from "./AdvancedSettingsAccordion";
+import { executeParams } from "../mocks/executeParams";
 import { act, render, screen, userEvent } from "../mocks/testUtils";
 
 const TestComponent = () => {
   const form = useForm({
     defaultValues: {
-      executeParams: { fee: 100, storageLimit: 0, gasLimit: 0 },
+      executeParams: [
+        executeParams({
+          fee: 100,
+        }),
+      ],
     },
   });
 
   return (
     <FormProvider {...form}>
-      <input {...form.register("executeParams.fee")} data-testid="real-fee-input" type="number" />
+      <input {...form.register("executeParams.0.fee")} data-testid="real-fee-input" type="number" />
       <AdvancedSettingsAccordion />
     </FormProvider>
   );
@@ -21,7 +26,7 @@ const TestComponent = () => {
 describe("<AdvancedSettingsAccordion />", () => {
   it("renders without crashing", () => {
     render(<TestComponent />);
-    expect(screen.getByText("Advanced")).toBeInTheDocument();
+    expect(screen.getByText("Advanced")).toBeVisible();
   });
 
   it("renders fee input with correct value", () => {
@@ -38,12 +43,16 @@ describe("<AdvancedSettingsAccordion />", () => {
     await act(() => user.click(screen.getByRole("button", { name: "Advanced" })));
 
     const feeInput = screen.getByLabelText("Fee");
+    const realFeeInput = screen.getByTestId("real-fee-input");
 
     await act(() => user.clear(feeInput));
 
+    expect(feeInput).toHaveValue(null);
+    expect(realFeeInput).toHaveValue(100);
+
     await act(() => user.type(feeInput, "0.000001"));
 
-    expect(screen.getByTestId("real-fee-input")).toHaveValue(1);
+    expect(realFeeInput).toHaveValue(1);
 
     expect(feeInput).toHaveValue(0.000001);
   });

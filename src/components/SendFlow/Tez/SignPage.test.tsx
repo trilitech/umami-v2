@@ -1,6 +1,7 @@
 import { Modal } from "@chakra-ui/react";
 
 import { SignPage } from "./SignPage";
+import { executeParams } from "../../../mocks/executeParams";
 import {
   mockImplicitAccount,
   mockImplicitAddress,
@@ -26,14 +27,16 @@ describe("<SignPage />", () => {
   describe("fee", () => {
     it("displays the fee in tez", () => {
       const props: SignPageProps = {
-        operations: makeAccountOperations(mockImplicitAccount(0), mockImplicitAccount(0), [
-          {
-            type: "tez",
-            amount: "1000000",
-            recipient: mockImplicitAddress(1),
-          },
-        ]),
-        executeParams: { fee: 1234567, gasLimit: 0, storageLimit: 0 },
+        operations: {
+          ...makeAccountOperations(mockImplicitAccount(0), mockImplicitAccount(0), [
+            {
+              type: "tez",
+              amount: "1000000",
+              recipient: mockImplicitAddress(1),
+            },
+          ]),
+          estimates: [executeParams({ fee: 1234567 })],
+        },
         mode: "single",
         data: undefined,
       };

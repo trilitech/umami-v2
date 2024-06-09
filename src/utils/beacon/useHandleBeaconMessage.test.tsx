@@ -19,6 +19,7 @@ import {
 import { WalletClient } from "./WalletClient";
 import { BatchSignPage } from "../../components/SendFlow/Beacon/BatchSignPage";
 import { BeaconSignPage } from "../../components/SendFlow/Beacon/BeaconSignPage";
+import { executeParams } from "../../mocks/executeParams";
 import {
   mockContractAddress,
   mockImplicitAccount,
@@ -28,7 +29,7 @@ import {
 import { addAccount } from "../../mocks/helpers";
 import { act, dynamicModalContextMock, renderHook, screen, waitFor } from "../../mocks/testUtils";
 import { mockToast } from "../../mocks/toast";
-import { ImplicitOperations, makeAccountOperations } from "../../types/AccountOperations";
+import { makeAccountOperations } from "../../types/AccountOperations";
 import { estimate } from "../tezos";
 
 jest.mock("./WalletClient", () => ({
@@ -38,10 +39,6 @@ jest.mock("./WalletClient", () => ({
   },
 }));
 jest.mock("../tezos");
-
-jest.mock("../../components/AdvancedSettingsAccordion.tsx", () => ({
-  AdvancedSettingsAccordion: () => <div>Test component</div>,
-}));
 
 const SENDER_ID = "mockSenderId";
 
@@ -268,9 +265,10 @@ describe("<useHandleBeaconMessage />", () => {
 
   it("opens a modal with the BeaconSignPage for 1 operation", async () => {
     jest.mocked(estimate).mockResolvedValueOnce({
-      fee: 100,
-      storageLimit: 0,
-      gasLimit: 0,
+      ...makeAccountOperations(account, account, [
+        { type: "tez", amount: "1", recipient: mockImplicitAddress(2) },
+      ]),
+      estimates: [executeParams()],
     });
 
     const message: BeaconRequestOutputMessage = {
@@ -298,17 +296,13 @@ describe("<useHandleBeaconMessage />", () => {
     await waitFor(() =>
       expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
         <BeaconSignPage
-          executeParams={{
-            fee: 100,
-            storageLimit: 0,
-            gasLimit: 0,
-          }}
           message={message}
-          operation={
-            makeAccountOperations(account, account, [
+          operation={{
+            ...makeAccountOperations(account, account, [
               { type: "tez", amount: "1", recipient: mockImplicitAddress(2) },
-            ]) as ImplicitOperations
-          }
+            ]),
+            estimates: [executeParams()],
+          }}
         />
       )
     );
@@ -317,9 +311,11 @@ describe("<useHandleBeaconMessage />", () => {
 
   it("opens a modal with the BatchSignPage for multiple operations", async () => {
     jest.mocked(estimate).mockResolvedValueOnce({
-      fee: 100,
-      storageLimit: 0,
-      gasLimit: 0,
+      ...makeAccountOperations(account, account, [
+        { type: "tez", amount: "1", recipient: mockImplicitAddress(2) },
+        { type: "tez", amount: "1", recipient: mockImplicitAddress(2) },
+      ]),
+      estimates: [executeParams()],
     });
 
     const message: BeaconRequestOutputMessage = {
@@ -352,18 +348,14 @@ describe("<useHandleBeaconMessage />", () => {
     await waitFor(() =>
       expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
         <BatchSignPage
-          executeParams={{
-            fee: 100,
-            storageLimit: 0,
-            gasLimit: 0,
-          }}
           message={message}
-          operation={
-            makeAccountOperations(account, account, [
+          operation={{
+            ...makeAccountOperations(account, account, [
               { type: "tez", amount: "1", recipient: mockImplicitAddress(2) },
               { type: "tez", amount: "1", recipient: mockImplicitAddress(2) },
-            ]) as ImplicitOperations
-          }
+            ]),
+            estimates: [executeParams()],
+          }}
         />
       )
     );

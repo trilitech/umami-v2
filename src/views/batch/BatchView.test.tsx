@@ -2,6 +2,7 @@ import { OpKind, OperationContentsAndResult } from "@taquito/rpc";
 import { TezosOperationError } from "@taquito/taquito";
 
 import { BatchView } from "./BatchView";
+import { executeParams } from "../../mocks/executeParams";
 import { mockImplicitAccount, mockTezOperation } from "../../mocks/factories";
 import { addAccount } from "../../mocks/helpers";
 import { act, render, screen, userEvent, within } from "../../mocks/testUtils";
@@ -134,9 +135,11 @@ describe("<BatchView />", () => {
       const user = userEvent.setup();
       addAccount(mockImplicitAccount(0));
       jest.mocked(estimate).mockResolvedValueOnce({
-        fee: 100,
-        storageLimit: 0,
-        gasLimit: 0,
+        type: "implicit",
+        operations: [],
+        sender: mockImplicitAccount(0),
+        signer: mockImplicitAccount(0),
+        estimates: [executeParams()],
       });
 
       render(<BatchView operations={operations} />);

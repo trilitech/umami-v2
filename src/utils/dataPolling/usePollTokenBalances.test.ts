@@ -22,10 +22,6 @@ describe("usePollTokenBalances", () => {
 
     await waitFor(() => expect(getTokenBalances).toHaveBeenCalledTimes(1));
 
-    // const tokens = tokenBalances.map(({ token, lastLevel }) => ({ ...token, lastLevel }));
-    // dispatch(tokensActions.addTokens({ network, tokens }));
-    // dispatch(assetsActions.updateTokenBalance(tokenBalances));
-
     expect(store.getState().assets.balances.tokens).toEqual({
       [mockImplicitAddress(0).pkh]: [
         {

@@ -1,6 +1,7 @@
 import { Modal } from "@chakra-ui/react";
 
 import { SignPage } from "./SignPage";
+import { executeParams } from "../../../mocks/executeParams";
 import { mockFA2Token, mockImplicitAccount, mockMnemonicAccount } from "../../../mocks/factories";
 import { addAccount } from "../../../mocks/helpers";
 import { render, screen } from "../../../mocks/testUtils";
@@ -22,23 +23,29 @@ const mockAccount = mockMnemonicAccount(0);
 const mockFAToken = mockFA2Token(0, mockAccount);
 describe("<SignPage />", () => {
   const sender = mockImplicitAccount(0);
-  const operations = makeAccountOperations(sender, mockImplicitAccount(0), [
-    {
-      type: "fa2",
-      amount: "10",
-      sender: sender.address,
-      recipient: mockImplicitAccount(1).address,
-      contract: parseContractPkh(mockFAToken.contract),
-      tokenId: mockFAToken.tokenId,
-    },
-  ]);
+  const operations = {
+    ...makeAccountOperations(sender, mockImplicitAccount(0), [
+      {
+        type: "fa2",
+        amount: "10",
+        sender: sender.address,
+        recipient: mockImplicitAccount(1).address,
+        contract: parseContractPkh(mockFAToken.contract),
+        tokenId: mockFAToken.tokenId,
+      },
+    ]),
+    estimates: [
+      executeParams({
+        fee: 1234567,
+      }),
+    ],
+  };
   describe("fee", () => {
     it("displays the fee in tez", () => {
       const props: SignPageProps<{
         token: FA12TokenBalance | FA2TokenBalance;
       }> = {
         operations,
-        executeParams: { fee: 1234567, gasLimit: 0, storageLimit: 0 },
         mode: "single",
         data: { token: mockFAToken },
       };
@@ -53,7 +60,6 @@ describe("<SignPage />", () => {
         token: FA12TokenBalance | FA2TokenBalance;
       }> = {
         operations,
-        executeParams: { fee: 1234567, gasLimit: 0, storageLimit: 0 },
         mode: "single",
         data: { token: mockFAToken },
       };
@@ -68,7 +74,6 @@ describe("<SignPage />", () => {
         token: FA12TokenBalance | FA2TokenBalance;
       }> = {
         operations,
-        executeParams: { fee: 1234567, gasLimit: 0, storageLimit: 0 },
         mode: "single",
         data: { token: mockFA2Token(0, mockAccount, 1, 0) },
       };

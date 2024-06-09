@@ -1,4 +1,5 @@
 import { SignPage } from "./SignPage";
+import { executeParams } from "../../../mocks/executeParams";
 import {
   mockImplicitAccount,
   mockMnemonicAccount,
@@ -14,20 +15,22 @@ import { TEZ } from "../../../utils/tezos";
 
 const account = mockImplicitAccount(0);
 const multisig = mockMultisigAccount(1);
-const operation = makeAccountOperations(account, account, [
-  makeMultisigApproveOrExecuteOperation(multisig.address, "execute", "3"),
-  {
-    type: "fa2",
-    amount: "1",
-    sender: account.address,
-    recipient: mockImplicitAccount(1).address,
-    contract: parseContractPkh(mockNFT(1).contract),
-    tokenId: mockNFT(1).tokenId,
-  },
-]);
+const operation = {
+  ...makeAccountOperations(account, account, [
+    makeMultisigApproveOrExecuteOperation(multisig.address, "execute", "3"),
+    {
+      type: "fa2",
+      amount: "1",
+      sender: account.address,
+      recipient: mockImplicitAccount(1).address,
+      contract: parseContractPkh(mockNFT(1).contract),
+      tokenId: mockNFT(1).tokenId,
+    },
+  ]),
+  estimates: [executeParams({ fee: 1234567 })],
+};
 
-const fee = 1234567;
-const fixture = () => <SignPage initialFee={fee} initialOperations={operation} />;
+const fixture = () => <SignPage initialOperations={operation} />;
 
 beforeEach(() => addAccount(mockMnemonicAccount(0)));
 

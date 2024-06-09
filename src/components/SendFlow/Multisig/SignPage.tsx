@@ -2,6 +2,7 @@ import { ModalContent, ModalFooter } from "@chakra-ui/react";
 import { TezosToolkit } from "@taquito/taquito";
 import { capitalize } from "lodash";
 import React, { useContext } from "react";
+import { useForm } from "react-hook-form";
 
 import { ImplicitAccount } from "../../../types/Account";
 import { EstimatedAccountOperations } from "../../../types/AccountOperations";
@@ -23,11 +24,14 @@ export const SignPage: React.FC<{
 }> = ({ signer, operation, actionType, transactionCount }) => {
   const { handleAsyncAction } = useAsyncActionHandler();
   const { openWith } = useContext(DynamicModalContext);
+  const form = useForm({
+    defaultValues: { executeParams: operation.estimates },
+  });
+
   // TODO: add advanced execute params component
   const approveOrExecute = (tezosToolkit: TezosToolkit) =>
     handleAsyncAction(
       async () => {
-        // TODO: add execute params
         const { opHash } = await executeOperations(
           { ...operation, estimates: form.watch("executeParams") },
           tezosToolkit

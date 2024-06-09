@@ -2,6 +2,7 @@ import { Modal } from "@chakra-ui/react";
 
 import { FormPage, FormValues } from "./FormPage";
 import { SignPage } from "./SignPage";
+import { executeParams } from "../../../mocks/executeParams";
 import {
   mockFA2Token,
   mockFA2TokenRaw,
@@ -214,28 +215,28 @@ describe("<FormPage />", () => {
         );
         const submitButton = screen.getByText("Preview");
         await waitFor(() => expect(submitButton).toBeEnabled());
-        jest.mocked(estimate).mockResolvedValueOnce({
-          fee: 100,
-          storageLimit: 0,
-          gasLimit: 0,
-        });
-        const operations = makeAccountOperations(sender, mockAccount, [
-          {
-            type: "fa2",
-            amount: "1",
-            sender: sender.address,
-            recipient: mockImplicitAccount(1).address,
-            contract: parseContractPkh(mockToken.contract),
-            tokenId: mockToken.tokenId,
-          },
-        ]);
+
+        const operations = {
+          ...makeAccountOperations(sender, mockAccount, [
+            {
+              type: "fa2",
+              amount: "1",
+              sender: sender.address,
+              recipient: mockImplicitAccount(1).address,
+              contract: parseContractPkh(mockToken.contract),
+              tokenId: mockToken.tokenId,
+            },
+          ]),
+          estimates: [executeParams()],
+        };
+
+        jest.mocked(estimate).mockResolvedValueOnce(operations);
 
         await act(() => user.click(submitButton));
 
         expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
           <SignPage
             data={{ token: mockFA2Token(0, mockAccount, 2, 0) }}
-            executeParams={{ fee: 100, gasLimit: 0, storageLimit: 0 }}
             goBack={expect.any(Function)}
             mode="single"
             operations={operations}
