@@ -1,7 +1,0 @@
-#!/bin/sh
-set -ex
-
-yarn format:ci
-yarn lint:ci
-yarn exec tsc
-CI=true yarn test

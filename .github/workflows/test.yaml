@@ -35,14 +35,8 @@ jobs:
       - name: Install packages
         run: yarn install --immutable
 
-      - name: Check format
-        run: yarn format:ci
-
-      - name: Run linter
-        run: yarn lint:ci
-
-      - name: Typecheck
-        run: yarn tsc
+      - name: Run checks
+        run: turbo check-types lint:ci format:ci test
 
       - name: Circular dependencies check
         run: npx madge --circular src/index.tsx
