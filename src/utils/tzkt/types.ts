@@ -16,7 +16,8 @@ export type RawTzktBlock = {
 
 export type RawTzktUnstakeRequest = {
   cycle: number;
-  finalizableAmount: number;
+  amount: number;
+  status: "pending" | "finalizable" | "finalized";
   staker: TzktAlias;
 };
 

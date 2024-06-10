@@ -2,6 +2,7 @@ import { EarnTab } from "./EarnTab";
 import { mockImplicitAddress, mockMnemonicAccount } from "../../../mocks/factories";
 import { addAccount } from "../../../mocks/helpers";
 import { act, render, screen, userEvent } from "../../../mocks/testUtils";
+import { rawAccountFixture } from "../../../mocks/tzktResponse";
 import { assetsSlice } from "../../../utils/redux/slices/assetsSlice";
 import { store } from "../../../utils/redux/store";
 
@@ -50,13 +51,12 @@ describe("<EarnTab />", () => {
       name: "Baker name",
       stakingBalance: 234798273,
     };
-    const accountState = {
+    const accountState = rawAccountFixture({
       address: account.address.pkh,
       balance: 33200000000,
       stakedBalance: 1234,
-      unstakedBalance: 54215,
       delegate: baker,
-    };
+    });
 
     beforeEach(() => addAccount(account));
 
@@ -93,7 +93,7 @@ describe("<EarnTab />", () => {
     });
 
     it('opens undelegation form on "End Delegation" button click', async () => {
-      store.dispatch(updateAccountStates([accountState]));
+      store.dispatch(updateAccountStates([rawAccountFixture(accountState)]));
       store.dispatch(updateBakers([baker]));
       const user = userEvent.setup();
 

@@ -2,6 +2,7 @@ import { accountsSlice } from "./accountsSlice/accountsSlice";
 import { assetsSlice } from "./assetsSlice";
 import { hedgehoge } from "../../../mocks/fa12Tokens";
 import { mockImplicitAddress, mockTokenTransaction } from "../../../mocks/factories";
+import { rawAccountFixture } from "../../../mocks/tzktResponse";
 import { store } from "../store";
 
 const {
@@ -32,8 +33,20 @@ describe("assetsSlice", () => {
   it("resets state on reset", () => {
     store.dispatch(
       updateAccountStates([
-        { address: "bar", balance: 44, stakedBalance: 123, unstakedBalance: 321, delegate: null },
-        { address: "baz", balance: 55, stakedBalance: 123, unstakedBalance: 321, delegate: null },
+        rawAccountFixture({
+          address: "bar",
+          balance: 44,
+          stakedBalance: 123,
+          unstakedBalance: 321,
+          delegate: null,
+        }),
+        rawAccountFixture({
+          address: "baz",
+          balance: 55,
+          stakedBalance: 123,
+          unstakedBalance: 321,
+          delegate: null,
+        }),
       ])
     );
     store.dispatch(updateTokenBalance([hedgehoge(mockImplicitAddress(0))]));
@@ -55,34 +68,32 @@ describe("assetsSlice", () => {
   test("updateAccountStates", () => {
     store.dispatch(
       updateAccountStates([
-        {
+        rawAccountFixture({
           address: "foo",
-          balance: 43,
+          balance: 4391,
           stakedBalance: 123,
           unstakedBalance: 321,
           delegate: { address: "foo" },
-        },
-        {
+        }),
+        rawAccountFixture({
           address: "baz",
-          balance: 55,
+          balance: 9595,
           stakedBalance: 1234,
           unstakedBalance: 4321,
           delegate: null,
-        },
+        }),
       ])
     );
 
     expect(store.getState().assets.accountStates).toEqual({
       foo: {
-        balance: 43,
+        balance: 3947,
         stakedBalance: 123,
-        unstakedBalance: 321,
         delegate: { address: "foo" },
       },
       baz: {
-        balance: 55,
+        balance: 4040,
         stakedBalance: 1234,
-        unstakedBalance: 4321,
         delegate: null,
       },
     });
@@ -99,18 +110,21 @@ describe("assetsSlice", () => {
       updateUnstakeRequests([
         {
           staker: { address: "foo" },
-          finalizableAmount: 123,
+          amount: 123,
           cycle: 5,
+          status: "finalizable",
         },
         {
           staker: { address: "foo" },
-          finalizableAmount: 123,
+          amount: 123,
           cycle: 1,
+          status: "finalizable",
         },
         {
           staker: { address: "bar" },
-          finalizableAmount: 321,
+          amount: 321,
           cycle: 1,
+          status: "finalizable",
         },
       ])
     );
@@ -118,11 +132,11 @@ describe("assetsSlice", () => {
     expect(store.getState().assets.accountStates).toEqual({
       foo: {
         unstakeRequests: [
-          { finalizableAmount: 123, cycle: 1 },
-          { finalizableAmount: 123, cycle: 5 }, // older comes last
+          { amount: 123, cycle: 1, status: "finalizable" },
+          { amount: 123, cycle: 5, status: "finalizable" }, // older comes last
         ],
       },
-      bar: { unstakeRequests: [{ finalizableAmount: 321, cycle: 1 }] },
+      bar: { unstakeRequests: [{ amount: 321, cycle: 1, status: "finalizable" }] },
     });
   });
 
@@ -172,9 +186,27 @@ describe("assetsSlice", () => {
   test("removeAccountsData", () => {
     store.dispatch(
       updateAccountStates([
-        { address: "foo", balance: 11, stakedBalance: 123, unstakedBalance: 321, delegate: null },
-        { address: "bar", balance: 22, stakedBalance: 123, unstakedBalance: 321, delegate: null },
-        { address: "baz", balance: 33, stakedBalance: 123, unstakedBalance: 321, delegate: null },
+        rawAccountFixture({
+          address: "foo",
+          balance: 500,
+          stakedBalance: 123,
+          unstakedBalance: 321,
+          delegate: null,
+        }),
+        rawAccountFixture({
+          address: "bar",
+          balance: 22,
+          stakedBalance: 123,
+          unstakedBalance: 321,
+          delegate: null,
+        }),
+        rawAccountFixture({
+          address: "baz",
+          balance: 33,
+          stakedBalance: 123,
+          unstakedBalance: 321,
+          delegate: null,
+        }),
       ])
     );
 
@@ -182,10 +214,9 @@ describe("assetsSlice", () => {
 
     expect(store.getState().assets.accountStates).toEqual({
       foo: {
-        balance: 11,
+        balance: 56,
         delegate: null,
         stakedBalance: 123,
-        unstakedBalance: 321,
       },
     });
   });

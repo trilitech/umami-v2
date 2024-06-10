@@ -3,6 +3,7 @@ import { FormProvider } from "react-hook-form";
 
 import { Unstake } from "../../../types/Operation";
 import { AddressTile } from "../../AddressTile/AddressTile";
+import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";
 import { TezTile } from "../../AssetTiles/TezTile";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
@@ -13,10 +14,9 @@ export const SignPage: React.FC<SignPageProps<{ stakedBalance: number }>> = prop
   const {
     mode,
     operations,
-    fee,
     data: { stakedBalance },
   } = props;
-  const { isLoading, form, signer, onSign } = useSignPageHelpers(fee, operations, mode);
+  const { isLoading, form, signer, onSign, fee } = useSignPageHelpers(operations, mode);
   const { amount: mutezAmount } = operations.operations[0] as Unstake;
 
   return (
@@ -37,6 +37,8 @@ export const SignPage: React.FC<SignPageProps<{ stakedBalance: number }>> = prop
 
             <FormLabel marginTop="24px">Amount to Unstake</FormLabel>
             <TezTile mutezAmount={mutezAmount} />
+
+            <AdvancedSettingsAccordion />
           </ModalBody>
           <ModalFooter>
             <SignButton

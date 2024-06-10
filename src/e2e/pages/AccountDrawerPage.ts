@@ -3,6 +3,7 @@ import { Locator, Page, expect } from "@playwright/test";
 import { AddressPillPage } from "./AddressPillPage";
 import { SignPage } from "./SignPage";
 import { RawPkh } from "../../types/Address";
+import { TEZ } from "../../utils/tezos";
 import { DEFAULT_ACCOUNTS } from "../constants";
 
 export class AccountDrawerPage {
@@ -55,5 +56,28 @@ export class AccountDrawerPage {
     await this.page.getByRole("button", { name: "Preview" }).click();
 
     await new SignPage(this.page, "12345678").sign();
+  }
+
+  async stake(amount: number): Promise<void> {
+    await this.openTab("Earn");
+    await this.page.getByRole("button", { name: "Stake", exact: true }).click();
+
+    await expect(this.page.getByRole("heading", { name: "Disclaimer", exact: true })).toBeVisible();
+    await this.page.getByText(/I understand/).click();
+    await this.page.getByRole("button", { name: "Continue" }).click();
+
+    await this.page.getByLabel("Enter Amount").fill(String(amount));
+    await this.page.getByRole("button", { name: "Preview" }).click();
+    await new SignPage(this.page, "12345678").sign();
+  }
+
+  async stakedBalance(): Promise<number> {
+    await this.openTab("Earn");
+    const balance = await this.page
+      .getByTestId("staked-balance")
+      .locator("div")
+      .filter({ hasText: TEZ })
+      .textContent();
+    return parseFloat(String(balance));
   }
 }

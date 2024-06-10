@@ -11,6 +11,7 @@ import { addAccount } from "../../mocks/helpers";
 import { multisigOperation, multisigs } from "../../mocks/multisig";
 import { act, render, screen, userEvent, waitFor, within } from "../../mocks/testUtils";
 import { mockTzktTezTransfer } from "../../mocks/transfers";
+import { rawAccountFixture } from "../../mocks/tzktResponse";
 import { GHOSTNET, MAINNET } from "../../types/Network";
 import { formatPkh } from "../../utils/format";
 import { Multisig } from "../../utils/multisig/types";
@@ -19,7 +20,7 @@ import { multisigActions } from "../../utils/redux/slices/multisigsSlice";
 import { networksActions } from "../../utils/redux/slices/networks";
 import { tokensSlice } from "../../utils/redux/slices/tokensSlice";
 import { store } from "../../utils/redux/store";
-import { TzktAccount, TzktCombinedOperation } from "../../utils/tezos";
+import { TzktCombinedOperation } from "../../utils/tezos";
 import * as useGetOperationsModule from "../../views/operations/useGetOperations";
 
 import { AccountCard } from ".";
@@ -67,11 +68,7 @@ describe("<AccountDrawerDisplay />", () => {
   });
 
   it("displays account tez balance", async () => {
-    store.dispatch(
-      updateAccountStates([
-        { address: pkh, balance: 1234554321, delegate: null, stakedBalance: 0, unstakedBalance: 0 },
-      ])
-    );
+    store.dispatch(updateAccountStates([rawAccountFixture({ address: pkh, balance: 1234554321 })]));
 
     render(<AccountCard accountPkh={pkh} />);
 
@@ -79,9 +76,7 @@ describe("<AccountDrawerDisplay />", () => {
   });
 
   describe("tzkt link", () => {
-    beforeEach(() => {
-      store.dispatch(networksActions.setCurrent(GHOSTNET));
-    });
+    beforeEach(() => store.dispatch(networksActions.setCurrent(GHOSTNET)));
 
     it("is displayed", async () => {
       render(<AccountCard accountPkh={pkh} />);
@@ -159,11 +154,13 @@ describe("<AccountDrawerDisplay />", () => {
   describe("Delegation tab", () => {
     const SELECTED_ACCOUNT_BALANCE = 33200000000;
 
-    beforeEach(() => {
+    beforeEach(() =>
       store.dispatch(
-        updateAccountStates([{ address: pkh, balance: SELECTED_ACCOUNT_BALANCE } as TzktAccount])
-      );
-    });
+        updateAccountStates([
+          rawAccountFixture({ address: pkh, balance: SELECTED_ACCOUNT_BALANCE }),
+        ])
+      )
+    );
 
     it("is not selected by default", async () => {
       render(<AccountCard accountPkh={pkh} />);

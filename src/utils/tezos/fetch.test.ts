@@ -1,5 +1,4 @@
 import {
-  accountsGet,
   blocksGet,
   operationsGetDelegations,
   operationsGetOriginations,
@@ -32,7 +31,6 @@ jest.mock("@tzkt/sdk-api", () => ({
   operationsGetDelegations: jest.fn(),
   operationsGetOriginations: jest.fn(),
   tokensGetTokenTransfers: jest.fn(),
-  accountsGet: jest.fn(),
   quotesGetLast: jest.fn(),
   blocksGet: jest.fn(),
 }));
@@ -84,18 +82,17 @@ describe("tezos utils fetch", () => {
     });
 
     test("getAccounts", async () => {
-      jest.mocked(accountsGet).mockResolvedValue([]);
+      jest.spyOn(axios, "get").mockResolvedValue({ data: [] });
       await getAccounts([mockImplicitAddress(0).pkh, mockImplicitAddress(1).pkh], network);
 
-      expect(jest.mocked(accountsGet)).toHaveBeenCalledWith(
-        {
-          address: {
-            in: ["tz1gUNyn3hmnEWqkusWPzxRaon1cs7ndWh7h,tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf"],
-          },
-          select: { fields: ["address,balance,delegate,stakedBalance,unstakedBalance"] },
+      expect(axios.get).toHaveBeenCalledWith(`${network.tzktApiUrl}/v1/accounts`, {
+        params: {
+          ["address.in"]:
+            "tz1gUNyn3hmnEWqkusWPzxRaon1cs7ndWh7h,tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf",
+          ["select.fields"]:
+            "address,balance,delegate,stakedBalance,unstakedBalance,rollupBonds,smartRollupBonds",
         },
-        { baseUrl: network.tzktApiUrl }
-      );
+      });
     });
 
     test("getDelegations", async () => {

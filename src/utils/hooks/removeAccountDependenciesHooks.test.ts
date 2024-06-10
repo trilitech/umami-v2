@@ -6,6 +6,7 @@ import { mockImplicitAccount, mockMultisigAccount, mockTezOperation } from "../.
 import { addAccount } from "../../mocks/helpers";
 import { multisigOperation } from "../../mocks/multisig";
 import { act, renderHook } from "../../mocks/testUtils";
+import { rawAccountFixture } from "../../mocks/tzktResponse";
 import { makeAccountOperations } from "../../types/AccountOperations";
 import { GHOSTNET, MAINNET } from "../../types/Network";
 import { usePeers } from "../beacon/beacon";
@@ -142,27 +143,27 @@ describe("useRemoveDependenciesAndMultisigs", () => {
     it("removes assets data directly related to the given accounts", () => {
       store.dispatch(
         assetsActions.updateAccountStates([
-          {
+          rawAccountFixture({
             address: account0.address.pkh,
             balance: 11,
             stakedBalance: 1,
             unstakedBalance: 1,
             delegate: null,
-          },
-          {
+          }),
+          rawAccountFixture({
             address: account1.address.pkh,
             balance: 22,
             stakedBalance: 1,
             unstakedBalance: 1,
             delegate: null,
-          },
-          {
+          }),
+          rawAccountFixture({
             address: account2.address.pkh,
             balance: 33,
             stakedBalance: 1,
             unstakedBalance: 1,
             delegate: null,
-          },
+          }),
         ])
       );
 
@@ -173,10 +174,9 @@ describe("useRemoveDependenciesAndMultisigs", () => {
 
       expect(store.getState().assets.accountStates).toEqual({
         [account1.address.pkh]: {
-          balance: 22,
-          stakedBalance: 1,
-          unstakedBalance: 1,
+          balance: 20,
           delegate: null,
+          stakedBalance: 1,
         },
       });
     });
@@ -284,27 +284,27 @@ describe("useRemoveDependenciesAndMultisigs", () => {
     it("removes assets data directly related to the obsolete multisig accounts", () => {
       store.dispatch(
         assetsActions.updateAccountStates([
-          {
+          rawAccountFixture({
             address: multisig0.address.pkh,
             balance: 11,
             stakedBalance: 1,
             unstakedBalance: 1,
             delegate: null,
-          },
-          {
+          }),
+          rawAccountFixture({
             address: multisig1.address.pkh,
             balance: 22,
             stakedBalance: 1,
             unstakedBalance: 1,
             delegate: null,
-          },
-          {
+          }),
+          rawAccountFixture({
             address: multisig2.address.pkh,
             balance: 33,
             stakedBalance: 1,
             unstakedBalance: 1,
             delegate: null,
-          },
+          }),
         ])
       );
 
@@ -315,10 +315,9 @@ describe("useRemoveDependenciesAndMultisigs", () => {
 
       expect(store.getState().assets.accountStates).toEqual({
         [multisig1.address.pkh]: {
-          balance: 22,
-          stakedBalance: 1,
-          unstakedBalance: 1,
+          balance: 20,
           delegate: null,
+          stakedBalance: 1,
         },
       });
     });

@@ -64,7 +64,7 @@ export type Unstake = {
   amount: string;
 };
 
-export type FinalizeUnstake = {
+type FinalizeUnstake = {
   type: "finalize_unstake";
   sender: Address;
 };

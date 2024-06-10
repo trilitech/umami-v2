@@ -16,6 +16,7 @@ import {
 import { addAccount } from "../../mocks/helpers";
 import { encryptedMnemonic1 } from "../../mocks/mockMnemonic";
 import { renderHook, waitFor } from "../../mocks/testUtils";
+import { rawAccountFixture } from "../../mocks/tzktResponse";
 import { ImplicitAccount, MnemonicAccount } from "../../types/Account";
 import { accountsActions } from "../redux/slices/accountsSlice/accountsSlice";
 import { assetsActions } from "../redux/slices/assetsSlice";
@@ -108,20 +109,14 @@ describe("getAccountDataHooks", () => {
 
       store.dispatch(
         assetsActions.updateAccountStates([
-          {
+          rawAccountFixture({
             address: mockImplicitAccount(1).address.pkh,
             balance: 5,
-            stakedBalance: 0,
-            unstakedBalance: 0,
-            delegate: null,
-          },
-          {
+          }),
+          rawAccountFixture({
             address: mockImplicitAccount(2).address.pkh,
             balance: 1,
-            stakedBalance: 0,
-            unstakedBalance: 0,
-            delegate: null,
-          },
+          }),
         ])
       );
 

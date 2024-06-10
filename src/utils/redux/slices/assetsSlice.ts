@@ -6,7 +6,7 @@ import { RawPkh, TzktAlias } from "../../../types/Address";
 import { Delegate } from "../../../types/Delegate";
 import { RawTokenBalance, TokenBalance, fromRaw } from "../../../types/TokenBalance";
 import { TokenTransfer } from "../../../types/Transfer";
-import { TzktAccount } from "../../tezos";
+import { RawTzktAccount } from "../../tezos";
 import { RawTzktUnstakeRequest } from "../../tzkt/types";
 
 type TransactionId = number;
@@ -15,7 +15,6 @@ type AccountState = {
   delegate: TzktAlias | null;
   balance: number;
   stakedBalance: number;
-  unstakedBalance: number;
   tokens: TokenBalance[];
   unstakeRequests: RawTzktUnstakeRequest[];
 };
@@ -63,11 +62,24 @@ export const assetsSlice = createSlice({
         state.transfers.tokens[transfer.transactionId!] = transfer;
       });
     },
-    updateAccountStates: (state, { payload }: { payload: TzktAccount[] }) => {
+    updateAccountStates: (state, { payload }: { payload: RawTzktAccount[] }) => {
       payload.forEach(accountInfo => {
-        state.accountStates[accountInfo.address] = {
-          ...state.accountStates[accountInfo.address],
-          ...omit(accountInfo, "address"),
+        const {
+          balance: totalBalance,
+          address,
+          delegate,
+          stakedBalance,
+          unstakedBalance,
+          rollupBonds,
+          smartRollupBonds,
+        } = accountInfo;
+
+        const balance =
+          totalBalance - stakedBalance - unstakedBalance - rollupBonds - smartRollupBonds;
+
+        state.accountStates[address] = {
+          ...state.accountStates[address],
+          ...{ delegate, balance, stakedBalance },
         } as AccountState;
       });
     },

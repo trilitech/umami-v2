@@ -35,7 +35,7 @@ export const useGetAccountBalance = () => {
     if (!state) {
       return undefined;
     }
-    return state.balance - state.stakedBalance;
+    return state.balance;
   };
 };
 
@@ -45,8 +45,6 @@ export const useIsBlockFinalised = (level: number) => {
 
   return currentLevel ? currentLevel - level >= 2 : null;
 };
-
-export const useGetCurrentCycle = () => useAppSelector(s => s.assets.block.cycle);
 
 export const useAllNfts = (): Record<RawPkh, NFTBalance[] | undefined> => {
   const getAccountNFTs = useGetAccountNFTs();

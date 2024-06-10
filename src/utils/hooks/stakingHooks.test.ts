@@ -1,6 +1,7 @@
 import { useGetAccountStakedBalance, useGetAccountUnstakeRequests } from "./stakingHooks";
 import { mockImplicitAddress } from "../../mocks/factories";
 import { renderHook } from "../../mocks/testUtils";
+import { rawAccountFixture } from "../../mocks/tzktResponse";
 import { assetsActions } from "../redux/slices/assetsSlice";
 import { store } from "../redux/store";
 
@@ -19,13 +20,13 @@ describe("stakingHooks", () => {
     it("should return the staked balance of the account", () => {
       store.dispatch(
         assetsActions.updateAccountStates([
-          {
+          rawAccountFixture({
             address,
-            balance: 10,
+            balance: 1000,
             stakedBalance: 123,
             unstakedBalance: 321,
             delegate: null,
-          },
+          }),
         ])
       );
 
@@ -51,8 +52,9 @@ describe("stakingHooks", () => {
         assetsActions.updateUnstakeRequests([
           {
             cycle: 1,
-            finalizableAmount: 123,
+            amount: 123,
             staker: { address },
+            status: "pending",
           },
         ])
       );
@@ -64,7 +66,8 @@ describe("stakingHooks", () => {
       expect(balance).toEqual([
         {
           cycle: 1,
-          finalizableAmount: 123,
+          amount: 123,
+          status: "pending",
         },
       ]);
     });

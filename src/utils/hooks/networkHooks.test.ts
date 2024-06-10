@@ -4,7 +4,9 @@ import {
   useSelectNetwork,
   useSelectedNetwork,
 } from "./networkHooks";
+import { mockImplicitAddress } from "../../mocks/factories";
 import { renderHook } from "../../mocks/testUtils";
+import { rawAccountFixture } from "../../mocks/tzktResponse";
 import { GHOSTNET, MAINNET } from "../../types/Network";
 import { assetsActions } from "../redux/slices/assetsSlice";
 import { networksActions } from "../redux/slices/networks";
@@ -51,13 +53,12 @@ describe("networkHooks", () => {
     beforeEach(() =>
       store.dispatch(
         assetsActions.updateAccountStates([
-          {
-            address: "address",
-            balance: 0,
+          rawAccountFixture({
+            balance: 10000,
             delegate: null,
             stakedBalance: 1,
             unstakedBalance: 1234,
-          },
+          }),
         ])
       )
     );
@@ -80,11 +81,10 @@ describe("networkHooks", () => {
 
       expect(store.getState().networks.current.name).toEqual("mainnet");
       expect(store.getState().assets.accountStates).toEqual({
-        ["address"]: {
-          balance: 0,
+        [mockImplicitAddress(0).pkh]: {
+          balance: 8765,
           delegate: null,
           stakedBalance: 1,
-          unstakedBalance: 1234,
         },
       });
     });

@@ -1,6 +1,5 @@
 Feature: Staking
 
-  @focus
   Scenario: I delegate to a baker
     Given I have account
       | type       | label | secretKey                                              | password |
@@ -22,7 +21,6 @@ Feature: Staking
   # stake
   # stake - unstake
   # stake - unstake - finalize unstake
-  @focus
   Scenario: I undelegate
     Given I have account
       | type       | label | secretKey                                              | password |
@@ -44,6 +42,7 @@ Feature: Staking
     When I close drawer
     Then I see Alice is not delegating
 
+  @focus
   Scenario: I stake to a baker
     Given I have account
       | type       | label | secretKey                                              | password |
@@ -64,4 +63,8 @@ Feature: Staking
     Then their delegate is "baker1"
     When I wait until "baker1" has no pending staking parameters
     And I stake 100 tez
+    Then I see "Operation Submitted" modal
+    When I close modal
+    And I wait for TZKT to process the updates
+    And I refetch the data in the background
     Then I am staking 100 tez

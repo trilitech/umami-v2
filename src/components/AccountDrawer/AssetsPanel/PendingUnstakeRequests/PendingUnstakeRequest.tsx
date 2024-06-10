@@ -32,7 +32,7 @@ export const PendingUnstakeRequest: React.FC<
       {...props}
     >
       <Flex flexDirection="column" gap="8px">
-        <PrettyNumber number={prettyTezAmount(request.finalizableAmount)} size="md" />
+        <PrettyNumber number={prettyTezAmount(request.amount)} size="md" />
         <Box display="inline" color={colors.gray[450]}>
           <Text display="inline" size="sm">
             Requested in{" "}

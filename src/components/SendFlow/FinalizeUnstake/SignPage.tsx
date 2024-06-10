@@ -13,6 +13,7 @@ import BigNumber from "bignumber.js";
 import { FormProvider } from "react-hook-form";
 
 import { AddressTile } from "../../AddressTile/AddressTile";
+import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";
 import { TezTile } from "../../AssetTiles/TezTile";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
@@ -24,10 +25,9 @@ export const SignPage: React.FC<SignPageProps<{ finalizableAmount: BigNumber }>>
   const {
     mode,
     operations,
-    fee,
     data: { finalizableAmount },
   } = props;
-  const { isLoading, form, signer, onSign } = useSignPageHelpers(fee, operations, mode);
+  const { isLoading, form, signer, onSign, fee } = useSignPageHelpers(operations, mode);
 
   return (
     <FormProvider {...form}>
@@ -49,6 +49,8 @@ export const SignPage: React.FC<SignPageProps<{ finalizableAmount: BigNumber }>>
 
             <FormLabel marginTop="24px">Withdraw</FormLabel>
             <TezTile mutezAmount={finalizableAmount} />
+
+            <AdvancedSettingsAccordion />
           </ModalBody>
           <ModalFooter>
             <SignButton

@@ -3,7 +3,6 @@ import {
   Delegate,
   OffsetParameter,
   SortParameter,
-  accountsGet,
   blocksGet,
   delegatesGet,
   operationsGetDelegations,
@@ -28,10 +27,25 @@ import { RawTzktBlock, RawTzktUnstakeRequest } from "../tzkt/types";
 // whilst accountsGet returns all the info about accounts
 export type TzktAccount = {
   address: RawPkh;
+  balance: number; // this is an actual spendable balance
+  stakedBalance: number;
+  delegate: TzktAlias | null;
+};
+export type RawTzktAccount = {
+  address: RawPkh;
   balance: number;
   stakedBalance: number;
   unstakedBalance: number;
+  rollupBonds: number;
+  smartRollupBonds: number;
   delegate: TzktAlias | null;
+};
+
+type TzktUnstakeRequest = {
+  cycle: number;
+  actualAmount: number;
+  status: "pending" | "finalizable";
+  staker: TzktAlias;
 };
 
 type CommonOperationFields = {
@@ -100,17 +114,16 @@ export type TzktCombinedOperation =
   | FinalizeUnstakeOperation;
 
 export const getAccounts = async (pkhs: string[], network: Network) =>
-  withRateLimit(() =>
-    accountsGet(
-      {
-        address: { in: [pkhs.join(",")] },
-        select: { fields: ["address,balance,delegate,stakedBalance,unstakedBalance"] },
+  withRateLimit(async () => {
+    const { data } = await axios.get<RawTzktAccount[]>(`${network.tzktApiUrl}/v1/accounts`, {
+      params: {
+        ["address.in"]: pkhs.join(","),
+        ["select.fields"]:
+          "address,balance,delegate,stakedBalance,unstakedBalance,rollupBonds,smartRollupBonds",
       },
-      {
-        baseUrl: network.tzktApiUrl,
-      }
-    )
-  ) as any as Promise<TzktAccount[]>;
+    });
+    return data;
+  });
 
 export const getTokenBalances = async (pkhs: string[], network: Network) =>
   withRateLimit(() =>
@@ -338,23 +351,25 @@ export const getPendingUnstakeRequests = async (
   addresses: RawPkh[]
 ): Promise<RawTzktUnstakeRequest[]> =>
   withRateLimit(async () => {
-    const { data } = await axios.get<
-      Array<{
-        cycle: number;
-        finalizableAmount: number;
-        staker: TzktAlias;
-      }>
-    >(`${network.tzktApiUrl}/v1/staking/unstake_requests`, {
-      params: {
-        limit: 10000,
-        "staker.in": addresses.join(","),
-        type: "unstake",
-        isFinalized: false,
-        "select.fields": "cycle,finalizableAmount,staker",
-      },
-    });
+    const { data: requests } = await axios.get<TzktUnstakeRequest[]>(
+      `${network.tzktApiUrl}/v1/staking/unstake_requests`,
+      {
+        params: {
+          limit: 10000,
+          "staker.in": addresses.join(","),
+          type: "unstake",
+          ["status.ne"]: "finalized",
+          "select.fields": "cycle,actualAmount,staker,status",
+        },
+      }
+    );
 
-    return data;
+    return requests.map(request => ({
+      cycle: request.cycle,
+      amount: request.actualAmount,
+      staker: request.staker,
+      status: request.status,
+    }));
   });
 
 export const getProtocolSettings = async (network: Network): Promise<ProtocolSettings> => {

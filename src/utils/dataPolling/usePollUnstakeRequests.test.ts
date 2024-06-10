@@ -11,18 +11,21 @@ describe("usePollUnstakeRequests", () => {
     jest.mocked(getPendingUnstakeRequests).mockResolvedValue([
       {
         staker: { address: mockImplicitAddress(0).pkh },
-        finalizableAmount: 123,
+        amount: 123,
         cycle: 1,
+        status: "finalizable",
       },
       {
         staker: { address: mockImplicitAddress(1).pkh },
-        finalizableAmount: 321,
+        amount: 321,
         cycle: 1,
+        status: "finalizable",
       },
       {
         staker: { address: mockImplicitAddress(1).pkh },
-        finalizableAmount: 3214,
+        amount: 3214,
         cycle: 3,
+        status: "finalizable",
       },
     ]);
 
@@ -31,12 +34,12 @@ describe("usePollUnstakeRequests", () => {
     await waitFor(() => expect(getPendingUnstakeRequests).toHaveBeenCalled());
     expect(store.getState().assets.accountStates).toEqual({
       [mockImplicitAddress(0).pkh]: {
-        unstakeRequests: [{ finalizableAmount: 123, cycle: 1 }],
+        unstakeRequests: [{ amount: 123, cycle: 1, status: "finalizable" }],
       },
       [mockImplicitAddress(1).pkh]: {
         unstakeRequests: [
-          { finalizableAmount: 321, cycle: 1 },
-          { finalizableAmount: 3214, cycle: 3 },
+          { amount: 321, cycle: 1, status: "finalizable" },
+          { amount: 3214, cycle: 3, status: "finalizable" },
         ],
       },
     });

@@ -10,12 +10,8 @@ import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
 import { headerText } from "../SignPageHeader";
 
-export const FinalizeUnstakeSignPage: React.FC<BeaconSignPageProps> = ({
-  operation,
-  fee,
-  message,
-}) => {
-  const { isSigning, onSign, network } = useSignWithBeacon(operation, message);
+export const FinalizeUnstakeSignPage: React.FC<BeaconSignPageProps> = ({ operation, message }) => {
+  const { isSigning, onSign, network, fee } = useSignWithBeacon(operation, message);
   const totalFinalizableAmount = useAccountTotalFinalizableUnstakeAmount(
     operation.signer.address.pkh
   );

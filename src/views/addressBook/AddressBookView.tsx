@@ -3,10 +3,10 @@ import { useContext } from "react";
 
 import { ContactTable } from "./ContactTable";
 import { AddContactIcon } from "../../assets/icons";
-import { UpsertContactModal } from "../../components/UpsertContactModal";
 import { DynamicModalContext } from "../../components/DynamicModal";
 import { NoItems } from "../../components/NoItems";
 import { TopBar } from "../../components/TopBar";
+import { UpsertContactModal } from "../../components/UpsertContactModal";
 import { useSortedContacts } from "../../utils/hooks/contactsHooks";
 
 const AddContact: React.FC = () => {

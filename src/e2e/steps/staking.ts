@@ -49,10 +49,20 @@ When(
   "I wait until {string} has no pending staking parameters",
   function (this: CustomWorld, baker: string) {
     const bakerAddress = DEFAULT_ACCOUNTS[baker].pkh;
-    const command = `exec -it tezos_node octez-client rpc get chains/main/blocks/head/context/delegates/${bakerAddress}/pending_staking_parameters`;
+    const command =
+      "exec -it tezos_node octez-client rpc get " +
+      `chains/main/blocks/head/context/delegates/${bakerAddress}/pending_staking_parameters`;
 
     while (JSON.parse(runDockerCommand(command, "pipe")).length) {
       continue;
     }
   }
 );
+
+When("I stake {int} tez", async function (this: CustomWorld, amount: number) {
+  await new AccountDrawerPage(this.page).stake(amount);
+});
+
+Then("I am staking {int} tez", async function (this: CustomWorld, amount: number) {
+  expect(await new AccountDrawerPage(this.page).stakedBalance()).toEqual(amount);
+});

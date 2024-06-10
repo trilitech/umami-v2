@@ -3,9 +3,9 @@ import BigNumber from "bignumber.js";
 import { useBakerList, useTotalBalance } from "./assetsHooks";
 import { mockBaker, mockImplicitAddress } from "../../mocks/factories";
 import { renderHook } from "../../mocks/testUtils";
+import { rawAccountFixture } from "../../mocks/tzktResponse";
 import { assetsActions, assetsSlice } from "../redux/slices/assetsSlice";
 import { store } from "../redux/store";
-import { TzktAccount } from "../tezos";
 
 describe("useBakerList", () => {
   it("should return bakers in store", () => {
@@ -28,7 +28,7 @@ describe("useTotalBalance", () => {
     store.dispatch(assetsActions.updateConversionRate(0.5));
     store.dispatch(
       assetsActions.updateAccountStates([
-        { address: mockImplicitAddress(0).pkh, balance: 1000000 } as TzktAccount,
+        rawAccountFixture({ address: mockImplicitAddress(0).pkh, balance: 1000000 }),
       ])
     );
 

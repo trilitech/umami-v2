@@ -40,14 +40,13 @@ export const FinalizableUnstakeRequest: React.FC<
       const accountOperations = makeAccountOperations(account, account, [
         { type: "finalize_unstake", sender: account.address },
       ]);
-      const fee = await estimate(accountOperations, network);
+      const estimatedOperations = await estimate(accountOperations, network);
 
       return openWith(
         <SignPage
           data={{ finalizableAmount: totalFinalizableAmount }}
-          fee={fee}
           mode="single"
-          operations={accountOperations}
+          operations={estimatedOperations}
         />
       );
     });
