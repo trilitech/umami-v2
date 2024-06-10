@@ -29,7 +29,9 @@ export const AdvancedSettingsAccordion = ({ index = 0 }) => {
     executeParams: Estimation[];
   }>();
 
-  const [tezFee, setTezFee] = useState<string>(mutezToTez(getValues().executeParams[index].fee));
+  const [tezFee, setTezFee] = useState<string>(
+    mutezToTez(getValues().executeParams[index].fee).toFixed()
+  );
 
   const handleFeeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newFeeValue = event.target.value;
@@ -59,7 +61,7 @@ export const AdvancedSettingsAccordion = ({ index = 0 }) => {
               <Input
                 paddingRight="28px"
                 fontSize="14px"
-                onBlur={() => setTezFee(mutezToTez(getValues().executeParams[index].fee))}
+                onBlur={() => setTezFee(mutezToTez(getValues().executeParams[index].fee).toFixed())}
                 onChange={handleFeeChange}
                 placeholder="0.000000"
                 step={getSmallestUnit(TEZ_DECIMALS)}

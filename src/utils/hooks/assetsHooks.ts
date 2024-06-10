@@ -100,7 +100,7 @@ export const useGetDollarBalance = () => {
   return (pkh: string) => {
     const mutezBalance = getAccountBalance(pkh);
 
-    return mutezBalance === undefined ? undefined : tezToDollar(mutezToTez(mutezBalance));
+    return mutezBalance === undefined ? undefined : tezToDollar(mutezToTez(mutezBalance).toFixed());
   };
 };
 
@@ -120,7 +120,7 @@ export const useTotalBalance = () => {
 
   const totalBalance = balances.reduce((acc, curr) => acc.plus(curr!), BigNumber(0));
 
-  const usdBalance = tezToDollar(mutezToTez(totalBalance));
+  const usdBalance = tezToDollar(mutezToTez(totalBalance).toFixed());
 
   return { mutez: totalBalance.toFixed(), usd: usdBalance };
 };
