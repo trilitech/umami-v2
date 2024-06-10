@@ -2,7 +2,7 @@ import { Box, Button, FormControl, useToast } from "@chakra-ui/react";
 import { TezosToolkit } from "@taquito/taquito";
 import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
 import React from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useForm, useFormContext } from "react-hook-form";
 
 import * as Auth from "../../auth";
 import {
@@ -44,6 +44,12 @@ export const SignButton: React.FC<{
   if (preferredNetwork) {
     network = preferredNetwork;
   }
+
+  const {
+    formState: { isValid: isOuterFormValid },
+  } = useFormContext();
+
+  const isButtonDisabled = isDisabled || !isPasswordValid || !isOuterFormValid;
 
   const getSecretKey = useGetSecretKey();
   const toast = useToast();
@@ -105,7 +111,7 @@ export const SignButton: React.FC<{
             <Button
               width="100%"
               marginTop="8px"
-              isDisabled={isDisabled || !isPasswordValid}
+              isDisabled={isButtonDisabled}
               isLoading={isLoading}
               onClick={handleSubmit(signer.type === "mnemonic" ? onMnemonicSign : onSecretKeySign)}
               size="lg"

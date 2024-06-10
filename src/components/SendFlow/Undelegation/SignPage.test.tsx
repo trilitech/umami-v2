@@ -4,7 +4,7 @@ import { SignPage } from "./SignPage";
 import { executeParams } from "../../../mocks/executeParams";
 import { mockImplicitAccount, mockMnemonicAccount } from "../../../mocks/factories";
 import { addAccount } from "../../../mocks/helpers";
-import { render, screen } from "../../../mocks/testUtils";
+import { render, screen, waitFor } from "../../../mocks/testUtils";
 import { makeAccountOperations } from "../../../types/AccountOperations";
 import { TEZ } from "../../../utils/tezos";
 import { SignPageProps } from "../utils";
@@ -33,14 +33,15 @@ describe("<SignPage />", () => {
     ],
   };
   describe("fee", () => {
-    it("displays the fee in tez", () => {
+    it("displays the fee in tez", async () => {
       const props: SignPageProps = {
         operations,
         mode: "single",
         data: undefined,
       };
       render(fixture(props));
-      expect(screen.getByTestId("fee")).toHaveTextContent(`1.234567 ${TEZ}`);
+
+      await waitFor(() => expect(screen.getByTestId("fee")).toHaveTextContent(`1.234567 ${TEZ}`));
     });
   });
 });

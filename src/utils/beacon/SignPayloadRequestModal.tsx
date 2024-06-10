@@ -17,6 +17,7 @@ import {
 } from "@chakra-ui/react";
 import { TezosToolkit } from "@taquito/taquito";
 import React, { useContext } from "react";
+import { FormProvider, useForm } from "react-hook-form";
 
 import { useRemovePeerBySenderId } from "./beacon";
 import { decodePayload } from "./decodePayload";
@@ -34,6 +35,7 @@ export const SignPayloadRequestModal: React.FC<{
   const signerAccount = getAccount(request.sourceAddress);
   const toast = useToast();
   const removePeer = useRemovePeerBySenderId();
+  const form = useForm();
 
   const onModalClose = () => {
     void removePeer(request.senderId);
@@ -64,34 +66,36 @@ export const SignPayloadRequestModal: React.FC<{
   };
 
   return (
-    <ModalContent>
-      <ModalHeader marginBottom="32px" textAlign="center">
-        Connect with pairing request
-      </ModalHeader>
-      <ModalCloseButton onClick={onModalClose} />
+    <FormProvider {...form}>
+      <ModalContent>
+        <ModalHeader marginBottom="32px" textAlign="center">
+          Connect with pairing request
+        </ModalHeader>
+        <ModalCloseButton onClick={onModalClose} />
 
-      <ModalBody>
-        <Heading marginBottom="12px" size="l">
-          {`${request.appMetadata.name}/dApp Pairing Request`}
-        </Heading>
-        <Box
-          overflowY="auto"
-          maxHeight="300px"
-          padding="15px"
-          border="1px solid"
-          borderColor={colors.gray[500]}
-          borderRadius="4px"
-          backgroundColor={colors.gray[800]}
-        >
-          <Text color={colors.gray[450]} size="md">
-            {decodePayload(request.payload)}
-          </Text>
-        </Box>
-      </ModalBody>
+        <ModalBody>
+          <Heading marginBottom="12px" size="l">
+            {`${request.appMetadata.name}/dApp Pairing Request`}
+          </Heading>
+          <Box
+            overflowY="auto"
+            maxHeight="300px"
+            padding="15px"
+            border="1px solid"
+            borderColor={colors.gray[500]}
+            borderRadius="4px"
+            backgroundColor={colors.gray[800]}
+          >
+            <Text color={colors.gray[450]} size="md">
+              {decodePayload(request.payload)}
+            </Text>
+          </Box>
+        </ModalBody>
 
-      <ModalFooter justifyContent="center" display="flex" padding="16px 0 0 0">
-        <SignButton onSubmit={sign} signer={signerAccount} text="Sign" />
-      </ModalFooter>
-    </ModalContent>
+        <ModalFooter justifyContent="center" display="flex" padding="16px 0 0 0">
+          <SignButton onSubmit={sign} signer={signerAccount} text="Sign" />
+        </ModalFooter>
+      </ModalContent>
+    </FormProvider>
   );
 };
