@@ -9,7 +9,7 @@ export const truncate = (name: string, len: number) =>
 export const tezToMutez = (tez: string): BigNumber => format("tz", "mutez", tez) as BigNumber;
 
 export const mutezToTez = (mutez: BigNumber | string | number) =>
-  format("mutez", "tz", mutez) as string;
+  format("mutez", "tz", mutez) as BigNumber;
 
 const formatTezAmount = (mutez: BigNumber | string | number): string => {
   const tezAmount = BigNumber(mutezToTez(mutez)).toNumber();
