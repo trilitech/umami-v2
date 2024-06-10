@@ -1,5 +1,8 @@
+import BigNumber from "bignumber.js";
+
 import { Account, ImplicitAccount, MultisigAccount } from "./Account";
 import { Operation } from "./Operation";
+import { type Estimation } from "../utils/tezos/types";
 
 type ProposalOperations = {
   type: "proposal";
@@ -16,6 +19,15 @@ export type ImplicitOperations = {
 };
 
 export type AccountOperations = ProposalOperations | ImplicitOperations;
+export type EstimatedAccountOperations = AccountOperations & {
+  estimates: Estimation[];
+};
+
+export const totalFee = (estimates: Estimation[]): number =>
+  estimates
+    .map(estimate => estimate.fee)
+    .reduce((acc, curr) => acc.plus(curr), BigNumber(0))
+    .toNumber();
 
 export const makeAccountOperations = (
   sender: Account,

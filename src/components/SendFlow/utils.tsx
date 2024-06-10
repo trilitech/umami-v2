@@ -1,13 +1,17 @@
 import { Box, Button } from "@chakra-ui/react";
 import { TezosToolkit } from "@taquito/taquito";
-import BigNumber from "bignumber.js";
 import { repeat } from "lodash";
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { SuccessStep } from "./SuccessStep";
 import { Account } from "../../types/Account";
-import { AccountOperations, makeAccountOperations } from "../../types/AccountOperations";
+import {
+  AccountOperations,
+  EstimatedAccountOperations,
+  makeAccountOperations,
+  totalFee,
+} from "../../types/AccountOperations";
 import { RawPkh } from "../../types/Address";
 import { Operation } from "../../types/Operation";
 import { useClearBatch } from "../../utils/hooks/batchesHooks";
@@ -18,7 +22,7 @@ import {
 } from "../../utils/hooks/getAccountDataHooks";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
-import { estimate, executeOperations } from "../../utils/tezos";
+import { ExecuteParams, estimate, executeOperations } from "../../utils/tezos";
 import { DynamicModalContext } from "../DynamicModal";
 
 // Convert given optional fields to required
@@ -41,8 +45,7 @@ export type SignPageMode = "single" | "batch";
 
 export type SignPageProps<T = undefined> = {
   goBack?: () => void;
-  operations: AccountOperations;
-  fee: BigNumber;
+  operations: EstimatedAccountOperations;
   mode: SignPageMode;
   data: T;
 };
@@ -103,23 +106,30 @@ export const formDefaultValues = <T,>({ sender, form }: FormPageProps<T>) => {
 // TODO: test this
 export const useSignPageHelpers = (
   // the fee & operations you've got from the form
-  initialFee: BigNumber,
-  initialOperations: AccountOperations,
+  initialOperations: EstimatedAccountOperations,
   mode: SignPageMode
 ) => {
   const [estimationFailed, setEstimationFailed] = useState(false);
   const getSigner = useGetImplicitAccount();
-  const [fee, setFee] = useState<BigNumber>(initialFee);
-  const [operations, setOperations] = useState<AccountOperations>(initialOperations);
+  const [operations, setOperations] = useState<EstimatedAccountOperations>(initialOperations);
   const network = useSelectedNetwork();
   const clearBatch = useClearBatch();
   const { isLoading, handleAsyncAction, handleAsyncActionUnsafe } = useAsyncActionHandler();
   const { openWith } = useContext(DynamicModalContext);
 
-  const form = useForm<{ sender: string; signer: string }>({
+  const form = useForm<{
+    sender: string;
+    signer: string;
+    executeParams: ExecuteParams[];
+  }>({
     mode: "onBlur",
-    defaultValues: { signer: operations.signer.address.pkh, sender: operations.sender.address.pkh },
+    defaultValues: {
+      signer: operations.signer.address.pkh,
+      sender: operations.sender.address.pkh,
+      executeParams: operations.estimates,
+    },
   });
+
   const signer = form.watch("signer");
 
   // if it fails then the sign button must be disabled
@@ -128,12 +138,15 @@ export const useSignPageHelpers = (
   const reEstimate = async (newSigner: RawPkh) =>
     handleAsyncActionUnsafe(
       async () => {
-        const operationsWithNewSigner = {
-          ...operations,
-          signer: getSigner(newSigner),
-        };
-        setFee(await estimate(operations, network));
-        setOperations(operationsWithNewSigner);
+        const newOperations = await estimate(
+          {
+            ...operations,
+            signer: getSigner(newSigner),
+          },
+          network
+        );
+        form.setValue("executeParams", newOperations.estimates);
+        setOperations(newOperations);
         setEstimationFailed(false);
       },
       {
@@ -144,7 +157,10 @@ export const useSignPageHelpers = (
 
   const onSign = async (tezosToolkit: TezosToolkit) =>
     handleAsyncAction(async () => {
-      const operation = await executeOperations(operations, tezosToolkit);
+      const operation = await executeOperations(
+        { ...operations, estimates: form.watch("executeParams") },
+        tezosToolkit
+      );
       if (mode === "batch") {
         clearBatch(operations.sender);
       }
@@ -153,7 +169,7 @@ export const useSignPageHelpers = (
     });
 
   return {
-    fee,
+    fee: totalFee(form.watch("executeParams")),
     estimationFailed,
     operations,
     isLoading,

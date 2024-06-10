@@ -5,11 +5,10 @@ import { OpKind } from "@taquito/rpc";
 import { Curves, InMemorySigner } from "@taquito/signer";
 import { ParamsWithKind, TezosToolkit, WalletParamsWithKind } from "@taquito/taquito";
 import axios from "axios";
-import BigNumber from "bignumber.js";
-import { shuffle } from "lodash";
+import { shuffle, zipWith } from "lodash";
 
 import { FakeSigner } from "./fakeSigner";
-import { AccountOperations } from "../../types/AccountOperations";
+import { AccountOperations, EstimatedAccountOperations } from "../../types/AccountOperations";
 import { Network } from "../../types/Network";
 import {
   Operation,
@@ -126,10 +125,6 @@ export const selectRandomElements = <T>(
     .slice(0, n)
     .sort((a, b) => a.index - b.index);
 
-// for tez it will return tez, for mutez - mutez
-export const sumTez = (items: string[]): BigNumber =>
-  items.reduce((acc, curr) => acc.plus(curr), new BigNumber(0));
-
 export const operationToTaquitoOperation = (operation: Operation): ParamsWithKind => {
   switch (operation.type) {
     case "tez":
@@ -210,9 +205,12 @@ export const operationsToBatchParams = ({
     operationsType === "implicit"
       ? originalOperations
       : [makeMultisigProposeOperation(sender.address, originalOperations)];
+
   return operations.map(operationToTaquitoOperation);
 };
 
-export const operationsToWalletParams = operationsToBatchParams as (
-  operations: AccountOperations
-) => WalletParamsWithKind[];
+export const operationsToWalletParams = (operations: EstimatedAccountOperations) =>
+  zipWith(operationsToBatchParams(operations), operations.estimates, (operation, estimate) => ({
+    ...operation,
+    ...estimate,
+  })) as WalletParamsWithKind[];

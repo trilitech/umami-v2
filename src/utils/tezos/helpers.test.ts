@@ -6,7 +6,9 @@ import {
   getPublicKeyPairFromSk,
   operationToTaquitoOperation,
   operationsToBatchParams,
+  operationsToWalletParams,
 } from "./helpers";
+import { executeParams } from "../../mocks/executeParams";
 import {
   mockContractAddress,
   mockDelegationOperation,
@@ -28,12 +30,12 @@ jest.mock("axios");
 const mockedAxios = jest.mocked(axios);
 const mockSk = "mockSk";
 describe("tezos utils helpers", () => {
-  test("getPkAndPkhFromSk", async () => {
+  it("getPkAndPkhFromSk", async () => {
     await getPublicKeyPairFromSk(mockSk);
     expect(InMemorySigner).toHaveBeenCalledTimes(1);
   });
 
-  test("addressExists for non empty response", async () => {
+  it("addressExists for non empty response", async () => {
     const mockResponse = {
       data: {
         type: "user",
@@ -47,7 +49,7 @@ describe("tezos utils helpers", () => {
     expect(result).toEqual(true);
   });
 
-  test("addressExists returns false for empty response", async () => {
+  it("addressExists returns false for empty response", async () => {
     const mockResponse = {
       data: {
         type: "empty",
@@ -62,7 +64,7 @@ describe("tezos utils helpers", () => {
   });
 
   describe("operationToTaquitoOperation", () => {
-    test("tez", () => {
+    it("tez", () => {
       expect(operationToTaquitoOperation(mockTezOperation(0))).toEqual({
         amount: 0,
         kind: "transaction",
@@ -71,7 +73,7 @@ describe("tezos utils helpers", () => {
       });
     });
 
-    test("fa1.2", () => {
+    it("fa1.2", () => {
       expect(operationToTaquitoOperation(mockFA12Operation(0))).toEqual({
         amount: 0,
         kind: "transaction",
@@ -102,7 +104,7 @@ describe("tezos utils helpers", () => {
       });
     });
 
-    test("fa2", () => {
+    it("fa2", () => {
       expect(operationToTaquitoOperation(mockNftOperation(0))).toEqual({
         amount: 0,
         kind: "transaction",
@@ -144,7 +146,7 @@ describe("tezos utils helpers", () => {
       });
     });
 
-    test("delegation", () => {
+    it("delegation", () => {
       expect(operationToTaquitoOperation(mockDelegationOperation(0))).toEqual({
         delegate: "tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf",
         kind: "delegation",
@@ -152,7 +154,7 @@ describe("tezos utils helpers", () => {
       });
     });
 
-    test("undelegation", () => {
+    it("undelegation", () => {
       expect(operationToTaquitoOperation(mockUndelegationOperation(0))).toEqual({
         kind: "delegation",
         delegate: undefined,
@@ -236,7 +238,7 @@ describe("tezos utils helpers", () => {
       });
     });
 
-    test("contract_call", () => {
+    it("contract_call", () => {
       const operation: ContractCall = {
         type: "contract_call",
         contract: mockContractAddress(0),
@@ -264,28 +266,32 @@ describe("tezos utils helpers", () => {
 
   describe("operationsToBatchParams", () => {
     describe("implicit", () => {
-      test("1 operation", () => {
-        const accountOperations = makeAccountOperations(
-          mockImplicitAccount(0),
-          mockImplicitAccount(0),
-          [mockTezOperation(0)]
-        );
-        expect(operationsToBatchParams(accountOperations)).toEqual([
+      it("1 operation", () => {
+        const accountOperations = {
+          ...makeAccountOperations(mockImplicitAccount(0), mockImplicitAccount(0), [
+            mockTezOperation(0),
+          ]),
+          estimates: [executeParams({ fee: 123 })],
+        };
+        expect(operationsToWalletParams(accountOperations)).toEqual([
           {
             amount: 0,
             kind: "transaction",
             mutez: true,
             to: "tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf",
+            ...executeParams({ fee: 123 }),
           },
         ]);
       });
 
-      test(">1 operations", () => {
-        const accountOperations = makeAccountOperations(
-          mockImplicitAccount(0),
-          mockImplicitAccount(0),
-          [mockTezOperation(0), mockDelegationOperation(0)]
-        );
+      it(">1 operations", () => {
+        const accountOperations = {
+          ...makeAccountOperations(mockImplicitAccount(0), mockImplicitAccount(0), [
+            mockTezOperation(0),
+            mockDelegationOperation(0),
+          ]),
+          estimates: [executeParams({ fee: 123 })],
+        };
         expect(operationsToBatchParams(accountOperations)).toEqual([
           {
             amount: 0,
@@ -303,13 +309,14 @@ describe("tezos utils helpers", () => {
     });
 
     describe("multisig", () => {
-      test("1 operation", () => {
-        const accountOperations = makeAccountOperations(
-          mockMultisigAccount(0),
-          mockImplicitAccount(0),
-          [mockTezOperation(0)]
-        );
-        expect(operationsToBatchParams(accountOperations)).toEqual([
+      it("1 operation", () => {
+        const accountOperations = {
+          ...makeAccountOperations(mockMultisigAccount(0), mockImplicitAccount(0), [
+            mockTezOperation(0),
+          ]),
+          estimates: [executeParams({ fee: 123 })],
+        };
+        expect(operationsToWalletParams(accountOperations)).toEqual([
           {
             amount: 0,
             kind: "transaction",
@@ -365,20 +372,23 @@ describe("tezos utils helpers", () => {
               ],
             },
             to: "KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG",
+            ...executeParams({ fee: 123 }),
           },
         ]);
       });
 
-      test(">1 operations", () => {
-        const accountOperations = makeAccountOperations(
-          mockMultisigAccount(0),
-          mockImplicitAccount(0),
-          [
+      it(">1 operations", () => {
+        const accountOperations = {
+          ...makeAccountOperations(mockMultisigAccount(0), mockImplicitAccount(0), [
             mockTezOperation(0),
-            { ...mockDelegationOperation(0), sender: mockMultisigAccount(0).address },
-          ]
-        );
-        expect(operationsToBatchParams(accountOperations)).toEqual([
+            {
+              ...mockDelegationOperation(0),
+              sender: mockMultisigAccount(0).address,
+            },
+          ]),
+          estimates: [executeParams({ fee: 123 })],
+        };
+        expect(operationsToWalletParams(accountOperations)).toEqual([
           {
             amount: 0,
             kind: "transaction",
@@ -407,6 +417,7 @@ describe("tezos utils helpers", () => {
               ],
             },
             to: "KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG",
+            ...executeParams({ fee: 123 }),
           },
         ]);
       });

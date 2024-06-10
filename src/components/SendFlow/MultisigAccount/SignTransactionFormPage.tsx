@@ -20,6 +20,7 @@ import { useAppDispatch } from "../../../utils/redux/hooks";
 import { multisigActions } from "../../../utils/redux/slices/multisigsSlice";
 import { OwnedImplicitAccountsAutocomplete } from "../../AddressAutocomplete";
 import { AddressTile } from "../../AddressTile/AddressTile";
+import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
 import { SignPageHeader } from "../SignPageHeader";
@@ -27,12 +28,12 @@ import { SignPageProps, useSignPageHelpers } from "../utils";
 
 export const SignTransactionFormPage: React.FC<SignPageProps<FormValues>> = props => {
   const dispatch = useAppDispatch();
+
   const { isLoading: contractNameObtainingIsLoading, handleAsyncAction } = useAsyncActionHandler();
 
   const {
     mode,
     operations: initialOperations,
-    fee: initialFee,
     data: { threshold, signers, name },
   } = props;
 
@@ -45,7 +46,7 @@ export const SignTransactionFormPage: React.FC<SignPageProps<FormValues>> = prop
     reEstimate,
     signer,
     onSign: originateContract,
-  } = useSignPageHelpers(initialFee, initialOperations, mode);
+  } = useSignPageHelpers(initialOperations, mode);
 
   const isLoading = contractNameObtainingIsLoading || contractCreationIsLoading;
   /**
@@ -94,6 +95,8 @@ export const SignTransactionFormPage: React.FC<SignPageProps<FormValues>> = prop
             >
               {name}
             </Text>
+
+            <AdvancedSettingsAccordion />
 
             <FormLabel>Approvers</FormLabel>
             <Flex flexDirection="column" gap="12px" marginBottom="12px" data-testid="approvers">

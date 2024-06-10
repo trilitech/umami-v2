@@ -1,8 +1,8 @@
 import { BeaconMessageType, NetworkType, OperationRequestOutput } from "@airgap/beacon-wallet";
 import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
-import BigNumber from "bignumber.js";
 
 import { TezSignPage } from "./TezSignPage";
+import { executeParams } from "../../../mocks/executeParams";
 import { mockImplicitAccount, mockTezOperation } from "../../../mocks/factories";
 import {
   act,
@@ -45,6 +45,7 @@ describe("<TezSignPage />", () => {
       sender: mockImplicitAccount(0),
       signer: mockImplicitAccount(0),
       operations: [mockTezOperation(0)],
+      estimates: [executeParams({ fee: 123 })],
     };
     store.dispatch(networksActions.setCurrent(MAINNET));
     jest.mocked(useGetSecretKey).mockImplementation(() => () => Promise.resolve("secretKey"));
@@ -52,14 +53,16 @@ describe("<TezSignPage />", () => {
     jest.mocked(executeOperations).mockResolvedValue({ opHash: "ophash" } as BatchWalletOperation);
     jest.spyOn(WalletClient, "respond").mockResolvedValue();
 
-    render(<TezSignPage fee={BigNumber(123)} message={message} operation={operation} />);
+    render(<TezSignPage message={message} operation={operation} />);
 
     expect(screen.getByText("Ghostnet")).toBeVisible();
     expect(screen.queryByText("Mainnet")).not.toBeInTheDocument();
 
     await act(() => user.type(screen.getByLabelText("Password"), "Password"));
 
-    const signButton = screen.getByRole("button", { name: "Confirm Transaction" });
+    const signButton = screen.getByRole("button", {
+      name: "Confirm Transaction",
+    });
     await waitFor(() => expect(signButton).toBeEnabled());
     await act(() => user.click(signButton));
 

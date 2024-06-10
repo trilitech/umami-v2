@@ -3,12 +3,12 @@ import { AspectRatio, Flex, Heading, Image, Text } from "@chakra-ui/react";
 import { capitalize } from "lodash";
 
 import colors from "../../../style/colors";
-import { ImplicitOperations } from "../../../types/AccountOperations";
+import { AccountOperations } from "../../../types/AccountOperations";
 import { SignPageHeader } from "../SignPageHeader";
 import { SignPageMode } from "../utils";
 
 export const Header: React.FC<{
-  operation: ImplicitOperations;
+  operation: AccountOperations;
   message: OperationRequestOutput;
   mode: SignPageMode;
 }> = ({ operation, message, mode }) => (

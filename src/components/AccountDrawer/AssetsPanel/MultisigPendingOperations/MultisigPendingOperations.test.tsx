@@ -1,6 +1,6 @@
-import BigNumber from "bignumber.js";
-
+import { executeParams } from "../../../../mocks/executeParams";
 import {
+  mockImplicitAccount,
   mockImplicitAddress,
   mockMnemonicAccount,
   mockMultisigAccount,
@@ -19,7 +19,13 @@ jest.mock("../../../../utils/tezos/estimate");
 
 describe("<MultisigPendingOperations />", () => {
   it("displays multisig executable tez operations", async () => {
-    jest.mocked(estimate).mockResolvedValueOnce(BigNumber(33));
+    jest.mocked(estimate).mockResolvedValueOnce({
+      type: "implicit",
+      operations: [],
+      sender: mockImplicitAccount(0),
+      signer: mockImplicitAccount(0),
+      estimates: [executeParams()],
+    });
     const multisig = {
       ...mockMultisigAccount(0),
       pendingOperationsBigmapId: 3,

@@ -1,8 +1,8 @@
 import { Modal } from "@chakra-ui/react";
-import BigNumber from "bignumber.js";
 
 import { FormPage, FormValues } from "./FormPage";
 import { SignPage } from "./SignPage";
+import { executeParams } from "../../../mocks/executeParams";
 import { mockImplicitAccount, mockMnemonicAccount, mockNFT } from "../../../mocks/factories";
 import { addAccount } from "../../../mocks/helpers";
 import {
@@ -143,7 +143,9 @@ describe("<FormPage />", () => {
             sender: mockImplicitAccount(0),
           })
         );
-        fireEvent.change(screen.getByTestId("quantity-input"), { target: { value: "0" } });
+        fireEvent.change(screen.getByTestId("quantity-input"), {
+          target: { value: "0" },
+        });
         fireEvent.blur(screen.getByTestId("quantity-input"));
         await waitFor(() => {
           expect(screen.getByTestId("quantity-error")).toHaveTextContent("Min quantity is 1");
@@ -159,7 +161,9 @@ describe("<FormPage />", () => {
             mockNFT(1, "5")
           )
         );
-        fireEvent.change(screen.getByTestId("quantity-input"), { target: { value: "7" } });
+        fireEvent.change(screen.getByTestId("quantity-input"), {
+          target: { value: "7" },
+        });
         fireEvent.blur(screen.getByTestId("quantity-input"));
         await waitFor(() => {
           expect(screen.getByTestId("quantity-error")).toHaveTextContent("Max quantity is 5");
@@ -186,24 +190,28 @@ describe("<FormPage />", () => {
         await waitFor(() => {
           expect(submitButton).toBeEnabled();
         });
-        jest.mocked(estimate).mockResolvedValueOnce(BigNumber(100));
-        const operations = makeAccountOperations(sender, mockImplicitAccount(0), [
-          {
-            type: "fa2",
-            amount: "1",
-            sender: sender.address,
-            recipient: mockImplicitAccount(1).address,
-            contract: parseContractPkh(mockNFT(1).contract),
-            tokenId: mockNFT(1).tokenId,
-          },
-        ]);
+
+        const operations = {
+          ...makeAccountOperations(sender, mockImplicitAccount(0), [
+            {
+              type: "fa2",
+              amount: "1",
+              sender: sender.address,
+              recipient: mockImplicitAccount(1).address,
+              contract: parseContractPkh(mockNFT(1).contract),
+              tokenId: mockNFT(1).tokenId,
+            },
+          ]),
+          estimates: [executeParams()],
+        };
+
+        jest.mocked(estimate).mockResolvedValueOnce(operations);
 
         await act(() => user.click(submitButton));
 
         expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
           <SignPage
             data={{ nft: mockNFT(1) }}
-            fee={new BigNumber(100)}
             goBack={expect.any(Function)}
             mode="single"
             operations={operations}

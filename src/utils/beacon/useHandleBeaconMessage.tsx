@@ -53,7 +53,9 @@ export const useHandleBeaconMessage = () => {
         errorType: BeaconErrorType.NETWORK_NOT_SUPPORTED,
       });
       throw new Error(
-        `Got Beacon request from an unknown network: ${JSON.stringify(beaconNetwork)}. Please add it to the networks list and retry.`
+        `Got Beacon request from an unknown network: ${JSON.stringify(
+          beaconNetwork
+        )}. Please add it to the networks list and retry.`
       );
     }
 
@@ -89,11 +91,12 @@ export const useHandleBeaconMessage = () => {
               message.operationDetails,
               signer as ImplicitAccount
             );
-            const fee = await estimate(operation, network);
+            const estimatedOperations = await estimate(operation, network);
+
             if (operation.operations.length === 1) {
-              modal = <BeaconSignPage fee={fee} message={message} operation={operation} />;
+              modal = <BeaconSignPage message={message} operation={estimatedOperations} />;
             } else {
-              modal = <BatchSignPage fee={fee} message={message} operation={operation} />;
+              modal = <BatchSignPage message={message} operation={estimatedOperations} />;
             }
 
             break;

@@ -1,5 +1,6 @@
 import { estimate, handleTezError } from "./estimate";
 import { addressExists, makeToolkit } from "./helpers";
+import { executeParams } from "../../mocks/executeParams";
 import { mockImplicitAccount, mockTezOperation } from "../../mocks/factories";
 import { makeAccountOperations } from "../../types/AccountOperations";
 import { GHOSTNET } from "../../types/Network";
@@ -8,15 +9,14 @@ jest.mock("./helpers", () => ({
   makeToolkit: jest.fn(),
   addressExists: jest.fn(),
 }));
+
+const accountOperations = makeAccountOperations(mockImplicitAccount(1), mockImplicitAccount(1), [
+  mockTezOperation(0),
+]);
+
 describe("estimate", () => {
   describe("Error handling", () => {
-    it("Catches unrevelaed account", async () => {
-      const accountOperations = makeAccountOperations(
-        mockImplicitAccount(1),
-        mockImplicitAccount(1),
-        [mockTezOperation(0)]
-      );
-
+    it("Catches unrevealed account", async () => {
       jest.mocked(addressExists).mockResolvedValue(false);
 
       jest.mocked(makeToolkit).mockImplementation(
@@ -49,5 +49,39 @@ describe("estimate", () => {
       const err = new Error("unknown error");
       expect(handleTezError(err)).toEqual("unknown error");
     });
+  });
+
+  it("returns fee, storageLimit and gasLimit estimate ", async () => {
+    const estimateResult = [
+      {
+        burnFeeMutez: 0,
+        consumedMilligas: 168681,
+        gasLimit: 169,
+        minimalFeeMutez: 269,
+        operationFeeMutez: 168.9,
+        storageLimit: 0,
+        suggestedFeeMutez: 289,
+        totalCost: 269,
+        usingBaseFeeMutez: 269,
+      },
+    ];
+
+    const processedEstimateResult = {
+      ...accountOperations,
+      estimates: [executeParams({ fee: 289, gasLimit: 169 })],
+    };
+
+    jest.mocked(makeToolkit).mockImplementation(
+      () =>
+        ({
+          estimate: {
+            batch: jest.fn().mockResolvedValue(estimateResult),
+          },
+        }) as any
+    );
+
+    const result = await estimate(accountOperations, GHOSTNET);
+
+    expect(result).toEqual(processedEstimateResult);
   });
 });

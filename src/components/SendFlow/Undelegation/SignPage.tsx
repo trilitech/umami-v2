@@ -2,6 +2,7 @@ import { Flex, FormLabel, ModalBody, ModalContent, ModalFooter } from "@chakra-u
 import { FormProvider } from "react-hook-form";
 
 import { AddressTile } from "../../AddressTile/AddressTile";
+import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";
 import { OperationSignerSelector } from "../OperationSignerSelector";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
@@ -9,9 +10,10 @@ import { SignPageHeader, headerText } from "../SignPageHeader";
 import { SignPageProps, useSignPageHelpers } from "../utils";
 
 export const SignPage: React.FC<SignPageProps> = props => {
-  const { mode, operations: initialOperations, fee: initialFee } = props;
+  const { mode, operations: initialOperations } = props;
+
   const { fee, operations, estimationFailed, isLoading, form, signer, reEstimate, onSign } =
-    useSignPageHelpers(initialFee, initialOperations, mode);
+    useSignPageHelpers(initialOperations, mode);
   return (
     <FormProvider {...form}>
       <ModalContent>
@@ -31,6 +33,8 @@ export const SignPage: React.FC<SignPageProps> = props => {
               reEstimate={reEstimate}
               sender={operations.sender}
             />
+
+            <AdvancedSettingsAccordion />
           </ModalBody>
           <ModalFooter>
             <SignButton

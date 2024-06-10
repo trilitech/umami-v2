@@ -1,8 +1,8 @@
 import { Modal } from "@chakra-ui/react";
-import BigNumber from "bignumber.js";
 
 import { FormPage, FormValues } from "./FormPage";
 import { SignPage } from "./SignPage";
+import { executeParams } from "../../../mocks/executeParams";
 import {
   mockFA2Token,
   mockFA2TokenRaw,
@@ -145,7 +145,9 @@ describe("<FormPage />", () => {
             mockFA2Token(1, mockAccount, 5, 0)
           )
         );
-        fireEvent.change(screen.getByLabelText("Amount"), { target: { value: "7" } });
+        fireEvent.change(screen.getByLabelText("Amount"), {
+          target: { value: "7" },
+        });
         fireEvent.blur(screen.getByLabelText("Amount"));
         await waitFor(() => {
           expect(screen.getByTestId("amount-error")).toHaveTextContent("Max amount is 5");
@@ -161,7 +163,9 @@ describe("<FormPage />", () => {
             mockFA2Token(1, mockAccount, 1234)
           )
         );
-        fireEvent.change(screen.getByLabelText("Amount"), { target: { value: "0.1235" } });
+        fireEvent.change(screen.getByLabelText("Amount"), {
+          target: { value: "0.1235" },
+        });
         fireEvent.blur(screen.getByLabelText("Amount"));
         await waitFor(() => {
           expect(screen.getByTestId("amount-error")).toHaveTextContent("Max amount is 0.1234");
@@ -178,7 +182,9 @@ describe("<FormPage />", () => {
             mockFA2Token(1, mockAccount, 1, decimals)
           )
         );
-        fireEvent.change(screen.getByLabelText("Amount"), { target: { value: "0.00007" } });
+        fireEvent.change(screen.getByLabelText("Amount"), {
+          target: { value: "0.00007" },
+        });
         fireEvent.blur(screen.getByLabelText("Amount"));
         await waitFor(() => {
           expect(screen.getByTestId("amount-error")).toHaveTextContent(
@@ -209,24 +215,28 @@ describe("<FormPage />", () => {
         );
         const submitButton = screen.getByText("Preview");
         await waitFor(() => expect(submitButton).toBeEnabled());
-        jest.mocked(estimate).mockResolvedValueOnce(BigNumber(100));
-        const operations = makeAccountOperations(sender, mockAccount, [
-          {
-            type: "fa2",
-            amount: "1",
-            sender: sender.address,
-            recipient: mockImplicitAccount(1).address,
-            contract: parseContractPkh(mockToken.contract),
-            tokenId: mockToken.tokenId,
-          },
-        ]);
+
+        const operations = {
+          ...makeAccountOperations(sender, mockAccount, [
+            {
+              type: "fa2",
+              amount: "1",
+              sender: sender.address,
+              recipient: mockImplicitAccount(1).address,
+              contract: parseContractPkh(mockToken.contract),
+              tokenId: mockToken.tokenId,
+            },
+          ]),
+          estimates: [executeParams()],
+        };
+
+        jest.mocked(estimate).mockResolvedValueOnce(operations);
 
         await act(() => user.click(submitButton));
 
         expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
           <SignPage
             data={{ token: mockFA2Token(0, mockAccount, 2, 0) }}
-            fee={new BigNumber(100)}
             goBack={expect.any(Function)}
             mode="single"
             operations={operations}

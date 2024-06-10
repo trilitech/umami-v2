@@ -1,9 +1,9 @@
 import { BeaconMessageType, NetworkType, OperationRequestOutput } from "@airgap/beacon-wallet";
 import { TezosToolkit } from "@taquito/taquito";
 import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
-import BigNumber from "bignumber.js";
 
 import { OriginationOperationSignPage } from "./OriginationOperationSignPage";
+import { executeParams } from "../../../mocks/executeParams";
 import { mockContractOrigination, mockImplicitAccount } from "../../../mocks/factories";
 import {
   act,
@@ -31,8 +31,8 @@ const operation = {
   sender: mockImplicitAccount(0),
   signer: mockImplicitAccount(0),
   operations: [mockContractOrigination(0)],
+  estimates: [executeParams({ fee: 123 })],
 };
-const fee = BigNumber(123);
 
 jest.mock("../../../utils/tezos", () => ({
   ...jest.requireActual("../../../utils/tezos"),
@@ -47,9 +47,9 @@ jest.mock("../../../utils/hooks/getAccountDataHooks", () => ({
 
 describe("<OriginationOperationSignPage />", () => {
   it("renders fee", () => {
-    render(<OriginationOperationSignPage fee={fee} message={message} operation={operation} />);
+    render(<OriginationOperationSignPage message={message} operation={operation} />);
 
-    expect(screen.getByText(prettyTezAmount(fee))).toBeVisible();
+    expect(screen.getByText(prettyTezAmount(123))).toBeVisible();
   });
 
   it("passes correct payload to sign handler", async () => {
@@ -61,7 +61,7 @@ describe("<OriginationOperationSignPage />", () => {
     jest.mocked(executeOperations).mockResolvedValue({ opHash: "ophash" } as BatchWalletOperation);
     jest.spyOn(WalletClient, "respond").mockResolvedValue();
 
-    render(<OriginationOperationSignPage fee={fee} message={message} operation={operation} />);
+    render(<OriginationOperationSignPage message={message} operation={operation} />);
 
     await act(() => user.type(screen.getByLabelText("Password"), "Password"));
 

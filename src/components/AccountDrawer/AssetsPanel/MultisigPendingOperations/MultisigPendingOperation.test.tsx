@@ -1,8 +1,8 @@
 import { TezosToolkit } from "@taquito/taquito";
 import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
-import BigNumber from "bignumber.js";
 
 import { MultisigPendingOperation } from "./MultisigPendingOperation";
+import { executeParams } from "../../../../mocks/executeParams";
 import {
   mockImplicitAddress,
   mockMnemonicAccount,
@@ -76,7 +76,16 @@ describe("<MultisigPendingOperation />", () => {
       ...mockMnemonicAccount(0),
       address: parseImplicitPkh("tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3"),
     };
-    jest.mocked(estimate).mockResolvedValueOnce(BigNumber(33));
+    const multisig = { ...mockMultisigAccount(0), signers: [account.address] };
+
+    const operation = makeAccountOperations(account, account, [
+      makeMultisigApproveOrExecuteOperation(multisig.address, "execute", pendingOps[0].id),
+    ]);
+
+    jest.mocked(estimate).mockResolvedValueOnce({
+      ...operation,
+      estimates: [executeParams()],
+    });
 
     jest.mocked(executeOperations).mockResolvedValue({
       opHash: "mockHash",
@@ -85,7 +94,6 @@ describe("<MultisigPendingOperation />", () => {
     addAccount(account);
 
     const executablePendingOp: MultisigOperation = pendingOps[0];
-    const multisig = { ...mockMultisigAccount(0), signers: [account.address] };
 
     render(<MultisigPendingOperation operation={executablePendingOp} sender={multisig} />);
 
@@ -95,22 +103,26 @@ describe("<MultisigPendingOperation />", () => {
 
     expect(screen.getByRole("dialog")).toBeInTheDocument();
 
-    const operation = makeAccountOperations(account, account, [
-      makeMultisigApproveOrExecuteOperation(multisig.address, "execute", pendingOps[0].id),
-    ]);
-
     expect(jest.mocked(estimate)).toHaveBeenCalledWith(operation, MAINNET);
 
     await act(() => user.type(screen.getByTestId("password"), "mockPass"));
 
-    const submitButton = screen.getByRole("button", { name: "Execute transaction" });
+    const submitButton = screen.getByRole("button", {
+      name: "Execute transaction",
+    });
     expect(submitButton).toBeEnabled();
 
     await act(() => user.click(submitButton));
 
     await screen.findByText("Operation Submitted");
 
-    expect(jest.mocked(executeOperations)).toHaveBeenCalledWith(operation, MOCK_TEZOS_TOOLKIT);
+    expect(jest.mocked(executeOperations)).toHaveBeenCalledWith(
+      {
+        ...operation,
+        estimates: [executeParams()],
+      },
+      MOCK_TEZOS_TOOLKIT
+    );
   });
 
   test("User can accomplish a proposal approval", async () => {
@@ -120,15 +132,26 @@ describe("<MultisigPendingOperation />", () => {
       address: parseImplicitPkh("tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3"),
     };
 
-    jest.mocked(estimate).mockResolvedValueOnce(BigNumber(33));
+    const multisig = { ...mockMultisigAccount(0), signers: [signer.address] };
+
+    const operations = makeAccountOperations(signer, signer, [
+      makeMultisigApproveOrExecuteOperation(multisig.address, "approve", pendingOps[0].id),
+    ]);
+
+    jest.mocked(estimate).mockResolvedValueOnce({
+      ...operations,
+      estimates: [executeParams()],
+    });
 
     jest.mocked(executeOperations).mockResolvedValue({
       opHash: "mockHash",
     } as BatchWalletOperation);
 
     addAccount(signer);
-    const multisig = { ...mockMultisigAccount(0), signers: [signer.address] };
-    const approvablePendingOp: MultisigOperation = { ...pendingOps[0], approvals: [] };
+    const approvablePendingOp: MultisigOperation = {
+      ...pendingOps[0],
+      approvals: [],
+    };
     render(<MultisigPendingOperation operation={approvablePendingOp} sender={multisig} />);
 
     const firstPendingOp = screen.getByTestId("multisig-pending-operation-" + pendingOps[0].id);
@@ -136,21 +159,25 @@ describe("<MultisigPendingOperation />", () => {
 
     expect(screen.getByRole("dialog")).toBeInTheDocument();
 
-    const operations = makeAccountOperations(signer, signer, [
-      makeMultisigApproveOrExecuteOperation(multisig.address, "approve", pendingOps[0].id),
-    ]);
-
     expect(jest.mocked(estimate)).toHaveBeenCalledWith(operations, MAINNET);
 
     await act(() => user.type(screen.getByTestId("password"), "mockPass"));
 
-    const submitButton = screen.getByRole("button", { name: "Approve transaction" });
+    const submitButton = screen.getByRole("button", {
+      name: "Approve transaction",
+    });
     expect(submitButton).toBeEnabled();
 
     await act(() => user.click(submitButton));
 
     await screen.findByText("Operation Submitted");
 
-    expect(jest.mocked(executeOperations)).toHaveBeenCalledWith(operations, MOCK_TEZOS_TOOLKIT);
+    expect(jest.mocked(executeOperations)).toHaveBeenCalledWith(
+      {
+        ...operations,
+        estimates: [executeParams()],
+      },
+      MOCK_TEZOS_TOOLKIT
+    );
   });
 });

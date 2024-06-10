@@ -1,7 +1,7 @@
 import { Modal } from "@chakra-ui/react";
-import BigNumber from "bignumber.js";
 
 import { SignPage } from "./SignPage";
+import { executeParams } from "../../../mocks/executeParams";
 import { mockDelegation, mockImplicitAccount, mockMnemonicAccount } from "../../../mocks/factories";
 import { addAccount } from "../../../mocks/helpers";
 import { render, screen } from "../../../mocks/testUtils";
@@ -26,18 +26,20 @@ beforeEach(() => addAccount(mockMnemonicAccount(0)));
 
 describe("<SignPage />", () => {
   const sender = mockImplicitAccount(0);
-  const operations = makeAccountOperations(sender, mockImplicitAccount(0), [
-    {
-      type: "delegation",
-      sender: sender.address,
-      recipient: mockImplicitAccount(1).address,
-    },
-  ]);
+  const operations = {
+    ...makeAccountOperations(sender, mockImplicitAccount(0), [
+      {
+        type: "delegation",
+        sender: sender.address,
+        recipient: mockImplicitAccount(1).address,
+      },
+    ]),
+    estimates: [executeParams({ fee: 1234567 })],
+  };
 
   it("displays the fee in tez", () => {
     const props: SignPageProps = {
       operations,
-      fee: new BigNumber(1234567),
       mode: "single",
       data: undefined,
     };
@@ -68,7 +70,6 @@ describe("<SignPage />", () => {
 
     const props: SignPageProps = {
       operations,
-      fee: new BigNumber(1234567),
       mode: "single",
       data: undefined,
     };

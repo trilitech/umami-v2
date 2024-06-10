@@ -1,7 +1,6 @@
-import BigNumber from "bignumber.js";
-
 import { AssetsPanel } from "./AssetsPanel";
-import { mockMultisigAccount } from "../../../mocks/factories";
+import { executeParams } from "../../../mocks/executeParams";
+import { mockImplicitAccount, mockMultisigAccount } from "../../../mocks/factories";
 import { pendingOps } from "../../../mocks/multisig";
 import { render, screen } from "../../../mocks/testUtils";
 import { multisigsSlice } from "../../../utils/redux/slices/multisigsSlice";
@@ -32,7 +31,13 @@ describe("<AssetsPanel />", () => {
       jest.mocked(getCombinedOperations).mockResolvedValue([]);
       jest.mocked(getRelatedTokenTransfers).mockResolvedValue([]);
 
-      jest.mocked(estimate).mockResolvedValueOnce(BigNumber(33));
+      jest.mocked(estimate).mockResolvedValueOnce({
+        type: "implicit",
+        operations: [],
+        sender: mockImplicitAccount(0),
+        signer: mockImplicitAccount(0),
+        estimates: [executeParams()],
+      });
       const multisig = {
         ...mockMultisigAccount(0),
         pendingOperationsBigmapId: 3,

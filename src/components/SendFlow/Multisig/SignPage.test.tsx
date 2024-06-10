@@ -1,6 +1,5 @@
-import BigNumber from "bignumber.js";
-
 import { SignPage } from "./SignPage";
+import { executeParams } from "../../../mocks/executeParams";
 import { mockImplicitAccount, mockMultisigAccount } from "../../../mocks/factories";
 import { render, screen } from "../../../mocks/testUtils";
 import { makeAccountOperations } from "../../../types/AccountOperations";
@@ -10,17 +9,18 @@ import { TEZ } from "../../../utils/tezos";
 const fixture = () => {
   const account = mockImplicitAccount(0);
   const multisig = mockMultisigAccount(1);
-  const operation = makeAccountOperations(account, account, [
-    makeMultisigApproveOrExecuteOperation(multisig.address, "execute", "3"),
-  ]);
+  const operation = {
+    ...makeAccountOperations(account, account, [
+      makeMultisigApproveOrExecuteOperation(multisig.address, "execute", "3"),
+    ]),
+    estimates: [
+      executeParams({
+        fee: 1234567,
+      }),
+    ],
+  };
   return (
-    <SignPage
-      actionType="approve"
-      fee={new BigNumber(1234567)}
-      operation={operation}
-      signer={account}
-      transactionCount={1}
-    />
+    <SignPage actionType="approve" operation={operation} signer={account} transactionCount={1} />
   );
 };
 

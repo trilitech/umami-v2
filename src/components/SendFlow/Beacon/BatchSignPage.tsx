@@ -23,8 +23,8 @@ import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
 import { headerText } from "../SignPageHeader";
 
-export const BatchSignPage: React.FC<BeaconSignPageProps> = ({ operation, fee, message }) => {
-  const { isSigning, onSign, network } = useSignWithBeacon(operation, message);
+export const BatchSignPage: React.FC<BeaconSignPageProps> = ({ operation, message }) => {
+  const { isSigning, onSign, network, fee } = useSignWithBeacon(operation, message);
   const { signer } = operation;
   const transactionCount = operation.operations.length;
 

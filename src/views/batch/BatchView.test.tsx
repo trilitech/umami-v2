@@ -1,8 +1,8 @@
 import { OpKind, OperationContentsAndResult } from "@taquito/rpc";
 import { TezosOperationError } from "@taquito/taquito";
-import BigNumber from "bignumber.js";
 
 import { BatchView } from "./BatchView";
+import { executeParams } from "../../mocks/executeParams";
 import { mockImplicitAccount, mockTezOperation } from "../../mocks/factories";
 import { addAccount } from "../../mocks/helpers";
 import { act, render, screen, userEvent, within } from "../../mocks/testUtils";
@@ -134,7 +134,13 @@ describe("<BatchView />", () => {
     it("renders successful estimation statuses on a successful batch estimation", async () => {
       const user = userEvent.setup();
       addAccount(mockImplicitAccount(0));
-      jest.mocked(estimate).mockResolvedValueOnce(BigNumber(100));
+      jest.mocked(estimate).mockResolvedValueOnce({
+        type: "implicit",
+        operations: [],
+        sender: mockImplicitAccount(0),
+        signer: mockImplicitAccount(0),
+        estimates: [executeParams()],
+      });
 
       render(<BatchView operations={operations} />);
 

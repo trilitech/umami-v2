@@ -4,6 +4,7 @@ import { FormProvider } from "react-hook-form";
 import { TokenTransfer } from "../../../types/Operation";
 import { FA12TokenBalance, FA2TokenBalance } from "../../../types/TokenBalance";
 import { AddressTile } from "../../AddressTile/AddressTile";
+import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";
 import { TokenTile } from "../../TokenTile";
 import { OperationSignerSelector } from "../OperationSignerSelector";
 import { SignButton } from "../SignButton";
@@ -17,11 +18,10 @@ export const SignPage: React.FC<
   const {
     mode,
     operations: initialOperations,
-    fee: initialFee,
     data: { token },
   } = props;
   const { fee, operations, estimationFailed, isLoading, form, signer, reEstimate, onSign } =
-    useSignPageHelpers(initialFee, initialOperations, mode);
+    useSignPageHelpers(initialOperations, mode);
 
   const { amount, recipient } = operations.operations[0] as TokenTransfer;
 
@@ -56,6 +56,8 @@ export const SignPage: React.FC<
               reEstimate={reEstimate}
               sender={operations.sender}
             />
+
+            <AdvancedSettingsAccordion />
           </ModalBody>
           <ModalFooter>
             <SignButton

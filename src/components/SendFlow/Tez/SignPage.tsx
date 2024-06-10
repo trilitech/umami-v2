@@ -3,6 +3,7 @@ import { FormProvider } from "react-hook-form";
 
 import { TezTransfer } from "../../../types/Operation";
 import { AddressTile } from "../../AddressTile/AddressTile";
+import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";
 import { TezTile } from "../../AssetTiles/TezTile";
 import { OperationSignerSelector } from "../OperationSignerSelector";
 import { SignButton } from "../SignButton";
@@ -11,9 +12,9 @@ import { SignPageHeader, headerText } from "../SignPageHeader";
 import { SignPageProps, useSignPageHelpers } from "../utils";
 
 export const SignPage: React.FC<SignPageProps> = props => {
-  const { mode, operations: initialOperations, fee: initialFee } = props;
+  const { mode, operations: initialOperations } = props;
   const { fee, operations, estimationFailed, isLoading, form, signer, reEstimate, onSign } =
-    useSignPageHelpers(initialFee, initialOperations, mode);
+    useSignPageHelpers(initialOperations, mode);
 
   const { amount: mutezAmount, recipient } = operations.operations[0] as TezTransfer;
 
@@ -41,6 +42,8 @@ export const SignPage: React.FC<SignPageProps> = props => {
               reEstimate={reEstimate}
               sender={operations.sender}
             />
+
+            <AdvancedSettingsAccordion />
           </ModalBody>
           <ModalFooter>
             <SignButton

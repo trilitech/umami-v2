@@ -45,12 +45,12 @@ export const MultisigSignerTile: React.FC<{
       const approveOrExecute = makeAccountOperations(signer, signer, [
         makeMultisigApproveOrExecuteOperation(sender.address, actionType, operation.id),
       ]);
-      const fee = await estimate(approveOrExecute, network);
+      const estimatedOperations = await estimate(approveOrExecute, network);
 
       let transactionCount;
       try {
         transactionCount = parseRawMichelson(operation.rawActions, sender).length;
-      } catch (_) {
+      } catch {
         // for cases when we cannot parse the actions
         transactionCount = 1;
       }
@@ -58,8 +58,7 @@ export const MultisigSignerTile: React.FC<{
       return openWith(
         <SignPage
           actionType={actionType}
-          fee={fee}
-          operation={approveOrExecute}
+          operation={estimatedOperations}
           signer={signer}
           transactionCount={transactionCount}
         />

@@ -1,9 +1,9 @@
 import { Modal } from "@chakra-ui/react";
-import BigNumber from "bignumber.js";
 
 import { FormValues } from "./FormValues";
 import { SelectApproversFormPage } from "./SelectApproversFormPage";
 import { SignTransactionFormPage } from "./SignTransactionFormPage";
+import { executeParams } from "../../../mocks/executeParams";
 import {
   mockContractAddress,
   mockContractOrigination,
@@ -80,7 +80,9 @@ describe("SelectApproversFormPage", () => {
         const user = userEvent.setup();
         render(fixture());
 
-        const addSignerButton = screen.getByRole("button", { name: "+ Add Approver" });
+        const addSignerButton = screen.getByRole("button", {
+          name: "+ Add Approver",
+        });
         await act(() => user.click(addSignerButton));
 
         expect(screen.getAllByTestId(/^address-autocomplete-signer/)).toHaveLength(2);
@@ -103,7 +105,9 @@ describe("SelectApproversFormPage", () => {
         const user = userEvent.setup();
         render(fixture());
 
-        const addSignerButton = screen.getByRole("button", { name: "+ Add Approver" });
+        const addSignerButton = screen.getByRole("button", {
+          name: "+ Add Approver",
+        });
 
         await act(() => user.click(addSignerButton));
 
@@ -113,7 +117,9 @@ describe("SelectApproversFormPage", () => {
       it("removes the correct approver", async () => {
         const user = userEvent.setup();
         render(fixture());
-        const addSignerButton = screen.getByRole("button", { name: "+ Add Approver" });
+        const addSignerButton = screen.getByRole("button", {
+          name: "+ Add Approver",
+        });
 
         await act(() => user.click(addSignerButton));
         await act(() => user.click(addSignerButton));
@@ -164,7 +170,9 @@ describe("SelectApproversFormPage", () => {
       const user = userEvent.setup();
       render(fixture());
 
-      const addSignerButton = screen.getByRole("button", { name: "+ Add Approver" });
+      const addSignerButton = screen.getByRole("button", {
+        name: "+ Add Approver",
+      });
       await act(() => user.click(addSignerButton));
       await act(() =>
         user.type(screen.getByLabelText("Select 1st approver"), mockImplicitAddress(1).pkh)
@@ -181,7 +189,9 @@ describe("SelectApproversFormPage", () => {
     it("doesn't allow values < 1", async () => {
       render(fixture());
 
-      fireEvent.change(screen.getByTestId("threshold-input"), { target: { value: "0" } });
+      fireEvent.change(screen.getByTestId("threshold-input"), {
+        target: { value: "0" },
+      });
       fireEvent.blur(screen.getByTestId("threshold-input"));
 
       await waitFor(() => {
@@ -194,7 +204,9 @@ describe("SelectApproversFormPage", () => {
     it("doesn't allow values above the number of approvers", async () => {
       render(fixture());
 
-      fireEvent.change(screen.getByTestId("threshold-input"), { target: { value: "2" } });
+      fireEvent.change(screen.getByTestId("threshold-input"), {
+        target: { value: "2" },
+      });
       fireEvent.blur(screen.getByTestId("threshold-input"));
       await waitFor(() => {
         expect(screen.getByTestId("threshold-error")).toHaveTextContent(
@@ -202,9 +214,13 @@ describe("SelectApproversFormPage", () => {
         );
       });
 
-      const addSignerButton = screen.getByRole("button", { name: "+ Add Approver" });
+      const addSignerButton = screen.getByRole("button", {
+        name: "+ Add Approver",
+      });
       fireEvent.click(addSignerButton);
-      fireEvent.change(screen.getByTestId("threshold-input"), { target: { value: "3" } });
+      fireEvent.change(screen.getByTestId("threshold-input"), {
+        target: { value: "3" },
+      });
       fireEvent.blur(screen.getByTestId("threshold-input"));
 
       await waitFor(() => {
@@ -220,7 +236,9 @@ describe("SelectApproversFormPage", () => {
 
       expect(screen.getByTestId("max-signers")).toHaveTextContent("out of 1");
 
-      const addSignerButton = screen.getByRole("button", { name: "+ Add Approver" });
+      const addSignerButton = screen.getByRole("button", {
+        name: "+ Add Approver",
+      });
       await act(() => user.click(addSignerButton));
 
       expect(screen.getByTestId("max-signers")).toHaveTextContent("out of 2");
@@ -269,18 +287,22 @@ describe("SelectApproversFormPage", () => {
         })
       );
 
-      const operations = makeAccountOperations(sender, sender, [
-        mockContractOrigination(
-          1, // sender id
-          makeStorageJSON(
-            sender.address.pkh,
-            [mockImplicitAccount(0).address.pkh, mockImplicitAddress(1).pkh],
-            "1"
+      const operations = {
+        ...makeAccountOperations(sender, sender, [
+          mockContractOrigination(
+            1, // sender id
+            makeStorageJSON(
+              sender.address.pkh,
+              [mockImplicitAccount(0).address.pkh, mockImplicitAddress(1).pkh],
+              "1"
+            ),
+            contract
           ),
-          contract
-        ),
-      ]);
-      jest.mocked(estimate).mockResolvedValueOnce(BigNumber(150));
+        ]),
+        estimates: [executeParams({ fee: 100 })],
+      };
+
+      jest.mocked(estimate).mockResolvedValueOnce(operations);
 
       const reviewButton = screen.getByText("Review");
       await waitFor(() => expect(reviewButton).toBeEnabled());
@@ -294,7 +316,6 @@ describe("SelectApproversFormPage", () => {
             signers: [{ val: mockImplicitAddress(0).pkh }, { val: mockImplicitAddress(1).pkh }],
             name: "Test account",
           }}
-          fee={new BigNumber(150)}
           goBack={expect.any(Function)}
           mode="single"
           operations={operations}
@@ -308,7 +329,9 @@ describe("SelectApproversFormPage", () => {
       render(fixture());
 
       // select values
-      const addSignerButton = screen.getByRole("button", { name: "+ Add Approver" });
+      const addSignerButton = screen.getByRole("button", {
+        name: "+ Add Approver",
+      });
       fireEvent.click(addSignerButton);
       await waitFor(() => {
         expect(screen.getAllByTestId(/^address-autocomplete-signer/)).toHaveLength(2);
@@ -319,7 +342,9 @@ describe("SelectApproversFormPage", () => {
       fireEvent.change(screen.getByLabelText("2nd approver"), {
         target: { value: mockImplicitAddress(2).pkh },
       });
-      fireEvent.change(screen.getByTestId("threshold-input"), { target: { value: "2" } });
+      fireEvent.change(screen.getByTestId("threshold-input"), {
+        target: { value: "2" },
+      });
 
       // open sign form
       const reviewButton = screen.getByText("Review");
@@ -328,18 +353,22 @@ describe("SelectApproversFormPage", () => {
       });
       fireEvent.click(reviewButton);
 
-      const operations = makeAccountOperations(SENDER, SENDER, [
-        mockContractOrigination(
-          0, // sender id
-          makeStorageJSON(
-            SENDER.address.pkh,
-            [mockImplicitAccount(1).address.pkh, mockImplicitAddress(2).pkh],
-            "2"
+      const operations = {
+        ...makeAccountOperations(SENDER, SENDER, [
+          mockContractOrigination(
+            0, // sender id
+            makeStorageJSON(
+              SENDER.address.pkh,
+              [mockImplicitAccount(1).address.pkh, mockImplicitAddress(2).pkh],
+              "2"
+            ),
+            contract
           ),
-          contract
-        ),
-      ]);
-      jest.mocked(estimate).mockResolvedValueOnce(BigNumber(100));
+        ]),
+        estimates: [executeParams({ fee: 100 })],
+      };
+      jest.mocked(estimate).mockResolvedValueOnce(operations);
+
       await waitFor(() => {
         expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
           <SignTransactionFormPage
@@ -349,7 +378,6 @@ describe("SelectApproversFormPage", () => {
               signers: [{ val: mockImplicitAddress(1).pkh }, { val: mockImplicitAddress(2).pkh }],
               name: MULTISIG_NAME,
             }}
-            fee={new BigNumber(100)}
             goBack={expect.any(Function)}
             mode="single"
             operations={operations}
