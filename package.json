@@ -18,9 +18,12 @@
     "test": "turbo test",
     "lint": "turbo lint",
     "format": "turbo format",
+    "ci": "turbo check-types lint:ci format:ci audit check-circular-deps",
+    "test:e2e": "turbo test:e2e",
     "dev:desktop": "turbo dev --filter='./apps/desktop'"
   },
   "devDependencies": {
-    "turbo": "^2.0.3"
+    "jest": "^29.7.0",
+    "turbo": "^2.0.4"
   }
 }

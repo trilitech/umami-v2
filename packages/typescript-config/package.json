@@ -1,0 +1,7 @@
+{
+  "name": "@umami/typescript-config",
+  "license": "MIT",
+  "files": [
+    "tsconfig.json"
+  ]
+}

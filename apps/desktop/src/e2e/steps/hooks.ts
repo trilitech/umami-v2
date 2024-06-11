@@ -31,7 +31,7 @@ const resourceCleanup = () => {
 };
 
 BeforeAll({ timeout: secondsToMilliseconds(20) }, async function () {
-  browser = await chromium.launch({ headless: !!process.env.CI });
+  browser = await chromium.launch({ headless: !process.env.OPEN_BROWSER });
   process.on("SIGINT", resourceCleanup);
 
   Object.defineProperty(global, "crypto", crypto);

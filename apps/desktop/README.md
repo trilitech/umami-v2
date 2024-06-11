@@ -23,7 +23,7 @@ We use [jest](https://jestjs.io/) as the test runner.
 
 This will run the e2e tests for you. Please make sure that you have docker & docker-compose [installed](https://docs.docker.com/desktop/install/mac-install/).
 
-Note: the test runner expects the server with the app running at localhost:3000. You can use the dev server (`yarn start`) for that.
+Note: the test runner expects the server with the app running at localhost:3000. You can use the dev server (`yarn dev`) for that.
 On CI we build the app and serve the production build on the same port (check `.github/workflows/e2e.yaml` for details).
 
 When you're working on a specific scenario, you can mark it with a `@focus` tag and use `yarn test:e2e:focus` to run it exclusively.
@@ -37,7 +37,7 @@ It correctly bundles React in production mode and optimizes the build for the be
 
 Runs the electron app in the development mode.
 In order to get the dev tools work please make sure to set the `devTools` to `true` in the `webPreferences` in `public/electron.js`
-Note: you still have to have your `yarn start` running in a separate terminal
+Note: you still have to have your `yarn dev` running in a separate terminal
 
 ### `yarn electron:package:(mac|win|linux)`
 

@@ -33,7 +33,7 @@ yarn-error.log*
 .vscode
 
 settings.json
-/test-results/
+test-results/
 
 *.tsbuildinfo
 docs/

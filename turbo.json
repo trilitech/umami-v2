@@ -9,14 +9,29 @@
         "^build"
       ]
     },
-    "lint": {},
-    "lint:ci": {},
+    "lint": {
+      "dependsOn": [
+        "@umami/eslint-config#build"
+      ]
+    },
+    "lint:ci": {
+      "dependsOn": [
+        "@umami/eslint-config#build"
+      ]
+    },
     "format:ci": {
       "dependsOn": [
         "lint:ci"
       ]
     },
-    "test": {},
+    "test": {
+      "outputs": [
+        "coverage/**"
+      ],
+      "env": [
+        "CI"
+      ]
+    },
     "test:watch": {
       "persistent": true,
       "cache": false
@@ -26,7 +41,11 @@
         "lint"
       ]
     },
-    "check-types": {},
+    "check-types": {
+      "dependsOn": [
+        "@umami/typescript-config#build"
+      ]
+    },
     "check-types:watch": {
       "persistent": true,
       "cache": false
@@ -34,6 +53,17 @@
     "dev": {
       "persistent": true,
       "cache": false
+    },
+    "audit": {},
+    "check-circular-deps": {},
+    "test:e2e": {
+      "dependsOn": [
+        "build"
+      ],
+      "env": [
+        "TZKT_SYNC_IMAGE",
+        "TZKT_API_IMAGE"
+      ]
     }
   }
 }
