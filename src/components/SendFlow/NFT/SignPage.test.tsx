@@ -4,7 +4,7 @@ import { SignPage } from "./SignPage";
 import { executeParams } from "../../../mocks/executeParams";
 import { mockImplicitAccount, mockMnemonicAccount, mockNFT } from "../../../mocks/factories";
 import { addAccount } from "../../../mocks/helpers";
-import { render, screen } from "../../../mocks/testUtils";
+import { render, screen, waitFor } from "../../../mocks/testUtils";
 import { makeAccountOperations } from "../../../types/AccountOperations";
 import { parseContractPkh } from "../../../types/Address";
 import { NFTBalance } from "../../../types/TokenBalance";
@@ -35,35 +35,41 @@ describe("<SignPage />", () => {
     estimates: [executeParams({ fee: 1234567 })],
   };
   describe("fee", () => {
-    it("displays the fee in tez", () => {
+    it("displays the fee in tez", async () => {
       const props: SignPageProps<{ nft: NFTBalance }> = {
         operations,
         mode: "single",
         data: { nft: mockNFT(1) },
       };
       render(fixture(props));
-      expect(screen.getByTestId("fee")).toHaveTextContent(`1.234567 ${TEZ}`);
+
+      await waitFor(() => expect(screen.getByTestId("fee")).toHaveTextContent(`1.234567 ${TEZ}`));
     });
   });
   describe("nft", () => {
-    it("displays the correct name", () => {
+    it("displays the correct name", async () => {
       const props: SignPageProps<{ nft: NFTBalance }> = {
         operations,
         mode: "single",
         data: { nft: mockNFT(1) },
       };
       render(fixture(props));
-      expect(screen.getByTestId("nft-name")).toHaveTextContent(mockNFT(1).metadata.name as string);
+
+      await waitFor(() =>
+        expect(screen.getByTestId("nft-name")).toHaveTextContent(mockNFT(1).metadata.name as string)
+      );
     });
 
-    it("displays the correct balance", () => {
+    it("displays the correct balance", async () => {
       const props: SignPageProps<{ nft: NFTBalance }> = {
         operations,
         mode: "single",
         data: { nft: mockNFT(1) },
       };
       render(fixture(props));
-      expect(screen.getByTestId("nft-owned")).toHaveTextContent(mockNFT(1).balance);
+      await waitFor(() =>
+        expect(screen.getByTestId("nft-owned")).toHaveTextContent(mockNFT(1).balance)
+      );
     });
   });
 });

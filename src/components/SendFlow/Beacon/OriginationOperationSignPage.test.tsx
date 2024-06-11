@@ -46,10 +46,10 @@ jest.mock("../../../utils/hooks/getAccountDataHooks", () => ({
 }));
 
 describe("<OriginationOperationSignPage />", () => {
-  it("renders fee", () => {
+  it("renders fee", async () => {
     render(<OriginationOperationSignPage message={message} operation={operation} />);
 
-    expect(screen.getByText(prettyTezAmount(123))).toBeVisible();
+    await waitFor(() => expect(screen.getByText(prettyTezAmount(123))).toBeVisible());
   });
 
   it("passes correct payload to sign handler", async () => {

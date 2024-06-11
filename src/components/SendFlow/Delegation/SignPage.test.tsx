@@ -4,7 +4,7 @@ import { SignPage } from "./SignPage";
 import { executeParams } from "../../../mocks/executeParams";
 import { mockDelegation, mockImplicitAccount, mockMnemonicAccount } from "../../../mocks/factories";
 import { addAccount } from "../../../mocks/helpers";
-import { render, screen } from "../../../mocks/testUtils";
+import { render, screen, waitFor } from "../../../mocks/testUtils";
 import { makeAccountOperations } from "../../../types/AccountOperations";
 import { assetsSlice } from "../../../utils/redux/slices/assetsSlice";
 import { store } from "../../../utils/redux/store";
@@ -37,17 +37,18 @@ describe("<SignPage />", () => {
     estimates: [executeParams({ fee: 1234567 })],
   };
 
-  it("displays the fee in tez", () => {
+  it("displays the fee in tez", async () => {
     const props: SignPageProps = {
       operations,
       mode: "single",
       data: undefined,
     };
     render(fixture(props));
-    expect(screen.getByTestId("fee")).toHaveTextContent(`1.234567 ${TEZ}`);
+
+    await waitFor(() => expect(screen.getByTestId("fee")).toHaveTextContent(`1.234567 ${TEZ}`));
   });
 
-  it("displays address tile for baker", () => {
+  it("displays address tile for baker", async () => {
     const baker = mockImplicitAccount(1);
 
     store.dispatch(
@@ -75,6 +76,8 @@ describe("<SignPage />", () => {
     };
     render(fixture(props));
 
-    expect(screen.getAllByTestId("address-tile")[1]).toHaveTextContent("baker1");
+    await waitFor(() =>
+      expect(screen.getAllByTestId("address-tile")[1]).toHaveTextContent("baker1")
+    );
   });
 });

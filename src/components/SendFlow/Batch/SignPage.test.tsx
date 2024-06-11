@@ -7,7 +7,7 @@ import {
   mockNFT,
 } from "../../../mocks/factories";
 import { addAccount } from "../../../mocks/helpers";
-import { render, screen } from "../../../mocks/testUtils";
+import { render, screen, waitFor } from "../../../mocks/testUtils";
 import { makeAccountOperations } from "../../../types/AccountOperations";
 import { parseContractPkh } from "../../../types/Address";
 import { makeMultisigApproveOrExecuteOperation } from "../../../types/Operation";
@@ -36,16 +36,18 @@ beforeEach(() => addAccount(mockMnemonicAccount(0)));
 
 describe("<SignPage />", () => {
   describe("fee", () => {
-    it("displays the fee in tez", () => {
+    it("displays the fee in tez", async () => {
       render(fixture());
-      expect(screen.getByTestId("fee")).toHaveTextContent(`1.234567 ${TEZ}`);
+
+      await waitFor(() => expect(screen.getByTestId("fee")).toHaveTextContent(`1.234567 ${TEZ}`));
     });
   });
 
   describe("number of transactions", () => {
-    it("displays the correct number of transactions", () => {
+    it("displays the correct number of transactions", async () => {
       render(fixture());
-      expect(screen.getByTestId("transaction-length")).toHaveTextContent("2");
+
+      await waitFor(() => expect(screen.getByTestId("transaction-length")).toHaveTextContent("2"));
     });
   });
 });

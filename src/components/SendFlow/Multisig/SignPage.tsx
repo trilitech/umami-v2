@@ -2,7 +2,7 @@ import { ModalContent, ModalFooter } from "@chakra-ui/react";
 import { TezosToolkit } from "@taquito/taquito";
 import { capitalize } from "lodash";
 import React, { useContext } from "react";
-import { useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 
 import { ImplicitAccount } from "../../../types/Account";
 import { EstimatedAccountOperations } from "../../../types/AccountOperations";
@@ -45,14 +45,16 @@ export const SignPage: React.FC<{
   const title = `${capitalize(actionType)} transaction`;
 
   return (
-    <ModalContent>
-      <form>
-        <BatchModalBody operation={operation} title={title} transactionCount={transactionCount} />
+    <FormProvider {...form}>
+      <ModalContent>
+        <form>
+          <BatchModalBody operation={operation} title={title} transactionCount={transactionCount} />
 
-        <ModalFooter>
-          <SignButton onSubmit={approveOrExecute} signer={signer} text={title} />
-        </ModalFooter>
-      </form>
-    </ModalContent>
+          <ModalFooter>
+            <SignButton onSubmit={approveOrExecute} signer={signer} text={title} />
+          </ModalFooter>
+        </form>
+      </ModalContent>
+    </FormProvider>
   );
 };

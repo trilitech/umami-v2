@@ -1,3 +1,5 @@
+import { waitFor } from "@testing-library/react";
+
 import { SignPage } from "./SignPage";
 import { executeParams } from "../../../mocks/executeParams";
 import { mockImplicitAccount, mockMultisigAccount } from "../../../mocks/factories";
@@ -26,16 +28,18 @@ const fixture = () => {
 
 describe("<SignPage />", () => {
   describe("fee", () => {
-    it("displays the fee in tez", () => {
+    it("displays the fee in tez", async () => {
       render(fixture());
-      expect(screen.getByTestId("fee")).toHaveTextContent(`1.234567 ${TEZ}`);
+
+      await waitFor(() => expect(screen.getByTestId("fee")).toHaveTextContent(`1.234567 ${TEZ}`));
     });
   });
 
   describe("number of transactions", () => {
-    it("displays the correct number of transactions", () => {
+    it("displays the correct number of transactions", async () => {
       render(fixture());
-      expect(screen.getByTestId("transaction-length")).toHaveTextContent("1");
+
+      await waitFor(() => expect(screen.getByTestId("transaction-length")).toHaveTextContent("1"));
     });
   });
 });

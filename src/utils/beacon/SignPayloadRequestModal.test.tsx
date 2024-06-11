@@ -49,16 +49,18 @@ beforeEach(() => {
 });
 
 describe("<SignPayloadRequestModal />", () => {
-  it("renders the dapp name", () => {
+  it("renders the dapp name", async () => {
     render(<TestComponent request={request} />);
 
-    expect(screen.getByText("mockDappName/dApp Pairing Request")).toBeVisible();
+    await waitFor(() =>
+      expect(screen.getByText("mockDappName/dApp Pairing Request")).toBeVisible()
+    );
   });
 
-  it("renders the payload to sign", () => {
+  it("renders the payload to sign", async () => {
     render(<TestComponent request={request} />);
 
-    expect(screen.getByText(decodedPayload)).toBeVisible();
+    await waitFor(() => expect(screen.getByText(decodedPayload)).toBeVisible());
   });
 
   it("sends the signed payload back to the DApp", async () => {

@@ -10,7 +10,7 @@ import {
   mockMnemonicAccount,
 } from "../../../mocks/factories";
 import { addAccount } from "../../../mocks/helpers";
-import { render, screen } from "../../../mocks/testUtils";
+import { render, screen, waitFor } from "../../../mocks/testUtils";
 import { makeAccountOperations } from "../../../types/AccountOperations";
 import { TEZ } from "../../../utils/tezos";
 import { SignPageProps } from "../utils";
@@ -40,45 +40,52 @@ const props: SignPageProps<FormValues> = {
 };
 
 describe("<SignPage />", () => {
-  it("has a title", () => {
+  it("has a title", async () => {
     render(fixture(props));
 
-    expect(screen.getByTestId("sign-page-header")).toHaveTextContent("Review & Submit");
+    await waitFor(() =>
+      expect(screen.getByTestId("sign-page-header")).toHaveTextContent("Review & Submit")
+    );
   });
 
-  it("has a subtitle", () => {
+  it("has a subtitle", async () => {
     render(fixture(props));
 
-    expect(
-      screen.getByText("Please review the details and then continue to submit contract.")
-    ).toBeInTheDocument();
+    await screen.findByText("Please review the details and then continue to submit contract.");
   });
 
-  it("displays the contract name", () => {
+  it("displays the contract name", async () => {
     render(fixture(props));
 
-    expect(screen.getByTestId("contract-name")).toHaveTextContent("Contract name");
+    await waitFor(() =>
+      expect(screen.getByTestId("contract-name")).toHaveTextContent("Contract name")
+    );
   });
 
-  it("displays the approvers", () => {
+  it("displays the approvers", async () => {
     render(fixture(props));
 
-    props.data.signers.forEach(signer => {
-      expect(screen.getByTestId(`approver-${signer.val}`)).toBeInTheDocument();
+    await waitFor(() => {
+      props.data.signers.forEach(signer => {
+        expect(screen.getByTestId(`approver-${signer.val}`)).toBeInTheDocument();
+      });
     });
   });
 
-  it("displays the threshold", () => {
+  it("displays the threshold", async () => {
     render(fixture(props));
 
-    expect(screen.getByTestId("threshold")).toHaveTextContent("No. of approvals:");
+    await waitFor(() => {
+      expect(screen.getByTestId("threshold")).toHaveTextContent("No. of approvals:");
+    });
+
     expect(screen.getByTestId("threshold")).toHaveTextContent("1 out of 2");
   });
 
-  it("displays the fee in tez", () => {
+  it("displays the fee in tez", async () => {
     render(fixture(props));
 
-    expect(screen.getByTestId("fee")).toHaveTextContent(`1.234567 ${TEZ}`);
+    await waitFor(() => expect(screen.getByTestId("fee")).toHaveTextContent(`1.234567 ${TEZ}`));
   });
 
   // TODO: test creating multisig on sign
