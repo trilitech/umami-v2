@@ -19,7 +19,11 @@ import colors from "../style/colors";
 import { mutezToTez, tezToMutez } from "../utils/format";
 import { Estimation, TEZ_DECIMALS } from "../utils/tezos";
 
-export const AdvancedSettingsAccordion = ({ index = 0 }) => {
+type AdvancedSettingsAccordionProps = {
+  index?: number;
+};
+
+export const AdvancedSettingsAccordion = ({ index = 0 }: AdvancedSettingsAccordionProps) => {
   const {
     register,
     getValues,

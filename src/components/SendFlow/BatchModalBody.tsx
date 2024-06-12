@@ -12,7 +12,8 @@ export const BatchModalBody: React.FC<{
   title: string;
   operation: EstimatedAccountOperations;
   transactionCount: number;
-}> = ({ title, operation, transactionCount }) => (
+  children?: React.ReactNode;
+}> = ({ title, operation, transactionCount, children }) => (
   <>
     <FormPageHeader subTitle={subTitle(operation.signer)} title={title} />
     <ModalBody>
@@ -29,6 +30,7 @@ export const BatchModalBody: React.FC<{
         </Flex>
         <SignPageFee fee={totalFee(operation.estimates)} />
       </Flex>
+      {children}
     </ModalBody>
   </>
 );

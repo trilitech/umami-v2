@@ -9,6 +9,7 @@ import { EstimatedAccountOperations } from "../../../types/AccountOperations";
 import { ApproveOrExecute } from "../../../types/Operation";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
 import { executeOperations } from "../../../utils/tezos";
+import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";
 import { DynamicModalContext } from "../../DynamicModal";
 import { BatchModalBody } from "../BatchModalBody";
 import { SignButton } from "../SignButton";
@@ -28,14 +29,15 @@ export const SignPage: React.FC<{
     defaultValues: { executeParams: operation.estimates },
   });
 
-  // TODO: add advanced execute params component
+  const estimatedOperations = {
+    ...operation,
+    estimates: form.watch("executeParams"),
+  };
+
   const approveOrExecute = (tezosToolkit: TezosToolkit) =>
     handleAsyncAction(
       async () => {
-        const { opHash } = await executeOperations(
-          { ...operation, estimates: form.watch("executeParams") },
-          tezosToolkit
-        );
+        const { opHash } = await executeOperations(estimatedOperations, tezosToolkit);
 
         return openWith(<SuccessStep hash={opHash} />);
       },
@@ -48,7 +50,13 @@ export const SignPage: React.FC<{
     <FormProvider {...form}>
       <ModalContent>
         <form>
-          <BatchModalBody operation={operation} title={title} transactionCount={transactionCount} />
+          <BatchModalBody
+            operation={estimatedOperations}
+            title={title}
+            transactionCount={transactionCount}
+          >
+            <AdvancedSettingsAccordion />
+          </BatchModalBody>
 
           <ModalFooter>
             <SignButton onSubmit={approveOrExecute} signer={signer} text={title} />
