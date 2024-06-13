@@ -16856,12 +16856,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typedoc-plugin-missing-exports@npm:^2.2.0":
-  version: 2.2.0
-  resolution: "typedoc-plugin-missing-exports@npm:2.2.0"
+"typedoc-plugin-missing-exports@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "typedoc-plugin-missing-exports@npm:2.3.0"
   peerDependencies:
     typedoc: 0.24.x || 0.25.x
-  checksum: 10/db691b3494c8e112d7ea8621fcf79f1988ef8f0c9fc43eb5fc308fda0caa1b1e007c3d51db83236247cf9b52cdfec1186a7eb25ec3416fa03ef65f68b4e88e4e
+  checksum: 10/83ff8affd82fa39a81931e825ef31b51b7470613c71601fde6ff413a5c7571e30734698092a38a437f12c5d3264010696ce9ca806d43485aa11e8208cb4cb323
   languageName: node
   linkType: hard
 
@@ -17038,7 +17038,7 @@ __metadata:
     redux-persist: "npm:^6.0.0"
     ts-node: "npm:^10.9.2"
     typedoc: "npm:^0.25.13"
-    typedoc-plugin-missing-exports: "npm:^2.2.0"
+    typedoc-plugin-missing-exports: "npm:^2.3.0"
     typescript: "npm:5.4.5"
     vite: "npm:^5.3.0"
     vite-plugin-checker: "npm:^0.6.4"
