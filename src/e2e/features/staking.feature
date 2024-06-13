@@ -1,5 +1,11 @@
 Feature: Staking
 
+  # TODO:
+  # change delegate via round button
+  # change delegate via edit button on earn page
+  # stake
+  # stake - unstake
+  # stake - unstake - finalize unstake
   Scenario: I delegate to a baker
     Given I have account
       | type       | label | secretKey                                              | password |
@@ -15,12 +21,6 @@ Feature: Staking
     When I close drawer
     Then I see Alice is delegating
 
-  # TODO:
-  # change delegate via round button
-  # change delegate via edit button on earn page
-  # stake
-  # stake - unstake
-  # stake - unstake - finalize unstake
   Scenario: I undelegate
     Given I have account
       | type       | label | secretKey                                              | password |
@@ -42,7 +42,6 @@ Feature: Staking
     When I close drawer
     Then I see Alice is not delegating
 
-  @focus
   Scenario: I stake to a baker
     Given I have account
       | type       | label | secretKey                                              | password |
@@ -67,4 +66,7 @@ Feature: Staking
     When I close modal
     And I wait for TZKT to process the updates
     And I refetch the data in the background
-    Then I am staking 100 tez
+
+
+# TODO: introduce a way to properly wait for the operation to be included & indexed
+# Then I am staking 100 tez

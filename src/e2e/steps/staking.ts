@@ -5,6 +5,7 @@ import { CustomWorld } from "./world";
 import { DEFAULT_ACCOUNTS } from "../constants";
 import { AccountDrawerPage } from "../pages/AccountDrawerPage";
 import { AccountsPage } from "../pages/AccountsPage";
+import { AddressPillPage } from "../pages/AddressPillPage";
 import { runDockerCommand } from "../utils";
 
 Given(
@@ -33,12 +34,14 @@ Then(
 );
 
 Then("their delegate is {string}", async function (this: CustomWorld, baker: string) {
-  const currentBakerAddress = await new AccountDrawerPage(this.page).getBakerAddress();
-  expect(currentBakerAddress).toEqual(DEFAULT_ACCOUNTS[baker].pkh);
+  await expect(new AccountDrawerPage(this.page).delegationStatus).toHaveText(/Active/);
+
+  const bakerPill = new AccountDrawerPage(this.page).baker;
+  await expect(new AddressPillPage(bakerPill).address).toHaveText(DEFAULT_ACCOUNTS[baker].pkh);
 });
 
 Then("their delegate is not set", async function (this: CustomWorld) {
-  expect(await new AccountDrawerPage(this.page).isDelegating()).toEqual(true);
+  await expect(new AccountDrawerPage(this.page).delegationStatus).toHaveText(/Inactive/);
 });
 
 When("I undelegate", async function (this: CustomWorld) {

@@ -5,6 +5,7 @@ import {
   SortParameter,
   blocksGet,
   delegatesGet,
+  operationsGetByHash,
   operationsGetDelegations,
   operationsGetOriginations,
   operationsGetTransactions,
@@ -380,3 +381,6 @@ export const getProtocolSettings = async (network: Network): Promise<ProtocolSet
     consensusRightsDelay: (settings as any).consensus_rights_delay,
   };
 };
+
+export const getOperationsByHash = (hash: string, network: Network) =>
+  withRateLimit(() => operationsGetByHash(hash, {}, { baseUrl: network.tzktApiUrl }));

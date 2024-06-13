@@ -1,8 +1,6 @@
 import { Locator, Page, expect } from "@playwright/test";
 
-import { AddressPillPage } from "./AddressPillPage";
 import { SignPage } from "./SignPage";
-import { RawPkh } from "../../types/Address";
 import { TEZ } from "../../utils/tezos";
 import { DEFAULT_ACCOUNTS } from "../constants";
 
@@ -31,19 +29,12 @@ export class AccountDrawerPage {
     return this.page.getByTestId("account-drawer-cta-button").filter({ hasText: buttonName });
   }
 
-  async getBakerAddress(): Promise<RawPkh> {
-    await this.openTab("Earn");
-    return (await new AddressPillPage(this.getBakerLocator()).getAddress()) as string;
-  }
-
-  getBakerLocator(): Locator {
+  get baker(): Locator {
     return this.page.getByTestId("current-baker");
   }
 
-  async isDelegating(): Promise<boolean> {
-    await this.openTab("Earn");
-    const delegationStatus = this.page.getByTestId("delegation-status");
-    return (await delegationStatus.getByText("Inactive").count()) === 0;
+  get delegationStatus(): Locator {
+    return this.page.getByTestId("delegation-status");
   }
 
   async undelegate(): Promise<void> {

@@ -21,7 +21,6 @@ const startNode = () => {
   try {
     runDockerCommand("up --wait --wait-timeout 120");
   } catch (e) {
-    console.error("Failed to start the node, docker compose logs:");
     runDockerCommand("logs", "inherit");
     throw e;
   }
@@ -63,7 +62,8 @@ export const topUpAccount = async (account: RawPkh, tez: string) => {
   }
 };
 
-export const waitUntilRefetch = (page: Page) => runAndWaitUntilRefetch(page, Promise.resolve);
+export const waitUntilRefetch = (page: Page) =>
+  runAndWaitUntilRefetch(page, () => Promise.resolve());
 
 export const refetch = (page: Page, force = false) =>
   runAndWaitUntilRefetch(page, () => page.getByTestId("refetch-button").click({ force }));

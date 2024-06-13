@@ -16,9 +16,11 @@ export const useReactQueryErrorHandler = () => {
       }
       dispatch(errorsSlice.actions.add(getErrorContext(error)));
       toast({
+        id: "data-fetching-error",
         description: `Data fetching error: ${error.message}`,
         status: "error",
         isClosable: true,
+        duration: 10000,
       });
     },
     [dispatch, toast]
