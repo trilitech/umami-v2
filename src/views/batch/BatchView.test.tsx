@@ -1,4 +1,4 @@
-import { OpKind, OperationContentsAndResult } from "@taquito/rpc";
+import { OpKind, type OperationContentsAndResult } from "@taquito/rpc";
 import { TezosOperationError } from "@taquito/taquito";
 
 import { BatchView } from "./BatchView";
@@ -8,7 +8,7 @@ import { addAccount } from "../../mocks/helpers";
 import { act, render, screen, userEvent, within } from "../../mocks/testUtils";
 import { mockToast } from "../../mocks/toast";
 import { makeAccountOperations } from "../../types/AccountOperations";
-import { Operation } from "../../types/Operation";
+import { type Operation } from "../../types/Operation";
 import { estimate } from "../../utils/tezos";
 
 jest.mock("../../utils/tezos/estimate");

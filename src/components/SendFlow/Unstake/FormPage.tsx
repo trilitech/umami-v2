@@ -13,12 +13,12 @@ import {
   ModalHeader,
 } from "@chakra-ui/react";
 import BigNumber from "bignumber.js";
-import React from "react";
+import type React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { SignPage } from "./SignPage";
-import { RawPkh, parsePkh } from "../../../types/Address";
-import { Unstake } from "../../../types/Operation";
+import { type RawPkh, parsePkh } from "../../../types/Address";
+import { type Unstake } from "../../../types/Operation";
 import { tezToMutez } from "../../../utils/format";
 import { TEZ, TEZ_DECIMALS } from "../../../utils/tezos";
 import { TezTile } from "../../AssetTiles/TezTile";
@@ -29,7 +29,7 @@ import {
   useOpenSignPageFormAction,
 } from "../onSubmitFormActionHooks";
 import {
-  FormPageProps,
+  type FormPageProps,
   FormSubmitButtons,
   formDefaultValues,
   getSmallestUnit,

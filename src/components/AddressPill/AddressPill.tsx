@@ -1,6 +1,6 @@
 import {
   Box,
-  BoxProps,
+  type BoxProps,
   Button,
   Flex,
   Popover,
@@ -15,11 +15,11 @@ import {
 import { useRef, useState } from "react";
 
 import { LeftIcon, RightIcon } from "./AddressPillIcon";
-import { AddressPillMode } from "./AddressPillMode";
+import { type AddressPillMode } from "./AddressPillMode";
 import { AddressPillText } from "./AddressPillText";
 import { useAddressKind } from "./useAddressKind";
 import colors from "../../style/colors";
-import { Address, TzktAlias, parsePkh } from "../../types/Address";
+import { type Address, type TzktAlias, parsePkh } from "../../types/Address";
 
 export const AddressPill: React.FC<
   { address: Address | TzktAlias; mode?: AddressPillMode } & BoxProps

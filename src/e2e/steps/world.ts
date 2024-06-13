@@ -1,5 +1,5 @@
-import { IWorldOptions, World, setWorldConstructor } from "@cucumber/cucumber";
-import { BrowserContext, Locator, Page } from "@playwright/test";
+import { type IWorldOptions, World, setWorldConstructor } from "@cucumber/cucumber";
+import { type BrowserContext, type Locator, type Page } from "@playwright/test";
 
 /**
  * Custom cucumber context which allows us to use

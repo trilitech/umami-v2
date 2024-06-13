@@ -7,9 +7,9 @@ import { addAccount } from "../../../mocks/helpers";
 import { render, screen, waitFor } from "../../../mocks/testUtils";
 import { makeAccountOperations } from "../../../types/AccountOperations";
 import { parseContractPkh } from "../../../types/Address";
-import { NFTBalance } from "../../../types/TokenBalance";
+import { type NFTBalance } from "../../../types/TokenBalance";
 import { TEZ } from "../../../utils/tezos";
-import { SignPageProps } from "../utils";
+import { type SignPageProps } from "../utils";
 
 const fixture = (props: SignPageProps<{ nft: NFTBalance }>) => (
   <Modal isOpen={true} onClose={() => {}}>

@@ -1,7 +1,7 @@
 import { NFTDrawerCard } from "./NFTDrawerCard";
 import { mockImplicitAddress, mockNFT } from "../../mocks/factories";
 import { render, screen } from "../../mocks/testUtils";
-import { NFTBalance } from "../../types/TokenBalance";
+import { type NFTBalance } from "../../types/TokenBalance";
 
 const fixture = (nft: NFTBalance, ownerPkh = mockImplicitAddress(0).pkh) => {
   const nftWithOwner = { ...nft, owner: ownerPkh };

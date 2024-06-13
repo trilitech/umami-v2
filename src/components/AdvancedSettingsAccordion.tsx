@@ -17,7 +17,7 @@ import { useFormContext } from "react-hook-form";
 import { getSmallestUnit, makeValidateDecimals } from "./SendFlow/utils";
 import colors from "../style/colors";
 import { mutezToTez, tezToMutez } from "../utils/format";
-import { Estimation, TEZ_DECIMALS } from "../utils/tezos";
+import { type Estimation, TEZ_DECIMALS } from "../utils/tezos";
 
 type AdvancedSettingsAccordionProps = {
   index?: number;

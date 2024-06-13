@@ -2,22 +2,25 @@ import TransportWebUSB from "@ledgerhq/hw-transport-webusb";
 import { DerivationType, LedgerSigner } from "@taquito/ledger-signer";
 import { Parser } from "@taquito/michel-codec";
 import { OpKind } from "@taquito/rpc";
-import { Curves, InMemorySigner } from "@taquito/signer";
-import { ParamsWithKind, TezosToolkit, WalletParamsWithKind } from "@taquito/taquito";
+import { type Curves, InMemorySigner } from "@taquito/signer";
+import { type ParamsWithKind, TezosToolkit, type WalletParamsWithKind } from "@taquito/taquito";
 import axios from "axios";
 import { shuffle, zipWith } from "lodash";
 
 import { FakeSigner } from "./fakeSigner";
-import { AccountOperations, EstimatedAccountOperations } from "../../types/AccountOperations";
-import { Network } from "../../types/Network";
 import {
-  Operation,
+  type AccountOperations,
+  type EstimatedAccountOperations,
+} from "../../types/AccountOperations";
+import { type Network } from "../../types/Network";
+import {
+  type Operation,
   makeFA12TransactionParameter,
   makeFA2TransactionParameter,
   makeMultisigProposeOperation,
 } from "../../types/Operation";
-import { SignerConfig } from "../../types/SignerConfig";
-import { RawTzktAccountType } from "../tzkt/types";
+import { type SignerConfig } from "../../types/SignerConfig";
+import { type RawTzktAccountType } from "../tzkt/types";
 
 export type PublicKeyPair = {
   pk: string;

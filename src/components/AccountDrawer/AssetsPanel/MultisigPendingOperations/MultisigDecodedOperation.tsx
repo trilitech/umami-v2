@@ -2,7 +2,7 @@ import { Box, Flex, Text } from "@chakra-ui/react";
 
 import { OutgoingArrow } from "../../../../assets/icons";
 import colors from "../../../../style/colors";
-import { Operation } from "../../../../types/Operation";
+import { type Operation } from "../../../../types/Operation";
 import { tokenNameSafe, tokenPrettyAmount } from "../../../../types/Token";
 import { prettyTezAmount } from "../../../../utils/format";
 import { useGetToken } from "../../../../utils/hooks/tokensHooks";

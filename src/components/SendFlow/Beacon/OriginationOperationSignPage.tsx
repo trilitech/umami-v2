@@ -18,10 +18,10 @@ import {
 import { capitalize } from "lodash";
 import { FormProvider } from "react-hook-form";
 
-import { BeaconSignPageProps } from "./BeaconSignPageProps";
+import { type BeaconSignPageProps } from "./BeaconSignPageProps";
 import { useSignWithBeacon } from "./useSignWithBeacon";
 import colors from "../../../style/colors";
-import { ContractOrigination } from "../../../types/Operation";
+import { type ContractOrigination } from "../../../types/Operation";
 import { JsValueWrap } from "../../AccountDrawer/JsValueWrap";
 import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";
 import { SignButton } from "../SignButton";

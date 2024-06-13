@@ -1,4 +1,4 @@
-import { Card, CardBody, CardProps } from "@chakra-ui/react";
+import { Card, CardBody, type CardProps } from "@chakra-ui/react";
 
 import colors from "../../style/colors";
 

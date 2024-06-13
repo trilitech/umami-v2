@@ -13,7 +13,7 @@ import { useContext } from "react";
 import { FormPage } from "./FormPage";
 import { WarningIcon } from "../../../assets/icons";
 import colors from "../../../style/colors";
-import { Account } from "../../../types/Account";
+import { type Account } from "../../../types/Account";
 import { useGetAccountStakedBalance } from "../../../utils/hooks/stakingHooks";
 import { DynamicModalContext } from "../../DynamicModal";
 import { NoticeSteps } from "../NoticeSteps";

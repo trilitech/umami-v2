@@ -4,7 +4,7 @@ import React from "react";
 import { DocumentIcon } from "../../../assets/icons";
 import colors from "../../../style/colors";
 import { ModalContentWrapper } from "../ModalContentWrapper";
-import { OnboardingStep } from "../OnboardingStep";
+import { type OnboardingStep } from "../OnboardingStep";
 
 export const Eula: React.FC<{
   goToStep: (step: OnboardingStep) => void;

@@ -1,6 +1,6 @@
 import { When } from "@cucumber/cucumber";
 
-import { CustomWorld } from "./world";
+import { type CustomWorld } from "./world";
 import { AccountDrawerPage } from "../pages/AccountDrawerPage";
 import { AccountsPage } from "../pages/AccountsPage";
 

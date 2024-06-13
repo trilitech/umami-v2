@@ -3,13 +3,13 @@ import { maxBy } from "lodash";
 import { useGetAccountBalance } from "./assetsHooks";
 import { useMultisigAccounts } from "./multisigHooks";
 import {
-  Account,
-  ImplicitAccount,
-  MnemonicAccount,
-  MultisigAccount,
-  SecretKeyAccount,
+  type Account,
+  type ImplicitAccount,
+  type MnemonicAccount,
+  type MultisigAccount,
+  type SecretKeyAccount,
 } from "../../types/Account";
-import { RawPkh } from "../../types/Address";
+import { type RawPkh } from "../../types/Address";
 import { decrypt } from "../crypto/AES";
 import { useAppSelector } from "../redux/hooks";
 import { deriveSecretKey } from "../tezos";

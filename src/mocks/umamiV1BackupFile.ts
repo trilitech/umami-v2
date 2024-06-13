@@ -1,5 +1,5 @@
 import { mnemonic1, mnemonic2 } from "./mockMnemonic";
-import { UmamiV1Backup } from "../types/UmamiBackup";
+import { type UmamiV1Backup } from "../types/UmamiBackup";
 
 export const umamiBackup: UmamiV1Backup = {
   // password = password !

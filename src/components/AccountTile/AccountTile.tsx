@@ -1,10 +1,20 @@
-import { AspectRatio, Box, Divider, Flex, FlexProps, Heading, Image, Text } from "@chakra-ui/react";
-import React, { useContext } from "react";
+import {
+  AspectRatio,
+  Box,
+  Divider,
+  Flex,
+  type FlexProps,
+  Heading,
+  Image,
+  Text,
+} from "@chakra-ui/react";
+import type React from "react";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
 
 import { AccountTileIcon } from "./AccountTileIcon";
 import colors from "../../style/colors";
-import { Account } from "../../types/Account";
+import { type Account } from "../../types/Account";
 import { fullId, thumbnailUri } from "../../types/Token";
 import { formatPkh, prettyTezAmount } from "../../utils/format";
 import {

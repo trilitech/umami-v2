@@ -1,7 +1,7 @@
 import { Text, Wrap, WrapItem } from "@chakra-ui/react";
 
 import colors from "../../../style/colors";
-import { NFTBalance } from "../../../types/TokenBalance";
+import { type NFTBalance } from "../../../types/TokenBalance";
 
 export const TagsSection = ({ nft }: { nft: NFTBalance }) => {
   const tags = nft.metadata.tags;

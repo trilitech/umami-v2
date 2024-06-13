@@ -1,5 +1,5 @@
 import { ValidationResult, validateAddress } from "@taquito/utils";
-import { Alias } from "@tzkt/sdk-api";
+import { type Alias } from "@tzkt/sdk-api";
 import { z } from "zod";
 
 export type RawPkh = string;

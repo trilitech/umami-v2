@@ -1,4 +1,4 @@
-import { ExtendedPeerInfo, NetworkType } from "@airgap/beacon-wallet";
+import { type ExtendedPeerInfo, NetworkType } from "@airgap/beacon-wallet";
 import { waitFor } from "@testing-library/react";
 
 import { useRemoveDependenciesAndMultisigs } from "./removeAccountDependenciesHooks";

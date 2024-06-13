@@ -16,7 +16,7 @@ import { PenIcon, PlusIcon, TrashIcon } from "../../../assets/icons";
 import { DynamicModalContext } from "../../../components/DynamicModal";
 import { PopoverMenu } from "../../../components/PopoverMenu";
 import colors from "../../../style/colors";
-import { Network, isDefault } from "../../../types/Network";
+import { type Network, isDefault } from "../../../types/Network";
 import {
   useAvailableNetworks,
   useSelectNetwork,

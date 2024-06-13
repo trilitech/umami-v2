@@ -1,5 +1,5 @@
-import { Card, CardBody, CardProps, Flex, Heading } from "@chakra-ui/react";
-import { PropsWithChildren } from "react";
+import { Card, CardBody, type CardProps, Flex, Heading } from "@chakra-ui/react";
+import { type PropsWithChildren } from "react";
 
 import { ChevronRightIcon } from "../assets/icons";
 import colors from "../style/colors";

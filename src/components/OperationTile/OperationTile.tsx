@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 
 import { ContractCallTile } from "./ContractCallTile";
 import { DelegationTile } from "./DelegationTile";
@@ -10,7 +10,7 @@ import { TransactionTile } from "./TransactionTile";
 import { UnstakeTile } from "./UnstakeTile";
 import { fromRaw } from "../../types/Token";
 import { useGetTokenTransfer } from "../../utils/hooks/assetsHooks";
-import { TzktCombinedOperation } from "../../utils/tezos";
+import { type TzktCombinedOperation } from "../../utils/tezos";
 
 export const OperationTile: React.FC<{
   operation: TzktCombinedOperation;

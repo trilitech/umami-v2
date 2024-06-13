@@ -1,4 +1,4 @@
-import { OperationContentsAndResult } from "@taquito/rpc";
+import { type OperationContentsAndResult } from "@taquito/rpc";
 
 import { OperationEstimationStatus } from "./OperationEstimationStatus";
 import { render, screen } from "../../mocks/testUtils";

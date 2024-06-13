@@ -1,8 +1,8 @@
 import { MenuItem, MenuList } from "@chakra-ui/react";
-import React from "react";
+import type React from "react";
 
 import colors from "../../style/colors";
-import { Account } from "../../types/Account";
+import { type Account } from "../../types/Account";
 import { AddressTile } from "../AddressTile/AddressTile";
 
 export const AccountListDisplay: React.FC<{

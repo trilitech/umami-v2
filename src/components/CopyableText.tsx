@@ -1,5 +1,5 @@
-import { Flex, FlexProps, Text, useToast } from "@chakra-ui/react";
-import React from "react";
+import { Flex, type FlexProps, Text, useToast } from "@chakra-ui/react";
+import type React from "react";
 
 import { FileCopyIcon } from "../assets/icons";
 import colors from "../style/colors";

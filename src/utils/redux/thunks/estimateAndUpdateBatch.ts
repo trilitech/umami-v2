@@ -1,10 +1,10 @@
-import { Action, ThunkAction } from "@reduxjs/toolkit";
+import { type Action, type ThunkAction } from "@reduxjs/toolkit";
 
-import { AccountOperations } from "../../../types/AccountOperations";
-import { Network } from "../../../types/Network";
+import { type AccountOperations } from "../../../types/AccountOperations";
+import { type Network } from "../../../types/Network";
 import { estimate } from "../../tezos";
 import { batchesActions } from "../slices/batches";
-import { RootState } from "../store";
+import { type RootState } from "../store";
 
 export const estimateAndUpdateBatch =
   (

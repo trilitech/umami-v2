@@ -17,7 +17,7 @@ import { addAccount } from "../../mocks/helpers";
 import { encryptedMnemonic1 } from "../../mocks/mockMnemonic";
 import { renderHook, waitFor } from "../../mocks/testUtils";
 import { rawAccountFixture } from "../../mocks/tzktResponse";
-import { ImplicitAccount, MnemonicAccount } from "../../types/Account";
+import { type ImplicitAccount, type MnemonicAccount } from "../../types/Account";
 import { accountsActions } from "../redux/slices/accountsSlice/accountsSlice";
 import { assetsActions } from "../redux/slices/assetsSlice";
 import { multisigsSlice } from "../redux/slices/multisigsSlice";

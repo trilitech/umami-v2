@@ -13,7 +13,7 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
-import { FC, useContext, useEffect, useRef } from "react";
+import { type FC, useContext, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 
 import { CopyableAddress } from "./CopyableText";
@@ -21,7 +21,7 @@ import { DynamicModalContext } from "./DynamicModal";
 import { FormErrorMessage } from "./FormErrorMessage";
 import colors from "../style/colors";
 import { isValidContractPkh } from "../types/Address";
-import { Contact } from "../types/Contact";
+import { type Contact } from "../types/Contact";
 import { useValidateNewContactPkh } from "../utils/hooks/contactsHooks";
 import { useValidateName } from "../utils/hooks/labelsHooks";
 import { useAvailableNetworks } from "../utils/hooks/networkHooks";

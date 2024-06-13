@@ -1,6 +1,6 @@
 import { ChangeDelegateNoticeModal } from "./ChangeDelegateNoticeModal";
 import { NewDelegateNoticeModal } from "./NewDelegateNoticeModal";
-import { Account } from "../../../types/Account";
+import { type Account } from "../../../types/Account";
 import { useGetAccountDelegate } from "../../../utils/hooks/assetsHooks";
 
 export const NoticeModal = ({ account }: { account: Account }) => {

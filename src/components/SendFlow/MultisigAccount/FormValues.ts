@@ -1,4 +1,4 @@
-import { RawPkh } from "../../../types/Address";
+import { type RawPkh } from "../../../types/Address";
 
 export type FormValues = {
   name: string;

@@ -1,4 +1,4 @@
-import { RawPkh } from "../../types/Address";
+import { type RawPkh } from "../../types/Address";
 
 type MnemonicAddress = { type: "mnemonic"; pkh: RawPkh; label: string };
 type SecretKeyAddress = { type: "secret_key"; pkh: RawPkh; label: string };

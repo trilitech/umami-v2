@@ -1,10 +1,10 @@
 import { FormControl, FormLabel, ModalBody, ModalContent, ModalFooter } from "@chakra-ui/react";
-import React from "react";
+import type React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { SignPage } from "./SignPage";
-import { RawPkh, parsePkh } from "../../../types/Address";
-import { Undelegation } from "../../../types/Operation";
+import { type RawPkh, parsePkh } from "../../../types/Address";
+import { type Undelegation } from "../../../types/Operation";
 import { OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
 import { AddressTile } from "../../AddressTile/AddressTile";
 import { FormPageHeader } from "../FormPageHeader";
@@ -13,7 +13,7 @@ import {
   useHandleOnSubmitFormActions,
   useOpenSignPageFormAction,
 } from "../onSubmitFormActionHooks";
-import { FormPagePropsWithSender, FormSubmitButtons, formDefaultValues } from "../utils";
+import { type FormPagePropsWithSender, FormSubmitButtons, formDefaultValues } from "../utils";
 
 export type FormValues = {
   sender: RawPkh;

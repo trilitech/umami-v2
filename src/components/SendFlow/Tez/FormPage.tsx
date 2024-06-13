@@ -8,12 +8,12 @@ import {
   ModalContent,
   ModalFooter,
 } from "@chakra-ui/react";
-import React from "react";
+import type React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { SignPage } from "./SignPage";
-import { RawPkh, parsePkh } from "../../../types/Address";
-import { TezTransfer } from "../../../types/Operation";
+import { type RawPkh, parsePkh } from "../../../types/Address";
+import { type TezTransfer } from "../../../types/Operation";
 import { tezToMutez } from "../../../utils/format";
 import { TEZ, TEZ_DECIMALS } from "../../../utils/tezos";
 import { KnownAccountsAutocomplete, OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
@@ -25,7 +25,7 @@ import {
   useOpenSignPageFormAction,
 } from "../onSubmitFormActionHooks";
 import {
-  FormPageProps,
+  type FormPageProps,
   FormSubmitButtons,
   formDefaultValues,
   getSmallestUnit,

@@ -2,18 +2,18 @@ import { BigNumber } from "bignumber.js";
 import { compact, fromPairs } from "lodash";
 
 import { useGetToken } from "./tokensHooks";
-import { RawPkh } from "../../types/Address";
-import { Delegate } from "../../types/Delegate";
+import { type RawPkh } from "../../types/Address";
+import { type Delegate } from "../../types/Delegate";
 import {
-  NFTBalance,
-  TokenBalanceWithToken,
+  type NFTBalance,
+  type TokenBalanceWithToken,
   keepFA1s,
   keepFA2s,
   keepNFTs,
 } from "../../types/TokenBalance";
 import { mutezToTez } from "../format";
 import { useAppSelector } from "../redux/hooks";
-import { TokenTransferOperation } from "../tezos";
+import { type TokenTransferOperation } from "../tezos";
 
 const useGetAccountStates = () => useAppSelector(s => s.assets.accountStates);
 

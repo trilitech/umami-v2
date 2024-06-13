@@ -1,9 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { fromPairs, groupBy, omit } from "lodash";
 
-import { MultisigAccount } from "../../../types/Account";
-import { RawPkh } from "../../../types/Address";
-import { Multisig, MultisigOperation, MultisigPendingOperations } from "../../multisig/types";
+import { type MultisigAccount } from "../../../types/Account";
+import { type RawPkh } from "../../../types/Address";
+import {
+  type Multisig,
+  type MultisigOperation,
+  type MultisigPendingOperations,
+} from "../../multisig/types";
 
 type State = {
   items: MultisigAccount[];

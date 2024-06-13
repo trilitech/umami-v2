@@ -13,12 +13,12 @@ import {
 import ordinal from "ordinal";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 
-import { FormValues } from "./FormValues";
+import { type FormValues } from "./FormValues";
 import { SignTransactionFormPage } from "./SignTransactionFormPage";
 import { TrashIcon } from "../../../assets/icons";
 import { contract, makeStorageJSON } from "../../../multisig/contract";
 import colors from "../../../style/colors";
-import { ImplicitAccount } from "../../../types/Account";
+import { type ImplicitAccount } from "../../../types/Account";
 import { isValidImplicitPkh, parsePkh } from "../../../types/Address";
 import { OwnedImplicitAccountsAutocomplete } from "../../AddressAutocomplete";
 import { FormErrorMessage } from "../../FormErrorMessage";
@@ -28,7 +28,7 @@ import {
   useHandleOnSubmitFormActions,
   useOpenSignPageFormAction,
 } from "../onSubmitFormActionHooks";
-import { FormPageProps, formDefaultValues } from "../utils";
+import { type FormPageProps, formDefaultValues } from "../utils";
 
 const toOperation = (formValues: FormValues) => ({
   type: "contract_origination" as const,

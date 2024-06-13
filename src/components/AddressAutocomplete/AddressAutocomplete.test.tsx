@@ -3,7 +3,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { AddressAutocomplete } from "./AddressAutocomplete";
 import { mockImplicitAddress, mockImplicitContact } from "../../mocks/factories";
 import { fireEvent, render, screen, within } from "../../mocks/testUtils";
-import { Contact } from "../../types/Contact";
+import { type Contact } from "../../types/Contact";
 import { contactsActions } from "../../utils/redux/slices/contactsSlice";
 import { store } from "../../utils/redux/store";
 

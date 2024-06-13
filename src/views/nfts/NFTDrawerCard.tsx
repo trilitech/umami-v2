@@ -24,7 +24,7 @@ import { FormPage as SendNFTForm } from "../../components/SendFlow/NFT/FormPage"
 import colors from "../../style/colors";
 import { artifactUri, mimeType, tokenName } from "../../types/Token";
 import { useGetOwnedAccount } from "../../utils/hooks/getAccountDataHooks";
-import { NFTWithOwner, getIPFSurl } from "../../utils/token/utils";
+import { type NFTWithOwner, getIPFSurl } from "../../utils/token/utils";
 
 export const NFTDrawerCard = ({ nft }: { nft: NFTWithOwner }) => {
   const url = getIPFSurl(artifactUri(nft));

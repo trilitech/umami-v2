@@ -6,12 +6,12 @@ import {
   ModalFooter,
   Text,
 } from "@chakra-ui/react";
-import React from "react";
+import type React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { SignPage } from "./SignPage";
-import { RawPkh, parseImplicitPkh, parsePkh } from "../../../types/Address";
-import { Delegation } from "../../../types/Operation";
+import { type RawPkh, parseImplicitPkh, parsePkh } from "../../../types/Address";
+import { type Delegation } from "../../../types/Operation";
 import { BakersAutocomplete, OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
 import { FormErrorMessage } from "../../FormErrorMessage";
 import { HeaderWrapper } from "../FormPageHeader";
@@ -20,7 +20,7 @@ import {
   useHandleOnSubmitFormActions,
   useOpenSignPageFormAction,
 } from "../onSubmitFormActionHooks";
-import { FormPageProps, FormSubmitButtons, formDefaultValues } from "../utils";
+import { type FormPageProps, FormSubmitButtons, formDefaultValues } from "../utils";
 
 export type FormValues = {
   sender: RawPkh;

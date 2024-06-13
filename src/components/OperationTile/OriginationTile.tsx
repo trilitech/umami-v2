@@ -9,7 +9,7 @@ import { TzktLink } from "./TzktLink";
 import { ContractIcon } from "../../assets/icons";
 import colors from "../../style/colors";
 import { CODE_HASH, TYPE_HASH } from "../../utils/multisig/fetch";
-import { OriginationOperation } from "../../utils/tezos";
+import { type OriginationOperation } from "../../utils/tezos";
 import { AddressPill } from "../AddressPill/AddressPill";
 
 export const OriginationTile: React.FC<{ operation: OriginationOperation }> = ({ operation }) => {

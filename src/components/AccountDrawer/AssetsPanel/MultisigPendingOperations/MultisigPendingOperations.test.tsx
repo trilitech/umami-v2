@@ -8,7 +8,7 @@ import {
 import { addAccount } from "../../../../mocks/helpers";
 import { pendingOps } from "../../../../mocks/multisig";
 import { fireEvent, render, screen, within } from "../../../../mocks/testUtils";
-import { MnemonicAccount } from "../../../../types/Account";
+import { type MnemonicAccount } from "../../../../types/Account";
 import { multisigsSlice } from "../../../../utils/redux/slices/multisigsSlice";
 import { store } from "../../../../utils/redux/store";
 import { estimate } from "../../../../utils/tezos";

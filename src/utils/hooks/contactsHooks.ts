@@ -1,7 +1,7 @@
 import { useGetOwnedAccountSafe } from "./getAccountDataHooks";
 import { useSelectedNetwork } from "./networkHooks";
 import { isAddressValid, isValidImplicitPkh } from "../../types/Address";
-import { Contact } from "../../types/Contact";
+import { type Contact } from "../../types/Contact";
 import { useAppSelector } from "../redux/hooks";
 
 export const useAllContacts = () => useAppSelector(s => s.contacts);

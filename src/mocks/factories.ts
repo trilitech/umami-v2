@@ -1,40 +1,40 @@
-import { MichelsonV1Expression } from "@taquito/rpc";
-import { DelegationOperation } from "@tzkt/sdk-api";
+import { type MichelsonV1Expression } from "@taquito/rpc";
+import { type DelegationOperation } from "@tzkt/sdk-api";
 
-import { IDP } from "../auth";
+import { type IDP } from "../auth";
 import {
-  Account,
-  ImplicitAccount,
-  LedgerAccount,
-  MnemonicAccount,
-  MultisigAccount,
-  SecretKeyAccount,
-  SocialAccount,
+  type Account,
+  type ImplicitAccount,
+  type LedgerAccount,
+  type MnemonicAccount,
+  type MultisigAccount,
+  type SecretKeyAccount,
+  type SocialAccount,
 } from "../types/Account";
-import { ContractAddress, ImplicitAddress, RawPkh } from "../types/Address";
-import { StoredContactInfo } from "../types/Contact";
-import { Delegate } from "../types/Delegate";
+import { type ContractAddress, type ImplicitAddress, type RawPkh } from "../types/Address";
+import { type StoredContactInfo } from "../types/Contact";
+import { type Delegate } from "../types/Delegate";
 import {
-  ContractOrigination,
-  Delegation,
-  FA12Transfer,
-  FA2Transfer,
-  TezTransfer,
-  Undelegation,
+  type ContractOrigination,
+  type Delegation,
+  type FA12Transfer,
+  type FA2Transfer,
+  type TezTransfer,
+  type Undelegation,
 } from "../types/Operation";
 import {
-  FA12TokenBalance,
-  FA2TokenBalance,
-  NFTBalance,
-  RawTokenBalance,
+  type FA12TokenBalance,
+  type FA2TokenBalance,
+  type NFTBalance,
+  type RawTokenBalance,
   fromRaw,
 } from "../types/TokenBalance";
-import { TokenTransfer } from "../types/Transfer";
+import { type TokenTransfer } from "../types/Transfer";
 import {
   defaultDerivationPathTemplate,
   getDefaultDerivationPath,
 } from "../utils/account/derivationPathUtils";
-import { Multisig } from "../utils/multisig/types";
+import { type Multisig } from "../utils/multisig/types";
 
 export const mockDelegation = (
   id: number,

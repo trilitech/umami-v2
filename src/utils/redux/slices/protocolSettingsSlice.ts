@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { fromPairs } from "lodash";
 
-import { DefaultNetworks, Network, NetworkName } from "../../../types/Network";
+import { DefaultNetworks, type Network, type NetworkName } from "../../../types/Network";
 
 export type ProtocolSettings = {
   maxSlashingPeriod: number;

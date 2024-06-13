@@ -1,6 +1,6 @@
 import { createContext } from "react";
 
-import { NFTWithOwner } from "../../utils/token/utils";
+import { type NFTWithOwner } from "../../utils/token/utils";
 
 export const SelectedNFTContext = createContext<{
   selectedNFT: NFTWithOwner | undefined;

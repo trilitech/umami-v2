@@ -1,8 +1,8 @@
-import { Box, Button, Center, Flex, FlexProps, Text } from "@chakra-ui/react";
+import { Box, Button, Center, Flex, type FlexProps, Text } from "@chakra-ui/react";
 import { useContext } from "react";
 
 import colors from "../../../../style/colors";
-import { ImplicitAccount } from "../../../../types/Account";
+import { type ImplicitAccount } from "../../../../types/Account";
 import { makeAccountOperations } from "../../../../types/AccountOperations";
 import { prettyTezAmount } from "../../../../utils/format";
 import { useSelectedNetwork } from "../../../../utils/hooks/networkHooks";

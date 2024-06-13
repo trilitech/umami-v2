@@ -1,4 +1,4 @@
-import { Icon, IconProps } from "@chakra-ui/react";
+import { Icon, type IconProps } from "@chakra-ui/react";
 
 export const AddContactIcon: React.FC<IconProps> = props => (
   <Icon fill="none" viewBox="0 0 13 17" xmlns="http://www.w3.org/2000/svg" {...props}>

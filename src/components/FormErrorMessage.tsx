@@ -1,5 +1,5 @@
 import {
-  FormErrorMessageProps,
+  type FormErrorMessageProps,
   Icon,
   FormErrorMessage as OriginalFormErrorMessage,
 } from "@chakra-ui/react";

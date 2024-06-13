@@ -1,6 +1,6 @@
 import { Modal } from "@chakra-ui/react";
 
-import { FormValues } from "./FormValues";
+import { type FormValues } from "./FormValues";
 import { SelectApproversFormPage } from "./SelectApproversFormPage";
 import { SignTransactionFormPage } from "./SignTransactionFormPage";
 import { executeParams } from "../../../mocks/executeParams";

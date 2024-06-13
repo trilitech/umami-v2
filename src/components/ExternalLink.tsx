@@ -1,5 +1,5 @@
-import { Link, LinkProps } from "@chakra-ui/react";
-import { PropsWithChildren } from "react";
+import { Link, type LinkProps } from "@chakra-ui/react";
+import { type PropsWithChildren } from "react";
 
 export const ExternalLink: React.FC<PropsWithChildren<{ href: string } & LinkProps>> = ({
   href,

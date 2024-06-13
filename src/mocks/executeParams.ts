@@ -1,4 +1,4 @@
-import { ExecuteParams } from "../utils/tezos";
+import { type ExecuteParams } from "../utils/tezos";
 
 export const executeParams = (params?: Partial<ExecuteParams>) => ({
   fee: 0,

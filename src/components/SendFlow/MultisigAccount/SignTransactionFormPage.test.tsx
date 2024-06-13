@@ -1,6 +1,6 @@
 import { Modal } from "@chakra-ui/react";
 
-import { FormValues } from "./FormValues";
+import { type FormValues } from "./FormValues";
 import { SignTransactionFormPage } from "./SignTransactionFormPage";
 import { executeParams } from "../../../mocks/executeParams";
 import {
@@ -13,7 +13,7 @@ import { addAccount } from "../../../mocks/helpers";
 import { render, screen, waitFor } from "../../../mocks/testUtils";
 import { makeAccountOperations } from "../../../types/AccountOperations";
 import { TEZ } from "../../../utils/tezos";
-import { SignPageProps } from "../utils";
+import { type SignPageProps } from "../utils";
 
 const fixture = (props: SignPageProps<FormValues>) => (
   <Modal isOpen={true} onClose={() => {}}>

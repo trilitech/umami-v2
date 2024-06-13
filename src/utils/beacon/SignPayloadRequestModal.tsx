@@ -1,8 +1,8 @@
 import {
   BeaconErrorType,
   BeaconMessageType,
-  SignPayloadRequestOutput,
-  SignPayloadResponseInput,
+  type SignPayloadRequestOutput,
+  type SignPayloadResponseInput,
 } from "@airgap/beacon-wallet";
 import {
   Box,
@@ -15,8 +15,9 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import { TezosToolkit } from "@taquito/taquito";
-import React, { useContext } from "react";
+import { type TezosToolkit } from "@taquito/taquito";
+import type React from "react";
+import { useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { useRemovePeerBySenderId } from "./beacon";

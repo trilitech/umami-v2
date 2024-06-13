@@ -1,5 +1,5 @@
 import { Modal } from "@chakra-ui/react";
-import { ReactElement } from "react";
+import { type ReactElement } from "react";
 
 import { UpsertNetworkModal } from "./UpsertNetworkModal";
 import { act, fireEvent, render, screen, userEvent, waitFor } from "../../../mocks/testUtils";

@@ -1,5 +1,5 @@
-import { Address } from "../types/Address";
-import { RawTokenBalance } from "../types/TokenBalance";
+import { type Address } from "../types/Address";
+import { type RawTokenBalance } from "../types/TokenBalance";
 
 export const uUSD = (owner: Address): RawTokenBalance => ({
   id: 64166129827842,

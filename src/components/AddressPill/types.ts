@@ -1,9 +1,9 @@
-import { RawPkh } from "../../types/Address";
+import { type RawPkh } from "../../types/Address";
 import {
-  BakerAddress,
-  ContactAddress,
-  OwnedMultisigAddress,
-  UnknownAddress,
+  type BakerAddress,
+  type ContactAddress,
+  type OwnedMultisigAddress,
+  type UnknownAddress,
 } from "../AddressTile/types";
 
 export type OwnedImplicitAddress = {

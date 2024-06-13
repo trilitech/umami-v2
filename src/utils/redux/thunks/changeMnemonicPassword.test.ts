@@ -1,9 +1,9 @@
 import { changeMnemonicPassword } from "./changeMnemonicPassword";
 import { mockImplicitAccount } from "../../../mocks/factories";
 import { mnemonic1, mnemonic2 } from "../../../mocks/mockMnemonic";
-import { MnemonicAccount } from "../../../types/Account";
+import { type MnemonicAccount } from "../../../types/Account";
 import { decrypt, encrypt } from "../../crypto/AES";
-import { EncryptedData } from "../../crypto/types";
+import { type EncryptedData } from "../../crypto/types";
 import { getFingerPrint } from "../../tezos";
 import { accountsSlice } from "../slices/accountsSlice/accountsSlice";
 import { store } from "../store";

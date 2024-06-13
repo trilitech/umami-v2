@@ -15,7 +15,7 @@ import {
 import { addAccount, fakeIsAccountRevealed } from "../../mocks/helpers";
 import { mnemonic1 } from "../../mocks/mockMnemonic";
 import { act, renderHook } from "../../mocks/testUtils";
-import { ImplicitAccount, MnemonicAccount } from "../../types/Account";
+import { type ImplicitAccount, type MnemonicAccount } from "../../types/Account";
 import {
   AVAILABLE_DERIVATION_PATH_TEMPLATES,
   makeDerivationPath,

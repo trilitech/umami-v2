@@ -13,7 +13,7 @@ import { MultisigDecodedOperation } from "./MultisigDecodedOperation";
 import { parseRawMichelson } from "../../../../multisig/decode/decodeLambda";
 import { UnrecognizedMichelsonError } from "../../../../multisig/decode/UnrecognizedMichelsonError";
 import colors from "../../../../style/colors";
-import { MultisigAccount } from "../../../../types/Account";
+import { type MultisigAccount } from "../../../../types/Account";
 import { JsValueWrap } from "../../JsValueWrap";
 
 export const MultisigDecodedOperations: React.FC<{

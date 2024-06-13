@@ -11,9 +11,9 @@ import {
   tezSchema,
 } from "./schemas";
 import { UnrecognizedMichelsonError } from "./UnrecognizedMichelsonError";
-import { MultisigAccount } from "../../types/Account";
+import { type MultisigAccount } from "../../types/Account";
 import { parseContractPkh, parseImplicitPkh, parsePkh } from "../../types/Address";
-import { Operation } from "../../types/Operation";
+import { type Operation } from "../../types/Operation";
 
 const convertToPkh = (addressBytes: string): string => {
   if (addressBytes.length === 42) {

@@ -1,4 +1,4 @@
-import { IconProps } from "@chakra-ui/react";
+import { type IconProps } from "@chakra-ui/react";
 
 import { WindowLinkIcon } from "../assets/icons/WindowLink";
 

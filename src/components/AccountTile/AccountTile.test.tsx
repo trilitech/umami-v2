@@ -10,7 +10,7 @@ import {
 import { addAccount } from "../../mocks/helpers";
 import { act, render, screen, userEvent } from "../../mocks/testUtils";
 import { MAINNET } from "../../types/Network";
-import { RawTokenBalance } from "../../types/TokenBalance";
+import { type RawTokenBalance } from "../../types/TokenBalance";
 import { assetsActions } from "../../utils/redux/slices/assetsSlice";
 import { tokensActions } from "../../utils/redux/slices/tokensSlice";
 import { store } from "../../utils/redux/store";

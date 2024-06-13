@@ -1,9 +1,9 @@
 import { mockContractAddress, mockImplicitAddress } from "../mocks/factories";
-import { ContractAddress, ImplicitAddress, parseContractPkh } from "../types/Address";
+import { type ContractAddress, type ImplicitAddress, parseContractPkh } from "../types/Address";
 import {
-  FA12Transfer,
+  type FA12Transfer,
   FA12_TRANSFER_ARG_TYPES,
-  FA2Transfer,
+  type FA2Transfer,
   FA2_TRANSFER_ARG_TYPES,
   headlessLambda,
   makeFA12TransactionParameter,

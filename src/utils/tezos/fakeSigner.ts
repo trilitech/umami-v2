@@ -1,4 +1,4 @@
-import { Signer } from "@taquito/taquito";
+import { type Signer } from "@taquito/taquito";
 export class FakeSigner implements Signer {
   pk: string;
   pkh: string;

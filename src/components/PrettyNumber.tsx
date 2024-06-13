@@ -1,4 +1,4 @@
-import { Flex, FlexProps, Heading } from "@chakra-ui/react";
+import { Flex, type FlexProps, Heading } from "@chakra-ui/react";
 
 const splitNumber = (num: string) => {
   const [integer, decimal] = num.split(".");

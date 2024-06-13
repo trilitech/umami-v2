@@ -13,15 +13,15 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import Papa, { ParseResult } from "papaparse";
+import Papa, { type ParseResult } from "papaparse";
 import { useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { parseOperation } from "./utils";
 import colors from "../../style/colors";
 import { makeAccountOperations } from "../../types/AccountOperations";
-import { RawPkh } from "../../types/Address";
-import { Operation } from "../../types/Operation";
+import { type RawPkh } from "../../types/Address";
+import { type Operation } from "../../types/Operation";
 import {
   useGetBestSignerForAccount,
   useGetOwnedAccount,

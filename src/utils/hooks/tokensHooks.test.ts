@@ -2,7 +2,7 @@ import { useGetToken, useGetTokenType } from "./tokensHooks";
 import { hedgehoge } from "../../mocks/fa12Tokens";
 import { mockContractAddress, mockImplicitAddress } from "../../mocks/factories";
 import { renderHook } from "../../mocks/testUtils";
-import { DefaultNetworks, Network } from "../../types/Network";
+import { DefaultNetworks, type Network } from "../../types/Network";
 import { fromRaw } from "../../types/Token";
 import { networksActions } from "../redux/slices/networks";
 import { tokensActions } from "../redux/slices/tokensSlice";

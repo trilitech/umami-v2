@@ -1,4 +1,4 @@
-import { ContractAddress, ImplicitAddress } from "../../types/Address";
+import { type ContractAddress, type ImplicitAddress } from "../../types/Address";
 
 type BigmapId = number;
 

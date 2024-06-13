@@ -1,10 +1,10 @@
 import { Box, Button, ListItem, OrderedList } from "@chakra-ui/react";
-import React from "react";
+import type React from "react";
 
 import { NoticeIcon } from "../../../assets/icons";
 import { generate24WordMnemonic } from "../../../utils/mnemonic";
 import { ModalContentWrapper } from "../ModalContentWrapper";
-import { OnboardingStep } from "../OnboardingStep";
+import { type OnboardingStep } from "../OnboardingStep";
 
 export const Notice: React.FC<{
   goToStep: (step: OnboardingStep) => void;

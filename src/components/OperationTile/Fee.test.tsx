@@ -3,7 +3,7 @@ import { OperationTileContext } from "./OperationTileContext";
 import { mockImplicitAccount, mockMnemonicAccount } from "../../mocks/factories";
 import { addAccount } from "../../mocks/helpers";
 import { render, screen } from "../../mocks/testUtils";
-import { TransactionOperation } from "../../utils/tezos";
+import { type TransactionOperation } from "../../utils/tezos";
 
 describe("<Fee />", () => {
   it("doesn't render if fee is 0", () => {

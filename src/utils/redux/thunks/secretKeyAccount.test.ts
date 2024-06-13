@@ -2,7 +2,7 @@ import { getCurve, restore } from "./secretKeyAccount";
 import { mockMnemonicAccount } from "../../../mocks/factories";
 import { addAccount } from "../../../mocks/helpers";
 import { decrypt } from "../../crypto/AES";
-import { EncryptedData } from "../../crypto/types";
+import { type EncryptedData } from "../../crypto/types";
 import { store } from "../store";
 
 describe("secretKeyAccount", () => {

@@ -9,7 +9,7 @@ import { makeAccountOperations } from "../../../types/AccountOperations";
 import { assetsSlice } from "../../../utils/redux/slices/assetsSlice";
 import { store } from "../../../utils/redux/store";
 import { TEZ } from "../../../utils/tezos";
-import { SignPageProps } from "../utils";
+import { type SignPageProps } from "../utils";
 
 const fixture = (props: SignPageProps) => (
   <Modal isOpen={true} onClose={() => {}}>

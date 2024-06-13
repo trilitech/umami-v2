@@ -1,6 +1,6 @@
 import { Modal } from "@chakra-ui/react";
 
-import { FormPage, FormValues } from "./FormPage";
+import { FormPage, type FormValues } from "./FormPage";
 import { SignPage } from "./SignPage";
 import { executeParams } from "../../../mocks/executeParams";
 import {
@@ -23,7 +23,7 @@ import { makeAccountOperations } from "../../../types/AccountOperations";
 import { assetsSlice } from "../../../utils/redux/slices/assetsSlice";
 import { store } from "../../../utils/redux/store";
 import { estimate } from "../../../utils/tezos";
-import { FormPagePropsWithSender } from "../utils";
+import { type FormPagePropsWithSender } from "../utils";
 
 const fixture = (props: FormPagePropsWithSender<FormValues>) => (
   <Modal isOpen={true} onClose={() => {}}>

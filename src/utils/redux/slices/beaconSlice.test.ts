@@ -6,7 +6,7 @@ import {
   mockSecretKeyAccount,
   mockSocialAccount,
 } from "../../../mocks/factories";
-import { RawPkh } from "../../../types/Address";
+import { type RawPkh } from "../../../types/Address";
 import { store } from "../store";
 
 describe("Beacon slice", () => {

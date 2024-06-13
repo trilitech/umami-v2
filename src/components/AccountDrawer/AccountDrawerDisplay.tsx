@@ -1,13 +1,17 @@
 import { Box, Center, Flex, Heading, IconButton, Text } from "@chakra-ui/react";
-import { ReactElement, useContext } from "react";
+import { type ReactElement, useContext } from "react";
 
 import { AssetsPanel } from "./AssetsPanel/AssetsPanel";
 import { MultisigApprovers } from "./MultisigApprovers";
 import { RenameRemoveMenuSwitch } from "./RenameRemoveMenuSwitch";
 import { BakerIcon, IncomingArrow, OutgoingArrow, PlusIcon } from "../../assets/icons";
 import colors from "../../style/colors";
-import { Account } from "../../types/Account";
-import { FA12TokenBalance, FA2TokenBalance, NFTBalance } from "../../types/TokenBalance";
+import { type Account } from "../../types/Account";
+import {
+  type FA12TokenBalance,
+  type FA2TokenBalance,
+  type NFTBalance,
+} from "../../types/TokenBalance";
 import { useGetAccountBalance, useGetDollarBalance } from "../../utils/hooks/assetsHooks";
 import { accountIconGradient } from "../AccountTile/AccountTile";
 import { AccountTileIcon } from "../AccountTile/AccountTileIcon";

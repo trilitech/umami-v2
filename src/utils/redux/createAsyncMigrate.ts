@@ -1,4 +1,4 @@
-import { DEFAULT_VERSION, PersistedState } from "redux-persist";
+import { DEFAULT_VERSION, type PersistedState } from "redux-persist";
 
 type MigrationManifest = {
   [key: string]: (state: PersistedState) => Promise<PersistedState>;

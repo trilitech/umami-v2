@@ -6,7 +6,7 @@ import { useSearchParams } from "react-router-dom";
 
 import { AccountListDisplay } from "./AccountSelector/AccountListDisplay";
 import { AddressPill } from "./AddressPill/AddressPill";
-import { Account } from "../types/Account";
+import { type Account } from "../types/Account";
 import { useAllAccounts } from "../utils/hooks/getAccountDataHooks";
 
 export const useAccountsFilter = () => {

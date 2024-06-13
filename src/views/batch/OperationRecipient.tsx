@@ -2,7 +2,7 @@ import { Text } from "@chakra-ui/react";
 
 import { AddressPill } from "../../components/AddressPill/AddressPill";
 import colors from "../../style/colors";
-import { Operation } from "../../types/Operation";
+import { type Operation } from "../../types/Operation";
 import { useGetAccountDelegate } from "../../utils/hooks/assetsHooks";
 
 export const OperationRecipient = ({ operation }: { operation: Operation }) => {

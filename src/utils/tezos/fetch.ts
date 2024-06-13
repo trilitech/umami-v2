@@ -1,8 +1,8 @@
 import { RpcClient } from "@taquito/rpc";
 import {
-  Delegate,
-  OffsetParameter,
-  SortParameter,
+  type Delegate,
+  type OffsetParameter,
+  type SortParameter,
   blocksGet,
   delegatesGet,
   operationsGetByHash,
@@ -17,12 +17,12 @@ import axios from "axios";
 import { identity, pickBy, sortBy } from "lodash";
 
 import { withRateLimit } from "./withRateLimit";
-import { RawPkh, TzktAlias } from "../../types/Address";
-import { Network } from "../../types/Network";
-import { RawTokenBalance } from "../../types/TokenBalance";
-import { TokenTransfer } from "../../types/Transfer";
-import { ProtocolSettings } from "../redux/slices/protocolSettingsSlice";
-import { RawTzktBlock, RawTzktUnstakeRequest } from "../tzkt/types";
+import { type RawPkh, type TzktAlias } from "../../types/Address";
+import { type Network } from "../../types/Network";
+import { type RawTokenBalance } from "../../types/TokenBalance";
+import { type TokenTransfer } from "../../types/Transfer";
+import { type ProtocolSettings } from "../redux/slices/protocolSettingsSlice";
+import { type RawTzktBlock, type RawTzktUnstakeRequest } from "../tzkt/types";
 
 // TzKT defines type Account = {type: string};
 // whilst accountsGet returns all the info about accounts

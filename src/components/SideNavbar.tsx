@@ -1,5 +1,5 @@
-import { Box, Divider, Flex, FlexProps, Text, useMediaQuery } from "@chakra-ui/react";
-import React from "react";
+import { Box, Divider, Flex, type FlexProps, Text, useMediaQuery } from "@chakra-ui/react";
+import type React from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import { AppVersion } from "./AppVersion";

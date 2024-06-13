@@ -1,9 +1,9 @@
 import { Box, Divider } from "@chakra-ui/react";
-import React from "react";
+import type React from "react";
 
 import { ViewAllLink } from "./ViewAllLink";
-import { RawPkh } from "../../../types/Address";
-import { TzktCombinedOperation } from "../../../utils/tezos";
+import { type RawPkh } from "../../../types/Address";
+import { type TzktCombinedOperation } from "../../../utils/tezos";
 import { NoOperations } from "../../NoItems";
 import { OperationTile } from "../../OperationTile";
 

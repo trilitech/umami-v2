@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Address } from "../../types/Address";
+import { type Address } from "../../types/Address";
 
 export type OperationTileContextType =
   | { mode: "page" }

@@ -1,5 +1,5 @@
 import { AddressTileIcon } from "./AddressTileIcon";
-import { AddressKind } from "./types";
+import { type AddressKind } from "./types";
 import type { IDP } from "../../auth";
 import {
   mockImplicitAddress,

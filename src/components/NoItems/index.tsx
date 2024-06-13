@@ -1,6 +1,6 @@
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Box, Button, Center, Flex, Heading, Text } from "@chakra-ui/react";
-import { PropsWithChildren } from "react";
+import { type PropsWithChildren } from "react";
 
 import colors from "../../style/colors";
 import { ExternalLink } from "../ExternalLink";

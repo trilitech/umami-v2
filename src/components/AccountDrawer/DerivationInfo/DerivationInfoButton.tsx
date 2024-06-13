@@ -1,9 +1,9 @@
-import { Button, ButtonProps } from "@chakra-ui/react";
+import { Button, type ButtonProps } from "@chakra-ui/react";
 import { useContext } from "react";
 
 import { InfoModal } from "./InfoModal";
 import { FolderInfoIcon } from "../../../assets/icons";
-import { Account } from "../../../types/Account";
+import { type Account } from "../../../types/Account";
 import { DynamicModalContext } from "../../DynamicModal";
 
 /**

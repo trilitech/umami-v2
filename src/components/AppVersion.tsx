@@ -1,4 +1,4 @@
-import { Text, TextProps } from "@chakra-ui/react";
+import { Text, type TextProps } from "@chakra-ui/react";
 
 import packageInfo from "../../package.json";
 import colors from "../style/colors";

@@ -1,4 +1,4 @@
-import { Center, FlexProps } from "@chakra-ui/react";
+import { Center, type FlexProps } from "@chakra-ui/react";
 
 import { BurgerMenuIcon } from "../../assets/icons";
 import colors from "../../style/colors";

@@ -1,5 +1,5 @@
 import { useSelectedNetwork } from "./networkHooks";
-import { Account } from "../../types/Account";
+import { type Account } from "../../types/Account";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { batchesActions } from "../redux/slices/batches";
 

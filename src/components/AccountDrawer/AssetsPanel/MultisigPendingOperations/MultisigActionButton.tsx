@@ -1,5 +1,5 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
-import React from "react";
+import type React from "react";
 
 import { CheckmarkIcon, HourglassIcon } from "../../../../assets/icons";
 import colors from "../../../../style/colors";

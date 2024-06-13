@@ -1,4 +1,4 @@
-import { EncryptedData } from "../utils/crypto/types";
+import { type EncryptedData } from "../utils/crypto/types";
 
 export type UmamiV1Backup = {
   version: string;

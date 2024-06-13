@@ -1,5 +1,5 @@
 import { Text } from "@chakra-ui/react";
-import { PropsWithChildren, useContext } from "react";
+import { type PropsWithChildren, useContext } from "react";
 
 import { OperationTileContext } from "./OperationTileContext";
 import colors from "../../style/colors";

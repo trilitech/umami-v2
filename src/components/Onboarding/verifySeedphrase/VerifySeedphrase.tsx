@@ -8,8 +8,7 @@ import { selectRandomElements } from "../../../utils/tezos";
 import { FormErrorMessage } from "../../FormErrorMessage";
 import { MnemonicAutocomplete } from "../../MnemonicAutocomplete";
 import { ModalContentWrapper } from "../ModalContentWrapper";
-import { OnboardingStep } from "../OnboardingStep";
-import type { VerifySeedphraseStep } from "../OnboardingStep";
+import { type OnboardingStep, type VerifySeedphraseStep } from "../OnboardingStep";
 
 export const VerifySeedphrase = ({
   goToStep,

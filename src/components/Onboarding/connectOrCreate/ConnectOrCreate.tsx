@@ -8,7 +8,7 @@ import { WalletPlusIcon } from "../../../assets/icons";
 import { IS_DEV } from "../../../env";
 import colors from "../../../style/colors";
 import { ModalContentWrapper } from "../ModalContentWrapper";
-import { OnboardingStep } from "../OnboardingStep";
+import { type OnboardingStep } from "../OnboardingStep";
 
 export const ConnectOrCreate = ({
   goToStep,

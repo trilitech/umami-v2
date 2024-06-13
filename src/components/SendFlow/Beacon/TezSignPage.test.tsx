@@ -1,4 +1,4 @@
-import { BeaconMessageType, NetworkType, OperationRequestOutput } from "@airgap/beacon-wallet";
+import { BeaconMessageType, NetworkType, type OperationRequestOutput } from "@airgap/beacon-wallet";
 import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
 
 import { TezSignPage } from "./TezSignPage";

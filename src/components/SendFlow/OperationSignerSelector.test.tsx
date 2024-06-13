@@ -9,8 +9,8 @@ import {
 } from "../../mocks/factories";
 import { addAccount } from "../../mocks/helpers";
 import { render, renderHook, screen } from "../../mocks/testUtils";
-import { MultisigAccount } from "../../types/Account";
-import { RawPkh } from "../../types/Address";
+import { type MultisigAccount } from "../../types/Account";
+import { type RawPkh } from "../../types/Address";
 import { multisigsSlice } from "../../utils/redux/slices/multisigsSlice";
 import { store } from "../../utils/redux/store";
 

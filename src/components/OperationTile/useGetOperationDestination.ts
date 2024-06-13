@@ -1,5 +1,5 @@
 import colors from "../../style/colors";
-import { RawPkh } from "../../types/Address";
+import { type RawPkh } from "../../types/Address";
 import { useIsOwnedAddress } from "../../utils/hooks/getAccountDataHooks";
 
 export type OperationDestination = "incoming" | "outgoing" | "unrelated";

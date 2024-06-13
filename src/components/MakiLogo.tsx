@@ -1,5 +1,5 @@
-import { IconProps } from "@chakra-ui/react";
-import React from "react";
+import { type IconProps } from "@chakra-ui/react";
+import type React from "react";
 
 import { MakiIcon } from "../assets/icons";
 import { useSelectedNetwork } from "../utils/hooks/networkHooks";

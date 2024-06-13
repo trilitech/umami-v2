@@ -8,7 +8,7 @@ import { DefaultNetworks } from "../../types/Network";
 import { formatPkh } from "../../utils/format";
 import { networksActions } from "../../utils/redux/slices/networks";
 import { store } from "../../utils/redux/store";
-import { TEZ, UnstakeOperation } from "../../utils/tezos";
+import { TEZ, type UnstakeOperation } from "../../utils/tezos";
 
 const fixture = (context: any, operation: UnstakeOperation) => (
   <OperationTileContext.Provider value={context}>

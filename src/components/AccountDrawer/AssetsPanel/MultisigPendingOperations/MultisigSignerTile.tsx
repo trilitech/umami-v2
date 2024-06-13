@@ -1,16 +1,17 @@
-import React, { useContext } from "react";
+import type React from "react";
+import { useContext } from "react";
 
-import { MultisigActionButton, MultisigSignerState } from "./MultisigActionButton";
+import { MultisigActionButton, type MultisigSignerState } from "./MultisigActionButton";
 import { parseRawMichelson } from "../../../../multisig/decode/decodeLambda";
 import colors from "../../../../style/colors";
-import { ImplicitAccount, MultisigAccount } from "../../../../types/Account";
+import { type ImplicitAccount, type MultisigAccount } from "../../../../types/Account";
 import { makeAccountOperations } from "../../../../types/AccountOperations";
-import { ImplicitAddress } from "../../../../types/Address";
+import { type ImplicitAddress } from "../../../../types/Address";
 import { makeMultisigApproveOrExecuteOperation } from "../../../../types/Operation";
 import { useGetImplicitAccountSafe } from "../../../../utils/hooks/getAccountDataHooks";
 import { useSelectedNetwork } from "../../../../utils/hooks/networkHooks";
 import { useAsyncActionHandler } from "../../../../utils/hooks/useAsyncActionHandler";
-import { MultisigOperation } from "../../../../utils/multisig/types";
+import { type MultisigOperation } from "../../../../utils/multisig/types";
 import { estimate } from "../../../../utils/tezos";
 import { AccountTileBase, LabelAndAddress } from "../../../AccountTile/AccountTile";
 import { AddressTileIcon } from "../../../AddressTile/AddressTileIcon";

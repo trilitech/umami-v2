@@ -1,6 +1,6 @@
 import { Modal } from "@chakra-ui/react";
 
-import { FormPage, FormValues } from "./FormPage";
+import { FormPage, type FormValues } from "./FormPage";
 import { SignPage } from "./SignPage";
 import { executeParams } from "../../../mocks/executeParams";
 import {
@@ -22,11 +22,11 @@ import {
 import { mockToast } from "../../../mocks/toast";
 import { makeAccountOperations } from "../../../types/AccountOperations";
 import { parseContractPkh } from "../../../types/Address";
-import { FA2TokenBalance } from "../../../types/TokenBalance";
+import { type FA2TokenBalance } from "../../../types/TokenBalance";
 import { assetsSlice } from "../../../utils/redux/slices/assetsSlice";
 import { store } from "../../../utils/redux/store";
 import { estimate } from "../../../utils/tezos";
-import { FormPagePropsWithSender } from "../utils";
+import { type FormPagePropsWithSender } from "../utils";
 
 jest.mock("../../../utils/tezos/estimate");
 

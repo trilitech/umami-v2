@@ -1,4 +1,8 @@
-import { BeaconMessageType, SignPayloadRequestOutput, SigningType } from "@airgap/beacon-wallet";
+import {
+  BeaconMessageType,
+  type SignPayloadRequestOutput,
+  SigningType,
+} from "@airgap/beacon-wallet";
 import { Modal } from "@chakra-ui/react";
 
 import { SignPayloadRequestModal } from "./SignPayloadRequestModal";

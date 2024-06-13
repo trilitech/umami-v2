@@ -1,7 +1,7 @@
-import { Input, InputProps, ListItem, ListProps, UnorderedList } from "@chakra-ui/react";
+import { Input, type InputProps, ListItem, type ListProps, UnorderedList } from "@chakra-ui/react";
 import { wordlists } from "bip39";
 import { useState } from "react";
-import { FieldValues, Path, RegisterOptions, useFormContext } from "react-hook-form";
+import { type FieldValues, type Path, type RegisterOptions, useFormContext } from "react-hook-form";
 
 type MnemonicAutocompleteProps<T extends FieldValues, U extends Path<T>> = {
   inputName: U;

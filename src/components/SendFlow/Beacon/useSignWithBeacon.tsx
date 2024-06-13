@@ -1,13 +1,13 @@
 import {
   BeaconMessageType,
-  OperationRequestOutput,
-  OperationResponseInput,
+  type OperationRequestOutput,
+  type OperationResponseInput,
 } from "@airgap/beacon-wallet";
-import { TezosToolkit } from "@taquito/taquito";
+import { type TezosToolkit } from "@taquito/taquito";
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
 
-import { EstimatedAccountOperations, totalFee } from "../../../types/AccountOperations";
+import { type EstimatedAccountOperations, totalFee } from "../../../types/AccountOperations";
 import { WalletClient } from "../../../utils/beacon/WalletClient";
 import { useFindNetwork } from "../../../utils/hooks/networkHooks";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";

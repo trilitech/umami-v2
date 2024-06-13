@@ -1,12 +1,12 @@
 import crypto from "crypto";
 
 import { After, AfterAll, Before, BeforeAll, setDefaultTimeout } from "@cucumber/cucumber";
-import { ChromiumBrowser, chromium } from "@playwright/test";
+import { type ChromiumBrowser, chromium } from "@playwright/test";
 import { secondsToMilliseconds } from "date-fns";
 import { omit } from "lodash";
 
 import { BASE_URL } from "./onboarding";
-import { CustomWorld } from "./world";
+import { type CustomWorld } from "./world";
 import { VERSION } from "../../utils/redux/migrations";
 import { initialState as accountsInitialState } from "../../utils/redux/slices/accountsSlice";
 import { initialState as announcementInitialState } from "../../utils/redux/slices/announcementSlice";

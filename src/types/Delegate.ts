@@ -1,4 +1,4 @@
-import { RawPkh } from "./Address";
+import { type RawPkh } from "./Address";
 
 export type Delegate = {
   address: RawPkh;

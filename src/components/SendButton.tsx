@@ -1,4 +1,4 @@
-import { Button, ButtonProps, Text } from "@chakra-ui/react";
+import { Button, type ButtonProps, Text } from "@chakra-ui/react";
 
 import { OutgoingArrow } from "../assets/icons";
 

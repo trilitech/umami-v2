@@ -11,7 +11,7 @@ import { mockContractContact, mockImplicitContact, mockSocialAccount } from "../
 import { addAccount, fakeIsAccountRevealed } from "../mocks/helpers";
 import { mnemonic1 } from "../mocks/mockMnemonic";
 import { renderHook } from "../mocks/testUtils";
-import { ImplicitAccount } from "../types/Account";
+import { type ImplicitAccount } from "../types/Account";
 import { MAINNET } from "../types/Network";
 
 const isAccountRevealedMock = jest.spyOn(tezosHelpers, "isAccountRevealed");

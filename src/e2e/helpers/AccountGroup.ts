@@ -1,7 +1,7 @@
 import { InMemorySigner } from "@taquito/signer";
 import { times } from "lodash";
 
-import { RawPkh } from "../../types/Address";
+import { type RawPkh } from "../../types/Address";
 import { makeDerivationPath } from "../../utils/account/derivationPathUtils";
 import { derivePublicKeyPair, getFingerPrint } from "../../utils/tezos";
 

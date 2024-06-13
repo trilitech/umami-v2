@@ -1,7 +1,8 @@
 import { GHOSTNET, MAINNET } from "./Network";
 import {
-  FA12Token,
-  FA2Token,
+  type FA12Token,
+  type FA2Token,
+  type Metadata,
   artifactUri,
   formatTokenAmount,
   fromRaw,
@@ -14,7 +15,6 @@ import {
   tokenNameSafe,
   tokenSymbolSafe,
 } from "./Token";
-import type { Metadata } from "./Token";
 import { hedgehoge, tzBtsc } from "../mocks/fa12Tokens";
 import { uUSD } from "../mocks/fa2Tokens";
 import { mockImplicitAddress, mockNFT } from "../mocks/factories";

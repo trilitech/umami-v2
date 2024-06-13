@@ -1,4 +1,4 @@
-import { RawTokenBalance } from "../types/TokenBalance";
+import { type RawTokenBalance } from "../types/TokenBalance";
 
 export const ghostnetThezard: RawTokenBalance = {
   id: 139206711050241,

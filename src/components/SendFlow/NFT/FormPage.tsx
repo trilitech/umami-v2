@@ -10,14 +10,14 @@ import {
   ModalFooter,
   Text,
 } from "@chakra-ui/react";
-import React from "react";
+import type React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { SignPage } from "./SignPage";
 import colors from "../../../style/colors";
-import { RawPkh, parseContractPkh, parsePkh } from "../../../types/Address";
-import { FA2Transfer } from "../../../types/Operation";
-import { NFTBalance } from "../../../types/TokenBalance";
+import { type RawPkh, parseContractPkh, parsePkh } from "../../../types/Address";
+import { type FA2Transfer } from "../../../types/Operation";
+import { type NFTBalance } from "../../../types/TokenBalance";
 import { KnownAccountsAutocomplete, OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
 import { FormErrorMessage } from "../../FormErrorMessage";
 import { FormPageHeader } from "../FormPageHeader";
@@ -27,7 +27,7 @@ import {
   useOpenSignPageFormAction,
 } from "../onSubmitFormActionHooks";
 import { SendNFTRecapTile } from "../SendNFTRecapTile";
-import { FormPagePropsWithSender, FormSubmitButtons, formDefaultValues } from "../utils";
+import { type FormPagePropsWithSender, FormSubmitButtons, formDefaultValues } from "../utils";
 
 export type FormValues = {
   quantity: number;

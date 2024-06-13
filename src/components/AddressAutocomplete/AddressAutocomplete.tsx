@@ -2,23 +2,23 @@ import {
   Box,
   Center,
   FormLabel,
-  IconProps,
+  type IconProps,
   Input,
   InputGroup,
   InputRightElement,
 } from "@chakra-ui/react";
 import { get } from "lodash";
 import { useId, useState } from "react";
-import { FieldValues, Path, useFormContext } from "react-hook-form";
+import { type FieldValues, type Path, useFormContext } from "react-hook-form";
 
-import { BaseProps } from "./BaseProps";
+import { type BaseProps } from "./BaseProps";
 import { getSuggestions } from "./getSuggestions";
 import { Suggestions } from "./Suggestions";
 import { ChevronDownIcon, XMarkIcon } from "../../assets/icons";
 import colors from "../../style/colors";
-import { Account } from "../../types/Account";
+import { type Account } from "../../types/Account";
 import { isAddressValid, parsePkh } from "../../types/Address";
-import { Contact } from "../../types/Contact";
+import { type Contact } from "../../types/Contact";
 import { useBakerList } from "../../utils/hooks/assetsHooks";
 import {
   useAllAccounts,

@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { useAccountsFilter } from "./useAccountsFilter";
 import { mockMnemonicAccount } from "../mocks/factories";
 import { addAccount } from "../mocks/helpers";
-import { UserEvent, act, render, renderHook, screen, userEvent } from "../mocks/testUtils";
+import { type UserEvent, act, render, renderHook, screen, userEvent } from "../mocks/testUtils";
 
 const accounts = [mockMnemonicAccount(0), mockMnemonicAccount(1), mockMnemonicAccount(2)];
 

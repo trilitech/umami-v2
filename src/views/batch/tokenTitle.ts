@@ -1,6 +1,6 @@
 import { compact } from "lodash";
 
-import { Token, tokenName, tokenPrettyAmount, tokenSymbol } from "../../types/Token";
+import { type Token, tokenName, tokenPrettyAmount, tokenSymbol } from "../../types/Token";
 
 export const tokenTitle = (token: Token | undefined, amount: string) => {
   if (!token) {

@@ -1,7 +1,7 @@
-import { FieldValues, Path } from "react-hook-form";
+import { type FieldValues, type Path } from "react-hook-form";
 
 import { AddressAutocomplete } from "./AddressAutocomplete";
-import { BaseProps } from "./BaseProps";
+import { type BaseProps } from "./BaseProps";
 import { useContactsForSelectedNetwork } from "../../utils/hooks/contactsHooks";
 import { useAllAccounts } from "../../utils/hooks/getAccountDataHooks";
 
