@@ -1,5 +1,5 @@
 import { estimate, handleTezError } from "./estimate";
-import { addressExists, makeToolkit } from "./helpers";
+import { isAccountRevealed, makeToolkit } from "./helpers";
 import { executeParams } from "../../mocks/executeParams";
 import { mockImplicitAccount, mockTezOperation } from "../../mocks/factories";
 import { makeAccountOperations } from "../../types/AccountOperations";
@@ -7,7 +7,7 @@ import { GHOSTNET } from "../../types/Network";
 jest.mock("./helpers", () => ({
   ...jest.requireActual("./helpers"),
   makeToolkit: jest.fn(),
-  addressExists: jest.fn(),
+  isAccountRevealed: jest.fn(),
 }));
 
 const accountOperations = makeAccountOperations(mockImplicitAccount(1), mockImplicitAccount(1), [
@@ -17,7 +17,7 @@ const accountOperations = makeAccountOperations(mockImplicitAccount(1), mockImpl
 describe("estimate", () => {
   describe("Error handling", () => {
     it("Catches unrevealed account", async () => {
-      jest.mocked(addressExists).mockResolvedValue(false);
+      jest.mocked(isAccountRevealed).mockResolvedValue(false);
 
       jest.mocked(makeToolkit).mockImplementation(
         () =>
@@ -51,7 +51,7 @@ describe("estimate", () => {
     });
   });
 
-  it("returns fee, storageLimit and gasLimit estimate ", async () => {
+  it("returns estimated operations", async () => {
     const estimateResult = [
       {
         burnFeeMutez: 0,
@@ -69,6 +69,52 @@ describe("estimate", () => {
     const processedEstimateResult = {
       ...accountOperations,
       estimates: [executeParams({ fee: 289, gasLimit: 169 })],
+    };
+
+    jest.mocked(makeToolkit).mockImplementation(
+      () =>
+        ({
+          estimate: {
+            batch: jest.fn().mockResolvedValue(estimateResult),
+          },
+        }) as any
+    );
+
+    const result = await estimate(accountOperations, GHOSTNET);
+
+    expect(result).toEqual(processedEstimateResult);
+  });
+
+  it("can deal with the reveal estimation", async () => {
+    const estimateResult = [
+      {
+        burnFeeMutez: 0,
+        consumedMilligas: 1,
+        gasLimit: 2,
+        minimalFeeMutez: 3,
+        operationFeeMutez: 4,
+        storageLimit: 5,
+        suggestedFeeMutez: 6,
+        totalCost: 7,
+        usingBaseFeeMutez: 8,
+      },
+      {
+        burnFeeMutez: 0,
+        consumedMilligas: 168681,
+        gasLimit: 169,
+        minimalFeeMutez: 269,
+        operationFeeMutez: 168.9,
+        storageLimit: 0,
+        suggestedFeeMutez: 289,
+        totalCost: 269,
+        usingBaseFeeMutez: 269,
+      },
+    ];
+
+    const processedEstimateResult = {
+      ...accountOperations,
+      estimates: [executeParams({ fee: 289, gasLimit: 169 })],
+      revealEstimate: executeParams({ fee: 7, gasLimit: 2, storageLimit: 5 }),
     };
 
     jest.mocked(makeToolkit).mockImplementation(

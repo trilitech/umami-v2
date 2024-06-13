@@ -98,7 +98,7 @@ export const SignTransactionFormPage: React.FC<SignPageProps<FormValues>> = prop
 
             <AdvancedSettingsAccordion />
 
-            <FormLabel>Approvers</FormLabel>
+            <FormLabel marginTop="24px">Approvers</FormLabel>
             <Flex flexDirection="column" gap="12px" marginBottom="12px" data-testid="approvers">
               {signers.map(signer => (
                 <AddressTile

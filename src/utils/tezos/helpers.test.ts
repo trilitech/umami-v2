@@ -2,8 +2,8 @@ import { InMemorySigner } from "@taquito/signer";
 import axios from "axios";
 
 import {
-  addressExists,
   getPublicKeyPairFromSk,
+  isAccountRevealed,
   operationToTaquitoOperation,
   operationsToBatchParams,
   operationsToWalletParams,
@@ -20,7 +20,7 @@ import {
   mockTezOperation,
   mockUndelegationOperation,
 } from "../../mocks/factories";
-import { makeAccountOperations } from "../../types/AccountOperations";
+import { EstimatedAccountOperations, makeAccountOperations } from "../../types/AccountOperations";
 import { MAINNET } from "../../types/Network";
 import { ContractCall, ContractOrigination } from "../../types/Operation";
 jest.mock("@taquito/signer");
@@ -35,32 +35,50 @@ describe("tezos utils helpers", () => {
     expect(InMemorySigner).toHaveBeenCalledTimes(1);
   });
 
-  it("addressExists for non empty response", async () => {
-    const mockResponse = {
-      data: {
-        type: "user",
-      },
-    };
-    mockedAxios.get.mockResolvedValue(mockResponse);
-    const result = await addressExists(mockImplicitAddress(0).pkh, MAINNET);
-    expect(mockedAxios.get).toHaveBeenCalledWith(
-      `${MAINNET.tzktApiUrl}/v1/accounts/${mockImplicitAddress(0).pkh}`
-    );
-    expect(result).toEqual(true);
-  });
+  describe("isAccountRevealed", () => {
+    it("returns true for a revealed account", async () => {
+      const mockResponse = {
+        data: {
+          type: "user",
+          revealed: true,
+        },
+      };
+      mockedAxios.get.mockResolvedValue(mockResponse);
+      const result = await isAccountRevealed(mockImplicitAddress(0).pkh, MAINNET);
+      expect(mockedAxios.get).toHaveBeenCalledWith(
+        `${MAINNET.tzktApiUrl}/v1/accounts/${mockImplicitAddress(0).pkh}`
+      );
+      expect(result).toEqual(true);
+    });
 
-  it("addressExists returns false for empty response", async () => {
-    const mockResponse = {
-      data: {
-        type: "empty",
-      },
-    };
-    mockedAxios.get.mockResolvedValue(mockResponse);
-    const result = await addressExists(mockImplicitAddress(0).pkh, MAINNET);
-    expect(mockedAxios.get).toHaveBeenCalledWith(
-      `${MAINNET.tzktApiUrl}/v1/accounts/${mockImplicitAddress(0).pkh}`
-    );
-    expect(result).toEqual(false);
+    it("returns false for unrevealed account", async () => {
+      const mockResponse = {
+        data: {
+          type: "user",
+          revealed: false,
+        },
+      };
+      mockedAxios.get.mockResolvedValue(mockResponse);
+      const result = await isAccountRevealed(mockImplicitAddress(0).pkh, MAINNET);
+      expect(mockedAxios.get).toHaveBeenCalledWith(
+        `${MAINNET.tzktApiUrl}/v1/accounts/${mockImplicitAddress(0).pkh}`
+      );
+      expect(result).toEqual(false);
+    });
+
+    it("returns false for empty response", async () => {
+      const mockResponse = {
+        data: {
+          type: "empty",
+        },
+      };
+      mockedAxios.get.mockResolvedValue(mockResponse);
+      const result = await isAccountRevealed(mockImplicitAddress(0).pkh, MAINNET);
+      expect(mockedAxios.get).toHaveBeenCalledWith(
+        `${MAINNET.tzktApiUrl}/v1/accounts/${mockImplicitAddress(0).pkh}`
+      );
+      expect(result).toEqual(false);
+    });
   });
 
   describe("operationToTaquitoOperation", () => {
@@ -422,5 +440,35 @@ describe("tezos utils helpers", () => {
         ]);
       });
     });
+  });
+
+  test("operationsToWalletParams", () => {
+    const operations: EstimatedAccountOperations = {
+      ...makeAccountOperations(mockImplicitAccount(0), mockImplicitAccount(0), [
+        mockTezOperation(0),
+        mockDelegationOperation(0),
+      ]),
+      estimates: [executeParams({ fee: 123 }), executeParams({ fee: 456, storageLimit: 123 })],
+    };
+
+    expect(operationsToWalletParams(operations)).toEqual([
+      {
+        amount: 0,
+        fee: 123,
+        gasLimit: 0,
+        kind: "transaction",
+        mutez: true,
+        storageLimit: 0,
+        to: "tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf",
+      },
+      {
+        delegate: "tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf",
+        fee: 456,
+        gasLimit: 0,
+        kind: "delegation",
+        source: "tz1gUNyn3hmnEWqkusWPzxRaon1cs7ndWh7h",
+        storageLimit: 123,
+      },
+    ]);
   });
 });

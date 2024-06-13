@@ -12,7 +12,7 @@ import {
   mockSecretKeyAccount,
   mockSocialAccount,
 } from "../../mocks/factories";
-import { addAccount, fakeAddressExists } from "../../mocks/helpers";
+import { addAccount, fakeIsAccountRevealed } from "../../mocks/helpers";
 import { mnemonic1 } from "../../mocks/mockMnemonic";
 import { act, renderHook } from "../../mocks/testUtils";
 import { ImplicitAccount, MnemonicAccount } from "../../types/Account";
@@ -36,7 +36,7 @@ describe("setAccountDataHooks", () => {
   });
 
   describe("mnemonic accounts", () => {
-    const addressExistsMock = jest.spyOn(tezosHelpers, "addressExists");
+    const isAccountRevealedMock = jest.spyOn(tezosHelpers, "isAccountRevealed");
     const getFingerPrintMock = jest.spyOn(tezosHelpers, "getFingerPrint");
     const encryptMock = jest.spyOn(functionsToMock, "encrypt");
     const decryptMock = jest.spyOn(functionsToMock, "decrypt");
@@ -108,8 +108,8 @@ describe("setAccountDataHooks", () => {
           await mnemonicAccount(4, `${LABEL_BASE} 5`),
           await mnemonicAccount(5, `${LABEL_BASE} 6`),
         ];
-        addressExistsMock.mockImplementation(
-          fakeAddressExists(revealedAccounts.map(account => account.address))
+        isAccountRevealedMock.mockImplementation(
+          fakeIsAccountRevealed(revealedAccounts.map(account => account.address))
         );
 
         const {
@@ -148,8 +148,8 @@ describe("setAccountDataHooks", () => {
           await mnemonicAccount(2, `${LABEL_BASE} 5`),
         ];
         // Reveal mnemonic accounts
-        addressExistsMock.mockImplementation(
-          fakeAddressExists(expected.map(account => account.address))
+        isAccountRevealedMock.mockImplementation(
+          fakeIsAccountRevealed(expected.map(account => account.address))
         );
 
         const {

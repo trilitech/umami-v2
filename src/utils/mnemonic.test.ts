@@ -8,13 +8,13 @@ import { networksActions } from "./redux/slices/networks";
 import { store } from "./redux/store";
 import * as tezosHelpers from "./tezos/helpers";
 import { mockContractContact, mockImplicitContact, mockSocialAccount } from "../mocks/factories";
-import { addAccount, fakeAddressExists } from "../mocks/helpers";
+import { addAccount, fakeIsAccountRevealed } from "../mocks/helpers";
 import { mnemonic1 } from "../mocks/mockMnemonic";
 import { renderHook } from "../mocks/testUtils";
 import { ImplicitAccount } from "../types/Account";
 import { MAINNET } from "../types/Network";
 
-const addressExistsMock = jest.spyOn(tezosHelpers, "addressExists");
+const isAccountRevealedMock = jest.spyOn(tezosHelpers, "isAccountRevealed");
 
 const testPublicKeys = [
   {
@@ -37,7 +37,7 @@ beforeEach(() => {
 
 describe("restoreRevealedPublicKeyPairs", () => {
   it("restores existing accounts", async () => {
-    addressExistsMock.mockImplementation(fakeAddressExists(testPublicKeys));
+    isAccountRevealedMock.mockImplementation(fakeIsAccountRevealed(testPublicKeys));
 
     const result = await restoreRevealedPublicKeyPairs(
       mnemonic1,
@@ -49,7 +49,7 @@ describe("restoreRevealedPublicKeyPairs", () => {
   });
 
   it("restores first account if none exists", async () => {
-    addressExistsMock.mockImplementation(fakeAddressExists([]));
+    isAccountRevealedMock.mockImplementation(fakeIsAccountRevealed([]));
 
     const result = await restoreRevealedPublicKeyPairs(
       mnemonic1,
@@ -61,7 +61,9 @@ describe("restoreRevealedPublicKeyPairs", () => {
   });
 
   it("stops at first unrevealed account", async () => {
-    addressExistsMock.mockImplementation(fakeAddressExists([testPublicKeys[0], testPublicKeys[2]]));
+    isAccountRevealedMock.mockImplementation(
+      fakeIsAccountRevealed([testPublicKeys[0], testPublicKeys[2]])
+    );
 
     const result = await restoreRevealedPublicKeyPairs(
       mnemonic1,
@@ -109,8 +111,8 @@ describe("useRestoreRevealedMnemonicAccounts", () => {
         derivationPathTemplate: "44'/1729'/?'/0'",
       },
     ];
-    addressExistsMock.mockImplementation(
-      fakeAddressExists(expected.map(account => account.address))
+    isAccountRevealedMock.mockImplementation(
+      fakeIsAccountRevealed(expected.map(account => account.address))
     );
 
     const {
@@ -127,7 +129,7 @@ describe("useRestoreRevealedMnemonicAccounts", () => {
   });
 
   it("restores one account if none were revealed", async () => {
-    addressExistsMock.mockImplementation(fakeAddressExists([]));
+    isAccountRevealedMock.mockImplementation(fakeIsAccountRevealed([]));
 
     const {
       result: { current: restoreRevealedMnemonicsHook },
@@ -148,7 +150,7 @@ describe("useRestoreRevealedMnemonicAccounts", () => {
   });
 
   it("sets unique labels for restored accounts", async () => {
-    addressExistsMock.mockImplementation(fakeAddressExists(testPublicKeys.slice(0, 3)));
+    isAccountRevealedMock.mockImplementation(fakeIsAccountRevealed(testPublicKeys.slice(0, 3)));
     store.dispatch(networksActions.setCurrent(MAINNET));
     store.dispatch(contactsActions.upsert(mockImplicitContact(1, CUSTOM_LABEL)));
     store.dispatch(contactsActions.upsert(mockContractContact(0, "ghostnet", `${CUSTOM_LABEL} 4`)));
@@ -180,7 +182,7 @@ describe("useRestoreRevealedMnemonicAccounts", () => {
   });
 
   it("restores existing accounts with a custom derivation path", async () => {
-    addressExistsMock.mockImplementation(fakeAddressExists(testPublicKeys.slice(0, 2)));
+    isAccountRevealedMock.mockImplementation(fakeIsAccountRevealed(testPublicKeys.slice(0, 2)));
 
     const {
       result: { current: restoreRevealedMnemonicsHook },

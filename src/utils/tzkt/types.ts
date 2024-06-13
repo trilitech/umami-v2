@@ -1,6 +1,11 @@
-export type RawTzktGetAddressType = {
-  type: "user" | "delegate" | "contract" | "ghost" | "rollup" | "smart_rollup" | "empty";
-};
+export type RawTzktAccountType =
+  | "user"
+  | "delegate"
+  | "contract"
+  | "ghost"
+  | "rollup"
+  | "smart_rollup"
+  | "empty";
 
 export type RawTzktGetSameMultisigsItem = {
   address: string;

@@ -14,5 +14,5 @@ export const addAccount = (account: Account | Multisig) => {
   store.dispatch(accountsActions.addAccount(account));
 };
 
-export const fakeAddressExists = (revealedKeyPairs: { pkh: RawPkh }[]) => (pkh: RawPkh) =>
+export const fakeIsAccountRevealed = (revealedKeyPairs: { pkh: RawPkh }[]) => (pkh: RawPkh) =>
   Promise.resolve(revealedKeyPairs.map(keyPair => keyPair.pkh).includes(pkh));
