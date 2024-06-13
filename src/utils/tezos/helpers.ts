@@ -17,23 +17,19 @@ import {
   makeMultisigProposeOperation,
 } from "../../types/Operation";
 import { SignerConfig } from "../../types/SignerConfig";
-import { RawTzktGetAddressType } from "../tzkt/types";
+import { RawTzktAccountType } from "../tzkt/types";
 
 export type PublicKeyPair = {
   pk: string;
   pkh: string;
 };
 
-export const addressExists = async (pkh: string, network: Network): Promise<boolean> => {
-  try {
-    const url = `${network.tzktApiUrl}/v1/accounts/${pkh}`;
-    const {
-      data: { type },
-    } = await axios.get<RawTzktGetAddressType>(url);
-    return type !== "empty";
-  } catch (error: any) {
-    throw new Error(`Error fetching account from tzkt ${error.message}`);
-  }
+export const isAccountRevealed = async (pkh: string, network: Network): Promise<boolean> => {
+  const url = `${network.tzktApiUrl}/v1/accounts/${pkh}`;
+  const {
+    data: { type, revealed },
+  } = await axios.get<{ type: RawTzktAccountType; revealed: boolean }>(url);
+  return type !== "empty" && revealed;
 };
 
 // Temporary solution for generating fingerprint for seedphrase

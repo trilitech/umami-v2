@@ -1,7 +1,19 @@
-import { addressExists, makeToolkit, operationsToBatchParams } from "./helpers";
+import { Estimate } from "@taquito/taquito";
+
+import { isAccountRevealed, makeToolkit, operationsToBatchParams } from "./helpers";
+import { Estimation } from "./types";
 import { AccountOperations, EstimatedAccountOperations } from "../../types/AccountOperations";
 import { Network } from "../../types/Network";
 
+/**
+ * Estimates (and simulates the execution of) the operations.
+ *
+ * Note: if
+ *
+ * @param operations - operations to be estimated with a particular transaction signer
+ * @param network -
+ * @returns operations with their estimated fees, gas and storage limits
+ */
 export const estimate = async (
   operations: AccountOperations,
   network: Network
@@ -14,20 +26,20 @@ export const estimate = async (
   try {
     const estimates = await tezosToolkit.estimate.batch(operationsToBatchParams(operations));
 
+    let revealEstimate = undefined;
+    // taquito automatically adds a reveal operation (sometimes)
+    // if an account is not revealed yet
+    if (estimates.length > operations.operations.length) {
+      revealEstimate = estimateToEstimation(estimates.shift()!);
+    }
+
     return {
       ...operations,
-      estimates: estimates.map(estimate => ({
-        storageLimit: estimate.storageLimit,
-        gasLimit: estimate.gasLimit,
-        fee: Math.max(estimate.suggestedFeeMutez, estimate.totalCost),
-      })),
+      estimates: estimates.map(estimateToEstimation),
+      revealEstimate,
     };
-    // The way taquito works we need to take the max of suggestedFeeMutez and totalCost
-    // because the suggestedFeeMutez does not include the storage & execution cost
-    // and in these cases the totalCost is the one to go (so, for contract calls)
-    // though totalCost doesn't work well with simple tez transfers and suggestedFeeMutez is more accurate
   } catch (err: any) {
-    const isRevealed = await addressExists(operations.signer.address.pkh, network);
+    const isRevealed = await isAccountRevealed(operations.signer.address.pkh, network);
 
     if (!isRevealed) {
       throw new Error(`Signer address is not revealed on the ${network.name}.`);
@@ -38,6 +50,16 @@ export const estimate = async (
     throw err;
   }
 };
+
+const estimateToEstimation = (estimate: Estimate): Estimation => ({
+  storageLimit: estimate.storageLimit,
+  gasLimit: estimate.gasLimit,
+  // The way taquito works we need to take the max of suggestedFeeMutez and totalCost
+  // because the suggestedFeeMutez does not include the storage & execution cost
+  // and in these cases the totalCost is the one to go (so, for contract calls)
+  // though totalCost doesn't work well with simple tez transfers and suggestedFeeMutez is more accurate
+  fee: Math.max(estimate.suggestedFeeMutez, estimate.totalCost),
+});
 
 // Converts a known L1 error message to a more user-friendly one
 export const handleTezError = (err: Error): string => {

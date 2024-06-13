@@ -3,7 +3,7 @@ import { generateMnemonic } from "bip39";
 import { makeDerivationPath } from "./account/derivationPathUtils";
 import { makeMnemonicAccount } from "./account/makeMnemonicAccount";
 import { useGetNextAvailableAccountLabels } from "./hooks/labelsHooks";
-import { PublicKeyPair, addressExists, derivePublicKeyPair, getFingerPrint } from "./tezos";
+import { PublicKeyPair, derivePublicKeyPair, getFingerPrint, isAccountRevealed } from "./tezos";
 import { MnemonicAccount } from "../types/Account";
 import { Network } from "../types/Network";
 
@@ -44,7 +44,7 @@ export const restoreRevealedPublicKeyPairs = async (
       mnemonic,
       makeDerivationPath(derivationPathTemplate, accountIndex)
     );
-  } while (await addressExists(pubKeyPair.pkh, network));
+  } while (await isAccountRevealed(pubKeyPair.pkh, network));
   return result;
 };
 

@@ -21,6 +21,9 @@ export type ImplicitOperations = {
 export type AccountOperations = ProposalOperations | ImplicitOperations;
 export type EstimatedAccountOperations = AccountOperations & {
   estimates: Estimation[];
+  // for some operations taquito automatically adds a reveal operation
+  // and returns it as the first estimate
+  revealEstimate?: Estimation;
 };
 
 export const totalFee = (estimates: Estimation[]): number =>
