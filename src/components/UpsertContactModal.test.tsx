@@ -1,4 +1,4 @@
-import { UpsertContactModal } from "./ContactModal";
+import { UpsertContactModal } from "./UpsertContactModal";
 import { contact1, contact2 } from "../mocks/contacts";
 import { mockContractAddress, mockImplicitAddress } from "../mocks/factories";
 import { act, render, screen, userEvent, waitFor } from "../mocks/testUtils";
@@ -7,7 +7,7 @@ import * as helpers from "../utils/multisig/helpers";
 import { contactsActions } from "../utils/redux/slices/contactsSlice";
 import { store } from "../utils/redux/store";
 
-describe("UpsertContactModal", () => {
+describe("<UpsertContactModal />", () => {
   describe("on adding contact", () => {
     const mockedGetNetworksForContracts = jest.spyOn(helpers, "getNetworksForContracts");
     const contractPkh = mockContractAddress(0).pkh;
@@ -146,6 +146,7 @@ describe("UpsertContactModal", () => {
         expect(mockToast).toHaveBeenCalledWith({
           description: `Network not found for contract ${contractPkh}`,
           status: "error",
+          isClosable: true,
         });
         expect(store.getState().contacts).toEqual({});
       });
@@ -267,6 +268,7 @@ describe("UpsertContactModal", () => {
         expect(mockToast).toHaveBeenCalledWith({
           description: `Network not found for contract ${contractPkh}`,
           status: "error",
+          isClosable: true,
         });
         expect(store.getState().contacts).toEqual({});
       });

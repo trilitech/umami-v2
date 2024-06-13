@@ -2,6 +2,7 @@ import { AccountSmallTile } from "./AccountSmallTile";
 import { mockImplicitAccount, mockMnemonicAccount } from "../../mocks/factories";
 import { addAccount } from "../../mocks/helpers";
 import { render, screen } from "../../mocks/testUtils";
+import { rawAccountFixture } from "../../mocks/tzktResponse";
 import { formatPkh } from "../../utils/format";
 import { assetsActions } from "../../utils/redux/slices/assetsSlice";
 import { store } from "../../utils/redux/store";
@@ -38,7 +39,12 @@ describe("<AccountSmallTile />", () => {
   it("displays non-empty balance", () => {
     const account = mockImplicitAccount(1);
     store.dispatch(
-      assetsActions.updateTezBalance([{ address: account.address.pkh, balance: 1234567 }])
+      assetsActions.updateAccountStates([
+        rawAccountFixture({
+          address: account.address.pkh,
+          balance: 1234567,
+        }),
+      ])
     );
 
     render(<AccountSmallTile account={account} />);

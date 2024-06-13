@@ -21,7 +21,7 @@ describe("<AssetsPanel />", () => {
       jest.mocked(getRelatedTokenTransfers).mockResolvedValue([]);
 
       const multisigAccount = mockMultisigAccount(0);
-      render(<AssetsPanel account={multisigAccount} delegation={null} nfts={[]} tokens={[]} />);
+      render(<AssetsPanel account={multisigAccount} nfts={[]} tokens={[]} />);
       await screen.findByTestId("account-card-operations-tab");
 
       expect(screen.queryByTestId("account-card-pending-tab-panel")).not.toBeInTheDocument();
@@ -45,7 +45,7 @@ describe("<AssetsPanel />", () => {
       store.dispatch(multisigsSlice.actions.setMultisigs([multisig]));
       store.dispatch(multisigsSlice.actions.setPendingOperations(pendingOps));
 
-      render(<AssetsPanel account={multisig} delegation={null} nfts={[]} tokens={[]} />);
+      render(<AssetsPanel account={multisig} nfts={[]} tokens={[]} />);
       await screen.findByTestId("account-card-operations-tab");
 
       expect(screen.getByTestId("account-card-pending-tab-panel")).toBeInTheDocument();

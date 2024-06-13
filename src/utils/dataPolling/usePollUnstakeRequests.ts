@@ -7,10 +7,10 @@ import { useAllAccounts } from "../hooks/getAccountDataHooks";
 import { useSelectedNetwork } from "../hooks/networkHooks";
 import { useAppDispatch } from "../redux/hooks";
 import { assetsActions } from "../redux/slices/assetsSlice";
-import { getAccounts } from "../tezos";
+import { getPendingUnstakeRequests } from "../tezos";
 import { useReactQueryErrorHandler } from "../useReactQueryOnError";
 
-export const usePollTezBalances = () => {
+export const usePollUnstakeRequests = () => {
   const dispatch = useAppDispatch();
   const handleError = useReactQueryErrorHandler();
   const network = useSelectedNetwork();
@@ -18,20 +18,19 @@ export const usePollTezBalances = () => {
   const addresses = useAllAccounts().map(account => account.address.pkh);
 
   const query = useQuery({
-    queryKey: ["accountInformation", network, addresses, refetchTrigger],
-    queryFn: () => getAccounts(addresses, network),
+    queryKey: ["unstakeRequests", dispatch, network, addresses, refetchTrigger],
+    queryFn: () => getPendingUnstakeRequests(network, addresses),
     retry: false, // retries are handled by the underlying functions
     refetchInterval: BLOCK_TIME,
-    select: accountInformation => accountInformation.flat(),
     refetchIntervalInBackground: true,
     refetchOnWindowFocus: false,
   });
 
-  const accountInformation = query.data;
+  const unstakeRequests = query.data;
 
   useEffect(() => {
-    accountInformation && dispatch(assetsActions.updateTezBalance(accountInformation));
-  }, [dispatch, accountInformation]);
+    unstakeRequests && dispatch(assetsActions.updateUnstakeRequests(unstakeRequests));
+  }, [dispatch, unstakeRequests]);
 
   handleError(query.error);
 

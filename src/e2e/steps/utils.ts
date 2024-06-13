@@ -1,5 +1,7 @@
 import { DataTable, Given, Then, When } from "@cucumber/cucumber";
 import { expect } from "@playwright/test";
+import { minutesToMilliseconds } from "date-fns";
+import { some } from "lodash";
 
 import { BASE_URL } from "./onboarding";
 import { CustomWorld } from "./world";
@@ -7,7 +9,10 @@ import { Account } from "../../types/Account";
 import { BLOCK_TIME } from "../../utils/dataPolling/constants";
 import { State } from "../../utils/redux/slices/accountsSlice/State";
 import { makeSecretKeyAccount } from "../../utils/redux/thunks/secretKeyAccount";
+import { getOperationsByHash } from "../../utils/tezos";
+import { TEST_NETWORK } from "../constants";
 import { AccountsPage } from "../pages/AccountsPage";
+import { SignPage } from "../pages/SignPage";
 import { refetch, runDockerCommand, topUpAccount, waitUntilRefetch } from "../utils";
 
 Given(/I have accounts?/, async function (this: CustomWorld, table: DataTable) {
@@ -49,7 +54,14 @@ When(
 );
 
 Then("I see {string} modal", async function (this: CustomWorld, modalTitle) {
-  await expect(this.page.getByRole("heading", { name: modalTitle, exact: false })).toBeVisible();
+  await expect(this.modal.getByRole("heading", { name: modalTitle, exact: false })).toBeVisible();
+
+  if (modalTitle === "Operation Submitted") {
+    const lastOperationHash = await this.modal
+      .getByRole("link", { name: "View in Tzkt" })
+      .getAttribute("href");
+    this.lastOperationHash = lastOperationHash!.split("/").reverse()[0];
+  }
 });
 
 When("I check {string} checkbox", async function (this: CustomWorld, checkboxName) {
@@ -57,43 +69,63 @@ When("I check {string} checkbox", async function (this: CustomWorld, checkboxNam
 });
 
 When("I sign transaction with password {string}", async function (this: CustomWorld, password) {
-  await this.page.getByLabel("Password", { exact: true }).fill(password);
-  await this.page
-    .getByRole("button", { name: /^(Confirm|Propose|Submit) (Transaction|Batch|Contract)$/ })
-    .click();
+  await new SignPage(this.page, password).sign();
 });
 
 When("I close modal", async function (this: CustomWorld) {
-  const modal = this.page.getByRole("dialog");
-  await modal.getByRole("button", { name: "Close", exact: true }).click();
+  await this.modal.getByRole("button", { name: "Close", exact: true }).click();
+  await expect(this.modal).not.toBeAttached();
 });
 
-When("I wait for TZKT to process the updates", async function (this: CustomWorld) {
-  const getLastAppliedBlock = () => {
-    const logs = runDockerCommand("logs sync", "pipe").toString().split("\n").reverse();
-    for (const log of logs) {
-      const matches = log.match(/Applied (\d+) of \d+/);
-      if (matches) {
-        return matches[1];
+When("I close drawer", async function (this: CustomWorld) {
+  await this.page.getByTestId("close-drawer-button").click();
+  await expect(this.drawer).not.toBeAttached();
+});
+
+When(
+  "I wait for TZKT to process the updates",
+  { timeout: minutesToMilliseconds(1) },
+  async function (this: CustomWorld) {
+    if (this.lastOperationHash) {
+      let operations: any[] = [];
+      do {
+        // eslint-disable-next-line playwright/no-wait-for-timeout
+        await this.page.waitForTimeout(1000);
+        operations = await getOperationsByHash(this.lastOperationHash, TEST_NETWORK);
+      } while (operations.length === 0 || some(operations, op => op.status !== "applied"));
+
+      return;
+    }
+
+    // Wait for 2 blocks to be applied
+    const getLastAppliedBlock = () => {
+      const logs = runDockerCommand("logs sync", "pipe").toString().split("\n").reverse();
+      for (const log of logs) {
+        const matches = log.match(/Applied (\d+) of \d+/);
+        if (matches) {
+          return matches[1];
+        }
+      }
+      throw new Error("TZKT sync last applied block not found");
+    };
+
+    for (let i = 0; i < 2; i++) {
+      const previous = getLastAppliedBlock();
+
+      while (getLastAppliedBlock() === previous) {
+        // eslint-disable-next-line playwright/no-wait-for-timeout
+        await this.page.waitForTimeout(100);
       }
     }
-    throw new Error("TZKT sync last applied block not found");
-  };
-
-  const previous = getLastAppliedBlock();
-
-  for (;;) {
-    // eslint-disable-next-line playwright/no-wait-for-timeout
-    await this.page.waitForTimeout(100);
-    if (getLastAppliedBlock() !== previous) {
-      break;
-    }
   }
-});
+);
 
-When("I refetch the data", async function (this: CustomWorld) {
-  await refetch(this.page);
-});
+When(
+  /I refetch the data( in the background)?/,
+  async function (this: CustomWorld, inBackground: string) {
+    await refetch(this.page, !!inBackground);
+  }
+);
 
 When(
   "{string} is topped-up with {string}",

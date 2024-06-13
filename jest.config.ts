@@ -7,6 +7,8 @@ import process from "process";
 
 import type { Config } from "jest";
 
+process.env.DEBUG_PRINT_LIMIT ||= "40000";
+
 const config: Config = {
   // All imported modules in your tests should be mocked automatically
   // automock: false,

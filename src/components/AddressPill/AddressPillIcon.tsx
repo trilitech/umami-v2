@@ -10,11 +10,11 @@ import {
   FA12Icon,
   FA2Icon,
   KeyIcon,
-  XMark,
+  XMarkIcon,
 } from "../../assets/icons";
 import { useAddressExistsInContacts } from "../../utils/hooks/contactsHooks";
-import { UpsertContactModal } from "../ContactModal";
 import { DynamicModalContext } from "../DynamicModal";
+import { UpsertContactModal } from "../UpsertContactModal";
 
 export const LeftIcon: React.FC<{ addressKind: AddressKind } & IconProps> = ({
   addressKind: { type },
@@ -44,7 +44,7 @@ export const RightIcon: React.FC<
   const { openWith } = useContext(DynamicModalContext);
 
   if (addressPillMode.type === "removable") {
-    return <XMark cursor="pointer" onClick={addressPillMode.onRemove} {...rest} />;
+    return <XMarkIcon cursor="pointer" onClick={addressPillMode.onRemove} {...rest} />;
   }
 
   const knownTypes: AddressKind["type"][] = ["implicit", "multisig", "baker"];

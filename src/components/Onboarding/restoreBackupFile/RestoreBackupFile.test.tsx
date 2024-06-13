@@ -72,6 +72,7 @@ describe("<RestoreBackupFile />", () => {
     expect(mockToast).toHaveBeenCalledWith({
       description: "Invalid backup file.",
       status: "error",
+      isClosable: true,
     });
     expect(mockReload).toHaveBeenCalledTimes(0);
     expect(mockRestoreV1BackupFile).toHaveBeenCalledTimes(0);
@@ -88,6 +89,7 @@ describe("<RestoreBackupFile />", () => {
       expect(mockToast).toHaveBeenCalledWith({
         description: "Invalid backup file.",
         status: "error",
+        isClosable: true,
       });
       expect(mockReload).toHaveBeenCalledTimes(0);
       expect(mockRestoreV1BackupFile).toHaveBeenCalledTimes(0);
@@ -103,6 +105,7 @@ describe("<RestoreBackupFile />", () => {
       expect(mockToast).toHaveBeenCalledWith({
         description: "Invalid backup file.",
         status: "error",
+        isClosable: true,
       });
       expect(mockReload).toHaveBeenCalledTimes(0);
       expect(mockRestoreV1BackupFile).toHaveBeenCalledTimes(0);
@@ -132,6 +135,7 @@ describe("<RestoreBackupFile />", () => {
       expect(mockToast).toHaveBeenCalledWith({
         description: "Invalid password.",
         status: "error",
+        isClosable: true,
       });
       expect(mockRestoreV2BackupFile).toHaveBeenCalledTimes(0);
       expect(mockReload).toHaveBeenCalledTimes(0);
@@ -148,6 +152,7 @@ describe("<RestoreBackupFile />", () => {
       expect(mockToast).toHaveBeenCalledWith({
         description: "Invalid backup file.",
         status: "error",
+        isClosable: true,
       });
       expect(mockReload).toHaveBeenCalledTimes(0);
       expect(mockRestoreV1BackupFile).toHaveBeenCalledTimes(0);
@@ -186,6 +191,7 @@ describe("<RestoreBackupFile />", () => {
       expect(mockToast).toHaveBeenCalledWith({
         description: "Invalid password.",
         status: "error",
+        isClosable: true,
       });
       expect(mockRestoreV1BackupFile).toHaveBeenCalledTimes(0);
       expect(mockReload).toHaveBeenCalledTimes(0);

@@ -26,7 +26,7 @@ describe("<ContractCallTile />", () => {
         it("links to the operation page on tzkt", () => {
           store.dispatch(networksActions.setCurrent(network));
 
-          render(fixture(contextValue, contractCallFixture({})));
+          render(fixture(contextValue, contractCallFixture()));
 
           expect(screen.getByTestId("title")).toHaveAttribute(
             "href",
@@ -38,7 +38,7 @@ describe("<ContractCallTile />", () => {
     });
 
     it("displays timestamp", () => {
-      render(fixture(contextValue, contractCallFixture({})));
+      render(fixture(contextValue, contractCallFixture()));
       expect(screen.getByTestId("timestamp")).toHaveTextContent("02 Jan 2021");
     });
 
@@ -97,7 +97,7 @@ describe("<ContractCallTile />", () => {
     });
 
     it("shows operation type", () => {
-      render(fixture(contextValue, contractCallFixture({})));
+      render(fixture(contextValue, contractCallFixture()));
 
       expect(screen.getByTestId("operation-type")).toHaveTextContent("Contract Call");
     });
@@ -108,13 +108,13 @@ describe("<ContractCallTile />", () => {
     beforeEach(() => addAccount(mockLedgerAccount(0)));
 
     it("hides the fee", () => {
-      render(fixture(contextValue, contractCallFixture({})));
+      render(fixture(contextValue, contractCallFixture()));
 
       expect(screen.queryByTestId("fee")).not.toBeInTheDocument();
     });
 
     it("hides the operation type", () => {
-      render(fixture(contextValue, contractCallFixture({})));
+      render(fixture(contextValue, contractCallFixture()));
 
       expect(screen.queryByTestId("operation-type")).not.toBeInTheDocument();
     });

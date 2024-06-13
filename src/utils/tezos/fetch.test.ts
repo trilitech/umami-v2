@@ -1,5 +1,5 @@
 import {
-  accountsGet,
+  blocksGet,
   operationsGetDelegations,
   operationsGetOriginations,
   operationsGetTransactions,
@@ -7,13 +7,14 @@ import {
   tokensGetTokenBalances,
   tokensGetTokenTransfers,
 } from "@tzkt/sdk-api";
+import axios from "axios";
 import { sortBy } from "lodash";
 
 import {
   getAccounts,
   getCombinedOperations,
   getDelegations,
-  getLastDelegation,
+  getLatestBlock,
   getOriginations,
   getRelatedTokenTransfers,
   getTezosPriceInUSD,
@@ -24,16 +25,14 @@ import {
 import { mockImplicitAddress } from "../../mocks/factories";
 import { DefaultNetworks } from "../../types/Network";
 
-jest.mock("axios");
-
 jest.mock("@tzkt/sdk-api", () => ({
   tokensGetTokenBalances: jest.fn(),
   operationsGetTransactions: jest.fn(),
   operationsGetDelegations: jest.fn(),
   operationsGetOriginations: jest.fn(),
   tokensGetTokenTransfers: jest.fn(),
-  accountsGet: jest.fn(),
   quotesGetLast: jest.fn(),
+  blocksGet: jest.fn(),
 }));
 
 describe("tezos utils fetch", () => {
@@ -74,29 +73,26 @@ describe("tezos utils fetch", () => {
       );
     });
 
-    test("getLastDelegation", async () => {
-      jest.mocked(operationsGetDelegations).mockResolvedValue([
-        { id: 2, type: "delegation" },
-        { id: 1, type: "delegation" },
-      ]);
-      const res = await getLastDelegation(mockImplicitAddress(0).pkh, network);
+    test("getLatestBlock", async () => {
+      jest.mocked(blocksGet).mockResolvedValue([{ level: 123, cycle: 5 }]);
 
-      expect(res).toEqual({ id: 2, type: "delegation" });
+      const res = await getLatestBlock(network);
+
+      expect(res).toEqual({ level: 123, cycle: 5 });
     });
 
     test("getAccounts", async () => {
-      jest.mocked(accountsGet).mockResolvedValue([]);
+      jest.spyOn(axios, "get").mockResolvedValue({ data: [] });
       await getAccounts([mockImplicitAddress(0).pkh, mockImplicitAddress(1).pkh], network);
 
-      expect(jest.mocked(accountsGet)).toHaveBeenCalledWith(
-        {
-          address: {
-            in: ["tz1gUNyn3hmnEWqkusWPzxRaon1cs7ndWh7h,tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf"],
-          },
-          select: { fields: ["address,balance,delegationLevel"] },
+      expect(axios.get).toHaveBeenCalledWith(`${network.tzktApiUrl}/v1/accounts`, {
+        params: {
+          ["address.in"]:
+            "tz1gUNyn3hmnEWqkusWPzxRaon1cs7ndWh7h,tz1UZFB9kGauB6F5c2gfJo4hVcvrD8MeJ3Vf",
+          ["select.fields"]:
+            "address,balance,delegate,stakedBalance,unstakedBalance,rollupBonds,smartRollupBonds",
         },
-        { baseUrl: network.tzktApiUrl }
-      );
+      });
     });
 
     test("getDelegations", async () => {
@@ -191,6 +187,7 @@ describe("tezos utils fetch", () => {
         jest.mocked(operationsGetDelegations).mockResolvedValue([]);
         jest.mocked(operationsGetOriginations).mockResolvedValue([]);
         jest.mocked(tokensGetTokenTransfers).mockResolvedValue([]);
+        jest.spyOn(axios, "get").mockResolvedValue({ data: [] });
       });
 
       describe("request options", () => {

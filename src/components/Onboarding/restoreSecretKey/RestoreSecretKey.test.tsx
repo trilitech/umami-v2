@@ -105,6 +105,7 @@ describe("<RestoreSecretKey />", () => {
     expect(mockToast).toHaveBeenCalledWith({
       description: "Key-password pair is invalid",
       status: "error",
+      isClosable: true,
     });
   });
 
@@ -121,6 +122,7 @@ describe("<RestoreSecretKey />", () => {
     expect(mockToast).toHaveBeenCalledWith({
       description: "Invalid secret key: checksum doesn't match",
       status: "error",
+      isClosable: true,
     });
   });
 
@@ -138,6 +140,7 @@ describe("<RestoreSecretKey />", () => {
       description:
         "Invalid private key with unsupported prefix expecting one of the following 'edesk', 'edsk', 'spsk', 'spesk', 'p2sk' or 'p2esk'..",
       status: "error",
+      isClosable: true,
     });
   });
 });

@@ -1,5 +1,5 @@
 import { IWorldOptions, World, setWorldConstructor } from "@cucumber/cucumber";
-import { BrowserContext, Page } from "@playwright/test";
+import { BrowserContext, Locator, Page } from "@playwright/test";
 
 /**
  * Custom cucumber context which allows us to use
@@ -42,15 +42,24 @@ export class CustomWorld extends World {
    */
   pageReady: Promise<boolean>;
   private pageReadyResolve: undefined | ((val: boolean) => void);
+  lastOperationHash: string | null = null;
 
-  public get page(): Page {
+  get page(): Page {
     return this._page;
+  }
+
+  get modal(): Locator {
+    return this.page.locator('section[role="dialog"][id^="chakra-modal"]');
+  }
+
+  get drawer(): Locator {
+    return this.page.locator('div[role="dialog"][id^="chakra-modal"]');
   }
 
   /**
    * Sets the page and resolves {@link pageReady} promise.
    */
-  public set page(page: Page) {
+  set page(page: Page) {
     this._page = page;
     this.pageReadyResolve!(true);
   }

@@ -1,4 +1,4 @@
-import { Page, expect } from "@playwright/test";
+import { Locator, Page, expect } from "@playwright/test";
 
 import { formatPkh } from "../../utils/format";
 import { Account, AccountGroup } from "../helpers/AccountGroup";
@@ -10,18 +10,25 @@ export class AccountsPage {
     return this.page.getByTestId("total-balance").getByRole("heading", { level: 2 }).innerText();
   }
 
+  async openAccountDrawer(accountLabel: string): Promise<void> {
+    await this.getAccountCard(accountLabel).click();
+  }
+
+  getAccountCard(accountLabel: string): Locator {
+    return this.page
+      .getByTestId("account-tile-container")
+      .filter({ has: this.page.getByRole("heading", { name: accountLabel, exact: true }) });
+  }
+
   async getAccountInfo(
     accountLabel: string
   ): Promise<{ balance: string; shortAddress: string; delegationStatus: boolean }> {
-    const accountBlock = this.page
-      .getByTestId("account-tile-container")
-      .filter({ has: this.page.getByText(accountLabel, { exact: true }) });
+    const accountCard = this.getAccountCard(accountLabel);
 
     return {
-      balance: await accountBlock.getByTestId("balance").innerText(),
-      shortAddress: await accountBlock.getByTestId("short-address").innerText(),
-      delegationStatus:
-        "Delegated" === (await accountBlock.getByTestId("is-delegated").innerText()),
+      balance: await accountCard.getByTestId("balance").innerText(),
+      shortAddress: await accountCard.getByTestId("short-address").innerText(),
+      delegationStatus: "Delegated" === (await accountCard.getByTestId("is-delegated").innerText()),
     };
   }
 

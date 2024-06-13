@@ -22,29 +22,33 @@ describe("usePollTokenBalances", () => {
 
     await waitFor(() => expect(getTokenBalances).toHaveBeenCalledTimes(1));
 
-    expect(store.getState().assets.balances.tokens).toEqual({
-      [mockImplicitAddress(0).pkh]: [
-        {
-          balance: "1",
-          contract: "KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG",
-          lastLevel: undefined,
-          tokenId: "0",
-        },
-        {
-          balance: "5",
-          contract: "KT1CSKPf2jeLpMmrgKquN2bCjBTkAcAdRVDy",
-          lastLevel: undefined,
-          tokenId: "1",
-        },
-      ],
-      [mockImplicitAddress(1).pkh]: [
-        {
-          balance: "1",
-          contract: "KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG",
-          lastLevel: 5,
-          tokenId: "0",
-        },
-      ],
+    expect(store.getState().assets.accountStates).toEqual({
+      [mockImplicitAddress(0).pkh]: {
+        tokens: [
+          {
+            balance: "1",
+            contract: "KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG",
+            lastLevel: undefined,
+            tokenId: "0",
+          },
+          {
+            balance: "5",
+            contract: "KT1CSKPf2jeLpMmrgKquN2bCjBTkAcAdRVDy",
+            lastLevel: undefined,
+            tokenId: "1",
+          },
+        ],
+      },
+      [mockImplicitAddress(1).pkh]: {
+        tokens: [
+          {
+            balance: "1",
+            contract: "KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG",
+            lastLevel: 5,
+            tokenId: "0",
+          },
+        ],
+      },
     });
   });
 });

@@ -82,7 +82,7 @@ describe("<TransactionTile />", () => {
         it("links to the operation page on tzkt", () => {
           store.dispatch(networksActions.setCurrent(network));
 
-          render(fixture(contextValue, transactionFixture({})));
+          render(fixture(contextValue, transactionFixture()));
 
           expect(screen.getByTestId("title")).toHaveAttribute(
             "href",
@@ -218,7 +218,7 @@ describe("<TransactionTile />", () => {
     });
 
     it("shows operation type", () => {
-      render(fixture(contextValue, transactionFixture({})));
+      render(fixture(contextValue, transactionFixture()));
 
       expect(screen.getByTestId("operation-type")).toHaveTextContent("Transaction");
     });
@@ -248,7 +248,7 @@ describe("<TransactionTile />", () => {
     });
 
     it("hides the operation type", () => {
-      render(fixture(contextValue, transactionFixture({})));
+      render(fixture(contextValue, transactionFixture()));
 
       expect(screen.queryByTestId("operation-type")).not.toBeInTheDocument();
     });

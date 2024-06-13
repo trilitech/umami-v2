@@ -1,10 +1,13 @@
 import { Icon, IconProps } from "@chakra-ui/react";
 
-export const XMark: React.FC<IconProps> = props => (
+import colors from "../../style/colors";
+
+export const XMarkIcon: React.FC<IconProps> = props => (
   <Icon
     width="18px"
     height="18px"
     fill="none"
+    stroke={colors.gray[450]}
     viewBox="0 0 18 18"
     xmlns="http://www.w3.org/2000/svg"
     {...props}

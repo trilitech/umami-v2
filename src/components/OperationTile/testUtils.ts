@@ -9,12 +9,17 @@ import { TokenTransfer } from "../../types/Transfer";
 import { CODE_HASH, TYPE_HASH } from "../../utils/multisig/fetch";
 import {
   DelegationOperation,
+  FinalizeUnstakeOperation,
   OriginationOperation,
+  StakeOperation,
   TokenTransferOperation,
   TransactionOperation,
+  UnstakeOperation,
 } from "../../utils/tezos";
 
-export const transactionFixture = (props: Partial<TransactionOperation>): TransactionOperation => ({
+export const transactionFixture = (
+  props?: Partial<TransactionOperation>
+): TransactionOperation => ({
   amount: 1,
   target: { address: mockImplicitAccount(0).address.pkh },
   sender: { address: mockImplicitAccount(1).address.pkh },
@@ -28,14 +33,16 @@ export const transactionFixture = (props: Partial<TransactionOperation>): Transa
   ...props,
 });
 
-export const contractCallFixture = (props: Partial<TransactionOperation>) =>
+export const contractCallFixture = (props?: Partial<TransactionOperation>) =>
   transactionFixture({
     target: { address: mockContractAddress(0).pkh },
     parameter: { entrypoint: "test-entrypoint" },
     ...props,
   });
 
-export const originationFixture = (props: Partial<OriginationOperation>): OriginationOperation => ({
+export const originationFixture = (
+  props?: Partial<OriginationOperation>
+): OriginationOperation => ({
   hash: "test-hash",
   counter: 1234,
   id: 56789,
@@ -52,7 +59,7 @@ export const originationFixture = (props: Partial<OriginationOperation>): Origin
   ...props,
 });
 
-export const delegationFixture = (props: Partial<DelegationOperation>): DelegationOperation => ({
+export const delegationFixture = (props?: Partial<DelegationOperation>): DelegationOperation => ({
   hash: "test-hash",
   counter: 1234,
   id: 56789,
@@ -68,14 +75,62 @@ export const delegationFixture = (props: Partial<DelegationOperation>): Delegati
   ...props,
 });
 
-export const tokenTransferFixture = (props: Partial<TokenTransfer>): TokenTransferOperation => ({
-  type: "token_transfer",
-  amount: "500",
-  transactionId: 56789,
-  id: 278346,
-  level: 10,
-  from: { address: mockImplicitAccount(0).address.pkh },
-  to: { address: mockImplicitAccount(1).address.pkh },
-  token: uUSD(mockLedgerAccount(0).address).token,
+export const tokenTransferFixture = (props?: Partial<TokenTransfer>): TokenTransferOperation =>
+  ({
+    type: "token_transfer",
+    amount: "500",
+    transactionId: 56789,
+    id: 278346,
+    level: 10,
+    from: { address: mockImplicitAccount(0).address.pkh },
+    to: { address: mockImplicitAccount(1).address.pkh },
+    token: uUSD(mockLedgerAccount(0).address).token,
+    ...props,
+  }) as TokenTransferOperation;
+
+export const stakeFixture = (props?: Partial<StakeOperation>): StakeOperation => ({
+  hash: "test-hash",
+  counter: 1234,
+  id: 56789,
+  level: 4321,
+  type: "stake",
+  sender: { address: mockLedgerAccount(0).address.pkh },
+  timestamp: "2021-01-02T00:00:00.000Z",
+  baker: {
+    address: mockImplicitAddress(1).pkh,
+  },
+  amount: 5,
+  status: "applied",
+  ...props,
+});
+
+export const unstakeFixture = (props?: Partial<UnstakeOperation>): UnstakeOperation => ({
+  hash: "test-hash",
+  counter: 1234,
+  id: 56789,
+  level: 4321,
+  type: "unstake",
+  sender: { address: mockLedgerAccount(0).address.pkh },
+  timestamp: "2021-01-02T00:00:00.000Z",
+  baker: {
+    address: mockImplicitAddress(1).pkh,
+  },
+  amount: 10,
+  status: "applied",
+  ...props,
+});
+
+export const finalizeUnstakeFixture = (
+  props?: Partial<FinalizeUnstakeOperation>
+): FinalizeUnstakeOperation => ({
+  hash: "test-hash",
+  counter: 1234,
+  id: 56789,
+  level: 4321,
+  type: "finalize",
+  sender: { address: mockLedgerAccount(0).address.pkh },
+  timestamp: "2021-01-02T00:00:00.000Z",
+  amount: 15,
+  status: "applied",
   ...props,
 });

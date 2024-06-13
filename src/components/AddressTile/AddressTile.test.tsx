@@ -2,6 +2,7 @@ import { AddressTile } from "./AddressTile";
 import { mockMnemonicAccount } from "../../mocks/factories";
 import { addAccount } from "../../mocks/helpers";
 import { act, render, screen, userEvent } from "../../mocks/testUtils";
+import { rawAccountFixture } from "../../mocks/tzktResponse";
 import { formatPkh } from "../../utils/format";
 import { assetsActions } from "../../utils/redux/slices/assetsSlice";
 import { store } from "../../utils/redux/store";
@@ -74,8 +75,11 @@ describe("<AddressTileIcon />", () => {
       const account = mockMnemonicAccount(0);
       addAccount(account);
       store.dispatch(
-        assetsActions.updateTezBalance([
-          { address: mockMnemonicAccount(0).address.pkh, balance: 5000000 },
+        assetsActions.updateAccountStates([
+          rawAccountFixture({
+            address: mockMnemonicAccount(0).address.pkh,
+            balance: 5000000,
+          }),
         ])
       );
 
@@ -90,8 +94,8 @@ describe("<AddressTileIcon />", () => {
       const account = mockMnemonicAccount(0);
       addAccount(account);
       store.dispatch(
-        assetsActions.updateTezBalance([
-          { address: mockMnemonicAccount(0).address.pkh, balance: 5000000 },
+        assetsActions.updateAccountStates([
+          rawAccountFixture({ address: mockMnemonicAccount(0).address.pkh, balance: 5000000 }),
         ])
       );
 

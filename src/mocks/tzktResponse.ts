@@ -1,5 +1,6 @@
 import { mockContractAddress, mockImplicitAddress } from "./factories";
 import { RawTokenBalance } from "../types/TokenBalance";
+import { RawTzktAccount } from "../utils/tezos";
 import { RawTzktGetSameMultisigs } from "../utils/tzkt/types";
 
 export const fa1Token: RawTokenBalance = {
@@ -257,3 +258,14 @@ export const tzktGetSameMultisigsResponse: RawTzktGetSameMultisigs = [
     storage: { threshold: "2", pending_ops: 1, signers: [mockImplicitAddress(2).pkh] },
   },
 ];
+
+export const rawAccountFixture = (props?: Partial<RawTzktAccount>): RawTzktAccount => ({
+  address: mockImplicitAddress(0).pkh,
+  balance: 1000000,
+  delegate: { alias: "mega_baker", address: mockImplicitAddress(1).pkh },
+  stakedBalance: 0,
+  unstakedBalance: 0,
+  rollupBonds: 0,
+  smartRollupBonds: 0,
+  ...props,
+});

@@ -27,7 +27,7 @@ describe("<OriginationTile />", () => {
         });
 
         it("links to the operation page on tzkt", () => {
-          render(fixture(contextValue, originationFixture({})));
+          render(fixture(contextValue, originationFixture()));
 
           expect(screen.getByTestId("title")).toHaveAttribute(
             "href",
@@ -36,7 +36,7 @@ describe("<OriginationTile />", () => {
         });
 
         it("shows a multisig account created title if it is a multisig contract", () => {
-          render(fixture(contextValue, originationFixture({})));
+          render(fixture(contextValue, originationFixture()));
           expect(screen.getByTestId("title")).toHaveTextContent("Multisig Account Created");
         });
 
@@ -59,7 +59,7 @@ describe("<OriginationTile />", () => {
     });
 
     it("displays timestamp", () => {
-      render(fixture(contextValue, originationFixture({})));
+      render(fixture(contextValue, originationFixture()));
       expect(screen.getByTestId("timestamp")).toHaveTextContent("02 Jan 2021");
     });
 
@@ -116,7 +116,7 @@ describe("<OriginationTile />", () => {
     });
 
     it("shows operation type", () => {
-      render(fixture(contextValue, originationFixture({})));
+      render(fixture(contextValue, originationFixture()));
       expect(screen.getByTestId("operation-type")).toHaveTextContent("Contract Origination");
     });
   });
@@ -126,13 +126,13 @@ describe("<OriginationTile />", () => {
     beforeEach(() => addAccount(mockLedgerAccount(0)));
 
     it("hides the fee", () => {
-      render(fixture(contextValue, originationFixture({})));
+      render(fixture(contextValue, originationFixture()));
 
       expect(screen.queryByTestId("fee")).not.toBeInTheDocument();
     });
 
     it("hides the operation type", () => {
-      render(fixture(contextValue, originationFixture({})));
+      render(fixture(contextValue, originationFixture()));
 
       expect(screen.queryByTestId("operation-type")).not.toBeInTheDocument();
     });

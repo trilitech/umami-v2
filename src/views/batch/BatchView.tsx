@@ -63,6 +63,12 @@ const prettyOperationType = (operation: Operation) => {
       return "Delegation";
     case "tez":
       return `${TEZ} Transfer`;
+    case "stake":
+      return "Stake";
+    case "unstake":
+      return "Unstake";
+    case "finalize_unstake":
+      return "Finalize Unstake";
     case "contract_origination":
     case "contract_call":
       throw new Error(`${operation.type} is not supported yet`);

@@ -3,9 +3,12 @@ import { OperationTileContext } from "./OperationTileContext";
 import {
   contractCallFixture,
   delegationFixture,
+  finalizeUnstakeFixture,
   originationFixture,
+  stakeFixture,
   tokenTransferFixture,
   transactionFixture,
+  unstakeFixture,
 } from "./testUtils";
 import { render, screen } from "../../mocks/testUtils";
 import { assetsActions } from "../../utils/redux/slices/assetsSlice";
@@ -20,23 +23,38 @@ const fixture = (operation: TzktCombinedOperation) => (
 
 describe("<OperationTile />", () => {
   it("renders Delegation", () => {
-    render(fixture(delegationFixture({})));
-    expect(screen.getByTestId("operation-tile-delegation")).toBeInTheDocument();
+    render(fixture(delegationFixture()));
+    expect(screen.getByTestId("operation-tile-delegation")).toBeVisible();
   });
 
   it("renders Origination", () => {
-    render(fixture(originationFixture({})));
-    expect(screen.getByTestId("operation-tile-origination")).toBeInTheDocument();
+    render(fixture(originationFixture()));
+    expect(screen.getByTestId("operation-tile-origination")).toBeVisible();
   });
 
   it("renders ContractCall", () => {
-    render(fixture(contractCallFixture({})));
-    expect(screen.getByTestId("operation-tile-contract-call")).toBeInTheDocument();
+    render(fixture(contractCallFixture()));
+    expect(screen.getByTestId("operation-tile-contract-call")).toBeVisible();
   });
 
   it("renders Transaction", () => {
-    render(fixture(transactionFixture({})));
-    expect(screen.getByTestId("operation-tile-transaction")).toBeInTheDocument();
+    render(fixture(transactionFixture()));
+    expect(screen.getByTestId("operation-tile-transaction")).toBeVisible();
+  });
+
+  it("renders Stake", () => {
+    render(fixture(stakeFixture()));
+    expect(screen.getByTestId("operation-tile-stake")).toBeVisible();
+  });
+
+  it("renders Unstake", () => {
+    render(fixture(unstakeFixture()));
+    expect(screen.getByTestId("operation-tile-unstake")).toBeVisible();
+  });
+
+  it("renders FinalizeUnstake", () => {
+    render(fixture(finalizeUnstakeFixture()));
+    expect(screen.getByTestId("operation-tile-finalize-unstake")).toBeVisible();
   });
 
   describe("token transfer", () => {
@@ -49,7 +67,7 @@ describe("<OperationTile />", () => {
 
     it("renders ContractCall if token transfer info is missing", () => {
       render(fixture(tokenTransferTransaction));
-      expect(screen.getByTestId("operation-tile-contract-call")).toBeInTheDocument();
+      expect(screen.getByTestId("operation-tile-contract-call")).toBeVisible();
     });
 
     it("renders Transaction if token info is missing/incorrect", () => {
@@ -59,19 +77,19 @@ describe("<OperationTile />", () => {
       );
 
       render(fixture(tokenTransferTransaction));
-      expect(screen.getByTestId("operation-tile-transaction")).toBeInTheDocument();
+      expect(screen.getByTestId("operation-tile-transaction")).toBeVisible();
     });
 
     it("renders TokenTransfer", () => {
-      store.dispatch(assetsActions.updateTokenTransfers([tokenTransferFixture({})]));
+      store.dispatch(assetsActions.updateTokenTransfers([tokenTransferFixture()]));
 
       render(fixture(tokenTransferTransaction));
-      expect(screen.getByTestId("operation-tile-token-transfer")).toBeInTheDocument();
+      expect(screen.getByTestId("operation-tile-token-transfer")).toBeVisible();
     });
 
     it("renders TokenTransfer when the operation is a token transfer", () => {
-      render(fixture(tokenTransferFixture({})));
-      expect(screen.getByTestId("operation-tile-token-transfer")).toBeInTheDocument();
+      render(fixture(tokenTransferFixture()));
+      expect(screen.getByTestId("operation-tile-token-transfer")).toBeVisible();
     });
 
     it("renders nothing if token is invalid", () => {

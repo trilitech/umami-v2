@@ -14,8 +14,7 @@ import { useRemoveMnemonic, useRemoveNonMnemonic } from "../../utils/hooks/setAc
 export const AccountGroup: React.FC<{
   accounts: Account[];
   groupLabel: string;
-  balances: Record<string, string | undefined>;
-}> = ({ groupLabel, accounts, balances }) => {
+}> = ({ groupLabel, accounts }) => {
   const first = accounts[0];
   const isMultisig = first.type === "multisig";
   const isMnemonic = first.type === "mnemonic";
@@ -81,7 +80,7 @@ export const AccountGroup: React.FC<{
 
       {accounts.map(account => (
         <Box key={account.address.pkh} marginBottom="16px">
-          <AccountTile account={account} balance={balances[account.address.pkh]} />
+          <AccountTile account={account} />
         </Box>
       ))}
     </Box>

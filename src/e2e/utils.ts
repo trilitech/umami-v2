@@ -3,21 +3,9 @@ import { StdioOptions, execSync } from "child_process";
 import { Page } from "@playwright/test";
 import { noop } from "lodash";
 
+import { TEST_NETWORK } from "./constants";
 import { RawPkh } from "../types/Address";
-import { DefaultNetworks } from "../types/Network";
 import { getAccounts } from "../utils/tezos";
-
-const TEST_NETWORK = {
-  name: "Test net",
-  rpcUrl: "http://0.0.0.0:2000" + (process.env.CUCUMBER_WORKER_ID || "0"),
-  tzktApiUrl: "http://0.0.0.0:500" + (process.env.CUCUMBER_WORKER_ID || "0"),
-  tzktExplorerUrl: "http://unavailable",
-  buyTezUrl: "",
-};
-export const TEST_NETWORKS_STATE = {
-  available: [...DefaultNetworks, TEST_NETWORK],
-  current: TEST_NETWORK,
-};
 
 export const runDockerCommand = (command: string, stdio: StdioOptions = "ignore") =>
   execSync(`docker compose ${command}`, {
@@ -33,7 +21,6 @@ const startNode = () => {
   try {
     runDockerCommand("up --wait --wait-timeout 120");
   } catch (e) {
-    console.error("Failed to start the node, docker compose logs:");
     runDockerCommand("logs", "inherit");
     throw e;
   }
@@ -78,8 +65,8 @@ export const topUpAccount = async (account: RawPkh, tez: string) => {
 export const waitUntilRefetch = (page: Page) =>
   runAndWaitUntilRefetch(page, () => Promise.resolve());
 
-export const refetch = (page: Page) =>
-  runAndWaitUntilRefetch(page, () => page.getByTestId("refetch-button").click());
+export const refetch = (page: Page, force = false) =>
+  runAndWaitUntilRefetch(page, () => page.getByTestId("refetch-button").click({ force }));
 
 const runAndWaitUntilRefetch = async (page: Page, action: () => Promise<void>) => {
   const getLastTimeUpdated = () => (window as any).reduxStore.getState().assets.lastTimeUpdated;

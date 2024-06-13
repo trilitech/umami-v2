@@ -1,3 +1,5 @@
+import type { TzktAlias } from "../../types/Address";
+
 export type RawTzktAccountType =
   | "user"
   | "delegate"
@@ -6,6 +8,18 @@ export type RawTzktAccountType =
   | "rollup"
   | "smart_rollup"
   | "empty";
+
+export type RawTzktBlock = {
+  level: number;
+  cycle: number;
+};
+
+export type RawTzktUnstakeRequest = {
+  cycle: number;
+  amount: number;
+  status: "pending" | "finalizable" | "finalized";
+  staker: TzktAlias;
+};
 
 export type RawTzktGetSameMultisigsItem = {
   address: string;

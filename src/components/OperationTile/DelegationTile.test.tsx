@@ -23,7 +23,7 @@ describe("<DelegationTile />", () => {
   ])("in $mode mode", contextValue => {
     describe("title", () => {
       it("displays delegate", () => {
-        render(fixture(contextValue, delegationFixture({})));
+        render(fixture(contextValue, delegationFixture()));
         expect(screen.getByTestId("title")).toHaveTextContent("Delegate");
       });
 
@@ -38,7 +38,7 @@ describe("<DelegationTile />", () => {
         it("links to the operation page on tzkt", () => {
           store.dispatch(networksActions.setCurrent(network));
 
-          render(fixture(contextValue, delegationFixture({})));
+          render(fixture(contextValue, delegationFixture()));
 
           expect(screen.getByTestId("title")).toHaveAttribute(
             "href",
@@ -49,14 +49,14 @@ describe("<DelegationTile />", () => {
     });
 
     it("displays timestamp", () => {
-      render(fixture(contextValue, delegationFixture({})));
+      render(fixture(contextValue, delegationFixture()));
       expect(screen.getByTestId("timestamp")).toHaveTextContent("02 Jan 2021");
     });
 
     it("displays both the sender and baker contract pills", () => {
       addAccount(mockLedgerAccount(0));
 
-      render(fixture(contextValue, delegationFixture({})));
+      render(fixture(contextValue, delegationFixture()));
 
       expect(screen.getByTestId("from")).toHaveTextContent("Account");
       expect(screen.getByTestId("to")).toHaveTextContent(formatPkh(mockImplicitAddress(1).pkh));
@@ -98,7 +98,7 @@ describe("<DelegationTile />", () => {
 
     describe("operation type", () => {
       it("displays 'delegate' if delegating", () => {
-        render(fixture(contextValue, delegationFixture({})));
+        render(fixture(contextValue, delegationFixture()));
         expect(screen.getByTestId("operation-type")).toHaveTextContent("Delegate");
       });
 
@@ -115,12 +115,12 @@ describe("<DelegationTile />", () => {
     beforeEach(() => addAccount(mockLedgerAccount(0)));
 
     it("hides the fee", () => {
-      render(fixture(contextValue, delegationFixture({})));
+      render(fixture(contextValue, delegationFixture()));
       expect(screen.queryByTestId("fee")).not.toBeInTheDocument();
     });
 
     it("hides the operation type", () => {
-      render(fixture(contextValue, delegationFixture({})));
+      render(fixture(contextValue, delegationFixture()));
       expect(screen.queryByTestId("operation-type")).not.toBeInTheDocument();
     });
   });

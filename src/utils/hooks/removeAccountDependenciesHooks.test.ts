@@ -6,6 +6,7 @@ import { mockImplicitAccount, mockMultisigAccount, mockTezOperation } from "../.
 import { addAccount } from "../../mocks/helpers";
 import { multisigOperation } from "../../mocks/multisig";
 import { act, renderHook } from "../../mocks/testUtils";
+import { rawAccountFixture } from "../../mocks/tzktResponse";
 import { makeAccountOperations } from "../../types/AccountOperations";
 import { GHOSTNET, MAINNET } from "../../types/Network";
 import { usePeers } from "../beacon/beacon";
@@ -141,10 +142,28 @@ describe("useRemoveDependenciesAndMultisigs", () => {
 
     it("removes assets data directly related to the given accounts", () => {
       store.dispatch(
-        assetsActions.updateTezBalance([
-          { address: account0.address.pkh, balance: 11, delegationLevel: 1 },
-          { address: account1.address.pkh, balance: 22, delegationLevel: 2 },
-          { address: account2.address.pkh, balance: 33, delegationLevel: 3 },
+        assetsActions.updateAccountStates([
+          rawAccountFixture({
+            address: account0.address.pkh,
+            balance: 11,
+            stakedBalance: 1,
+            unstakedBalance: 1,
+            delegate: null,
+          }),
+          rawAccountFixture({
+            address: account1.address.pkh,
+            balance: 22,
+            stakedBalance: 1,
+            unstakedBalance: 1,
+            delegate: null,
+          }),
+          rawAccountFixture({
+            address: account2.address.pkh,
+            balance: 33,
+            stakedBalance: 1,
+            unstakedBalance: 1,
+            delegate: null,
+          }),
         ])
       );
 
@@ -153,11 +172,12 @@ describe("useRemoveDependenciesAndMultisigs", () => {
       } = renderHook(() => useRemoveDependenciesAndMultisigs());
       act(() => removeAccountsDependencies([account0, account2]));
 
-      expect(store.getState().assets.balances.mutez).toEqual({
-        [account1.address.pkh]: "22",
-      });
-      expect(store.getState().assets.delegationLevels).toEqual({
-        [account1.address.pkh]: 2,
+      expect(store.getState().assets.accountStates).toEqual({
+        [account1.address.pkh]: {
+          balance: 20,
+          delegate: null,
+          stakedBalance: 1,
+        },
       });
     });
   });
@@ -263,10 +283,28 @@ describe("useRemoveDependenciesAndMultisigs", () => {
 
     it("removes assets data directly related to the obsolete multisig accounts", () => {
       store.dispatch(
-        assetsActions.updateTezBalance([
-          { address: multisig0.address.pkh, balance: 11, delegationLevel: 1 },
-          { address: multisig1.address.pkh, balance: 22, delegationLevel: 2 },
-          { address: multisig2.address.pkh, balance: 33, delegationLevel: 3 },
+        assetsActions.updateAccountStates([
+          rawAccountFixture({
+            address: multisig0.address.pkh,
+            balance: 11,
+            stakedBalance: 1,
+            unstakedBalance: 1,
+            delegate: null,
+          }),
+          rawAccountFixture({
+            address: multisig1.address.pkh,
+            balance: 22,
+            stakedBalance: 1,
+            unstakedBalance: 1,
+            delegate: null,
+          }),
+          rawAccountFixture({
+            address: multisig2.address.pkh,
+            balance: 33,
+            stakedBalance: 1,
+            unstakedBalance: 1,
+            delegate: null,
+          }),
         ])
       );
 
@@ -275,11 +313,12 @@ describe("useRemoveDependenciesAndMultisigs", () => {
       } = renderHook(() => useRemoveDependenciesAndMultisigs());
       act(() => removeAccountsDependencies([account0, account1]));
 
-      expect(store.getState().assets.balances.mutez).toEqual({
-        [multisig1.address.pkh]: "22",
-      });
-      expect(store.getState().assets.delegationLevels).toEqual({
-        [multisig1.address.pkh]: 2,
+      expect(store.getState().assets.accountStates).toEqual({
+        [multisig1.address.pkh]: {
+          balance: 20,
+          delegate: null,
+          stakedBalance: 1,
+        },
       });
     });
   });

@@ -1,7 +1,5 @@
 import { Box, Center, Flex, Heading, IconButton, Text } from "@chakra-ui/react";
-import type { BigNumber } from "bignumber.js";
-import { noop } from "lodash";
-import { ReactElement, useContext, useEffect, useState } from "react";
+import { ReactElement, useContext } from "react";
 
 import { AssetsPanel } from "./AssetsPanel/AssetsPanel";
 import { MultisigApprovers } from "./MultisigApprovers";
@@ -9,25 +7,20 @@ import { RenameRemoveMenuSwitch } from "./RenameRemoveMenuSwitch";
 import { BakerIcon, IncomingArrow, OutgoingArrow, PlusIcon } from "../../assets/icons";
 import colors from "../../style/colors";
 import { Account } from "../../types/Account";
-import { Delegation, makeDelegation } from "../../types/Delegation";
 import { FA12TokenBalance, FA2TokenBalance, NFTBalance } from "../../types/TokenBalance";
-import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
-import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
-import { getLastDelegation } from "../../utils/tezos";
+import { useGetAccountBalance, useGetDollarBalance } from "../../utils/hooks/assetsHooks";
 import { accountIconGradient } from "../AccountTile/AccountTile";
 import { AccountTileIcon } from "../AccountTile/AccountTileIcon";
 import { AddressPill } from "../AddressPill/AddressPill";
 import { BuyTezForm } from "../BuyTez/BuyTezForm";
 import { DynamicModalContext } from "../DynamicModal";
-import { FormPage as DelegationFormPage } from "../SendFlow/Delegation/FormPage";
+import { NoticeModal as DelegateNoticeModal } from "../SendFlow/Delegation/NoticeModal";
 import { TezRecapDisplay } from "../TezRecapDisplay";
 
 type Props = {
   onSend: () => void;
   onReceive?: () => void;
   onBuyTez?: () => void;
-  balance: string | undefined;
-  dollarBalance: BigNumber | undefined;
   tokens: Array<FA12TokenBalance | FA2TokenBalance>;
   nfts: Array<NFTBalance>;
   account: Account;
@@ -44,6 +37,7 @@ const RoundButton: React.FC<{
     textAlign="center"
     _hover={{ color: colors.green }}
     cursor="pointer"
+    data-testid="account-drawer-cta-button"
     marginX="24px"
     onClick={onClick}
   >
@@ -64,25 +58,15 @@ const RoundButton: React.FC<{
 export const AccountDrawerDisplay: React.FC<Props> = ({
   onSend,
   onReceive = () => {},
-  balance,
-  dollarBalance,
   tokens,
   nfts,
   account,
 }) => {
   const isMultisig = account.type === "multisig";
   const { openWith } = useContext(DynamicModalContext);
-  const network = useSelectedNetwork();
-
-  const [delegation, setDelegation] = useState<Delegation | null>(null);
-  const { handleAsyncAction } = useAsyncActionHandler();
-
-  useEffect(() => {
-    handleAsyncAction(async () => {
-      const tzktDelegation = await getLastDelegation(account.address.pkh, network);
-      tzktDelegation && setDelegation(makeDelegation(tzktDelegation));
-    }).catch(noop);
-  }, [account.address.pkh, handleAsyncAction, network]);
+  const pkh = account.address.pkh;
+  const balance = useGetAccountBalance()(pkh);
+  const dollarBalance = useGetDollarBalance()(pkh);
 
   return (
     <Flex
@@ -134,22 +118,11 @@ export const AccountDrawerDisplay: React.FC<Props> = ({
         <RoundButton
           icon={<BakerIcon width="24px" height="24px" stroke="currentcolor" />}
           label="Delegate"
-          onClick={() =>
-            openWith(
-              <DelegationFormPage
-                form={
-                  delegation
-                    ? { baker: delegation.delegate.address, sender: account.address.pkh }
-                    : undefined
-                }
-                sender={account}
-              />
-            )
-          }
+          onClick={() => openWith(<DelegateNoticeModal account={account} />)}
         />
       </Center>
       {isMultisig && <MultisigApprovers signers={account.signers} />}
-      <AssetsPanel account={account} delegation={delegation} nfts={nfts} tokens={tokens} />
+      <AssetsPanel account={account} nfts={nfts} tokens={tokens} />
     </Flex>
   );
 };

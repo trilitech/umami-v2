@@ -5,7 +5,7 @@ import { initialState as announcementsInitialState } from "./slices/announcement
 import { isValidContractPkh, isValidImplicitPkh } from "../../types/Address";
 import { getNetworksForContracts } from "../multisig/helpers";
 
-export const VERSION = 6;
+export const VERSION = 7;
 
 export const mainStoreMigrations = {
   0: (state: any) =>
@@ -55,6 +55,14 @@ export const mainStoreMigrations = {
       draft.contacts = fromPairs([...implicitAccounts, ...contractAccounts]);
     });
   },
+  7: (state: any) =>
+    produce(state, (draft: any) => {
+      draft.assets.accountStates = {};
+      draft.assets.block = { level: draft.assets.blockLevel };
+      delete draft.assets["blockLevel"];
+      delete draft.assets["balances"];
+      delete draft.assets["delegationLevels"];
+    }),
 } as any;
 
 export const accountsMigrations = {
@@ -85,4 +93,5 @@ export const accountsMigrations = {
     }),
   5: identity,
   6: identity,
+  7: identity,
 } as any;

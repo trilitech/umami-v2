@@ -1,10 +1,11 @@
+import { RpcClient } from "@taquito/rpc";
 import {
   Delegate,
   OffsetParameter,
   SortParameter,
-  accountsGet,
-  blocksGetCount,
+  blocksGet,
   delegatesGet,
+  operationsGetByHash,
   operationsGetDelegations,
   operationsGetOriginations,
   operationsGetTransactions,
@@ -12,73 +13,118 @@ import {
   tokensGetTokenTransfers,
 } from "@tzkt/sdk-api";
 import * as tzktApi from "@tzkt/sdk-api";
-import { first, sortBy } from "lodash";
+import axios from "axios";
+import { identity, pickBy, sortBy } from "lodash";
 
 import { withRateLimit } from "./withRateLimit";
 import { RawPkh, TzktAlias } from "../../types/Address";
 import { Network } from "../../types/Network";
 import { RawTokenBalance } from "../../types/TokenBalance";
 import { TokenTransfer } from "../../types/Transfer";
+import { ProtocolSettings } from "../redux/slices/protocolSettingsSlice";
+import { RawTzktBlock, RawTzktUnstakeRequest } from "../tzkt/types";
 
 // TzKT defines type Account = {type: string};
 // whilst accountsGet returns all the info about accounts
-export type TzktAccount = { address: RawPkh; balance: number; delegationLevel?: number };
+export type TzktAccount = {
+  address: RawPkh;
+  balance: number; // this is an actual spendable balance
+  stakedBalance: number;
+  delegate: TzktAlias | null;
+};
+export type RawTzktAccount = {
+  address: RawPkh;
+  balance: number;
+  stakedBalance: number;
+  unstakedBalance: number;
+  rollupBonds: number;
+  smartRollupBonds: number;
+  delegate: TzktAlias | null;
+};
 
-export type DelegationOperation = tzktApi.DelegationOperation & {
+type TzktUnstakeRequest = {
+  cycle: number;
+  actualAmount: number;
+  status: "pending" | "finalizable";
+  staker: TzktAlias;
+};
+
+type CommonOperationFields = {
   id: number;
   level: number;
   hash: string;
   counter: number;
-  type: "delegation";
+  status: "applied" | "failed" | "backtracked" | "skipped";
   sender: TzktAlias;
+  timestamp: string;
+  bakerFee?: number;
+  storageFee?: number;
+  allocationFee?: number;
+};
+export type DelegationOperation = CommonOperationFields & {
+  type: "delegation";
   newDelegate?: TzktAlias | null;
-  status: string;
   initiator?: TzktAlias | null;
   timestamp: string;
   amount: number;
 };
-export type TransactionOperation = tzktApi.TransactionOperation & {
-  id: number;
-  level: number;
-  hash: string;
-  counter: number;
+export type TransactionOperation = CommonOperationFields & {
   type: "transaction";
-  sender: TzktAlias;
   target?: TzktAlias | null;
-  status: string;
+  amount: number;
+  parameter?: { entrypoint: string; value?: any };
 };
-export type OriginationOperation = tzktApi.OriginationOperation & {
-  id: number;
-  level: number;
-  hash: string;
-  counter: number;
+export type OriginationOperation = CommonOperationFields & {
   type: "origination";
-  sender: TzktAlias;
-  status: string;
+  originatedContract: {
+    address: RawPkh;
+    codeHash: number;
+    typeHash: number;
+  };
 };
-
 export type TokenTransferOperation = TokenTransfer & {
   type: "token_transfer";
+};
+export type StakeOperation = CommonOperationFields & {
+  type: "stake";
+  amount: number;
+  baker: TzktAlias;
+};
+export type UnstakeOperation = CommonOperationFields & {
+  type: "unstake";
+  amount: number;
+  baker: TzktAlias;
+};
+export type FinalizeUnstakeOperation = CommonOperationFields & {
+  type: "finalize";
+  amount: number;
+};
+type StakingOperation = StakeOperation | UnstakeOperation | FinalizeUnstakeOperation;
+type RawTzktStakingOperation = Omit<StakingOperation, "type"> & {
+  type: "staking";
+  action: "stake" | "unstake" | "finalize";
 };
 
 export type TzktCombinedOperation =
   | DelegationOperation
   | TransactionOperation
   | OriginationOperation
-  | TokenTransferOperation;
+  | TokenTransferOperation
+  | StakeOperation
+  | UnstakeOperation
+  | FinalizeUnstakeOperation;
 
 export const getAccounts = async (pkhs: string[], network: Network) =>
-  withRateLimit(() =>
-    accountsGet(
-      {
-        address: { in: [pkhs.join(",")] },
-        select: { fields: ["address,balance,delegationLevel"] },
+  withRateLimit(async () => {
+    const { data } = await axios.get<RawTzktAccount[]>(`${network.tzktApiUrl}/v1/accounts`, {
+      params: {
+        ["address.in"]: pkhs.join(","),
+        ["select.fields"]:
+          "address,balance,delegate,stakedBalance,unstakedBalance,rollupBonds,smartRollupBonds",
       },
-      {
-        baseUrl: network.tzktApiUrl,
-      }
-    )
-  ) as any as Promise<TzktAccount[]>;
+    });
+    return data;
+  });
 
 export const getTokenBalances = async (pkhs: string[], network: Network) =>
   withRateLimit(() =>
@@ -151,6 +197,34 @@ export const getOriginations = async (
     )
   ) as Promise<OriginationOperation[]>;
 
+export const getStakingOperations = async (
+  addresses: RawPkh[],
+  network: Network,
+  options: {
+    offset?: OffsetParameter;
+    sort: SortParameter;
+    limit: number;
+  }
+): Promise<StakingOperation[]> =>
+  withRateLimit(async () => {
+    const params = pickBy(
+      {
+        limit: options.limit,
+        "sender.in": addresses.join(","),
+        "sort.asc": options.sort.asc,
+        "sort.desc": options.sort.desc,
+        "offset.cr": options.offset?.cr,
+        // TODO: add select.fields
+      },
+      identity
+    );
+    const { data } = await axios.get<RawTzktStakingOperation[]>(
+      network.tzktApiUrl + "/v1/operations/staking",
+      { params }
+    );
+    return data.map(operation => ({ ...operation, type: operation.action }) as StakingOperation);
+  });
+
 // It returns all transactions, delegations, contract originations & token transfers for given addresses
 // You will get them interleaved and  sorted by ID and up to the specified limit (100 by default)
 // ID is a shared sequence among all operations in TzKT so it's safe to use it for sorting & pagination
@@ -177,6 +251,7 @@ export const getCombinedOperations = async (
     getDelegations(addresses, network, tzktRequestOptions),
     getOriginations(addresses, network, tzktRequestOptions),
     getTokenTransfers(addresses, network, tzktRequestOptions),
+    getStakingOperations(addresses, network, tzktRequestOptions),
   ]);
 
   return sortBy(operations.flat(), operation =>
@@ -232,19 +307,22 @@ export const getTokenTransfers = async (
     }));
   });
 
-export const getLastDelegation = (address: RawPkh, network: Network) =>
-  getDelegations([address], network, { limit: 1, sort: { desc: "id" } }).then(first);
-
 export const getTezosPriceInUSD = () =>
   withRateLimit(() => tzktApi.quotesGetLast().then(quote => quote.usd));
 
-export const getLatestBlockLevel = async (network: Network): Promise<number> =>
-  withRateLimit(
-    async () =>
-      await blocksGetCount({
+export const getLatestBlock = async (network: Network): Promise<RawTzktBlock> =>
+  withRateLimit(async () => {
+    const [block] = await blocksGet(
+      {
+        limit: 1,
+        sort: { desc: "id" },
+      },
+      {
         baseUrl: network.tzktApiUrl,
-      })
-  );
+      }
+    );
+    return { level: block.level!, cycle: block.cycle! };
+  });
 
 export const getBakers = async (
   network: Network
@@ -268,3 +346,41 @@ export const getBakers = async (
       }))
     )
   );
+
+export const getPendingUnstakeRequests = async (
+  network: Network,
+  addresses: RawPkh[]
+): Promise<RawTzktUnstakeRequest[]> =>
+  withRateLimit(async () => {
+    const { data: requests } = await axios.get<TzktUnstakeRequest[]>(
+      `${network.tzktApiUrl}/v1/staking/unstake_requests`,
+      {
+        params: {
+          limit: 10000,
+          "staker.in": addresses.join(","),
+          type: "unstake",
+          ["status.ne"]: "finalized",
+          "select.fields": "cycle,actualAmount,staker,status",
+        },
+      }
+    );
+
+    return requests.map(request => ({
+      cycle: request.cycle,
+      amount: request.actualAmount,
+      staker: request.staker,
+      status: request.status,
+    }));
+  });
+
+export const getProtocolSettings = async (network: Network): Promise<ProtocolSettings> => {
+  const settings = await new RpcClient(network.rpcUrl).getConstants();
+
+  return {
+    maxSlashingPeriod: settings.max_slashing_period!,
+    consensusRightsDelay: (settings as any).consensus_rights_delay,
+  };
+};
+
+export const getOperationsByHash = (hash: string, network: Network) =>
+  withRateLimit(() => operationsGetByHash(hash, {}, { baseUrl: network.tzktApiUrl }));

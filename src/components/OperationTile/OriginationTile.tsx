@@ -14,7 +14,7 @@ import { AddressPill } from "../AddressPill/AddressPill";
 
 export const OriginationTile: React.FC<{ operation: OriginationOperation }> = ({ operation }) => {
   const isMultisig =
-    operation.originatedContract?.codeHash === CODE_HASH &&
+    operation.originatedContract.codeHash === CODE_HASH &&
     operation.originatedContract.typeHash === TYPE_HASH;
 
   const contractTitle = isMultisig ? "Multisig Account Created" : "Contract Origination";

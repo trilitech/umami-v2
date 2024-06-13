@@ -1,13 +1,15 @@
 import { fromUnixTime } from "date-fns";
 import { useEffect } from "react";
 
+import { usePollAccountStates } from "./usePollAccountStates";
 import { usePollBakers } from "./usePollBakers";
-import { usePollBlockLevel } from "./usePollBlockLevel";
+import { usePollBlock } from "./usePollBlock";
 import { usePollConversionRate } from "./usePollConversionRate";
 import { usePollMultisigs } from "./usePollMultisigs";
 import { usePollPendingOperations } from "./usePollPendingOperations";
-import { usePollTezBalances } from "./usePollTezBalances";
+import { usePollProtocolSettings } from "./usePollProtocolSettings";
 import { usePollTokenBalances } from "./usePollTokenBalances";
+import { usePollUnstakeRequests } from "./usePollUnstakeRequests";
 import { useAppDispatch } from "../redux/hooks";
 import { assetsActions } from "../redux/slices/assetsSlice";
 
@@ -18,26 +20,31 @@ export const useDataPolling = () => {
     usePollMultisigs();
   const { dataUpdatedAt: isPendingOperationsUpdatedAt, isFetching: isPendingOperationsFetching } =
     usePollPendingOperations();
-  const { dataUpdatedAt: isTezBalancesUpdatedAt, isFetching: isTezBalancesFetching } =
-    usePollTezBalances();
+  const { dataUpdatedAt: isAccountStatesUpdatedAt, isFetching: isAccountStatesFetching } =
+    usePollAccountStates();
+  const { dataUpdatedAt: isUnstakeRequestUpdatedAt, isFetching: isUnstakeRequestFetching } =
+    usePollUnstakeRequests();
   const { dataUpdatedAt: isTokenBalancesUpdatedAt, isFetching: isTokenBalancesFetching } =
     usePollTokenBalances();
 
   usePollConversionRate();
-  usePollBlockLevel();
+  usePollBlock();
   usePollBakers();
+  usePollProtocolSettings();
 
   const isFetching =
     isMultisigsFetching ||
     isPendingOperationsFetching ||
-    isTezBalancesFetching ||
-    isTokenBalancesFetching;
+    isAccountStatesFetching ||
+    isTokenBalancesFetching ||
+    isUnstakeRequestFetching;
 
   const lastUpdatedAt = Math.max(
     isMultisigsUpdatedAt,
     isPendingOperationsUpdatedAt,
-    isTezBalancesUpdatedAt,
-    isTokenBalancesUpdatedAt
+    isAccountStatesUpdatedAt,
+    isTokenBalancesUpdatedAt,
+    isUnstakeRequestUpdatedAt
   );
 
   useEffect(() => {

@@ -17,8 +17,8 @@ export const OperationView = ({ operation }: { operation: Operation }) => {
   switch (operation.type) {
     case "tez":
       return (
-        <Flex>
-          <OutgoingArrow marginRight="8px" />
+        <Flex gap="8px">
+          <OutgoingArrow />
           <Heading size="sm">{prettyTezAmount(operation.amount)}</Heading>
         </Flex>
       );
@@ -61,8 +61,8 @@ export const OperationView = ({ operation }: { operation: Operation }) => {
       }
 
       return (
-        <Flex>
-          <OutgoingArrow marginRight="8px" />
+        <Flex gap="8px">
+          <OutgoingArrow />
           <Heading size="sm">
             <Link data-testid="link" href={token ? tokenUri(token, network) : undefined}>
               {tokenTitle(token, operation.amount)}
@@ -73,16 +73,37 @@ export const OperationView = ({ operation }: { operation: Operation }) => {
     }
     case "delegation":
       return (
-        <Flex>
-          <BakerIcon marginRight="8px" />
+        <Flex gap="8px">
+          <BakerIcon />
           <Heading size="sm">Delegate</Heading>
         </Flex>
       );
     case "undelegation":
       return (
-        <Flex>
-          <BakerIcon marginRight="8px" />
+        <Flex gap="8px">
+          <BakerIcon />
           <Heading size="sm">End Delegation</Heading>
+        </Flex>
+      );
+    case "stake":
+      return (
+        <Flex gap="8px">
+          <BakerIcon />
+          <Heading size="sm">Stake: {prettyTezAmount(operation.amount)}</Heading>
+        </Flex>
+      );
+    case "unstake":
+      return (
+        <Flex gap="8px">
+          <BakerIcon />
+          <Heading size="sm">Unstake: {prettyTezAmount(operation.amount)}</Heading>
+        </Flex>
+      );
+    case "finalize_unstake":
+      return (
+        <Flex gap="8px">
+          <BakerIcon />
+          <Heading size="sm">Finalize Unstake</Heading>
         </Flex>
       );
     case "contract_origination":

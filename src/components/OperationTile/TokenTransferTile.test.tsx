@@ -36,7 +36,7 @@ describe("<TokenTransferTile />", () => {
       it("shows '+' for incoming transactions", () => {
         addAccount(mockLedgerAccount(1));
 
-        render(fixture(contextValue, tokenTransferFixture({})));
+        render(fixture(contextValue, tokenTransferFixture()));
 
         expect(screen.getByTestId("incoming-arrow")).toBeInTheDocument();
         expect(screen.queryByTestId("outgoing-arrow")).not.toBeInTheDocument();
@@ -110,7 +110,7 @@ describe("<TokenTransferTile />", () => {
     describe("token name", () => {
       describe("NFT", () => {
         it("shows the token name", () => {
-          const tokenTransfer = tokenTransferFixture({});
+          const tokenTransfer = tokenTransferFixture();
           tokenTransfer.token.metadata = {
             ...tokenTransfer.token.metadata,
             name: "some-name",
@@ -123,7 +123,7 @@ describe("<TokenTransferTile />", () => {
         });
 
         it("shows the default token name if the token name is empty", () => {
-          const tokenTransfer = tokenTransferFixture({});
+          const tokenTransfer = tokenTransferFixture();
           tokenTransfer.token.metadata = {
             ...tokenTransfer.token.metadata,
             name: undefined,
@@ -141,7 +141,7 @@ describe("<TokenTransferTile />", () => {
         { standard: "fa1.2", defaultSymbol: "FA1.2" },
         { standard: "fa2", defaultSymbol: "FA2" },
       ])("$standard", ({ standard, defaultSymbol }) => {
-        const tokenTransfer = tokenTransferFixture({});
+        const tokenTransfer = tokenTransferFixture();
         tokenTransfer.token.standard = standard;
         tokenTransfer.token.metadata.name = "some-name";
 
@@ -166,7 +166,7 @@ describe("<TokenTransferTile />", () => {
         it("links to the operation page on tzkt", () => {
           store.dispatch(networksActions.setCurrent(network));
 
-          render(fixture(contextValue, tokenTransferFixture({})));
+          render(fixture(contextValue, tokenTransferFixture()));
 
           expect(screen.getByTestId("title")).toHaveAttribute(
             "href",
@@ -241,7 +241,7 @@ describe("<TokenTransferTile />", () => {
 
     describe.each([
       { type: "NFT", transfer: tokenTransferFixture({ token: ghostnetThezard.token }) },
-      { type: "token", transfer: tokenTransferFixture({}) },
+      { type: "token", transfer: tokenTransferFixture() },
     ])("for $type", ({ transfer }) => {
       afterEach(() => jest.restoreAllMocks());
 
@@ -274,7 +274,7 @@ describe("<TokenTransferTile />", () => {
         render(
           fixture(
             contextValue,
-            tokenTransferFixture({}),
+            tokenTransferFixture(),
             transactionFixture({
               bakerFee: 100,
               storageFee: 20,
@@ -323,7 +323,7 @@ describe("<TokenTransferTile />", () => {
     });
 
     it("shows operation type", () => {
-      render(fixture(contextValue, tokenTransferFixture({})));
+      render(fixture(contextValue, tokenTransferFixture()));
 
       expect(screen.getByTestId("operation-type")).toHaveTextContent("Token Transfer");
     });
@@ -353,7 +353,7 @@ describe("<TokenTransferTile />", () => {
     });
 
     it("hides the operation type", () => {
-      render(fixture(contextValue, tokenTransferFixture({})));
+      render(fixture(contextValue, tokenTransferFixture()));
 
       expect(screen.queryByTestId("operation-type")).not.toBeInTheDocument();
     });

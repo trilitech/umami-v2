@@ -13,6 +13,7 @@ import { contactsSlice } from "./slices/contactsSlice";
 import { errorsSlice } from "./slices/errorsSlice";
 import { multisigsSlice } from "./slices/multisigsSlice";
 import { networksSlice } from "./slices/networks";
+import { protocolSettingsSlice } from "./slices/protocolSettingsSlice";
 import { tokensSlice } from "./slices/tokensSlice";
 
 const rootPersistConfig = {
@@ -41,6 +42,7 @@ const rootReducers = combineReducers({
   errors: errorsSlice.reducer,
   multisigs: multisigsSlice.reducer,
   networks: networksSlice.reducer,
+  protocolSettings: protocolSettingsSlice.reducer,
   tokens: tokensSlice.reducer,
 });
 

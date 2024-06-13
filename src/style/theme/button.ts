@@ -116,9 +116,11 @@ export const buttonTheme = defineStyleConfig({
     },
     CTAWithIcon: {
       padding: "8px 7px",
+      stroke: colors.gray[450],
       color: colors.gray[300],
       _hover: {
         color: colors.green,
+        stroke: colors.green,
       },
       _disabled: {
         color: colors.gray[450],

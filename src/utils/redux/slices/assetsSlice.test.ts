@@ -1,25 +1,29 @@
 import { accountsSlice } from "./accountsSlice/accountsSlice";
 import { assetsSlice } from "./assetsSlice";
-import { hedgehoge, tzBtsc } from "../../../mocks/fa12Tokens";
+import { hedgehoge } from "../../../mocks/fa12Tokens";
 import { mockImplicitAddress, mockTokenTransaction } from "../../../mocks/factories";
+import { rawAccountFixture } from "../../../mocks/tzktResponse";
 import { store } from "../store";
 
 const {
-  actions: { removeAccountsData, updateTezBalance, updateTokenBalance, updateTokenTransfers },
+  actions: {
+    updateBlock,
+    updateUnstakeRequests,
+    removeAccountsData,
+    updateAccountStates,
+    updateTokenBalance,
+    updateTokenTransfers,
+  },
 } = assetsSlice;
 
 describe("assetsSlice", () => {
   it("is initialized with empty state", () => {
     expect(store.getState().assets).toEqual({
-      balances: {
-        mutez: {},
-        tokens: {},
-      },
+      accountStates: {},
       transfers: { tokens: {} },
-      delegationLevels: {},
       conversionRate: undefined,
       bakers: [],
-      blockLevel: null,
+      block: {},
       refetchTrigger: 0,
       lastTimeUpdated: null,
       isLoading: false,
@@ -28,9 +32,21 @@ describe("assetsSlice", () => {
 
   it("resets state on reset", () => {
     store.dispatch(
-      updateTezBalance([
-        { address: "bar", balance: 44 },
-        { address: "baz", balance: 55 },
+      updateAccountStates([
+        rawAccountFixture({
+          address: "bar",
+          balance: 44,
+          stakedBalance: 123,
+          unstakedBalance: 321,
+          delegate: null,
+        }),
+        rawAccountFixture({
+          address: "baz",
+          balance: 55,
+          stakedBalance: 123,
+          unstakedBalance: 321,
+          delegate: null,
+        }),
       ])
     );
     store.dispatch(updateTokenBalance([hedgehoge(mockImplicitAddress(0))]));
@@ -38,211 +54,170 @@ describe("assetsSlice", () => {
     store.dispatch(accountsSlice.actions.reset());
 
     expect(store.getState().assets).toEqual({
-      balances: { mutez: {}, tokens: {} },
+      accountStates: {},
       transfers: { tokens: {} },
-      delegationLevels: {},
       bakers: [],
       conversionRate: undefined,
-      blockLevel: null,
+      block: {},
       refetchTrigger: 0,
       lastTimeUpdated: null,
       isLoading: false,
     });
   });
 
-  describe("updateTezBalance", () => {
-    it("replaces tez balances", () => {
-      store.dispatch(updateTezBalance([{ address: "foo", balance: 43 }]));
+  test("updateAccountStates", () => {
+    store.dispatch(
+      updateAccountStates([
+        rawAccountFixture({
+          address: "foo",
+          balance: 4391,
+          stakedBalance: 123,
+          unstakedBalance: 321,
+          delegate: { address: "foo" },
+        }),
+        rawAccountFixture({
+          address: "baz",
+          balance: 9595,
+          stakedBalance: 1234,
+          unstakedBalance: 4321,
+          delegate: null,
+        }),
+      ])
+    );
 
-      expect(store.getState().assets).toEqual({
-        balances: {
-          mutez: {
-            foo: "43",
-          },
-          tokens: {},
-        },
-        transfers: { tokens: {} },
-        delegationLevels: {},
-        conversionRate: undefined,
-        bakers: [],
-        blockLevel: null,
-        refetchTrigger: 0,
-        lastTimeUpdated: null,
-        isLoading: false,
-      });
-
-      store.dispatch(
-        updateTezBalance([
-          { address: "bar", balance: 44 },
-          { address: "baz", balance: 55 },
-        ])
-      );
-
-      expect(store.getState().assets).toEqual({
-        balances: {
-          mutez: {
-            bar: "44",
-            baz: "55",
-          },
-          tokens: {},
-        },
-        transfers: { tokens: {} },
-        delegationLevels: {},
-        conversionRate: undefined,
-        bakers: [],
-        blockLevel: null,
-        refetchTrigger: 0,
-        lastTimeUpdated: null,
-        isLoading: false,
-      });
-    });
-
-    it("updates tez balances", () => {
-      store.dispatch(
-        updateTezBalance([
-          { address: "bar", balance: 44 },
-          { address: "baz", balance: 55 },
-        ])
-      );
-
-      store.dispatch(
-        updateTezBalance([
-          {
-            address: "baz",
-            balance: 66,
-          },
-        ])
-      );
-
-      expect(store.getState().assets).toEqual({
-        balances: {
-          mutez: { baz: "66" },
-          tokens: {},
-        },
-        conversionRate: undefined,
-        delegationLevels: {},
-        bakers: [],
-        transfers: { tokens: {} },
-        blockLevel: null,
-        refetchTrigger: 0,
-        lastTimeUpdated: null,
-        isLoading: false,
-      });
-    });
-
-    it("sets up delegation levels", () => {
-      store.dispatch(
-        updateTezBalance([
-          { address: "bar", balance: 44, delegationLevel: 5 },
-          { address: "baz", balance: 55 },
-        ])
-      );
-
-      expect(store.getState().assets.delegationLevels).toEqual({
-        bar: 5,
-      });
+    expect(store.getState().assets.accountStates).toEqual({
+      foo: {
+        balance: 3947,
+        stakedBalance: 123,
+        delegate: { address: "foo" },
+      },
+      baz: {
+        balance: 4040,
+        stakedBalance: 1234,
+        delegate: null,
+      },
     });
   });
 
-  describe("updateTokenBalance", () => {
-    it("sets up token balances", () => {
-      store.dispatch(updateTokenBalance([hedgehoge(mockImplicitAddress(0))]));
+  test("updateBlock", () => {
+    store.dispatch(updateBlock({ level: 123, cycle: 321 }));
 
-      expect(store.getState().assets).toEqual({
-        balances: {
-          mutez: {},
-          tokens: {
-            [mockImplicitAddress(0).pkh]: [
-              {
-                balance: "10000000000",
-                contract: "KT1G1cCRNBgQ48mVDjopHjEmTN5Sbtar8nn9",
-                tokenId: "0",
-                lastLevel: 1477579,
-              },
-            ],
-          },
+    expect(store.getState().assets.block).toEqual({ level: 123, cycle: 321 });
+  });
+
+  test("updateUnstakeRequests", () => {
+    store.dispatch(
+      updateUnstakeRequests([
+        {
+          staker: { address: "foo" },
+          amount: 123,
+          cycle: 5,
+          status: "finalizable",
         },
-        conversionRate: undefined,
-        delegationLevels: {},
-        bakers: [],
-        transfers: { tokens: {} },
-        blockLevel: null,
-        refetchTrigger: 0,
-        lastTimeUpdated: null,
-        isLoading: false,
-      });
-    });
-  });
+        {
+          staker: { address: "foo" },
+          amount: 123,
+          cycle: 1,
+          status: "finalizable",
+        },
+        {
+          staker: { address: "bar" },
+          amount: 321,
+          cycle: 1,
+          status: "finalizable",
+        },
+      ])
+    );
 
-  describe("updateTokenTransfer", () => {
-    it("sets up token transfers on token transfer update", () => {
-      store.dispatch(updateTokenTransfers([mockTokenTransaction(1), mockTokenTransaction(2)]));
-
-      expect(store.getState().assets.transfers.tokens).toEqual({
-        101: mockTokenTransaction(1),
-        102: mockTokenTransaction(2),
-      });
-
-      store.dispatch(updateTokenTransfers([mockTokenTransaction(4)]));
-
-      expect(store.getState().assets.transfers.tokens).toEqual({
-        101: mockTokenTransaction(1),
-        102: mockTokenTransaction(2),
-        104: mockTokenTransaction(4),
-      });
-    });
-  });
-
-  describe("removeAccountsData", () => {
-    it("removes tez balance for listed accounts", () => {
-      store.dispatch(
-        updateTezBalance([
-          { address: "foo", balance: 11 },
-          { address: "bar", balance: 22 },
-          { address: "baz", balance: 33 },
-        ])
-      );
-
-      store.dispatch(removeAccountsData(["bar", "baz", "qwerty"]));
-
-      expect(store.getState().assets.balances.mutez).toEqual({
-        foo: "11",
-      });
-    });
-
-    it("removes token balance for listed accounts", () => {
-      store.dispatch(
-        updateTokenBalance([tzBtsc(mockImplicitAddress(0)), hedgehoge(mockImplicitAddress(1))])
-      );
-
-      store.dispatch(removeAccountsData([mockImplicitAddress(0).pkh, mockImplicitAddress(2).pkh]));
-
-      expect(store.getState().assets.balances.tokens).toEqual({
-        [mockImplicitAddress(1).pkh]: [
-          {
-            balance: "10000000000",
-            contract: "KT1G1cCRNBgQ48mVDjopHjEmTN5Sbtar8nn9",
-            tokenId: "0",
-            lastLevel: 1477579,
-          },
+    expect(store.getState().assets.accountStates).toEqual({
+      foo: {
+        unstakeRequests: [
+          { amount: 123, cycle: 1, status: "finalizable" },
+          { amount: 123, cycle: 5, status: "finalizable" }, // older comes last
         ],
-      });
+      },
+      bar: { unstakeRequests: [{ amount: 321, cycle: 1, status: "finalizable" }] },
+    });
+  });
+
+  test("updateTokenBalance", () => {
+    store.dispatch(updateTokenBalance([hedgehoge(mockImplicitAddress(0))]));
+
+    expect(store.getState().assets).toEqual({
+      accountStates: {
+        [mockImplicitAddress(0).pkh]: {
+          tokens: [
+            {
+              balance: "10000000000",
+              contract: "KT1G1cCRNBgQ48mVDjopHjEmTN5Sbtar8nn9",
+              tokenId: "0",
+              lastLevel: 1477579,
+            },
+          ],
+        },
+      },
+      conversionRate: undefined,
+      bakers: [],
+      transfers: { tokens: {} },
+      block: {},
+      refetchTrigger: 0,
+      lastTimeUpdated: null,
+      isLoading: false,
+    });
+  });
+
+  test("updateTokenTransfers", () => {
+    store.dispatch(updateTokenTransfers([mockTokenTransaction(1), mockTokenTransaction(2)]));
+
+    expect(store.getState().assets.transfers.tokens).toEqual({
+      101: mockTokenTransaction(1),
+      102: mockTokenTransaction(2),
     });
 
-    it("removes delegation level for listed accounts", () => {
-      store.dispatch(
-        updateTezBalance([
-          { address: "foo", balance: 11, delegationLevel: 1 },
-          { address: "bar", balance: 22, delegationLevel: 2 },
-          { address: "baz", balance: 33, delegationLevel: 3 },
-        ])
-      );
+    store.dispatch(updateTokenTransfers([mockTokenTransaction(4)]));
 
-      store.dispatch(removeAccountsData(["bar", "baz", "qwerty"]));
+    expect(store.getState().assets.transfers.tokens).toEqual({
+      101: mockTokenTransaction(1),
+      102: mockTokenTransaction(2),
+      104: mockTokenTransaction(4),
+    });
+  });
 
-      expect(store.getState().assets.delegationLevels).toEqual({
-        foo: 1,
-      });
+  test("removeAccountsData", () => {
+    store.dispatch(
+      updateAccountStates([
+        rawAccountFixture({
+          address: "foo",
+          balance: 500,
+          stakedBalance: 123,
+          unstakedBalance: 321,
+          delegate: null,
+        }),
+        rawAccountFixture({
+          address: "bar",
+          balance: 22,
+          stakedBalance: 123,
+          unstakedBalance: 321,
+          delegate: null,
+        }),
+        rawAccountFixture({
+          address: "baz",
+          balance: 33,
+          stakedBalance: 123,
+          unstakedBalance: 321,
+          delegate: null,
+        }),
+      ])
+    );
+
+    store.dispatch(removeAccountsData(["bar", "baz", "qwerty"]));
+
+    expect(store.getState().assets.accountStates).toEqual({
+      foo: {
+        balance: 56,
+        delegate: null,
+        stakedBalance: 123,
+      },
     });
   });
 });

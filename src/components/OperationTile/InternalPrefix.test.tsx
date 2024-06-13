@@ -12,17 +12,17 @@ import { render, screen } from "../../mocks/testUtils";
 describe("<InternalPrefix />", () => {
   describe.each([
     {
-      operation: transactionFixture({}),
+      operation: transactionFixture(),
       sender: mockImplicitAccount(1),
       target: mockImplicitAccount(0),
     },
     {
-      operation: tokenTransferFixture({}),
+      operation: tokenTransferFixture(),
       sender: mockImplicitAccount(0),
       target: mockImplicitAccount(1),
     },
-    { operation: delegationFixture({}), sender: mockLedgerAccount(0) },
-    { operation: originationFixture({}), sender: mockLedgerAccount(0) },
+    { operation: delegationFixture(), sender: mockLedgerAccount(0) },
+    { operation: originationFixture(), sender: mockLedgerAccount(0) },
   ])("for $operation.type", ({ operation, sender, target }) => {
     it('renders "Internal" if neither sender nor receiver is owned', () => {
       render(<InternalPrefix operation={operation} />);

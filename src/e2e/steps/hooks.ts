@@ -16,8 +16,10 @@ import { initialState as beaconInitialState } from "../../utils/redux/slices/bea
 import { initialState as contactsInitialState } from "../../utils/redux/slices/contactsSlice";
 import { initialState as errorsInitialState } from "../../utils/redux/slices/errorsSlice";
 import { initialState as multisigsInitialState } from "../../utils/redux/slices/multisigsSlice";
+import { initialState as protocolSettingsInitialState } from "../../utils/redux/slices/protocolSettingsSlice";
 import { initialState as tokensInitialState } from "../../utils/redux/slices/tokensSlice";
-import { TEST_NETWORKS_STATE, killNode, resetBlockchain } from "../utils";
+import { TEST_NETWORKS_STATE } from "../constants";
+import { killNode, resetBlockchain } from "../utils";
 
 setDefaultTimeout(secondsToMilliseconds(15));
 
@@ -64,6 +66,7 @@ Before(async function (this: CustomWorld) {
       errors: errorsInitialState,
       multisigs: multisigsInitialState,
       networks: TEST_NETWORKS_STATE,
+      protocolSettings: protocolSettingsInitialState,
       tokens: tokensInitialState,
       ...omit(predefinedState, "accounts"),
     };

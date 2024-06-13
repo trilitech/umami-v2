@@ -2,31 +2,33 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 
 import { BLOCK_TIME } from "./constants";
+import { useRefetchTrigger } from "../hooks/assetsHooks";
 import { useSelectedNetwork } from "../hooks/networkHooks";
 import { useAppDispatch } from "../redux/hooks";
 import { assetsActions } from "../redux/slices/assetsSlice";
-import { getLatestBlockLevel } from "../tezos";
+import { getLatestBlock } from "../tezos";
 import { useReactQueryErrorHandler } from "../useReactQueryOnError";
 
-export const usePollBlockLevel = () => {
+export const usePollBlock = () => {
   const dispatch = useAppDispatch();
   const handleError = useReactQueryErrorHandler();
   const network = useSelectedNetwork();
+  const refetchTrigger = useRefetchTrigger();
 
   const query = useQuery({
-    queryKey: ["blockLevel", dispatch, network],
-    queryFn: () => getLatestBlockLevel(network),
+    queryKey: ["latestBlock", dispatch, network, refetchTrigger],
+    queryFn: () => getLatestBlock(network),
     retry: false, // retries are handled by the underlying functions
     refetchInterval: BLOCK_TIME,
     refetchIntervalInBackground: true,
     refetchOnWindowFocus: false,
   });
 
-  const blockLevel = query.data;
+  const block = query.data;
 
   useEffect(() => {
-    blockLevel && dispatch(assetsActions.updateBlockLevel(blockLevel));
-  }, [dispatch, blockLevel]);
+    block && dispatch(assetsActions.updateBlock(block));
+  }, [dispatch, block]);
 
   handleError(query.error);
 

@@ -12,23 +12,25 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 
-import { DelegationDisplay } from "./DelegationDisplay";
+import { EarnTab } from "./EarnTab";
 import { MultisigPendingOperations } from "./MultisigPendingOperations";
 import { NFTsGrid } from "./NFTsGrid";
 import { OperationListDisplay } from "./OperationListDisplay";
+import { PendingUnstakeRequests } from "./PendingUnstakeRequests";
 import { TokenList } from "./TokenList";
 import { ExternalLinkIcon } from "../../../assets/icons";
 import colors from "../../../style/colors";
-import { Account } from "../../../types/Account";
-import { Delegation } from "../../../types/Delegation";
+import { Account, ImplicitAccount } from "../../../types/Account";
 import { FA12TokenBalance, FA2TokenBalance, NFTBalance } from "../../../types/TokenBalance";
 import { useGetPendingMultisigOperations } from "../../../utils/hooks/multisigHooks";
 import { useSelectedNetwork } from "../../../utils/hooks/networkHooks";
-import { buildTzktAddressUrl } from "../../../utils/tzkt/helpers";
+import { useGetAccountUnstakeRequests } from "../../../utils/hooks/stakingHooks";
+import { buildTzktUrl } from "../../../utils/tzkt/helpers";
 import { useGetOperations } from "../../../views/operations/useGetOperations";
 import { ExternalLink } from "../../ExternalLink";
 import { OperationTileContext } from "../../OperationTile";
 import { SmallTab } from "../../SmallTab";
+
 /**
  * Component that displays account assets in the account drawer
  *
@@ -41,11 +43,12 @@ export const AssetsPanel: React.FC<{
   tokens: Array<FA12TokenBalance | FA2TokenBalance>;
   nfts: Array<NFTBalance>;
   account: Account;
-  delegation: Delegation | null;
-}> = ({ tokens, nfts, account, delegation }) => {
+}> = ({ tokens, nfts, account }) => {
   const getPendingOperations = useGetPendingMultisigOperations();
-  const withPendingOperations =
+  const hasPendingMultisigOperations =
     account.type === "multisig" && getPendingOperations(account).length > 0;
+  const hasPendingUnstakeRequests = useGetAccountUnstakeRequests(account.address.pkh).length > 0;
+  const showPendingTab = hasPendingMultisigOperations || hasPendingUnstakeRequests;
 
   const network = useSelectedNetwork();
   const { operations, isFirstLoad: isLoading } = useGetOperations([account]);
@@ -60,7 +63,7 @@ export const AssetsPanel: React.FC<{
     >
       <TabList justifyContent="space-between" data-testid="asset-panel-tablist">
         <Flex>
-          {withPendingOperations && (
+          {showPendingTab && (
             <SmallTab data-testid="account-card-pending-tab">
               <Text>Pending</Text>
               <Box
@@ -75,22 +78,22 @@ export const AssetsPanel: React.FC<{
             </SmallTab>
           )}
           <SmallTab data-testid="account-card-operations-tab">Operations</SmallTab>
-          <SmallTab data-testid="account-card-delegation-tab">Delegation</SmallTab>
           <SmallTab data-testid="account-card-nfts-tab">NFTs</SmallTab>
           <SmallTab data-testid="account-card-tokens-tab">Tokens</SmallTab>
+          <SmallTab data-testid="account-card-earn-tab">Earn</SmallTab>
         </Flex>
 
-        <ExternalLink href={buildTzktAddressUrl(network, account.address.pkh)}>
-          <Button paddingRight={0} variant="CTAWithIcon">
+        <ExternalLink href={buildTzktUrl(network, account.address.pkh)}>
+          <Button padding="0" variant="CTAWithIcon">
             <Text marginRight="7px" size="sm">
               View on Tzkt
             </Text>
-            <ExternalLinkIcon stroke="currentcolor" />
+            <ExternalLinkIcon stroke="inherit" />
           </Button>
         </ExternalLink>
       </TabList>
       <TabPanels height="100%">
-        {withPendingOperations && (
+        {showPendingTab && (
           <TabPanel
             overflowX="hidden"
             height="100%"
@@ -99,7 +102,10 @@ export const AssetsPanel: React.FC<{
             data-testid="account-card-pending-tab-panel"
             paddingX="0"
           >
-            <MultisigPendingOperations account={account} />
+            {hasPendingMultisigOperations && <MultisigPendingOperations account={account} />}
+            {hasPendingUnstakeRequests && (
+              <PendingUnstakeRequests account={account as ImplicitAccount} />
+            )}
           </TabPanel>
         )}
 
@@ -126,15 +132,6 @@ export const AssetsPanel: React.FC<{
 
         <TabPanel
           overflowX="hidden"
-          paddingTop="24px"
-          data-testid="account-card-delegation-tab-panel"
-          paddingX="0"
-        >
-          <DelegationDisplay account={account} delegation={delegation} />
-        </TabPanel>
-
-        <TabPanel
-          overflowX="hidden"
           height="100%"
           paddingTop="24px"
           paddingBottom={0}
@@ -152,6 +149,15 @@ export const AssetsPanel: React.FC<{
           paddingX="0"
         >
           <TokenList owner={account.address.pkh} tokens={tokens} />
+        </TabPanel>
+
+        <TabPanel
+          overflowX="hidden"
+          paddingTop="24px"
+          data-testid="account-card-earn-tab-panel"
+          paddingX="0"
+        >
+          <EarnTab account={account} />
         </TabPanel>
       </TabPanels>
     </Tabs>

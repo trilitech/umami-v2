@@ -14,7 +14,7 @@ import { FieldValues, Path, useFormContext } from "react-hook-form";
 import { BaseProps } from "./BaseProps";
 import { getSuggestions } from "./getSuggestions";
 import { Suggestions } from "./Suggestions";
-import { ChevronDownIcon, XMark } from "../../assets/icons";
+import { ChevronDownIcon, XMarkIcon } from "../../assets/icons";
 import colors from "../../style/colors";
 import { Account } from "../../types/Account";
 import { isAddressValid, parsePkh } from "../../types/Address";
@@ -188,13 +188,7 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
 };
 
 const CrossButton = (props: IconProps) => (
-  <XMark
-    marginRight="16px"
-    stroke={colors.gray[450]}
-    cursor="pointer"
-    data-testid="clear-input-button"
-    {...props}
-  />
+  <XMarkIcon marginRight="16px" cursor="pointer" data-testid="clear-input-button" {...props} />
 );
 
 export const OwnedImplicitAccountsAutocomplete = <T extends FieldValues, U extends Path<T>>(

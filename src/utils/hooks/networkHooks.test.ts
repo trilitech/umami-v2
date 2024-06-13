@@ -4,8 +4,11 @@ import {
   useSelectNetwork,
   useSelectedNetwork,
 } from "./networkHooks";
+import { mockImplicitAddress } from "../../mocks/factories";
 import { renderHook } from "../../mocks/testUtils";
+import { rawAccountFixture } from "../../mocks/tzktResponse";
 import { GHOSTNET, MAINNET } from "../../types/Network";
+import { assetsActions } from "../redux/slices/assetsSlice";
 import { networksActions } from "../redux/slices/networks";
 import { store } from "../redux/store";
 
@@ -46,16 +49,45 @@ describe("networkHooks", () => {
     });
   });
 
-  test("useSelectNetwork", () => {
-    const {
-      result: { current: selectNetwork },
-    } = renderHook(() => useSelectNetwork());
-    selectNetwork("ghostnet");
+  describe("useSelectNetwork", () => {
+    beforeEach(() =>
+      store.dispatch(
+        assetsActions.updateAccountStates([
+          rawAccountFixture({
+            balance: 10000,
+            delegate: null,
+            stakedBalance: 1,
+            unstakedBalance: 1234,
+          }),
+        ])
+      )
+    );
 
-    const {
-      result: { current },
-    } = renderHook(() => useSelectedNetwork());
-    expect(current.name).toEqual("ghostnet");
+    it("changes the current network", () => {
+      const {
+        result: { current: selectNetwork },
+      } = renderHook(() => useSelectNetwork());
+      selectNetwork("ghostnet");
+
+      expect(store.getState().networks.current.name).toEqual("ghostnet");
+      expect(store.getState().assets.accountStates).toEqual({});
+    });
+
+    it("does nothing if network is not found", () => {
+      const {
+        result: { current: selectNetwork },
+      } = renderHook(() => useSelectNetwork());
+      selectNetwork("ghostnet234");
+
+      expect(store.getState().networks.current.name).toEqual("mainnet");
+      expect(store.getState().assets.accountStates).toEqual({
+        [mockImplicitAddress(0).pkh]: {
+          balance: 8765,
+          delegate: null,
+          stakedBalance: 1,
+        },
+      });
+    });
   });
 
   describe("useFindNetwork", () => {
