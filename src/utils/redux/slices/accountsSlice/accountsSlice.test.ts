@@ -6,7 +6,7 @@ import {
   mockSocialAccount,
 } from "../../../../mocks/factories";
 import { addAccount } from "../../../../mocks/helpers";
-import { MnemonicAccount } from "../../../../types/Account";
+import { type MnemonicAccount } from "../../../../types/Account";
 import { store } from "../../store";
 
 import { accountsActions } from ".";

@@ -7,9 +7,9 @@ import { addAccount } from "../../../mocks/helpers";
 import { render, screen, waitFor } from "../../../mocks/testUtils";
 import { makeAccountOperations } from "../../../types/AccountOperations";
 import { parseContractPkh } from "../../../types/Address";
-import { FA12TokenBalance, FA2TokenBalance } from "../../../types/TokenBalance";
+import { type FA12TokenBalance, type FA2TokenBalance } from "../../../types/TokenBalance";
 import { TEZ } from "../../../utils/tezos";
-import { SignPageProps } from "../utils";
+import { type SignPageProps } from "../utils";
 
 const fixture = (props: SignPageProps<{ token: FA12TokenBalance | FA2TokenBalance }>) => (
   <Modal isOpen={true} onClose={() => {}}>

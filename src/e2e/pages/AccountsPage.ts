@@ -1,7 +1,7 @@
-import { Locator, Page, expect } from "@playwright/test";
+import { type Locator, type Page, expect } from "@playwright/test";
 
 import { formatPkh } from "../../utils/format";
-import { Account, AccountGroup } from "../helpers/AccountGroup";
+import { type Account, type AccountGroup } from "../helpers/AccountGroup";
 
 export class AccountsPage {
   constructor(readonly page: Page) {}

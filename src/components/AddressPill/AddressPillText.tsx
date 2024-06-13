@@ -1,6 +1,6 @@
-import { Text, TextProps } from "@chakra-ui/react";
+import { Text, type TextProps } from "@chakra-ui/react";
 
-import { AddressKind } from "./types";
+import { type AddressKind } from "./types";
 import { formatPkh, truncate } from "../../utils/format";
 import { useGetContactName } from "../../utils/hooks/contactsHooks";
 

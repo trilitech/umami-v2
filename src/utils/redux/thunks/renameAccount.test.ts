@@ -2,7 +2,7 @@ import { renameAccount } from "./renameAccount";
 import { mockContractContact, mockMnemonicAccount } from "../../../mocks/factories";
 import { addAccount } from "../../../mocks/helpers";
 import { multisigs } from "../../../mocks/multisig";
-import { MultisigAccount } from "../../../types/Account";
+import { type MultisigAccount } from "../../../types/Account";
 import { MAINNET } from "../../../types/Network";
 import { contactsActions } from "../slices/contactsSlice";
 import { networksActions } from "../slices/networks";

@@ -1,5 +1,5 @@
 import { Box, Flex, Heading, ModalBody, ModalContent, ModalFooter } from "@chakra-ui/react";
-import { FC } from "react";
+import { type FC } from "react";
 import { QRCode } from "react-qrcode-logo";
 
 import { AddressPill } from "./AddressPill/AddressPill";

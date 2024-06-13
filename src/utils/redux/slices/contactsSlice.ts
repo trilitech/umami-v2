@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { StoredContactInfo } from "../../../types/Contact";
+import { type StoredContactInfo } from "../../../types/Contact";
 
 type State = Record<string, StoredContactInfo>;
 

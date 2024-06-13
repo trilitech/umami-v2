@@ -1,6 +1,6 @@
 import { Box, Heading, Text } from "@chakra-ui/react";
 import type { BigNumber } from "bignumber.js";
-import React from "react";
+import type React from "react";
 
 import colors from "../style/colors";
 import { prettyTezAmount } from "../utils/format";

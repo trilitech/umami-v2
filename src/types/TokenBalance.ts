@@ -1,7 +1,13 @@
-import * as tzktApi from "@tzkt/sdk-api";
+import type * as tzktApi from "@tzkt/sdk-api";
 
-import { TzktAlias } from "./Address";
-import { FA12Token, FA2Token, NFT, RawTokenInfo, fromRaw as fromRawToken } from "./Token";
+import { type TzktAlias } from "./Address";
+import {
+  type FA12Token,
+  type FA2Token,
+  type NFT,
+  type RawTokenInfo,
+  fromRaw as fromRawToken,
+} from "./Token";
 
 type Balance = { balance: string; lastLevel?: number };
 export type FA12TokenBalance = FA12Token & Balance;

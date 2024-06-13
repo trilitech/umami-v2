@@ -8,19 +8,19 @@ import {
   ModalContent,
   ModalFooter,
 } from "@chakra-ui/react";
-import React from "react";
+import type React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { SignPage } from "./SignPage";
-import { RawPkh, parseContractPkh, parsePkh } from "../../../types/Address";
-import { FA2Transfer, TokenTransfer } from "../../../types/Operation";
+import { type RawPkh, parseContractPkh, parsePkh } from "../../../types/Address";
+import { type FA2Transfer, type TokenTransfer } from "../../../types/Operation";
 import {
   formatTokenAmount,
   getRealAmount,
   tokenDecimals,
   tokenSymbolSafe,
 } from "../../../types/Token";
-import { FA12TokenBalance, FA2TokenBalance } from "../../../types/TokenBalance";
+import { type FA12TokenBalance, type FA2TokenBalance } from "../../../types/TokenBalance";
 import { KnownAccountsAutocomplete, OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
 import { FormErrorMessage } from "../../FormErrorMessage";
 import { FormPageHeader } from "../FormPageHeader";
@@ -30,7 +30,7 @@ import {
   useOpenSignPageFormAction,
 } from "../onSubmitFormActionHooks";
 import {
-  FormPagePropsWithSender,
+  type FormPagePropsWithSender,
   FormSubmitButtons,
   formDefaultValues,
   getSmallestUnit,

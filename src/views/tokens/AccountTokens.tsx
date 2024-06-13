@@ -10,7 +10,8 @@ import {
   Text,
   Tr,
 } from "@chakra-ui/react";
-import React, { useContext } from "react";
+import type React from "react";
+import { useContext } from "react";
 
 import { TokenNameWithIcon } from "./TokenNameWithIcon";
 import { TokenIcon } from "../../assets/icons";
@@ -22,10 +23,10 @@ import { DynamicModalContext } from "../../components/DynamicModal";
 import { SendButton } from "../../components/SendButton";
 import { FormPage as SendTokenFormPage } from "../../components/SendFlow/Token/FormPage";
 import colors from "../../style/colors";
-import { Account } from "../../types/Account";
+import { type Account } from "../../types/Account";
 import { parseContractPkh } from "../../types/Address";
 import { fullId, tokenPrettyAmount } from "../../types/Token";
-import { FA12TokenBalance, FA2TokenBalance } from "../../types/TokenBalance";
+import { type FA12TokenBalance, type FA2TokenBalance } from "../../types/TokenBalance";
 import { formatPkh } from "../../utils/format";
 
 const Header: React.FC<{

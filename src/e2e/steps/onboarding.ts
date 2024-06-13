@@ -3,14 +3,14 @@ import path from "path";
 import { Given, Then, When } from "@cucumber/cucumber";
 import { expect } from "@playwright/test";
 
-import { CustomWorld } from "./world";
+import { type CustomWorld } from "./world";
 import { mnemonic1 as existingSeedphrase } from "../../mocks/mockMnemonic";
 import { DEFAULT_DERIVATION_PATH_TEMPLATE } from "../../utils/account/derivationPathUtils";
 import {
   v1BackedupAccountGroups,
   v2BackedupAccountGroups,
 } from "../fixtures/backups/backedupAccountGroups";
-import { AccountGroup, AccountGroupBuilder } from "../helpers/AccountGroup";
+import { type AccountGroup, AccountGroupBuilder } from "../helpers/AccountGroup";
 import { AccountsPage } from "../pages/AccountsPage";
 
 export const BASE_URL = "http://127.0.0.1:3000";

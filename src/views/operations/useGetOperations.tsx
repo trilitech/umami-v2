@@ -2,18 +2,18 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { maxBy } from "lodash";
 import { useEffect } from "react";
 
-import { Account } from "../../types/Account";
-import { Network } from "../../types/Network";
+import { type Account } from "../../types/Account";
+import { type Network } from "../../types/Network";
 import { BLOCK_TIME } from "../../utils/dataPolling/constants";
 import { useRefetchTrigger } from "../../utils/hooks/assetsHooks";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 import { useAppDispatch } from "../../utils/redux/hooks";
 import { assetsActions } from "../../utils/redux/slices/assetsSlice";
 import { tokensActions } from "../../utils/redux/slices/tokensSlice";
-import { AppDispatch } from "../../utils/redux/store";
+import { type AppDispatch } from "../../utils/redux/store";
 import {
-  TokenTransferOperation,
-  TzktCombinedOperation,
+  type TokenTransferOperation,
+  type TzktCombinedOperation,
   getCombinedOperations,
   getRelatedTokenTransfers,
 } from "../../utils/tezos";

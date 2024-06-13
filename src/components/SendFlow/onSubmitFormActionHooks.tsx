@@ -1,8 +1,13 @@
 import { useToast } from "@chakra-ui/react";
 import { useContext } from "react";
 
-import { BaseFormValues, FormPageProps, SignPageProps, useMakeFormOperations } from "./utils";
-import { Operation } from "../../types/Operation";
+import {
+  type BaseFormValues,
+  type FormPageProps,
+  type SignPageProps,
+  useMakeFormOperations,
+} from "./utils";
+import { type Operation } from "../../types/Operation";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 import { useAppDispatch } from "../../utils/redux/hooks";

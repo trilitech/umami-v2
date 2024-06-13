@@ -1,8 +1,8 @@
 import { Image } from "@chakra-ui/react";
 import { memo } from "react";
 
-import { AddressTileIconSize } from "./AddressTileIconSize";
-import { AddressKind } from "./types";
+import { type AddressTileIconSize } from "./AddressTileIconSize";
+import { type AddressKind } from "./types";
 import { ContactIcon, UnknownContactIcon } from "../../assets/icons";
 import colors from "../../style/colors";
 import { useGetOwnedAccountSafe } from "../../utils/hooks/getAccountDataHooks";

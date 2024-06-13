@@ -1,4 +1,4 @@
-import { ExtendedPeerInfo, getSenderId } from "@airgap/beacon-wallet";
+import { type ExtendedPeerInfo, getSenderId } from "@airgap/beacon-wallet";
 import {
   AspectRatio,
   Box,

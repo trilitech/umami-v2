@@ -1,10 +1,10 @@
 import { contractsGet } from "@tzkt/sdk-api";
 import axios from "axios";
 
-import { RawPkh } from "../../types/Address";
-import { Network } from "../../types/Network";
+import { type RawPkh } from "../../types/Address";
+import { type Network } from "../../types/Network";
 import { withRateLimit } from "../tezos/withRateLimit";
-import { RawTzktGetBigMapKeys, RawTzktGetSameMultisigs } from "../tzkt/types";
+import { type RawTzktGetBigMapKeys, type RawTzktGetSameMultisigs } from "../tzkt/types";
 
 const MULTISIG_FETCH_LIMIT = 10000;
 

@@ -10,7 +10,7 @@ import {
 } from "../../mocks/factories";
 import { addAccount } from "../../mocks/helpers";
 import { act, render, screen, userEvent, waitFor, within } from "../../mocks/testUtils";
-import { MnemonicAccount } from "../../types/Account";
+import { type MnemonicAccount } from "../../types/Account";
 import { getDefaultDerivationPath } from "../../utils/account/derivationPathUtils";
 import { WalletClient } from "../../utils/beacon/WalletClient";
 import * as cryptoFunctionsToMock from "../../utils/crypto/AES";

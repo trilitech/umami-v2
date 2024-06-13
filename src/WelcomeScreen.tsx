@@ -10,7 +10,7 @@ import { AppVersion } from "./components/AppVersion";
 import { MakiLogo } from "./components/MakiLogo";
 import { useOnboardingModal } from "./components/Onboarding/useOnboardingModal";
 import { Slider } from "./components/Slider";
-import { Item, SlideItem } from "./components/SliderItem";
+import { type Item, SlideItem } from "./components/SliderItem";
 import colors from "./style/colors";
 
 const SliderItems: Item[] = [

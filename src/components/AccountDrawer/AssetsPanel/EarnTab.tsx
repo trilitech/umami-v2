@@ -1,10 +1,12 @@
-import { Box, Button, Center, Flex, FlexProps, Heading, Text } from "@chakra-ui/react";
-import React, { ReactNode, useContext } from "react";
+import { Box, Button, Center, Flex, type FlexProps, Heading, Text } from "@chakra-ui/react";
+import type React from "react";
+import { type ReactNode } from "react";
+import { useContext } from "react";
 
 import { PendingUnstakeRequests } from "./PendingUnstakeRequests/PendingUnstakeRequests";
 import { ExternalLinkIcon, PenIcon, XMarkIcon } from "../../../assets/icons";
 import colors from "../../../style/colors";
-import { Account, ImplicitAccount } from "../../../types/Account";
+import { type Account, type ImplicitAccount } from "../../../types/Account";
 import { prettyTezAmount } from "../../../utils/format";
 import { useGetAccountDelegate } from "../../../utils/hooks/assetsHooks";
 import { useSelectedNetwork } from "../../../utils/hooks/networkHooks";

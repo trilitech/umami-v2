@@ -1,7 +1,7 @@
-import { DataTable, Then, When } from "@cucumber/cucumber";
+import { type DataTable, Then, When } from "@cucumber/cucumber";
 import { expect } from "@playwright/test";
 
-import { CustomWorld } from "./world";
+import { type CustomWorld } from "./world";
 import { formatPkh } from "../../utils/format";
 import { AccountsPage } from "../pages/AccountsPage";
 import { CreateMultisigPage } from "../pages/CreateMultisigPage";

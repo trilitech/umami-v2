@@ -9,7 +9,7 @@ import { NoNFTs } from "../../components/NoItems";
 import { TopBar } from "../../components/TopBar";
 import { useAccountsFilter } from "../../components/useAccountsFilter";
 import { useAllNfts } from "../../utils/hooks/assetsHooks";
-import { NFTWithOwner } from "../../utils/token/utils";
+import { type NFTWithOwner } from "../../utils/token/utils";
 
 export const NFTsView = () => {
   const nfts = useAllNfts();

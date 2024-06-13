@@ -1,15 +1,15 @@
 import {
-  Address,
+  type Address,
   isAddressValid,
   isValidContractPkh,
   parseContractPkh,
   parsePkh,
 } from "../../types/Address";
-import { Operation } from "../../types/Operation";
+import { type Operation } from "../../types/Operation";
 import { getRealAmount } from "../../types/Token";
 import { tezToMutez } from "../../utils/format";
 import { validateNonNegativeNumber } from "../../utils/helpers";
-import { TokenLookup } from "../../utils/hooks/tokensHooks";
+import { type TokenLookup } from "../../utils/hooks/tokensHooks";
 
 export const parseOperation = (
   sender: Address,

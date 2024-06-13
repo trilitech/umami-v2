@@ -1,8 +1,8 @@
-import { IconProps } from "@chakra-ui/react";
+import { type IconProps } from "@chakra-ui/react";
 import { useContext } from "react";
 
-import { AddressPillMode } from "./AddressPillMode";
-import { AddressKind } from "./types";
+import { type AddressPillMode } from "./AddressPillMode";
+import { type AddressKind } from "./types";
 import {
   AddContactIcon,
   BakerIcon,

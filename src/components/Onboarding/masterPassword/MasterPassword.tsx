@@ -8,7 +8,7 @@ import {
   useRestoreFromSecretKey,
 } from "../../../utils/hooks/setAccountDataHooks";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
-import { MasterPasswordStep } from "../OnboardingStep";
+import { type MasterPasswordStep } from "../OnboardingStep";
 
 export const MasterPassword = ({
   account,

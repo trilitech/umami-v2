@@ -1,6 +1,6 @@
-import { Account } from "../types/Account";
-import { RawPkh } from "../types/Address";
-import { Multisig } from "../utils/multisig/types";
+import { type Account } from "../types/Account";
+import { type RawPkh } from "../types/Address";
+import { type Multisig } from "../utils/multisig/types";
 import { accountsActions } from "../utils/redux/slices/accountsSlice/accountsSlice";
 import { multisigActions } from "../utils/redux/slices/multisigsSlice";
 import { store } from "../utils/redux/store";

@@ -1,4 +1,4 @@
-import { Locator, Page } from "@playwright/test";
+import { type Locator, type Page } from "@playwright/test";
 
 const APPROVER_LABEL_REGEXP = /\d+\w\w approver$/;
 

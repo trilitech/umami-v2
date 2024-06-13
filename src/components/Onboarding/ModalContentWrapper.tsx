@@ -1,5 +1,5 @@
 import { Box, Center, Heading, Text, VStack } from "@chakra-ui/react";
-import { ReactElement } from "react";
+import { type ReactElement } from "react";
 
 import colors from "../../style/colors";
 import { CircleIcon } from "../CircleIcon";

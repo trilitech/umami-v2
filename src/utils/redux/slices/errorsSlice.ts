@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { ErrorContext } from "../../getErrorContext";
+import { type ErrorContext } from "../../getErrorContext";
 
 type State = ErrorContext[];
 

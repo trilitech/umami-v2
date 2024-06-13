@@ -1,7 +1,7 @@
 import { RestoreBackupFile } from "./RestoreBackupFile";
 import { reload, restoreV2BackupFile, useRestoreV1BackupFile } from "./utils";
 import {
-  UserEvent,
+  type UserEvent,
   act,
   fireEvent,
   render,

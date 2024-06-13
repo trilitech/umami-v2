@@ -8,7 +8,7 @@ import {
 } from "../../mocks/factories";
 import { addAccount } from "../../mocks/helpers";
 import { fireEvent, render, screen, waitFor } from "../../mocks/testUtils";
-import { Account } from "../../types/Account";
+import { type Account } from "../../types/Account";
 import { MAINNET } from "../../types/Network";
 import { contactsActions } from "../../utils/redux/slices/contactsSlice";
 import { networksActions } from "../../utils/redux/slices/networks";

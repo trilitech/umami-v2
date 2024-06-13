@@ -1,6 +1,6 @@
-import { Link, LinkProps } from "@chakra-ui/react";
+import { Link, type LinkProps } from "@chakra-ui/react";
 import { compact } from "lodash";
-import { PropsWithChildren } from "react";
+import { type PropsWithChildren } from "react";
 
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 

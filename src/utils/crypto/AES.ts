@@ -2,7 +2,7 @@ import { buf2hex, hex2Bytes } from "@taquito/utils";
 
 import { AES_MODE } from "./AES_MODE";
 import { derivePasswordBasedKeyV1, derivePasswordBasedKeyV2 } from "./KDF";
-import { EncryptedData } from "./types";
+import { type EncryptedData } from "./types";
 
 // NIST recommends a salt size of at least 128 bits (16 bytes)
 // https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-132.pdf

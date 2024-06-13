@@ -3,7 +3,7 @@
  * https://github.com/SamREye/tezos-multisig-managed-onchain
  */
 
-import { MichelsonV1Expression } from "@taquito/rpc";
+import { type MichelsonV1Expression } from "@taquito/rpc";
 
 export const contract: MichelsonV1Expression[] = [
   {

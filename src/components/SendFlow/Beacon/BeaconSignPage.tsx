@@ -1,4 +1,4 @@
-import { BeaconSignPageProps } from "./BeaconSignPageProps";
+import { type BeaconSignPageProps } from "./BeaconSignPageProps";
 import { ContractCallSignPage } from "./ContractCallSignPage";
 import { DelegationSignPage } from "./DelegationSignPage";
 import { FinalizeUnstakeSignPage } from "./FinalizeUnstakeSignPage";

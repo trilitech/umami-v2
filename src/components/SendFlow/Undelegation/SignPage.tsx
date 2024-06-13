@@ -7,7 +7,7 @@ import { OperationSignerSelector } from "../OperationSignerSelector";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
 import { SignPageHeader, headerText } from "../SignPageHeader";
-import { SignPageProps, useSignPageHelpers } from "../utils";
+import { type SignPageProps, useSignPageHelpers } from "../utils";
 
 export const SignPage: React.FC<SignPageProps> = props => {
   const { mode, operations: initialOperations } = props;

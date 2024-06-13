@@ -1,8 +1,8 @@
 import {
   BeaconErrorType,
   BeaconMessageType,
-  BeaconResponseInputMessage,
-  PermissionRequestOutput,
+  type BeaconResponseInputMessage,
+  type PermissionRequestOutput,
 } from "@airgap/beacon-wallet";
 import {
   Accordion,
@@ -25,7 +25,8 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { capitalize } from "lodash";
-import React, { useContext } from "react";
+import type React from "react";
+import { useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { useRemovePeerBySenderId } from "./beacon";

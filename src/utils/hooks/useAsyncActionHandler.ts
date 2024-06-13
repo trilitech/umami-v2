@@ -1,4 +1,4 @@
-import { UseToastOptions, useToast } from "@chakra-ui/react";
+import { type UseToastOptions, useToast } from "@chakra-ui/react";
 import { useCallback, useRef, useState } from "react";
 
 import { getErrorContext } from "../getErrorContext";

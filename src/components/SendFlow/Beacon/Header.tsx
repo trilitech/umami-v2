@@ -1,11 +1,11 @@
-import { OperationRequestOutput } from "@airgap/beacon-wallet";
+import { type OperationRequestOutput } from "@airgap/beacon-wallet";
 import { AspectRatio, Flex, Heading, Image, Text } from "@chakra-ui/react";
 import { capitalize } from "lodash";
 
 import colors from "../../../style/colors";
-import { AccountOperations } from "../../../types/AccountOperations";
+import { type AccountOperations } from "../../../types/AccountOperations";
 import { SignPageHeader } from "../SignPageHeader";
-import { SignPageMode } from "../utils";
+import { type SignPageMode } from "../utils";
 
 export const Header: React.FC<{
   operation: AccountOperations;

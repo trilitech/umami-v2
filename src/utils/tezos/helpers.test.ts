@@ -20,9 +20,12 @@ import {
   mockTezOperation,
   mockUndelegationOperation,
 } from "../../mocks/factories";
-import { EstimatedAccountOperations, makeAccountOperations } from "../../types/AccountOperations";
+import {
+  type EstimatedAccountOperations,
+  makeAccountOperations,
+} from "../../types/AccountOperations";
 import { MAINNET } from "../../types/Network";
-import { ContractCall, ContractOrigination } from "../../types/Operation";
+import { type ContractCall, type ContractOrigination } from "../../types/Operation";
 jest.mock("@taquito/signer");
 jest.mock("./fakeSigner");
 jest.mock("axios");

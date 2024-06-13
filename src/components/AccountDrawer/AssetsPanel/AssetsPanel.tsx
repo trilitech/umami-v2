@@ -10,7 +10,7 @@ import {
   Tabs,
   Text,
 } from "@chakra-ui/react";
-import React from "react";
+import type React from "react";
 
 import { EarnTab } from "./EarnTab";
 import { MultisigPendingOperations } from "./MultisigPendingOperations";
@@ -20,8 +20,12 @@ import { PendingUnstakeRequests } from "./PendingUnstakeRequests";
 import { TokenList } from "./TokenList";
 import { ExternalLinkIcon } from "../../../assets/icons";
 import colors from "../../../style/colors";
-import { Account, ImplicitAccount } from "../../../types/Account";
-import { FA12TokenBalance, FA2TokenBalance, NFTBalance } from "../../../types/TokenBalance";
+import { type Account, type ImplicitAccount } from "../../../types/Account";
+import {
+  type FA12TokenBalance,
+  type FA2TokenBalance,
+  type NFTBalance,
+} from "../../../types/TokenBalance";
 import { useGetPendingMultisigOperations } from "../../../utils/hooks/multisigHooks";
 import { useSelectedNetwork } from "../../../utils/hooks/networkHooks";
 import { useGetAccountUnstakeRequests } from "../../../utils/hooks/stakingHooks";

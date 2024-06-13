@@ -1,4 +1,4 @@
-import { MnemonicAccount } from "../../types/Account";
+import { type MnemonicAccount } from "../../types/Account";
 import { parseImplicitPkh } from "../../types/Address";
 
 export const makeMnemonicAccount = (

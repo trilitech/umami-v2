@@ -1,6 +1,6 @@
-import { Image, ImageProps } from "@chakra-ui/react";
+import { Image, type ImageProps } from "@chakra-ui/react";
 
-import { RawPkh } from "../../types/Address";
+import { type RawPkh } from "../../types/Address";
 
 export const TokenIcon: React.FC<{ contract: RawPkh } & ImageProps> = ({ contract, ...props }) => {
   const url = `https://services.tzkt.io/v1/avatars/${contract}`;

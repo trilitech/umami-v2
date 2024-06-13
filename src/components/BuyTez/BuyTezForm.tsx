@@ -12,7 +12,7 @@ import {
 import { FormProvider, useForm } from "react-hook-form";
 
 import colors from "../../style/colors";
-import { RawPkh } from "../../types/Address";
+import { type RawPkh } from "../../types/Address";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 import { OwnedImplicitAccountsAutocomplete } from "../AddressAutocomplete";
 import { FormErrorMessage } from "../FormErrorMessage";

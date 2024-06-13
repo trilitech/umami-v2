@@ -1,4 +1,4 @@
-import { Box, Center, Flex, FlexProps, Heading } from "@chakra-ui/react";
+import { Box, Center, Flex, type FlexProps, Heading } from "@chakra-ui/react";
 import { Fragment } from "react/jsx-runtime";
 
 import colors from "../../style/colors";

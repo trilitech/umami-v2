@@ -1,4 +1,4 @@
-import { TezosToolkit } from "@taquito/taquito";
+import { type TezosToolkit } from "@taquito/taquito";
 import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
 
 import { MultisigPendingOperation } from "./MultisigPendingOperation";
@@ -11,13 +11,13 @@ import {
 import { addAccount } from "../../../../mocks/helpers";
 import { pendingOps } from "../../../../mocks/multisig";
 import { act, render, screen, userEvent, within } from "../../../../mocks/testUtils";
-import { ImplicitAccount, MnemonicAccount } from "../../../../types/Account";
+import { type ImplicitAccount, type MnemonicAccount } from "../../../../types/Account";
 import { makeAccountOperations } from "../../../../types/AccountOperations";
 import { parseImplicitPkh } from "../../../../types/Address";
 import { MAINNET } from "../../../../types/Network";
 import { makeMultisigApproveOrExecuteOperation } from "../../../../types/Operation";
 import * as getAccountDataHooks from "../../../../utils/hooks/getAccountDataHooks";
-import { MultisigOperation } from "../../../../utils/multisig/types";
+import { type MultisigOperation } from "../../../../utils/multisig/types";
 import { estimate, executeOperations, makeToolkit } from "../../../../utils/tezos";
 
 jest.mock("../../../../utils/tezos", () => ({

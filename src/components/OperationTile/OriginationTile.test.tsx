@@ -7,7 +7,7 @@ import { render, screen } from "../../mocks/testUtils";
 import { DefaultNetworks } from "../../types/Network";
 import { networksActions } from "../../utils/redux/slices/networks";
 import { store } from "../../utils/redux/store";
-import { OriginationOperation, TEZ } from "../../utils/tezos";
+import { type OriginationOperation, TEZ } from "../../utils/tezos";
 
 const fixture = (context: any, operation: OriginationOperation) => (
   <OperationTileContext.Provider value={context}>

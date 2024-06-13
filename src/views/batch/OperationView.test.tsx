@@ -13,7 +13,7 @@ import { ghostnetThezard } from "../../mocks/nftTokens";
 import { render, screen } from "../../mocks/testUtils";
 import { parseContractPkh } from "../../types/Address";
 import { MAINNET } from "../../types/Network";
-import { FA12Transfer, FA2Transfer } from "../../types/Operation";
+import { type FA12Transfer, type FA2Transfer } from "../../types/Operation";
 import { tokensActions } from "../../utils/redux/slices/tokensSlice";
 import { store } from "../../utils/redux/store";
 import { TEZ } from "../../utils/tezos";

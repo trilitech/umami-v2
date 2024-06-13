@@ -8,7 +8,7 @@ import { DefaultNetworks } from "../../types/Network";
 import { formatPkh } from "../../utils/format";
 import { networksActions } from "../../utils/redux/slices/networks";
 import { store } from "../../utils/redux/store";
-import { DelegationOperation, TEZ } from "../../utils/tezos";
+import { type DelegationOperation, TEZ } from "../../utils/tezos";
 
 const fixture = (context: any, operation: DelegationOperation) => (
   <OperationTileContext.Provider value={context}>

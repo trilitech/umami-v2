@@ -7,7 +7,7 @@ import { getAccountGroupLabel } from "./getAccountGroupLabel";
 import { AccountTile } from "../../components/AccountTile/AccountTile";
 import { ConfirmationModal } from "../../components/ConfirmationModal";
 import { DynamicModalContext } from "../../components/DynamicModal";
-import { Account } from "../../types/Account";
+import { type Account } from "../../types/Account";
 import { useImplicitAccounts } from "../../utils/hooks/getAccountDataHooks";
 import { useRemoveMnemonic, useRemoveNonMnemonic } from "../../utils/hooks/setAccountDataHooks";
 

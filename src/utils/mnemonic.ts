@@ -3,9 +3,14 @@ import { generateMnemonic } from "bip39";
 import { makeDerivationPath } from "./account/derivationPathUtils";
 import { makeMnemonicAccount } from "./account/makeMnemonicAccount";
 import { useGetNextAvailableAccountLabels } from "./hooks/labelsHooks";
-import { PublicKeyPair, derivePublicKeyPair, getFingerPrint, isAccountRevealed } from "./tezos";
-import { MnemonicAccount } from "../types/Account";
-import { Network } from "../types/Network";
+import {
+  type PublicKeyPair,
+  derivePublicKeyPair,
+  getFingerPrint,
+  isAccountRevealed,
+} from "./tezos";
+import { type MnemonicAccount } from "../types/Account";
+import { type Network } from "../types/Network";
 
 // This is put in a separate file for mocking purposes in tests
 export const generate24WordMnemonic = () => generateMnemonic(256);

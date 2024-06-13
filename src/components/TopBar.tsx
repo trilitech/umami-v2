@@ -9,7 +9,8 @@ import {
   useMediaQuery,
 } from "@chakra-ui/react";
 import { differenceInMinutes, differenceInSeconds, formatDistance } from "date-fns";
-import React, { useContext, useEffect, useState } from "react";
+import type React from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { BuyTezForm } from "./BuyTez/BuyTezForm";
 import { DynamicModalContext } from "./DynamicModal";

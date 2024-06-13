@@ -2,7 +2,7 @@ import { ConnectOptions } from "./ConnectOptions";
 import { mockSocialAccount } from "../../../mocks/factories";
 import { addAccount } from "../../../mocks/helpers";
 import { act, render, screen, userEvent } from "../../../mocks/testUtils";
-import { OnboardingStep } from "../OnboardingStep";
+import { type OnboardingStep } from "../OnboardingStep";
 
 const goToStepMock = jest.fn();
 

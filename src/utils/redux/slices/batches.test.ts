@@ -5,9 +5,9 @@ import {
   mockNftOperation,
   mockTezOperation,
 } from "../../../mocks/factories";
-import { ImplicitOperations, makeAccountOperations } from "../../../types/AccountOperations";
-import { DefaultNetworks, Network } from "../../../types/Network";
-import { Operation } from "../../../types/Operation";
+import { type ImplicitOperations, makeAccountOperations } from "../../../types/AccountOperations";
+import { DefaultNetworks, type Network } from "../../../types/Network";
+import { type Operation } from "../../../types/Operation";
 import { store } from "../store";
 
 const { add, clear, removeItem, removeByAccounts } = batchesActions;

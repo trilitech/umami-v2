@@ -8,7 +8,7 @@ import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandle
 import { isEncryptedSecretKeyPrefix } from "../../../utils/redux/thunks/secretKeyAccount";
 import { PasswordInput } from "../../PasswordInput";
 import { ModalContentWrapper } from "../ModalContentWrapper";
-import { OnboardingStep } from "../OnboardingStep";
+import { type OnboardingStep } from "../OnboardingStep";
 
 export const RestoreSecretKey = ({ goToStep }: { goToStep: (step: OnboardingStep) => void }) => {
   const [isEncrypted, setIsEncrypted] = useState(false);

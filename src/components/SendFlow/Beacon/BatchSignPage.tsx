@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { FormProvider } from "react-hook-form";
 
-import { BeaconSignPageProps } from "./BeaconSignPageProps";
+import { type BeaconSignPageProps } from "./BeaconSignPageProps";
 import { Header } from "./Header";
 import { useSignWithBeacon } from "./useSignWithBeacon";
 import colors from "../../../style/colors";

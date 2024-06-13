@@ -1,13 +1,13 @@
-import { DataTable, Given, Then, When } from "@cucumber/cucumber";
+import { type DataTable, Given, Then, When } from "@cucumber/cucumber";
 import { expect } from "@playwright/test";
 import { minutesToMilliseconds } from "date-fns";
 import { some } from "lodash";
 
 import { BASE_URL } from "./onboarding";
-import { CustomWorld } from "./world";
-import { Account } from "../../types/Account";
+import { type CustomWorld } from "./world";
+import { type Account } from "../../types/Account";
 import { BLOCK_TIME } from "../../utils/dataPolling/constants";
-import { State } from "../../utils/redux/slices/accountsSlice/State";
+import { type State } from "../../utils/redux/slices/accountsSlice/State";
 import { makeSecretKeyAccount } from "../../utils/redux/thunks/secretKeyAccount";
 import { getOperationsByHash } from "../../utils/tezos";
 import { TEST_NETWORK } from "../constants";

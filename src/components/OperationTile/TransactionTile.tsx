@@ -15,7 +15,7 @@ import {
 import colors from "../../style/colors";
 import { parsePkh } from "../../types/Address";
 import { prettyTezAmount } from "../../utils/format";
-import { TransactionOperation } from "../../utils/tezos";
+import { type TransactionOperation } from "../../utils/tezos";
 import { AddressPill } from "../AddressPill/AddressPill";
 
 export const TransactionTile: React.FC<{ operation: TransactionOperation }> = ({ operation }) => {

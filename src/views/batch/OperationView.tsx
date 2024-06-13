@@ -3,7 +3,7 @@ import { AspectRatio, Flex, Heading, Image, Link, Tooltip } from "@chakra-ui/rea
 import { tokenTitle } from "./tokenTitle";
 import { BakerIcon, OutgoingArrow } from "../../assets/icons";
 import colors from "../../style/colors";
-import { Operation } from "../../types/Operation";
+import { type Operation } from "../../types/Operation";
 import { thumbnailUri, tokenNameSafe, tokenUri } from "../../types/Token";
 import { prettyTezAmount } from "../../utils/format";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";

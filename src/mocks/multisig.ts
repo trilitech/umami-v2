@@ -1,6 +1,6 @@
 import { mockImplicitAddress } from "./factories";
 import { parseContractPkh, parseImplicitPkh } from "../types/Address";
-import { Multisig, MultisigOperation } from "../utils/multisig/types";
+import { type Multisig, type MultisigOperation } from "../utils/multisig/types";
 
 export const multisigs: Multisig[] = [
   {

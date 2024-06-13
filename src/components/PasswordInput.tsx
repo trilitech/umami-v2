@@ -3,11 +3,11 @@ import {
   FormLabel,
   Input,
   InputGroup,
-  InputProps,
+  type InputProps,
   InputRightElement,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { FieldValues, Path, RegisterOptions, useFormContext } from "react-hook-form";
+import { type FieldValues, type Path, type RegisterOptions, useFormContext } from "react-hook-form";
 
 import { EyeIcon, EyeSlashIcon } from "../assets/icons";
 

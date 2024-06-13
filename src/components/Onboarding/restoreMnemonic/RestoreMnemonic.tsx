@@ -3,7 +3,7 @@ import { Box, Button, Grid, GridItem, Heading, Select, VStack } from "@chakra-ui
 import { validateMnemonic } from "bip39";
 import { range } from "lodash";
 import { useState } from "react";
-import { FieldValues, FormProvider, useForm } from "react-hook-form";
+import { type FieldValues, FormProvider, useForm } from "react-hook-form";
 
 import { KeyIcon } from "../../../assets/icons";
 import { IS_DEV } from "../../../env";
@@ -12,7 +12,7 @@ import colors from "../../../style/colors";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
 import { MnemonicAutocomplete } from "../../MnemonicAutocomplete";
 import { ModalContentWrapper } from "../ModalContentWrapper";
-import { OnboardingStep } from "../OnboardingStep";
+import { type OnboardingStep } from "../OnboardingStep";
 
 const mnemonicSizes = [12, 15, 18, 24];
 

@@ -10,13 +10,13 @@ import {
 import { useGetNextAvailableAccountLabels } from "./labelsHooks";
 import { useSelectedNetwork } from "./networkHooks";
 import { useRemoveDependenciesAndMultisigs } from "./removeAccountDependenciesHooks";
-import { IDP } from "../../auth";
+import { type IDP } from "../../auth";
 import {
-  ImplicitAccount,
-  LedgerAccount,
-  MnemonicAccount,
-  SecretKeyAccount,
-  SocialAccount,
+  type ImplicitAccount,
+  type LedgerAccount,
+  type MnemonicAccount,
+  type SecretKeyAccount,
+  type SocialAccount,
 } from "../../types/Account";
 import { makeDerivationPath } from "../account/derivationPathUtils";
 import { makeMnemonicAccount } from "../account/makeMnemonicAccount";

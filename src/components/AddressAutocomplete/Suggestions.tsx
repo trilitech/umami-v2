@@ -2,7 +2,7 @@ import { Box, ListItem, UnorderedList } from "@chakra-ui/react";
 
 import colors from "../../style/colors";
 import { parsePkh } from "../../types/Address";
-import { Contact } from "../../types/Contact";
+import { type Contact } from "../../types/Contact";
 import { AddressTile } from "../AddressTile/AddressTile";
 
 export const Suggestions = ({

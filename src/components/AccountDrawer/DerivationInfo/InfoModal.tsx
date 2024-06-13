@@ -11,7 +11,7 @@ import {
 
 import { SlashIcon } from "../../../assets/icons";
 import colors from "../../../style/colors";
-import { LedgerAccount, MnemonicAccount } from "../../../types/Account";
+import { type LedgerAccount, type MnemonicAccount } from "../../../types/Account";
 import { CircleIcon } from "../../CircleIcon";
 
 /**

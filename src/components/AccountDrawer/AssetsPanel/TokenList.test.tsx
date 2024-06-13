@@ -2,7 +2,7 @@ import { TokenList } from "./TokenList";
 import { hedgehoge } from "../../../mocks/fa12Tokens";
 import { mockFA12Token, mockFA2Token, mockMnemonicAccount } from "../../../mocks/factories";
 import { render, screen } from "../../../mocks/testUtils";
-import { FA2TokenBalance, fromRaw } from "../../../types/TokenBalance";
+import { type FA2TokenBalance, fromRaw } from "../../../types/TokenBalance";
 
 describe("<TokenList />", () => {
   const ACCOUNT = mockMnemonicAccount(0);

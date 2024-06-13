@@ -5,16 +5,16 @@ import {
   mockImplicitAddress,
   mockLedgerAccount,
 } from "../../mocks/factories";
-import { TokenTransfer } from "../../types/Transfer";
+import { type TokenTransfer } from "../../types/Transfer";
 import { CODE_HASH, TYPE_HASH } from "../../utils/multisig/fetch";
 import {
-  DelegationOperation,
-  FinalizeUnstakeOperation,
-  OriginationOperation,
-  StakeOperation,
-  TokenTransferOperation,
-  TransactionOperation,
-  UnstakeOperation,
+  type DelegationOperation,
+  type FinalizeUnstakeOperation,
+  type OriginationOperation,
+  type StakeOperation,
+  type TokenTransferOperation,
+  type TransactionOperation,
+  type UnstakeOperation,
 } from "../../utils/tezos";
 
 export const transactionFixture = (

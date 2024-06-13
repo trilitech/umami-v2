@@ -13,8 +13,8 @@ import {
   useGetOperationDestination,
 } from "./useGetOperationDestination";
 import colors from "../../style/colors";
-import { Token, thumbnailUri, tokenNameSafe, tokenPrettyAmount } from "../../types/Token";
-import { TokenTransferOperation, TransactionOperation } from "../../utils/tezos";
+import { type Token, thumbnailUri, tokenNameSafe, tokenPrettyAmount } from "../../types/Token";
+import { type TokenTransferOperation, type TransactionOperation } from "../../utils/tezos";
 import { getIPFSurl } from "../../utils/token/utils";
 import { AddressPill } from "../AddressPill/AddressPill";
 

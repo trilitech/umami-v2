@@ -1,4 +1,4 @@
-import { ExtendedPeerInfo, NetworkType } from "@airgap/beacon-wallet";
+import { type ExtendedPeerInfo, NetworkType } from "@airgap/beacon-wallet";
 
 import * as beaconHelper from "./beacon";
 import { BeaconPeers } from "./BeaconPeers";

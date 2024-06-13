@@ -15,7 +15,7 @@ import { ExternalLink } from "../../ExternalLink";
 import { FormErrorMessage } from "../../FormErrorMessage";
 import { Select } from "../../Select";
 import { ModalContentWrapper } from "../ModalContentWrapper";
-import { DerivationPathStep, OnboardingStep } from "../OnboardingStep";
+import { type DerivationPathStep, type OnboardingStep } from "../OnboardingStep";
 
 /**
  * Component represents the derivation path step in the onboarding flow

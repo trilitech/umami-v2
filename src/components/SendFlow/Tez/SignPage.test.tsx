@@ -11,7 +11,7 @@ import { addAccount } from "../../../mocks/helpers";
 import { render, screen, waitFor } from "../../../mocks/testUtils";
 import { makeAccountOperations } from "../../../types/AccountOperations";
 import { TEZ } from "../../../utils/tezos";
-import { SignPageProps } from "../utils";
+import { type SignPageProps } from "../utils";
 
 const fixture = (props: SignPageProps) => (
   <Modal isOpen={true} onClose={() => {}}>

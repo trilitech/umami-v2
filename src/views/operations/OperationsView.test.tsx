@@ -7,7 +7,7 @@ import { MAINNET } from "../../types/Network";
 import { networksActions } from "../../utils/redux/slices/networks";
 import { store } from "../../utils/redux/store";
 import {
-  TzktCombinedOperation,
+  type TzktCombinedOperation,
   getCombinedOperations,
   getRelatedTokenTransfers,
 } from "../../utils/tezos";

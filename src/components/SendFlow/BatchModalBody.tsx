@@ -1,11 +1,11 @@
 import { Flex, FormLabel, ModalBody, Text } from "@chakra-ui/react";
-import React from "react";
+import type React from "react";
 
 import { FormPageHeader } from "./FormPageHeader";
 import { SignPageFee } from "./SignPageFee";
 import { subTitle } from "./SignPageHeader";
 import colors from "../../style/colors";
-import { EstimatedAccountOperations, totalFee } from "../../types/AccountOperations";
+import { type EstimatedAccountOperations, totalFee } from "../../types/AccountOperations";
 import { AddressTile } from "../AddressTile/AddressTile";
 
 export const BatchModalBody: React.FC<{

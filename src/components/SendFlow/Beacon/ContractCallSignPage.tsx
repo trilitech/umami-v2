@@ -13,11 +13,11 @@ import {
 } from "@chakra-ui/react";
 import { FormProvider } from "react-hook-form";
 
-import { BeaconSignPageProps } from "./BeaconSignPageProps";
+import { type BeaconSignPageProps } from "./BeaconSignPageProps";
 import { Header } from "./Header";
 import { useSignWithBeacon } from "./useSignWithBeacon";
 import colors from "../../../style/colors";
-import { ContractCall } from "../../../types/Operation";
+import { type ContractCall } from "../../../types/Operation";
 import { JsValueWrap } from "../../AccountDrawer/JsValueWrap";
 import { AddressTile } from "../../AddressTile/AddressTile";
 import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";

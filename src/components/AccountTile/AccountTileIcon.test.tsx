@@ -1,5 +1,5 @@
 import { AccountTileIcon } from "./AccountTileIcon";
-import { IDP } from "../../auth";
+import { type IDP } from "../../auth";
 import {
   mockLedgerAccount,
   mockMnemonicAccount,
@@ -8,7 +8,7 @@ import {
 } from "../../mocks/factories";
 import { addAccount } from "../../mocks/helpers";
 import { render, screen } from "../../mocks/testUtils";
-import { Account } from "../../types/Account";
+import { type Account } from "../../types/Account";
 
 const fixture = (account: Account) => <AccountTileIcon account={account} size="sm" />;
 

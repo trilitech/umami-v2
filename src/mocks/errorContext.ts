@@ -1,4 +1,4 @@
-import { ErrorContext } from "../utils/getErrorContext";
+import { type ErrorContext } from "../utils/getErrorContext";
 
 export const errorContext1: ErrorContext = {
   timestamp: "2023-08-03T19:27:43.735Z",

@@ -8,7 +8,7 @@ import {
 } from "./beaconHooks";
 import { mockMnemonicAccount, mockSocialAccount } from "../../mocks/factories";
 import { renderHook } from "../../mocks/testUtils";
-import { RawPkh } from "../../types/Address";
+import { type RawPkh } from "../../types/Address";
 import { beaconActions } from "../redux/slices/beaconSlice";
 import { store } from "../redux/store";
 

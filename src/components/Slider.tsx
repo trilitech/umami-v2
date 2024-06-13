@@ -1,6 +1,6 @@
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Box } from "@chakra-ui/react";
-import { CSSProperties, ReactElement } from "react";
+import { type CSSProperties, type ReactElement } from "react";
 import { Carousel } from "react-responsive-carousel";
 
 import colors from "../style/colors";

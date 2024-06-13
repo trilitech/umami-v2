@@ -1,9 +1,9 @@
-import { Flex, FlexProps, Heading, Text } from "@chakra-ui/react";
+import { Flex, type FlexProps, Heading, Text } from "@chakra-ui/react";
 
 import { FinalizableUnstakeRequest } from "./FinalizableUnstakeRequest";
 import { PendingUnstakeRequest } from "./PendingUnstakeRequest";
 import colors from "../../../../style/colors";
-import { ImplicitAccount } from "../../../../types/Account";
+import { type ImplicitAccount } from "../../../../types/Account";
 import {
   useAccountPendingUnstakeRequests,
   useAccountTotalFinalizableUnstakeAmount,

@@ -1,16 +1,16 @@
 import { compact, every } from "lodash";
 
 import { getAllMultiSigContracts, getExistingContracts, getPendingOperations } from "./fetch";
-import { Multisig, MultisigOperation } from "./types";
-import { MultisigAccount } from "../../types/Account";
+import { type Multisig, type MultisigOperation } from "./types";
+import { type MultisigAccount } from "../../types/Account";
 import {
-  RawPkh,
+  type RawPkh,
   isValidImplicitPkh,
   parseContractPkh,
   parseImplicitPkh,
 } from "../../types/Address";
-import { Network } from "../../types/Network";
-import { RawTzktGetBigMapKeysItem, RawTzktGetSameMultisigsItem } from "../tzkt/types";
+import { type Network } from "../../types/Network";
+import { type RawTzktGetBigMapKeysItem, type RawTzktGetSameMultisigsItem } from "../tzkt/types";
 
 export const parseMultisig = (raw: RawTzktGetSameMultisigsItem): Multisig => ({
   address: parseContractPkh(raw.address),

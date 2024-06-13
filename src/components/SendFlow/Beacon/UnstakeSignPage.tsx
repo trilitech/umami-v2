@@ -1,9 +1,9 @@
 import { Flex, FormLabel, ModalBody, ModalContent, ModalFooter } from "@chakra-ui/react";
 
-import { BeaconSignPageProps } from "./BeaconSignPageProps";
+import { type BeaconSignPageProps } from "./BeaconSignPageProps";
 import { Header } from "./Header";
 import { useSignWithBeacon } from "./useSignWithBeacon";
-import { Unstake } from "../../../types/Operation";
+import { type Unstake } from "../../../types/Operation";
 import { AddressTile } from "../../AddressTile/AddressTile";
 import { TezTile } from "../../AssetTiles/TezTile";
 import { SignButton } from "../SignButton";

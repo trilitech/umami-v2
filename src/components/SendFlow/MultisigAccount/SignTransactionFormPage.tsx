@@ -9,10 +9,10 @@ import {
   ModalFooter,
   Text,
 } from "@chakra-ui/react";
-import { TezosToolkit } from "@taquito/taquito";
+import { type TezosToolkit } from "@taquito/taquito";
 import { FormProvider } from "react-hook-form";
 
-import { FormValues } from "./FormValues";
+import { type FormValues } from "./FormValues";
 import colors from "../../../style/colors";
 import { parsePkh } from "../../../types/Address";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
@@ -24,7 +24,7 @@ import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
 import { SignPageHeader } from "../SignPageHeader";
-import { SignPageProps, useSignPageHelpers } from "../utils";
+import { type SignPageProps, useSignPageHelpers } from "../utils";
 
 export const SignTransactionFormPage: React.FC<SignPageProps<FormValues>> = props => {
   const dispatch = useAppDispatch();

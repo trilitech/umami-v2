@@ -1,4 +1,4 @@
-import { SignPayloadRequestOutput } from "@airgap/beacon-wallet";
+import { type SignPayloadRequestOutput } from "@airgap/beacon-wallet";
 import { hex2buf } from "@taquito/utils";
 
 // Padding for a sign request payload in Micheline expression.

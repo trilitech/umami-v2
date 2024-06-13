@@ -1,7 +1,7 @@
-import { DataTable, Given, Then, When } from "@cucumber/cucumber";
+import { type DataTable, Given, Then, When } from "@cucumber/cucumber";
 import { expect } from "@playwright/test";
 
-import { CustomWorld } from "./world";
+import { type CustomWorld } from "./world";
 import { DEFAULT_ACCOUNTS } from "../constants";
 import { AccountDrawerPage } from "../pages/AccountDrawerPage";
 import { AccountsPage } from "../pages/AccountsPage";

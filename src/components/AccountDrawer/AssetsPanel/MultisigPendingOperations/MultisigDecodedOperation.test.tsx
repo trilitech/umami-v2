@@ -2,7 +2,7 @@ import { MultisigDecodedOperation } from "./MultisigDecodedOperation";
 import { mockContractAddress, mockImplicitAddress } from "../../../../mocks/factories";
 import { render, screen } from "../../../../mocks/testUtils";
 import { MAINNET } from "../../../../types/Network";
-import { RawTokenBalance } from "../../../../types/TokenBalance";
+import { type RawTokenBalance } from "../../../../types/TokenBalance";
 import { assetsActions } from "../../../../utils/redux/slices/assetsSlice";
 import { networksActions } from "../../../../utils/redux/slices/networks";
 import { tokensSlice } from "../../../../utils/redux/slices/tokensSlice";

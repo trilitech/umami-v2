@@ -1,5 +1,5 @@
 import * as testingLibrary from "@testing-library/react";
-import { PropsWithChildren, act } from "react";
+import { type PropsWithChildren, act } from "react";
 import { HashRouter } from "react-router-dom";
 
 import { DynamicModalContext, useDynamicModal } from "../components/DynamicModal";

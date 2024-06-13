@@ -1,5 +1,5 @@
-import { Flex, FlexProps } from "@chakra-ui/react";
-import React from "react";
+import { Flex, type FlexProps } from "@chakra-ui/react";
+import type React from "react";
 
 import { CloseDrawerButton } from "./CloseDrawerButton";
 

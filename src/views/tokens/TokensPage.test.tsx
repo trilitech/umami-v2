@@ -4,7 +4,7 @@ import { uUSD } from "../../mocks/fa2Tokens";
 import { mockImplicitAddress, mockMnemonicAccount } from "../../mocks/factories";
 import { addAccount } from "../../mocks/helpers";
 import { render, screen } from "../../mocks/testUtils";
-import { DefaultNetworks, MAINNET, Network } from "../../types/Network";
+import { DefaultNetworks, MAINNET, type Network } from "../../types/Network";
 import { assetsSlice } from "../../utils/redux/slices/assetsSlice";
 import { networksActions } from "../../utils/redux/slices/networks";
 import { tokensActions } from "../../utils/redux/slices/tokensSlice";

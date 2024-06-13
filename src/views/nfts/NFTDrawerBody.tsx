@@ -5,7 +5,7 @@ import { AddressPill } from "../../components/AddressPill/AddressPill";
 import { CloseDrawerButton } from "../../components/CloseDrawerButton";
 import colors from "../../style/colors";
 import { parsePkh } from "../../types/Address";
-import { NFTWithOwner } from "../../utils/token/utils";
+import { type NFTWithOwner } from "../../utils/token/utils";
 
 export const NFTDrawerBody = ({
   nft,

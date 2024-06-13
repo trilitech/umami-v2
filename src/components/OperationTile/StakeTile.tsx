@@ -11,7 +11,7 @@ import { BakerIcon } from "../../assets/icons";
 import colors from "../../style/colors";
 import { parsePkh } from "../../types/Address";
 import { prettyTezAmount } from "../../utils/format";
-import { StakeOperation } from "../../utils/tezos";
+import { type StakeOperation } from "../../utils/tezos";
 import { AddressPill } from "../AddressPill/AddressPill";
 
 export const StakeTile: React.FC<{ operation: StakeOperation }> = memo(({ operation }) => {

@@ -3,7 +3,7 @@ import { Accordion } from "@chakra-ui/react";
 import { PropertiesAccordionItem } from "./PropertiesAccordionItem";
 import { mockImplicitAddress, mockNFT } from "../../../mocks/factories";
 import { render, screen } from "../../../mocks/testUtils";
-import { NFTBalance } from "../../../types/TokenBalance";
+import { type NFTBalance } from "../../../types/TokenBalance";
 
 const fixture = (nft: NFTBalance) => (
   <Accordion>

@@ -8,7 +8,7 @@ import { Timestamp } from "./Timestamp";
 import { TzktLink } from "./TzktLink";
 import { ContractIcon } from "../../assets/icons";
 import colors from "../../style/colors";
-import { TransactionOperation } from "../../utils/tezos";
+import { type TransactionOperation } from "../../utils/tezos";
 import { AddressPill } from "../AddressPill/AddressPill";
 
 export const ContractCallTile: React.FC<{

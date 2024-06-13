@@ -9,7 +9,7 @@ import {
   ModalFooter,
   ModalHeader,
 } from "@chakra-ui/react";
-import BigNumber from "bignumber.js";
+import type BigNumber from "bignumber.js";
 import { FormProvider } from "react-hook-form";
 
 import { AddressTile } from "../../AddressTile/AddressTile";
@@ -18,7 +18,7 @@ import { TezTile } from "../../AssetTiles/TezTile";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
 import { headerText } from "../SignPageHeader";
-import { SignPageProps, useSignPageHelpers } from "../utils";
+import { type SignPageProps, useSignPageHelpers } from "../utils";
 
 // TODO: test
 export const SignPage: React.FC<SignPageProps<{ finalizableAmount: BigNumber }>> = props => {

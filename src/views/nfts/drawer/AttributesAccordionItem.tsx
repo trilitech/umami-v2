@@ -10,10 +10,10 @@ import {
   Wrap,
   WrapItem,
 } from "@chakra-ui/react";
-import { CSSProperties } from "react";
+import { type CSSProperties } from "react";
 
 import colors from "../../../style/colors";
-import { NFTBalance } from "../../../types/TokenBalance";
+import { type NFTBalance } from "../../../types/TokenBalance";
 
 export const AttributesAccordionItem = ({
   nft,

@@ -1,7 +1,7 @@
 import {
   BeaconMessageType,
   NetworkType,
-  PermissionRequestOutput,
+  type PermissionRequestOutput,
   PermissionScope,
 } from "@airgap/beacon-wallet";
 import { Modal } from "@chakra-ui/react";

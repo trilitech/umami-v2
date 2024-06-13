@@ -2,7 +2,7 @@ import { VerifySeedphrase } from "./VerifySeedphrase";
 import { mnemonic1 } from "../../../mocks/mockMnemonic";
 import { act, fireEvent, render, screen, userEvent, waitFor } from "../../../mocks/testUtils";
 import { selectRandomElements } from "../../../utils/tezos";
-import { OnboardingStep } from "../OnboardingStep";
+import { type OnboardingStep } from "../OnboardingStep";
 
 const goToStepMock = jest.fn((step: OnboardingStep) => {});
 

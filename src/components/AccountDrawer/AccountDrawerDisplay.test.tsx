@@ -14,13 +14,13 @@ import { mockTzktTezTransfer } from "../../mocks/transfers";
 import { rawAccountFixture } from "../../mocks/tzktResponse";
 import { GHOSTNET, MAINNET } from "../../types/Network";
 import { formatPkh } from "../../utils/format";
-import { Multisig } from "../../utils/multisig/types";
+import { type Multisig } from "../../utils/multisig/types";
 import { assetsSlice } from "../../utils/redux/slices/assetsSlice";
 import { multisigActions } from "../../utils/redux/slices/multisigsSlice";
 import { networksActions } from "../../utils/redux/slices/networks";
 import { tokensSlice } from "../../utils/redux/slices/tokensSlice";
 import { store } from "../../utils/redux/store";
-import { TzktCombinedOperation } from "../../utils/tezos";
+import { type TzktCombinedOperation } from "../../utils/tezos";
 import * as useGetOperationsModule from "../../views/operations/useGetOperations";
 
 import { AccountCard } from ".";

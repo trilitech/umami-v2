@@ -1,19 +1,20 @@
 import { Center, Heading, Text } from "@chakra-ui/react";
 import { BigNumber } from "bignumber.js";
 import { get } from "lodash";
-import React, { useContext } from "react";
+import type React from "react";
+import { useContext } from "react";
 
 import { OperationTileContext } from "./OperationTileContext";
 import colors from "../../style/colors";
 import { prettyTezAmount } from "../../utils/format";
 import { useIsOwnedAddress } from "../../utils/hooks/getAccountDataHooks";
 import {
-  DelegationOperation,
-  FinalizeUnstakeOperation,
-  OriginationOperation,
-  StakeOperation,
-  TransactionOperation,
-  UnstakeOperation,
+  type DelegationOperation,
+  type FinalizeUnstakeOperation,
+  type OriginationOperation,
+  type StakeOperation,
+  type TransactionOperation,
+  type UnstakeOperation,
 } from "../../utils/tezos";
 
 const FEE_FIELDS = ["bakerFee", "storageFee", "allocationFee"];

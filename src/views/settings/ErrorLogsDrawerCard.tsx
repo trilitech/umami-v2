@@ -18,7 +18,7 @@ import { OutlineExclamationCircleIcon } from "../../assets/icons";
 import { SettingsCardWithDrawerIcon } from "../../components/ClickableCard";
 import { DrawerTopButtons } from "../../components/DrawerTopButtons";
 import colors from "../../style/colors";
-import { ErrorContext } from "../../utils/getErrorContext";
+import { type ErrorContext } from "../../utils/getErrorContext";
 import { useAppSelector } from "../../utils/redux/hooks";
 import { errorsSlice } from "../../utils/redux/slices/errorsSlice";
 

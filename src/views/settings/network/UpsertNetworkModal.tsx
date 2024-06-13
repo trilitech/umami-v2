@@ -15,7 +15,7 @@ import { useDispatch } from "react-redux";
 
 import { DynamicModalContext } from "../../../components/DynamicModal";
 import { FormErrorMessage } from "../../../components/FormErrorMessage";
-import { Network } from "../../../types/Network";
+import { type Network } from "../../../types/Network";
 import { useAvailableNetworks } from "../../../utils/hooks/networkHooks";
 import { networksActions } from "../../../utils/redux/slices/networks";
 

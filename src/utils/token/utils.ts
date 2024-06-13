@@ -1,7 +1,7 @@
 import { orderBy } from "lodash";
 
-import { RawPkh } from "../../types/Address";
-import { NFTBalance } from "../../types/TokenBalance";
+import { type RawPkh } from "../../types/Address";
+import { type NFTBalance } from "../../types/TokenBalance";
 
 export const getIPFSurl = (ipfsPath?: string) =>
   ipfsPath?.replace("ipfs://", "https://ipfs.io/ipfs/");

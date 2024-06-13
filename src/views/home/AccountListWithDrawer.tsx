@@ -15,7 +15,7 @@ import { SelectedAccountContext } from "./SelectedAccountContext";
 import { AccountCard } from "../../components/AccountDrawer";
 import { DerivationInfoButton } from "../../components/AccountDrawer/DerivationInfo";
 import { CloseDrawerButton } from "../../components/CloseDrawerButton";
-import { Account } from "../../types/Account";
+import { type Account } from "../../types/Account";
 import { fullId } from "../../types/Token";
 import { useAllNfts } from "../../utils/hooks/assetsHooks";
 import { NFTDrawerBody } from "../nfts/NFTDrawerBody";

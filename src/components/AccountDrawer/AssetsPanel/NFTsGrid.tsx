@@ -6,17 +6,17 @@ import {
   Center,
   Image,
   SimpleGrid,
-  SimpleGridProps,
+  type SimpleGridProps,
   Text,
 } from "@chakra-ui/react";
-import { FC } from "react";
+import { type FC } from "react";
 import { Link } from "react-router-dom";
 
 import { ViewAllLink } from "./ViewAllLink";
 import colors from "../../../style/colors";
-import { RawPkh } from "../../../types/Address";
+import { type RawPkh } from "../../../types/Address";
 import { fullId, thumbnailUri } from "../../../types/Token";
-import { NFTBalance } from "../../../types/TokenBalance";
+import { type NFTBalance } from "../../../types/TokenBalance";
 import { getIPFSurl, sortedByLastUpdate } from "../../../utils/token/utils";
 import { NoNFTs } from "../../NoItems";
 

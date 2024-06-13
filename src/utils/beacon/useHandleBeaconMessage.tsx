@@ -1,9 +1,9 @@
 import {
   BeaconErrorType,
   BeaconMessageType,
-  Network as BeaconNetwork,
-  BeaconRequestOutputMessage,
-  PartialTezosOperation,
+  type Network as BeaconNetwork,
+  type BeaconRequestOutputMessage,
+  type PartialTezosOperation,
   TezosOperationType,
 } from "@airgap/beacon-wallet";
 import { useContext } from "react";
@@ -14,11 +14,11 @@ import { WalletClient } from "./WalletClient";
 import { DynamicModalContext } from "../../components/DynamicModal";
 import { BatchSignPage } from "../../components/SendFlow/Beacon/BatchSignPage";
 import { BeaconSignPage } from "../../components/SendFlow/Beacon/BeaconSignPage";
-import { ImplicitAccount } from "../../types/Account";
-import { ImplicitOperations } from "../../types/AccountOperations";
+import { type ImplicitAccount } from "../../types/Account";
+import { type ImplicitOperations } from "../../types/AccountOperations";
 import { isValidImplicitPkh, parseImplicitPkh, parsePkh } from "../../types/Address";
-import { Network } from "../../types/Network";
-import { ContractOrigination, Operation } from "../../types/Operation";
+import { type Network } from "../../types/Network";
+import { type ContractOrigination, type Operation } from "../../types/Operation";
 import { useGetOwnedAccountSafe } from "../hooks/getAccountDataHooks";
 import { useFindNetwork } from "../hooks/networkHooks";
 import { useAsyncActionHandler } from "../hooks/useAsyncActionHandler";

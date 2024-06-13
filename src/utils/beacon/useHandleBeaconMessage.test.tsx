@@ -1,11 +1,11 @@
 import {
   BeaconMessageType,
-  BeaconRequestOutputMessage,
+  type BeaconRequestOutputMessage,
   NetworkType,
-  PartialTezosOperation,
-  PermissionRequestOutput,
+  type PartialTezosOperation,
+  type PermissionRequestOutput,
   PermissionScope,
-  SignPayloadRequestOutput,
+  type SignPayloadRequestOutput,
   SigningType,
   TezosOperationType,
 } from "@airgap/beacon-wallet";

@@ -1,8 +1,8 @@
-import { MichelsonV1Expression, TransactionOperationParameter } from "@taquito/rpc";
+import { type MichelsonV1Expression, type TransactionOperationParameter } from "@taquito/rpc";
 import { MANAGER_LAMBDA } from "@taquito/taquito";
 import { isEqual } from "lodash";
 
-import { Address, ContractAddress, ImplicitAddress } from "./Address";
+import { type Address, type ContractAddress, type ImplicitAddress } from "./Address";
 
 export type TezTransfer = {
   type: "tez";

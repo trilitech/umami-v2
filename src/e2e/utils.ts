@@ -1,10 +1,10 @@
-import { StdioOptions, execSync } from "child_process";
+import { type StdioOptions, execSync } from "child_process";
 
-import { Page } from "@playwright/test";
+import { type Page } from "@playwright/test";
 import { noop } from "lodash";
 
 import { TEST_NETWORK } from "./constants";
-import { RawPkh } from "../types/Address";
+import { type RawPkh } from "../types/Address";
 import { getAccounts } from "../utils/tezos";
 
 export const runDockerCommand = (command: string, stdio: StdioOptions = "ignore") =>

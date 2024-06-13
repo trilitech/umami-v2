@@ -1,8 +1,8 @@
-import { NetworkType } from "@airgap/beacon-wallet";
+import { type NetworkType } from "@airgap/beacon-wallet";
 import { createSlice } from "@reduxjs/toolkit";
 import { fromPairs } from "lodash";
 
-import { RawPkh } from "../../../types/Address";
+import { type RawPkh } from "../../../types/Address";
 
 export type DAppConnectionInfo = {
   accountPkh: RawPkh;

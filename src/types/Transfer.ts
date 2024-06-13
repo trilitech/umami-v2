@@ -1,7 +1,7 @@
-import * as tzktApi from "@tzkt/sdk-api";
+import type * as tzktApi from "@tzkt/sdk-api";
 
-import { TzktAlias } from "./Address";
-import { RawTokenInfo } from "./Token";
+import { type TzktAlias } from "./Address";
+import { type RawTokenInfo } from "./Token";
 
 export type TokenTransfer = {
   id: number;

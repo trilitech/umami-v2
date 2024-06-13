@@ -8,7 +8,7 @@ import { Timestamp } from "./Timestamp";
 import { TzktLink } from "./TzktLink";
 import { BakerIcon } from "../../assets/icons";
 import colors from "../../style/colors";
-import { DelegationOperation } from "../../utils/tezos";
+import { type DelegationOperation } from "../../utils/tezos";
 import { AddressPill } from "../AddressPill/AddressPill";
 
 export const DelegationTile: React.FC<{ operation: DelegationOperation }> = ({ operation }) => {

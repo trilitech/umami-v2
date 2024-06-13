@@ -10,8 +10,8 @@ import {
   TwitterIcon,
 } from "../../assets/icons";
 import colors from "../../style/colors";
-import { Account } from "../../types/Account";
-import { AddressTileIconSize } from "../AddressTile/AddressTileIconSize";
+import { type Account } from "../../types/Account";
+import { type AddressTileIconSize } from "../AddressTile/AddressTileIconSize";
 import { Identicon } from "../Identicon";
 
 const SIZES = {

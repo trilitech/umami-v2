@@ -7,11 +7,11 @@ import { addAccount } from "../../mocks/helpers";
 import { ghostnetThezard } from "../../mocks/nftTokens";
 import { render, screen } from "../../mocks/testUtils";
 import { DefaultNetworks } from "../../types/Network";
-import { Token, fromRaw } from "../../types/Token";
+import { type Token, fromRaw } from "../../types/Token";
 import { formatPkh } from "../../utils/format";
 import { networksActions } from "../../utils/redux/slices/networks";
 import { store } from "../../utils/redux/store";
-import { TEZ, TokenTransferOperation, TransactionOperation } from "../../utils/tezos";
+import { TEZ, type TokenTransferOperation, type TransactionOperation } from "../../utils/tezos";
 
 const fixture = (
   context: any,

@@ -1,10 +1,14 @@
-import { ExtendedP2PPairingResponse, ExtendedPeerInfo, Serializer } from "@airgap/beacon-wallet";
+import {
+  type ExtendedP2PPairingResponse,
+  type ExtendedPeerInfo,
+  Serializer,
+} from "@airgap/beacon-wallet";
 import { useToast } from "@chakra-ui/react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { makePeerInfo } from "./types";
 import { WalletClient } from "./WalletClient";
-import { RawPkh } from "../../types/Address";
+import { type RawPkh } from "../../types/Address";
 import { useGetPeersForAccounts, useRemoveConnection } from "../hooks/beaconHooks";
 
 const PEERS_QUERY_KEY = "beaconPeers";

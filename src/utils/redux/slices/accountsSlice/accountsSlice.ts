@@ -1,17 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { remove } from "lodash";
 
-import { State } from "./State";
+import { type State } from "./State";
 import {
-  AccountType,
-  ImplicitAccount,
-  LedgerAccount,
-  MnemonicAccount,
-  SecretKeyAccount,
-  SocialAccount,
+  type AccountType,
+  type ImplicitAccount,
+  type LedgerAccount,
+  type MnemonicAccount,
+  type SecretKeyAccount,
+  type SocialAccount,
 } from "../../../../types/Account";
-import { RawPkh } from "../../../../types/Address";
-import { EncryptedData } from "../../../crypto/types";
+import { type RawPkh } from "../../../../types/Address";
+import { type EncryptedData } from "../../../crypto/types";
 import { changeMnemonicPassword } from "../../thunks/changeMnemonicPassword";
 
 export const initialState: State = {

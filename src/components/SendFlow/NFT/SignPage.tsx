@@ -11,8 +11,8 @@ import {
 import { FormProvider } from "react-hook-form";
 
 import colors from "../../../style/colors";
-import { FA2Transfer } from "../../../types/Operation";
-import { NFTBalance } from "../../../types/TokenBalance";
+import { type FA2Transfer } from "../../../types/Operation";
+import { type NFTBalance } from "../../../types/TokenBalance";
 import { AddressTile } from "../../AddressTile/AddressTile";
 import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";
 import { OperationSignerSelector } from "../OperationSignerSelector";
@@ -20,7 +20,7 @@ import { SendNFTRecapTile } from "../SendNFTRecapTile";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
 import { SignPageHeader, headerText } from "../SignPageHeader";
-import { SignPageProps, useSignPageHelpers } from "../utils";
+import { type SignPageProps, useSignPageHelpers } from "../utils";
 
 export const SignPage: React.FC<SignPageProps<{ nft: NFTBalance }>> = props => {
   const {

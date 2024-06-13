@@ -1,7 +1,7 @@
 import { mockContractAddress, mockImplicitAddress } from "./factories";
-import { RawTokenBalance } from "../types/TokenBalance";
-import { RawTzktAccount } from "../utils/tezos";
-import { RawTzktGetSameMultisigs } from "../utils/tzkt/types";
+import { type RawTokenBalance } from "../types/TokenBalance";
+import { type RawTzktAccount } from "../utils/tezos";
+import { type RawTzktGetSameMultisigs } from "../utils/tzkt/types";
 
 export const fa1Token: RawTokenBalance = {
   id: 10897662672897,

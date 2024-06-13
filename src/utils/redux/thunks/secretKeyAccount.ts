@@ -1,11 +1,11 @@
-import { Curves } from "@taquito/signer";
+import { type Curves } from "@taquito/signer";
 import { Prefix } from "@taquito/utils";
 
 import { parseImplicitPkh } from "../../../types/Address";
 import { encrypt } from "../../crypto/AES";
 import { getPublicKeyPairFromSk } from "../../tezos";
 import { accountsSlice } from "../slices/accountsSlice/accountsSlice";
-import { AppDispatch } from "../store";
+import { type AppDispatch } from "../store";
 
 export const getCurve = (secretKey: string): Curves => {
   if (secretKey.startsWith(Prefix.EDESK) || secretKey.startsWith(Prefix.EDSK)) {

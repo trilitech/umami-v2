@@ -14,7 +14,7 @@ import { FakeAccount } from "./FakeAccount";
 import { MasterPassword } from "./masterPassword/MasterPassword";
 import { NameAccount } from "./nameAccount/NameAccount";
 import { Notice } from "./notice/Notice";
-import { OnboardingStep } from "./OnboardingStep";
+import { type OnboardingStep } from "./OnboardingStep";
 import { RestoreBackupFile } from "./restoreBackupFile/RestoreBackupFile";
 import { RestoreLedger } from "./restoreLedger/RestoreLedger";
 import { RestoreMnemonic } from "./restoreMnemonic/RestoreMnemonic";

@@ -1,7 +1,10 @@
 import { b58cencode, prefix } from "@taquito/utils";
-import CustomAuth, { TorusAggregateLoginResponse, TorusLoginResponse } from "@toruslabs/customauth";
+import CustomAuth, {
+  type TorusAggregateLoginResponse,
+  type TorusLoginResponse,
+} from "@toruslabs/customauth";
 
-import { IDP } from "./types";
+import { type IDP } from "./types";
 
 const WEB3_AUTH_CLIENT_ID =
   "BBQoFIabI50S1-0QsGHGTM4qID_FDjja0ZxIxKPyFqc0El--M-EG0c2giaBYVTVVE6RC9WCUzCJyW24aJrR_Lzc";

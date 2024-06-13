@@ -1,5 +1,5 @@
-import { StyleProps } from "@chakra-ui/react";
-import { FieldValues, Path, RegisterOptions } from "react-hook-form";
+import { type StyleProps } from "@chakra-ui/react";
+import { type FieldValues, type Path, type RegisterOptions } from "react-hook-form";
 
 // <T extends FieldValues> is needed to be compatible with the useForm's type parameter (FormData)
 // <U extends Path<T>> makes sure that we can pass in only valid inputName that exists in FormData

@@ -2,12 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 import { compact, groupBy, omit, sortBy } from "lodash";
 
 import { accountsSlice } from "./accountsSlice/accountsSlice";
-import { RawPkh, TzktAlias } from "../../../types/Address";
-import { Delegate } from "../../../types/Delegate";
-import { RawTokenBalance, TokenBalance, fromRaw } from "../../../types/TokenBalance";
-import { TokenTransfer } from "../../../types/Transfer";
-import { RawTzktAccount } from "../../tezos";
-import { RawTzktUnstakeRequest } from "../../tzkt/types";
+import { type RawPkh, type TzktAlias } from "../../../types/Address";
+import { type Delegate } from "../../../types/Delegate";
+import { type RawTokenBalance, type TokenBalance, fromRaw } from "../../../types/TokenBalance";
+import { type TokenTransfer } from "../../../types/Transfer";
+import { type RawTzktAccount } from "../../tezos";
+import { type RawTzktUnstakeRequest } from "../../tzkt/types";
 
 type TransactionId = number;
 

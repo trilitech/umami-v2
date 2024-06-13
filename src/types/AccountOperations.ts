@@ -1,7 +1,7 @@
 import BigNumber from "bignumber.js";
 
-import { Account, ImplicitAccount, MultisigAccount } from "./Account";
-import { Operation } from "./Operation";
+import { type Account, type ImplicitAccount, type MultisigAccount } from "./Account";
+import { type Operation } from "./Operation";
 import { type Estimation } from "../utils/tezos/types";
 
 type ProposalOperations = {

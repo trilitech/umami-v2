@@ -1,7 +1,7 @@
 import { useContext } from "react";
 
 import { OperationTileContext } from "./OperationTileContext";
-import { RawPkh } from "../../types/Address";
+import { type RawPkh } from "../../types/Address";
 
 /**
  * Hook to determine if the address should be shown in the tile

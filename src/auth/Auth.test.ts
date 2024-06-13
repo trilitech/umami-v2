@@ -1,6 +1,6 @@
-import { TorusAggregateLoginResponse, TorusLoginResponse } from "@toruslabs/customauth";
+import { type TorusAggregateLoginResponse, type TorusLoginResponse } from "@toruslabs/customauth";
 
-import { Auth } from "./Auth";
+import { type Auth } from "./Auth";
 import { EmailAuth } from "./EmailAuth";
 import { FacebookAuth } from "./FacebookAuth";
 import { GoogleAuth } from "./GoogleAuth";

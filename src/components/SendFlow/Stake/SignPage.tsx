@@ -1,14 +1,14 @@
 import { Flex, FormLabel, ModalBody, ModalContent, ModalFooter } from "@chakra-ui/react";
 import { FormProvider } from "react-hook-form";
 
-import { Stake } from "../../../types/Operation";
+import { type Stake } from "../../../types/Operation";
 import { AddressTile } from "../../AddressTile/AddressTile";
 import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";
 import { TezTile } from "../../AssetTiles/TezTile";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
 import { SignPageHeader, headerText } from "../SignPageHeader";
-import { SignPageProps, useSignPageHelpers } from "../utils";
+import { type SignPageProps, useSignPageHelpers } from "../utils";
 
 // TODO: test
 export const SignPage: React.FC<SignPageProps> = props => {
