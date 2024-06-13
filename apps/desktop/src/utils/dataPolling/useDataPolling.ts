@@ -1,4 +1,5 @@
 import { fromUnixTime } from "date-fns";
+import { max } from "lodash";
 import { useEffect } from "react";
 
 import { usePollAccountStates } from "./usePollAccountStates";
@@ -16,36 +17,20 @@ import { assetsActions } from "../redux/slices/assetsSlice";
 export const useDataPolling = () => {
   const dispatch = useAppDispatch();
 
-  const { dataUpdatedAt: isMultisigsUpdatedAt, isFetching: isMultisigsFetching } =
-    usePollMultisigs();
-  const { dataUpdatedAt: isPendingOperationsUpdatedAt, isFetching: isPendingOperationsFetching } =
-    usePollPendingOperations();
-  const { dataUpdatedAt: isAccountStatesUpdatedAt, isFetching: isAccountStatesFetching } =
-    usePollAccountStates();
-  const { dataUpdatedAt: isUnstakeRequestUpdatedAt, isFetching: isUnstakeRequestFetching } =
-    usePollUnstakeRequests();
-  const { dataUpdatedAt: isTokenBalancesUpdatedAt, isFetching: isTokenBalancesFetching } =
-    usePollTokenBalances();
+  const pollers = [
+    usePollAccountStates(),
+    usePollBakers(),
+    usePollBlock(),
+    usePollConversionRate(),
+    usePollMultisigs(),
+    usePollPendingOperations(),
+    usePollProtocolSettings(),
+    usePollTokenBalances(),
+    usePollUnstakeRequests(),
+  ];
 
-  usePollConversionRate();
-  usePollBlock();
-  usePollBakers();
-  usePollProtocolSettings();
-
-  const isFetching =
-    isMultisigsFetching ||
-    isPendingOperationsFetching ||
-    isAccountStatesFetching ||
-    isTokenBalancesFetching ||
-    isUnstakeRequestFetching;
-
-  const lastUpdatedAt = Math.max(
-    isMultisigsUpdatedAt,
-    isPendingOperationsUpdatedAt,
-    isAccountStatesUpdatedAt,
-    isTokenBalancesUpdatedAt,
-    isUnstakeRequestUpdatedAt
-  );
+  const isFetching = pollers.some(poller => poller.isFetching);
+  const lastUpdatedAt = max(pollers.map(poller => poller.dataUpdatedAt));
 
   useEffect(() => {
     dispatch(assetsActions.setIsLoading(isFetching));

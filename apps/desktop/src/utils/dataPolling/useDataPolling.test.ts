@@ -5,6 +5,7 @@ import { usePollBlock } from "./usePollBlock";
 import { usePollConversionRate } from "./usePollConversionRate";
 import { usePollMultisigs } from "./usePollMultisigs";
 import { usePollPendingOperations } from "./usePollPendingOperations";
+import { usePollProtocolSettings } from "./usePollProtocolSettings";
 import { usePollTokenBalances } from "./usePollTokenBalances";
 import { usePollUnstakeRequests } from "./usePollUnstakeRequests";
 import { renderHook } from "../../mocks/testUtils";
@@ -34,107 +35,73 @@ const usePollTokenBalancesMock = jest.mocked(usePollTokenBalances);
 jest.mock("./usePollUnstakeRequests");
 const usePollUnstakeRequestsMock = jest.mocked(usePollUnstakeRequests);
 
+jest.mock("./usePollProtocolSettings");
+const usePollProtocolSettingsMock = jest.mocked(usePollProtocolSettings);
+
 describe("useDataPolling", () => {
   describe("isLoading", () => {
     it.each([
+      { hookName: "usePollAccountStates", mock: usePollAccountStatesMock },
+      { hookName: "usePollBakers", mock: usePollBakersMock },
+      { hookName: "usePollBlock", mock: usePollBlockMock },
+      { hookName: "usePollConversionRate", mock: usePollConversionRateMock },
       { hookName: "usePollMultisigs", mock: usePollMultisigsMock },
       { hookName: "usePollPendingOperations", mock: usePollPendingOperationsMock },
-      { hookName: "usePollAccountStates", mock: usePollAccountStatesMock },
+      { hookName: "usePollProtocolSettings", mock: usePollProtocolSettingsMock },
       { hookName: "usePollTokenBalances", mock: usePollTokenBalancesMock },
       { hookName: "usePollUnstakeRequests", mock: usePollUnstakeRequestsMock },
     ])("is true when the data is being fetched by $hookName", ({ mock }) => {
       [
+        usePollAccountStatesMock,
         usePollBakersMock,
         usePollBlockMock,
         usePollConversionRateMock,
         usePollMultisigsMock,
         usePollPendingOperationsMock,
-        usePollAccountStatesMock,
+        usePollProtocolSettingsMock,
         usePollTokenBalancesMock,
         usePollUnstakeRequestsMock,
       ].forEach(hookMock => {
-        if (hookMock === mock) {
-          // @ts-expect-error 2590
-          hookMock.mockReturnValue({
-            isFetching: true,
-            dataUpdatedAt: 1,
-          });
-        } else {
-          hookMock.mockReturnValue({
-            isFetching: false,
-            dataUpdatedAt: 1,
-          });
-        }
+        // @ts-expect-error TS2590
+        hookMock.mockReturnValue({
+          isFetching: hookMock === mock,
+          dataUpdatedAt: 1,
+        });
       });
 
       renderHook(() => useDataPolling());
 
       expect(store.getState().assets.isLoading).toBe(true);
     });
+  });
 
+  describe("lastTimeUpdated", () => {
     it.each([
+      { hookName: "usePollAccountStates", mock: usePollAccountStatesMock },
       { hookName: "usePollBakers", mock: usePollBakersMock },
       { hookName: "usePollBlock", mock: usePollBlockMock },
       { hookName: "usePollConversionRate", mock: usePollConversionRateMock },
-    ])("is not affected by $hookName", ({ mock }) => {
-      [
-        usePollBakersMock,
-        usePollBlockMock,
-        usePollConversionRateMock,
-        usePollMultisigsMock,
-        usePollPendingOperationsMock,
-        usePollAccountStatesMock,
-        usePollTokenBalancesMock,
-        usePollUnstakeRequestsMock,
-      ].forEach(hookMock => {
-        if (hookMock === mock) {
-          hookMock.mockReturnValue({
-            isFetching: true,
-            dataUpdatedAt: 1,
-          });
-        } else {
-          hookMock.mockReturnValue({
-            isFetching: false,
-            dataUpdatedAt: 1,
-          });
-        }
-      });
-
-      renderHook(() => useDataPolling());
-
-      expect(store.getState().assets.isLoading).toBe(false);
-    });
-  });
-
-  describe("lastUpdatedAt", () => {
-    it.each([
       { hookName: "usePollMultisigs", mock: usePollMultisigsMock },
       { hookName: "usePollPendingOperations", mock: usePollPendingOperationsMock },
-      { hookName: "usePollAccountStates", mock: usePollAccountStatesMock },
+      { hookName: "usePollProtocolSettings", mock: usePollProtocolSettingsMock },
       { hookName: "usePollTokenBalances", mock: usePollTokenBalancesMock },
       { hookName: "usePollUnstakeRequests", mock: usePollUnstakeRequestsMock },
-    ])("is true when the data is being fetched by $hookName", ({ mock }) => {
+    ])("is set to the lastUpdatedAt of the $hookName hook if it is the latest one", ({ mock }) => {
       [
+        usePollAccountStatesMock,
         usePollBakersMock,
         usePollBlockMock,
         usePollConversionRateMock,
         usePollMultisigsMock,
         usePollPendingOperationsMock,
-        usePollAccountStatesMock,
+        usePollProtocolSettingsMock,
         usePollTokenBalancesMock,
         usePollUnstakeRequestsMock,
       ].forEach(hookMock => {
-        if (hookMock === mock) {
-          hookMock.mockReturnValue({
-            isFetching: false,
-            dataUpdatedAt: 1000,
-          });
-        } else {
-          hookMock.mockReturnValue({
-            isFetching: false,
-            dataUpdatedAt: 1,
-          });
-        }
+        hookMock.mockReturnValue({
+          isFetching: false,
+          dataUpdatedAt: hookMock === mock ? 1000 : 1,
+        });
       });
 
       renderHook(() => useDataPolling());
@@ -143,36 +110,36 @@ describe("useDataPolling", () => {
     });
 
     it.each([
+      { hookName: "usePollAccountStates", mock: usePollAccountStatesMock },
       { hookName: "usePollBakers", mock: usePollBakersMock },
       { hookName: "usePollBlock", mock: usePollBlockMock },
       { hookName: "usePollConversionRate", mock: usePollConversionRateMock },
-    ])("is not affected by $hookName", ({ mock }) => {
+      { hookName: "usePollMultisigs", mock: usePollMultisigsMock },
+      { hookName: "usePollPendingOperations", mock: usePollPendingOperationsMock },
+      { hookName: "usePollProtocolSettings", mock: usePollProtocolSettingsMock },
+      { hookName: "usePollTokenBalances", mock: usePollTokenBalancesMock },
+      { hookName: "usePollUnstakeRequests", mock: usePollUnstakeRequestsMock },
+    ])("does not change lastTimeUpdated if $hookName is loading", ({ mock }) => {
       [
-        usePollMultisigsMock,
-        usePollPendingOperationsMock,
         usePollAccountStatesMock,
-        usePollTokenBalancesMock,
         usePollBakersMock,
         usePollBlockMock,
         usePollConversionRateMock,
+        usePollMultisigsMock,
+        usePollPendingOperationsMock,
+        usePollProtocolSettingsMock,
+        usePollTokenBalancesMock,
         usePollUnstakeRequestsMock,
       ].forEach(hookMock => {
-        if (hookMock === mock) {
-          hookMock.mockReturnValue({
-            isFetching: false,
-            dataUpdatedAt: 5,
-          });
-        } else {
-          hookMock.mockReturnValue({
-            isFetching: false,
-            dataUpdatedAt: 1,
-          });
-        }
+        hookMock.mockReturnValue({
+          isFetching: hookMock === mock,
+          dataUpdatedAt: 1000,
+        });
       });
 
       renderHook(() => useDataPolling());
 
-      expect(store.getState().assets.lastTimeUpdated).toBe("Thu, 01 Jan 1970 00:00:00 GMT");
+      expect(store.getState().assets.lastTimeUpdated).toBeNull();
     });
   });
 });
