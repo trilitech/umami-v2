@@ -38,7 +38,8 @@ export const NewDelegateNoticeModal = ({ account }: { account: Account }) => {
             textAlign="center"
             size="sm"
           >
-            Earn rewards while retaining lower risk of your funds by delegating to a Tezos baker.
+            Earn risk-free rewards by delegating to a Tezos baker. Delegated funds remain in your
+            account, and you can always spend them at will.
           </Text>
 
           <NoticeSteps steps={["delegate", "stake tez"]} />

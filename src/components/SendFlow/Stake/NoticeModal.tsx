@@ -45,11 +45,18 @@ export const NoticeModal = ({ account }: { account: Account }) => {
             textAlign="center"
             size="sm"
           >
-            By staking, you put your balance at risk and may lose all your money.
+            Staked balances are locked in your account until they are manually unstaked and
+            finalized. You need to wait 4 cycles to finalize after an unstake.
+          </Text>
+
+          <Text width="340px" color={colors.gray[400]} textAlign="center" size="sm">
+            Staked funds are at risk. You might lose a portion of your stake if the chosen baker is
+            slashed for not following Tezos consensus mechanism rules.
           </Text>
 
           <Checkbox
             width="100%"
+            fontWeight={600}
             background={colors.gray[600]}
             borderRadius="8px"
             onChange={event => setValue("consent", event.target.checked)}

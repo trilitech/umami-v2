@@ -44,8 +44,8 @@ export const ChangeDelegateNoticeModal = ({
             textAlign="center"
             size="sm"
           >
-            Changing the baker after staking will unstake your staked balance. You will need to
-            finalise the unstake balance first before staking it to the new baker.
+            Changing the baker will automatically unstake all the existing staked balance. This
+            balance will be finalizable after 4 cycles.
           </Text>
 
           <Button

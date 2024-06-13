@@ -20,6 +20,7 @@ import { RawPkh, parsePkh } from "../../../types/Address";
 import { Stake } from "../../../types/Operation";
 import { tezToMutez } from "../../../utils/format";
 import { TEZ, TEZ_DECIMALS } from "../../../utils/tezos";
+import { AddressTile } from "../../AddressTile/AddressTile";
 import { FormErrorMessage } from "../../FormErrorMessage";
 import {
   useAddToBatchFormAction,
@@ -77,9 +78,11 @@ export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
             <ModalCloseButton />
           </ModalHeader>
           <ModalBody>
-            <FormControl isInvalid={!!errors.prettyAmount}>
-              <FormLabel>Enter Amount</FormLabel>
+            <FormLabel>From</FormLabel>
+            <AddressTile address={props.sender!.address} />
 
+            <FormControl marginTop="24px" isInvalid={!!errors.prettyAmount}>
+              <FormLabel>Enter Amount</FormLabel>
               <InputGroup>
                 <Input
                   isDisabled={isLoading}

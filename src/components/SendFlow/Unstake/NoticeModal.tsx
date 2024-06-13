@@ -40,8 +40,9 @@ export const NoticeModal = ({ account }: { account: Account }) => {
             textAlign="center"
             size="sm"
           >
-            You need to unstake first and wait for the next cycle to finalize and withdraw your
-            frozen tez back to your balance
+            After submitting an unstake, the chosen amount will become finalizable after 4 cycles
+            (~10 days). Then, you will need to finalize unstaked balances in order to make them
+            spendable.
           </Text>
 
           <NoticeSteps steps={["unstake", "finalize"]} />
