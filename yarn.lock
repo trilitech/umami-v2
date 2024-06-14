@@ -14360,14 +14360,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier-plugin-gherkin@npm:^2.2.1":
-  version: 2.2.1
-  resolution: "prettier-plugin-gherkin@npm:2.2.1"
+"prettier-plugin-gherkin@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "prettier-plugin-gherkin@npm:2.3.0"
   dependencies:
     "@cucumber/gherkin": "npm:^27.0.0"
     "@cucumber/messages": "npm:^23.0.0"
     prettier: "npm:^3.0.0"
-  checksum: 10/a2787d20783fd6e5ef1c56d6768470a3ff89e0fd9b7ebeda84dd372797b726d8d42c8c10e92d9e8f2d8c22ced3ad0c5546695f01feab6785521524922eb74f3a
+  checksum: 10/92ba87e41dea7c0df9935a37a7b09d6284019c3d112072f7d3c8d62a21b891ea98880bdfdfef11e87b8c80cd723ca8cdf1766b6edc9b64417747ee9e6266c2ba
   languageName: node
   linkType: hard
 
@@ -17018,7 +17018,7 @@ __metadata:
     papaparse: "npm:^5.4.1"
     pluralize: "npm:^8.0.0"
     prettier: "npm:^3.3.2"
-    prettier-plugin-gherkin: "npm:^2.2.1"
+    prettier-plugin-gherkin: "npm:^2.3.0"
     process: "npm:^0.11.10"
     promise-retry: "npm:^2.0.1"
     react: "npm:^18.3.1"
