@@ -1,0 +1,7 @@
+{
+  "name": "@umami/jest-config",
+  "license": "MIT",
+  "files": [
+    "jest.config.ts"
+  ]
+}

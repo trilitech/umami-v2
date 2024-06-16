@@ -1,7 +1,7 @@
 {
   "name": "@umami/eslint-config",
   "main": "index.js",
-  "type": "commonjs",
+  "type": "module",
   "packageManager": "yarn@4.3.0",
   "license": "MIT",
   "files": [
