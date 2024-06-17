@@ -30,6 +30,7 @@ win:
     - sha256
   certificateSubjectName: TRILITECH LIMITED
 linux:
+  artifactName: umami-${version}.${arch}.${ext}
   icon: icons/
   target:
     - deb
@@ -38,6 +39,7 @@ linux:
   mimeTypes:
     - x-scheme-handler/umami
 deb:
+  artifactName: umami_${version}_${arch}.${ext}
   depends:
     - libasound2
     - libnotify4
