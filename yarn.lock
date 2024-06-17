@@ -6218,7 +6218,7 @@ __metadata:
     bip39: "npm:^3.1.0"
     cross-env: "npm:^7.0.3"
     date-fns: "npm:^3.6.0"
-    electron: "npm:^31.0.1"
+    electron: "npm:31.0.1"
     electron-builder: "npm:^24.13.3"
     electron-updater: "npm:^6.2.1"
     electronmon: "npm:^2.0.3"
@@ -8627,7 +8627,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron@npm:^31.0.1":
+"electron@npm:31.0.1":
   version: 31.0.1
   resolution: "electron@npm:31.0.1"
   dependencies:
