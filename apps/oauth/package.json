@@ -1,0 +1,6 @@
+{
+  "name": "@umami/oauth",
+  "files": [
+    "public/redirect.html"
+  ]
+}
