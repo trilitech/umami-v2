@@ -1,4 +1,4 @@
-import { config } from "@umami/jest-config";
+import config from "@umami/jest-config";
 
 export default {
   ...config,

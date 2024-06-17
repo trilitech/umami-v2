@@ -1,10 +1,8 @@
 import process from "process";
 
-import type { Config } from "jest";
-
 process.env.DEBUG_PRINT_LIMIT ||= "40000";
 
-export const config: Config = {
+const config = {
   // All imported modules in your tests should be mocked automatically
   // automock: false,
 
@@ -116,7 +114,7 @@ export const config: Config = {
   // projects: undefined,
 
   // Use this configuration option to add custom reporters to Jest
-  reporters: ["default", "summary"],
+  reporters: process.env.CI ? ["github-actions"] : ["default", "summary"],
 
   // Automatically reset mock state before every test
   resetMocks: true,
@@ -145,7 +143,6 @@ export const config: Config = {
   // setupFiles: [],
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
-  setupFilesAfterEnv: ["<rootDir>/src/setupTests.ts"],
 
   // The number of seconds after which a test is considered as slow and reported as such in the results.
   slowTestThreshold: 15,
@@ -201,3 +198,5 @@ export const config: Config = {
   // watchman: true,
   watchPlugins: ["jest-watch-typeahead/filename", "jest-watch-typeahead/testname"],
 };
+
+export default config;

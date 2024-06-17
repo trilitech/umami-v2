@@ -4857,7 +4857,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/react-query@npm:^5.45.1":
+"@tanstack/react-query@npm:^5.45.0, @tanstack/react-query@npm:^5.45.1":
   version: 5.45.1
   resolution: "@tanstack/react-query@npm:5.45.1"
   dependencies:
@@ -6093,9 +6093,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/utils@npm:7.13.1":
-  version: 7.13.1
-  resolution: "@typescript-eslint/utils@npm:7.13.1"
+"@typescript-eslint/utils@npm:7.13.0":
+  version: 7.13.0
+  resolution: "@typescript-eslint/utils@npm:7.13.0"
   dependencies:
     "@eslint-community/eslint-utils": "npm:^4.4.0"
     "@typescript-eslint/scope-manager": "npm:7.13.1"
@@ -6171,16 +6171,16 @@ __metadata:
   linkType: hard
 
 "@typescript-eslint/utils@npm:^7.12.0":
-  version: 7.13.0
-  resolution: "@typescript-eslint/utils@npm:7.13.0"
+  version: 7.13.1
+  resolution: "@typescript-eslint/utils@npm:7.13.1"
   dependencies:
     "@eslint-community/eslint-utils": "npm:^4.4.0"
-    "@typescript-eslint/scope-manager": "npm:7.13.0"
-    "@typescript-eslint/types": "npm:7.13.0"
-    "@typescript-eslint/typescript-estree": "npm:7.13.0"
+    "@typescript-eslint/scope-manager": "npm:7.13.1"
+    "@typescript-eslint/types": "npm:7.13.1"
+    "@typescript-eslint/typescript-estree": "npm:7.13.1"
   peerDependencies:
     eslint: ^8.56.0
-  checksum: 10/c87bbb90c958ed4617f88767890af2a797adcf28060e85809a9cad2ce4ed55b5db685d3a8d062dbbf89d2a49e85759e2a9deb92ee1946a95d5de6cbd14ea42f4
+  checksum: 10/e1bc916dcb567c6b35819f635a84561e015f40b28d650b987f74c79b013ec43fb4f5b61199d4039fcdf9480281f945f622650cba2e68739600822da05808a706
   languageName: node
   linkType: hard
 
@@ -6320,9 +6320,9 @@ __metadata:
     "@types/react-dom": "npm:18.3.0"
     "@types/react-test-renderer": "npm:^18.3.0"
     "@tzkt/sdk-api": "npm:^2.2.1"
-    "@umami/eslint-config": "workspace:^"
-    "@umami/jest-config": "workspace:^"
-    "@umami/typescript-config": "workspace:^"
+    "@umami/eslint-config": "workspace:*"
+    "@umami/jest-config": "workspace:*"
+    "@umami/typescript-config": "workspace:*"
     "@vitejs/plugin-react": "npm:^4.3.1"
     axios: "npm:^1.7.2"
     babel-jest: "npm:^29.7.0"
@@ -6382,7 +6382,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@umami/eslint-config@workspace:*, @umami/eslint-config@workspace:^, @umami/eslint-config@workspace:packages/eslint-config":
+"@umami/eslint-config@workspace:*, @umami/eslint-config@workspace:packages/eslint-config":
   version: 0.0.0-use.local
   resolution: "@umami/eslint-config@workspace:packages/eslint-config"
   dependencies:
@@ -6409,13 +6409,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@umami/jest-config@workspace:*, @umami/jest-config@workspace:^, @umami/jest-config@workspace:packages/jest-config":
+"@umami/jest-config@workspace:*, @umami/jest-config@workspace:packages/jest-config":
   version: 0.0.0-use.local
   resolution: "@umami/jest-config@workspace:packages/jest-config"
   languageName: unknown
   linkType: soft
 
-"@umami/typescript-config@workspace:*, @umami/typescript-config@workspace:^, @umami/typescript-config@workspace:packages/typescript-config":
+"@umami/typescript-config@workspace:*, @umami/typescript-config@workspace:packages/typescript-config":
   version: 0.0.0-use.local
   resolution: "@umami/typescript-config@workspace:packages/typescript-config"
   languageName: unknown
@@ -16202,49 +16202,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^5.2.0":
+"vite@npm:^5.2.0, vite@npm:^5.3.1":
   version: 5.3.1
   resolution: "vite@npm:5.3.1"
-  dependencies:
-    esbuild: "npm:^0.21.3"
-    fsevents: "npm:~2.3.3"
-    postcss: "npm:^8.4.38"
-    rollup: "npm:^4.13.0"
-  peerDependencies:
-    "@types/node": ^18.0.0 || >=20.0.0
-    less: "*"
-    lightningcss: ^1.21.0
-    sass: "*"
-    stylus: "*"
-    sugarss: "*"
-    terser: ^5.4.0
-  dependenciesMeta:
-    fsevents:
-      optional: true
-  peerDependenciesMeta:
-    "@types/node":
-      optional: true
-    less:
-      optional: true
-    lightningcss:
-      optional: true
-    sass:
-      optional: true
-    stylus:
-      optional: true
-    sugarss:
-      optional: true
-    terser:
-      optional: true
-  bin:
-    vite: bin/vite.js
-  checksum: 10/180ca1795389f1ebc0b09f2ce61846943d34df597c4719e68d1d5ecba3e6cbd5b3313a4a321119b18290de3ef543df433659ba8b678de84df152e0386342697f
-  languageName: node
-  linkType: hard
-
-"vite@npm:^5.3.0":
-  version: 5.3.0
-  resolution: "vite@npm:5.3.0"
   dependencies:
     esbuild: "npm:^0.21.3"
     fsevents: "npm:~2.3.3"

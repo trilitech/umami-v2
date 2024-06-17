@@ -15,6 +15,9 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "incremental": true
+    "incremental": true,
+    "paths": {
+      "@umami/jest-config": ["../../packages/jest-config/*"]
+    }
   }
 }

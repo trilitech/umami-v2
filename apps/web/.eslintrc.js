@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   extends: ["@umami/eslint-config/index.js"],
   parserOptions: {
     // tsconfig.e2e.json includes both src and src/e2e
@@ -6,4 +6,4 @@ module.exports = {
     parser: "@typescript-eslint/parser",
     tsconfigRootDir: __dirname,
   },
-}
+};

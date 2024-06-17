@@ -1,7 +1,9 @@
 {
   "name": "@umami/jest-config",
   "license": "MIT",
-  "files": [
-    "jest.config.ts"
-  ]
+  "main": "./jest.config.js",
+  "type": "module",
+  "exports": {
+    ".": "./jest.config.js"
+  }
 }
