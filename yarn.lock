@@ -4712,9 +4712,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@stylistic/eslint-plugin-js@npm:2.1.0, @stylistic/eslint-plugin-js@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "@stylistic/eslint-plugin-js@npm:2.1.0"
+"@stylistic/eslint-plugin-js@npm:2.2.1, @stylistic/eslint-plugin-js@npm:^2.2.1":
+  version: 2.2.1
+  resolution: "@stylistic/eslint-plugin-js@npm:2.2.1"
   dependencies:
     "@types/eslint": "npm:^8.56.10"
     acorn: "npm:^8.11.3"
@@ -4722,61 +4722,61 @@ __metadata:
     espree: "npm:^10.0.1"
   peerDependencies:
     eslint: ">=8.40.0"
-  checksum: 10/c8222eaa7010a2482f57523b28b2cb85647e116871cdb6fb742f8ff7849f9e50366a827399ee0840ea474b5c8f19a11a0963cb71f8fadb6e1b62848c1c6f9b87
+  checksum: 10/98a98bbba025874dea827b12a552704bb7cf4ff7f714f5ae0f6f098cab1e87ba3977f406f1f6b8a8ef87bdd4c5f8c06f755ce7c19a3de711494b50e6e8962beb
   languageName: node
   linkType: hard
 
-"@stylistic/eslint-plugin-jsx@npm:2.1.0":
-  version: 2.1.0
-  resolution: "@stylistic/eslint-plugin-jsx@npm:2.1.0"
+"@stylistic/eslint-plugin-jsx@npm:2.2.1":
+  version: 2.2.1
+  resolution: "@stylistic/eslint-plugin-jsx@npm:2.2.1"
   dependencies:
-    "@stylistic/eslint-plugin-js": "npm:^2.1.0"
+    "@stylistic/eslint-plugin-js": "npm:^2.2.1"
     "@types/eslint": "npm:^8.56.10"
     estraverse: "npm:^5.3.0"
     picomatch: "npm:^4.0.2"
   peerDependencies:
     eslint: ">=8.40.0"
-  checksum: 10/9d4dd8cb7c8f4399813ac94c18de177aeb5d40111e8242a18a1fb5fece785810263c75fce67f7ac4cdc39364da6b0aaa11e4dc43ffcbf2c0e54c91a4389a23fd
+  checksum: 10/68d7746b0f4395c7c04aa9c86d8bf94585e0d54da01b0816f0c40a9576a4009475306dbcae633b2c833ed827cd962a40960a2344224923fde4fe76ce9ff6ffab
   languageName: node
   linkType: hard
 
-"@stylistic/eslint-plugin-plus@npm:2.1.0":
-  version: 2.1.0
-  resolution: "@stylistic/eslint-plugin-plus@npm:2.1.0"
+"@stylistic/eslint-plugin-plus@npm:2.2.1":
+  version: 2.2.1
+  resolution: "@stylistic/eslint-plugin-plus@npm:2.2.1"
   dependencies:
     "@types/eslint": "npm:^8.56.10"
-    "@typescript-eslint/utils": "npm:^7.8.0"
+    "@typescript-eslint/utils": "npm:^7.12.0"
   peerDependencies:
     eslint: "*"
-  checksum: 10/0ecd7d418eb2160018c525666f0ba988d534c94b2b177aa07848fb8c8afda1d42d15f33c9093727b16fbec5ca7ff10a7869ae20228fa35dd977a62c72432dcd6
+  checksum: 10/c0924078f84283b0412668edf6df3d11a7d11e5f7804bdcc16a5dc00dbeaac662a998ea656d03a13117566489b5ffc79f78ec079a982bb7ea70ae93335a90326
   languageName: node
   linkType: hard
 
-"@stylistic/eslint-plugin-ts@npm:2.1.0":
-  version: 2.1.0
-  resolution: "@stylistic/eslint-plugin-ts@npm:2.1.0"
+"@stylistic/eslint-plugin-ts@npm:2.2.1":
+  version: 2.2.1
+  resolution: "@stylistic/eslint-plugin-ts@npm:2.2.1"
   dependencies:
-    "@stylistic/eslint-plugin-js": "npm:2.1.0"
+    "@stylistic/eslint-plugin-js": "npm:2.2.1"
     "@types/eslint": "npm:^8.56.10"
-    "@typescript-eslint/utils": "npm:^7.8.0"
+    "@typescript-eslint/utils": "npm:^7.12.0"
   peerDependencies:
     eslint: ">=8.40.0"
-  checksum: 10/bf1c7003cb0c06265422e4e5944123863faf37da417e7102d40ad8dc928cd737c23430d506ec6e11dba3120a257de9247a027b6d82fa45912ca9435c780e9f97
+  checksum: 10/42d2abd51f30c0c36c7eb496caa28e8622f02e7b6a64ad8ac62e88ef3fb10b355d2c6325bf278fd63fd3245ac5b356fe6f9b4abd1cc4ab9a1894d71e63cb375a
   languageName: node
   linkType: hard
 
-"@stylistic/eslint-plugin@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "@stylistic/eslint-plugin@npm:2.1.0"
+"@stylistic/eslint-plugin@npm:^2.2.1":
+  version: 2.2.1
+  resolution: "@stylistic/eslint-plugin@npm:2.2.1"
   dependencies:
-    "@stylistic/eslint-plugin-js": "npm:2.1.0"
-    "@stylistic/eslint-plugin-jsx": "npm:2.1.0"
-    "@stylistic/eslint-plugin-plus": "npm:2.1.0"
-    "@stylistic/eslint-plugin-ts": "npm:2.1.0"
+    "@stylistic/eslint-plugin-js": "npm:2.2.1"
+    "@stylistic/eslint-plugin-jsx": "npm:2.2.1"
+    "@stylistic/eslint-plugin-plus": "npm:2.2.1"
+    "@stylistic/eslint-plugin-ts": "npm:2.2.1"
     "@types/eslint": "npm:^8.56.10"
   peerDependencies:
     eslint: ">=8.40.0"
-  checksum: 10/503e079a1e932dd2bd5d707c110cf89a2e25b719b4a98bff6a174e2ae81183965b358cb5528a546fb2c48c88ca9affaa93f4d36977f7fcff2c308853a6a71dc0
+  checksum: 10/76e30681af2502f0df3c55455fe308db889b49ef1de12c61eb327bad34f5a6db95634c280e52499a99c333dfa6e13232f3d9beee800d14bd5cfa563b495469db
   languageName: node
   linkType: hard
 
@@ -4814,26 +4814,26 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/react-query-devtools@npm:^5.45.0":
-  version: 5.45.0
-  resolution: "@tanstack/react-query-devtools@npm:5.45.0"
+"@tanstack/react-query-devtools@npm:^5.45.1":
+  version: 5.45.1
+  resolution: "@tanstack/react-query-devtools@npm:5.45.1"
   dependencies:
     "@tanstack/query-devtools": "npm:5.37.1"
   peerDependencies:
-    "@tanstack/react-query": ^5.45.0
+    "@tanstack/react-query": ^5.45.1
     react: ^18 || ^19
-  checksum: 10/edae7f3b209c831cc0300ab54ba5c6c6c2c457b503189d3160a1acbe3fb58218d83614af5cf9af7c992bdf8978ac9a3de406fa3ec07f77abf8707741321eced6
+  checksum: 10/7047d83b215c4ef34a668c73728b635da4bf22f1dbc40903ed4ac47128a8415fc957c98356bac7a6ed7df404294be14e9f835fbdd1917197095c8b0c1285bab5
   languageName: node
   linkType: hard
 
-"@tanstack/react-query@npm:^5.45.0":
-  version: 5.45.0
-  resolution: "@tanstack/react-query@npm:5.45.0"
+"@tanstack/react-query@npm:^5.45.1":
+  version: 5.45.1
+  resolution: "@tanstack/react-query@npm:5.45.1"
   dependencies:
     "@tanstack/query-core": "npm:5.45.0"
   peerDependencies:
     react: ^18.0.0
-  checksum: 10/0b70e533f9ed04682868972ef409a89c2ef990b568051517ce64bd56a354ff80c5f1a72e2e6ec28ccb7e32a977a71ee8a88366f410a1615a194672e6f2b8322c
+  checksum: 10/570ac283d1a6b17114177464d8d233c02070cb276ca48bb8b3cb5cc87f0b08dec70a225ac73d1f18b563c06cabdfe75b22fa5c2d80c372b55400c6e64455c083
   languageName: node
   linkType: hard
 
@@ -6006,7 +6006,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/utils@npm:7.13.0":
+"@typescript-eslint/utils@npm:7.13.0, @typescript-eslint/utils@npm:^7.12.0":
   version: 7.13.0
   resolution: "@typescript-eslint/utils@npm:7.13.0"
   dependencies:
@@ -6052,7 +6052,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/utils@npm:^6.0.0 || ^7.0.0, @typescript-eslint/utils@npm:^7.0.0, @typescript-eslint/utils@npm:^7.8.0":
+"@typescript-eslint/utils@npm:^6.0.0 || ^7.0.0, @typescript-eslint/utils@npm:^7.0.0":
   version: 7.12.0
   resolution: "@typescript-eslint/utils@npm:7.12.0"
   dependencies:
@@ -6181,10 +6181,10 @@ __metadata:
     "@ledgerhq/hw-transport-webusb": "npm:^6.28.6"
     "@playwright/test": "npm:^1.44.1"
     "@reduxjs/toolkit": "npm:^2.2.5"
-    "@stylistic/eslint-plugin": "npm:^2.1.0"
+    "@stylistic/eslint-plugin": "npm:^2.2.1"
     "@tanstack/eslint-plugin-query": "npm:^5.43.1"
-    "@tanstack/react-query": "npm:^5.45.0"
-    "@tanstack/react-query-devtools": "npm:^5.45.0"
+    "@tanstack/react-query": "npm:^5.45.1"
+    "@tanstack/react-query-devtools": "npm:^5.45.1"
     "@taquito/ledger-signer": "npm:^20.0.0"
     "@taquito/michel-codec": "npm:^20.0.0"
     "@taquito/rpc": "npm:^20.0.0"
@@ -6245,7 +6245,7 @@ __metadata:
     react: "npm:^18.3.1"
     react-dom: "npm:^18.3.1"
     react-error-boundary: "npm:^4.0.13"
-    react-hook-form: "npm:^7.51.5"
+    react-hook-form: "npm:^7.52.0"
     react-hooks-testing-library: "npm:^0.6.0"
     react-player: "npm:^2.16.0"
     react-qrcode-logo: "npm:^3.0.0"
@@ -6262,7 +6262,7 @@ __metadata:
     typedoc: "npm:^0.25.13"
     typedoc-plugin-missing-exports: "npm:^2.3.0"
     typescript: "npm:5.4.5"
-    vite: "npm:^5.3.0"
+    vite: "npm:^5.3.1"
     vite-plugin-checker: "npm:^0.6.4"
     vite-plugin-node-polyfills: "npm:^0.22.0"
     zipurl: "npm:^0.2.18"
@@ -6274,7 +6274,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@umami/eslint-config@workspace:packages/eslint-config"
   dependencies:
-    "@stylistic/eslint-plugin": "npm:^2.1.0"
+    "@stylistic/eslint-plugin": "npm:^2.2.1"
     "@tanstack/eslint-plugin-query": "npm:^5.43.1"
     "@typescript-eslint/eslint-plugin": "npm:^7.13.0"
     "@typescript-eslint/parser": "npm:^7.13.0"
@@ -13573,12 +13573,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-hook-form@npm:^7.51.5":
-  version: 7.51.5
-  resolution: "react-hook-form@npm:7.51.5"
+"react-hook-form@npm:^7.52.0":
+  version: 7.52.0
+  resolution: "react-hook-form@npm:7.52.0"
   peerDependencies:
-    react: ^16.8.0 || ^17 || ^18
-  checksum: 10/f4ff77989202b1faf2dede7a7730210635a6225189dcaeaeb191cea12422bcb97d2adfef0712c50d13bf5c5e14b8debc00fbba16491f86a6d24945a52cacfa59
+    react: ^16.8.0 || ^17 || ^18 || ^19
+  checksum: 10/fc4f92008acc22bcdabf7f472529b29dd29f6305f2b66c8e993c72cbc43eb03b761dd55d5dcb339382fe4bfdd81c4521d3ddcc380d43a3c9a8501aec121e4e7d
   languageName: node
   linkType: hard
 
@@ -16075,9 +16075,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^5.3.0":
-  version: 5.3.0
-  resolution: "vite@npm:5.3.0"
+"vite@npm:^5.3.1":
+  version: 5.3.1
+  resolution: "vite@npm:5.3.1"
   dependencies:
     esbuild: "npm:^0.21.3"
     fsevents: "npm:~2.3.3"
@@ -16111,7 +16111,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 10/0278f286fc38427328a2f33de4d2ab5c96c683948872790c2ba8e67d362a3464b8ff59de2e433f5cdebf1a9bee899e05ad7a65b7f4fd31da931a8b08fa1746d3
+  checksum: 10/180ca1795389f1ebc0b09f2ce61846943d34df597c4719e68d1d5ecba3e6cbd5b3313a4a321119b18290de3ef543df433659ba8b678de84df152e0386342697f
   languageName: node
   linkType: hard
 
