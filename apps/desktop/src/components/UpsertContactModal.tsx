@@ -1,25 +1,20 @@
 import {
   Box,
   Button,
-  Flex,
   FormControl,
   FormLabel,
-  Heading,
   Input,
   ModalBody,
   ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalHeader,
-  Text,
 } from "@chakra-ui/react";
 import { type FC, useContext, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 
-import { CopyableAddress } from "./CopyableText";
 import { DynamicModalContext } from "./DynamicModal";
 import { FormErrorMessage } from "./FormErrorMessage";
-import colors from "../style/colors";
 import { isValidContractPkh } from "../types/Address";
 import { type Contact } from "../types/Contact";
 import { useValidateNewContactPkh } from "../utils/hooks/contactsHooks";
@@ -149,51 +144,6 @@ export const UpsertContactModal: FC<{
           </Box>
         </ModalFooter>
       </form>
-    </ModalContent>
-  );
-};
-
-/**
- * Modal used for deleting existing contact.
- *
- * @param contact - contact that will be deleted.
- */
-export const DeleteContactModal: FC<{
-  contact: Contact;
-}> = ({ contact }) => {
-  const dispatch = useAppDispatch();
-  const { onClose } = useContext(DynamicModalContext);
-  const onDeleteContact = () => {
-    dispatch(contactsActions.remove(contact.pkh));
-    onClose();
-  };
-  return (
-    <ModalContent>
-      <ModalHeader marginBottom="10px" textAlign="center">
-        Delete Contact
-      </ModalHeader>
-      <ModalCloseButton />
-      <ModalBody>
-        <Flex alignItems="center" justifyContent="space-between" flexDirection="column">
-          <Text color={colors.gray[400]} size="sm">
-            Are you sure you want to delete this contact?
-          </Text>
-          <Box marginTop={5}>
-            <Heading marginBottom={3} textAlign="center" size="md">
-              {contact.name}
-            </Heading>
-            <CopyableAddress pkh={contact.pkh} />
-          </Box>
-        </Flex>
-      </ModalBody>
-
-      <ModalFooter>
-        <Box width="100%">
-          <Button width="100%" marginBottom={2} onClick={onDeleteContact} variant="warning">
-            Delete Contact
-          </Button>
-        </Box>
-      </ModalFooter>
     </ModalContent>
   );
 };

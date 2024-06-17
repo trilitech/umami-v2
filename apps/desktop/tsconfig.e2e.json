@@ -1,10 +1,10 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "@umami/typescript-config/tsconfig.json",
   "compilerOptions": {
     // until we migrated to ESM modules, we need to use CommonJS for e2e tests
     "module": "CommonJS"
   },
-  "exclude": [], // override the exclusion of src/e2e in tsconfig.json
+  "include": ["src", "jest.config.ts"],
   "typedocOptions": {
     "entryPoints": ["src"],
     "entryPointStrategy": "expand",

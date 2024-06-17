@@ -1,0 +1,32 @@
+{
+  "name": "@umami/eslint-config",
+  "main": "index.js",
+  "type": "commonjs",
+  "packageManager": "yarn@4.3.0",
+  "license": "MIT",
+  "files": [
+    "index.js"
+  ],
+  "dependencies": {
+    "@stylistic/eslint-plugin": "^2.1.0",
+    "@tanstack/eslint-plugin-query": "^5.43.1",
+    "@typescript-eslint/eslint-plugin": "^7.13.0",
+    "@typescript-eslint/parser": "^7.13.0",
+    "@umami/typescript-config": "workspace:*",
+    "eslint": "^8.57.0",
+    "eslint-import-resolver-typescript": "^3.6.1",
+    "eslint-plugin-chakra-ui": "^0.11.0",
+    "eslint-plugin-deprecation": "^3.0.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-jest": "^28.6.0",
+    "eslint-plugin-jest-dom": "^5.4.0",
+    "eslint-plugin-playwright": "^1.6.2",
+    "eslint-plugin-react": "^7.34.2",
+    "eslint-plugin-react-hooks": "^4.6.2",
+    "eslint-plugin-react-redux": "^4.1.0",
+    "eslint-plugin-testing-library": "^6.2.2",
+    "eslint-plugin-tsdoc": "^0.3.0",
+    "eslint-plugin-unused-imports": "^3.2.0",
+    "typescript": "^5.4.5"
+  }
+}

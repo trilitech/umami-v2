@@ -27,29 +27,24 @@ jobs:
           node-version: 20.x
           cache: "yarn"
 
-      - name: Install dependencies
-        run: yarn install --immutable
+      - run: yarn install --immutable
 
-      - name: Install Playwright Browsers & build the app
-        run: yarn exec concurrently "yarn playwright install chromium --with-deps" "yarn build"
+      - name: Install Playwright browser
+        run: yarn workspace @umami/desktop playwright install chromium --with-deps
 
-      - name: Start server
-        run: yarn exec http-server build -p 3000 &
-
-      - name: Run cucumber tests
-        run: yarn test:e2e
+      - run: yarn test:e2e
 
       - name: Cucumber Report to Annotations
         uses: deblockt/cucumber-report-annotations-action@v1.16
         if: always()
         with:
           access-token: ${{ secrets.GITHUB_TOKEN }}
-          path: "test-results/cucumber-report.json"
+          path: "apps/dekstop/test-results/cucumber-report.json"
           show-global-summary-report: true
 
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: cucumber-report
-          path: test-results/cucumber-report.html
+          path: apps/dekstop/test-results/cucumber-report.html
           retention-days: 10

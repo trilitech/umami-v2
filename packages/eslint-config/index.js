@@ -1,10 +1,5 @@
-{
+module.exports = {
   "root": true,
-  "parserOptions": {
-    // tsconfig.e2e.json includes both src and src/e2e
-    "project": "./tsconfig.e2e.json",
-    "parser": "@typescript-eslint/parser",
-  },
   "plugins": [
     "@stylistic/eslint-plugin",
     "@typescript-eslint",
@@ -38,7 +33,7 @@
     },
   },
   "rules": {
-    "@typescript-eslint/no-explicit-any": "off", // TODO: change to error https://app.asana.com/0/0/1204322668303155/f
+    "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-empty-function": ["warn", { "allow": ["arrowFunctions"] }],
     "@typescript-eslint/switch-exhaustiveness-check": "warn",
 

@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES6",
+    "target": "ESNext",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -15,9 +15,6 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "incremental": true,
-    "types": ["vite/client"]
-  },
-  "include": ["src", "vite.config.ts", "jest.config.ts"],
-  "exclude": ["src/e2e"]
+    "incremental": true
+  }
 }

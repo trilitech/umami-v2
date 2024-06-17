@@ -2,11 +2,12 @@ import { Box, Flex, Table, TableContainer, Tbody, Td, Text, Tr } from "@chakra-u
 import { useContext } from "react";
 
 import { CopyableAddress } from "../../components/CopyableText";
+import { DeleteContactModal } from "../../components/DeleteContactModal";
 import { DynamicModalContext } from "../../components/DynamicModal";
 import { RenameRemoveMenu } from "../../components/RenameRemoveMenu";
 import { SendButton } from "../../components/SendButton";
 import { FormPage } from "../../components/SendFlow/Tez/FormPage";
-import { DeleteContactModal, UpsertContactModal } from "../../components/UpsertContactModal";
+import { UpsertContactModal } from "../../components/UpsertContactModal";
 import colors from "../../style/colors";
 import { type Contact } from "../../types/Contact";
 
