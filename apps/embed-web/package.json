@@ -2,12 +2,11 @@
   "name": "@umami/embed-web",
   "type": "module",
   "scripts": {
-    "audit": "yarn npm audit --exclude @toruslabs/customauth",
-    "dev": "vite",
     "build": "tsc && vite build",
+    "dev": "vite dev",
+    "preview": "vite preview",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --fix",
-    "format": "prettier --write .",
-    "preview": "vite preview"
+    "format": "prettier --write ."
   },
   "dependencies": {
     "@airgap/beacon-sdk": "^4.2.1",
