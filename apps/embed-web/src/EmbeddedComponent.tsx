@@ -1,11 +1,11 @@
 import { Box, ChakraProvider, ColorModeScript } from "@chakra-ui/react";
+import { type RequestMessage, toMatchingResponseType } from "@trilitech-umami/umami-embed/types";
 import { useEffect } from "react";
 
 import { type Permissions, getPermissionsForOrigin } from "./ClientsPermissions";
 import theme from "./imported/style/theme";
 import { useLoginModal } from "./loginModalHooks";
 import { useSignOperationModal } from "./signOperationModalHooks";
-import { type RequestMessage, getMatchingType } from "./types";
 import { sendResponse } from "./utils";
 import "./EmbeddedComponent.scss";
 
@@ -63,7 +63,7 @@ export function EmbeddedComponent() {
     if (!clientPermissions) {
       console.error(`No permissions for origin (${origin})`);
       sendResponse({
-        type: getMatchingType(request.type),
+        type: toMatchingResponseType(request.type),
         error: "no_permissions",
         errorMessage: "No permissions found for given origin",
       });
@@ -74,7 +74,7 @@ export function EmbeddedComponent() {
       case "logout_request":
         if (!clientPermissions.login) {
           sendResponse({
-            type: getMatchingType(request.type),
+            type: toMatchingResponseType(request.type),
             error: "no_permissions",
             errorMessage: "No permissions found for login actions",
           });
@@ -85,7 +85,7 @@ export function EmbeddedComponent() {
       case "operation_request":
         if (!clientPermissions.operations) {
           sendResponse({
-            type: getMatchingType(request.type),
+            type: toMatchingResponseType(request.type),
             error: "no_permissions",
             errorMessage: "No permissions found for operation actions",
           });

@@ -1,4 +1,4 @@
-import { type ResponseMessage } from "./types";
+import { type ResponseMessage } from "@trilitech-umami/umami-embed/types";
 
 export const sendResponse = (response: ResponseMessage) =>
   window.parent.postMessage(JSON.stringify(response), "*");

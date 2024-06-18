@@ -1,4 +1,4 @@
-import { type Network } from "./types";
+import { type Network } from "@trilitech-umami/umami-embed/types";
 
 export interface Permissions {
   origins: string[];
