@@ -4,7 +4,7 @@
     // until we migrated to ESM modules, we need to use CommonJS for e2e tests
     "module": "CommonJS"
   },
-  "include": ["src", "jest.config.js"],
+  "include": ["src"],
   "typedocOptions": {
     "entryPoints": ["src"],
     "entryPointStrategy": "expand",

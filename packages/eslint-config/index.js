@@ -39,6 +39,11 @@ module.exports = {
     "plugin:testing-library/react",
   ],
   settings: {
+    "import/resolver": {
+      node: {
+        extensions: [".js", ".jsx", ".ts", ".tsx"],
+      },
+    },
     react: {
       version: "detect",
     },

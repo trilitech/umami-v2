@@ -1,6 +1,6 @@
 {
-  "compilerOptions": { "types": ["vite/client"], "allowImportingTsExtensions": true },
+  "compilerOptions": { "types": ["vite/client"] },
   "extends": "@umami/typescript-config/tsconfig.json",
-  "include": ["src", "vite.config.ts", "jest.config.mjs"],
+  "include": ["src", "vite.config.ts"],
   "exclude": ["src/e2e"]
 }
