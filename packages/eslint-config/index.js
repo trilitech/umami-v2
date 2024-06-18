@@ -1,6 +1,17 @@
+const { resolve } = require("node:path");
+
+const project = resolve(process.cwd(), "tsconfig.json");
+
 module.exports = {
-  "root": true,
-  "plugins": [
+  parser: require.resolve("@typescript-eslint/parser"),
+  parserOptions: {
+    ecmaVersion: "latest",
+    sourceType: "module",
+    tsconfigRootDir: process.cwd(),
+    project,
+  },
+  root: true,
+  plugins: [
     "@stylistic/eslint-plugin",
     "@typescript-eslint",
     "chakra-ui",
@@ -15,7 +26,7 @@ module.exports = {
     "testing-library",
     "unused-imports",
   ],
-  "extends": [
+  extends: [
     "eslint:recommended",
     "plugin:@tanstack/eslint-plugin-query/recommended",
     "plugin:@typescript-eslint/recommended",
@@ -27,18 +38,18 @@ module.exports = {
     "plugin:react/jsx-runtime",
     "plugin:testing-library/react",
   ],
-  "settings": {
-    "react": {
-      "version": "detect",
+  settings: {
+    react: {
+      version: "detect",
     },
   },
-  "rules": {
+  rules: {
     "@typescript-eslint/no-explicit-any": "off",
-    "@typescript-eslint/no-empty-function": ["warn", { "allow": ["arrowFunctions"] }],
+    "@typescript-eslint/no-empty-function": ["warn", { allow: ["arrowFunctions"] }],
     "@typescript-eslint/switch-exhaustiveness-check": "warn",
 
     "react/jsx-curly-brace-presence": ["warn", "never"],
-    "curly": ["warn", "all"],
+    curly: ["warn", "all"],
 
     "jest/no-focused-tests": "warn",
     "jest/no-identical-title": "warn",
@@ -50,38 +61,38 @@ module.exports = {
     "@typescript-eslint/ban-ts-comment": ["warn", { "ts-ignore": "allow-with-description" }],
     "@typescript-eslint/no-unused-vars": [
       "warn",
-      { "argsIgnorePattern": ".*", "varsIgnorePattern": "^_" },
+      { argsIgnorePattern: ".*", varsIgnorePattern: "^_" },
     ],
     "@typescript-eslint/triple-slash-reference": "off",
 
     "react/jsx-key": [
       "warn",
       {
-        "checkFragmentShorthand": true,
-        "checkKeyMustBeforeSpread": true,
-        "warnOnDuplicates": true,
+        checkFragmentShorthand: true,
+        checkKeyMustBeforeSpread: true,
+        warnOnDuplicates: true,
       },
     ],
 
-    "chakra-ui/props-order": ["warn", { "applyToAllComponents": true }],
-    "chakra-ui/props-shorthand": ["warn", { "noShorthand": true, "applyToAllComponents": true }],
+    "chakra-ui/props-order": ["warn", { applyToAllComponents: true }],
+    "chakra-ui/props-shorthand": ["warn", { noShorthand: true, applyToAllComponents: true }],
     "chakra-ui/require-specific-component": "warn",
 
     "import/no-unresolved": "warn",
     "sort-imports": [
       "warn",
       {
-        "ignoreCase": false,
-        "ignoreDeclarationSort": true, // don"t want to sort import lines, use eslint-plugin-import instead
-        "ignoreMemberSort": false,
-        "memberSyntaxSortOrder": ["none", "all", "multiple", "single"],
-        "allowSeparatedGroups": true,
+        ignoreCase: false,
+        ignoreDeclarationSort: true, // don"t want to sort import lines, use eslint-plugin-import instead
+        ignoreMemberSort: false,
+        memberSyntaxSortOrder: ["none", "all", "multiple", "single"],
+        allowSeparatedGroups: true,
       },
     ],
     "import/order": [
       "warn",
       {
-        "groups": [
+        groups: [
           "builtin", // Built-in imports (come from NodeJS native) go first
           "external", // <- External imports
           "internal", // <- Absolute imports
@@ -90,53 +101,50 @@ module.exports = {
           "unknown", // <- unknown
         ],
         "newlines-between": "always",
-        "alphabetize": {
-          "order": "asc",
-          "caseInsensitive": true,
+        alphabetize: {
+          order: "asc",
+          caseInsensitive: true,
         },
       },
     ],
-    "@stylistic/quotes": ["warn", "double", { "avoidEscape": true }],
+    "@stylistic/quotes": ["warn", "double", { avoidEscape: true }],
     "deprecation/deprecation": "warn",
-    "import/no-unused-modules": ["warn", { "unusedExports": true }],
+    "import/no-unused-modules": ["warn", { unusedExports: true }],
     "prefer-const": "warn",
     "@typescript-eslint/require-await": "warn",
     "@typescript-eslint/no-floating-promises": "warn",
-    "@typescript-eslint/no-misused-promises": [
-      "warn",
-      { "checksVoidReturn": { "attributes": false } },
-    ],
+    "@typescript-eslint/no-misused-promises": ["warn", { checksVoidReturn: { attributes: false } }],
     "tsdoc/syntax": "warn",
     "arrow-body-style": ["warn", "as-needed"],
     "react-redux/useSelector-prefer-selectors": "off",
-    "eqeqeq": ["warn", "always"],
-    "@typescript-eslint/consistent-type-imports": ["error", { "fixStyle": "inline-type-imports" }],
+    eqeqeq: ["warn", "always"],
+    "@typescript-eslint/consistent-type-imports": ["error", { fixStyle: "inline-type-imports" }],
   },
-  "overrides": [
+  overrides: [
     {
-      "files": ["src/e2e/**/*.ts"],
-      "rules": {
+      files: ["src/e2e/**/*.ts"],
+      rules: {
         "testing-library/prefer-screen-queries": "off",
       },
     },
     {
-      "files": ["react-app-env.d.ts", "jest.config.ts"],
-      "rules": {
+      files: ["react-app-env.d.ts", "jest.config.ts"],
+      rules: {
         "import/no-unused-modules": "off",
       },
     },
     {
-      "files": ["MultisigActionButton.tsx"],
-      "rules": {
+      files: ["MultisigActionButton.tsx"],
+      rules: {
         "deprecation/deprecation": "off",
       },
     },
     {
-      "files": "src/e2e/**",
-      "extends": "plugin:playwright/recommended",
-      "rules": {
+      files: "src/e2e/**",
+      extends: "plugin:playwright/recommended",
+      rules: {
         "playwright/no-standalone-expect": "off",
       },
     },
   ],
-}
+};
