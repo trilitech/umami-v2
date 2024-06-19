@@ -11,7 +11,7 @@
     "@stylistic/eslint-plugin": "^2.2.1",
     "@tanstack/eslint-plugin-query": "^5.43.1",
     "@typescript-eslint/eslint-plugin": "^7.13.1",
-    "@typescript-eslint/parser": "^7.13.0",
+    "@typescript-eslint/parser": "^7.13.1",
     "@umami/typescript-config": "workspace:*",
     "eslint": "^8.57.0",
     "eslint-import-resolver-typescript": "^3.6.1",
