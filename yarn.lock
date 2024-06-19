@@ -6297,6 +6297,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@umami/oauth@workspace:apps/oauth":
+  version: 0.0.0-use.local
+  resolution: "@umami/oauth@workspace:apps/oauth"
+  languageName: unknown
+  linkType: soft
+
 "@umami/typescript-config@workspace:*, @umami/typescript-config@workspace:packages/typescript-config":
   version: 0.0.0-use.local
   resolution: "@umami/typescript-config@workspace:packages/typescript-config"
