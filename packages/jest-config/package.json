@@ -1,9 +1,33 @@
 {
   "name": "@umami/jest-config",
   "license": "MIT",
-  "main": "./jest.config.js",
+  "main": "./dist/jest.config.js",
+  "types": "dist/jest.config.d.ts",
   "type": "module",
   "exports": {
-    ".": "./jest.config.js"
+    ".": {
+      "import": "./dist/jest.config.js",
+      "require": "./dist/jest.config.cjs",
+      "types": "./dist/jest.config.d.(c)?ts"
+    }
+  },
+  "scripts": {
+    "build": "tsup"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "tsup": "^8.1.0",
+    "typescript": "^5.4.5"
+  },
+  "tsup": {
+    "entry": [
+      "jest.config.ts"
+    ],
+    "clean": true,
+    "format": [
+      "cjs",
+      "esm"
+    ],
+    "dts": true
   }
 }

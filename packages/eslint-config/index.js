@@ -1,15 +1,4 @@
-const { resolve } = require("node:path");
-
-const project = resolve(process.cwd(), "tsconfig.json");
-
 module.exports = {
-  parser: require.resolve("@typescript-eslint/parser"),
-  parserOptions: {
-    ecmaVersion: "latest",
-    sourceType: "module",
-    tsconfigRootDir: process.cwd(),
-    project,
-  },
   root: true,
   plugins: [
     "@stylistic/eslint-plugin",

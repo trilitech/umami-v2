@@ -1,14 +1,17 @@
 {
-  "name": "web",
+  "name": "@umami/web",
   "private": true,
   "version": "0.0.1",
+  "type": "module",
   "scripts": {
-    "dev": "vite",
     "build": "tsc && vite build",
+    "check-types:watch": "yarn check-types --watch",
+    "check-types": "tsc",
+    "dev": "vite",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "test": "cross-env TS_NODE_PROJECT=./tsconfig.json TZ=CET jest",
-    "test:watch": "cross-env DEV=true yarn test --watch"
+    "test:watch": "cross-env DEV=true yarn test --watch",
+    "test": "cross-env TZ=CET jest"
   },
   "dependencies": {
     "@chakra-ui/anatomy": "2.2.2",
