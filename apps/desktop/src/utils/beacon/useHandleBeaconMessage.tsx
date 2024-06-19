@@ -8,6 +8,7 @@ import {
 } from "@airgap/beacon-wallet";
 import { useContext } from "react";
 
+import { useRemovePeerBySenderId } from "./beacon";
 import { PermissionRequestModal } from "./PermissionRequestModal";
 import { SignPayloadRequestModal } from "./SignPayloadRequestModal";
 import { WalletClient } from "./WalletClient";
@@ -35,6 +36,7 @@ export const useHandleBeaconMessage = () => {
   const { handleAsyncAction } = useAsyncActionHandler();
   const getAccount = useGetOwnedAccountSafe();
   const findNetwork = useFindNetwork();
+  const removePeer = useRemovePeerBySenderId();
 
   // we should confirm that we support the network that the beacon request is coming from
   const checkNetwork = ({
@@ -66,14 +68,32 @@ export const useHandleBeaconMessage = () => {
     void handleAsyncAction(
       async () => {
         let modal;
+        let onClose;
+
         switch (message.type) {
           case BeaconMessageType.PermissionRequest: {
             checkNetwork(message);
             modal = <PermissionRequestModal request={message} />;
+            onClose = async () => {
+              await WalletClient.respond({
+                id: message.id,
+                type: BeaconMessageType.Error,
+                errorType: BeaconErrorType.NOT_GRANTED_ERROR,
+              });
+              await removePeer(message.senderId);
+            };
             break;
           }
           case BeaconMessageType.SignPayloadRequest: {
             modal = <SignPayloadRequestModal request={message} />;
+            onClose = async () => {
+              await WalletClient.respond({
+                id: message.id,
+                type: BeaconMessageType.Error,
+                errorType: BeaconErrorType.ABORTED_ERROR,
+              });
+              await removePeer(message.senderId);
+            };
             break;
           }
           case BeaconMessageType.OperationRequest: {
@@ -98,6 +118,12 @@ export const useHandleBeaconMessage = () => {
             } else {
               modal = <BatchSignPage message={message} operation={estimatedOperations} />;
             }
+            onClose = () =>
+              WalletClient.respond({
+                id: message.id,
+                type: BeaconMessageType.Error,
+                errorType: BeaconErrorType.ABORTED_ERROR,
+              });
 
             break;
           }
@@ -114,7 +140,7 @@ export const useHandleBeaconMessage = () => {
           }
         }
 
-        return openWith(modal);
+        return openWith(modal, { onClose });
       },
       error => ({
         description: `Error while processing Beacon request: ${error.message}`,

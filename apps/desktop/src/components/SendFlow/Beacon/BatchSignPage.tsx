@@ -36,7 +36,7 @@ export const BatchSignPage: React.FC<BeaconSignPageProps> = ({ operation, messag
           <Header message={message} mode="batch" operation={operation} />
 
           <ModalBody>
-            <Accordion allowToggle={true}>
+            <Accordion allowToggle>
               <AccordionItem background={colors.gray[800]} border="none" borderRadius="8px">
                 <AccordionButton>
                   <Heading flex="1" textAlign="left" paddingY="6px" size="sm">

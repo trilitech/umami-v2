@@ -47,45 +47,106 @@ const account = mockImplicitAccount(1);
 beforeEach(() => addAccount(account));
 
 describe("<useHandleBeaconMessage />", () => {
-  test("permission request", async () => {
-    const message: PermissionRequestOutput = {
-      appMetadata: { name: "mockDappName", senderId: SENDER_ID },
-      id: "mockMessageId",
-      network: { type: NetworkType.MAINNET },
-      scopes: [PermissionScope.SIGN],
-      senderId: SENDER_ID,
-      type: BeaconMessageType.PermissionRequest,
-      version: "2",
-    };
+  describe("permission request", () => {
+    it("opens a PermissionRequestModal", async () => {
+      const message: PermissionRequestOutput = {
+        appMetadata: { name: "mockDappName", senderId: SENDER_ID },
+        id: "mockMessageId",
+        network: { type: NetworkType.MAINNET },
+        scopes: [PermissionScope.SIGN],
+        senderId: SENDER_ID,
+        type: BeaconMessageType.PermissionRequest,
+        version: "2",
+      };
 
-    const {
-      result: { current: handleMessage },
-    } = renderHook(useHandleBeaconMessage);
+      const {
+        result: { current: handleMessage },
+      } = renderHook(useHandleBeaconMessage);
 
-    act(() => handleMessage(message));
+      act(() => handleMessage(message));
 
-    await screen.findByText("Permission Request");
+      await screen.findByText("Permission Request");
+    });
+
+    it("sends an error response to the dapp on close", async () => {
+      const message: PermissionRequestOutput = {
+        appMetadata: { name: "mockDappName", senderId: SENDER_ID },
+        id: "mockMessageId",
+        network: { type: NetworkType.MAINNET },
+        scopes: [PermissionScope.SIGN],
+        senderId: SENDER_ID,
+        type: BeaconMessageType.PermissionRequest,
+        version: "2",
+      };
+
+      const {
+        result: { current: handleMessage },
+      } = renderHook(useHandleBeaconMessage);
+
+      act(() => handleMessage(message));
+
+      await screen.findByText("Permission Request");
+
+      act(() => screen.getByRole("button", { name: "Close" }).click());
+
+      expect(WalletClient.respond).toHaveBeenCalledWith({
+        errorType: "NOT_GRANTED_ERROR",
+        id: "mockMessageId",
+        type: "error",
+      });
+    });
   });
 
-  test("sign payload request", async () => {
-    const message: SignPayloadRequestOutput = {
-      payload: "mockPayload",
-      sourceAddress: account.address.pkh,
-      appMetadata: { name: "mockDappName", senderId: SENDER_ID },
-      id: "mockMessageId",
-      signingType: SigningType.RAW,
-      senderId: SENDER_ID,
-      type: BeaconMessageType.SignPayloadRequest,
-      version: "2",
-    };
+  describe("sign payload request", () => {
+    it("opens a SignPayloadRequestModal", async () => {
+      const message: SignPayloadRequestOutput = {
+        payload: "mockPayload",
+        sourceAddress: account.address.pkh,
+        appMetadata: { name: "mockDappName", senderId: SENDER_ID },
+        id: "mockMessageId",
+        signingType: SigningType.RAW,
+        senderId: SENDER_ID,
+        type: BeaconMessageType.SignPayloadRequest,
+        version: "2",
+      };
 
-    const {
-      result: { current: handleMessage },
-    } = renderHook(useHandleBeaconMessage);
+      const {
+        result: { current: handleMessage },
+      } = renderHook(useHandleBeaconMessage);
 
-    act(() => handleMessage(message));
+      act(() => handleMessage(message));
 
-    await screen.findByText("Connect with pairing request");
+      await screen.findByText("Connect with pairing request");
+    });
+
+    it("sends an error response to the dapp on close", async () => {
+      const message: SignPayloadRequestOutput = {
+        payload: "mockPayload",
+        sourceAddress: account.address.pkh,
+        appMetadata: { name: "mockDappName", senderId: SENDER_ID },
+        id: "mockMessageId",
+        signingType: SigningType.RAW,
+        senderId: SENDER_ID,
+        type: BeaconMessageType.SignPayloadRequest,
+        version: "2",
+      };
+
+      const {
+        result: { current: handleMessage },
+      } = renderHook(useHandleBeaconMessage);
+
+      act(() => handleMessage(message));
+
+      await screen.findByText("Connect with pairing request");
+
+      act(() => screen.getByRole("button", { name: "Close" }).click());
+
+      expect(WalletClient.respond).toHaveBeenCalledWith({
+        errorType: "ABORTED_ERROR",
+        id: "mockMessageId",
+        type: "error",
+      });
+    });
   });
 
   it("displays an error on an unknown Beacon request", async () => {
@@ -134,238 +195,326 @@ describe("<useHandleBeaconMessage />", () => {
       );
       expect(dynamicModalContextMock.openWith).not.toHaveBeenCalled();
     });
-  });
 
-  it("doesn't open a modal on an unknown operation type", async () => {
-    const message = {
-      type: BeaconMessageType.OperationRequest,
-      operationDetails: [{ kind: TezosOperationType.ACTIVATE_ACCOUNT }],
-      sourceAddress: account.address.pkh,
-      network: { type: NetworkType.MAINNET },
-    } as unknown as BeaconRequestOutputMessage;
+    it("doesn't open a modal on an unknown operation type", async () => {
+      const message = {
+        type: BeaconMessageType.OperationRequest,
+        operationDetails: [{ kind: TezosOperationType.ACTIVATE_ACCOUNT }],
+        sourceAddress: account.address.pkh,
+        network: { type: NetworkType.MAINNET },
+      } as unknown as BeaconRequestOutputMessage;
 
-    const {
-      result: { current: handleMessage },
-    } = renderHook(useHandleBeaconMessage);
+      const {
+        result: { current: handleMessage },
+      } = renderHook(useHandleBeaconMessage);
 
-    act(() => handleMessage(message));
+      act(() => handleMessage(message));
 
-    await waitFor(() =>
-      expect(mockToast).toHaveBeenCalledWith({
-        description:
-          "Error while processing Beacon request: Unsupported operation kind: activate_account",
-        status: "error",
-        isClosable: true,
-      })
-    );
-    expect(dynamicModalContextMock.openWith).not.toHaveBeenCalled();
-  });
-
-  it("doesn't open a modal when account is not owned", async () => {
-    const message: BeaconRequestOutputMessage = {
-      type: BeaconMessageType.OperationRequest,
-      operationDetails: [
-        {
-          kind: TezosOperationType.TRANSACTION,
-          amount: "1",
-          destination: mockImplicitAddress(2).pkh,
-        },
-      ],
-      senderId: "mockSenderId",
-      id: "mockMessageId",
-      network: { type: NetworkType.MAINNET },
-      appMetadata: { name: "mockDappName", senderId: "mockSenderId" },
-      sourceAddress: mockImplicitAddress(3).pkh,
-    };
-
-    const {
-      result: { current: handleMessage },
-    } = renderHook(useHandleBeaconMessage);
-
-    act(() => handleMessage(message));
-
-    await waitFor(() =>
-      expect(mockToast).toHaveBeenCalledWith({
-        description:
-          "Error while processing Beacon request: Unknown account: tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
-        status: "error",
-        isClosable: true,
-      })
-    );
-    expect(WalletClient.respond).toHaveBeenCalledWith({
-      errorType: "NO_PRIVATE_KEY_FOUND_ERROR",
-      id: "mockMessageId",
-      type: "error",
+      await waitFor(() =>
+        expect(mockToast).toHaveBeenCalledWith({
+          description:
+            "Error while processing Beacon request: Unsupported operation kind: activate_account",
+          status: "error",
+          isClosable: true,
+        })
+      );
+      expect(dynamicModalContextMock.openWith).not.toHaveBeenCalled();
     });
-    expect(dynamicModalContextMock.openWith).not.toHaveBeenCalled();
-  });
 
-  it("doesn't open a modal on an error while estimating the fee", async () => {
-    jest.mocked(estimate).mockRejectedValueOnce(new Error("Something went very wrong!"));
+    it("doesn't open a modal when account is not owned", async () => {
+      const message: BeaconRequestOutputMessage = {
+        type: BeaconMessageType.OperationRequest,
+        operationDetails: [
+          {
+            kind: TezosOperationType.TRANSACTION,
+            amount: "1",
+            destination: mockImplicitAddress(2).pkh,
+          },
+        ],
+        senderId: "mockSenderId",
+        id: "mockMessageId",
+        network: { type: NetworkType.MAINNET },
+        appMetadata: { name: "mockDappName", senderId: "mockSenderId" },
+        sourceAddress: mockImplicitAddress(3).pkh,
+      };
 
-    const message: BeaconRequestOutputMessage = {
-      type: BeaconMessageType.OperationRequest,
-      operationDetails: [
-        {
-          kind: TezosOperationType.TRANSACTION,
-          amount: "1",
-          destination: mockImplicitAddress(2).pkh,
-        },
-      ],
-      senderId: "mockSenderId",
-      id: "mockMessageId",
-      network: { type: NetworkType.MAINNET },
-      appMetadata: { name: "mockDappName", senderId: "mockSenderId" },
-      sourceAddress: account.address.pkh,
-    };
+      const {
+        result: { current: handleMessage },
+      } = renderHook(useHandleBeaconMessage);
 
-    const {
-      result: { current: handleMessage },
-    } = renderHook(useHandleBeaconMessage);
+      act(() => handleMessage(message));
 
-    act(() => handleMessage(message));
+      await waitFor(() =>
+        expect(mockToast).toHaveBeenCalledWith({
+          description:
+            "Error while processing Beacon request: Unknown account: tz1g7Vk9dxDALJUp4w1UTnC41ssvRa7Q4XyS",
+          status: "error",
+          isClosable: true,
+        })
+      );
+      expect(WalletClient.respond).toHaveBeenCalledWith({
+        errorType: "NO_PRIVATE_KEY_FOUND_ERROR",
+        id: "mockMessageId",
+        type: "error",
+      });
+      expect(dynamicModalContextMock.openWith).not.toHaveBeenCalled();
+    });
 
-    await waitFor(() =>
-      expect(mockToast).toHaveBeenCalledWith({
-        description: "Error while processing Beacon request: Something went very wrong!",
-        status: "error",
-        isClosable: true,
-      })
-    );
-    expect(dynamicModalContextMock.openWith).not.toHaveBeenCalled();
-  });
+    it("doesn't open a modal on an error while estimating the fee", async () => {
+      jest.mocked(estimate).mockRejectedValueOnce(new Error("Something went very wrong!"));
 
-  it("doesn't open a modal when the network is unknown", async () => {
-    const message: BeaconRequestOutputMessage = {
-      type: BeaconMessageType.OperationRequest,
-      operationDetails: [],
-      senderId: "mockSenderId",
-      id: "mockMessageId",
-      network: { type: "Whatever" as any },
-      appMetadata: { name: "mockDappName", senderId: "mockSenderId" },
-      sourceAddress: account.address.pkh,
-    };
+      const message: BeaconRequestOutputMessage = {
+        type: BeaconMessageType.OperationRequest,
+        operationDetails: [
+          {
+            kind: TezosOperationType.TRANSACTION,
+            amount: "1",
+            destination: mockImplicitAddress(2).pkh,
+          },
+        ],
+        senderId: "mockSenderId",
+        id: "mockMessageId",
+        network: { type: NetworkType.MAINNET },
+        appMetadata: { name: "mockDappName", senderId: "mockSenderId" },
+        sourceAddress: account.address.pkh,
+      };
 
-    const {
-      result: { current: handleMessage },
-    } = renderHook(useHandleBeaconMessage);
+      const {
+        result: { current: handleMessage },
+      } = renderHook(useHandleBeaconMessage);
 
-    act(() => handleMessage(message));
+      act(() => handleMessage(message));
 
-    await waitFor(() => {
-      expect(mockToast).toHaveBeenCalledWith({
-        description:
-          'Error while processing Beacon request: Got Beacon request from an unknown network: {"type":"Whatever"}. Please add it to the networks list and retry.',
-        status: "error",
-        isClosable: true,
+      await waitFor(() =>
+        expect(mockToast).toHaveBeenCalledWith({
+          description: "Error while processing Beacon request: Something went very wrong!",
+          status: "error",
+          isClosable: true,
+        })
+      );
+      expect(dynamicModalContextMock.openWith).not.toHaveBeenCalled();
+    });
+
+    it("doesn't open a modal when the network is unknown", async () => {
+      const message: BeaconRequestOutputMessage = {
+        type: BeaconMessageType.OperationRequest,
+        operationDetails: [],
+        senderId: "mockSenderId",
+        id: "mockMessageId",
+        network: { type: "Whatever" as any },
+        appMetadata: { name: "mockDappName", senderId: "mockSenderId" },
+        sourceAddress: account.address.pkh,
+      };
+
+      const {
+        result: { current: handleMessage },
+      } = renderHook(useHandleBeaconMessage);
+
+      act(() => handleMessage(message));
+
+      await waitFor(() => {
+        expect(mockToast).toHaveBeenCalledWith({
+          description:
+            'Error while processing Beacon request: Got Beacon request from an unknown network: {"type":"Whatever"}. Please add it to the networks list and retry.',
+          status: "error",
+          isClosable: true,
+        });
+      });
+
+      expect(WalletClient.respond).toHaveBeenCalledWith({
+        errorType: "NETWORK_NOT_SUPPORTED",
+        id: "mockMessageId",
+        type: "error",
+      });
+      expect(dynamicModalContextMock.openWith).not.toHaveBeenCalled();
+    });
+
+    describe("single operation", () => {
+      it("opens a modal with the BeaconSignPage for 1 operation", async () => {
+        jest.mocked(estimate).mockResolvedValueOnce({
+          ...makeAccountOperations(account, account, [
+            { type: "tez", amount: "1", recipient: mockImplicitAddress(2) },
+          ]),
+          estimates: [executeParams()],
+        });
+
+        const message: BeaconRequestOutputMessage = {
+          type: BeaconMessageType.OperationRequest,
+          operationDetails: [
+            {
+              kind: TezosOperationType.TRANSACTION,
+              amount: "1",
+              destination: mockImplicitAddress(2).pkh,
+            },
+          ],
+          senderId: "mockSenderId",
+          id: "mockMessageId",
+          network: { type: NetworkType.MAINNET },
+          appMetadata: { name: "mockDappName", senderId: "mockSenderId" },
+          sourceAddress: account.address.pkh,
+        };
+
+        const {
+          result: { current: handleMessage },
+        } = renderHook(useHandleBeaconMessage);
+
+        act(() => handleMessage(message));
+
+        await waitFor(() =>
+          expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
+            <BeaconSignPage
+              message={message}
+              operation={{
+                ...makeAccountOperations(account, account, [
+                  { type: "tez", amount: "1", recipient: mockImplicitAddress(2) },
+                ]),
+                estimates: [executeParams()],
+              }}
+            />,
+            { onClose: expect.any(Function) }
+          )
+        );
+        expect(mockToast).not.toHaveBeenCalled();
+      });
+
+      it("sends an error response to the dapp on close", async () => {
+        jest.mocked(estimate).mockResolvedValueOnce({
+          ...makeAccountOperations(account, account, [
+            { type: "tez", amount: "1", recipient: mockImplicitAddress(2) },
+          ]),
+          estimates: [executeParams()],
+        });
+
+        const message: BeaconRequestOutputMessage = {
+          type: BeaconMessageType.OperationRequest,
+          operationDetails: [
+            {
+              kind: TezosOperationType.TRANSACTION,
+              amount: "1",
+              destination: mockImplicitAddress(2).pkh,
+            },
+          ],
+          senderId: "mockSenderId",
+          id: "mockMessageId",
+          network: { type: NetworkType.MAINNET },
+          appMetadata: { name: "mockDappName", senderId: "mockSenderId" },
+          sourceAddress: account.address.pkh,
+        };
+
+        const {
+          result: { current: handleMessage },
+        } = renderHook(useHandleBeaconMessage);
+
+        act(() => handleMessage(message));
+
+        await waitFor(() => expect(dynamicModalContextMock.openWith).toHaveBeenCalledTimes(1));
+
+        act(() => screen.getByRole("button", { name: "Close" }).click());
+
+        expect(WalletClient.respond).toHaveBeenCalledWith({
+          errorType: "ABORTED_ERROR",
+          id: "mockMessageId",
+          type: "error",
+        });
       });
     });
 
-    expect(WalletClient.respond).toHaveBeenCalledWith({
-      errorType: "NETWORK_NOT_SUPPORTED",
-      id: "mockMessageId",
-      type: "error",
-    });
-    expect(dynamicModalContextMock.openWith).not.toHaveBeenCalled();
-  });
+    describe("batch operation", () => {
+      it("opens a modal with the BatchSignPage for multiple operations", async () => {
+        jest.mocked(estimate).mockResolvedValueOnce({
+          ...makeAccountOperations(account, account, [
+            { type: "tez", amount: "1", recipient: mockImplicitAddress(2) },
+            { type: "tez", amount: "1", recipient: mockImplicitAddress(2) },
+          ]),
+          estimates: [executeParams()],
+        });
 
-  it("opens a modal with the BeaconSignPage for 1 operation", async () => {
-    jest.mocked(estimate).mockResolvedValueOnce({
-      ...makeAccountOperations(account, account, [
-        { type: "tez", amount: "1", recipient: mockImplicitAddress(2) },
-      ]),
-      estimates: [executeParams()],
-    });
+        const message: BeaconRequestOutputMessage = {
+          type: BeaconMessageType.OperationRequest,
+          operationDetails: [
+            {
+              kind: TezosOperationType.TRANSACTION,
+              amount: "1",
+              destination: mockImplicitAddress(2).pkh,
+            },
+            {
+              kind: TezosOperationType.TRANSACTION,
+              amount: "1",
+              destination: mockImplicitAddress(2).pkh,
+            },
+          ],
+          senderId: "mockSenderId",
+          id: "mockMessageId",
+          network: { type: NetworkType.MAINNET },
+          appMetadata: { name: "mockDappName", senderId: "mockSenderId" },
+          sourceAddress: account.address.pkh,
+        };
 
-    const message: BeaconRequestOutputMessage = {
-      type: BeaconMessageType.OperationRequest,
-      operationDetails: [
-        {
-          kind: TezosOperationType.TRANSACTION,
-          amount: "1",
-          destination: mockImplicitAddress(2).pkh,
-        },
-      ],
-      senderId: "mockSenderId",
-      id: "mockMessageId",
-      network: { type: NetworkType.MAINNET },
-      appMetadata: { name: "mockDappName", senderId: "mockSenderId" },
-      sourceAddress: account.address.pkh,
-    };
+        const {
+          result: { current: handleMessage },
+        } = renderHook(useHandleBeaconMessage);
 
-    const {
-      result: { current: handleMessage },
-    } = renderHook(useHandleBeaconMessage);
+        act(() => handleMessage(message));
 
-    act(() => handleMessage(message));
-
-    await waitFor(() =>
-      expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
-        <BeaconSignPage
-          message={message}
-          operation={{
-            ...makeAccountOperations(account, account, [
-              { type: "tez", amount: "1", recipient: mockImplicitAddress(2) },
-            ]),
-            estimates: [executeParams()],
-          }}
-        />
-      )
-    );
-    expect(mockToast).not.toHaveBeenCalled();
-  });
-
-  it("opens a modal with the BatchSignPage for multiple operations", async () => {
-    jest.mocked(estimate).mockResolvedValueOnce({
-      ...makeAccountOperations(account, account, [
-        { type: "tez", amount: "1", recipient: mockImplicitAddress(2) },
-        { type: "tez", amount: "1", recipient: mockImplicitAddress(2) },
-      ]),
-      estimates: [executeParams()],
+        await waitFor(() =>
+          expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
+            <BatchSignPage
+              message={message}
+              operation={{
+                ...makeAccountOperations(account, account, [
+                  { type: "tez", amount: "1", recipient: mockImplicitAddress(2) },
+                  { type: "tez", amount: "1", recipient: mockImplicitAddress(2) },
+                ]),
+                estimates: [executeParams()],
+              }}
+            />,
+            { onClose: expect.any(Function) }
+          )
+        );
+        expect(mockToast).not.toHaveBeenCalled();
+      });
     });
 
-    const message: BeaconRequestOutputMessage = {
-      type: BeaconMessageType.OperationRequest,
-      operationDetails: [
-        {
-          kind: TezosOperationType.TRANSACTION,
-          amount: "1",
-          destination: mockImplicitAddress(2).pkh,
-        },
-        {
-          kind: TezosOperationType.TRANSACTION,
-          amount: "1",
-          destination: mockImplicitAddress(2).pkh,
-        },
-      ],
-      senderId: "mockSenderId",
-      id: "mockMessageId",
-      network: { type: NetworkType.MAINNET },
-      appMetadata: { name: "mockDappName", senderId: "mockSenderId" },
-      sourceAddress: account.address.pkh,
-    };
+    it("sends an error response to the dapp on close", async () => {
+      jest.mocked(estimate).mockResolvedValueOnce({
+        ...makeAccountOperations(account, account, [
+          { type: "tez", amount: "1", recipient: mockImplicitAddress(2) },
+        ]),
+        estimates: [executeParams()],
+      });
 
-    const {
-      result: { current: handleMessage },
-    } = renderHook(useHandleBeaconMessage);
+      const message: BeaconRequestOutputMessage = {
+        type: BeaconMessageType.OperationRequest,
+        operationDetails: [
+          {
+            kind: TezosOperationType.TRANSACTION,
+            amount: "1",
+            destination: mockImplicitAddress(2).pkh,
+          },
+        ],
+        senderId: "mockSenderId",
+        id: "mockMessageId",
+        network: { type: NetworkType.MAINNET },
+        appMetadata: { name: "mockDappName", senderId: "mockSenderId" },
+        sourceAddress: account.address.pkh,
+      };
 
-    act(() => handleMessage(message));
+      const {
+        result: { current: handleMessage },
+      } = renderHook(useHandleBeaconMessage);
 
-    await waitFor(() =>
-      expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
-        <BatchSignPage
-          message={message}
-          operation={{
-            ...makeAccountOperations(account, account, [
-              { type: "tez", amount: "1", recipient: mockImplicitAddress(2) },
-              { type: "tez", amount: "1", recipient: mockImplicitAddress(2) },
-            ]),
-            estimates: [executeParams()],
-          }}
-        />
-      )
-    );
-    expect(mockToast).not.toHaveBeenCalled();
+      act(() => handleMessage(message));
+
+      await waitFor(() => expect(dynamicModalContextMock.openWith).toHaveBeenCalledTimes(1));
+
+      act(() => screen.getByRole("button", { name: "Close" }).click());
+
+      expect(WalletClient.respond).toHaveBeenCalledWith({
+        errorType: "ABORTED_ERROR",
+        id: "mockMessageId",
+        type: "error",
+      });
+    });
   });
 });
 

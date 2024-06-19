@@ -10,8 +10,14 @@ import { TextDecoder, TextEncoder } from "util";
 import { setupJestCanvasMock } from "jest-canvas-mock";
 import failOnConsole from "jest-fail-on-console";
 import MockDate from "mockdate";
-import React from "react";
 
+import {
+  MockModal,
+  MockModalCloseButton,
+  MockModalContent,
+  MockModalHeader,
+  MockModalInnerComponent,
+} from "./mocks/modal";
 import { mockUseToast } from "./mocks/toast";
 import { accountsSlice } from "./utils/redux/slices/accountsSlice/accountsSlice";
 import { announcementSlice } from "./utils/redux/slices/announcementSlice";
@@ -70,24 +76,6 @@ beforeEach(() => {
 
   setupJestCanvasMock();
 });
-
-const MockModal = ({ children, isOpen }: any) =>
-  React.createElement("div", { "data-testid": "mock-modal" }, isOpen ? children : null);
-
-const MockModalHeader = ({ children }: any) =>
-  React.createElement("header", { id: "modal-header" }, children);
-
-const MockModalContent = ({ children }: any) =>
-  React.createElement(
-    "section",
-    { role: "dialog", "aria-labelledby": "modal-header", "aria-modal": true },
-    children
-  );
-
-const MockModalInnerComponent = ({ children }: any) => React.createElement("div", {}, children);
-
-const MockModalCloseButton = ({ children }: any) =>
-  React.createElement("button", { "aria-label": "Close" }, children);
 
 jest.mock("@chakra-ui/react", () => ({
   ...jest.requireActual("@chakra-ui/react"),
