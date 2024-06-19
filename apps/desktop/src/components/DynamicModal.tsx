@@ -1,10 +1,13 @@
-import { Modal, ModalOverlay, type ModalProps, useDisclosure } from "@chakra-ui/react";
-import { type ReactElement, createContext, useState } from "react";
+import { Modal, ModalOverlay, type ThemingProps, useDisclosure } from "@chakra-ui/react";
+import { type ReactElement, createContext, useCallback, useState } from "react";
 import { RemoveScroll } from "react-remove-scroll";
 
 // this should be used in components as useContext(DynamicModalContext);
 export const DynamicModalContext = createContext<{
-  openWith: (content: ReactElement, size?: ModalProps["size"]) => Promise<void>;
+  openWith: (
+    content: ReactElement,
+    props?: ThemingProps & { onClose?: () => void | Promise<void> }
+  ) => Promise<void>;
   onClose: () => void;
   isOpen: boolean;
 }>({
@@ -23,16 +26,35 @@ export const DynamicModalContext = createContext<{
 // This hook should be used only once in the app. You place the modal wrapper and then
 // use the `openWith` provided by the `DynamicModalContext` in components.
 export const useDynamicModal = () => {
-  const { isOpen, onClose, onOpen } = useDisclosure();
+  const { isOpen, onClose: closeModal, onOpen } = useDisclosure();
   const [modalContent, setModalContent] = useState<ReactElement | null>(null);
-  const [size, setSize] = useState<ModalProps["size"]>("md");
+  const [modalProps, setModalProps] = useState<
+    ThemingProps & { onClose: () => void | Promise<void> }
+  >({
+    size: "md",
+    onClose: closeModal,
+  });
 
-  const openWith = async (content: ReactElement, size: ModalProps["size"] = "md") => {
-    setSize(size);
-    setModalContent(content);
-    onOpen();
-    return Promise.resolve();
-  };
+  const onClose = useCallback(() => {
+    closeModal();
+  }, [closeModal]);
+
+  const openWith = useCallback(
+    async (
+      content: ReactElement,
+      props: ThemingProps & { onClose?: () => void | Promise<void> } = {}
+    ) => {
+      const onClose = () => {
+        closeModal();
+        return props.onClose?.();
+      };
+      setModalProps({ size: "md", ...props, onClose });
+      setModalContent(content);
+      onOpen();
+      return Promise.resolve();
+    },
+    [onOpen, closeModal]
+  );
 
   return {
     isOpen,
@@ -47,8 +69,7 @@ export const useDynamicModal = () => {
         isOpen={isOpen}
         // this is used in e2e tests to decrease flakiness due to animations
         motionPreset={(localStorage.getItem("chakra-modal-motion-preset") as any) || undefined}
-        onClose={onClose}
-        size={size}
+        {...modalProps}
       >
         <ModalOverlay />
         <RemoveScroll enabled={isOpen}>{modalContent}</RemoveScroll>

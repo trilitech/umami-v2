@@ -46,7 +46,7 @@ const RightHeader: React.FC<{
         aria-label="remove-batch"
         data-testid="remove-batch"
         icon={<TrashIcon stroke={colors.gray[300]} />}
-        onClick={() => openWith(<ClearBatchConfirmationModal sender={sender} />, "sm")}
+        onClick={() => openWith(<ClearBatchConfirmationModal sender={sender} />, { size: "sm" })}
         variant="circle"
       />
     </Box>

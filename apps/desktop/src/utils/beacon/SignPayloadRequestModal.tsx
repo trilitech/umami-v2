@@ -1,5 +1,4 @@
 import {
-  BeaconErrorType,
   BeaconMessageType,
   type SignPayloadRequestOutput,
   type SignPayloadResponseInput,
@@ -20,7 +19,6 @@ import type React from "react";
 import { useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
-import { useRemovePeerBySenderId } from "./beacon";
 import { decodePayload } from "./decodePayload";
 import { WalletClient } from "./WalletClient";
 import { DynamicModalContext } from "../../components/DynamicModal";
@@ -35,17 +33,7 @@ export const SignPayloadRequestModal: React.FC<{
   const getAccount = useGetImplicitAccount();
   const signerAccount = getAccount(request.sourceAddress);
   const toast = useToast();
-  const removePeer = useRemovePeerBySenderId();
   const form = useForm();
-
-  const onModalClose = () => {
-    void removePeer(request.senderId);
-    void WalletClient.respond({
-      id: request.id,
-      type: BeaconMessageType.Error,
-      errorType: BeaconErrorType.ABORTED_ERROR,
-    });
-  };
 
   const sign = async (tezosToolkit: TezosToolkit) => {
     const result = await tezosToolkit.signer.sign(request.payload);
@@ -72,7 +60,7 @@ export const SignPayloadRequestModal: React.FC<{
         <ModalHeader marginBottom="32px" textAlign="center">
           Connect with pairing request
         </ModalHeader>
-        <ModalCloseButton onClick={onModalClose} />
+        <ModalCloseButton />
 
         <ModalBody>
           <Heading marginBottom="12px" size="l">
