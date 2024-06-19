@@ -11,12 +11,12 @@
     },
     "lint": {
       "dependsOn": [
-        "@umami/eslint-config#build"
+        "^build"
       ]
     },
     "lint:ci": {
       "dependsOn": [
-        "@umami/eslint-config#build"
+        "^build"
       ]
     },
     "format:ci": {
@@ -30,11 +30,17 @@
       ],
       "env": [
         "CI"
+      ],
+      "dependsOn": [
+        "@umami/jest-config#build"
       ]
     },
     "test:watch": {
       "persistent": true,
-      "cache": false
+      "cache": false,
+      "dependsOn": [
+        "@umami/jest-config#build"
+      ]
     },
     "format": {
       "dependsOn": [
@@ -43,19 +49,29 @@
     },
     "check-types": {
       "dependsOn": [
-        "@umami/typescript-config#build"
+        "^build"
       ]
     },
     "check-types:watch": {
       "persistent": true,
-      "cache": false
+      "cache": false,
+      "dependsOn": [
+        "^build"
+      ]
     },
     "dev": {
       "persistent": true,
-      "cache": false
+      "cache": false,
+      "dependsOn": [
+        "^build"
+      ]
     },
     "audit": {},
-    "check-circular-deps": {},
+    "check-circular-deps": {
+      "dependsOn": [
+        "^build"
+      ]
+    },
     "test:e2e": {
       "dependsOn": [
         "build"

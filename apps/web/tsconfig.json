@@ -1,0 +1,4 @@
+{
+  "extends": "@umami/typescript-config/tsconfig.json",
+  "include": ["src", "vite.config.ts", ".eslintrc.cjs", "jest.config.ts"]
+}
