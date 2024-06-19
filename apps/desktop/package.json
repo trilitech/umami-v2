@@ -1,7 +1,7 @@
 {
   "name": "@umami/desktop",
   "productName": "umami",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "author": "Trilitech <umami-admin@trili.tech>",
   "description": "Tezos Desktop Wallet",
   "homepage": "https://umamiwallet.com",
