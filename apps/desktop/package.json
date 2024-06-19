@@ -96,6 +96,7 @@
     "electron": "31.0.1",
     "electron-builder": "^24.13.3",
     "electronmon": "^2.0.3",
+    "eslint": "^8.57.0",
     "framer-motion": "^11.2.10",
     "identity-obj-proxy": "^3.0.0",
     "immer": "^10.1.1",
