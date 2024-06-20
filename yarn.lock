@@ -5213,21 +5213,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@taquito/ledger-signer@npm:^20.0.0":
-  version: 20.0.0
-  resolution: "@taquito/ledger-signer@npm:20.0.0"
+"@taquito/ledger-signer@npm:^20.0.1":
+  version: 20.0.1
+  resolution: "@taquito/ledger-signer@npm:20.0.1"
   dependencies:
     "@ledgerhq/hw-transport": "npm:^6.30.5"
     "@stablelib/blake2b": "npm:^1.0.1"
-    "@taquito/core": "npm:^20.0.0"
-    "@taquito/taquito": "npm:^20.0.0"
-    "@taquito/utils": "npm:^20.0.0"
+    "@taquito/core": "npm:^20.0.1"
+    "@taquito/taquito": "npm:^20.0.1"
+    "@taquito/utils": "npm:^20.0.1"
     buffer: "npm:^6.0.3"
-  checksum: 10/f4ddb19967e8c8abb283ba4da8fddbae0943959a39acbc02c6c64435374416c7628ea3bff9cc952b1b0e5488cc01d36eb2af8ac6ebca791aec489c47109fb291
+  checksum: 10/d87fd184116cfbab875a4ac0688c0457a72ca141442c8c1951ab5341e71861725554591367bb06fd23f5844ca72c3bfc84075defe778a58c9fec3a5244ff47c7
   languageName: node
   linkType: hard
 
-"@taquito/local-forging@npm:^20.0.0":
+"@taquito/local-forging@npm:^20.0.0, @taquito/local-forging@npm:^20.0.1":
   version: 20.0.1
   resolution: "@taquito/local-forging@npm:20.0.1"
   dependencies:
@@ -5238,7 +5238,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@taquito/michel-codec@npm:^20.0.0":
+"@taquito/michel-codec@npm:^20.0.0, @taquito/michel-codec@npm:^20.0.1":
   version: 20.0.1
   resolution: "@taquito/michel-codec@npm:20.0.1"
   dependencies:
@@ -5247,7 +5247,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@taquito/michelson-encoder@npm:^20.0.0":
+"@taquito/michelson-encoder@npm:^20.0.0, @taquito/michelson-encoder@npm:^20.0.1":
   version: 20.0.1
   resolution: "@taquito/michelson-encoder@npm:20.0.1"
   dependencies:
@@ -5308,6 +5308,23 @@ __metadata:
     bignumber.js: "npm:^9.1.2"
     rxjs: "npm:^7.8.1"
   checksum: 10/985f9442e952d764d07555d20f274e650447488186eea4754d1993d78a820350cac2cbf482edeba8efe58590f75f0288c28478aa96001b4dc40d9fc62c605792
+  languageName: node
+  linkType: hard
+
+"@taquito/taquito@npm:^20.0.1":
+  version: 20.0.1
+  resolution: "@taquito/taquito@npm:20.0.1"
+  dependencies:
+    "@taquito/core": "npm:^20.0.1"
+    "@taquito/http-utils": "npm:^20.0.1"
+    "@taquito/local-forging": "npm:^20.0.1"
+    "@taquito/michel-codec": "npm:^20.0.1"
+    "@taquito/michelson-encoder": "npm:^20.0.1"
+    "@taquito/rpc": "npm:^20.0.1"
+    "@taquito/utils": "npm:^20.0.1"
+    bignumber.js: "npm:^9.1.2"
+    rxjs: "npm:^7.8.1"
+  checksum: 10/486f231b3f19c9cc44138fd1624444354a5da6e1bb0b172b1fd115d89880f5828fe115c4eb98067ec886cd229f97755ef310a4ecf5f893703b2bfe3aaf78ece4
   languageName: node
   linkType: hard
 
@@ -6516,7 +6533,7 @@ __metadata:
     "@reduxjs/toolkit": "npm:^2.2.5"
     "@tanstack/react-query": "npm:^5.45.1"
     "@tanstack/react-query-devtools": "npm:^5.45.1"
-    "@taquito/ledger-signer": "npm:^20.0.0"
+    "@taquito/ledger-signer": "npm:^20.0.1"
     "@taquito/michel-codec": "npm:^20.0.0"
     "@taquito/rpc": "npm:^20.0.0"
     "@taquito/signer": "npm:^20.0.0"
@@ -6709,7 +6726,7 @@ __metadata:
     "@reduxjs/toolkit": "npm:^2.2.5"
     "@tanstack/react-query": "npm:^5.45.0"
     "@taquito/beacon-wallet": "npm:^20.0.0"
-    "@taquito/ledger-signer": "npm:^20.0.0"
+    "@taquito/ledger-signer": "npm:^20.0.1"
     "@taquito/michel-codec": "npm:^20.0.0"
     "@taquito/rpc": "npm:^20.0.0"
     "@taquito/signer": "npm:^20.0.0"

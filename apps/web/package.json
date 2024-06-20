@@ -49,7 +49,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@taquito/ledger-signer": "^20.0.0",
+    "@taquito/ledger-signer": "^20.0.1",
     "@taquito/michel-codec": "^20.0.0",
     "@taquito/rpc": "^20.0.0",
     "@taquito/signer": "^20.0.0",
