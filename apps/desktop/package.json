@@ -64,7 +64,7 @@
     "@taquito/michel-codec": "^20.0.0",
     "@taquito/rpc": "^20.0.0",
     "@taquito/signer": "^20.0.0",
-    "@taquito/taquito": "20.0.0",
+    "@taquito/taquito": "20.0.1",
     "@taquito/utils": "^20.0.0",
     "@testing-library/dom": "^10.1.0",
     "@testing-library/jest-dom": "6.4.6",

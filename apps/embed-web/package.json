@@ -24,7 +24,7 @@
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@taquito/signer": "^20.0.0",
-    "@taquito/taquito": "20.0.0",
+    "@taquito/taquito": "20.0.1",
     "@taquito/utils": "^20.0.0",
     "@testing-library/dom": "^10.1.0",
     "@testing-library/jest-dom": "6.4.6",
