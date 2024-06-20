@@ -32,18 +32,8 @@ export const useSignOperationModal = () => {
       </Center>
     ),
     onOpen: (operations: PartialTezosOperation[]) => {
-      // TODO: if (isValid(operations)) {
-      // TODO: get fee
       setOperations(operations);
       onOpen();
     },
   };
 };
-
-// TODO: updated to validate all types of operations
-/*const isValid = (operations: SupportedPartialOperations[]): boolean => {
-  operations.forEach(operation => {
-    // TODO: check that required fields are present
-  });
-  return true;
-}; */

@@ -1,5 +1,3 @@
-import { resolve } from "path";
-
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import { nodePolyfills } from "vite-plugin-node-polyfills";
@@ -23,13 +21,6 @@ export default defineConfig({
       // Node.js global to browser globalThis
       define: {
         global: "globalThis",
-      },
-    },
-  },
-  build: {
-    rollupOptions: {
-      input: {
-        embed: resolve(import.meta.dirname, "index.html"),
       },
     },
   },
