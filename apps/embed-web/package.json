@@ -23,7 +23,7 @@
     "@chakra-ui/system": "^2.6.2",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
-    "@taquito/signer": "^20.0.0",
+    "@taquito/signer": "^20.0.1",
     "@taquito/taquito": "20.0.0",
     "@taquito/utils": "^20.0.0",
     "@testing-library/dom": "^10.1.0",
