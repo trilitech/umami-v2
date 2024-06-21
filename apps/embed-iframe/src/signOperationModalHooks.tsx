@@ -1,4 +1,4 @@
-import { type PartialTezosOperation } from "@airgap/beacon-sdk";
+import { type PartialTezosOperation } from "@airgap/beacon-types";
 import { Center, Modal, ModalCloseButton, ModalContent, useDisclosure } from "@chakra-ui/react";
 import { useState } from "react";
 

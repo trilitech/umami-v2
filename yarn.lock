@@ -19,26 +19,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@airgap/beacon-blockchain-substrate@npm:4.2.2":
-  version: 4.2.2
-  resolution: "@airgap/beacon-blockchain-substrate@npm:4.2.2"
-  dependencies:
-    "@airgap/beacon-types": "npm:4.2.2"
-    "@airgap/beacon-ui": "npm:4.2.2"
-  checksum: 10/9b5e2660fda700360a13459dd9795409f8b901e472254b54afe70c83deb3376a7b1c8b94d554da14282938887c6d29bbbe3008f83bc458d1c3beb5e3511a6d17
-  languageName: node
-  linkType: hard
-
-"@airgap/beacon-blockchain-tezos@npm:4.2.2":
-  version: 4.2.2
-  resolution: "@airgap/beacon-blockchain-tezos@npm:4.2.2"
-  dependencies:
-    "@airgap/beacon-types": "npm:4.2.2"
-    "@airgap/beacon-ui": "npm:4.2.2"
-  checksum: 10/2ae35fb1177f93cfcec9f873e5e75749130b160da6c95cbfcdc9c879270c7c3f186a16426d5995aee4e3c396a6b7daa126fcdacbcc16582a487a2455365684e6
-  languageName: node
-  linkType: hard
-
 "@airgap/beacon-core@npm:4.2.2":
   version: 4.2.2
   resolution: "@airgap/beacon-core@npm:4.2.2"
@@ -54,7 +34,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@airgap/beacon-dapp@npm:4.2.2, @airgap/beacon-dapp@npm:^4.2.2":
+"@airgap/beacon-dapp@npm:^4.2.2":
   version: 4.2.2
   resolution: "@airgap/beacon-dapp@npm:4.2.2"
   dependencies:
@@ -64,24 +44,6 @@ __metadata:
     "@airgap/beacon-transport-walletconnect": "npm:4.2.2"
     "@airgap/beacon-ui": "npm:4.2.2"
   checksum: 10/24613b2dcf1e7237e6a6524d2a8f3796c1575ada1604d2f8d4a735691ad1f68053b5799f8d8f414d2a957fb36116eb58a825e5739c162cd874de811f53332aaa
-  languageName: node
-  linkType: hard
-
-"@airgap/beacon-sdk@npm:^4.2.1":
-  version: 4.2.2
-  resolution: "@airgap/beacon-sdk@npm:4.2.2"
-  dependencies:
-    "@airgap/beacon-blockchain-substrate": "npm:4.2.2"
-    "@airgap/beacon-blockchain-tezos": "npm:4.2.2"
-    "@airgap/beacon-core": "npm:4.2.2"
-    "@airgap/beacon-dapp": "npm:4.2.2"
-    "@airgap/beacon-transport-matrix": "npm:4.2.2"
-    "@airgap/beacon-transport-postmessage": "npm:4.2.2"
-    "@airgap/beacon-types": "npm:4.2.2"
-    "@airgap/beacon-ui": "npm:4.2.2"
-    "@airgap/beacon-utils": "npm:4.2.2"
-    "@airgap/beacon-wallet": "npm:4.2.2"
-  checksum: 10/60522e261a545a88e52964f10c5d7b134b2d6ad0fa6004edc13d5c574647f94e414e19830747a37a034d29350151f33f537d62a600d53d28c9b826ff84025a99
   languageName: node
   linkType: hard
 
@@ -119,7 +81,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@airgap/beacon-types@npm:4.2.2":
+"@airgap/beacon-types@npm:4.2.2, @airgap/beacon-types@npm:^4.2.2":
   version: 4.2.2
   resolution: "@airgap/beacon-types@npm:4.2.2"
   dependencies:
@@ -156,7 +118,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@airgap/beacon-wallet@npm:4.2.2, @airgap/beacon-wallet@npm:^4.2.2":
+"@airgap/beacon-wallet@npm:^4.2.2":
   version: 4.2.2
   resolution: "@airgap/beacon-wallet@npm:4.2.2"
   dependencies:
@@ -6631,11 +6593,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@umami/embed-web@workspace:apps/embed-web":
+"@umami/embed-iframe@workspace:apps/embed-iframe":
   version: 0.0.0-use.local
-  resolution: "@umami/embed-web@workspace:apps/embed-web"
+  resolution: "@umami/embed-iframe@workspace:apps/embed-iframe"
   dependencies:
-    "@airgap/beacon-sdk": "npm:^4.2.1"
+    "@airgap/beacon-types": "npm:^4.2.2"
     "@babel/core": "npm:^7.24.7"
     "@babel/preset-env": "npm:^7.24.7"
     "@babel/preset-react": "npm:^7.24.7"
