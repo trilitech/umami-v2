@@ -1,4 +1,4 @@
-import { type PartialTezosOperation, TezosOperationType } from "@airgap/beacon-sdk";
+import { type PartialTezosOperation, TezosOperationType } from "@airgap/beacon-types";
 import {
   Accordion,
   AccordionButton,
