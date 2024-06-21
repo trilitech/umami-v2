@@ -2,7 +2,7 @@ services:
   db:
     container_name: "tzkt-db-${CUCUMBER_WORKER_ID:-0}"
     restart: always
-    image: postgres:13
+    image: postgres:16
     healthcheck:
       test: pg_isready -U ${POSTGRES_USER:-tzkt} -d ${POSTGRES_DB:-tzkt_db}
       interval: 1s
@@ -16,12 +16,11 @@ services:
   tezos_node:
     container_name: "tezos-node-${CUCUMBER_WORKER_ID:-0}"
     restart: always
-    image: ghcr.io/tez-capital/tezbox:tezos-v20.0
-    command: parisbox
+    image: ghcr.io/tez-capital/tezbox:tezos-v20.1
     environment:
       - USER=root
     volumes:
-      - ./sandbox-override-parameters.hjson:/tezbox/overrides/protocols/PtParisB/sandbox-parameters.hjson
+      - ./sandbox-override-parameters.hjson:/tezbox/overrides/protocols/PsParisC/sandbox-parameters.hjson
 
   proxy:
     container_name: "tezos-node-proxy-${CUCUMBER_WORKER_ID:-0}"
@@ -35,7 +34,7 @@ services:
   sync:
     container_name: "tzkt-sync-${CUCUMBER_WORKER_ID:-0}"
     restart: always
-    image: ${TZKT_SYNC_IMAGE:-serjonya/tzkt-sync:1.14.1}
+    image: ${TZKT_SYNC_IMAGE:-serjonya/tzkt-sync:1.14.3}
     environment:
       ConnectionStrings__DefaultConnection: host=db;port=5432;database=${POSTGRES_DB:-tzkt_db};username=${POSTGRES_USER:-tzkt};password=${POSTGRES_PASSWORD:-qwerty};command timeout=${COMMAND_TIMEOUT:-600};
       Kestrel__Endpoints__Http__Url: http://0.0.0.0:5001
@@ -49,7 +48,7 @@ services:
   api:
     container_name: "tzkt-api-${CUCUMBER_WORKER_ID:-0}"
     restart: always
-    image: ${TZKT_API_IMAGE:-serjonya/tzkt-api:1.14.1}
+    image: ${TZKT_API_IMAGE:-serjonya/tzkt-api:1.14.3}
     depends_on:
       sync:
         condition: service_started
@@ -61,7 +60,7 @@ services:
       ResponseCache__CacheSize: 0
     healthcheck:
       # check that Alice account has received initial 50000 tez
-      test: curl -f http://localhost:5000/v1/accounts/tz1VSUr8wwNhLAzempoch5d6hLRiTh8Cjcjb | grep -c 50000000000
+      test: curl -f http://localhost:5000/v1/accounts/tz1VSUr8wwNhLAzempoch5d6hLRiTh8Cjcjb | grep -cE '"balance":(50000|49999)'
       interval: 1s
       timeout: 1s
       retries: 100

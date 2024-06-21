@@ -1,5 +1,6 @@
 import { type DataTable, Given, Then, When } from "@cucumber/cucumber";
 import { expect } from "@playwright/test";
+import { minutesToMilliseconds } from "date-fns";
 
 import { type CustomWorld } from "./world";
 import { DEFAULT_ACCOUNTS } from "../constants";
@@ -50,14 +51,16 @@ When("I undelegate", async function (this: CustomWorld) {
 
 When(
   "I wait until {string} has no pending staking parameters",
-  function (this: CustomWorld, baker: string) {
+  { timeout: minutesToMilliseconds(2) },
+  async function (this: CustomWorld, baker: string) {
     const bakerAddress = DEFAULT_ACCOUNTS[baker].pkh;
     const command =
       "exec -it tezos_node octez-client rpc get " +
       `chains/main/blocks/head/context/delegates/${bakerAddress}/pending_staking_parameters`;
 
     while (JSON.parse(runDockerCommand(command, "pipe")).length) {
-      continue;
+      // eslint-disable-next-line playwright/no-wait-for-timeout
+      await this.page.waitForTimeout(5000);
     }
   }
 );
