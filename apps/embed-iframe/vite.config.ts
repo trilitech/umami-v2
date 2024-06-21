@@ -3,7 +3,6 @@ import { defineConfig } from "vite";
 import { nodePolyfills } from "vite-plugin-node-polyfills";
 import svgr from "vite-plugin-svgr";
 
-// eslint-disable-next-line import/no-unused-modules
 export default defineConfig({
   base: "./",
   plugins: [

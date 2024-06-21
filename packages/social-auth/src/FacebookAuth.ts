@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import { Auth } from "./Auth";
 import type { IDP } from "./types";
 

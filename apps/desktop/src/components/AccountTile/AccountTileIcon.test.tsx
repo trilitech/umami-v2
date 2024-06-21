@@ -1,5 +1,6 @@
+import { type IDP } from "@umami/social-auth";
+
 import { AccountTileIcon } from "./AccountTileIcon";
-import { type IDP } from "../../auth";
 import {
   mockLedgerAccount,
   mockMnemonicAccount,

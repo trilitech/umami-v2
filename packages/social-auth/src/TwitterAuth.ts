@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import { Auth } from "./Auth";
 import { JWT_AUTH_DOMAIN } from "./constants";
 import type { IDP } from "./types";

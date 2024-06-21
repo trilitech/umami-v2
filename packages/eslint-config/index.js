@@ -104,6 +104,7 @@ module.exports = {
     "@stylistic/quotes": ["warn", "double", { avoidEscape: true }],
     "deprecation/deprecation": "warn",
     "import/no-unused-modules": ["warn", { unusedExports: true }],
+    "import/no-unresolved": "off",
     "prefer-const": "warn",
     "@typescript-eslint/require-await": "warn",
     "@typescript-eslint/no-floating-promises": "warn",
@@ -140,5 +141,11 @@ module.exports = {
         "playwright/no-standalone-expect": "off",
       },
     },
+    {
+      files: "vite.config.ts",
+      rules: {
+        "import/no-unused-modules": "off",
+      }
+    }
   ],
 };

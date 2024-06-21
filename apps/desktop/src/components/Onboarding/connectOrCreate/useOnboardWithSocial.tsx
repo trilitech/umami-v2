@@ -1,8 +1,8 @@
 import { useToast } from "@chakra-ui/react";
+import * as Auth from "@umami/social-auth";
 import { minutesToMilliseconds } from "date-fns";
 import { useCallback } from "react";
 
-import * as Auth from "../../../auth";
 import { useRestoreSocial } from "../../../utils/hooks/setAccountDataHooks";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
 import { getPublicKeyPairFromSk } from "../../../utils/tezos";

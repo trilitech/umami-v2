@@ -1,3 +1,4 @@
+import { type IDP } from "@umami/social-auth";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 
@@ -10,7 +11,6 @@ import {
 import { useGetNextAvailableAccountLabels } from "./labelsHooks";
 import { useSelectedNetwork } from "./networkHooks";
 import { useRemoveDependenciesAndMultisigs } from "./removeAccountDependenciesHooks";
-import { type IDP } from "../../auth";
 import {
   type ImplicitAccount,
   type LedgerAccount,

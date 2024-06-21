@@ -1,7 +1,7 @@
 import { type MichelsonV1Expression } from "@taquito/rpc";
 import { type DelegationOperation } from "@tzkt/sdk-api";
+import { type IDP } from "@umami/social-auth";
 
-import { type IDP } from "../auth";
 import {
   type Account,
   type ImplicitAccount,

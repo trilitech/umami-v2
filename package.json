@@ -24,6 +24,7 @@
   },
   "devDependencies": {
     "jest": "^29.7.0",
+    "tsup": "^8.1.0",
     "turbo": "^2.0.4"
   }
 }
