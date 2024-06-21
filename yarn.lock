@@ -2774,7 +2774,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@chakra-ui/theme-tools@npm:2.1.2":
+"@chakra-ui/theme-tools@npm:2.1.2, @chakra-ui/theme-tools@npm:^2.1.2":
   version: 2.1.2
   resolution: "@chakra-ui/theme-tools@npm:2.1.2"
   dependencies:
@@ -6889,6 +6889,7 @@ __metadata:
     "@chakra-ui/react": "npm:^2.8.2"
     "@chakra-ui/styled-system": "npm:2.9.2"
     "@chakra-ui/system": "npm:^2.6.2"
+    "@chakra-ui/theme-tools": "npm:^2.1.2"
     "@emotion/react": "npm:^11.11.4"
     "@emotion/styled": "npm:^11.11.5"
     "@reduxjs/toolkit": "npm:^2.2.5"

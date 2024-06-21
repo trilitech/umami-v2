@@ -3,9 +3,18 @@ body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-image: url("./assets/background_light.svg"),
-    linear-gradient(67deg, rgba(226, 232, 240, 0) 0%, #e2e8f0 100%) !important;
   padding: 20px 46px 0;
+  position: relative;
+}
+
+body:before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100vh;
 }
 
 code {

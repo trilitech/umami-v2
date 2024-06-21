@@ -1,15 +1,7 @@
 import { extendTheme } from "@chakra-ui/react";
+import { mode } from "@chakra-ui/theme-tools";
 
-import colors from "./colors";
-import { buttonTheme } from "./theme/button";
-import { cardTheme } from "./theme/card";
-import { checkboxTheme } from "./theme/checkbox";
-import { drawerTheme } from "./theme/drawer";
-import { listTheme } from "./theme/list";
-import { modalTheme } from "./theme/modal";
-import { radioTheme } from "./theme/radio";
-import { switchTheme } from "./theme/switch";
-import { tabsTheme } from "./theme/tabs";
+import { dark, light } from "./colors";
 
 const config = {
   initialColorMode: "light",
@@ -50,14 +42,16 @@ const sizes = {
 };
 
 const theme = extendTheme({
+  // semanticTokens: {
+  //   colors: {
+  //     text: {
+  //       default: "green",
+  //       _dark: "red",
+  //     },
+  //   },
+  // },
   components: {
-    Card: cardTheme,
-    Tabs: tabsTheme,
     Text: {
-      baseStyle: {
-        fontWeight: "400",
-        fontFamily: "Inter",
-      },
       sizes,
     },
     Heading: {
@@ -67,31 +61,39 @@ const theme = extendTheme({
       },
       sizes,
     },
-    Checkbox: checkboxTheme,
-    Input: {
+    Card: {
+      // container: {
+      baseStyle: {
+        container: {
+          bg: "var(--chakra-colors-white)",
+          boxShadow: "2px 4px 12px 0px rgba(45, 55, 72, 0.05)",
+        },
+      },
+      // },
+    },
+    Input: props => ({
       sizes: { md: { field: { height: "48px" } } },
       defaultProps: { variant: "filled" },
       variants: {
         filled: {
           field: {
-            bg: colors.grey[800],
+            bg: mode(light.grey[800], dark.grey[800])(props),
             border: "1px solid",
-            borderColor: colors.grey[500],
+            borderColor: mode(light.grey[500], dark.grey[500])(props),
             _invalid: {
-              borderColor: colors.red,
+              borderColor: light.red,
             },
             _hover: {
-              bg: colors.grey[800],
+              bg: mode(light.grey[800], dark.grey[800])(props),
             },
             _focusVisible: {
-              bg: colors.grey[800],
-              borderColor: colors.grey[400],
+              bg: mode(light.grey[800], dark.grey[800])(props),
+              borderColor: mode(light.grey[400], dark.grey[400])(props),
             },
           },
         },
       },
-    },
-    Button: buttonTheme,
+    }),
     FormLabel: {
       baseStyle: {
         fontWeight: "600",
@@ -100,26 +102,66 @@ const theme = extendTheme({
       },
       sizes,
     },
-    Modal: modalTheme,
-    Drawer: drawerTheme,
-    Radio: radioTheme,
-    List: listTheme,
-    Switch: switchTheme,
+    Tabs: {
+      baseStyle: {
+        tab: {
+          color: "var(--chakra-colors-gray-500)",
+          _selected: {
+            bg: "var(--chakra-colors-gray-200)",
+            color: "var(--chakra-colors-gray-900)",
+          },
+        },
+      },
+    },
+    Switch: {
+      baseStyle: props => ({
+        track: {
+          backgroundColor: mode(light.grey[300], dark.grey[300])(props),
+          _checked: {
+            backgroundColor: mode(light.grey[400], dark.grey[400])(props),
+          },
+        },
+        thumb: {
+          backgroundColor: mode(light.grey.white, dark.grey.white)(props),
+        },
+      }),
+    },
+    Link: {
+      baseStyle: props => ({
+        color: mode(light.grey[600], dark.grey[600])(props),
+      }),
+    },
   },
   config,
   colors: {
-    umami: colors,
     text: {
-      light: colors.grey[800],
-      dark: colors.grey[400],
+      default: "green",
     },
   },
-  // styles: {
-  //   global: {
-  //     body: {
-  //       color: colors.grey.white,
-  //     },
-  //   },
-  // },
+  styles: {
+    global: props => ({
+      body: {
+        bg: mode(light.bg, dark.bg)(props),
+        bgImage: mode(light.bgGradient, dark.bgGradient)(props),
+        _before: {
+          bg: mode(light.bgMaskColor, dark.bgMaskColor)(props),
+          maskImage: "url(src/assets/bg.svg)",
+        },
+      },
+      ":root": {
+        "--chakra-colors-white": mode(light.grey.white, dark.grey.white)(props),
+        "--chakra-colors-gray-50": mode(light.grey[50], dark.grey[50])(props),
+        "--chakra-colors-gray-100": mode(light.grey[100], dark.grey[100])(props),
+        "--chakra-colors-gray-200": mode(light.grey[200], dark.grey[200])(props),
+        "--chakra-colors-gray-300": mode(light.grey[300], dark.grey[300])(props),
+        "--chakra-colors-gray-400": mode(light.grey[400], dark.grey[400])(props),
+        "--chakra-colors-gray-500": mode(light.grey[500], dark.grey[500])(props),
+        "--chakra-colors-gray-600": mode(light.grey[600], dark.grey[600])(props),
+        "--chakra-colors-gray-700": mode(light.grey[700], dark.grey[700])(props),
+        "--chakra-colors-gray-800": mode(light.grey[800], dark.grey[800])(props),
+        "--chakra-colors-gray-900": mode(light.grey[900], dark.grey[900])(props),
+      },
+    }),
+  },
 });
 export default theme;
