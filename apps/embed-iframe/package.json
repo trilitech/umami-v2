@@ -1,5 +1,5 @@
 {
-  "name": "@umami/embed-web",
+  "name": "@umami/embed-iframe",
   "type": "module",
   "scripts": {
     "build": "tsc && vite build",

@@ -6631,9 +6631,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@umami/embed-web@workspace:apps/embed-web":
+"@umami/embed-iframe@workspace:apps/embed-iframe":
   version: 0.0.0-use.local
-  resolution: "@umami/embed-web@workspace:apps/embed-web"
+  resolution: "@umami/embed-iframe@workspace:apps/embed-iframe"
   dependencies:
     "@airgap/beacon-sdk": "npm:^4.2.1"
     "@babel/core": "npm:^7.24.7"
