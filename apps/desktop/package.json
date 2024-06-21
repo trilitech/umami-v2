@@ -142,7 +142,7 @@
     "vite-plugin-node-polyfills": "^0.22.0",
     "zod": "^3.23.8"
   },
-  "packageManager": "yarn@4.3.0",
+  "packageManager": "yarn@4.3.1",
   "dependencies": {
     "electron-updater": "^6.2.1"
   }
