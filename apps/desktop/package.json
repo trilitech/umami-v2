@@ -60,12 +60,12 @@
     "@reduxjs/toolkit": "^2.2.5",
     "@tanstack/react-query": "^5.45.1",
     "@tanstack/react-query-devtools": "^5.45.1",
-    "@taquito/ledger-signer": "^20.0.0",
-    "@taquito/michel-codec": "^20.0.0",
-    "@taquito/rpc": "^20.0.0",
-    "@taquito/signer": "^20.0.0",
-    "@taquito/taquito": "20.0.0",
-    "@taquito/utils": "^20.0.0",
+    "@taquito/ledger-signer": "^20.0.1",
+    "@taquito/michel-codec": "^20.0.1",
+    "@taquito/rpc": "^20.0.1",
+    "@taquito/signer": "^20.0.1",
+    "@taquito/taquito": "20.0.1",
+    "@taquito/utils": "^20.0.1",
     "@testing-library/dom": "^10.1.0",
     "@testing-library/jest-dom": "6.4.6",
     "@testing-library/react": "14.3.1",
@@ -145,9 +145,5 @@
   "packageManager": "yarn@4.3.0",
   "dependencies": {
     "electron-updater": "^6.2.1"
-  },
-  "resolutions": {
-    "jsdom": "^23.0.1",
-    "@types/jsdom": "^21.1.6"
   }
 }
