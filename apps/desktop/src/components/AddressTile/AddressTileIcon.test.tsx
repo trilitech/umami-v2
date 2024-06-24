@@ -1,6 +1,7 @@
+import type { IDP } from "@umami/social-auth";
+
 import { AddressTileIcon } from "./AddressTileIcon";
 import { type AddressKind } from "./types";
-import type { IDP } from "../../auth";
 import {
   mockImplicitAddress,
   mockLedgerAccount,

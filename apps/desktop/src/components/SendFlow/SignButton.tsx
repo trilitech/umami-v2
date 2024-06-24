@@ -1,10 +1,10 @@
 import { Box, Button, FormControl, useToast } from "@chakra-ui/react";
 import { type TezosToolkit } from "@taquito/taquito";
 import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
+import * as Auth from "@umami/social-auth";
 import type React from "react";
 import { FormProvider, useForm, useFormContext } from "react-hook-form";
 
-import * as Auth from "../../auth";
 import {
   type ImplicitAccount,
   type LedgerAccount,

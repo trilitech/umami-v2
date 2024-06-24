@@ -133,7 +133,7 @@ describe("multisig helpers", () => {
 
     it("transforms api responses into map with data", async () => {
       mockedContractsGet.mockImplementation((...args) => {
-        if (args[1].baseUrl === MAINNET.tzktApiUrl) {
+        if (args[1]!.baseUrl === MAINNET.tzktApiUrl) {
           return Promise.resolve(["pkh1", "pkh3"] as any);
         } else {
           return Promise.resolve(["pkh2"] as any);
@@ -153,7 +153,7 @@ describe("multisig helpers", () => {
 
     it("returns empty map for empty contracts list", async () => {
       mockedContractsGet.mockImplementation((...args) => {
-        if (args[1].baseUrl === MAINNET.tzktApiUrl) {
+        if (args[1]!.baseUrl === MAINNET.tzktApiUrl) {
           return Promise.resolve(["pkh1", "pkh3", "pkh4"] as any);
         } else {
           return Promise.resolve(["pkh2", "pkh5"] as any);

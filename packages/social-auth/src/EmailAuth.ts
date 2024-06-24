@@ -1,24 +1,25 @@
+/* istanbul ignore file */
 import { Auth } from "./Auth";
 import { JWT_AUTH_DOMAIN } from "./constants";
 import type { IDP } from "./types";
 
-export class RedditAuth extends Auth {
-  idpName: IDP = "reddit";
-  clientId = "zyQ9tnKfdg3VNyj6MGhZq4dHbBzbmEvl";
+export class EmailAuth extends Auth {
+  clientId = "LTg6fVsacafGmhv14TZlrWF1EavwQoDZ";
+  idpName: IDP = "email";
 
   override async login() {
     const client = await this.getTorusClient();
 
     return client.triggerAggregateLogin({
-      verifierIdentifier: "tezos-reddit",
+      verifierIdentifier: "tezos-google",
       aggregateVerifierType: "single_id_verifier",
       subVerifierDetailsArray: [
         {
-          verifier: "web-kukai",
+          verifier: "web-kukai-email",
           typeOfLogin: "jwt",
           clientId: this.clientId,
           jwtParams: {
-            connection: "Reddit",
+            connection: "",
             verifierIdField: "name",
             domain: JWT_AUTH_DOMAIN,
           },

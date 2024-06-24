@@ -1,11 +1,11 @@
 /* istanbul ignore file */
 import { Button, FormControl, FormLabel, Input } from "@chakra-ui/react";
 import { RpcClient } from "@taquito/rpc";
+import type { IDP } from "@umami/social-auth";
 import { useForm } from "react-hook-form";
 
 import { ModalContentWrapper } from "./ModalContentWrapper";
 import { WalletPlusIcon } from "../../assets/icons";
-import type { IDP } from "../../auth";
 import { GHOSTNET } from "../../types/Network";
 import {
   defaultDerivationPathTemplate,

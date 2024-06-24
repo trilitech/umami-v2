@@ -1,10 +1,10 @@
+/* istanbul ignore file */
 import { Auth } from "./Auth";
-import { JWT_AUTH_DOMAIN } from "./constants";
 import type { IDP } from "./types";
 
-export class EmailAuth extends Auth {
-  clientId = "LTg6fVsacafGmhv14TZlrWF1EavwQoDZ";
-  idpName: IDP = "email";
+export class GoogleAuth extends Auth {
+  idpName: IDP = "google";
+  clientId = "1070572364808-d31nlkneam5ee6dr0tu28fjjbsdkfta5.apps.googleusercontent.com";
 
   override async login() {
     const client = await this.getTorusClient();
@@ -14,14 +14,9 @@ export class EmailAuth extends Auth {
       aggregateVerifierType: "single_id_verifier",
       subVerifierDetailsArray: [
         {
-          verifier: "web-kukai-email",
-          typeOfLogin: "jwt",
           clientId: this.clientId,
-          jwtParams: {
-            connection: "",
-            verifierIdField: "name",
-            domain: JWT_AUTH_DOMAIN,
-          },
+          typeOfLogin: "google",
+          verifier: "umami",
         },
       ],
     });

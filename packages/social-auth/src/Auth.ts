@@ -18,6 +18,7 @@ export abstract class Auth {
   abstract idpName: IDP;
   abstract clientId: string;
 
+  /* istanbul ignore next */
   protected async getTorusClient(): Promise<CustomAuth> {
     const torus = new CustomAuth({
       web3AuthClientId: WEB3_AUTH_CLIENT_ID,

@@ -1,7 +1,7 @@
 import { type Curves } from "@taquito/signer";
+import { type IDP } from "@umami/social-auth";
 
 import { type ImplicitAddress } from "./Address";
-import { type IDP } from "../auth";
 import { type Multisig } from "../utils/multisig/types";
 
 export type SocialAccount = {
