@@ -1,16 +1,13 @@
-import { Box, Button, Center, Flex, Heading, Text, VStack } from "@chakra-ui/react";
+import { Box, Center, Flex, Heading, Spinner, Text, VStack } from "@chakra-ui/react";
 import { InMemorySigner } from "@taquito/signer";
 import * as Auth from "@umami/social-auth";
 import { useState } from "react";
 
-import { FacebookLogoIcon } from "./assets/icons/FacebookLogo";
-import { GoogleLogoIcon } from "./assets/icons/GoogleLogo";
-import { TezosLogoIcon } from "./assets/icons/TezosLogo";
-import { TwitterLogoIcon } from "./assets/icons/TwitterLogo";
-import { UmamiLogoIcon } from "./assets/icons/UmamiLogo";
 import colors from "./imported/style/colors";
 import { getErrorContext } from "./imported/utils/getErrorContext";
+import { LoginButtonComponent } from "./LoginButtonComponent";
 import { sendLoginErrorResponse, sendResponse } from "./utils";
+import { TezosLogoIcon, UmamiLogoIcon } from "./assets/icons";
 
 export const LoginModalContent: React.FC<{ closeModal: () => void }> = ({ closeModal }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -43,55 +40,30 @@ export const LoginModalContent: React.FC<{ closeModal: () => void }> = ({ closeM
         <UmamiLogoIcon />
       </Box>
       <Heading marginBottom="30px" textColor={colors.white} fontSize="16px" lineHeight="22px">
-        Choose Provider
+        Continue With
       </Heading>
-      <VStack width="100%" spacing="10px">
-        <Button width="100%" isLoading={isLoading} onClick={() => onLoginClick("google")} size="lg">
-          <Flex alignItems="center" justifyContent="flex-start" flex={1}>
-            <GoogleLogoIcon position="absolute" />
-            <Heading margin="auto" textColor={colors.white} fontSize="14px" lineHeight="18px">
-              Continue with Google
-            </Heading>
+      <Box position="relative" width="100%">
+        <VStack width="100%" spacing="10px">
+          <LoginButtonComponent loginType="google" onClick={() => onLoginClick("google")} />
+          <LoginButtonComponent loginType="facebook" onClick={() => onLoginClick("facebook")} />
+          <LoginButtonComponent loginType="twitter" onClick={() => onLoginClick("twitter")} />
+          <LoginButtonComponent loginType="reddit" onClick={() => onLoginClick("reddit")} />
+        </VStack>
+        {isLoading && (
+          <Flex
+            position="absolute"
+            top="0"
+            right="0"
+            bottom="0"
+            left="0"
+            alignItems="center"
+            justifyContent="center"
+            backgroundColor="rgba(255, 255, 255, 0.8)" // Semi-transparent background
+          >
+            <Spinner size="xl" />
           </Flex>
-        </Button>
-
-        <Button
-          width="100%"
-          isLoading={isLoading}
-          onClick={() => onLoginClick("facebook")}
-          size="lg"
-        >
-          <Flex alignItems="center" justifyContent="flex-start" flex={1}>
-            <FacebookLogoIcon position="absolute" />
-            <Heading margin="auto" textColor={colors.white} fontSize="14px" lineHeight="18px">
-              Continue with Facebook
-            </Heading>
-          </Flex>
-        </Button>
-
-        <Button
-          width="100%"
-          isLoading={isLoading}
-          onClick={() => onLoginClick("twitter")}
-          size="lg"
-        >
-          <Flex alignItems="center" justifyContent="flex-start" flex={1}>
-            <TwitterLogoIcon position="absolute" />
-            <Heading margin="auto" textColor={colors.white} fontSize="14px" lineHeight="18px">
-              Continue with X
-            </Heading>
-          </Flex>
-        </Button>
-
-        <Button width="100%" isLoading={isLoading} onClick={() => onLoginClick("reddit")} size="lg">
-          <Flex alignItems="center" justifyContent="flex-start" flex={1}>
-            <GoogleLogoIcon position="absolute" />
-            <Heading margin="auto" textColor={colors.white} fontSize="14px" lineHeight="18px">
-              Continue with Reddit
-            </Heading>
-          </Flex>
-        </Button>
-      </VStack>
+        )}
+      </Box>
 
       <Center marginTop="30px">
         <Text marginRight="10px" color={colors.gray[450]} fontSize="xs" lineHeight="14px">
