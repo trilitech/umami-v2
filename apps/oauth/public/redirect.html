@@ -214,7 +214,21 @@
           } catch (e) {
             console.error(e);
           }
-          if (instanceParams.redirectToOpener) {
+          if (instanceParams.redirectToOpener === "embed") {
+            // communicate to back to umami-embed-iframe
+            window.opener.postMessage(
+              {
+                channel: "redirect_channel_" + instanceParams.instanceId,
+                data: {
+                  instanceParams: instanceParams,
+                  hashParams: hashParams,
+                  queryParams: queryParams,
+                },
+                error: error,
+              },
+              "https://umami-embed-iframe.vercel.app"
+            );
+          } else if (instanceParams.redirectToOpener) {
             // communicate back to umami
             let msg = {
               channel: "redirect_channel_" + instanceParams.instanceId,
