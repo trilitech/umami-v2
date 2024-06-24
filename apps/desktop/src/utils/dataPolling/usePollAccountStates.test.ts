@@ -1,11 +1,11 @@
-import { usePollAccountStates } from "./usePollAccountStates";
-import { mockImplicitAddress } from "../../mocks/factories";
-import { renderHook, waitFor } from "../../mocks/testUtils";
-import { rawAccountFixture } from "../../mocks/tzktResponse";
-import { store } from "../redux/store";
-import { getAccounts } from "../tezos";
+import { mockImplicitAddress, rawAccountFixture } from "@umami/test-utils";
+import { getAccounts } from "@umami/tzkt";
 
-jest.mock("../tezos");
+import { usePollAccountStates } from "./usePollAccountStates";
+import { renderHook, waitFor } from "../../mocks/testUtils";
+import { store } from "../redux/store";
+
+jest.mock("@umami/tzkt");
 
 describe("usePollAccountStates", () => {
   it("fetches tez balances and updates the state", async () => {

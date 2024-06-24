@@ -1,12 +1,8 @@
 import { NetworkType } from "@airgap/beacon-wallet";
+import { mockMnemonicAccount, mockSecretKeyAccount, mockSocialAccount } from "@umami/test-utils";
+import { type RawPkh } from "@umami/tezos";
 
 import { beaconActions } from "./beaconSlice";
-import {
-  mockMnemonicAccount,
-  mockSecretKeyAccount,
-  mockSocialAccount,
-} from "../../../mocks/factories";
-import { type RawPkh } from "../../../types/Address";
 import { store } from "../store";
 
 describe("Beacon slice", () => {

@@ -1,5 +1,6 @@
+import { mockFA12Token, mockFA2Token, mockImplicitAccount } from "@umami/test-utils";
+
 import { AccountTokens } from "./AccountTokens";
-import { mockFA12Token, mockFA2Token, mockImplicitAccount } from "../../mocks/factories";
 import { render, screen } from "../../mocks/testUtils";
 
 describe("<AccountTokens />", () => {

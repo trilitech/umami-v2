@@ -1,6 +1,7 @@
+import { mockContractContact } from "@umami/test-utils";
+
 import { contactsActions } from "./contactsSlice";
 import { contact1, contact2 } from "../../../mocks/contacts";
-import { mockContractContact } from "../../../mocks/factories";
 import { store } from "../store";
 const { remove } = contactsActions;
 

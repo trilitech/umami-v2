@@ -1,8 +1,9 @@
+import { mockImplicitAddress } from "@umami/test-utils";
+import { GHOSTNET } from "@umami/tezos";
+
 import { AddressPillText } from "./AddressPillText";
 import { mockFA2Address } from "../../mocks/addressKind";
-import { mockImplicitAddress } from "../../mocks/factories";
 import { render, screen } from "../../mocks/testUtils";
-import { GHOSTNET } from "../../types/Network";
 import { formatPkh } from "../../utils/format";
 import { contactsActions } from "../../utils/redux/slices/contactsSlice";
 import { networksActions } from "../../utils/redux/slices/networks";

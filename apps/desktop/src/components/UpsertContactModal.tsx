@@ -10,18 +10,18 @@ import {
   ModalFooter,
   ModalHeader,
 } from "@chakra-ui/react";
+import { type Contact } from "@umami/core";
+import { getNetworksForContracts } from "@umami/multisig";
+import { isValidContractPkh } from "@umami/tezos";
 import { type FC, useContext, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 
 import { DynamicModalContext } from "./DynamicModal";
 import { FormErrorMessage } from "./FormErrorMessage";
-import { isValidContractPkh } from "../types/Address";
-import { type Contact } from "../types/Contact";
 import { useValidateNewContactPkh } from "../utils/hooks/contactsHooks";
 import { useValidateName } from "../utils/hooks/labelsHooks";
 import { useAvailableNetworks } from "../utils/hooks/networkHooks";
 import { useAsyncActionHandler } from "../utils/hooks/useAsyncActionHandler";
-import { getNetworksForContracts } from "../utils/multisig/helpers";
 import { useAppDispatch } from "../utils/redux/hooks";
 import { contactsActions } from "../utils/redux/slices/contactsSlice";
 

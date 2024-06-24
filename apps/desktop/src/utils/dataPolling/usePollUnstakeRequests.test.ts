@@ -1,10 +1,11 @@
+import { mockImplicitAddress } from "@umami/test-utils";
+import { getPendingUnstakeRequests } from "@umami/tzkt";
+
 import { usePollUnstakeRequests } from "./usePollUnstakeRequests";
-import { mockImplicitAddress } from "../../mocks/factories";
 import { renderHook, waitFor } from "../../mocks/testUtils";
 import { store } from "../redux/store";
-import { getPendingUnstakeRequests } from "../tezos";
 
-jest.mock("../tezos");
+jest.mock("@umami/tzkt");
 
 describe("usePollUnstakeRequests", () => {
   it("fetches the latest unstake requests for all accounts and updates the state", async () => {

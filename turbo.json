@@ -32,14 +32,14 @@
         "CI"
       ],
       "dependsOn": [
-        "@umami/jest-config#build"
+        "^build"
       ]
     },
     "test:watch": {
       "persistent": true,
       "cache": false,
       "dependsOn": [
-        "@umami/jest-config#build"
+        "^build"
       ]
     },
     "format": {

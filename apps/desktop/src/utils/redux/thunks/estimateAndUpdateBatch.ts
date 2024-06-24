@@ -1,7 +1,7 @@
 import { type Action, type ThunkAction } from "@reduxjs/toolkit";
+import { type Network } from "@umami/tezos";
 
 import { type AccountOperations } from "../../../types/AccountOperations";
-import { type Network } from "../../../types/Network";
 import { estimate } from "../../tezos";
 import { batchesActions } from "../slices/batches";
 import { type RootState } from "../store";

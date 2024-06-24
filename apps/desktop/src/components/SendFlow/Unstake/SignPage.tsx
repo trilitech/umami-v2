@@ -1,7 +1,7 @@
 import { Flex, FormLabel, ModalBody, ModalContent, ModalFooter } from "@chakra-ui/react";
+import { type Unstake } from "@umami/core";
 import { FormProvider } from "react-hook-form";
 
-import { type Unstake } from "../../../types/Operation";
 import { AddressTile } from "../../AddressTile/AddressTile";
 import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";
 import { TezTile } from "../../AssetTiles/TezTile";

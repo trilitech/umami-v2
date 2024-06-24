@@ -1,8 +1,8 @@
+import { mockImplicitAccount, mockMnemonicAccount, rawAccountFixture } from "@umami/test-utils";
+
 import { AccountSmallTile } from "./AccountSmallTile";
-import { mockImplicitAccount, mockMnemonicAccount } from "../../mocks/factories";
 import { addAccount } from "../../mocks/helpers";
 import { render, screen } from "../../mocks/testUtils";
-import { rawAccountFixture } from "../../mocks/tzktResponse";
 import { formatPkh } from "../../utils/format";
 import { assetsActions } from "../../utils/redux/slices/assetsSlice";
 import { store } from "../../utils/redux/store";

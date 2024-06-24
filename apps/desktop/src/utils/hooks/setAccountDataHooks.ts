@@ -1,4 +1,12 @@
+import {
+  type ImplicitAccount,
+  type LedgerAccount,
+  type MnemonicAccount,
+  type SecretKeyAccount,
+  type SocialAccount,
+} from "@umami/core";
 import { type IDP } from "@umami/social-auth";
+import { makeDerivationPath } from "@umami/tezos";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 
@@ -11,14 +19,6 @@ import {
 import { useGetNextAvailableAccountLabels } from "./labelsHooks";
 import { useSelectedNetwork } from "./networkHooks";
 import { useRemoveDependenciesAndMultisigs } from "./removeAccountDependenciesHooks";
-import {
-  type ImplicitAccount,
-  type LedgerAccount,
-  type MnemonicAccount,
-  type SecretKeyAccount,
-  type SocialAccount,
-} from "../../types/Account";
-import { makeDerivationPath } from "../account/derivationPathUtils";
 import { makeMnemonicAccount } from "../account/makeMnemonicAccount";
 import { decrypt, encrypt } from "../crypto/AES";
 import { useRestoreRevealedMnemonicAccounts } from "../mnemonic";

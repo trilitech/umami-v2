@@ -1,19 +1,18 @@
 import { Box, Button } from "@chakra-ui/react";
 import { type TezosToolkit } from "@taquito/taquito";
+import { type Account, type Operation } from "@umami/core";
+import { type RawPkh } from "@umami/tezos";
 import { repeat } from "lodash";
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { SuccessStep } from "./SuccessStep";
-import { type Account } from "../../types/Account";
 import {
   type AccountOperations,
   type EstimatedAccountOperations,
   makeAccountOperations,
   totalFee,
 } from "../../types/AccountOperations";
-import { type RawPkh } from "../../types/Address";
-import { type Operation } from "../../types/Operation";
 import { useClearBatch } from "../../utils/hooks/batchesHooks";
 import {
   useGetBestSignerForAccount,

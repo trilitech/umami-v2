@@ -1,8 +1,8 @@
 import { type NetworkType } from "@airgap/beacon-wallet";
+import { type RawPkh } from "@umami/tezos";
 import { uniq } from "lodash";
 import { useDispatch } from "react-redux";
 
-import { type RawPkh } from "../../types/Address";
 import { useAppSelector } from "../redux/hooks";
 import { type DAppConnectionInfo, beaconSlice } from "../redux/slices/beaconSlice";
 

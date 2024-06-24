@@ -1,7 +1,7 @@
+import { mockMnemonicAccount } from "@umami/test-utils";
 import { useSearchParams } from "react-router-dom";
 
 import { useAccountsFilter } from "./useAccountsFilter";
-import { mockMnemonicAccount } from "../mocks/factories";
 import { addAccount } from "../mocks/helpers";
 import { type UserEvent, act, render, renderHook, screen, userEvent } from "../mocks/testUtils";
 

@@ -12,6 +12,8 @@ import {
   useDisclosure,
   useOutsideClick,
 } from "@chakra-ui/react";
+import { type Address, parsePkh } from "@umami/tezos";
+import { type TzktAlias } from "@umami/tzkt";
 import { useRef, useState } from "react";
 
 import { LeftIcon, RightIcon } from "./AddressPillIcon";
@@ -19,7 +21,6 @@ import { type AddressPillMode } from "./AddressPillMode";
 import { AddressPillText } from "./AddressPillText";
 import { useAddressKind } from "./useAddressKind";
 import colors from "../../style/colors";
-import { type Address, type TzktAlias, parsePkh } from "../../types/Address";
 
 export const AddressPill: React.FC<
   { address: Address | TzktAlias; mode?: AddressPillMode } & BoxProps

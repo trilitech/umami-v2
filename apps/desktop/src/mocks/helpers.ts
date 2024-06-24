@@ -1,6 +1,7 @@
-import { type Account } from "../types/Account";
-import { type RawPkh } from "../types/Address";
-import { type Multisig } from "../utils/multisig/types";
+import { type Account } from "@umami/core";
+import { type Multisig } from "@umami/multisig";
+import { type RawPkh } from "@umami/tezos";
+
 import { accountsActions } from "../utils/redux/slices/accountsSlice/accountsSlice";
 import { multisigActions } from "../utils/redux/slices/multisigsSlice";
 import { store } from "../utils/redux/store";

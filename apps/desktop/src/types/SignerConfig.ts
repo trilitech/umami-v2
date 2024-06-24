@@ -1,5 +1,5 @@
-import { type ImplicitAccount, type LedgerAccount } from "./Account";
-import { type Network } from "./Network";
+import { type ImplicitAccount, type LedgerAccount } from "@umami/core";
+import { type Network } from "@umami/tezos";
 
 export type SignerConfig = { network: Network } & (
   | { type: "ledger"; account: LedgerAccount }

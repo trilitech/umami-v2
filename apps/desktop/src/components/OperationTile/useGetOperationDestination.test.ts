@@ -1,5 +1,6 @@
+import { mockImplicitAddress, mockLedgerAccount } from "@umami/test-utils";
+
 import { useGetOperationDestination } from "./useGetOperationDestination";
-import { mockImplicitAddress, mockLedgerAccount } from "../../mocks/factories";
 import { addAccount } from "../../mocks/helpers";
 import { renderHook } from "../../mocks/testUtils";
 

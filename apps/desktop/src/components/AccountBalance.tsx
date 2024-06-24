@@ -1,7 +1,7 @@
 import { Box, type BoxProps, type FlexProps } from "@chakra-ui/react";
+import { type RawPkh } from "@umami/tezos";
 
 import { PrettyNumber } from "./PrettyNumber";
-import { type RawPkh } from "../types/Address";
 import { prettyTezAmount } from "../utils/format";
 import { useGetAccountBalance } from "../utils/hooks/assetsHooks";
 

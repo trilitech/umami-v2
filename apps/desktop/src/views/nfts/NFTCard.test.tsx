@@ -1,8 +1,8 @@
+import { mockImplicitAddress, mockNFT } from "@umami/test-utils";
 import { type PropsWithChildren, useState } from "react";
 
 import { NFTCard } from "./NFTCard";
 import { SelectedNFTContext } from "./SelectedNFTContext";
-import { mockImplicitAddress, mockNFT } from "../../mocks/factories";
 import { act, render, screen, userEvent } from "../../mocks/testUtils";
 import { type NFTWithOwner } from "../../utils/token/utils";
 

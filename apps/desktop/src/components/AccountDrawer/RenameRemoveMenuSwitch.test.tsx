@@ -1,5 +1,6 @@
+import { mockLedgerAccount, mockMnemonicAccount, mockSocialAccount } from "@umami/test-utils";
+
 import { RenameRemoveMenuSwitch } from "./RenameRemoveMenuSwitch";
-import { mockLedgerAccount, mockMnemonicAccount, mockSocialAccount } from "../../mocks/factories";
 import { addAccount } from "../../mocks/helpers";
 import { act, render, screen, userEvent } from "../../mocks/testUtils";
 import { WalletClient } from "../../utils/beacon/WalletClient";

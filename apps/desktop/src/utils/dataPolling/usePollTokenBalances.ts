@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { getTokenBalances } from "@umami/tzkt";
 import { useEffect } from "react";
 
 import { BLOCK_TIME } from "./constants";
@@ -8,7 +9,6 @@ import { useSelectedNetwork } from "../hooks/networkHooks";
 import { useAppDispatch } from "../redux/hooks";
 import { assetsActions } from "../redux/slices/assetsSlice";
 import { tokensActions } from "../redux/slices/tokensSlice";
-import { getTokenBalances } from "../tezos";
 import { useReactQueryErrorHandler } from "../useReactQueryOnError";
 
 export const usePollTokenBalances = () => {

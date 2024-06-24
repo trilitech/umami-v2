@@ -1,21 +1,21 @@
+import { getPendingOperations } from "@umami/multisig";
+import { mockMultisigAccount, pendingOps } from "@umami/test-utils";
+
 import { usePollPendingOperations } from "./usePollPendingOperations";
-import { mockMultisigAccount } from "../../mocks/factories";
 import { addAccount } from "../../mocks/helpers";
-import { pendingOps } from "../../mocks/multisig";
 import { renderHook, waitFor } from "../../mocks/testUtils";
-import { getPendingOperationsForMultisigs } from "../multisig/helpers";
 import { store } from "../redux/store";
 
-jest.mock("../multisig/helpers");
+jest.mock("@umami/multisig");
 
 describe("usePollPendingOperations", () => {
   it("fetches pending operations and updates the state", async () => {
-    jest.mocked(getPendingOperationsForMultisigs).mockResolvedValue(pendingOps);
+    jest.mocked(getPendingOperations).mockResolvedValue(pendingOps);
     addAccount(mockMultisigAccount(0));
 
     renderHook(() => usePollPendingOperations());
 
-    await waitFor(() => expect(getPendingOperationsForMultisigs).toHaveBeenCalledTimes(1));
+    await waitFor(() => expect(getPendingOperations).toHaveBeenCalledTimes(1));
     const bigMapId = pendingOps[0].bigmapId;
     expect(store.getState().multisigs.pendingOperations).toEqual({ [bigMapId]: pendingOps });
   });

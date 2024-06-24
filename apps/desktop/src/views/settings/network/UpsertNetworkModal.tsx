@@ -9,13 +9,13 @@ import {
   ModalFooter,
   ModalHeader,
 } from "@chakra-ui/react";
+import { type Network } from "@umami/tezos";
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 
 import { DynamicModalContext } from "../../../components/DynamicModal";
 import { FormErrorMessage } from "../../../components/FormErrorMessage";
-import { type Network } from "../../../types/Network";
 import { useAvailableNetworks } from "../../../utils/hooks/networkHooks";
 import { networksActions } from "../../../utils/redux/slices/networks";
 

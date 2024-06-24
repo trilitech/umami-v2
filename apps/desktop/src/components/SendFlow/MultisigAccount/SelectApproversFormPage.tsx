@@ -10,16 +10,16 @@ import {
   ModalFooter,
   Text,
 } from "@chakra-ui/react";
+import { type ImplicitAccount } from "@umami/core";
+import { contract, makeStorageJSON } from "@umami/multisig";
+import { isValidImplicitPkh, parsePkh } from "@umami/tezos";
 import ordinal from "ordinal";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 
 import { type FormValues } from "./FormValues";
 import { SignTransactionFormPage } from "./SignTransactionFormPage";
 import { TrashIcon } from "../../../assets/icons";
-import { contract, makeStorageJSON } from "../../../multisig/contract";
 import colors from "../../../style/colors";
-import { type ImplicitAccount } from "../../../types/Account";
-import { isValidImplicitPkh, parsePkh } from "../../../types/Address";
 import { OwnedImplicitAccountsAutocomplete } from "../../AddressAutocomplete";
 import { FormErrorMessage } from "../../FormErrorMessage";
 import { ModalBackButton } from "../../ModalBackButton";

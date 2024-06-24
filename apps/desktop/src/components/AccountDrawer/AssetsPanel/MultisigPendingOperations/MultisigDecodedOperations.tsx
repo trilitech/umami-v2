@@ -8,12 +8,11 @@ import {
   Divider,
   Heading,
 } from "@chakra-ui/react";
+import { type MultisigAccount } from "@umami/core";
+import { UnrecognizedMichelsonError, parseRawMichelson } from "@umami/multisig";
 
 import { MultisigDecodedOperation } from "./MultisigDecodedOperation";
-import { parseRawMichelson } from "../../../../multisig/decode/decodeLambda";
-import { UnrecognizedMichelsonError } from "../../../../multisig/decode/UnrecognizedMichelsonError";
 import colors from "../../../../style/colors";
-import { type MultisigAccount } from "../../../../types/Account";
 import { JsValueWrap } from "../../JsValueWrap";
 
 export const MultisigDecodedOperations: React.FC<{

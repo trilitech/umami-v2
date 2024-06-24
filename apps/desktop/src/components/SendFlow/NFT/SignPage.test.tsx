@@ -1,13 +1,13 @@
 import { Modal } from "@chakra-ui/react";
+import { type NFTBalance } from "@umami/core";
+import { mockImplicitAccount, mockMnemonicAccount, mockNFT } from "@umami/test-utils";
+import { parseContractPkh } from "@umami/tezos";
 
 import { SignPage } from "./SignPage";
 import { executeParams } from "../../../mocks/executeParams";
-import { mockImplicitAccount, mockMnemonicAccount, mockNFT } from "../../../mocks/factories";
 import { addAccount } from "../../../mocks/helpers";
 import { render, screen, waitFor } from "../../../mocks/testUtils";
 import { makeAccountOperations } from "../../../types/AccountOperations";
-import { parseContractPkh } from "../../../types/Address";
-import { type NFTBalance } from "../../../types/TokenBalance";
 import { TEZ } from "../../../utils/tezos";
 import { type SignPageProps } from "../utils";
 

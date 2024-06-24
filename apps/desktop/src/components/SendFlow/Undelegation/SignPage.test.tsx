@@ -1,8 +1,8 @@
 import { Modal } from "@chakra-ui/react";
+import { mockImplicitAccount, mockMnemonicAccount } from "@umami/test-utils";
 
 import { SignPage } from "./SignPage";
 import { executeParams } from "../../../mocks/executeParams";
-import { mockImplicitAccount, mockMnemonicAccount } from "../../../mocks/factories";
 import { addAccount } from "../../../mocks/helpers";
 import { render, screen, waitFor } from "../../../mocks/testUtils";
 import { makeAccountOperations } from "../../../types/AccountOperations";

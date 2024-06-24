@@ -1,13 +1,13 @@
 import { Modal } from "@chakra-ui/react";
+import { type FA12TokenBalance, type FA2TokenBalance } from "@umami/core";
+import { mockFA2Token, mockImplicitAccount, mockMnemonicAccount } from "@umami/test-utils";
+import { parseContractPkh } from "@umami/tezos";
 
 import { SignPage } from "./SignPage";
 import { executeParams } from "../../../mocks/executeParams";
-import { mockFA2Token, mockImplicitAccount, mockMnemonicAccount } from "../../../mocks/factories";
 import { addAccount } from "../../../mocks/helpers";
 import { render, screen, waitFor } from "../../../mocks/testUtils";
 import { makeAccountOperations } from "../../../types/AccountOperations";
-import { parseContractPkh } from "../../../types/Address";
-import { type FA12TokenBalance, type FA2TokenBalance } from "../../../types/TokenBalance";
 import { TEZ } from "../../../utils/tezos";
 import { type SignPageProps } from "../utils";
 

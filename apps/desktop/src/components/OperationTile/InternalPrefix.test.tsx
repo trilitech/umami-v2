@@ -1,3 +1,5 @@
+import { mockImplicitAccount, mockLedgerAccount } from "@umami/test-utils";
+
 import { InternalPrefix } from "./InternalPrefix";
 import {
   delegationFixture,
@@ -5,7 +7,6 @@ import {
   tokenTransferFixture,
   transactionFixture,
 } from "./testUtils";
-import { mockImplicitAccount, mockLedgerAccount } from "../../mocks/factories";
 import { addAccount } from "../../mocks/helpers";
 import { render, screen } from "../../mocks/testUtils";
 

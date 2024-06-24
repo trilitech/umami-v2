@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { DefaultNetworks, MAINNET, type Network, isDefault } from "@umami/tezos";
 import { remove } from "lodash";
-
-import { DefaultNetworks, MAINNET, type Network, isDefault } from "../../../types/Network";
 
 type State = {
   available: Network[];

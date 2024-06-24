@@ -1,8 +1,8 @@
 import { Modal } from "@chakra-ui/react";
+import { mockMnemonicAccount } from "@umami/test-utils";
 
 import { NameMultisigFormPage } from "./NameMultisigFormPage";
 import { SelectApproversFormPage } from "./SelectApproversFormPage";
-import { mockMnemonicAccount } from "../../../mocks/factories";
 import { addAccount } from "../../../mocks/helpers";
 import {
   dynamicModalContextMock,

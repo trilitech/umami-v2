@@ -1,9 +1,9 @@
 import { Modal } from "@chakra-ui/react";
+import { GHOSTNET, MAINNET } from "@umami/tezos";
 import { type ReactElement } from "react";
 
 import { UpsertNetworkModal } from "./UpsertNetworkModal";
 import { act, fireEvent, render, screen, userEvent, waitFor } from "../../../mocks/testUtils";
-import { GHOSTNET, MAINNET } from "../../../types/Network";
 import { networksActions } from "../../../utils/redux/slices/networks";
 import { store } from "../../../utils/redux/store";
 

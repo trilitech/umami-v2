@@ -1,19 +1,19 @@
-import { OperationView } from "./OperationView";
-import { hedgehoge } from "../../mocks/fa12Tokens";
-import { uUSD } from "../../mocks/fa2Tokens";
+import { type FA12Transfer, type FA2Transfer } from "@umami/core";
 import {
+  ghostnetThezard,
+  hedgehoge,
   mockDelegationOperation,
   mockFA12Operation,
   mockFA2Operation,
   mockImplicitAddress,
   mockTezOperation,
   mockUndelegationOperation,
-} from "../../mocks/factories";
-import { ghostnetThezard } from "../../mocks/nftTokens";
+  uUSD,
+} from "@umami/test-utils";
+import { MAINNET, parseContractPkh } from "@umami/tezos";
+
+import { OperationView } from "./OperationView";
 import { render, screen } from "../../mocks/testUtils";
-import { parseContractPkh } from "../../types/Address";
-import { MAINNET } from "../../types/Network";
-import { type FA12Transfer, type FA2Transfer } from "../../types/Operation";
 import { tokensActions } from "../../utils/redux/slices/tokensSlice";
 import { store } from "../../utils/redux/store";
 import { TEZ } from "../../utils/tezos";

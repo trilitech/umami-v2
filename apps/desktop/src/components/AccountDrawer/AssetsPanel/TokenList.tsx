@@ -1,11 +1,11 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
+import { type FA12TokenBalance, type FA2TokenBalance } from "@umami/core";
+import { fullId, tokenPrettyAmount } from "@umami/core";
+import { type RawPkh } from "@umami/tezos";
 
 import { ViewAllLink } from "./ViewAllLink";
 import { TokenIcon } from "../../../assets/icons";
 import colors from "../../../style/colors";
-import { type RawPkh } from "../../../types/Address";
-import { fullId, tokenPrettyAmount } from "../../../types/Token";
-import { type FA12TokenBalance, type FA2TokenBalance } from "../../../types/TokenBalance";
 import { TokenNameWithIcon } from "../../../views/tokens/TokenNameWithIcon";
 import { NoTokens } from "../../NoItems";
 

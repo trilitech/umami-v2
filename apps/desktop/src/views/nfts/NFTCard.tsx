@@ -1,11 +1,11 @@
 import { Box, Card, CardBody, Center, Heading, Image, Text } from "@chakra-ui/react";
+import { fullId, thumbnailUri } from "@umami/core";
+import { parsePkh } from "@umami/tezos";
 import { useContext } from "react";
 
 import { SelectedNFTContext } from "./SelectedNFTContext";
 import { AddressPill } from "../../components/AddressPill/AddressPill";
 import colors from "../../style/colors";
-import { parsePkh } from "../../types/Address";
-import { fullId, thumbnailUri } from "../../types/Token";
 import { type NFTWithOwner, getIPFSurl } from "../../utils/token/utils";
 
 export const NFTCard: React.FC<{

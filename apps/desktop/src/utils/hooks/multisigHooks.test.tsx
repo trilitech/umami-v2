@@ -1,6 +1,7 @@
+import { multisigOperation, multisigs } from "@umami/test-utils";
+
 import { useGetPendingMultisigOperations } from "./multisigHooks";
 import { addAccount } from "../../mocks/helpers";
-import { multisigOperation, multisigs } from "../../mocks/multisig";
 import { renderHook } from "../../mocks/testUtils";
 import { multisigActions } from "../redux/slices/multisigsSlice";
 import { store } from "../redux/store";

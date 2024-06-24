@@ -1,14 +1,15 @@
-import { executeParams } from "../../../../mocks/executeParams";
+import { type MnemonicAccount } from "@umami/core";
 import {
   mockImplicitAccount,
   mockImplicitAddress,
   mockMnemonicAccount,
   mockMultisigAccount,
-} from "../../../../mocks/factories";
+  pendingOps,
+} from "@umami/test-utils";
+
+import { executeParams } from "../../../../mocks/executeParams";
 import { addAccount } from "../../../../mocks/helpers";
-import { pendingOps } from "../../../../mocks/multisig";
 import { fireEvent, render, screen, within } from "../../../../mocks/testUtils";
-import { type MnemonicAccount } from "../../../../types/Account";
 import { multisigsSlice } from "../../../../utils/redux/slices/multisigsSlice";
 import { store } from "../../../../utils/redux/store";
 import { estimate } from "../../../../utils/tezos";

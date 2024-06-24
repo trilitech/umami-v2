@@ -1,21 +1,21 @@
-import { uUSD } from "../../mocks/fa2Tokens";
+import { CODE_HASH, TYPE_HASH } from "@umami/multisig";
 import {
   mockContractAddress,
   mockImplicitAccount,
   mockImplicitAddress,
   mockLedgerAccount,
-} from "../../mocks/factories";
-import { type TokenTransfer } from "../../types/Transfer";
-import { CODE_HASH, TYPE_HASH } from "../../utils/multisig/fetch";
+  uUSD,
+} from "@umami/test-utils";
 import {
   type DelegationOperation,
   type FinalizeUnstakeOperation,
   type OriginationOperation,
+  type RawTzktTokenTransfer,
   type StakeOperation,
   type TokenTransferOperation,
   type TransactionOperation,
   type UnstakeOperation,
-} from "../../utils/tezos";
+} from "@umami/tzkt";
 
 export const transactionFixture = (
   props?: Partial<TransactionOperation>
@@ -75,7 +75,9 @@ export const delegationFixture = (props?: Partial<DelegationOperation>): Delegat
   ...props,
 });
 
-export const tokenTransferFixture = (props?: Partial<TokenTransfer>): TokenTransferOperation =>
+export const tokenTransferFixture = (
+  props?: Partial<RawTzktTokenTransfer>
+): TokenTransferOperation =>
   ({
     type: "token_transfer",
     amount: "500",

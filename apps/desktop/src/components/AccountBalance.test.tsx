@@ -1,7 +1,7 @@
+import { mockImplicitAddress, rawAccountFixture } from "@umami/test-utils";
+
 import { AccountBalance } from "./AccountBalance";
-import { mockImplicitAddress } from "../mocks/factories";
 import { render, screen } from "../mocks/testUtils";
-import { rawAccountFixture } from "../mocks/tzktResponse";
 import { assetsActions } from "../utils/redux/slices/assetsSlice";
 import { store } from "../utils/redux/store";
 

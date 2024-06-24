@@ -1,3 +1,5 @@
+import { fromRawToken } from "@umami/core";
+import { type TzktCombinedOperation } from "@umami/tzkt";
 import type React from "react";
 
 import { ContractCallTile } from "./ContractCallTile";
@@ -8,9 +10,7 @@ import { StakeTile } from "./StakeTile";
 import { TokenTransferTile } from "./TokenTransferTile";
 import { TransactionTile } from "./TransactionTile";
 import { UnstakeTile } from "./UnstakeTile";
-import { fromRaw } from "../../types/Token";
 import { useGetTokenTransfer } from "../../utils/hooks/assetsHooks";
-import { type TzktCombinedOperation } from "../../utils/tezos";
 
 export const OperationTile: React.FC<{
   operation: TzktCombinedOperation;
@@ -19,7 +19,7 @@ export const OperationTile: React.FC<{
 
   switch (operation.type) {
     case "token_transfer": {
-      const token = fromRaw(operation.token);
+      const token = fromRawToken(operation.token);
       if (token) {
         return <TokenTransferTile token={token} tokenTransfer={operation} />;
       }
@@ -31,7 +31,7 @@ export const OperationTile: React.FC<{
       const tokenTransfer = getTokenTransfer(operation.id);
 
       if (tokenTransfer) {
-        const token = fromRaw(tokenTransfer.token);
+        const token = fromRawToken(tokenTransfer.token);
         if (token) {
           return (
             <TokenTransferTile operation={operation} token={token} tokenTransfer={tokenTransfer} />

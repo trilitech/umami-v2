@@ -1,5 +1,6 @@
+import { mockNFT } from "@umami/test-utils";
+
 import { TagsSection } from "./TagsSection";
-import { mockNFT } from "../../../mocks/factories";
 import { render, screen } from "../../../mocks/testUtils";
 
 describe("TagsSection", () => {

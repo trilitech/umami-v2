@@ -1,10 +1,11 @@
+import { getRelevantMultisigContracts } from "@umami/multisig";
+import { multisigs } from "@umami/test-utils";
+
 import { usePollMultisigs } from "./usePollMultisigs";
-import { multisigs } from "../../mocks/multisig";
 import { renderHook, waitFor } from "../../mocks/testUtils";
-import { getRelevantMultisigContracts } from "../multisig/helpers";
 import { store } from "../redux/store";
 
-jest.mock("../multisig/helpers");
+jest.mock("@umami/multisig");
 
 describe("usePollMultisigs", () => {
   it("fetches multisigs and updates the state", async () => {

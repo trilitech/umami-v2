@@ -4,10 +4,10 @@ import {
   SigningType,
 } from "@airgap/beacon-wallet";
 import { Modal } from "@chakra-ui/react";
+import { mockImplicitAccount, mockMnemonicAccount } from "@umami/test-utils";
 
 import { SignPayloadRequestModal } from "./SignPayloadRequestModal";
 import { WalletClient } from "./WalletClient";
-import { mockImplicitAccount, mockMnemonicAccount } from "../../mocks/factories";
 import { encryptedMnemonic1 } from "../../mocks/mockMnemonic";
 import { act, render, screen, userEvent, waitFor } from "../../mocks/testUtils";
 import { accountsActions } from "../redux/slices/accountsSlice/accountsSlice";

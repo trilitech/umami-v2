@@ -1,19 +1,18 @@
+import {
+  type Delegate,
+  type FA12TokenBalance,
+  type FA2TokenBalance,
+  type NFTBalance,
+  type TokenBalanceWithToken,
+} from "@umami/core";
+import { type RawPkh } from "@umami/tezos";
+import { type TokenTransferOperation } from "@umami/tzkt";
 import { BigNumber } from "bignumber.js";
 import { compact, fromPairs } from "lodash";
 
 import { useGetToken } from "./tokensHooks";
-import { type RawPkh } from "../../types/Address";
-import { type Delegate } from "../../types/Delegate";
-import {
-  type NFTBalance,
-  type TokenBalanceWithToken,
-  keepFA1s,
-  keepFA2s,
-  keepNFTs,
-} from "../../types/TokenBalance";
 import { mutezToTez } from "../format";
 import { useAppSelector } from "../redux/hooks";
-import { type TokenTransferOperation } from "../tezos";
 
 const useGetAccountStates = () => useAppSelector(s => s.assets.accountStates);
 
@@ -72,13 +71,15 @@ const useGetAccountAssets = () => {
 const useGetAccountFA2Tokens = () => {
   const getAssets = useGetAccountAssets();
 
-  return (pkh: string) => keepFA2s(getAssets(pkh));
+  return (pkh: string) =>
+    getAssets(pkh).filter((asset): asset is FA2TokenBalance => asset.type === "fa2");
 };
 
 const useGetAccountFA1Tokens = () => {
   const getAssets = useGetAccountAssets();
 
-  return (pkh: string) => keepFA1s(getAssets(pkh));
+  return (pkh: string) =>
+    getAssets(pkh).filter((asset): asset is FA12TokenBalance => asset.type === "fa1.2");
 };
 
 export const useGetAccountAllTokens = () => {
@@ -91,7 +92,8 @@ export const useGetAccountAllTokens = () => {
 export const useGetAccountNFTs = () => {
   const getAssets = useGetAccountAssets();
 
-  return (pkh: string) => keepNFTs(getAssets(pkh));
+  return (pkh: string) =>
+    getAssets(pkh).filter((asset): asset is NFTBalance => asset.type === "nft");
 };
 
 export const useGetTokenTransfer = () => {

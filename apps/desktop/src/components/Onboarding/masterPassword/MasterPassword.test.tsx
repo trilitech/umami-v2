@@ -1,5 +1,6 @@
+import { mockMnemonicAccount } from "@umami/test-utils";
+
 import { MasterPassword } from "./MasterPassword";
-import { mockMnemonicAccount } from "../../../mocks/factories";
 import { addAccount } from "../../../mocks/helpers";
 import { mnemonic1 } from "../../../mocks/mockMnemonic";
 import { render, screen } from "../../../mocks/testUtils";

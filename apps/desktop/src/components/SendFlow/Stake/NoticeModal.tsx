@@ -9,13 +9,13 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
+import { type Account } from "@umami/core";
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
 
 import { FormPage } from "./FormPage";
 import { WarningIcon } from "../../../assets/icons";
 import colors from "../../../style/colors";
-import { type Account } from "../../../types/Account";
 import { DynamicModalContext } from "../../DynamicModal";
 
 export const NoticeModal = ({ account }: { account: Account }) => {

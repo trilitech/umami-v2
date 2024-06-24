@@ -8,14 +8,14 @@ import {
   Image,
   Text,
 } from "@chakra-ui/react";
+import { type Account } from "@umami/core";
+import { fullId, thumbnailUri } from "@umami/core";
 import type React from "react";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 
 import { AccountTileIcon } from "./AccountTileIcon";
 import colors from "../../style/colors";
-import { type Account } from "../../types/Account";
-import { fullId, thumbnailUri } from "../../types/Token";
 import { formatPkh, prettyTezAmount } from "../../utils/format";
 import {
   useGetAccountBalance,

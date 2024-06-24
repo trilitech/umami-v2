@@ -11,7 +11,7 @@
     "@tanstack/eslint-plugin-query": "^5.43.1",
     "@typescript-eslint/eslint-plugin": "^7.13.1",
     "@typescript-eslint/parser": "^7.13.1",
-    "@umami/typescript-config": "workspace:*",
+    "@umami/typescript-config": "workspace:^",
     "eslint": "^8.57.0",
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-chakra-ui": "^0.11.0",

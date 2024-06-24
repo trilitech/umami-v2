@@ -1,7 +1,7 @@
+import { type RawPkh } from "@umami/tezos";
 import { useContext } from "react";
 
 import { AccountDrawerDisplay } from "./AccountDrawerDisplay";
-import { type RawPkh } from "../../types/Address";
 import { useGetAccountAllTokens, useGetAccountNFTs } from "../../utils/hooks/assetsHooks";
 import { useGetOwnedAccount } from "../../utils/hooks/getAccountDataHooks";
 import { sortedByLastUpdate } from "../../utils/token/utils";

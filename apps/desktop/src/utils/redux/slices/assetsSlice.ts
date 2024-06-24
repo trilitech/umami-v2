@@ -1,13 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { type Delegate, type TokenBalance, fromRawTokenBalance } from "@umami/core";
+import { type RawPkh } from "@umami/tezos";
+import {
+  type RawTzktAccount,
+  type RawTzktTokenBalance,
+  type RawTzktTokenTransfer,
+  type RawTzktUnstakeRequest,
+  type TzktAlias,
+} from "@umami/tzkt";
 import { compact, groupBy, omit, sortBy } from "lodash";
 
 import { accountsSlice } from "./accountsSlice/accountsSlice";
-import { type RawPkh, type TzktAlias } from "../../../types/Address";
-import { type Delegate } from "../../../types/Delegate";
-import { type RawTokenBalance, type TokenBalance, fromRaw } from "../../../types/TokenBalance";
-import { type TokenTransfer } from "../../../types/Transfer";
-import { type RawTzktAccount } from "../../tezos";
-import { type RawTzktUnstakeRequest } from "../../tzkt/types";
 
 type TransactionId = number;
 
@@ -26,7 +29,7 @@ type State = {
   };
   accountStates: Record<RawPkh, AccountState | undefined>;
   transfers: {
-    tokens: Record<TransactionId, TokenTransfer | undefined>;
+    tokens: Record<TransactionId, RawTzktTokenTransfer | undefined>;
   };
   bakers: Delegate[];
   conversionRate: number | undefined; // XTZ/USD conversion rate
@@ -56,7 +59,7 @@ export const assetsSlice = createSlice({
     updateBlock: (state, { payload }: { payload: { level: number; cycle: number } }) => {
       state.block = payload;
     },
-    updateTokenTransfers: (state, { payload: transfers }: { payload: TokenTransfer[] }) => {
+    updateTokenTransfers: (state, { payload: transfers }: { payload: RawTzktTokenTransfer[] }) => {
       transfers.forEach(transfer => {
         // these token transfers are fetched by transaction id and it's definitely present
         state.transfers.tokens[transfer.transactionId!] = transfer;
@@ -104,15 +107,14 @@ export const assetsSlice = createSlice({
     cleanAccountStates: state => {
       state.accountStates = {};
     },
-    updateTokenBalance: (state, { payload }: { payload: RawTokenBalance[] }) => {
+    updateTokenBalance: (state, { payload }: { payload: RawTzktTokenBalance[] }) => {
       const groupedByPkh = groupBy(payload, tokenBalance => tokenBalance.account.address);
 
       for (const accountState of Object.values(state.accountStates)) {
         accountState!.tokens = [];
       }
-
       for (const [pkh, rawTokenBalances] of Object.entries(groupedByPkh)) {
-        const accountTokenBalances = compact(rawTokenBalances.map(fromRaw)).map(
+        const accountTokenBalances = compact(rawTokenBalances.map(fromRawTokenBalance)).map(
           ({ balance, contract, tokenId, lastLevel }) => ({
             balance,
             contract,

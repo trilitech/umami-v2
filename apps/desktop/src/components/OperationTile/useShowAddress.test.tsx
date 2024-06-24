@@ -1,6 +1,7 @@
+import { mockImplicitAddress } from "@umami/test-utils";
+
 import { OperationTileContext } from "./OperationTileContext";
 import { useShowAddress } from "./useShowAddress";
-import { mockImplicitAddress } from "../../mocks/factories";
 import { renderHook } from "../../mocks/testUtils";
 
 const PageWrapper = ({ children }: { children: React.ReactNode }) => (

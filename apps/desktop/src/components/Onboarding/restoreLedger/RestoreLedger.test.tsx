@@ -1,7 +1,8 @@
+import { defaultDerivationPathTemplate } from "@umami/tezos";
+
 import { RestoreLedger } from "./RestoreLedger";
 import { act, render, screen, userEvent } from "../../../mocks/testUtils";
 import { mockToast } from "../../../mocks/toast";
-import { defaultDerivationPathTemplate } from "../../../utils/account/derivationPathUtils";
 import { getPk } from "../../../utils/ledger/pk";
 
 const closeModalMock = jest.fn(() => {});

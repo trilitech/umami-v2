@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { getLatestBlock } from "@umami/tzkt";
 import { useEffect } from "react";
 
 import { BLOCK_TIME } from "./constants";
@@ -6,7 +7,6 @@ import { useRefetchTrigger } from "../hooks/assetsHooks";
 import { useSelectedNetwork } from "../hooks/networkHooks";
 import { useAppDispatch } from "../redux/hooks";
 import { assetsActions } from "../redux/slices/assetsSlice";
-import { getLatestBlock } from "../tezos";
 import { useReactQueryErrorHandler } from "../useReactQueryOnError";
 
 export const usePollBlock = () => {

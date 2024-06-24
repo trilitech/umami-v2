@@ -1,10 +1,10 @@
 import { SimpleGrid } from "@chakra-ui/react";
+import type { NFTBalance } from "@umami/core";
+import { fullId } from "@umami/core";
+import { type RawPkh } from "@umami/tezos";
 import type React from "react";
 
 import { NFTCard } from "./NFTCard";
-import { type RawPkh } from "../../types/Address";
-import { fullId } from "../../types/Token";
-import type { NFTBalance } from "../../types/TokenBalance";
 import { sortedByLastUpdate } from "../../utils/token/utils";
 
 export const NFTGallery: React.FC<{

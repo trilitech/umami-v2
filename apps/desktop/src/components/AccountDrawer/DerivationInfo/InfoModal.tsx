@@ -8,10 +8,10 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
+import { type LedgerAccount, type MnemonicAccount } from "@umami/core";
 
 import { SlashIcon } from "../../../assets/icons";
 import colors from "../../../style/colors";
-import { type LedgerAccount, type MnemonicAccount } from "../../../types/Account";
 import { CircleIcon } from "../../CircleIcon";
 
 /**

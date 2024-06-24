@@ -1,13 +1,14 @@
-import { NFTsView } from "./NftsView";
 import {
   mockImplicitAccount,
   mockImplicitAddress,
   mockMnemonicAccount,
   mockNFTToken,
-} from "../../mocks/factories";
+} from "@umami/test-utils";
+import { MAINNET } from "@umami/tezos";
+
+import { NFTsView } from "./NftsView";
 import { addAccount } from "../../mocks/helpers";
 import { act, render, screen, userEvent } from "../../mocks/testUtils";
-import { MAINNET } from "../../types/Network";
 import { assetsSlice } from "../../utils/redux/slices/assetsSlice";
 import { networksActions } from "../../utils/redux/slices/networks";
 import { tokensSlice } from "../../utils/redux/slices/tokensSlice";

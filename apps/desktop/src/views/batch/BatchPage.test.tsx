@@ -1,13 +1,13 @@
 import { Modal } from "@chakra-ui/react";
 import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
+import { mockImplicitAccount, mockMnemonicAccount, mockTezOperation } from "@umami/test-utils";
+import { MAINNET } from "@umami/tezos";
 
 import { BatchPage } from "./BatchPage";
 import { executeParams } from "../../mocks/executeParams";
-import { mockImplicitAccount, mockMnemonicAccount, mockTezOperation } from "../../mocks/factories";
 import { addAccount } from "../../mocks/helpers";
 import { act, fireEvent, render, screen, userEvent } from "../../mocks/testUtils";
 import { makeAccountOperations } from "../../types/AccountOperations";
-import { MAINNET } from "../../types/Network";
 import { batchesActions } from "../../utils/redux/slices/batches";
 import { store } from "../../utils/redux/store";
 import { estimate, executeOperations } from "../../utils/tezos";

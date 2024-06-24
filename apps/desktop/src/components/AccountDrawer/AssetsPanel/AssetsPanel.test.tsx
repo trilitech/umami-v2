@@ -1,17 +1,22 @@
+import { mockImplicitAccount, mockMultisigAccount, pendingOps } from "@umami/test-utils";
+import { getCombinedOperations, getRelatedTokenTransfers } from "@umami/tzkt";
+
 import { AssetsPanel } from "./AssetsPanel";
 import { executeParams } from "../../../mocks/executeParams";
-import { mockImplicitAccount, mockMultisigAccount } from "../../../mocks/factories";
-import { pendingOps } from "../../../mocks/multisig";
 import { render, screen } from "../../../mocks/testUtils";
 import { multisigsSlice } from "../../../utils/redux/slices/multisigsSlice";
 import { store } from "../../../utils/redux/store";
-import { estimate, getCombinedOperations, getRelatedTokenTransfers } from "../../../utils/tezos";
+import { estimate } from "../../../utils/tezos";
 
 jest.mock("../../../utils/tezos", () => ({
   ...jest.requireActual("../../../utils/tezos"),
+  estimate: jest.fn(),
+}));
+
+jest.mock("@umami/tzkt", () => ({
+  ...jest.requireActual("@umami/tzkt"),
   getCombinedOperations: jest.fn(),
   getRelatedTokenTransfers: jest.fn(),
-  estimate: jest.fn(),
 }));
 
 describe("<AssetsPanel />", () => {

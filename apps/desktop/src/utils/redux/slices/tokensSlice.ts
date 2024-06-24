@@ -1,9 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { type Token, type TokenId, fromRawToken } from "@umami/core";
+import { DefaultNetworks, type Network, type NetworkName, type RawPkh } from "@umami/tezos";
+import { type RawTzktTokenInfo } from "@umami/tzkt";
 import { compact, fromPairs, setWith } from "lodash";
-
-import { type RawPkh } from "../../../types/Address";
-import { DefaultNetworks, type Network, type NetworkName } from "../../../types/Network";
-import { type RawTokenInfo, type Token, type TokenId, fromRaw } from "../../../types/Token";
 
 type State = Record<NetworkName, Record<RawPkh, Record<TokenId, Token>> | undefined>;
 
@@ -16,9 +15,11 @@ export const tokensSlice = createSlice({
     reset: () => initialState,
     addTokens: (
       state: State,
-      { payload: { network, tokens } }: { payload: { network: Network; tokens: RawTokenInfo[] } }
+      {
+        payload: { network, tokens },
+      }: { payload: { network: Network; tokens: RawTzktTokenInfo[] } }
     ) => {
-      compact(tokens.map(fromRaw)).forEach(token => {
+      compact(tokens.map(fromRawToken)).forEach(token => {
         setWith(state, [network.name, token.contract, token.tokenId], token, Object);
       });
     },

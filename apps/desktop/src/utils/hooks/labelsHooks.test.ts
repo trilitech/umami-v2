@@ -1,4 +1,3 @@
-import { useGetNextAvailableAccountLabels, useValidateName } from "./labelsHooks";
 import {
   mockContractContact,
   mockImplicitContact,
@@ -7,10 +6,12 @@ import {
   mockMultisigAccount,
   mockSecretKeyAccount,
   mockSocialAccount,
-} from "../../mocks/factories";
+} from "@umami/test-utils";
+import { MAINNET } from "@umami/tezos";
+
+import { useGetNextAvailableAccountLabels, useValidateName } from "./labelsHooks";
 import { addAccount } from "../../mocks/helpers";
 import { renderHook } from "../../mocks/testUtils";
-import { MAINNET } from "../../types/Network";
 import { contactsActions } from "../redux/slices/contactsSlice";
 import { multisigActions, multisigsSlice } from "../redux/slices/multisigsSlice";
 import { networksActions } from "../redux/slices/networks";

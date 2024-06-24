@@ -1,15 +1,20 @@
+import { getNetworksForContracts } from "@umami/multisig";
+import { mockContractAddress, mockImplicitAddress } from "@umami/test-utils";
+
 import { UpsertContactModal } from "./UpsertContactModal";
 import { contact1, contact2 } from "../mocks/contacts";
-import { mockContractAddress, mockImplicitAddress } from "../mocks/factories";
 import { act, render, screen, userEvent, waitFor } from "../mocks/testUtils";
 import { mockToast } from "../mocks/toast";
-import * as helpers from "../utils/multisig/helpers";
 import { contactsActions } from "../utils/redux/slices/contactsSlice";
 import { store } from "../utils/redux/store";
 
+jest.mock("@umami/multisig", () => ({
+  ...jest.requireActual("@umami/multisig"),
+  getNetworksForContracts: jest.fn(),
+}));
+
 describe("<UpsertContactModal />", () => {
   describe("on adding contact", () => {
-    const mockedGetNetworksForContracts = jest.spyOn(helpers, "getNetworksForContracts");
     const contractPkh = mockContractAddress(0).pkh;
 
     describe.each([
@@ -101,7 +106,9 @@ describe("<UpsertContactModal />", () => {
       });
 
       it("fetches network for contract addresses", async () => {
-        mockedGetNetworksForContracts.mockResolvedValue(new Map([[contractPkh, "ghostnet"]]));
+        jest
+          .mocked(getNetworksForContracts)
+          .mockResolvedValue(new Map([[contractPkh, "ghostnet"]]));
         const user = userEvent;
         render(modalComponent);
 
@@ -128,7 +135,7 @@ describe("<UpsertContactModal />", () => {
       });
 
       it("shows error toast on unknown network for contract addresses", async () => {
-        mockedGetNetworksForContracts.mockResolvedValue(new Map());
+        jest.mocked(getNetworksForContracts).mockResolvedValue(new Map());
         const user = userEvent;
         render(modalComponent);
 
@@ -217,7 +224,9 @@ describe("<UpsertContactModal />", () => {
       });
 
       it("fetches network for contract addresses", async () => {
-        mockedGetNetworksForContracts.mockResolvedValue(new Map([[contractPkh, "ghostnet"]]));
+        jest
+          .mocked(getNetworksForContracts)
+          .mockResolvedValue(new Map([[contractPkh, "ghostnet"]]));
         const user = userEvent;
         render(
           <UpsertContactModal
@@ -247,7 +256,7 @@ describe("<UpsertContactModal />", () => {
       });
 
       it("shows error toast on unknown network for contract addresses", async () => {
-        mockedGetNetworksForContracts.mockResolvedValue(new Map());
+        jest.mocked(getNetworksForContracts).mockResolvedValue(new Map());
         const user = userEvent;
         render(
           <UpsertContactModal

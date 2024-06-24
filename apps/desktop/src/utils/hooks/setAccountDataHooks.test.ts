@@ -1,3 +1,12 @@
+import { type ImplicitAccount, type MnemonicAccount } from "@umami/core";
+import {
+  mockImplicitAccount,
+  mockLedgerAccount,
+  mockSecretKeyAccount,
+  mockSocialAccount,
+} from "@umami/test-utils";
+import { AVAILABLE_DERIVATION_PATH_TEMPLATES, makeDerivationPath } from "@umami/tezos";
+
 import { useRemoveDependenciesAndMultisigs } from "./removeAccountDependenciesHooks";
 import {
   useDeriveMnemonicAccount,
@@ -6,20 +15,9 @@ import {
   useRemoveNonMnemonic,
   useRestoreFromMnemonic,
 } from "./setAccountDataHooks";
-import {
-  mockImplicitAccount,
-  mockLedgerAccount,
-  mockSecretKeyAccount,
-  mockSocialAccount,
-} from "../../mocks/factories";
 import { addAccount, fakeIsAccountRevealed } from "../../mocks/helpers";
 import { mnemonic1 } from "../../mocks/mockMnemonic";
 import { act, renderHook } from "../../mocks/testUtils";
-import { type ImplicitAccount, type MnemonicAccount } from "../../types/Account";
-import {
-  AVAILABLE_DERIVATION_PATH_TEMPLATES,
-  makeDerivationPath,
-} from "../account/derivationPathUtils";
 import * as functionsToMock from "../crypto/AES";
 import { accountsSlice } from "../redux/slices/accountsSlice/accountsSlice";
 import { store } from "../redux/store";

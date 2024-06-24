@@ -1,4 +1,5 @@
 import { type Estimate } from "@taquito/taquito";
+import { type Network } from "@umami/tezos";
 
 import { isAccountRevealed, makeToolkit, operationsToBatchParams } from "./helpers";
 import { type Estimation } from "./types";
@@ -6,7 +7,6 @@ import {
   type AccountOperations,
   type EstimatedAccountOperations,
 } from "../../types/AccountOperations";
-import { type Network } from "../../types/Network";
 
 /**
  * Estimates (and simulates the execution of) the operations.

@@ -1,7 +1,7 @@
+import { mockImplicitAddress, rawAccountFixture } from "@umami/test-utils";
+
 import { useGetAccountStakedBalance, useGetAccountUnstakeRequests } from "./stakingHooks";
-import { mockImplicitAddress } from "../../mocks/factories";
 import { renderHook } from "../../mocks/testUtils";
-import { rawAccountFixture } from "../../mocks/tzktResponse";
 import { assetsActions } from "../redux/slices/assetsSlice";
 import { store } from "../redux/store";
 

@@ -6,6 +6,8 @@ import {
   Flex,
   useDisclosure,
 } from "@chakra-ui/react";
+import { type Account } from "@umami/core";
+import { fullId } from "@umami/core";
 import { get } from "lodash";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -15,8 +17,6 @@ import { SelectedAccountContext } from "./SelectedAccountContext";
 import { AccountCard } from "../../components/AccountDrawer";
 import { DerivationInfoButton } from "../../components/AccountDrawer/DerivationInfo";
 import { CloseDrawerButton } from "../../components/CloseDrawerButton";
-import { type Account } from "../../types/Account";
-import { fullId } from "../../types/Token";
 import { useAllNfts } from "../../utils/hooks/assetsHooks";
 import { NFTDrawerBody } from "../nfts/NFTDrawerBody";
 

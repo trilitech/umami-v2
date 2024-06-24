@@ -1,12 +1,12 @@
 import { Box, Center, Flex, type FlexProps, Heading, Link, Text } from "@chakra-ui/react";
+import { type ImplicitAccount } from "@umami/core";
+import { type RawTzktUnstakeRequest } from "@umami/tzkt";
 
 import { HourglassIcon } from "../../../../assets/icons";
 import colors from "../../../../style/colors";
-import { type ImplicitAccount } from "../../../../types/Account";
 import { prettyTezAmount } from "../../../../utils/format";
 import { useSelectedNetwork } from "../../../../utils/hooks/networkHooks";
 import { useGetFirstFinalizableCycle } from "../../../../utils/hooks/stakingHooks";
-import { type RawTzktUnstakeRequest } from "../../../../utils/tzkt/types";
 import { PrettyNumber } from "../../../PrettyNumber";
 
 /**

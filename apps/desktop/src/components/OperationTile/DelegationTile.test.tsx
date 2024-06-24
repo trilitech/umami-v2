@@ -1,14 +1,16 @@
+import { mockImplicitAddress, mockLedgerAccount } from "@umami/test-utils";
+import { DefaultNetworks } from "@umami/tezos";
+import { type DelegationOperation } from "@umami/tzkt";
+
 import { DelegationTile } from "./DelegationTile";
 import { OperationTileContext } from "./OperationTileContext";
 import { delegationFixture } from "./testUtils";
-import { mockImplicitAddress, mockLedgerAccount } from "../../mocks/factories";
 import { addAccount } from "../../mocks/helpers";
 import { render, screen } from "../../mocks/testUtils";
-import { DefaultNetworks } from "../../types/Network";
 import { formatPkh } from "../../utils/format";
 import { networksActions } from "../../utils/redux/slices/networks";
 import { store } from "../../utils/redux/store";
-import { type DelegationOperation, TEZ } from "../../utils/tezos";
+import { TEZ } from "../../utils/tezos";
 
 const fixture = (context: any, operation: DelegationOperation) => (
   <OperationTileContext.Provider value={context}>

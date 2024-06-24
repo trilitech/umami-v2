@@ -1,4 +1,3 @@
-import { NameAccount } from "./NameAccount";
 import {
   mockContractContact,
   mockImplicitContact,
@@ -7,11 +6,13 @@ import {
   mockMultisigAccount,
   mockSecretKeyAccount,
   mockSocialAccount,
-} from "../../../mocks/factories";
+} from "@umami/test-utils";
+import { MAINNET } from "@umami/tezos";
+
+import { NameAccount } from "./NameAccount";
 import { addAccount } from "../../../mocks/helpers";
 import { mnemonic1 } from "../../../mocks/mockMnemonic";
 import { act, render, screen, userEvent } from "../../../mocks/testUtils";
-import { MAINNET } from "../../../types/Network";
 import { contactsActions } from "../../../utils/redux/slices/contactsSlice";
 import { multisigActions } from "../../../utils/redux/slices/multisigsSlice";
 import { networksActions } from "../../../utils/redux/slices/networks";

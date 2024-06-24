@@ -1,8 +1,12 @@
+import {
+  hedgehoge,
+  mockImplicitAddress,
+  mockTokenTransaction,
+  rawAccountFixture,
+} from "@umami/test-utils";
+
 import { accountsSlice } from "./accountsSlice/accountsSlice";
 import { assetsSlice } from "./assetsSlice";
-import { hedgehoge } from "../../../mocks/fa12Tokens";
-import { mockImplicitAddress, mockTokenTransaction } from "../../../mocks/factories";
-import { rawAccountFixture } from "../../../mocks/tzktResponse";
 import { store } from "../store";
 
 const {

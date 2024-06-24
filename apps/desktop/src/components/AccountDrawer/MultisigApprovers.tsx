@@ -8,10 +8,10 @@ import {
   Heading,
   Wrap,
 } from "@chakra-ui/react";
+import { type ImplicitAddress } from "@umami/tezos";
 import type React from "react";
 
 import colors from "../../style/colors";
-import { type ImplicitAddress } from "../../types/Address";
 import { AddressPill } from "../AddressPill/AddressPill";
 
 export const MultisigApprovers: React.FC<{

@@ -1,13 +1,10 @@
+import { mockDelegationOperation, mockImplicitAccount, mockTezOperation } from "@umami/test-utils";
+import { DefaultNetworks } from "@umami/tezos";
+
 import { estimateAndUpdateBatch } from "./estimateAndUpdateBatch";
 import { executeParams } from "../../../mocks/executeParams";
-import {
-  mockDelegationOperation,
-  mockImplicitAccount,
-  mockTezOperation,
-} from "../../../mocks/factories";
 import { act } from "../../../mocks/testUtils";
 import { makeAccountOperations } from "../../../types/AccountOperations";
-import { DefaultNetworks } from "../../../types/Network";
 import { estimate } from "../../tezos/estimate";
 import { store } from "../store";
 

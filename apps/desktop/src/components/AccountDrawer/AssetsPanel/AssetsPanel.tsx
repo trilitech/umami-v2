@@ -10,6 +10,13 @@ import {
   Tabs,
   Text,
 } from "@chakra-ui/react";
+import {
+  type Account,
+  type FA12TokenBalance,
+  type FA2TokenBalance,
+  type ImplicitAccount,
+  type NFTBalance,
+} from "@umami/core";
 import type React from "react";
 
 import { EarnTab } from "./EarnTab";
@@ -20,16 +27,9 @@ import { PendingUnstakeRequests } from "./PendingUnstakeRequests";
 import { TokenList } from "./TokenList";
 import { ExternalLinkIcon } from "../../../assets/icons";
 import colors from "../../../style/colors";
-import { type Account, type ImplicitAccount } from "../../../types/Account";
-import {
-  type FA12TokenBalance,
-  type FA2TokenBalance,
-  type NFTBalance,
-} from "../../../types/TokenBalance";
 import { useGetPendingMultisigOperations } from "../../../utils/hooks/multisigHooks";
 import { useSelectedNetwork } from "../../../utils/hooks/networkHooks";
 import { useGetAccountUnstakeRequests } from "../../../utils/hooks/stakingHooks";
-import { buildTzktUrl } from "../../../utils/tzkt/helpers";
 import { useGetOperations } from "../../../views/operations/useGetOperations";
 import { ExternalLink } from "../../ExternalLink";
 import { OperationTileContext } from "../../OperationTile";
@@ -87,7 +87,7 @@ export const AssetsPanel: React.FC<{
           <SmallTab data-testid="account-card-earn-tab">Earn</SmallTab>
         </Flex>
 
-        <ExternalLink href={buildTzktUrl(network, account.address.pkh)}>
+        <ExternalLink href={`${network.tzktExplorerUrl}/${account.address.pkh}`}>
           <Button padding="0" variant="CTAWithIcon">
             <Text marginRight="7px" size="sm">
               View on Tzkt

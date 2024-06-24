@@ -1,9 +1,10 @@
+import { getBakers } from "@umami/tzkt";
+
 import { usePollBakers } from "./usePollBakers";
 import { renderHook, waitFor } from "../../mocks/testUtils";
 import { store } from "../redux/store";
-import { getBakers } from "../tezos";
 
-jest.mock("../tezos");
+jest.mock("@umami/tzkt");
 
 describe("usePollBakers", () => {
   it("fetches baker data and updates the state", async () => {

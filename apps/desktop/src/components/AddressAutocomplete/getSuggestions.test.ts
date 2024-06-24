@@ -1,5 +1,6 @@
+import { mockImplicitContact } from "@umami/test-utils";
+
 import { getSuggestions } from "./getSuggestions";
-import { mockImplicitContact } from "../../mocks/factories";
 
 describe("getSuggestions", () => {
   it("returns all contacts if input is empty", () => {

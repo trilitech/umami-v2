@@ -1,10 +1,11 @@
+import { type Address } from "@umami/tezos";
+
 import {
   type AddressKind,
   type FA12Address,
   type FA2Address,
   type OwnedImplicitAddress,
 } from "./types";
-import { type Address } from "../../types/Address";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 import { useGetTokenType } from "../../utils/hooks/tokensHooks";
 import { type OwnedMultisigAddress } from "../AddressTile/types";

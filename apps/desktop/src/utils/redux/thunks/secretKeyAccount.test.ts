@@ -1,5 +1,6 @@
+import { mockMnemonicAccount } from "@umami/test-utils";
+
 import { getCurve, restore } from "./secretKeyAccount";
-import { mockMnemonicAccount } from "../../../mocks/factories";
 import { addAccount } from "../../../mocks/helpers";
 import { decrypt } from "../../crypto/AES";
 import { type EncryptedData } from "../../crypto/types";

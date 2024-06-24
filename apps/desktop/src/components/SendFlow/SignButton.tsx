@@ -1,18 +1,18 @@
 import { Box, Button, FormControl, useToast } from "@chakra-ui/react";
 import { type TezosToolkit } from "@taquito/taquito";
 import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
-import * as Auth from "@umami/social-auth";
-import type React from "react";
-import { FormProvider, useForm, useFormContext } from "react-hook-form";
-
 import {
   type ImplicitAccount,
   type LedgerAccount,
   type MnemonicAccount,
   type SecretKeyAccount,
   type SocialAccount,
-} from "../../types/Account";
-import { type Network } from "../../types/Network";
+} from "@umami/core";
+import * as Auth from "@umami/social-auth";
+import { type Network } from "@umami/tezos";
+import type React from "react";
+import { FormProvider, useForm, useFormContext } from "react-hook-form";
+
 import { useGetSecretKey } from "../../utils/hooks/getAccountDataHooks";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";

@@ -1,9 +1,9 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
+import { type Operation } from "@umami/core";
+import { tokenNameSafe, tokenPrettyAmount } from "@umami/core";
 
 import { OutgoingArrow } from "../../../../assets/icons";
 import colors from "../../../../style/colors";
-import { type Operation } from "../../../../types/Operation";
-import { tokenNameSafe, tokenPrettyAmount } from "../../../../types/Token";
 import { prettyTezAmount } from "../../../../utils/format";
 import { useGetToken } from "../../../../utils/hooks/tokensHooks";
 import { AddressPill } from "../../../AddressPill/AddressPill";

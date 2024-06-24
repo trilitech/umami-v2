@@ -1,8 +1,8 @@
+import { mockMnemonicAccount, rawAccountFixture } from "@umami/test-utils";
+
 import { AddressTile } from "./AddressTile";
-import { mockMnemonicAccount } from "../../mocks/factories";
 import { addAccount } from "../../mocks/helpers";
 import { act, render, screen, userEvent } from "../../mocks/testUtils";
-import { rawAccountFixture } from "../../mocks/tzktResponse";
 import { formatPkh } from "../../utils/format";
 import { assetsActions } from "../../utils/redux/slices/assetsSlice";
 import { store } from "../../utils/redux/store";

@@ -1,7 +1,4 @@
 import type { IDP } from "@umami/social-auth";
-
-import { AddressTileIcon } from "./AddressTileIcon";
-import { type AddressKind } from "./types";
 import {
   mockImplicitAddress,
   mockLedgerAccount,
@@ -9,7 +6,10 @@ import {
   mockMultisigAccount,
   mockSecretKeyAccount,
   mockSocialAccount,
-} from "../../mocks/factories";
+} from "@umami/test-utils";
+
+import { AddressTileIcon } from "./AddressTileIcon";
+import { type AddressKind } from "./types";
 import { addAccount } from "../../mocks/helpers";
 import { render, screen } from "../../mocks/testUtils";
 

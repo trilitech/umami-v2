@@ -4,6 +4,14 @@ import { Parser } from "@taquito/michel-codec";
 import { OpKind } from "@taquito/rpc";
 import { type Curves, InMemorySigner } from "@taquito/signer";
 import { type ParamsWithKind, TezosToolkit, type WalletParamsWithKind } from "@taquito/taquito";
+import {
+  type Operation,
+  makeFA12TransactionParameter,
+  makeFA2TransactionParameter,
+  makeMultisigProposeOperation,
+} from "@umami/core";
+import { type Network } from "@umami/tezos";
+import { type RawTzktAccountType } from "@umami/tzkt";
 import axios from "axios";
 import { shuffle, zipWith } from "lodash";
 
@@ -12,15 +20,7 @@ import {
   type AccountOperations,
   type EstimatedAccountOperations,
 } from "../../types/AccountOperations";
-import { type Network } from "../../types/Network";
-import {
-  type Operation,
-  makeFA12TransactionParameter,
-  makeFA2TransactionParameter,
-  makeMultisigProposeOperation,
-} from "../../types/Operation";
 import { type SignerConfig } from "../../types/SignerConfig";
-import { type RawTzktAccountType } from "../tzkt/types";
 
 export type PublicKeyPair = {
   pk: string;

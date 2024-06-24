@@ -1,7 +1,8 @@
+import { GHOSTNET } from "@umami/tezos";
+
 import { AddressBookView } from "./AddressBookView";
 import { contact1, contact2, contact3, contacts } from "../../mocks/contacts";
 import { render, screen } from "../../mocks/testUtils";
-import { GHOSTNET } from "../../types/Network";
 import { contactsActions } from "../../utils/redux/slices/contactsSlice";
 import { networksActions } from "../../utils/redux/slices/networks";
 import { store } from "../../utils/redux/store";
