@@ -12,17 +12,20 @@ import { Tokens } from "./views/Tokens/Tokens";
 
 export const Layout = () => (
   <Grid
+    className="layout"
     justifyContent="center"
     gridGap="20px"
-    gridTemplateRows="auto auto 1fr auto"
-    gridTemplateColumns="340px minmax(min-content, 1060px)"
-    gridTemplateAreas={`"header header" "sidebar nav" "sidebar main" "footer main"`}
-    height="calc(100vh - 20px)"
+    gridTemplateRows={{ base: "auto auto 1fr auto", lg: "auto auto 1fr auto" }}
+    gridTemplateColumns={{ base: "1fr", lg: "340px minmax(min-content, 1060px)" }}
+    gridTemplateAreas={{
+      base: '"header" "sidebar" "main" "footer" "nav"',
+      lg: `"header header" "sidebar nav" "sidebar main" "footer main"`,
+    }}
   >
-    <GridItem gridArea="header">
+    <GridItem className="header" gridArea="header">
       <Header />
     </GridItem>
-    <GridItem gridArea="nav">
+    <GridItem className="navbar" gridArea="nav">
       <Navbar />
     </GridItem>
     <GridItem gridArea="main">

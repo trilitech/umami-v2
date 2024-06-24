@@ -10,7 +10,7 @@ import { UmamiTheme } from "./providers/UmamiTheme";
 import { getErrorContext } from "./utils/getErrorContext";
 import { ErrorPage } from "./views/ErrorPage/ErrorPage";
 
-import "./index.css";
+import "./index.scss";
 
 const logError = (error: Error, info: { componentStack?: string | null }) => {
   const errorContext = { ...getErrorContext(error), stacktrace: String(info.componentStack) };

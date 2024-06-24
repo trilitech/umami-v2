@@ -1,5 +1,5 @@
 import { extendTheme } from "@chakra-ui/react";
-import { mode } from "@chakra-ui/theme-tools";
+import { type StyleFunctionProps, mode } from "@chakra-ui/theme-tools";
 
 import { dark, light } from "./colors";
 
@@ -42,14 +42,6 @@ const sizes = {
 };
 
 const theme = extendTheme({
-  // semanticTokens: {
-  //   colors: {
-  //     text: {
-  //       default: "green",
-  //       _dark: "red",
-  //     },
-  //   },
-  // },
   components: {
     Text: {
       sizes,
@@ -62,16 +54,15 @@ const theme = extendTheme({
       sizes,
     },
     Card: {
-      // container: {
       baseStyle: {
         container: {
+          color: "inherit",
           bg: "var(--chakra-colors-white)",
           boxShadow: "2px 4px 12px 0px rgba(45, 55, 72, 0.05)",
         },
       },
-      // },
     },
-    Input: props => ({
+    Input: (props: StyleFunctionProps) => ({
       sizes: { md: { field: { height: "48px" } } },
       defaultProps: { variant: "filled" },
       variants: {
@@ -105,7 +96,7 @@ const theme = extendTheme({
     Tabs: {
       baseStyle: {
         tab: {
-          color: "var(--chakra-colors-gray-500)",
+          color: "green",
           _selected: {
             bg: "var(--chakra-colors-gray-200)",
             color: "var(--chakra-colors-gray-900)",
@@ -114,7 +105,7 @@ const theme = extendTheme({
       },
     },
     Switch: {
-      baseStyle: props => ({
+      baseStyle: (props: StyleFunctionProps) => ({
         track: {
           backgroundColor: mode(light.grey[300], dark.grey[300])(props),
           _checked: {
@@ -127,24 +118,32 @@ const theme = extendTheme({
       }),
     },
     Link: {
-      baseStyle: props => ({
+      baseStyle: (props: StyleFunctionProps) => ({
         color: mode(light.grey[600], dark.grey[600])(props),
       }),
     },
-  },
-  config,
-  colors: {
-    text: {
-      default: "green",
+    Button: {
+      variants: {
+        solid: {
+          bg: "var(--chakra-colors-gray-100)",
+          _dark: {
+            _hover: {
+              bg: "var(--chakra-colors-gray-300)",
+            },
+          },
+        },
+      },
     },
   },
+  config,
   styles: {
-    global: props => ({
+    global: (props: StyleFunctionProps) => ({
       body: {
-        bg: mode(light.bg, dark.bg)(props),
+        color: mode(light.grey[600], dark.grey[600])(props),
+        bgColor: mode(light.bg, dark.bg)(props),
         bgImage: mode(light.bgGradient, dark.bgGradient)(props),
         _before: {
-          bg: mode(light.bgMaskColor, dark.bgMaskColor)(props),
+          bgColor: mode(light.bgMaskColor, dark.bgMaskColor)(props),
           maskImage: "url(src/assets/bg.svg)",
         },
       },
@@ -164,4 +163,5 @@ const theme = extendTheme({
     }),
   },
 });
+
 export default theme;
