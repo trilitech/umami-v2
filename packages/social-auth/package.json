@@ -22,6 +22,7 @@
     "format": "prettier --ignore-path ../../.gitignore --write .",
     "lint:ci": "eslint src --ext .ts --max-warnings=0",
     "lint": "eslint src --ext .ts --fix",
+    "format": "prettier --write .",
     "test:watch": "jest --watch",
     "test": "jest"
   },
