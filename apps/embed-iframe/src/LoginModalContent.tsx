@@ -1,25 +1,36 @@
 import { Box, Center, Flex, Heading, Spinner, Text, VStack } from "@chakra-ui/react";
 import { InMemorySigner } from "@taquito/signer";
+import { type TypeOfLogin } from "@trilitech-umami/umami-embed/types";
 import * as Auth from "@umami/social-auth";
 import { useState } from "react";
 
+import { TezosLogoIcon, UmamiLogoIcon } from "./assets/icons";
 import colors from "./imported/style/colors";
 import { getErrorContext } from "./imported/utils/getErrorContext";
+import { withTimeout } from "./imported/utils/withTimeout";
 import { LoginButtonComponent } from "./LoginButtonComponent";
 import { sendLoginErrorResponse, sendResponse } from "./utils";
-import { TezosLogoIcon, UmamiLogoIcon } from "./assets/icons";
 
-export const LoginModalContent: React.FC<{ closeModal: () => void }> = ({ closeModal }) => {
+const LOGIN_TIMEOUT = 3 * 60 * 1000; // 3 minutes
+
+export const LoginModalContent: React.FC<{
+  closeModal: () => void;
+  onLoginCallback: (loginType: TypeOfLogin) => void;
+}> = ({ closeModal, onLoginCallback }) => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const onLoginClick = async (idp: Auth.IDP) => {
+  const onLoginClick = async (loginType: TypeOfLogin) => {
     setIsLoading(true);
     try {
-      const { secretKey, name } = await Auth.forIDP(idp, "embed").getCredentials();
+      const { secretKey, name } = await withTimeout(
+        async () => Auth.forIDP(loginType, "embed").getCredentials(),
+        LOGIN_TIMEOUT
+      );
 
       const signer = new InMemorySigner(secretKey);
       const { pk, pkh } = { pk: await signer.publicKey(), pkh: await signer.publicKeyHash() };
 
+      onLoginCallback(loginType);
       sendResponse({
         type: "login_response",
         pk,

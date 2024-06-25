@@ -15,21 +15,26 @@ import {
 } from "@chakra-ui/react";
 import { InMemorySigner } from "@taquito/signer";
 import { OpKind, TezosToolkit, type WalletParamsWithKind } from "@taquito/taquito";
+import { type TypeOfLogin } from "@trilitech-umami/umami-embed/types";
+import * as Auth from "@umami/social-auth";
 import { useState } from "react";
 
 import { GoogleLogoIcon } from "./assets/icons/GoogleLogo";
 import { TezosLogoIcon } from "./assets/icons/TezosLogo";
 import { UmamiLogoIcon } from "./assets/icons/UmamiLogo";
-import { getGoogleCredentials } from "./imported/getGoogleCredentials";
 import { JsValueWrap } from "./imported/JsValueWrap";
 import colors from "./imported/style/colors";
 import { getErrorContext } from "./imported/utils/getErrorContext";
+import { withTimeout } from "./imported/utils/withTimeout";
 import { sendOperationErrorResponse, sendResponse } from "./utils";
+
+const SIGN_TIMEOUT = 5 * 60 * 1000; // 5 minutes
 
 export const OperationModalContent: React.FC<{
   operations: PartialTezosOperation[];
   closeModal: () => void;
-}> = ({ operations, closeModal }) => {
+  loginType: TypeOfLogin;
+}> = ({ operations, closeModal, loginType }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   console.log(operations);
@@ -37,7 +42,10 @@ export const OperationModalContent: React.FC<{
   const onClick = async () => {
     setIsLoading(true);
     try {
-      const { secretKey } = await getGoogleCredentials();
+      const { secretKey } = await withTimeout(
+        async () => Auth.forIDP(loginType, "embed").getCredentials(),
+        SIGN_TIMEOUT
+      );
       const toolkit = new TezosToolkit("https://ghostnet.ecadinfra.com");
       const signer = new InMemorySigner(secretKey);
       toolkit.setSignerProvider(signer);

@@ -1,9 +1,10 @@
 import { Center, Modal, ModalCloseButton, ModalContent, useDisclosure } from "@chakra-ui/react";
+import { type TypeOfLogin } from "@trilitech-umami/umami-embed/types";
 
 import { LoginModalContent } from "./LoginModalContent";
 import { sendLoginErrorResponse } from "./utils";
 
-export const useLoginModal = () => {
+export const useLoginModal = (onLoginCallback: (loginType: TypeOfLogin) => void) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const onModalCLose = () => {
@@ -24,12 +25,11 @@ export const useLoginModal = () => {
         >
           <ModalContent>
             <ModalCloseButton onClick={onModalCLose} />
-            <LoginModalContent closeModal={onClose} />
+            <LoginModalContent closeModal={onClose} onLoginCallback={onLoginCallback} />
           </ModalContent>
         </Modal>
       </Center>
     ),
-    // pass callback to save the data? - or should it be save to storage?
     onOpen,
   };
 };
