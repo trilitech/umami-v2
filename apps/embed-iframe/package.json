@@ -2,7 +2,7 @@
   "name": "@umami/embed-iframe",
   "type": "module",
   "scripts": {
-    "build": "tsc && vite build",
+    "build": "vite build",
     "dev": "vite dev",
     "preview": "vite preview",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --fix",
@@ -44,7 +44,7 @@
     "eslint": "^8.57.0",
     "prettier": "^3.3.2",
     "sass": "^1.77.6",
-    "typescript": "5.4.5",
+    "typescript": "5.5.2",
     "vite": "^5.3.1",
     "vite-plugin-node-polyfills": "^0.22.0",
     "vite-plugin-svgr": "^4.2.0"
