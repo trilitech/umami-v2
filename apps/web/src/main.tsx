@@ -14,7 +14,7 @@ import "./index.scss";
 
 const logError = (error: Error, info: { componentStack?: string | null }) => {
   const errorContext = { ...getErrorContext(error), stacktrace: String(info.componentStack) };
-  // TODO: setup error dispatch
+  // TODO: use error dispatch from redux store package
   // store.dispatch(errorsSlice.actions.add(errorContext));
 };
 

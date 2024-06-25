@@ -46,13 +46,6 @@ const theme = extendTheme({
     Text: {
       sizes,
     },
-    Heading: {
-      baseStyle: {
-        fontWeight: "600",
-        fontFamily: "Inter",
-      },
-      sizes,
-    },
     Card: {
       baseStyle: {
         container: {
@@ -144,7 +137,7 @@ const theme = extendTheme({
         bgImage: mode(light.bgGradient, dark.bgGradient)(props),
         _before: {
           bgColor: mode(light.bgMaskColor, dark.bgMaskColor)(props),
-          maskImage: "url(src/assets/bg.svg)",
+          maskImage: "url(public/static/bg.svg)",
         },
       },
       ":root": {

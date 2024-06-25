@@ -1,14 +1,14 @@
 import { Card, Grid, GridItem } from "@chakra-ui/react";
 import { Route, Routes } from "react-router";
 
-import { Footer } from "./components/Footer/Footer";
-import { Header } from "./components/Header/Header";
-import { Navbar } from "./components/Navbar/Navbar";
-import { Sidebar } from "./components/Sidebar/Sidebar";
-import { Activity } from "./views/Activity/Activity";
-import { Earn } from "./views/Earn/Earn";
-import { NFTs } from "./views/NFTs/NFTs";
-import { Tokens } from "./views/Tokens/Tokens";
+import { Footer } from "./components/Footer";
+import { Header } from "./components/Header";
+import { Navbar } from "./components/Navbar";
+import { Sidebar } from "./components/Sidebar";
+import { Activity } from "./views/Activity";
+import { Earn } from "./views/Earn";
+import { NFTs } from "./views/NFTs";
+import { Tokens } from "./views/Tokens";
 
 export const Layout = () => (
   <Grid
