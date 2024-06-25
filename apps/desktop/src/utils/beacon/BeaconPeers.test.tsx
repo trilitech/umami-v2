@@ -1,9 +1,9 @@
 import { type ExtendedPeerInfo, NetworkType } from "@airgap/beacon-wallet";
+import { mockMnemonicAccount } from "@umami/test-utils";
 
 import * as beaconHelper from "./beacon";
 import { BeaconPeers } from "./BeaconPeers";
 import { WalletClient } from "./WalletClient";
-import { mockMnemonicAccount } from "../../mocks/factories";
 import { addAccount } from "../../mocks/helpers";
 import { act, render, screen, userEvent, waitFor, within } from "../../mocks/testUtils";
 import { formatPkh } from "../format";

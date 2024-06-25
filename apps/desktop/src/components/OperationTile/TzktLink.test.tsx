@@ -1,6 +1,7 @@
+import { DefaultNetworks } from "@umami/tezos";
+
 import { TzktLink } from "./TzktLink";
 import { render, screen } from "../../mocks/testUtils";
-import { DefaultNetworks } from "../../types/Network";
 import { networksActions } from "../../utils/redux/slices/networks";
 import { store } from "../../utils/redux/store";
 

@@ -1,4 +1,4 @@
-import { DefaultNetworks } from "../types/Network";
+import { DefaultNetworks } from "@umami/tezos";
 
 export const TEST_NETWORK = {
   name: "Test net",

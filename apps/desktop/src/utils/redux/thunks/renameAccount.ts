@@ -1,6 +1,6 @@
 import { type Action, type ThunkAction } from "@reduxjs/toolkit";
+import { type Account } from "@umami/core";
 
-import { type Account } from "../../../types/Account";
 import { accountsSlice } from "../slices/accountsSlice/accountsSlice";
 import { multisigsSlice } from "../slices/multisigsSlice";
 import { type RootState } from "../store";

@@ -1,4 +1,6 @@
 import { AspectRatio, Box, Center, Flex, Image, Text, Tooltip } from "@chakra-ui/react";
+import { type Token, thumbnailUri, tokenNameSafe, tokenPrettyAmount } from "@umami/core";
+import { type TokenTransferOperation, type TransactionOperation } from "@umami/tzkt";
 
 import { Fee } from "./Fee";
 import { InternalPrefix } from "./InternalPrefix";
@@ -13,8 +15,6 @@ import {
   useGetOperationDestination,
 } from "./useGetOperationDestination";
 import colors from "../../style/colors";
-import { type Token, thumbnailUri, tokenNameSafe, tokenPrettyAmount } from "../../types/Token";
-import { type TokenTransferOperation, type TransactionOperation } from "../../utils/tezos";
 import { getIPFSurl } from "../../utils/token/utils";
 import { AddressPill } from "../AddressPill/AddressPill";
 

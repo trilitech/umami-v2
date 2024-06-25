@@ -8,13 +8,13 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
+import { type Account } from "@umami/core";
+import { type TzktAlias } from "@umami/tzkt";
 import { useContext } from "react";
 
 import { FormPage } from "./FormPage";
 import { WarningIcon } from "../../../assets/icons";
 import colors from "../../../style/colors";
-import { type Account } from "../../../types/Account";
-import { type TzktAlias } from "../../../types/Address";
 import { DynamicModalContext } from "../../DynamicModal";
 
 export const ChangeDelegateNoticeModal = ({

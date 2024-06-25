@@ -9,6 +9,7 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import { type Network, isDefault } from "@umami/tezos";
 import { Fragment, useContext } from "react";
 
 import { UpsertNetworkModal } from "./UpsertNetworkModal";
@@ -16,7 +17,6 @@ import { PenIcon, PlusIcon, TrashIcon } from "../../../assets/icons";
 import { DynamicModalContext } from "../../../components/DynamicModal";
 import { PopoverMenu } from "../../../components/PopoverMenu";
 import colors from "../../../style/colors";
-import { type Network, isDefault } from "../../../types/Network";
 import {
   useAvailableNetworks,
   useSelectNetwork,

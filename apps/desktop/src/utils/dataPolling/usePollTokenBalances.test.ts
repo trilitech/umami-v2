@@ -1,12 +1,12 @@
 import { waitFor } from "@testing-library/react";
+import { mockImplicitAddress, mockNFTToken } from "@umami/test-utils";
+import { getTokenBalances } from "@umami/tzkt";
 
 import { usePollTokenBalances } from "./usePollTokenBalances";
-import { mockImplicitAddress, mockNFTToken } from "../../mocks/factories";
 import { renderHook } from "../../mocks/testUtils";
 import { store } from "../redux/store";
-import { getTokenBalances } from "../tezos";
 
-jest.mock("../tezos");
+jest.mock("@umami/tzkt");
 
 describe("usePollTokenBalances", () => {
   it("fetches token balances and updates the state", async () => {

@@ -1,4 +1,3 @@
-import { OperationRecipient } from "./OperationRecipient";
 import {
   mockContractAddress,
   mockContractOrigination,
@@ -8,7 +7,9 @@ import {
   mockNftOperation,
   mockTezOperation,
   mockUndelegationOperation,
-} from "../../mocks/factories";
+} from "@umami/test-utils";
+
+import { OperationRecipient } from "./OperationRecipient";
 import { render, screen } from "../../mocks/testUtils";
 import { formatPkh } from "../../utils/format";
 

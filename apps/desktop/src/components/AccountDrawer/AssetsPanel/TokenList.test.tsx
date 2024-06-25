@@ -1,12 +1,12 @@
+import { type FA2TokenBalance, fromRawTokenBalance } from "@umami/core";
+import { hedgehoge, mockFA12Token, mockFA2Token, mockMnemonicAccount } from "@umami/test-utils";
+
 import { TokenList } from "./TokenList";
-import { hedgehoge } from "../../../mocks/fa12Tokens";
-import { mockFA12Token, mockFA2Token, mockMnemonicAccount } from "../../../mocks/factories";
 import { render, screen } from "../../../mocks/testUtils";
-import { type FA2TokenBalance, fromRaw } from "../../../types/TokenBalance";
 
 describe("<TokenList />", () => {
   const ACCOUNT = mockMnemonicAccount(0);
-  const HEDGEHOGE_TOKEN = fromRaw(hedgehoge(ACCOUNT.address))! as FA2TokenBalance;
+  const HEDGEHOGE_TOKEN = fromRawTokenBalance(hedgehoge(ACCOUNT.address)) as FA2TokenBalance;
 
   describe("without tokens", () => {
     it("displays empty state", () => {

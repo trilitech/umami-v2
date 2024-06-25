@@ -1,5 +1,5 @@
-import { type MnemonicAccount } from "../../types/Account";
-import { parseImplicitPkh } from "../../types/Address";
+import { type MnemonicAccount } from "@umami/core";
+import { parseImplicitPkh } from "@umami/tezos";
 
 export const makeMnemonicAccount = (
   pk: string,

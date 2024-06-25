@@ -1,15 +1,15 @@
+import { type Account } from "@umami/core";
 import { type IDP } from "@umami/social-auth";
-
-import { AccountTileIcon } from "./AccountTileIcon";
 import {
   mockLedgerAccount,
   mockMnemonicAccount,
   mockMultisigAccount,
   mockSocialAccount,
-} from "../../mocks/factories";
+} from "@umami/test-utils";
+
+import { AccountTileIcon } from "./AccountTileIcon";
 import { addAccount } from "../../mocks/helpers";
 import { render, screen } from "../../mocks/testUtils";
-import { type Account } from "../../types/Account";
 
 const fixture = (account: Account) => <AccountTileIcon account={account} size="sm" />;
 

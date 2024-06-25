@@ -1,8 +1,8 @@
 import { FormControl } from "@chakra-ui/react";
+import { type Account } from "@umami/core";
+import { type RawPkh } from "@umami/tezos";
 
-import { type Account } from "../../types/Account";
 import { type AccountOperations } from "../../types/AccountOperations";
-import { type RawPkh } from "../../types/Address";
 import { AvailableSignersAutocomplete } from "../AddressAutocomplete";
 
 export const OperationSignerSelector = ({

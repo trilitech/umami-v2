@@ -1,12 +1,13 @@
+import { type Operation } from "@umami/core";
+import { getRealAmount } from "@umami/core";
 import {
   type Address,
   isAddressValid,
   isValidContractPkh,
   parseContractPkh,
   parsePkh,
-} from "../../types/Address";
-import { type Operation } from "../../types/Operation";
-import { getRealAmount } from "../../types/Token";
+} from "@umami/tezos";
+
 import { tezToMutez } from "../../utils/format";
 import { validateNonNegativeNumber } from "../../utils/helpers";
 import { type TokenLookup } from "../../utils/hooks/tokensHooks";

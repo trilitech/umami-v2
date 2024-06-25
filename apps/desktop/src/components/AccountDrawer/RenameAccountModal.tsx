@@ -9,10 +9,10 @@ import {
   ModalContent,
   ModalFooter,
 } from "@chakra-ui/react";
+import { type Account } from "@umami/core";
 import { type FC, useContext } from "react";
 import { useForm } from "react-hook-form";
 
-import { type Account } from "../../types/Account";
 import { useValidateName } from "../../utils/hooks/labelsHooks";
 import { useAppDispatch } from "../../utils/redux/hooks";
 import { renameAccount } from "../../utils/redux/thunks/renameAccount";

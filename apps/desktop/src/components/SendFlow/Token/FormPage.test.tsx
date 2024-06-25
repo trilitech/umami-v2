@@ -1,14 +1,16 @@
 import { Modal } from "@chakra-ui/react";
-
-import { FormPage, type FormValues } from "./FormPage";
-import { SignPage } from "./SignPage";
-import { executeParams } from "../../../mocks/executeParams";
+import { type FA2TokenBalance } from "@umami/core";
 import {
   mockFA2Token,
   mockFA2TokenRaw,
   mockImplicitAccount,
   mockMnemonicAccount,
-} from "../../../mocks/factories";
+} from "@umami/test-utils";
+import { parseContractPkh } from "@umami/tezos";
+
+import { FormPage, type FormValues } from "./FormPage";
+import { SignPage } from "./SignPage";
+import { executeParams } from "../../../mocks/executeParams";
 import { addAccount } from "../../../mocks/helpers";
 import {
   act,
@@ -21,8 +23,6 @@ import {
 } from "../../../mocks/testUtils";
 import { mockToast } from "../../../mocks/toast";
 import { makeAccountOperations } from "../../../types/AccountOperations";
-import { parseContractPkh } from "../../../types/Address";
-import { type FA2TokenBalance } from "../../../types/TokenBalance";
 import { assetsSlice } from "../../../utils/redux/slices/assetsSlice";
 import { store } from "../../../utils/redux/store";
 import { estimate } from "../../../utils/tezos";

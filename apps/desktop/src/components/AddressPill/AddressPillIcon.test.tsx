@@ -1,6 +1,7 @@
+import { mockContractAddress } from "@umami/test-utils";
+
 import { LeftIcon, RightIcon } from "./AddressPillIcon";
 import { mockFA2Address } from "../../mocks/addressKind";
-import { mockContractAddress } from "../../mocks/factories";
 import { render, screen } from "../../mocks/testUtils";
 
 describe("AddressPill Icons", () => {

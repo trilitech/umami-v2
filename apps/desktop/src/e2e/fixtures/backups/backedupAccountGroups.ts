@@ -1,5 +1,6 @@
+import { DEFAULT_DERIVATION_PATH_TEMPLATE } from "@umami/tezos";
+
 import { mnemonic1 } from "../../../mocks/mockMnemonic";
-import { DEFAULT_DERIVATION_PATH_TEMPLATE } from "../../../utils/account/derivationPathUtils";
 import { type AccountGroup, AccountGroupBuilder } from "../../helpers/AccountGroup";
 
 export const v1BackedupAccountGroups = async () => {

@@ -10,14 +10,13 @@ import {
   ModalFooter,
   Text,
 } from "@chakra-ui/react";
+import { type FA2Transfer, type NFTBalance } from "@umami/core";
+import { type RawPkh, parseContractPkh, parsePkh } from "@umami/tezos";
 import type React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { SignPage } from "./SignPage";
 import colors from "../../../style/colors";
-import { type RawPkh, parseContractPkh, parsePkh } from "../../../types/Address";
-import { type FA2Transfer } from "../../../types/Operation";
-import { type NFTBalance } from "../../../types/TokenBalance";
 import { KnownAccountsAutocomplete, OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
 import { FormErrorMessage } from "../../FormErrorMessage";
 import { FormPageHeader } from "../FormPageHeader";

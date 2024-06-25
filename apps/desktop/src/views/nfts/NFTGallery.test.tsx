@@ -1,9 +1,10 @@
+import { type NFTBalance } from "@umami/core";
+import { mockContractAddress, mockImplicitAddress } from "@umami/test-utils";
+import { type RawPkh } from "@umami/tezos";
+
 import { NFTGallery } from "./NFTGallery";
-import { mockContractAddress, mockImplicitAddress } from "../../mocks/factories";
 import { render, screen } from "../../mocks/testUtils";
 import { mockNFTBalance } from "../../mocks/tokens";
-import { type RawPkh } from "../../types/Address";
-import { type NFTBalance } from "../../types/TokenBalance";
 
 const fixture = (nftsByOwner: Record<RawPkh, NFTBalance[] | undefined>) => (
   <NFTGallery nftsByOwner={nftsByOwner} />

@@ -1,20 +1,19 @@
-import { cloneDeep } from "lodash";
-
-import { useAddressKind } from "./useAddressKind";
-import { hedgehoge } from "../../mocks/fa12Tokens";
-import { uUSD } from "../../mocks/fa2Tokens";
 import {
+  hedgehoge,
   mockBaker,
   mockContractAddress,
   mockImplicitAccount,
   mockImplicitAddress,
   mockMnemonicAccount,
-} from "../../mocks/factories";
+  multisigs,
+  uUSD,
+} from "@umami/test-utils";
+import { MAINNET, parseContractPkh, parseImplicitPkh, parsePkh } from "@umami/tezos";
+import { cloneDeep } from "lodash";
+
+import { useAddressKind } from "./useAddressKind";
 import { addAccount } from "../../mocks/helpers";
-import { multisigs } from "../../mocks/multisig";
 import { renderHook } from "../../mocks/testUtils";
-import { parseContractPkh, parseImplicitPkh, parsePkh } from "../../types/Address";
-import { MAINNET } from "../../types/Network";
 import { assetsSlice } from "../../utils/redux/slices/assetsSlice";
 import { contactsSlice } from "../../utils/redux/slices/contactsSlice";
 import { multisigsSlice } from "../../utils/redux/slices/multisigsSlice";

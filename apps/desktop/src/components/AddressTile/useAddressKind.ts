@@ -1,10 +1,11 @@
+import { type Address } from "@umami/tezos";
+
 import {
   type AddressKind,
   type BakerAddress,
   type ContactAddress,
   type OwnedAddress,
 } from "./types";
-import { type Address } from "../../types/Address";
 import { useGetBaker } from "../../utils/hooks/assetsHooks";
 import { useGetContactName } from "../../utils/hooks/contactsHooks";
 import { useGetOwnedAccountSafe } from "../../utils/hooks/getAccountDataHooks";

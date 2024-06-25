@@ -1,10 +1,15 @@
+import {
+  hedgehoge,
+  mockImplicitAddress,
+  mockMnemonicAccount,
+  tzBtsc,
+  uUSD,
+} from "@umami/test-utils";
+import { DefaultNetworks, MAINNET, type Network } from "@umami/tezos";
+
 import { TokensPage } from "./TokensPage";
-import { hedgehoge, tzBtsc } from "../../mocks/fa12Tokens";
-import { uUSD } from "../../mocks/fa2Tokens";
-import { mockImplicitAddress, mockMnemonicAccount } from "../../mocks/factories";
 import { addAccount } from "../../mocks/helpers";
 import { render, screen } from "../../mocks/testUtils";
-import { DefaultNetworks, MAINNET, type Network } from "../../types/Network";
 import { assetsSlice } from "../../utils/redux/slices/assetsSlice";
 import { networksActions } from "../../utils/redux/slices/networks";
 import { tokensActions } from "../../utils/redux/slices/tokensSlice";

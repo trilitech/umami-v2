@@ -1,13 +1,13 @@
+import { mockImplicitAddress, rawAccountFixture } from "@umami/test-utils";
+import { GHOSTNET, MAINNET } from "@umami/tezos";
+
 import {
   useAvailableNetworks,
   useFindNetwork,
   useSelectNetwork,
   useSelectedNetwork,
 } from "./networkHooks";
-import { mockImplicitAddress } from "../../mocks/factories";
 import { renderHook } from "../../mocks/testUtils";
-import { rawAccountFixture } from "../../mocks/tzktResponse";
-import { GHOSTNET, MAINNET } from "../../types/Network";
 import { assetsActions } from "../redux/slices/assetsSlice";
 import { networksActions } from "../redux/slices/networks";
 import { store } from "../redux/store";

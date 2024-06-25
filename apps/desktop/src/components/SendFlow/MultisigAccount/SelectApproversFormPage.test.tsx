@@ -1,16 +1,17 @@
 import { Modal } from "@chakra-ui/react";
-
-import { type FormValues } from "./FormValues";
-import { SelectApproversFormPage } from "./SelectApproversFormPage";
-import { SignTransactionFormPage } from "./SignTransactionFormPage";
-import { executeParams } from "../../../mocks/executeParams";
+import { contract, makeStorageJSON } from "@umami/multisig";
 import {
   mockContractAddress,
   mockContractOrigination,
   mockImplicitAccount,
   mockImplicitAddress,
   mockMnemonicAccount,
-} from "../../../mocks/factories";
+} from "@umami/test-utils";
+
+import { type FormValues } from "./FormValues";
+import { SelectApproversFormPage } from "./SelectApproversFormPage";
+import { SignTransactionFormPage } from "./SignTransactionFormPage";
+import { executeParams } from "../../../mocks/executeParams";
 import { addAccount } from "../../../mocks/helpers";
 import {
   act,
@@ -21,7 +22,6 @@ import {
   userEvent,
   waitFor,
 } from "../../../mocks/testUtils";
-import { contract, makeStorageJSON } from "../../../multisig/contract";
 import { makeAccountOperations } from "../../../types/AccountOperations";
 import { estimate } from "../../../utils/tezos";
 

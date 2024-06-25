@@ -1,16 +1,17 @@
-import { SignPage } from "./SignPage";
-import { executeParams } from "../../../mocks/executeParams";
+import { makeMultisigApproveOrExecuteOperation } from "@umami/core";
 import {
   mockImplicitAccount,
   mockMnemonicAccount,
   mockMultisigAccount,
   mockNFT,
-} from "../../../mocks/factories";
+} from "@umami/test-utils";
+import { parseContractPkh } from "@umami/tezos";
+
+import { SignPage } from "./SignPage";
+import { executeParams } from "../../../mocks/executeParams";
 import { addAccount } from "../../../mocks/helpers";
 import { render, screen, waitFor } from "../../../mocks/testUtils";
 import { makeAccountOperations } from "../../../types/AccountOperations";
-import { parseContractPkh } from "../../../types/Address";
-import { makeMultisigApproveOrExecuteOperation } from "../../../types/Operation";
 import { TEZ } from "../../../utils/tezos";
 
 const account = mockImplicitAccount(0);

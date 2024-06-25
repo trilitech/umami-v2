@@ -1,4 +1,5 @@
 import { Box, Center, Flex, Heading, Text } from "@chakra-ui/react";
+import { type TransactionOperation } from "@umami/tzkt";
 
 import { Fee } from "./Fee";
 import { InternalPrefix } from "./InternalPrefix";
@@ -8,7 +9,6 @@ import { Timestamp } from "./Timestamp";
 import { TzktLink } from "./TzktLink";
 import { ContractIcon } from "../../assets/icons";
 import colors from "../../style/colors";
-import { type TransactionOperation } from "../../utils/tezos";
 import { AddressPill } from "../AddressPill/AddressPill";
 
 export const ContractCallTile: React.FC<{

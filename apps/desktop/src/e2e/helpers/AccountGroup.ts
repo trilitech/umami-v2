@@ -1,8 +1,7 @@
 import { InMemorySigner } from "@taquito/signer";
+import { type RawPkh, makeDerivationPath } from "@umami/tezos";
 import { times } from "lodash";
 
-import { type RawPkh } from "../../types/Address";
-import { makeDerivationPath } from "../../utils/account/derivationPathUtils";
 import { derivePublicKeyPair, getFingerPrint } from "../../utils/tezos";
 
 export type AccountGroup = {

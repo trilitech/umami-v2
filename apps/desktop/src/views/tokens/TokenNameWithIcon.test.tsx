@@ -1,5 +1,6 @@
+import { mockFA2Token, mockMnemonicAccount } from "@umami/test-utils";
+
 import { TokenNameWithIcon } from "./TokenNameWithIcon";
-import { mockFA2Token, mockMnemonicAccount } from "../../mocks/factories";
 import { render, screen } from "../../mocks/testUtils";
 
 describe("<TokenNameWithIcon />", () => {

@@ -1,10 +1,10 @@
 import { Modal } from "@chakra-ui/react";
+import { mockImplicitAccount } from "@umami/test-utils";
+import { type RawPkh } from "@umami/tezos";
+import { GHOSTNET } from "@umami/tezos";
 
 import { BuyTezForm } from "./BuyTezForm";
-import { mockImplicitAccount } from "../../mocks/factories";
 import { render, screen, waitFor } from "../../mocks/testUtils";
-import { type RawPkh } from "../../types/Address";
-import { GHOSTNET } from "../../types/Network";
 import { networksActions } from "../../utils/redux/slices/networks";
 import { store } from "../../utils/redux/store";
 

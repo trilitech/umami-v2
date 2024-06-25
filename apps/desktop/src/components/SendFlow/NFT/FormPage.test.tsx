@@ -1,9 +1,11 @@
 import { Modal } from "@chakra-ui/react";
+import { type NFTBalance } from "@umami/core";
+import { mockImplicitAccount, mockMnemonicAccount, mockNFT } from "@umami/test-utils";
+import { parseContractPkh } from "@umami/tezos";
 
 import { FormPage, type FormValues } from "./FormPage";
 import { SignPage } from "./SignPage";
 import { executeParams } from "../../../mocks/executeParams";
-import { mockImplicitAccount, mockMnemonicAccount, mockNFT } from "../../../mocks/factories";
 import { addAccount } from "../../../mocks/helpers";
 import {
   act,
@@ -16,8 +18,6 @@ import {
 } from "../../../mocks/testUtils";
 import { mockToast } from "../../../mocks/toast";
 import { makeAccountOperations } from "../../../types/AccountOperations";
-import { parseContractPkh } from "../../../types/Address";
-import { type NFTBalance } from "../../../types/TokenBalance";
 import { estimate } from "../../../utils/tezos";
 import { type FormPagePropsWithSender } from "../utils";
 

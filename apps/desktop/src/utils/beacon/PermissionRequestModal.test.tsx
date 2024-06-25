@@ -6,10 +6,10 @@ import {
 } from "@airgap/beacon-wallet";
 import { Modal } from "@chakra-ui/react";
 import { fireEvent } from "@testing-library/react";
+import { mockMnemonicAccount } from "@umami/test-utils";
 
 import { PermissionRequestModal } from "./PermissionRequestModal";
 import { WalletClient } from "./WalletClient";
-import { mockMnemonicAccount } from "../../mocks/factories";
 import { addAccount } from "../../mocks/helpers";
 import { act, render, screen, userEvent } from "../../mocks/testUtils";
 import { store } from "../redux/store";

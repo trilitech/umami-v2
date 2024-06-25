@@ -1,4 +1,4 @@
-import { AccountsList } from "./AccountsList";
+import { type MnemonicAccount } from "@umami/core";
 import {
   mockAccountLabel,
   mockImplicitAccount,
@@ -7,11 +7,12 @@ import {
   mockMultisigWithOperations,
   mockPk,
   mockSocialAccount,
-} from "../../mocks/factories";
+} from "@umami/test-utils";
+import { getDefaultDerivationPath } from "@umami/tezos";
+
+import { AccountsList } from "./AccountsList";
 import { addAccount } from "../../mocks/helpers";
 import { act, render, screen, userEvent, waitFor, within } from "../../mocks/testUtils";
-import { type MnemonicAccount } from "../../types/Account";
-import { getDefaultDerivationPath } from "../../utils/account/derivationPathUtils";
 import { WalletClient } from "../../utils/beacon/WalletClient";
 import * as cryptoFunctionsToMock from "../../utils/crypto/AES";
 import { formatPkh } from "../../utils/format";

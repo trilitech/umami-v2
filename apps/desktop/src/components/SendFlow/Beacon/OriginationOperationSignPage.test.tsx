@@ -1,10 +1,11 @@
 import { BeaconMessageType, NetworkType, type OperationRequestOutput } from "@airgap/beacon-wallet";
 import { TezosToolkit } from "@taquito/taquito";
 import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
+import { mockContractOrigination, mockImplicitAccount } from "@umami/test-utils";
+import { GHOSTNET } from "@umami/tezos";
 
 import { OriginationOperationSignPage } from "./OriginationOperationSignPage";
 import { executeParams } from "../../../mocks/executeParams";
-import { mockContractOrigination, mockImplicitAccount } from "../../../mocks/factories";
 import {
   act,
   dynamicModalContextMock,
@@ -13,7 +14,6 @@ import {
   userEvent,
   waitFor,
 } from "../../../mocks/testUtils";
-import { GHOSTNET } from "../../../types/Network";
 import { WalletClient } from "../../../utils/beacon/WalletClient";
 import { prettyTezAmount } from "../../../utils/format";
 import { useGetSecretKey } from "../../../utils/hooks/getAccountDataHooks";

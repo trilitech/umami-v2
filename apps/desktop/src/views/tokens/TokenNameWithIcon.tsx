@@ -1,8 +1,8 @@
 import { Flex, Text, type TextProps } from "@chakra-ui/react";
+import { type FA12TokenBalance, type FA2TokenBalance } from "@umami/core";
+import { tokenNameSafe } from "@umami/core";
 
 import { VerifiedIcon } from "../../assets/icons";
-import { tokenNameSafe } from "../../types/Token";
-import { type FA12TokenBalance, type FA2TokenBalance } from "../../types/TokenBalance";
 
 // Known verified tokens on mainnet
 const verifiedTokens = [

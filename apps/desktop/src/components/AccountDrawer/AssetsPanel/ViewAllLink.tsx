@@ -1,9 +1,9 @@
 import { Center, type FlexProps, Link, Text } from "@chakra-ui/react";
+import { type RawPkh } from "@umami/tezos";
 import { Link as ReactRouterLink } from "react-router-dom";
 
 import { RefreshClockIcon } from "../../../assets/icons";
 import colors from "../../../style/colors";
-import { type RawPkh } from "../../../types/Address";
 
 /**
  * Simple link to view all account's assets for one of categories.

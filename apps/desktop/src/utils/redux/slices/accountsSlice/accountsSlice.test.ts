@@ -1,12 +1,13 @@
+import { type MnemonicAccount } from "@umami/core";
 import {
   mockImplicitAccount,
   mockLedgerAccount,
   mockMnemonicAccount,
   mockSecretKeyAccount,
   mockSocialAccount,
-} from "../../../../mocks/factories";
+} from "@umami/test-utils";
+
 import { addAccount } from "../../../../mocks/helpers";
-import { type MnemonicAccount } from "../../../../types/Account";
 import { store } from "../../store";
 
 import { accountsActions } from ".";

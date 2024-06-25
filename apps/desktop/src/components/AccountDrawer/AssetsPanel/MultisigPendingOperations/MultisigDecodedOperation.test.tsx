@@ -1,8 +1,9 @@
+import { mockContractAddress, mockImplicitAddress } from "@umami/test-utils";
+import { MAINNET } from "@umami/tezos";
+import { type RawTzktTokenBalance } from "@umami/tzkt";
+
 import { MultisigDecodedOperation } from "./MultisigDecodedOperation";
-import { mockContractAddress, mockImplicitAddress } from "../../../../mocks/factories";
 import { render, screen } from "../../../../mocks/testUtils";
-import { MAINNET } from "../../../../types/Network";
-import { type RawTokenBalance } from "../../../../types/TokenBalance";
 import { assetsActions } from "../../../../utils/redux/slices/assetsSlice";
 import { networksActions } from "../../../../utils/redux/slices/networks";
 import { tokensSlice } from "../../../../utils/redux/slices/tokensSlice";
@@ -10,9 +11,7 @@ import { store } from "../../../../utils/redux/store";
 
 const { updateTokenBalance } = assetsActions;
 
-beforeEach(() => {
-  store.dispatch(networksActions.setCurrent(MAINNET));
-});
+beforeEach(() => store.dispatch(networksActions.setCurrent(MAINNET)));
 
 describe("<MultisigDecodedOperation />", () => {
   it("displays delegate", () => {
@@ -55,7 +54,7 @@ describe("<MultisigDecodedOperation />", () => {
   it("Non NFT FA tokens amount renders correctly", () => {
     const mockContract = mockContractAddress(0);
 
-    const mockBalancePlayload: RawTokenBalance = {
+    const mockBalancePayload: RawTzktTokenBalance = {
       account: { address: "mockPkh" },
 
       balance: "1",
@@ -69,11 +68,11 @@ describe("<MultisigDecodedOperation />", () => {
         },
       },
     };
-    store.dispatch(updateTokenBalance([mockBalancePlayload]));
+    store.dispatch(updateTokenBalance([mockBalancePayload]));
     store.dispatch(
       tokensSlice.actions.addTokens({
         network: MAINNET,
-        tokens: [mockBalancePlayload.token],
+        tokens: [mockBalancePayload.token],
       })
     );
 
@@ -102,7 +101,7 @@ describe("<MultisigDecodedOperation />", () => {
   it("NFT amount renders correctly", () => {
     const mockContract = mockContractAddress(0);
 
-    const mockBalancePlayload: RawTokenBalance = {
+    const mockBalancePlayload: RawTzktTokenBalance = {
       account: { address: mockImplicitAddress(0).pkh },
       balance: "1",
       token: {

@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
+import { getRelevantMultisigContracts } from "@umami/multisig";
 import { useEffect } from "react";
 
 import { BLOCK_TIME } from "./constants";
 import { useRefetchTrigger } from "../hooks/assetsHooks";
 import { useImplicitAccounts } from "../hooks/getAccountDataHooks";
 import { useSelectedNetwork } from "../hooks/networkHooks";
-import { getRelevantMultisigContracts } from "../multisig/helpers";
 import { useAppDispatch } from "../redux/hooks";
 import { multisigActions } from "../redux/slices/multisigsSlice";
 import { useReactQueryErrorHandler } from "../useReactQueryOnError";

@@ -1,7 +1,7 @@
 import { Button, ListItem, OrderedList, VStack, useToast } from "@chakra-ui/react";
+import { makeDerivationPath } from "@umami/tezos";
 
 import { USBIcon } from "../../../assets/icons";
-import { makeDerivationPath } from "../../../utils/account/derivationPathUtils";
 import { useRestoreLedger } from "../../../utils/hooks/setAccountDataHooks";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
 import { getPk } from "../../../utils/ledger/pk";

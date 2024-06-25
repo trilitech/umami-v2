@@ -1,6 +1,5 @@
+import { type Address } from "@umami/tezos";
 import React from "react";
-
-import { type Address } from "../../types/Address";
 
 export type OperationTileContextType =
   | { mode: "page" }

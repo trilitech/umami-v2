@@ -1,14 +1,14 @@
 import { Modal } from "@chakra-ui/react";
-
-import { type FormValues } from "./FormValues";
-import { SignTransactionFormPage } from "./SignTransactionFormPage";
-import { executeParams } from "../../../mocks/executeParams";
 import {
   mockContractOrigination,
   mockImplicitAccount,
   mockImplicitAddress,
   mockMnemonicAccount,
-} from "../../../mocks/factories";
+} from "@umami/test-utils";
+
+import { type FormValues } from "./FormValues";
+import { SignTransactionFormPage } from "./SignTransactionFormPage";
+import { executeParams } from "../../../mocks/executeParams";
 import { addAccount } from "../../../mocks/helpers";
 import { render, screen, waitFor } from "../../../mocks/testUtils";
 import { makeAccountOperations } from "../../../types/AccountOperations";

@@ -1,8 +1,8 @@
 import { Heading } from "@chakra-ui/react";
+import { type TzktCombinedOperation } from "@umami/tzkt";
 
 import { useGetOperationDestination } from "./useGetOperationDestination";
 import colors from "../../style/colors";
-import { type TzktCombinedOperation } from "../../utils/tezos";
 
 /**
  * "Internal: " prefix for operations which weren't directly initiated by the user.

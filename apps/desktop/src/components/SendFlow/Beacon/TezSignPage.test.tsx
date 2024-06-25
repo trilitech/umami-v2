@@ -1,9 +1,10 @@
 import { BeaconMessageType, NetworkType, type OperationRequestOutput } from "@airgap/beacon-wallet";
 import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
+import { mockImplicitAccount, mockTezOperation } from "@umami/test-utils";
+import { GHOSTNET, MAINNET } from "@umami/tezos";
 
 import { TezSignPage } from "./TezSignPage";
 import { executeParams } from "../../../mocks/executeParams";
-import { mockImplicitAccount, mockTezOperation } from "../../../mocks/factories";
 import {
   act,
   dynamicModalContextMock,
@@ -12,7 +13,6 @@ import {
   userEvent,
   waitFor,
 } from "../../../mocks/testUtils";
-import { GHOSTNET, MAINNET } from "../../../types/Network";
 import { WalletClient } from "../../../utils/beacon/WalletClient";
 import { useGetSecretKey } from "../../../utils/hooks/getAccountDataHooks";
 import { networksActions } from "../../../utils/redux/slices/networks";

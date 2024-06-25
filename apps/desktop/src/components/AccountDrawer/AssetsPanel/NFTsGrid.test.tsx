@@ -1,5 +1,6 @@
+import { mockContractAddress, mockImplicitAddress } from "@umami/test-utils";
+
 import { NFTsGrid } from "./NFTsGrid";
-import { mockContractAddress, mockImplicitAddress } from "../../../mocks/factories";
 import { render, screen } from "../../../mocks/testUtils";
 import { mockNFTBalance } from "../../../mocks/tokens";
 

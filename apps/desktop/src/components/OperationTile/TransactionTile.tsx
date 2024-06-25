@@ -1,4 +1,6 @@
 import { Box, Center, Flex, Text } from "@chakra-ui/react";
+import { parsePkh } from "@umami/tezos";
+import { type TransactionOperation } from "@umami/tzkt";
 
 import { Fee } from "./Fee";
 import { InternalPrefix } from "./InternalPrefix";
@@ -13,9 +15,7 @@ import {
   useGetOperationDestination,
 } from "./useGetOperationDestination";
 import colors from "../../style/colors";
-import { parsePkh } from "../../types/Address";
 import { prettyTezAmount } from "../../utils/format";
-import { type TransactionOperation } from "../../utils/tezos";
 import { AddressPill } from "../AddressPill/AddressPill";
 
 export const TransactionTile: React.FC<{ operation: TransactionOperation }> = ({ operation }) => {

@@ -1,9 +1,9 @@
+import { type MultisigAccount } from "@umami/core";
+import { mockContractContact, mockMnemonicAccount, multisigs } from "@umami/test-utils";
+import { MAINNET } from "@umami/tezos";
+
 import { renameAccount } from "./renameAccount";
-import { mockContractContact, mockMnemonicAccount } from "../../../mocks/factories";
 import { addAccount } from "../../../mocks/helpers";
-import { multisigs } from "../../../mocks/multisig";
-import { type MultisigAccount } from "../../../types/Account";
-import { MAINNET } from "../../../types/Network";
 import { contactsActions } from "../slices/contactsSlice";
 import { networksActions } from "../slices/networks";
 import { store } from "../store";

@@ -1,19 +1,20 @@
-import { OperationsView } from "./OperationsView";
-import { mockImplicitAccount, mockMnemonicAccount } from "../../mocks/factories";
-import { addAccount } from "../../mocks/helpers";
-import { act, render, screen, userEvent, waitFor } from "../../mocks/testUtils";
-import { mockTzktTezTransfer } from "../../mocks/transfers";
-import { MAINNET } from "../../types/Network";
-import { networksActions } from "../../utils/redux/slices/networks";
-import { store } from "../../utils/redux/store";
+import { mockImplicitAccount, mockMnemonicAccount } from "@umami/test-utils";
+import { MAINNET } from "@umami/tezos";
 import {
   type TzktCombinedOperation,
   getCombinedOperations,
   getRelatedTokenTransfers,
-} from "../../utils/tezos";
+} from "@umami/tzkt";
 
-jest.mock("../../utils/tezos", () => ({
-  ...jest.requireActual("../../utils/tezos"),
+import { OperationsView } from "./OperationsView";
+import { addAccount } from "../../mocks/helpers";
+import { act, render, screen, userEvent, waitFor } from "../../mocks/testUtils";
+import { mockTzktTezTransfer } from "../../mocks/transfers";
+import { networksActions } from "../../utils/redux/slices/networks";
+import { store } from "../../utils/redux/store";
+
+jest.mock("@umami/tzkt", () => ({
+  ...jest.requireActual("@umami/tzkt"),
   getCombinedOperations: jest.fn(),
   getRelatedTokenTransfers: jest.fn(),
 }));

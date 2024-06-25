@@ -12,12 +12,12 @@ import {
   ModalFooter,
   ModalHeader,
 } from "@chakra-ui/react";
+import { type Stake } from "@umami/core";
+import { type RawPkh, parsePkh } from "@umami/tezos";
 import type React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { SignPage } from "./SignPage";
-import { type RawPkh, parsePkh } from "../../../types/Address";
-import { type Stake } from "../../../types/Operation";
 import { tezToMutez } from "../../../utils/format";
 import { TEZ, TEZ_DECIMALS } from "../../../utils/tezos";
 import { AddressTile } from "../../AddressTile/AddressTile";

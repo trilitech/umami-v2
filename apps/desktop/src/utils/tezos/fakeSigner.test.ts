@@ -1,5 +1,6 @@
+import { mockImplicitAddress, mockPk } from "@umami/test-utils";
+
 import { FakeSigner } from "./fakeSigner";
-import { mockImplicitAddress, mockPk } from "../../mocks/factories";
 
 describe("fakeSigner", () => {
   test("fakeSigner sets pk and pkh", async () => {

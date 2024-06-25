@@ -13,6 +13,8 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
+import { type Operation } from "@umami/core";
+import { type RawPkh } from "@umami/tezos";
 import Papa, { type ParseResult } from "papaparse";
 import { useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
@@ -20,8 +22,6 @@ import { FormProvider, useForm } from "react-hook-form";
 import { parseOperation } from "./utils";
 import colors from "../../style/colors";
 import { makeAccountOperations } from "../../types/AccountOperations";
-import { type RawPkh } from "../../types/Address";
-import { type Operation } from "../../types/Operation";
 import {
   useGetBestSignerForAccount,
   useGetOwnedAccount,

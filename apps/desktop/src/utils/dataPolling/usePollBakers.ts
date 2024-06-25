@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
+import { getBakers } from "@umami/tzkt";
 import { hoursToMilliseconds } from "date-fns";
 import { useEffect } from "react";
 
 import { useSelectedNetwork } from "../hooks/networkHooks";
 import { useAppDispatch } from "../redux/hooks";
 import { assetsActions } from "../redux/slices/assetsSlice";
-import { getBakers } from "../tezos";
 import { useReactQueryErrorHandler } from "../useReactQueryOnError";
 
 const BAKERS_REFRESH_RATE = hoursToMilliseconds(2);

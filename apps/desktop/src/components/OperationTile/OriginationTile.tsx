@@ -1,4 +1,6 @@
 import { Box, Center, Flex, Heading, Text } from "@chakra-ui/react";
+import { CODE_HASH, TYPE_HASH } from "@umami/multisig";
+import { type OriginationOperation } from "@umami/tzkt";
 
 import { Fee } from "./Fee";
 import { InternalPrefix } from "./InternalPrefix";
@@ -8,8 +10,6 @@ import { Timestamp } from "./Timestamp";
 import { TzktLink } from "./TzktLink";
 import { ContractIcon } from "../../assets/icons";
 import colors from "../../style/colors";
-import { CODE_HASH, TYPE_HASH } from "../../utils/multisig/fetch";
-import { type OriginationOperation } from "../../utils/tezos";
 import { AddressPill } from "../AddressPill/AddressPill";
 
 export const OriginationTile: React.FC<{ operation: OriginationOperation }> = ({ operation }) => {

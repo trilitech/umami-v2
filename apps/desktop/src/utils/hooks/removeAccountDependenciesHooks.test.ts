@@ -1,14 +1,18 @@
 import { type ExtendedPeerInfo, NetworkType } from "@airgap/beacon-wallet";
 import { waitFor } from "@testing-library/react";
+import {
+  mockImplicitAccount,
+  mockMultisigAccount,
+  mockTezOperation,
+  multisigOperation,
+  rawAccountFixture,
+} from "@umami/test-utils";
+import { GHOSTNET, MAINNET } from "@umami/tezos";
 
 import { useRemoveDependenciesAndMultisigs } from "./removeAccountDependenciesHooks";
-import { mockImplicitAccount, mockMultisigAccount, mockTezOperation } from "../../mocks/factories";
 import { addAccount } from "../../mocks/helpers";
-import { multisigOperation } from "../../mocks/multisig";
 import { act, renderHook } from "../../mocks/testUtils";
-import { rawAccountFixture } from "../../mocks/tzktResponse";
 import { makeAccountOperations } from "../../types/AccountOperations";
-import { GHOSTNET, MAINNET } from "../../types/Network";
 import { usePeers } from "../beacon/beacon";
 import { WalletClient } from "../beacon/WalletClient";
 import { assetsActions } from "../redux/slices/assetsSlice";

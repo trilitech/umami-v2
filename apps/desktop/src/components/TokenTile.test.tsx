@@ -1,7 +1,8 @@
+import { type FA12TokenBalance, type FA2TokenBalance } from "@umami/core";
+import { mockFA2Token, mockImplicitAccount } from "@umami/test-utils";
+
 import { TokenTile } from "./TokenTile";
-import { mockFA2Token, mockImplicitAccount } from "../mocks/factories";
 import { render, screen } from "../mocks/testUtils";
-import { type FA12TokenBalance, type FA2TokenBalance } from "../types/TokenBalance";
 
 const mockAccount = mockImplicitAccount(0);
 const mockFAToken = mockFA2Token(0, mockAccount);

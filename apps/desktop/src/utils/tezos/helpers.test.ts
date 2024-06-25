@@ -1,4 +1,17 @@
 import { InMemorySigner } from "@taquito/signer";
+import { type ContractCall, type ContractOrigination } from "@umami/core";
+import {
+  mockContractAddress,
+  mockDelegationOperation,
+  mockFA12Operation,
+  mockImplicitAccount,
+  mockImplicitAddress,
+  mockMultisigAccount,
+  mockNftOperation,
+  mockTezOperation,
+  mockUndelegationOperation,
+} from "@umami/test-utils";
+import { MAINNET } from "@umami/tezos";
 import axios from "axios";
 
 import {
@@ -10,22 +23,10 @@ import {
 } from "./helpers";
 import { executeParams } from "../../mocks/executeParams";
 import {
-  mockContractAddress,
-  mockDelegationOperation,
-  mockFA12Operation,
-  mockImplicitAccount,
-  mockImplicitAddress,
-  mockMultisigAccount,
-  mockNftOperation,
-  mockTezOperation,
-  mockUndelegationOperation,
-} from "../../mocks/factories";
-import {
   type EstimatedAccountOperations,
   makeAccountOperations,
 } from "../../types/AccountOperations";
-import { MAINNET } from "../../types/Network";
-import { type ContractCall, type ContractOrigination } from "../../types/Operation";
+
 jest.mock("@taquito/signer");
 jest.mock("./fakeSigner");
 jest.mock("axios");

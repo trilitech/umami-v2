@@ -1,9 +1,10 @@
+import { getTezosPriceInUSD } from "@umami/tzkt";
+
 import { usePollConversionRate } from "./usePollConversionRate";
 import { renderHook, waitFor } from "../../mocks/testUtils";
 import { store } from "../redux/store";
-import { getTezosPriceInUSD } from "../tezos";
 
-jest.mock("../tezos");
+jest.mock("@umami/tzkt");
 
 describe("usePollConversionRate", () => {
   it("fetches conversion rate and updates the state", async () => {

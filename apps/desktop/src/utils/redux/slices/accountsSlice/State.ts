@@ -1,5 +1,6 @@
-import { type ImplicitAccount } from "../../../../types/Account";
-import { type RawPkh } from "../../../../types/Address";
+import { type ImplicitAccount } from "@umami/core";
+import { type RawPkh } from "@umami/tezos";
+
 import { type EncryptedData } from "../../../crypto/types";
 
 export type State = {

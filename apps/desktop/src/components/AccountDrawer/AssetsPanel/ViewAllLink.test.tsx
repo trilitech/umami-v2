@@ -1,5 +1,6 @@
+import { mockImplicitAddress } from "@umami/test-utils";
+
 import { ViewAllLink } from "./ViewAllLink";
-import { mockImplicitAddress } from "../../../mocks/factories";
 import { render, screen } from "../../../mocks/testUtils";
 
 describe("<ViewAllLink />", () => {

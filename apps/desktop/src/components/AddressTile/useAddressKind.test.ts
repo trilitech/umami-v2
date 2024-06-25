@@ -1,4 +1,3 @@
-import { useAddressKind } from "./useAddressKind";
 import {
   mockBaker,
   mockContractAddress,
@@ -6,12 +5,13 @@ import {
   mockLedgerAccount,
   mockMnemonicAccount,
   mockSocialAccount,
-} from "../../mocks/factories";
+  multisigs,
+} from "@umami/test-utils";
+import { MAINNET, parseImplicitPkh, parsePkh } from "@umami/tezos";
+
+import { useAddressKind } from "./useAddressKind";
 import { addAccount } from "../../mocks/helpers";
-import { multisigs } from "../../mocks/multisig";
 import { renderHook } from "../../mocks/testUtils";
-import { parseImplicitPkh, parsePkh } from "../../types/Address";
-import { MAINNET } from "../../types/Network";
 import { assetsSlice } from "../../utils/redux/slices/assetsSlice";
 import { contactsSlice } from "../../utils/redux/slices/contactsSlice";
 import { multisigsSlice } from "../../utils/redux/slices/multisigsSlice";

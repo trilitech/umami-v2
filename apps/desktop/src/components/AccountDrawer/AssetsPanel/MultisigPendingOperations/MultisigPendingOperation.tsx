@@ -1,11 +1,11 @@
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
+import { type MultisigAccount } from "@umami/core";
+import { type MultisigOperation } from "@umami/multisig";
 import type React from "react";
 
 import { MultisigDecodedOperations } from "./MultisigDecodedOperations";
 import { MultisigSignerTile } from "./MultisigSignerTile";
 import colors from "../../../../style/colors";
-import { type MultisigAccount } from "../../../../types/Account";
-import { type MultisigOperation } from "../../../../utils/multisig/types";
 
 export const MultisigPendingOperation: React.FC<{
   operation: MultisigOperation;

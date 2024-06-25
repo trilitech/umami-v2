@@ -1,6 +1,7 @@
+import { type Account, type ImplicitAccount } from "@umami/core";
+
 import { useImplicitAccounts } from "./getAccountDataHooks";
 import { useMultisigAccounts } from "./multisigHooks";
-import { type Account, type ImplicitAccount } from "../../types/Account";
 import { useRemovePeersByAccounts } from "../beacon/beacon";
 import { useAppDispatch } from "../redux/hooks";
 import { assetsSlice } from "../redux/slices/assetsSlice";

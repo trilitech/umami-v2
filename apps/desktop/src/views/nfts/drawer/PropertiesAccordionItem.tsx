@@ -10,15 +10,15 @@ import {
   Td,
   Tr,
 } from "@chakra-ui/react";
+import { type NFTBalance } from "@umami/core";
+import { metadataUri, mimeType, royalties } from "@umami/core";
+import { parsePkh } from "@umami/tezos";
 import { type CSSProperties } from "react";
 
 import { AddressPill } from "../../../components/AddressPill/AddressPill";
 import { TruncatedTextWithTooltip } from "../../../components/TruncatedTextWithTooltip";
 import { TzktLink } from "../../../components/TzktLink";
 import colors from "../../../style/colors";
-import { parsePkh } from "../../../types/Address";
-import { metadataUri, mimeType, royalties } from "../../../types/Token";
-import { type NFTBalance } from "../../../types/TokenBalance";
 import { useSelectedNetwork } from "../../../utils/hooks/networkHooks";
 
 const CreatorElement = ({ nft }: { nft: NFTBalance }) => {

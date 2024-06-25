@@ -1,7 +1,8 @@
+import { mockContractAddress, mockImplicitAddress } from "@umami/test-utils";
+import { type RawPkh, parseContractPkh } from "@umami/tezos";
+
 import { parseOperation } from "./utils";
-import { mockContractAddress, mockImplicitAddress } from "../../mocks/factories";
 import { ghostFA12, ghostTezzard } from "../../mocks/tokens";
-import { type RawPkh, parseContractPkh } from "../../types/Address";
 import { type TokenLookup } from "../../utils/hooks/tokensHooks";
 
 const emptyTokenLookup = (_contract: RawPkh, _tokenId: string) => undefined;

@@ -1,14 +1,14 @@
 import { OpKind, type OperationContentsAndResult } from "@taquito/rpc";
 import { TezosOperationError } from "@taquito/taquito";
+import { type Operation } from "@umami/core";
+import { mockImplicitAccount, mockTezOperation } from "@umami/test-utils";
 
 import { BatchView } from "./BatchView";
 import { executeParams } from "../../mocks/executeParams";
-import { mockImplicitAccount, mockTezOperation } from "../../mocks/factories";
 import { addAccount } from "../../mocks/helpers";
 import { act, render, screen, userEvent, within } from "../../mocks/testUtils";
 import { mockToast } from "../../mocks/toast";
 import { makeAccountOperations } from "../../types/AccountOperations";
-import { type Operation } from "../../types/Operation";
 import { estimate } from "../../utils/tezos";
 
 jest.mock("../../utils/tezos/estimate");

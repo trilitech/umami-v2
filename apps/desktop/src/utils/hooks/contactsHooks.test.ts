@@ -1,4 +1,15 @@
 import {
+  mockContractContact,
+  mockImplicitAddress,
+  mockLedgerAccount,
+  mockMnemonicAccount,
+  mockMultisigAccount,
+  mockSecretKeyAccount,
+  mockSocialAccount,
+} from "@umami/test-utils";
+import { GHOSTNET, MAINNET } from "@umami/tezos";
+
+import {
   useAddressExistsInContacts,
   useAllContacts,
   useContactsForSelectedNetwork,
@@ -13,18 +24,8 @@ import {
   ghostnetContact,
   mainnetContact,
 } from "../../mocks/contacts";
-import {
-  mockContractContact,
-  mockImplicitAddress,
-  mockLedgerAccount,
-  mockMnemonicAccount,
-  mockMultisigAccount,
-  mockSecretKeyAccount,
-  mockSocialAccount,
-} from "../../mocks/factories";
 import { addAccount } from "../../mocks/helpers";
 import { renderHook } from "../../mocks/testUtils";
-import { GHOSTNET, MAINNET } from "../../types/Network";
 import { contactsActions } from "../redux/slices/contactsSlice";
 import { multisigsSlice } from "../redux/slices/multisigsSlice";
 import { networksActions } from "../redux/slices/networks";

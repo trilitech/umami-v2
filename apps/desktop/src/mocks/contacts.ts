@@ -1,5 +1,5 @@
-import { mockContractContact, mockImplicitContact } from "./factories";
-import { type StoredContactInfo } from "../types/Contact";
+import { type StoredContactInfo } from "@umami/core";
+import { mockContractContact, mockImplicitContact } from "@umami/test-utils";
 
 export const contact1 = mockImplicitContact(1);
 export const contact2 = mockImplicitContact(2);

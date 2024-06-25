@@ -1,13 +1,14 @@
-import { batchesActions } from "./batches";
+import { type Operation } from "@umami/core";
 import {
   mockDelegationOperation,
   mockImplicitAccount,
   mockNftOperation,
   mockTezOperation,
-} from "../../../mocks/factories";
+} from "@umami/test-utils";
+import { DefaultNetworks, type Network } from "@umami/tezos";
+
+import { batchesActions } from "./batches";
 import { type ImplicitOperations, makeAccountOperations } from "../../../types/AccountOperations";
-import { DefaultNetworks, type Network } from "../../../types/Network";
-import { type Operation } from "../../../types/Operation";
 import { store } from "../store";
 
 const { add, clear, removeItem, removeByAccounts } = batchesActions;

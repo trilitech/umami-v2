@@ -1,8 +1,7 @@
 import { Flex, FormLabel, ModalBody, ModalContent, ModalFooter } from "@chakra-ui/react";
+import { type FA12TokenBalance, type FA2TokenBalance, type TokenTransfer } from "@umami/core";
 import { FormProvider } from "react-hook-form";
 
-import { type TokenTransfer } from "../../../types/Operation";
-import { type FA12TokenBalance, type FA2TokenBalance } from "../../../types/TokenBalance";
 import { AddressTile } from "../../AddressTile/AddressTile";
 import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";
 import { TokenTile } from "../../TokenTile";

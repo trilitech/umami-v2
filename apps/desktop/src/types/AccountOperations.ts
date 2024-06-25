@@ -1,7 +1,11 @@
+import {
+  type Account,
+  type ImplicitAccount,
+  type MultisigAccount,
+  type Operation,
+} from "@umami/core";
 import BigNumber from "bignumber.js";
 
-import { type Account, type ImplicitAccount, type MultisigAccount } from "./Account";
-import { type Operation } from "./Operation";
 import { type Estimation } from "../utils/tezos/types";
 
 type ProposalOperations = {

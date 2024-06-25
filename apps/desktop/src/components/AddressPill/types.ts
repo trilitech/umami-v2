@@ -1,4 +1,5 @@
-import { type RawPkh } from "../../types/Address";
+import { type RawPkh } from "@umami/tezos";
+
 import {
   type BakerAddress,
   type ContactAddress,

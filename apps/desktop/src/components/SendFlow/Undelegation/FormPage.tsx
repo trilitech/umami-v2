@@ -1,10 +1,10 @@
 import { FormControl, FormLabel, ModalBody, ModalContent, ModalFooter } from "@chakra-ui/react";
+import { type Undelegation } from "@umami/core";
+import { type RawPkh, parsePkh } from "@umami/tezos";
 import type React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { SignPage } from "./SignPage";
-import { type RawPkh, parsePkh } from "../../../types/Address";
-import { type Undelegation } from "../../../types/Operation";
 import { OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
 import { AddressTile } from "../../AddressTile/AddressTile";
 import { FormPageHeader } from "../FormPageHeader";

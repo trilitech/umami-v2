@@ -1,15 +1,11 @@
 import { Modal } from "@chakra-ui/react";
+import { type Account } from "@umami/core";
+import { mockContractContact, mockImplicitAccount, mockMnemonicAccount } from "@umami/test-utils";
+import { MAINNET } from "@umami/tezos";
 
 import { RenameAccountModal } from "./RenameAccountModal";
-import {
-  mockContractContact,
-  mockImplicitAccount,
-  mockMnemonicAccount,
-} from "../../mocks/factories";
 import { addAccount } from "../../mocks/helpers";
 import { fireEvent, render, screen, waitFor } from "../../mocks/testUtils";
-import { type Account } from "../../types/Account";
-import { MAINNET } from "../../types/Network";
 import { contactsActions } from "../../utils/redux/slices/contactsSlice";
 import { networksActions } from "../../utils/redux/slices/networks";
 import { store } from "../../utils/redux/store";

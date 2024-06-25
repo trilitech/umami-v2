@@ -1,4 +1,12 @@
 import { Center, Heading, Text } from "@chakra-ui/react";
+import {
+  type DelegationOperation,
+  type FinalizeUnstakeOperation,
+  type OriginationOperation,
+  type StakeOperation,
+  type TransactionOperation,
+  type UnstakeOperation,
+} from "@umami/tzkt";
 import { BigNumber } from "bignumber.js";
 import { get } from "lodash";
 import type React from "react";
@@ -8,14 +16,6 @@ import { OperationTileContext } from "./OperationTileContext";
 import colors from "../../style/colors";
 import { prettyTezAmount } from "../../utils/format";
 import { useIsOwnedAddress } from "../../utils/hooks/getAccountDataHooks";
-import {
-  type DelegationOperation,
-  type FinalizeUnstakeOperation,
-  type OriginationOperation,
-  type StakeOperation,
-  type TransactionOperation,
-  type UnstakeOperation,
-} from "../../utils/tezos";
 
 const FEE_FIELDS = ["bakerFee", "storageFee", "allocationFee"];
 

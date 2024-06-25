@@ -1,16 +1,16 @@
-import { FormProvider, useForm } from "react-hook-form";
-
-import { OperationSignerSelector } from "./OperationSignerSelector";
+import { type MultisigAccount } from "@umami/core";
 import {
   mockImplicitAccount,
   mockImplicitAddress,
   mockMnemonicAccount,
   mockMultisigAccount,
-} from "../../mocks/factories";
+} from "@umami/test-utils";
+import { type RawPkh } from "@umami/tezos";
+import { FormProvider, useForm } from "react-hook-form";
+
+import { OperationSignerSelector } from "./OperationSignerSelector";
 import { addAccount } from "../../mocks/helpers";
 import { render, renderHook, screen } from "../../mocks/testUtils";
-import { type MultisigAccount } from "../../types/Account";
-import { type RawPkh } from "../../types/Address";
 import { multisigsSlice } from "../../utils/redux/slices/multisigsSlice";
 import { store } from "../../utils/redux/store";
 

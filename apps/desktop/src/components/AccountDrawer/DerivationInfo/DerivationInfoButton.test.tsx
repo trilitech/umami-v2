@@ -1,12 +1,13 @@
-import { DerivationInfoButton } from "./DerivationInfoButton";
-import { InfoModal } from "./InfoModal";
 import {
   mockLedgerAccount,
   mockMnemonicAccount,
   mockMultisigAccount,
   mockSecretKeyAccount,
   mockSocialAccount,
-} from "../../../mocks/factories";
+} from "@umami/test-utils";
+
+import { DerivationInfoButton } from "./DerivationInfoButton";
+import { InfoModal } from "./InfoModal";
 import { act, dynamicModalContextMock, render, screen, userEvent } from "../../../mocks/testUtils";
 
 describe("<DerivationInfoButton />", () => {

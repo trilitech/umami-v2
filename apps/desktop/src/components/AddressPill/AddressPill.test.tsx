@@ -1,9 +1,9 @@
+import { mockFA1TokenRaw, mockImplicitAddress } from "@umami/test-utils";
+import { MAINNET, parseContractPkh, parseImplicitPkh } from "@umami/tezos";
+
 import { AddressPill } from "./AddressPill";
 import { contact1 } from "../../mocks/contacts";
-import { mockFA1TokenRaw, mockImplicitAddress } from "../../mocks/factories";
 import { render, screen } from "../../mocks/testUtils";
-import { parseContractPkh, parseImplicitPkh } from "../../types/Address";
-import { MAINNET } from "../../types/Network";
 import { contactsActions } from "../../utils/redux/slices/contactsSlice";
 import { networksActions } from "../../utils/redux/slices/networks";
 import { tokensSlice } from "../../utils/redux/slices/tokensSlice";

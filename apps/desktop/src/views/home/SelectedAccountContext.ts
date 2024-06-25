@@ -1,6 +1,5 @@
+import { type Account } from "@umami/core";
 import { createContext } from "react";
-
-import { type Account } from "../../types/Account";
 
 export const SelectedAccountContext = createContext<{
   selectAccount: (account: Account | null) => void;

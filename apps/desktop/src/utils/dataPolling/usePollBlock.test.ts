@@ -1,9 +1,11 @@
+import { getLatestBlock } from "@umami/tzkt";
+
 import { usePollBlock } from "./usePollBlock";
 import { renderHook, waitFor } from "../../mocks/testUtils";
 import { store } from "../redux/store";
-import { getLatestBlock } from "../tezos";
 
-jest.mock("../tezos");
+jest.mock("@umami/tzkt");
+
 describe("usePollBlock", () => {
   it("fetches the latest block and updates the state", async () => {
     jest.mocked(getLatestBlock).mockResolvedValue({ level: 123, cycle: 5 });

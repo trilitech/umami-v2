@@ -1,12 +1,13 @@
+import { mockImplicitAccount, mockImplicitAddress } from "@umami/test-utils";
+import { type RawPkh } from "@umami/tezos";
+
 import {
   FormSubmitButtons,
   formDefaultValues,
   getSmallestUnit,
   makeValidateDecimals,
 } from "./utils";
-import { mockImplicitAccount, mockImplicitAddress } from "../../mocks/factories";
 import { fireEvent, render, screen } from "../../mocks/testUtils";
-import { type RawPkh } from "../../types/Address";
 
 describe("SendFlow utils", () => {
   describe("formDefaultValues", () => {

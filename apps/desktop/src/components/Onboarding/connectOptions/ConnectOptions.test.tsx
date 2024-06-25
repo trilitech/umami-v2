@@ -1,5 +1,6 @@
+import { mockSocialAccount } from "@umami/test-utils";
+
 import { ConnectOptions } from "./ConnectOptions";
-import { mockSocialAccount } from "../../../mocks/factories";
 import { addAccount } from "../../../mocks/helpers";
 import { act, render, screen, userEvent } from "../../../mocks/testUtils";
 import { type OnboardingStep } from "../OnboardingStep";

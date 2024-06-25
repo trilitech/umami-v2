@@ -8,19 +8,18 @@ import {
   ModalContent,
   ModalFooter,
 } from "@chakra-ui/react";
+import {
+  type FA12TokenBalance,
+  type FA2TokenBalance,
+  type FA2Transfer,
+  type TokenTransfer,
+} from "@umami/core";
+import { formatTokenAmount, getRealAmount, tokenDecimals, tokenSymbolSafe } from "@umami/core";
+import { type RawPkh, parseContractPkh, parsePkh } from "@umami/tezos";
 import type React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { SignPage } from "./SignPage";
-import { type RawPkh, parseContractPkh, parsePkh } from "../../../types/Address";
-import { type FA2Transfer, type TokenTransfer } from "../../../types/Operation";
-import {
-  formatTokenAmount,
-  getRealAmount,
-  tokenDecimals,
-  tokenSymbolSafe,
-} from "../../../types/Token";
-import { type FA12TokenBalance, type FA2TokenBalance } from "../../../types/TokenBalance";
 import { KnownAccountsAutocomplete, OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
 import { FormErrorMessage } from "../../FormErrorMessage";
 import { FormPageHeader } from "../FormPageHeader";

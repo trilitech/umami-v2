@@ -12,6 +12,7 @@ import {
   Image,
   Text,
 } from "@chakra-ui/react";
+import { artifactUri, mimeType, tokenName } from "@umami/core";
 import { useContext } from "react";
 import ReactPlayer from "react-player";
 
@@ -22,7 +23,6 @@ import { JsValueWrap } from "../../components/AccountDrawer/JsValueWrap";
 import { DynamicModalContext } from "../../components/DynamicModal";
 import { FormPage as SendNFTForm } from "../../components/SendFlow/NFT/FormPage";
 import colors from "../../style/colors";
-import { artifactUri, mimeType, tokenName } from "../../types/Token";
 import { useGetOwnedAccount } from "../../utils/hooks/getAccountDataHooks";
 import { type NFTWithOwner, getIPFSurl } from "../../utils/token/utils";
 

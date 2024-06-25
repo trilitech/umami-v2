@@ -8,11 +8,10 @@ import {
   ModalFooter,
   Text,
 } from "@chakra-ui/react";
+import { type FA2Transfer, type NFTBalance } from "@umami/core";
 import { FormProvider } from "react-hook-form";
 
 import colors from "../../../style/colors";
-import { type FA2Transfer } from "../../../types/Operation";
-import { type NFTBalance } from "../../../types/TokenBalance";
 import { AddressTile } from "../../AddressTile/AddressTile";
 import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";
 import { OperationSignerSelector } from "../OperationSignerSelector";

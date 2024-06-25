@@ -1,11 +1,12 @@
-import { MultisigSignerTile } from "./MultisigSignerTile";
 import {
   mockImplicitAccount,
   mockMnemonicAccount,
   mockMultisigAccount,
-} from "../../../../mocks/factories";
+  pendingOps,
+} from "@umami/test-utils";
+
+import { MultisigSignerTile } from "./MultisigSignerTile";
 import { addAccount } from "../../../../mocks/helpers";
-import { pendingOps } from "../../../../mocks/multisig";
 import { render, screen } from "../../../../mocks/testUtils";
 
 const signer = mockMnemonicAccount(0);

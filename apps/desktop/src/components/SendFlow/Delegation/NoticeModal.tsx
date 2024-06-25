@@ -1,6 +1,7 @@
+import { type Account } from "@umami/core";
+
 import { ChangeDelegateNoticeModal } from "./ChangeDelegateNoticeModal";
 import { NewDelegateNoticeModal } from "./NewDelegateNoticeModal";
-import { type Account } from "../../../types/Account";
 import { useGetAccountDelegate } from "../../../utils/hooks/assetsHooks";
 
 export const NoticeModal = ({ account }: { account: Account }) => {

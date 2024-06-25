@@ -6,12 +6,12 @@ import {
   ModalFooter,
   Text,
 } from "@chakra-ui/react";
+import { type Delegation } from "@umami/core";
+import { type RawPkh, parseImplicitPkh, parsePkh } from "@umami/tezos";
 import type React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { SignPage } from "./SignPage";
-import { type RawPkh, parseImplicitPkh, parsePkh } from "../../../types/Address";
-import { type Delegation } from "../../../types/Operation";
 import { BakersAutocomplete, OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
 import { FormErrorMessage } from "../../FormErrorMessage";
 import { HeaderWrapper } from "../FormPageHeader";

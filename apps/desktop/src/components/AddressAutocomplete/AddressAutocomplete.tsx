@@ -7,6 +7,8 @@ import {
   InputGroup,
   InputRightElement,
 } from "@chakra-ui/react";
+import { type Account, type Contact } from "@umami/core";
+import { isAddressValid, parsePkh } from "@umami/tezos";
 import { get } from "lodash";
 import { useId, useState } from "react";
 import { type FieldValues, type Path, useFormContext } from "react-hook-form";
@@ -16,9 +18,6 @@ import { getSuggestions } from "./getSuggestions";
 import { Suggestions } from "./Suggestions";
 import { ChevronDownIcon, XMarkIcon } from "../../assets/icons";
 import colors from "../../style/colors";
-import { type Account } from "../../types/Account";
-import { isAddressValid, parsePkh } from "../../types/Address";
-import { type Contact } from "../../types/Contact";
 import { useBakerList } from "../../utils/hooks/assetsHooks";
 import {
   useAllAccounts,

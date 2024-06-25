@@ -1,8 +1,8 @@
 import { Text } from "@chakra-ui/react";
+import { type Operation } from "@umami/core";
 
 import { AddressPill } from "../../components/AddressPill/AddressPill";
 import colors from "../../style/colors";
-import { type Operation } from "../../types/Operation";
 import { useGetAccountDelegate } from "../../utils/hooks/assetsHooks";
 
 export const OperationRecipient = ({ operation }: { operation: Operation }) => {

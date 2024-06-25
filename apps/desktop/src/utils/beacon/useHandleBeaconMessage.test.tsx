@@ -9,6 +9,12 @@ import {
   SigningType,
   TezosOperationType,
 } from "@airgap/beacon-wallet";
+import {
+  mockContractAddress,
+  mockImplicitAccount,
+  mockImplicitAddress,
+  mockTezOperation,
+} from "@umami/test-utils";
 import { without } from "lodash";
 
 import {
@@ -20,12 +26,6 @@ import { WalletClient } from "./WalletClient";
 import { BatchSignPage } from "../../components/SendFlow/Beacon/BatchSignPage";
 import { BeaconSignPage } from "../../components/SendFlow/Beacon/BeaconSignPage";
 import { executeParams } from "../../mocks/executeParams";
-import {
-  mockContractAddress,
-  mockImplicitAccount,
-  mockImplicitAddress,
-  mockTezOperation,
-} from "../../mocks/factories";
 import { addAccount } from "../../mocks/helpers";
 import { act, dynamicModalContextMock, renderHook, screen, waitFor } from "../../mocks/testUtils";
 import { mockToast } from "../../mocks/toast";

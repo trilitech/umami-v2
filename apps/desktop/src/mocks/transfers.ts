@@ -1,16 +1,13 @@
-import { type TezTransfer } from "../types/Transfer";
+import { type RawTzktTezTransfer } from "@umami/tzkt";
 
-const MOCK_TIMESTAMP = "2020-05-24T13:12:18Z";
-const MOCK_HASH = "onqKcUZLbN9LdoJsPeRtDrHqYibm4osdtQJmGGQ4GAg3SjQUMT3";
-const MOCK_LEVEL = 10;
 export const mockTzktTezTransfer = (
   sender: string,
   recipient: string,
   amount: number,
-  timestamp = MOCK_TIMESTAMP,
-  hash = MOCK_HASH,
-  level = MOCK_LEVEL
-): TezTransfer =>
+  timestamp = "2020-05-24T13:12:18Z",
+  hash = "onqKcUZLbN9LdoJsPeRtDrHqYibm4osdtQJmGGQ4GAg3SjQUMT3",
+  level = 10
+): RawTzktTezTransfer =>
   ({
     id: 12345,
     type: "transaction",
@@ -21,4 +18,4 @@ export const mockTzktTezTransfer = (
     hash,
     level,
     transactionId: 54321,
-  }) as TezTransfer;
+  }) as RawTzktTezTransfer;

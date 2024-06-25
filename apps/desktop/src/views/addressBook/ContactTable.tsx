@@ -1,4 +1,5 @@
 import { Box, Flex, Table, TableContainer, Tbody, Td, Text, Tr } from "@chakra-ui/react";
+import { type Contact } from "@umami/core";
 import { useContext } from "react";
 
 import { CopyableAddress } from "../../components/CopyableText";
@@ -9,7 +10,6 @@ import { SendButton } from "../../components/SendButton";
 import { FormPage } from "../../components/SendFlow/Tez/FormPage";
 import { UpsertContactModal } from "../../components/UpsertContactModal";
 import colors from "../../style/colors";
-import { type Contact } from "../../types/Contact";
 
 export const ContactTable: React.FC<{ contacts: Contact[] }> = ({ contacts }) => {
   const { openWith } = useContext(DynamicModalContext);

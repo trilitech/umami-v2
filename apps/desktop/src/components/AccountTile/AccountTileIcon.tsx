@@ -1,3 +1,4 @@
+import { type Account } from "@umami/core";
 import { memo } from "react";
 
 import {
@@ -10,7 +11,6 @@ import {
   TwitterIcon,
 } from "../../assets/icons";
 import colors from "../../style/colors";
-import { type Account } from "../../types/Account";
 import { type AddressTileIconSize } from "../AddressTile/AddressTileIconSize";
 import { Identicon } from "../Identicon";
 

@@ -1,7 +1,12 @@
+import {
+  mockContractAddress,
+  mockMultisigAccount,
+  multisigOperation,
+  multisigs,
+} from "@umami/test-utils";
+
 import { multisigActions } from "./multisigsSlice";
-import { mockContractAddress, mockMultisigAccount } from "../../../mocks/factories";
 import { addAccount } from "../../../mocks/helpers";
-import { multisigOperation, multisigs } from "../../../mocks/multisig";
 import { store } from "../store";
 
 describe("Multisig reducer", () => {

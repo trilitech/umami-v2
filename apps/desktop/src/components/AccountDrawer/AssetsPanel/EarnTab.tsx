@@ -1,4 +1,5 @@
 import { Box, Button, Center, Flex, type FlexProps, Heading, Text } from "@chakra-ui/react";
+import { type Account, type ImplicitAccount } from "@umami/core";
 import type React from "react";
 import { type ReactNode } from "react";
 import { useContext } from "react";
@@ -6,12 +7,10 @@ import { useContext } from "react";
 import { PendingUnstakeRequests } from "./PendingUnstakeRequests/PendingUnstakeRequests";
 import { ExternalLinkIcon, PenIcon, XMarkIcon } from "../../../assets/icons";
 import colors from "../../../style/colors";
-import { type Account, type ImplicitAccount } from "../../../types/Account";
 import { prettyTezAmount } from "../../../utils/format";
 import { useGetAccountDelegate } from "../../../utils/hooks/assetsHooks";
 import { useSelectedNetwork } from "../../../utils/hooks/networkHooks";
 import { useGetAccountStakedBalance } from "../../../utils/hooks/stakingHooks";
-import { buildTzktUrl } from "../../../utils/tzkt/helpers";
 import { AddressPill } from "../../AddressPill/AddressPill";
 import { DynamicModalContext } from "../../DynamicModal";
 import { ExternalLink } from "../../ExternalLink";
@@ -139,7 +138,7 @@ export const EarnTab: React.FC<{
                     --
                   </Text>
                 </Center>
-                <ExternalLink href={buildTzktUrl(network, "bakers")}>
+                <ExternalLink href={`${network.tzktExplorerUrl}/bakers`}>
                   <Button padding="0" variant="CTAWithIcon">
                     <Text marginRight="7px" size="sm">
                       View Bakers

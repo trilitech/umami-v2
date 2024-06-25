@@ -1,13 +1,12 @@
 import { ModalContent, ModalFooter } from "@chakra-ui/react";
 import { type TezosToolkit } from "@taquito/taquito";
+import { type ApproveOrExecute, type ImplicitAccount } from "@umami/core";
 import { capitalize } from "lodash";
 import type React from "react";
 import { useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
-import { type ImplicitAccount } from "../../../types/Account";
 import { type EstimatedAccountOperations } from "../../../types/AccountOperations";
-import { type ApproveOrExecute } from "../../../types/Operation";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
 import { executeOperations } from "../../../utils/tezos";
 import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";

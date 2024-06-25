@@ -1,4 +1,4 @@
-import { type Account } from "../../types/Account";
+import { type Account } from "@umami/core";
 
 export const getAccountGroupLabel = (account: Account) => {
   switch (account.type) {

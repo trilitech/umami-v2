@@ -1,6 +1,5 @@
+import { type Token, tokenName, tokenPrettyAmount, tokenSymbol } from "@umami/core";
 import { compact } from "lodash";
-
-import { type Token, tokenName, tokenPrettyAmount, tokenSymbol } from "../../types/Token";
 
 export const tokenTitle = (token: Token | undefined, amount: string) => {
   if (!token) {

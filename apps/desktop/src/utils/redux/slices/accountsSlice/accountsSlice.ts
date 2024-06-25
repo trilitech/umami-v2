@@ -1,7 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { remove } from "lodash";
-
-import { type State } from "./State";
 import {
   type AccountType,
   type ImplicitAccount,
@@ -9,8 +6,11 @@ import {
   type MnemonicAccount,
   type SecretKeyAccount,
   type SocialAccount,
-} from "../../../../types/Account";
-import { type RawPkh } from "../../../../types/Address";
+} from "@umami/core";
+import { type RawPkh } from "@umami/tezos";
+import { remove } from "lodash";
+
+import { type State } from "./State";
 import { type EncryptedData } from "../../../crypto/types";
 import { changeMnemonicPassword } from "../../thunks/changeMnemonicPassword";
 

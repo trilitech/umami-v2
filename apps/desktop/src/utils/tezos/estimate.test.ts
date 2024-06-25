@@ -1,9 +1,10 @@
+import { mockImplicitAccount, mockTezOperation } from "@umami/test-utils";
+import { GHOSTNET } from "@umami/tezos";
+
 import { estimate, handleTezError } from "./estimate";
 import { isAccountRevealed, makeToolkit } from "./helpers";
 import { executeParams } from "../../mocks/executeParams";
-import { mockImplicitAccount, mockTezOperation } from "../../mocks/factories";
 import { makeAccountOperations } from "../../types/AccountOperations";
-import { GHOSTNET } from "../../types/Network";
 jest.mock("./helpers", () => ({
   ...jest.requireActual("./helpers"),
   makeToolkit: jest.fn(),

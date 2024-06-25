@@ -1,4 +1,3 @@
-import { AccountTile } from "./AccountTile";
 import {
   mockImplicitAccount,
   mockLedgerAccount,
@@ -6,11 +5,13 @@ import {
   mockMultisigAccount,
   mockNFTRaw,
   mockSocialAccount,
-} from "../../mocks/factories";
+} from "@umami/test-utils";
+import { MAINNET } from "@umami/tezos";
+import { type RawTzktTokenBalance } from "@umami/tzkt";
+
+import { AccountTile } from "./AccountTile";
 import { addAccount } from "../../mocks/helpers";
 import { act, render, screen, userEvent } from "../../mocks/testUtils";
-import { MAINNET } from "../../types/Network";
-import { type RawTokenBalance } from "../../types/TokenBalance";
 import { assetsActions } from "../../utils/redux/slices/assetsSlice";
 import { tokensActions } from "../../utils/redux/slices/tokensSlice";
 import { store } from "../../utils/redux/store";
@@ -154,7 +155,7 @@ describe("<AccountTile />", () => {
       });
 
       it("renders NFTs sorted by lastLevel desc", () => {
-        const balances: RawTokenBalance[] = [
+        const balances: RawTzktTokenBalance[] = [
           { ...mockNFTRaw(0, account.address.pkh, 1), lastLevel: 1 }, // TOKEN 2
           { ...mockNFTRaw(0, account.address.pkh, 1), lastLevel: 2 }, // TOKEN 1
           { ...mockNFTRaw(0, account.address.pkh, 1), lastLevel: 3 }, // TOKEN 0

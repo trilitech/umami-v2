@@ -5,10 +5,10 @@ import {
 } from "@airgap/beacon-wallet";
 import { useToast } from "@chakra-ui/react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { type RawPkh } from "@umami/tezos";
 
 import { makePeerInfo } from "./types";
 import { WalletClient } from "./WalletClient";
-import { type RawPkh } from "../../types/Address";
 import { useGetPeersForAccounts, useRemoveConnection } from "../hooks/beaconHooks";
 
 const PEERS_QUERY_KEY = "beaconPeers";

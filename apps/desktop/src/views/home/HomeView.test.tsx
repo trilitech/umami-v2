@@ -1,11 +1,12 @@
+import { mockImplicitAccount, mockMnemonicAccount } from "@umami/test-utils";
+import { getCombinedOperations, getRelatedTokenTransfers } from "@umami/tzkt";
+
 import { HomeView } from "./HomeView";
-import { mockImplicitAccount, mockMnemonicAccount } from "../../mocks/factories";
 import { addAccount } from "../../mocks/helpers";
 import { fireEvent, render, screen } from "../../mocks/testUtils";
-import { getCombinedOperations, getRelatedTokenTransfers } from "../../utils/tezos";
 
-jest.mock("../../utils/tezos", () => ({
-  ...jest.requireActual("../../utils/tezos"),
+jest.mock("@umami/tzkt", () => ({
+  ...jest.requireActual("@umami/tzkt"),
   getCombinedOperations: jest.fn(),
   getRelatedTokenTransfers: jest.fn(),
 }));

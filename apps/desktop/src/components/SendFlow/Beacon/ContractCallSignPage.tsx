@@ -11,13 +11,13 @@ import {
   ModalContent,
   ModalFooter,
 } from "@chakra-ui/react";
+import { type ContractCall } from "@umami/core";
 import { FormProvider } from "react-hook-form";
 
 import { type BeaconSignPageProps } from "./BeaconSignPageProps";
 import { Header } from "./Header";
 import { useSignWithBeacon } from "./useSignWithBeacon";
 import colors from "../../../style/colors";
-import { type ContractCall } from "../../../types/Operation";
 import { JsValueWrap } from "../../AccountDrawer/JsValueWrap";
 import { AddressTile } from "../../AddressTile/AddressTile";
 import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";

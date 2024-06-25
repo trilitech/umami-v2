@@ -1,9 +1,10 @@
+import { mockImplicitAccount, mockMnemonicAccount } from "@umami/test-utils";
+import { type TransactionOperation } from "@umami/tzkt";
+
 import { Fee } from "./Fee";
 import { OperationTileContext } from "./OperationTileContext";
-import { mockImplicitAccount, mockMnemonicAccount } from "../../mocks/factories";
 import { addAccount } from "../../mocks/helpers";
 import { render, screen } from "../../mocks/testUtils";
-import { type TransactionOperation } from "../../utils/tezos";
 
 describe("<Fee />", () => {
   it("doesn't render if fee is 0", () => {

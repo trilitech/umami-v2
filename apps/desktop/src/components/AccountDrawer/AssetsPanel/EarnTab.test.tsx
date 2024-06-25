@@ -1,8 +1,8 @@
+import { mockImplicitAddress, mockMnemonicAccount, rawAccountFixture } from "@umami/test-utils";
+
 import { EarnTab } from "./EarnTab";
-import { mockImplicitAddress, mockMnemonicAccount } from "../../../mocks/factories";
 import { addAccount } from "../../../mocks/helpers";
 import { act, render, screen, userEvent } from "../../../mocks/testUtils";
-import { rawAccountFixture } from "../../../mocks/tzktResponse";
 import { assetsSlice } from "../../../utils/redux/slices/assetsSlice";
 import { store } from "../../../utils/redux/store";
 

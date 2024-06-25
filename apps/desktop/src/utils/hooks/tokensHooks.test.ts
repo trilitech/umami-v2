@@ -1,9 +1,9 @@
+import { fromRawToken } from "@umami/core";
+import { hedgehoge, mockContractAddress, mockImplicitAddress } from "@umami/test-utils";
+import { DefaultNetworks, type Network } from "@umami/tezos";
+
 import { useGetToken, useGetTokenType } from "./tokensHooks";
-import { hedgehoge } from "../../mocks/fa12Tokens";
-import { mockContractAddress, mockImplicitAddress } from "../../mocks/factories";
 import { renderHook } from "../../mocks/testUtils";
-import { DefaultNetworks, type Network } from "../../types/Network";
-import { fromRaw } from "../../types/Token";
 import { networksActions } from "../redux/slices/networks";
 import { tokensActions } from "../redux/slices/tokensSlice";
 import { store } from "../redux/store";
@@ -24,7 +24,7 @@ describe("useGetToken", () => {
       store.dispatch(tokensActions.addTokens({ network, tokens: [tokenBalance.token] }));
       const { result: getTokenRef } = renderHook(() => useGetToken());
       expect(getTokenRef.current(tokenBalance.token.contract.address, "0")).toEqual(
-        fromRaw(tokenBalance.token)
+        fromRawToken(tokenBalance.token)
       );
     });
 

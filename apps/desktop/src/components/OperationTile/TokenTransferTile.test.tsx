@@ -1,17 +1,18 @@
+import { type Token, fromRawToken } from "@umami/core";
+import { ghostnetThezard, mockImplicitAddress, mockLedgerAccount } from "@umami/test-utils";
+import { DefaultNetworks } from "@umami/tezos";
+import { type TokenTransferOperation, type TransactionOperation } from "@umami/tzkt";
+
 import { OperationTileContext } from "./OperationTileContext";
 import { tokenTransferFixture, transactionFixture } from "./testUtils";
 import { TokenTransferTile } from "./TokenTransferTile";
 import * as operationDestinationModule from "./useGetOperationDestination";
-import { mockImplicitAddress, mockLedgerAccount } from "../../mocks/factories";
 import { addAccount } from "../../mocks/helpers";
-import { ghostnetThezard } from "../../mocks/nftTokens";
 import { render, screen } from "../../mocks/testUtils";
-import { DefaultNetworks } from "../../types/Network";
-import { type Token, fromRaw } from "../../types/Token";
 import { formatPkh } from "../../utils/format";
 import { networksActions } from "../../utils/redux/slices/networks";
 import { store } from "../../utils/redux/store";
-import { TEZ, type TokenTransferOperation, type TransactionOperation } from "../../utils/tezos";
+import { TEZ } from "../../utils/tezos";
 
 const fixture = (
   context: any,
@@ -21,7 +22,7 @@ const fixture = (
   <OperationTileContext.Provider value={context}>
     <TokenTransferTile
       operation={operation}
-      token={fromRaw(tokenTransfer.token) as Token}
+      token={fromRawToken(tokenTransfer.token) as Token}
       tokenTransfer={tokenTransfer}
     />
   </OperationTileContext.Provider>

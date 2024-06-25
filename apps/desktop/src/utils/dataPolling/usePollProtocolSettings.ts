@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
+import { getProtocolSettings } from "@umami/tezos";
 import { hoursToMilliseconds } from "date-fns";
 import { useEffect } from "react";
 
 import { useSelectedNetwork } from "../hooks/networkHooks";
 import { useAppDispatch } from "../redux/hooks";
 import { protocolSettingsActions } from "../redux/slices/protocolSettingsSlice";
-import { getProtocolSettings } from "../tezos";
 import { useReactQueryErrorHandler } from "../useReactQueryOnError";
 
 export const usePollProtocolSettings = () => {
@@ -25,7 +25,15 @@ export const usePollProtocolSettings = () => {
 
   useEffect(() => {
     if (settings) {
-      dispatch(protocolSettingsActions.update({ network, settings }));
+      dispatch(
+        protocolSettingsActions.update({
+          network,
+          settings: {
+            maxSlashingPeriod: settings.max_slashing_period!,
+            consensusRightsDelay: settings.consensus_rights_delay,
+          },
+        })
+      );
     }
   }, [settings, dispatch, network]);
 

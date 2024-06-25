@@ -38,8 +38,8 @@
     "react-router-dom": "^6.23.1"
   },
   "devDependencies": {
-    "@umami/eslint-config": "workspace:*",
-    "@umami/typescript-config": "workspace:*",
+    "@umami/eslint-config": "workspace:^",
+    "@umami/typescript-config": "workspace:^",
     "@vitejs/plugin-react": "^4.3.1",
     "eslint": "^8.57.0",
     "prettier": "^3.3.2",

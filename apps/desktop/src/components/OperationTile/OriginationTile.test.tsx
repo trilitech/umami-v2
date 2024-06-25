@@ -1,13 +1,15 @@
+import { mockContractAddress, mockLedgerAccount } from "@umami/test-utils";
+import { DefaultNetworks } from "@umami/tezos";
+import { type OriginationOperation } from "@umami/tzkt";
+
 import { OperationTileContext } from "./OperationTileContext";
 import { OriginationTile } from "./OriginationTile";
 import { originationFixture } from "./testUtils";
-import { mockContractAddress, mockLedgerAccount } from "../../mocks/factories";
 import { addAccount } from "../../mocks/helpers";
 import { render, screen } from "../../mocks/testUtils";
-import { DefaultNetworks } from "../../types/Network";
 import { networksActions } from "../../utils/redux/slices/networks";
 import { store } from "../../utils/redux/store";
-import { type OriginationOperation, TEZ } from "../../utils/tezos";
+import { TEZ } from "../../utils/tezos";
 
 const fixture = (context: any, operation: OriginationOperation) => (
   <OperationTileContext.Provider value={context}>

@@ -1,9 +1,9 @@
+import { getNetworksForContracts } from "@umami/multisig";
+import { isValidContractPkh, isValidImplicitPkh } from "@umami/tezos";
 import { produce } from "immer";
 import { fromPairs, identity } from "lodash";
 
 import { initialState as announcementsInitialState } from "./slices/announcementSlice";
-import { isValidContractPkh, isValidImplicitPkh } from "../../types/Address";
-import { getNetworksForContracts } from "../multisig/helpers";
 
 export const VERSION = 7;
 
@@ -42,6 +42,7 @@ export const mainStoreMigrations = {
     const contractPkhs = Object.values(state.contacts)
       .filter((contact: any) => isValidContractPkh(contact.pkh))
       .map((contact: any) => contact.pkh);
+
     const contractsWithNetworks = await getNetworksForContracts(
       state.networks.available,
       contractPkhs

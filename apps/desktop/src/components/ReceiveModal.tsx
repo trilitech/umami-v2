@@ -1,10 +1,10 @@
 import { Box, Flex, Heading, ModalBody, ModalContent, ModalFooter } from "@chakra-ui/react";
+import { parsePkh } from "@umami/tezos";
 import { type FC } from "react";
 import { QRCode } from "react-qrcode-logo";
 
 import { AddressPill } from "./AddressPill/AddressPill";
 import { FormPageHeader } from "./SendFlow/FormPageHeader";
-import { parsePkh } from "../types/Address";
 import { useGetOwnedAccountSafe } from "../utils/hooks/getAccountDataHooks";
 
 export const ReceiveModal: FC<{

@@ -1,15 +1,15 @@
-import { maxBy } from "lodash";
-
-import { useGetAccountBalance } from "./assetsHooks";
-import { useMultisigAccounts } from "./multisigHooks";
 import {
   type Account,
   type ImplicitAccount,
   type MnemonicAccount,
   type MultisigAccount,
   type SecretKeyAccount,
-} from "../../types/Account";
-import { type RawPkh } from "../../types/Address";
+} from "@umami/core";
+import { type RawPkh } from "@umami/tezos";
+import { maxBy } from "lodash";
+
+import { useGetAccountBalance } from "./assetsHooks";
+import { useMultisigAccounts } from "./multisigHooks";
 import { decrypt } from "../crypto/AES";
 import { useAppSelector } from "../redux/hooks";
 import { deriveSecretKey } from "../tezos";

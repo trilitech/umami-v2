@@ -1,8 +1,8 @@
 import { Flex, type FlexProps, Heading, Text } from "@chakra-ui/react";
+import { type Account } from "@umami/core";
 
 import { AccountTileIcon } from "../../components/AccountTile/AccountTileIcon";
 import colors from "../../style/colors";
-import { type Account } from "../../types/Account";
 import { formatPkh, prettyTezAmount } from "../../utils/format";
 import { useGetAccountBalance } from "../../utils/hooks/assetsHooks";
 
