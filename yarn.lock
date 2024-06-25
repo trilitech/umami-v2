@@ -6595,7 +6595,7 @@ __metadata:
     start-server-and-test: "npm:^2.0.4"
     ts-node: "npm:^10.9.2"
     typedoc: "npm:^0.25.13"
-    typedoc-plugin-missing-exports: "npm:^2.3.0"
+    typedoc-plugin-missing-exports: "npm:^3.0.0"
     typescript: "npm:5.4.5"
     vite: "npm:^5.3.1"
     vite-plugin-checker: "npm:^0.6.4"
@@ -17282,12 +17282,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typedoc-plugin-missing-exports@npm:^2.3.0":
-  version: 2.3.0
-  resolution: "typedoc-plugin-missing-exports@npm:2.3.0"
+"typedoc-plugin-missing-exports@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "typedoc-plugin-missing-exports@npm:3.0.0"
   peerDependencies:
-    typedoc: 0.24.x || 0.25.x
-  checksum: 10/83ff8affd82fa39a81931e825ef31b51b7470613c71601fde6ff413a5c7571e30734698092a38a437f12c5d3264010696ce9ca806d43485aa11e8208cb4cb323
+    typedoc: 0.26.x
+  checksum: 10/75f4f16a68c0a356a92d01e516e8d8220bf064c4a1af1f9f9da1d2cf4516293f32d94f8738324b16f973b9bbf34622e1edf3596015af04595f48e85242f86e54
   languageName: node
   linkType: hard
 
