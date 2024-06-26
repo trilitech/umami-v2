@@ -39,3 +39,6 @@ test-results/
 docs/
 
 .turbo/
+
+storybook-static
+
