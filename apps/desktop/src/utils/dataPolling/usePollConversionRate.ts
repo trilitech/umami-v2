@@ -1,10 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
+import { assetsActions, useAppDispatch } from "@umami/state";
 import { getTezosPriceInUSD } from "@umami/tzkt";
 import { minutesToMilliseconds } from "date-fns";
 import { useEffect } from "react";
 
-import { useAppDispatch } from "../redux/hooks";
-import { assetsActions } from "../redux/slices/assetsSlice";
 import { useReactQueryErrorHandler } from "../useReactQueryOnError";
 
 const CONVERSION_RATE_REFRESH_RATE = minutesToMilliseconds(5);

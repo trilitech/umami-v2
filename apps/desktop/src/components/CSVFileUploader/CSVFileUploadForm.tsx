@@ -13,7 +13,8 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import { type Operation } from "@umami/core";
+import { type Operation, makeAccountOperations } from "@umami/core";
+import { estimateAndUpdateBatch, useAppDispatch } from "@umami/state";
 import { type RawPkh } from "@umami/tezos";
 import Papa, { type ParseResult } from "papaparse";
 import { useContext } from "react";
@@ -21,7 +22,6 @@ import { FormProvider, useForm } from "react-hook-form";
 
 import { parseOperation } from "./utils";
 import colors from "../../style/colors";
-import { makeAccountOperations } from "../../types/AccountOperations";
 import {
   useGetBestSignerForAccount,
   useGetOwnedAccount,
@@ -29,8 +29,6 @@ import {
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 import { useGetToken } from "../../utils/hooks/tokensHooks";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
-import { useAppDispatch } from "../../utils/redux/hooks";
-import { estimateAndUpdateBatch } from "../../utils/redux/thunks/estimateAndUpdateBatch";
 import { OwnedAccountsAutocomplete } from "../AddressAutocomplete";
 import { DynamicModalContext } from "../DynamicModal";
 import { FormErrorMessage } from "../FormErrorMessage";

@@ -1,10 +1,9 @@
 import { Button, ListItem, OrderedList, VStack, useToast } from "@chakra-ui/react";
-import { makeDerivationPath } from "@umami/tezos";
+import { getLedgerPublicKeyPair, makeDerivationPath } from "@umami/tezos";
 
 import { USBIcon } from "../../../assets/icons";
 import { useRestoreLedger } from "../../../utils/hooks/setAccountDataHooks";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
-import { getPk } from "../../../utils/ledger/pk";
 import { withTimeout } from "../../../utils/withTimeout";
 import { ModalContentWrapper } from "../ModalContentWrapper";
 import { type RestoreLedgerStep } from "../OnboardingStep";
@@ -52,7 +51,7 @@ export const RestoreLedger = ({
           const derivationPath = account.derivationPathTemplate
             ? makeDerivationPath(account.derivationPathTemplate, 0)
             : account.derivationPath;
-          const { pk, pkh } = await getPk(derivationPath);
+          const { pk, pkh } = await getLedgerPublicKeyPair(derivationPath);
           restoreLedger(account.derivationPathTemplate, derivationPath!, pk, pkh, account.label);
           toast.close(toastId);
           toast({ description: "Account successfully created!", status: "success" });

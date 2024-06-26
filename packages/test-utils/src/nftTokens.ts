@@ -1,6 +1,4 @@
-import { type RawTzktTokenBalance } from "@umami/tzkt";
-
-export const ghostnetThezard: RawTzktTokenBalance = {
+export const ghostnetThezard: any = {
   id: 139206711050241,
   account: {
     address: "KT1MYis2J1hpjxVcfF92Mf7AfXouzaxsYfKm",

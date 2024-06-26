@@ -6,9 +6,14 @@ import {
   type PartialTezosOperation,
   TezosOperationType,
 } from "@airgap/beacon-wallet";
-import { type ContractOrigination, type ImplicitAccount, type Operation } from "@umami/core";
-import { isValidImplicitPkh, parseImplicitPkh, parsePkh } from "@umami/tezos";
-import { type Network } from "@umami/tezos";
+import {
+  type ContractOrigination,
+  type ImplicitAccount,
+  type ImplicitOperations,
+  type Operation,
+  estimate,
+} from "@umami/core";
+import { type Network, isValidImplicitPkh, parseImplicitPkh, parsePkh } from "@umami/tezos";
 import { useContext } from "react";
 
 import { useRemovePeerBySenderId } from "./beacon";
@@ -18,11 +23,9 @@ import { WalletClient } from "./WalletClient";
 import { DynamicModalContext } from "../../components/DynamicModal";
 import { BatchSignPage } from "../../components/SendFlow/Beacon/BatchSignPage";
 import { BeaconSignPage } from "../../components/SendFlow/Beacon/BeaconSignPage";
-import { type ImplicitOperations } from "../../types/AccountOperations";
 import { useGetOwnedAccountSafe } from "../hooks/getAccountDataHooks";
 import { useFindNetwork } from "../hooks/networkHooks";
 import { useAsyncActionHandler } from "../hooks/useAsyncActionHandler";
-import { estimate } from "../tezos";
 
 /**
  * @returns a function that handles a beacon message and opens a modal with the appropriate content

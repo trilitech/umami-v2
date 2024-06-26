@@ -1,5 +1,6 @@
-import { mockImplicitAddress, rawAccountFixture } from "@umami/test-utils";
-import { GHOSTNET, MAINNET } from "@umami/tezos";
+import { rawAccountFixture } from "@umami/core";
+import { assetsActions, networksActions, store } from "@umami/state";
+import { GHOSTNET, MAINNET, mockImplicitAddress } from "@umami/tezos";
 
 import {
   useAvailableNetworks,
@@ -8,9 +9,6 @@ import {
   useSelectedNetwork,
 } from "./networkHooks";
 import { renderHook } from "../../mocks/testUtils";
-import { assetsActions } from "../redux/slices/assetsSlice";
-import { networksActions } from "../redux/slices/networks";
-import { store } from "../redux/store";
 
 describe("networkHooks", () => {
   describe("useSelectedNetwork", () => {

@@ -15,17 +15,9 @@ import {
   tokenNameSafe,
   tokenSymbolSafe,
 } from "./Token";
-import {
-  mockImplicitAddress,
-  mockNFT,
-  hedgehoge,
-  tzBtsc,
-  uUSD,
-  fa1Token,
-  fa2Token,
-  nft,
-} from "@umami/test-utils";
-import { GHOSTNET, MAINNET } from "@umami/tezos";
+import { hedgehoge, tzBtsc, uUSD, fa1Token, fa2Token, nft } from "@umami/test-utils";
+import { GHOSTNET, MAINNET, mockImplicitAddress } from "@umami/tezos";
+import { mockNFT } from ".";
 
 beforeEach(() => {
   jest.spyOn(console, "warn").mockImplementation();

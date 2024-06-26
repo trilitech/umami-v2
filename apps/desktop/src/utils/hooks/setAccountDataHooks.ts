@@ -7,7 +7,8 @@ import {
 } from "@umami/core";
 import { decrypt, encrypt } from "@umami/crypto";
 import { type IDP } from "@umami/social-auth";
-import { makeDerivationPath } from "@umami/tezos";
+import { accountsSlice, restore as restoreFromSecretKey, useAppDispatch } from "@umami/state";
+import { derivePublicKeyPair, getFingerPrint, makeDerivationPath } from "@umami/tezos";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 
@@ -22,10 +23,6 @@ import { useSelectedNetwork } from "./networkHooks";
 import { useRemoveDependenciesAndMultisigs } from "./removeAccountDependenciesHooks";
 import { makeMnemonicAccount } from "../account/makeMnemonicAccount";
 import { useRestoreRevealedMnemonicAccounts } from "../mnemonic";
-import { useAppDispatch } from "../redux/hooks";
-import { accountsSlice } from "../redux/slices/accountsSlice/accountsSlice";
-import { restore as restoreFromSecretKey } from "../redux/thunks/secretKeyAccount";
-import { derivePublicKeyPair, getFingerPrint } from "../tezos";
 
 const { removeMnemonicAndAccounts, removeNonMnemonicAccounts } = accountsSlice.actions;
 

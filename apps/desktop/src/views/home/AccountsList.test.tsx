@@ -1,31 +1,36 @@
-import { type MnemonicAccount } from "@umami/core";
-import { decrypt } from "@umami/crypto";
 import {
+  type MnemonicAccount,
   mockAccountLabel,
   mockImplicitAccount,
-  mockImplicitAddress,
   mockMnemonicAccount,
-  mockMultisigWithOperations,
-  mockPk,
   mockSocialAccount,
-} from "@umami/test-utils";
-import { getDefaultDerivationPath } from "@umami/tezos";
+} from "@umami/core";
+import { decrypt } from "@umami/crypto";
+import { mockMultisigWithOperations } from "@umami/multisig";
+import { accountsSlice, addTestAccount, store } from "@umami/state";
+import {
+  derivePublicKeyPair,
+  getDefaultDerivationPath,
+  mockImplicitAddress,
+  mockPk,
+} from "@umami/tezos";
 
 import { AccountsList } from "./AccountsList";
-import { addAccount } from "../../mocks/helpers";
 import { act, render, screen, userEvent, waitFor, within } from "../../mocks/testUtils";
 import { WalletClient } from "../../utils/beacon/WalletClient";
 import { formatPkh } from "../../utils/format";
-import { accountsSlice } from "../../utils/redux/slices/accountsSlice";
-import { store } from "../../utils/redux/store";
-import { derivePublicKeyPair } from "../../utils/tezos";
 
-jest.mock("../../utils/tezos", () => ({
-  ...jest.requireActual("../../utils/tezos"),
+jest.mock("@umami/core", () => ({
+  ...jest.requireActual("@umami/core"),
   derivePublicKeyPair: jest.fn(),
 }));
 
 jest.mock("@umami/crypto", () => ({ decrypt: jest.fn() }));
+
+jest.mock("@umami/tezos", () => ({
+  ...jest.requireActual("@umami/tezos"),
+  derivePublicKeyPair: jest.fn(),
+}));
 
 const GOOGLE_ACCOUNT_LABEL1 = "my google account 1";
 const GOOGLE_ACCOUNT_LABEL2 = "my google account 2";
@@ -40,8 +45,8 @@ describe("<AccountsList />", () => {
       const user = userEvent.setup();
       const mnemonic = mockMnemonicAccount(0);
       const social = mockSocialAccount(1);
-      addAccount(mnemonic);
-      addAccount(social);
+      addTestAccount(mnemonic);
+      addTestAccount(social);
       render(<AccountsList />);
 
       const [mnemonicPopover, socialPopover] = screen.getAllByTestId("popover-cta");
@@ -101,8 +106,8 @@ describe("<AccountsList />", () => {
       const user = userEvent.setup();
       const social1 = mockSocialAccount(0);
       const social2 = mockSocialAccount(1);
-      addAccount(social1);
-      addAccount(social2);
+      addTestAccount(social1);
+      addTestAccount(social2);
 
       render(<AccountsList />);
 
@@ -118,9 +123,9 @@ describe("<AccountsList />", () => {
   });
 
   it("displays accounts in store with label and formated pkh", () => {
-    addAccount(mockMnemonicAccount(0));
-    addAccount(mockMnemonicAccount(1));
-    addAccount(mockMnemonicAccount(2));
+    addTestAccount(mockMnemonicAccount(0));
+    addTestAccount(mockMnemonicAccount(1));
+    addTestAccount(mockMnemonicAccount(2));
 
     render(<AccountsList />);
 
@@ -239,7 +244,7 @@ const restore = () => {
     })
   );
 
-  addAccount({
+  addTestAccount({
     type: "social",
     idp: "google",
     address: mockImplicitAddress(6),
@@ -247,7 +252,7 @@ const restore = () => {
     label: GOOGLE_ACCOUNT_LABEL1,
   });
 
-  addAccount({
+  addTestAccount({
     type: "social",
     idp: "google",
     address: mockImplicitAddress(7),
@@ -255,6 +260,6 @@ const restore = () => {
     label: GOOGLE_ACCOUNT_LABEL2,
   });
 
-  addAccount(mockMultisigWithOperations(0));
-  addAccount(mockMultisigWithOperations(1));
+  addTestAccount(mockMultisigWithOperations(0));
+  addTestAccount(mockMultisigWithOperations(1));
 };

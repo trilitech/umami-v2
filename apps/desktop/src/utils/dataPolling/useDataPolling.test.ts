@@ -1,3 +1,5 @@
+import { store } from "@umami/state";
+
 import { useDataPolling } from "./useDataPolling";
 import { usePollAccountStates } from "./usePollAccountStates";
 import { usePollBakers } from "./usePollBakers";
@@ -9,7 +11,6 @@ import { usePollProtocolSettings } from "./usePollProtocolSettings";
 import { usePollTokenBalances } from "./usePollTokenBalances";
 import { usePollUnstakeRequests } from "./usePollUnstakeRequests";
 import { renderHook } from "../../mocks/testUtils";
-import { store } from "../redux/store";
 
 jest.mock("./usePollBakers");
 const usePollBakersMock = jest.mocked(usePollBakers);

@@ -1,22 +1,18 @@
-import {
-  mockImplicitAccount,
-  mockMnemonicAccount,
-  mockMultisigAccount,
-  pendingOps,
-} from "@umami/test-utils";
+import { mockImplicitAccount, mockMnemonicAccount, mockMultisigAccount } from "@umami/core";
+import { multisigPendingOpsFixtures } from "@umami/multisig";
+import { addTestAccount } from "@umami/state";
 
 import { MultisigSignerTile } from "./MultisigSignerTile";
-import { addAccount } from "../../../../mocks/helpers";
 import { render, screen } from "../../../../mocks/testUtils";
 
 const signer = mockMnemonicAccount(0);
 describe("<MultisigSignerTile />", () => {
-  beforeEach(() => addAccount(signer));
+  beforeEach(() => addTestAccount(signer));
 
   it("displays the action button", () => {
     render(
       <MultisigSignerTile
-        operation={pendingOps[0]}
+        operation={multisigPendingOpsFixtures[0]}
         pendingApprovals={1}
         sender={mockMultisigAccount(0)}
         signerAddress={signer.address}
@@ -28,7 +24,7 @@ describe("<MultisigSignerTile />", () => {
   it("displays the account tile", () => {
     render(
       <MultisigSignerTile
-        operation={pendingOps[0]}
+        operation={multisigPendingOpsFixtures[0]}
         pendingApprovals={1}
         sender={mockMultisigAccount(0)}
         signerAddress={signer.address}
@@ -40,7 +36,7 @@ describe("<MultisigSignerTile />", () => {
   it("should display a button for non-pending operation with signer included in the account", () => {
     render(
       <MultisigSignerTile
-        operation={pendingOps[0]}
+        operation={multisigPendingOpsFixtures[0]}
         pendingApprovals={0}
         sender={mockMultisigAccount(0)}
         signerAddress={signer.address}
@@ -52,7 +48,7 @@ describe("<MultisigSignerTile />", () => {
   it("should hide button for pending operation with signers included in the account that already approved", () => {
     render(
       <MultisigSignerTile
-        operation={{ ...pendingOps[0], approvals: [signer.address] }}
+        operation={{ ...multisigPendingOpsFixtures[0], approvals: [signer.address] }}
         pendingApprovals={1}
         sender={mockMultisigAccount(0)}
         signerAddress={signer.address}
@@ -65,7 +61,7 @@ describe("<MultisigSignerTile />", () => {
     const account = { ...mockMultisigAccount(0), signers: [mockImplicitAccount(1).address] };
     render(
       <MultisigSignerTile
-        operation={pendingOps[0]}
+        operation={multisigPendingOpsFixtures[0]}
         pendingApprovals={1}
         sender={account}
         signerAddress={mockImplicitAccount(1).address}

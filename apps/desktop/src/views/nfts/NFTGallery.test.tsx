@@ -1,6 +1,5 @@
 import { type NFTBalance } from "@umami/core";
-import { mockContractAddress, mockImplicitAddress } from "@umami/test-utils";
-import { type RawPkh } from "@umami/tezos";
+import { type RawPkh, mockContractAddress, mockImplicitAddress } from "@umami/tezos";
 
 import { NFTGallery } from "./NFTGallery";
 import { render, screen } from "../../mocks/testUtils";

@@ -1,14 +1,18 @@
 import { Modal } from "@chakra-ui/react";
-import { type FA12TokenBalance, type FA2TokenBalance } from "@umami/core";
-import { mockFA2Token, mockImplicitAccount, mockMnemonicAccount } from "@umami/test-utils";
-import { parseContractPkh } from "@umami/tezos";
+import {
+  type FA12TokenBalance,
+  type FA2TokenBalance,
+  makeAccountOperations,
+  mockFA2Token,
+  mockImplicitAccount,
+  mockMnemonicAccount,
+} from "@umami/core";
+import { addTestAccount } from "@umami/state";
+import { executeParams } from "@umami/test-utils";
+import { TEZ, parseContractPkh } from "@umami/tezos";
 
 import { SignPage } from "./SignPage";
-import { executeParams } from "../../../mocks/executeParams";
-import { addAccount } from "../../../mocks/helpers";
 import { render, screen, waitFor } from "../../../mocks/testUtils";
-import { makeAccountOperations } from "../../../types/AccountOperations";
-import { TEZ } from "../../../utils/tezos";
 import { type SignPageProps } from "../utils";
 
 const fixture = (props: SignPageProps<{ token: FA12TokenBalance | FA2TokenBalance }>) => (
@@ -17,7 +21,7 @@ const fixture = (props: SignPageProps<{ token: FA12TokenBalance | FA2TokenBalanc
   </Modal>
 );
 
-beforeEach(() => addAccount(mockMnemonicAccount(0)));
+beforeEach(() => addTestAccount(mockMnemonicAccount(0)));
 
 const mockAccount = mockMnemonicAccount(0);
 const mockFAToken = mockFA2Token(0, mockAccount);

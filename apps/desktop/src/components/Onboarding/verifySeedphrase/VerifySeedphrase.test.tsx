@@ -1,14 +1,14 @@
+import { selectRandomElements } from "@umami/core";
 import { mnemonic1 } from "@umami/test-utils";
 
 import { VerifySeedphrase } from "./VerifySeedphrase";
 import { act, fireEvent, render, screen, userEvent, waitFor } from "../../../mocks/testUtils";
-import { selectRandomElements } from "../../../utils/tezos";
 import { type OnboardingStep } from "../OnboardingStep";
 
 const goToStepMock = jest.fn((step: OnboardingStep) => {});
 
-jest.mock("../../../utils/tezos", () => ({
-  ...jest.requireActual("../../../utils/tezos"),
+jest.mock("@umami/core", () => ({
+  ...jest.requireActual("@umami/core"),
   selectRandomElements: jest.fn(),
 }));
 

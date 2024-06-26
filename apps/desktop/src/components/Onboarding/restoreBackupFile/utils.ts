@@ -1,8 +1,8 @@
 import { type EncryptedData, decrypt } from "@umami/crypto";
+import { getPersistor } from "@umami/state";
 
 import packageInfo from "../../../../package.json";
 import { useRestoreFromMnemonic } from "../../../utils/hooks/setAccountDataHooks";
-import { persistor } from "../../../utils/redux/persistor";
 import { DEFAULT_ACCOUNT_LABEL } from "../nameAccount/NameAccount";
 
 // This method is wrapped in a function so that we can mock it in tests.
@@ -61,7 +61,7 @@ export const restoreV2BackupFile = async (
     throw new Error("Invalid password.");
   }
 
-  persistor.pause();
+  getPersistor().pause();
 
   localStorage.clear();
   localStorage.setItem("persist:accounts", accountsInString);

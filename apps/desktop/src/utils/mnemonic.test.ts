@@ -1,21 +1,28 @@
-import { type ImplicitAccount } from "@umami/core";
 import {
-  mnemonic1,
+  type ImplicitAccount,
   mockContractContact,
   mockImplicitContact,
   mockSocialAccount,
-} from "@umami/test-utils";
-import { MAINNET, defaultDerivationPathTemplate, getDefaultDerivationPath } from "@umami/tezos";
+} from "@umami/core";
+import { addTestAccount, contactsActions, networksActions, store } from "@umami/state";
+import { mnemonic1 } from "@umami/test-utils";
+import {
+  MAINNET,
+  defaultDerivationPathTemplate,
+  getDefaultDerivationPath,
+  getFingerPrint,
+  isAccountRevealed,
+} from "@umami/tezos";
 
 import { restoreRevealedPublicKeyPairs, useRestoreRevealedMnemonicAccounts } from "./mnemonic";
-import { contactsActions } from "./redux/slices/contactsSlice";
-import { networksActions } from "./redux/slices/networks";
-import { store } from "./redux/store";
-import * as tezosHelpers from "./tezos/helpers";
-import { addAccount, fakeIsAccountRevealed } from "../mocks/helpers";
+import { fakeIsAccountRevealed } from "../mocks/helpers";
 import { renderHook } from "../mocks/testUtils";
 
-const isAccountRevealedMock = jest.spyOn(tezosHelpers, "isAccountRevealed");
+jest.mock("@umami/tezos", () => ({
+  ...jest.requireActual("@umami/tezos"),
+  isAccountRevealed: jest.fn(),
+  getFingerPrint: jest.fn(),
+}));
 
 const testPublicKeys = [
   {
@@ -33,12 +40,12 @@ const testPublicKeys = [
 ];
 
 beforeEach(() => {
-  jest.spyOn(tezosHelpers, "getFingerPrint").mockResolvedValue("mockFingerPrint");
+  jest.mocked(getFingerPrint).mockResolvedValue("mockFingerPrint");
 });
 
 describe("restoreRevealedPublicKeyPairs", () => {
   it("restores existing accounts", async () => {
-    isAccountRevealedMock.mockImplementation(fakeIsAccountRevealed(testPublicKeys));
+    jest.mocked(isAccountRevealed).mockImplementation(fakeIsAccountRevealed(testPublicKeys));
 
     const result = await restoreRevealedPublicKeyPairs(
       mnemonic1,
@@ -50,7 +57,7 @@ describe("restoreRevealedPublicKeyPairs", () => {
   });
 
   it("restores first account if none exists", async () => {
-    isAccountRevealedMock.mockImplementation(fakeIsAccountRevealed([]));
+    jest.mocked(isAccountRevealed).mockImplementation(fakeIsAccountRevealed([]));
 
     const result = await restoreRevealedPublicKeyPairs(
       mnemonic1,
@@ -62,9 +69,9 @@ describe("restoreRevealedPublicKeyPairs", () => {
   });
 
   it("stops at first unrevealed account", async () => {
-    isAccountRevealedMock.mockImplementation(
-      fakeIsAccountRevealed([testPublicKeys[0], testPublicKeys[2]])
-    );
+    jest
+      .mocked(isAccountRevealed)
+      .mockImplementation(fakeIsAccountRevealed([testPublicKeys[0], testPublicKeys[2]]));
 
     const result = await restoreRevealedPublicKeyPairs(
       mnemonic1,
@@ -112,9 +119,9 @@ describe("useRestoreRevealedMnemonicAccounts", () => {
         derivationPathTemplate: "44'/1729'/?'/0'",
       },
     ];
-    isAccountRevealedMock.mockImplementation(
-      fakeIsAccountRevealed(expected.map(account => account.address))
-    );
+    jest
+      .mocked(isAccountRevealed)
+      .mockImplementation(fakeIsAccountRevealed(expected.map(account => account.address)));
 
     const {
       result: { current: restoreRevealedMnemonicsHook },
@@ -130,7 +137,7 @@ describe("useRestoreRevealedMnemonicAccounts", () => {
   });
 
   it("restores one account if none were revealed", async () => {
-    isAccountRevealedMock.mockImplementation(fakeIsAccountRevealed([]));
+    jest.mocked(isAccountRevealed).mockImplementation(fakeIsAccountRevealed([]));
 
     const {
       result: { current: restoreRevealedMnemonicsHook },
@@ -151,12 +158,14 @@ describe("useRestoreRevealedMnemonicAccounts", () => {
   });
 
   it("sets unique labels for restored accounts", async () => {
-    isAccountRevealedMock.mockImplementation(fakeIsAccountRevealed(testPublicKeys.slice(0, 3)));
+    jest
+      .mocked(isAccountRevealed)
+      .mockImplementation(fakeIsAccountRevealed(testPublicKeys.slice(0, 3)));
     store.dispatch(networksActions.setCurrent(MAINNET));
     store.dispatch(contactsActions.upsert(mockImplicitContact(1, CUSTOM_LABEL)));
     store.dispatch(contactsActions.upsert(mockContractContact(0, "ghostnet", `${CUSTOM_LABEL} 4`)));
     store.dispatch(contactsActions.upsert(mockContractContact(2, "mainnet", `${CUSTOM_LABEL} 5`)));
-    addAccount(mockSocialAccount(1, `${CUSTOM_LABEL} 3`));
+    addTestAccount(mockSocialAccount(1, `${CUSTOM_LABEL} 3`));
 
     const {
       result: { current: restoreRevealedMnemonicsHook },
@@ -183,7 +192,9 @@ describe("useRestoreRevealedMnemonicAccounts", () => {
   });
 
   it("restores existing accounts with a custom derivation path", async () => {
-    isAccountRevealedMock.mockImplementation(fakeIsAccountRevealed(testPublicKeys.slice(0, 2)));
+    jest
+      .mocked(isAccountRevealed)
+      .mockImplementation(fakeIsAccountRevealed(testPublicKeys.slice(0, 2)));
 
     const {
       result: { current: restoreRevealedMnemonicsHook },

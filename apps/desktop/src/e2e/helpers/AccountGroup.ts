@@ -1,8 +1,6 @@
 import { InMemorySigner } from "@taquito/signer";
-import { type RawPkh, makeDerivationPath } from "@umami/tezos";
+import { type RawPkh, derivePublicKeyPair, getFingerPrint, makeDerivationPath } from "@umami/tezos";
 import { times } from "lodash";
-
-import { derivePublicKeyPair, getFingerPrint } from "../../utils/tezos";
 
 export type AccountGroup = {
   type: "mnemonic" | "secret_key";

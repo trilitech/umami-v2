@@ -90,6 +90,7 @@
     "@umami/jest-config": "workspace:^",
     "@umami/multisig": "workspace:^",
     "@umami/social-auth": "workspace:^",
+    "@umami/state": "workspace:^",
     "@umami/test-utils": "workspace:^",
     "@umami/tezos": "workspace:^",
     "@umami/typescript-config": "workspace:^",

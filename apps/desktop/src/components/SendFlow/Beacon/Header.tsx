@@ -1,9 +1,9 @@
 import { type OperationRequestOutput } from "@airgap/beacon-wallet";
 import { AspectRatio, Flex, Heading, Image, Text } from "@chakra-ui/react";
+import { type AccountOperations } from "@umami/core";
 import { capitalize } from "lodash";
 
 import colors from "../../../style/colors";
-import { type AccountOperations } from "../../../types/AccountOperations";
 import { SignPageHeader } from "../SignPageHeader";
 import { type SignPageMode } from "../utils";
 

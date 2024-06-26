@@ -1,9 +1,10 @@
-import { mockImplicitAddress, rawAccountFixture } from "@umami/test-utils";
+import { rawAccountFixture } from "@umami/core";
+import { store } from "@umami/state";
+import { mockImplicitAddress } from "@umami/tezos";
 import { getAccounts } from "@umami/tzkt";
 
 import { usePollAccountStates } from "./usePollAccountStates";
 import { renderHook, waitFor } from "../../mocks/testUtils";
-import { store } from "../redux/store";
 
 jest.mock("@umami/tzkt");
 

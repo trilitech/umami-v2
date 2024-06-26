@@ -1,11 +1,10 @@
-import { type Contact } from "@umami/core";
-import { mockImplicitAddress, mockImplicitContact } from "@umami/test-utils";
+import { type Contact, mockImplicitContact } from "@umami/core";
+import { contactsActions, store } from "@umami/state";
+import { mockImplicitAddress } from "@umami/tezos";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { AddressAutocomplete } from "./AddressAutocomplete";
 import { fireEvent, render, screen, within } from "../../mocks/testUtils";
-import { contactsActions } from "../../utils/redux/slices/contactsSlice";
-import { store } from "../../utils/redux/store";
 
 type FormFields = { destination: string };
 

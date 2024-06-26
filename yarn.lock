@@ -6467,6 +6467,7 @@ __metadata:
     "@taquito/taquito": "npm:^20.0.1"
     "@types/eslint": "npm:^8"
     "@types/lodash": "npm:^4"
+    "@tzkt/sdk-api": "npm:^2.2.1"
     "@umami/eslint-config": "workspace:^"
     "@umami/jest-config": "workspace:^"
     "@umami/social-auth": "workspace:^"
@@ -6560,6 +6561,7 @@ __metadata:
     "@umami/jest-config": "workspace:^"
     "@umami/multisig": "workspace:^"
     "@umami/social-auth": "workspace:^"
+    "@umami/state": "workspace:^"
     "@umami/test-utils": "workspace:^"
     "@umami/tezos": "workspace:^"
     "@umami/typescript-config": "workspace:^"
@@ -6712,6 +6714,7 @@ __metadata:
     "@types/eslint": "npm:^8"
     "@types/lodash": "npm:^4"
     "@tzkt/sdk-api": "npm:^2.2.1"
+    "@umami/core": "workspace:^"
     "@umami/eslint-config": "workspace:^"
     "@umami/jest-config": "workspace:^"
     "@umami/test-utils": "workspace:^"
@@ -6756,6 +6759,40 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@umami/state@workspace:^, @umami/state@workspace:packages/state":
+  version: 0.0.0-use.local
+  resolution: "@umami/state@workspace:packages/state"
+  dependencies:
+    "@airgap/beacon-wallet": "npm:^4.2.2"
+    "@reduxjs/toolkit": "npm:^2.2.5"
+    "@taquito/signer": "npm:^20.0.1"
+    "@taquito/utils": "npm:^20.0.1"
+    "@types/eslint": "npm:^8"
+    "@types/lodash": "npm:^4"
+    "@umami/core": "workspace:^"
+    "@umami/crypto": "workspace:^"
+    "@umami/eslint-config": "workspace:^"
+    "@umami/jest-config": "workspace:^"
+    "@umami/multisig": "workspace:^"
+    "@umami/test-utils": "workspace:^"
+    "@umami/tezos": "workspace:^"
+    "@umami/typescript-config": "workspace:^"
+    "@umami/tzkt": "workspace:^"
+    eslint: "npm:^8.57.0"
+    immer: "npm:^10.1.1"
+    jest: "npm:^29.7.0"
+    lodash: "npm:^4.17.21"
+    prettier: "npm:^3.3.2"
+    react-redux: "npm:^9.1.2"
+    redux: "npm:^5.0.1"
+    redux-persist: "npm:^6.0.0"
+    redux-thunk: "npm:^3.1.0"
+    ts-jest: "npm:^29.1.5"
+    tsup: "npm:^8.1.0"
+    typescript: "npm:^5.5.2"
+  languageName: unknown
+  linkType: soft
+
 "@umami/test-utils@workspace:^, @umami/test-utils@workspace:packages/test-utils":
   version: 0.0.0-use.local
   resolution: "@umami/test-utils@workspace:packages/test-utils"
@@ -6782,12 +6819,19 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@umami/tezos@workspace:packages/tezos"
   dependencies:
+    "@ledgerhq/hw-transport-webusb": "npm:^6.29.0"
+    "@taquito/ledger-signer": "npm:^20.0.1"
+    "@taquito/michel-codec": "npm:^20.0.1"
     "@taquito/rpc": "npm:^20.0.1"
+    "@taquito/signer": "npm:^20.0.1"
+    "@taquito/taquito": "npm:^20.0.1"
     "@taquito/utils": "npm:^20.0.1"
     "@types/eslint": "npm:^8"
     "@umami/eslint-config": "workspace:^"
     "@umami/jest-config": "workspace:^"
+    "@umami/test-utils": "workspace:^"
     "@umami/typescript-config": "workspace:^"
+    axios: "npm:^1.7.2"
     eslint: "npm:^8.57.0"
     jest: "npm:^29.7.0"
     prettier: "npm:^3.3.2"
@@ -6860,6 +6904,7 @@ __metadata:
     "@types/react": "npm:^18.3.3"
     "@types/react-dom": "npm:^18.3.0"
     "@tzkt/sdk-api": "npm:^2.2.1"
+    "@umami/core": "workspace:^"
     "@umami/eslint-config": "workspace:^"
     "@umami/jest-config": "workspace:^"
     "@umami/typescript-config": "workspace:^"

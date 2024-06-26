@@ -1,7 +1,4 @@
-import { type Address } from "@umami/tezos";
-import { type RawTzktTokenBalance } from "@umami/tzkt";
-
-export const uUSD = (owner: Address): RawTzktTokenBalance => ({
+export const uUSD = (owner: { pkh: string }) => ({
   id: 64166129827842,
   account: {
     address: owner.pkh,

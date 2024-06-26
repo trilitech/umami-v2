@@ -1,8 +1,8 @@
+import { store } from "@umami/state";
 import { GHOSTNET } from "@umami/tezos";
 
 import { NetworkSelector } from "./NetworkSelector";
 import { act, render, screen, userEvent } from "../mocks/testUtils";
-import { store } from "../utils/redux/store";
 
 describe("<NetworkSelector />", () => {
   it("shows the current network", () => {

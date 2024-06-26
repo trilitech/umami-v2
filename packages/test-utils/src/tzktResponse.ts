@@ -1,8 +1,4 @@
-import { type RawTzktAccount, type RawTzktTokenBalance } from "@umami/tzkt";
-
-import { mockImplicitAddress } from ".";
-
-export const fa1Token: RawTzktTokenBalance = {
+export const fa1Token: any = {
   id: 10897662672897,
   account: {
     address: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
@@ -24,7 +20,7 @@ export const fa1Token: RawTzktTokenBalance = {
   lastTime: "2022-10-20T13:36:35Z",
 };
 
-export const fa2Token: RawTzktTokenBalance = {
+export const fa2Token: any = {
   id: 10898310692865,
   account: {
     address: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
@@ -51,7 +47,7 @@ export const fa2Token: RawTzktTokenBalance = {
   lastTime: "2022-10-20T13:36:35Z",
 };
 
-export const nft: RawTzktTokenBalance = {
+export const nft: any = {
   id: 10899466223618,
   account: {
     address: "tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3",
@@ -134,14 +130,3 @@ export const nft: RawTzktTokenBalance = {
   lastLevel: 697800,
   lastTime: "2022-06-15T14:05:25Z",
 };
-
-export const rawAccountFixture = (props?: Partial<RawTzktAccount>): RawTzktAccount => ({
-  address: mockImplicitAddress(0).pkh,
-  balance: 1000000,
-  delegate: { alias: "mega_baker", address: mockImplicitAddress(1).pkh },
-  stakedBalance: 0,
-  unstakedBalance: 0,
-  rollupBonds: 0,
-  smartRollupBonds: 0,
-  ...props,
-});

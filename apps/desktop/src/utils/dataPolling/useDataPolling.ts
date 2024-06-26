@@ -1,3 +1,4 @@
+import { assetsActions, useAppDispatch } from "@umami/state";
 import { fromUnixTime } from "date-fns";
 import { max } from "lodash";
 import { useEffect } from "react";
@@ -11,8 +12,6 @@ import { usePollPendingOperations } from "./usePollPendingOperations";
 import { usePollProtocolSettings } from "./usePollProtocolSettings";
 import { usePollTokenBalances } from "./usePollTokenBalances";
 import { usePollUnstakeRequests } from "./usePollUnstakeRequests";
-import { useAppDispatch } from "../redux/hooks";
-import { assetsActions } from "../redux/slices/assetsSlice";
 
 export const useDataPolling = () => {
   const dispatch = useAppDispatch();

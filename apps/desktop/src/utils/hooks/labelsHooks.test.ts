@@ -6,17 +6,20 @@ import {
   mockMultisigAccount,
   mockSecretKeyAccount,
   mockSocialAccount,
-} from "@umami/test-utils";
+} from "@umami/core";
+import {
+  addTestAccount,
+  contactsActions,
+  multisigActions,
+  multisigsSlice,
+  networksActions,
+  renameAccount,
+  store,
+} from "@umami/state";
 import { MAINNET } from "@umami/tezos";
 
 import { useGetNextAvailableAccountLabels, useValidateName } from "./labelsHooks";
-import { addAccount } from "../../mocks/helpers";
 import { renderHook } from "../../mocks/testUtils";
-import { contactsActions } from "../redux/slices/contactsSlice";
-import { multisigActions, multisigsSlice } from "../redux/slices/multisigsSlice";
-import { networksActions } from "../redux/slices/networks";
-import { store } from "../redux/store";
-import { renameAccount } from "../redux/thunks/renameAccount";
 
 describe("labelsHooks", () => {
   describe("useValidateName", () => {
@@ -64,7 +67,7 @@ describe("labelsHooks", () => {
           mockSocialAccount(1, "Social Account Label"),
           mockSecretKeyAccount(2, "Secret Key Account Label"),
           mockMnemonicAccount(3, "Mnemonic Account Label"),
-        ].forEach(addAccount);
+        ].forEach(addTestAccount);
         store.dispatch(multisigsSlice.actions.setMultisigs([mockMultisigAccount(4)]));
         store.dispatch(renameAccount(mockMultisigAccount(5), "Multisig Account Label"));
         store.dispatch(
@@ -116,7 +119,7 @@ describe("labelsHooks", () => {
 
     describe.each(existingAccounts)("among $type accounts", existingAccounts => {
       it("returns unique labels", () => {
-        existingAccounts.accounts.forEach(addAccount);
+        existingAccounts.accounts.forEach(addTestAccount);
 
         const {
           result: { current: getNextAvailableLabels },

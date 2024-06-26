@@ -1,4 +1,4 @@
-import { mockImplicitAddress } from "@umami/test-utils";
+import { mockImplicitAddress } from "@umami/tezos";
 
 import { OperationTileContext } from "./OperationTileContext";
 import { useShowAddress } from "./useShowAddress";

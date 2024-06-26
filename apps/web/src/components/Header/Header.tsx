@@ -1,10 +1,9 @@
 import { Card, useBreakpointValue, useColorMode } from "@chakra-ui/react";
 import { mode } from "@chakra-ui/theme-tools";
 
+import { Actions } from "./Actions";
 import { LogoDarkIcon } from "../../assets/icons/LogoDark";
 import { LogoLightIcon } from "../../assets/icons/LogoLight";
-
-import { Actions } from ".";
 
 export const Header = () => {
   const { colorMode } = useColorMode();

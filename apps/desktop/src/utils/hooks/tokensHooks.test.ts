@@ -1,12 +1,15 @@
 import { fromRawToken } from "@umami/core";
-import { hedgehoge, mockContractAddress, mockImplicitAddress } from "@umami/test-utils";
-import { DefaultNetworks, type Network } from "@umami/tezos";
+import { networksActions, store, tokensActions } from "@umami/state";
+import { hedgehoge } from "@umami/test-utils";
+import {
+  DefaultNetworks,
+  type Network,
+  mockContractAddress,
+  mockImplicitAddress,
+} from "@umami/tezos";
 
 import { useGetToken, useGetTokenType } from "./tokensHooks";
 import { renderHook } from "../../mocks/testUtils";
-import { networksActions } from "../redux/slices/networks";
-import { tokensActions } from "../redux/slices/tokensSlice";
-import { store } from "../redux/store";
 
 describe("useGetToken", () => {
   describe.each(DefaultNetworks)("on $name", network => {

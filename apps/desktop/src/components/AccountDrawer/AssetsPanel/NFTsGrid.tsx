@@ -9,8 +9,7 @@ import {
   type SimpleGridProps,
   Text,
 } from "@chakra-ui/react";
-import { type NFTBalance } from "@umami/core";
-import { fullId, thumbnailUri } from "@umami/core";
+import { type NFTBalance, fullId, thumbnailUri } from "@umami/core";
 import { type RawPkh } from "@umami/tezos";
 import { type FC } from "react";
 import { Link } from "react-router-dom";

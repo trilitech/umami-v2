@@ -1,8 +1,7 @@
 import { Box, Button, Center, Flex, type FlexProps, Heading, Text } from "@chakra-ui/react";
 import { type Account, type ImplicitAccount } from "@umami/core";
 import type React from "react";
-import { type ReactNode } from "react";
-import { useContext } from "react";
+import { type ReactNode, useContext } from "react";
 
 import { PendingUnstakeRequests } from "./PendingUnstakeRequests/PendingUnstakeRequests";
 import { ExternalLinkIcon, PenIcon, XMarkIcon } from "../../../assets/icons";

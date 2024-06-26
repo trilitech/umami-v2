@@ -12,13 +12,13 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
+import { getPersistor } from "@umami/state";
 import { noop } from "lodash";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { WarningIcon } from "../../assets/icons";
 import colors from "../../style/colors";
 import { WalletClient } from "../../utils/beacon/WalletClient";
-import { persistor } from "../../utils/redux/persistor";
 import { FormErrorMessage } from "../FormErrorMessage";
 
 const CONFIRMATION_CODE = "wasabi";
@@ -27,7 +27,7 @@ const reset = () =>
   WalletClient.destroy()
     .catch(noop)
     .finally(() => {
-      persistor.pause();
+      getPersistor().pause();
       localStorage.clear();
       window.location.reload();
     });

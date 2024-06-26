@@ -1,7 +1,7 @@
+import { executeParams } from "@umami/test-utils";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { AdvancedSettingsAccordion } from "./AdvancedSettingsAccordion";
-import { executeParams } from "../mocks/executeParams";
 import { act, render, screen, userEvent } from "../mocks/testUtils";
 
 const TestComponent = () => {

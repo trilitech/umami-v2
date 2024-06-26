@@ -25,7 +25,7 @@ const config: Config = {
   coverageDirectory: "coverage",
 
   // An array of regexp pattern strings used to skip coverage collection
-  coveragePathIgnorePatterns: ["/node_modules/", "/dist/"],
+  coveragePathIgnorePatterns: ["/node_modules/", "/dist/", "testUtils.ts"],
 
   // Indicates which provider should be used to instrument code for coverage
   // coverageProvider: "babel",
@@ -112,7 +112,7 @@ const config: Config = {
   // projects: undefined,
 
   // Use this configuration option to add custom reporters to Jest
-  reporters: process.env.CI ? ["github-actions"] : ["default", "summary"],
+  reporters: process.env.CI ? ["github-actions", "default"] : ["default", "summary"],
 
   // Automatically reset mock state before every test
   resetMocks: true,
@@ -139,11 +139,6 @@ const config: Config = {
 
   // The paths to modules that run some code to configure or set up the testing environment before each test
   // setupFiles: [],
-
-  // A list of paths to modules that run some code to configure or set up the testing framework before each test
-
-  // The number of seconds after which a test is considered as slow and reported as such in the results.
-  slowTestThreshold: 15,
 
   // A list of paths to snapshot serializer modules Jest should use for snapshot testing
   // snapshotSerializers: [],

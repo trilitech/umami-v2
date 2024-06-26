@@ -1,11 +1,11 @@
 import { BeaconMessageType, NetworkType, type OperationRequestOutput } from "@airgap/beacon-wallet";
 import { TezosToolkit } from "@taquito/taquito";
 import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
-import { mockContractOrigination, mockImplicitAccount } from "@umami/test-utils";
-import { GHOSTNET } from "@umami/tezos";
+import { executeOperations, mockContractOrigination, mockImplicitAccount } from "@umami/core";
+import { executeParams } from "@umami/test-utils";
+import { GHOSTNET, makeToolkit } from "@umami/tezos";
 
 import { OriginationOperationSignPage } from "./OriginationOperationSignPage";
-import { executeParams } from "../../../mocks/executeParams";
 import {
   act,
   dynamicModalContextMock,
@@ -17,7 +17,6 @@ import {
 import { WalletClient } from "../../../utils/beacon/WalletClient";
 import { prettyTezAmount } from "../../../utils/format";
 import { useGetSecretKey } from "../../../utils/hooks/getAccountDataHooks";
-import { executeOperations, makeToolkit } from "../../../utils/tezos";
 import { SuccessStep } from "../SuccessStep";
 
 const message = {
@@ -34,9 +33,13 @@ const operation = {
   estimates: [executeParams({ fee: 123 })],
 };
 
-jest.mock("../../../utils/tezos", () => ({
-  ...jest.requireActual("../../../utils/tezos"),
+jest.mock("@umami/core", () => ({
+  ...jest.requireActual("@umami/core"),
   executeOperations: jest.fn(),
+}));
+
+jest.mock("@umami/tezos", () => ({
+  ...jest.requireActual("@umami/tezos"),
   makeToolkit: jest.fn(),
 }));
 

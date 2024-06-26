@@ -1,14 +1,12 @@
 import { Box, Button, Center, Flex, type FlexProps, Text } from "@chakra-ui/react";
-import { type ImplicitAccount } from "@umami/core";
+import { type ImplicitAccount, estimate, makeAccountOperations } from "@umami/core";
 import { useContext } from "react";
 
 import colors from "../../../../style/colors";
-import { makeAccountOperations } from "../../../../types/AccountOperations";
 import { prettyTezAmount } from "../../../../utils/format";
 import { useSelectedNetwork } from "../../../../utils/hooks/networkHooks";
 import { useAccountTotalFinalizableUnstakeAmount } from "../../../../utils/hooks/stakingHooks";
 import { useAsyncActionHandler } from "../../../../utils/hooks/useAsyncActionHandler";
-import { estimate } from "../../../../utils/tezos";
 import { DynamicModalContext } from "../../../DynamicModal";
 import { PrettyNumber } from "../../../PrettyNumber";
 import { SignPage } from "../../../SendFlow/FinalizeUnstake/SignPage";

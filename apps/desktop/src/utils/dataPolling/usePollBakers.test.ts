@@ -1,8 +1,8 @@
+import { store } from "@umami/state";
 import { getBakers } from "@umami/tzkt";
 
 import { usePollBakers } from "./usePollBakers";
 import { renderHook, waitFor } from "../../mocks/testUtils";
-import { store } from "../redux/store";
 
 jest.mock("@umami/tzkt");
 

@@ -1,13 +1,9 @@
-import { mockContractAddress, mockImplicitAddress } from "@umami/test-utils";
-import { MAINNET } from "@umami/tezos";
+import { assetsActions, networksActions, store, tokensSlice } from "@umami/state";
+import { MAINNET, mockContractAddress, mockImplicitAddress } from "@umami/tezos";
 import { type RawTzktTokenBalance } from "@umami/tzkt";
 
 import { MultisigDecodedOperation } from "./MultisigDecodedOperation";
 import { render, screen } from "../../../../mocks/testUtils";
-import { assetsActions } from "../../../../utils/redux/slices/assetsSlice";
-import { networksActions } from "../../../../utils/redux/slices/networks";
-import { tokensSlice } from "../../../../utils/redux/slices/tokensSlice";
-import { store } from "../../../../utils/redux/store";
 
 const { updateTokenBalance } = assetsActions;
 

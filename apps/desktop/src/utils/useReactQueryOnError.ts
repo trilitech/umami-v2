@@ -1,9 +1,7 @@
 import { useToast } from "@chakra-ui/react";
+import { getErrorContext } from "@umami/core";
+import { errorsSlice, useAppDispatch } from "@umami/state";
 import { useCallback } from "react";
-
-import { getErrorContext } from "./getErrorContext";
-import { useAppDispatch } from "./redux/hooks";
-import { errorsSlice } from "./redux/slices/errorsSlice";
 
 export const useReactQueryErrorHandler = () => {
   const dispatch = useAppDispatch();

@@ -3,6 +3,7 @@ import {
   AVAILABLE_DERIVATION_PATH_TEMPLATES,
   DEFAULT_DERIVATION_PATH_TEMPLATE,
   defaultDerivationPathTemplate,
+  deriveSecretKey,
   getDefaultDerivationPath,
 } from "@umami/tezos";
 import { useState } from "react";
@@ -10,7 +11,6 @@ import { useForm } from "react-hook-form";
 
 import { SlashIcon } from "../../../assets/icons";
 import colors from "../../../style/colors";
-import { deriveSecretKey } from "../../../utils/tezos";
 import { ExternalLink } from "../../ExternalLink";
 import { FormErrorMessage } from "../../FormErrorMessage";
 import { Select } from "../../Select";

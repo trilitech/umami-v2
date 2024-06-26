@@ -1,7 +1,7 @@
 import { type Locator, type Page, expect } from "@playwright/test";
+import { TEZ } from "@umami/tezos";
 
 import { SignPage } from "./SignPage";
-import { TEZ } from "../../utils/tezos";
 import { DEFAULT_ACCOUNTS } from "../constants";
 
 export class AccountDrawerPage {

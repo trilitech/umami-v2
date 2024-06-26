@@ -10,11 +10,14 @@ import {
   TezosOperationType,
 } from "@airgap/beacon-wallet";
 import {
-  mockContractAddress,
+  estimate,
+  makeAccountOperations,
   mockImplicitAccount,
-  mockImplicitAddress,
   mockTezOperation,
-} from "@umami/test-utils";
+} from "@umami/core";
+import { addTestAccount } from "@umami/state";
+import { executeParams } from "@umami/test-utils";
+import { mockContractAddress, mockImplicitAddress } from "@umami/tezos";
 import { without } from "lodash";
 
 import {
@@ -25,12 +28,8 @@ import {
 import { WalletClient } from "./WalletClient";
 import { BatchSignPage } from "../../components/SendFlow/Beacon/BatchSignPage";
 import { BeaconSignPage } from "../../components/SendFlow/Beacon/BeaconSignPage";
-import { executeParams } from "../../mocks/executeParams";
-import { addAccount } from "../../mocks/helpers";
 import { act, dynamicModalContextMock, renderHook, screen, waitFor } from "../../mocks/testUtils";
 import { mockToast } from "../../mocks/toast";
-import { makeAccountOperations } from "../../types/AccountOperations";
-import { estimate } from "../tezos";
 
 jest.mock("./WalletClient", () => ({
   WalletClient: {
@@ -38,13 +37,17 @@ jest.mock("./WalletClient", () => ({
     respond: jest.fn(),
   },
 }));
-jest.mock("../tezos");
+
+jest.mock("@umami/core", () => ({
+  ...jest.requireActual("@umami/core"),
+  estimate: jest.fn(),
+}));
 
 const SENDER_ID = "mockSenderId";
 
 const account = mockImplicitAccount(1);
 
-beforeEach(() => addAccount(account));
+beforeEach(() => addTestAccount(account));
 
 describe("<useHandleBeaconMessage />", () => {
   describe("permission request", () => {

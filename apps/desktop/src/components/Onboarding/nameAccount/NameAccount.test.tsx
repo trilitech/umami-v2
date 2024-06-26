@@ -1,5 +1,4 @@
 import {
-  mnemonic1,
   mockContractContact,
   mockImplicitContact,
   mockLedgerAccount,
@@ -7,17 +6,20 @@ import {
   mockMultisigAccount,
   mockSecretKeyAccount,
   mockSocialAccount,
-} from "@umami/test-utils";
+} from "@umami/core";
+import {
+  addTestAccount,
+  contactsActions,
+  multisigActions,
+  networksActions,
+  renameAccount,
+  store,
+} from "@umami/state";
+import { mnemonic1 } from "@umami/test-utils";
 import { MAINNET } from "@umami/tezos";
 
 import { NameAccount } from "./NameAccount";
-import { addAccount } from "../../../mocks/helpers";
 import { act, render, screen, userEvent } from "../../../mocks/testUtils";
-import { contactsActions } from "../../../utils/redux/slices/contactsSlice";
-import { multisigActions } from "../../../utils/redux/slices/multisigsSlice";
-import { networksActions } from "../../../utils/redux/slices/networks";
-import { store } from "../../../utils/redux/store";
-import { renameAccount } from "../../../utils/redux/thunks/renameAccount";
 import type { NameAccountStep } from "../OnboardingStep";
 
 const goToStepMock = jest.fn();
@@ -92,7 +94,7 @@ describe("<NameAccount />", () => {
       describe.each(existingAccountGroups)("among $type accounts", existingAccountGroup => {
         it("sets group label", async () => {
           const user = userEvent.setup();
-          existingAccountGroup.accounts.forEach(addAccount);
+          existingAccountGroup.accounts.forEach(addTestAccount);
           render(fixture(account));
 
           if (label.withNameProvided) {
@@ -153,7 +155,7 @@ describe("<NameAccount />", () => {
       describe.each(existingAccountGroups)("among $type accounts", existingAccounts => {
         it("sets unique default label", async () => {
           const user = userEvent.setup();
-          existingAccounts.accounts.forEach(addAccount);
+          existingAccounts.accounts.forEach(addTestAccount);
 
           render(fixture(account));
 

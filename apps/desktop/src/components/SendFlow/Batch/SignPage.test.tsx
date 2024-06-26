@@ -1,18 +1,17 @@
-import { makeMultisigApproveOrExecuteOperation } from "@umami/core";
 import {
+  makeAccountOperations,
+  makeMultisigApproveOrExecuteOperation,
   mockImplicitAccount,
   mockMnemonicAccount,
   mockMultisigAccount,
   mockNFT,
-} from "@umami/test-utils";
-import { parseContractPkh } from "@umami/tezos";
+} from "@umami/core";
+import { addTestAccount } from "@umami/state";
+import { executeParams } from "@umami/test-utils";
+import { TEZ, parseContractPkh } from "@umami/tezos";
 
 import { SignPage } from "./SignPage";
-import { executeParams } from "../../../mocks/executeParams";
-import { addAccount } from "../../../mocks/helpers";
 import { render, screen, waitFor } from "../../../mocks/testUtils";
-import { makeAccountOperations } from "../../../types/AccountOperations";
-import { TEZ } from "../../../utils/tezos";
 
 const account = mockImplicitAccount(0);
 const multisig = mockMultisigAccount(1);
@@ -33,7 +32,7 @@ const operation = {
 
 const fixture = () => <SignPage initialOperations={operation} />;
 
-beforeEach(() => addAccount(mockMnemonicAccount(0)));
+beforeEach(() => addTestAccount(mockMnemonicAccount(0)));
 
 describe("<SignPage />", () => {
   describe("fee", () => {

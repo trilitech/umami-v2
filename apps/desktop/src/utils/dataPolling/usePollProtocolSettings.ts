@@ -1,11 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
+import { protocolSettingsActions, useAppDispatch } from "@umami/state";
 import { getProtocolSettings } from "@umami/tezos";
 import { hoursToMilliseconds } from "date-fns";
 import { useEffect } from "react";
 
 import { useSelectedNetwork } from "../hooks/networkHooks";
-import { useAppDispatch } from "../redux/hooks";
-import { protocolSettingsActions } from "../redux/slices/protocolSettingsSlice";
 import { useReactQueryErrorHandler } from "../useReactQueryOnError";
 
 export const usePollProtocolSettings = () => {

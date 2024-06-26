@@ -1,16 +1,14 @@
-import { mockMnemonicAccount, rawAccountFixture } from "@umami/test-utils";
+import { mockMnemonicAccount, rawAccountFixture } from "@umami/core";
+import { addTestAccount, assetsActions, store } from "@umami/state";
 
 import { AddressTile } from "./AddressTile";
-import { addAccount } from "../../mocks/helpers";
 import { act, render, screen, userEvent } from "../../mocks/testUtils";
 import { formatPkh } from "../../utils/format";
-import { assetsActions } from "../../utils/redux/slices/assetsSlice";
-import { store } from "../../utils/redux/store";
 
 describe("<AddressTileIcon />", () => {
   it("displays label", () => {
     const account = mockMnemonicAccount(0);
-    addAccount(account);
+    addTestAccount(account);
 
     render(<AddressTile address={account.address} />);
 
@@ -20,7 +18,7 @@ describe("<AddressTileIcon />", () => {
   describe("Full name tooltip", () => {
     it("is hidden when cursor is not on account label", () => {
       const account = mockMnemonicAccount(0);
-      addAccount(account);
+      addTestAccount(account);
 
       render(<AddressTile address={account.address} />);
 
@@ -30,7 +28,7 @@ describe("<AddressTileIcon />", () => {
     it("is shown when cursor is on account tile", async () => {
       const user = userEvent.setup();
       const account = mockMnemonicAccount(0);
-      addAccount(account);
+      addTestAccount(account);
 
       render(<AddressTile address={account.address} />);
 
@@ -46,7 +44,7 @@ describe("<AddressTileIcon />", () => {
   describe("address", () => {
     it("is formatted when known", () => {
       const account = mockMnemonicAccount(0);
-      addAccount(account);
+      addTestAccount(account);
 
       render(<AddressTile address={account.address} />);
 
@@ -73,7 +71,7 @@ describe("<AddressTileIcon />", () => {
 
     it("is shown when it holds tez", () => {
       const account = mockMnemonicAccount(0);
-      addAccount(account);
+      addTestAccount(account);
       store.dispatch(
         assetsActions.updateAccountStates([
           rawAccountFixture({
@@ -92,7 +90,7 @@ describe("<AddressTileIcon />", () => {
 
     it('is hidden when "hideBalance" is true', () => {
       const account = mockMnemonicAccount(0);
-      addAccount(account);
+      addTestAccount(account);
       store.dispatch(
         assetsActions.updateAccountStates([
           rawAccountFixture({ address: mockMnemonicAccount(0).address.pkh, balance: 5000000 }),

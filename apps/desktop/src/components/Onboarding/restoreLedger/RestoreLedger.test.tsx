@@ -1,14 +1,17 @@
-import { defaultDerivationPathTemplate } from "@umami/tezos";
+import { defaultDerivationPathTemplate, getLedgerPublicKeyPair } from "@umami/tezos";
 
 import { RestoreLedger } from "./RestoreLedger";
 import { act, render, screen, userEvent } from "../../../mocks/testUtils";
 import { mockToast } from "../../../mocks/toast";
-import { getPk } from "../../../utils/ledger/pk";
 
 const closeModalMock = jest.fn(() => {});
-jest.mock("../../../utils/ledger/pk");
 
-const getPkMock = jest.mocked(getPk);
+jest.mock("@umami/tezos", () => ({
+  ...jest.requireActual("@umami/tezos"),
+  getLedgerPublicKeyPair: jest.fn(),
+}));
+
+const getPkMock = jest.mocked(getLedgerPublicKeyPair);
 
 const fixture = () => {
   const account = {

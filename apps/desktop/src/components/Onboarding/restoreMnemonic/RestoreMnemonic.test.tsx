@@ -1,21 +1,19 @@
+import { selectRandomElements } from "@umami/core";
 import { mnemonic1 } from "@umami/test-utils";
 
 import { RestoreMnemonic } from "./RestoreMnemonic";
 import { act, render, screen, userEvent } from "../../../mocks/testUtils";
 import { mockToast } from "../../../mocks/toast";
-import { selectRandomElements } from "../../../utils/tezos";
 
 const goToStepMock = jest.fn();
 
-jest.mock("../../../utils/tezos", () => ({
-  ...jest.requireActual("../../../utils/tezos"),
+jest.mock("@umami/core", () => ({
+  ...jest.requireActual("@umami/core"),
   selectRandomElements: jest.fn(),
 }));
 const selectRandomElementsMock = jest.mocked(selectRandomElements);
 
 const fixture = () => <RestoreMnemonic goToStep={goToStepMock} />;
-
-jest.setTimeout(10 * 1000);
 
 describe("<RestoreMnemonic />", () => {
   beforeEach(() => {

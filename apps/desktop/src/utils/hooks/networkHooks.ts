@@ -1,8 +1,5 @@
+import { assetsActions, networksActions, useAppSelector } from "@umami/state";
 import { useDispatch } from "react-redux";
-
-import { useAppSelector } from "../redux/hooks";
-import { assetsActions } from "../redux/slices/assetsSlice";
-import { networksActions } from "../redux/slices/networks";
 
 export const useSelectedNetwork = () => useAppSelector(s => s.networks.current);
 

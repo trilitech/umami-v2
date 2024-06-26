@@ -1,29 +1,27 @@
-import { type Multisig } from "@umami/multisig";
 import {
-  hedgehoge,
   mockFA1TokenRaw,
   mockImplicitAccount,
   mockMnemonicAccount,
   mockMultisigAccount,
   mockNFTToken,
-  multisigOperation,
-  multisigs,
   rawAccountFixture,
-  tzBtsc,
-  uUSD,
-} from "@umami/test-utils";
+} from "@umami/core";
+import { type Multisig, multisigOperationFixture, multisigsFixture } from "@umami/multisig";
+import {
+  addTestAccount,
+  assetsSlice,
+  multisigActions,
+  networksActions,
+  store,
+  tokensSlice,
+} from "@umami/state";
+import { hedgehoge, tzBtsc, uUSD } from "@umami/test-utils";
 import { GHOSTNET, MAINNET } from "@umami/tezos";
 import { type TzktCombinedOperation } from "@umami/tzkt";
 
-import { addAccount } from "../../mocks/helpers";
 import { act, render, screen, userEvent, waitFor, within } from "../../mocks/testUtils";
 import { mockTzktTezTransfer } from "../../mocks/transfers";
 import { formatPkh } from "../../utils/format";
-import { assetsSlice } from "../../utils/redux/slices/assetsSlice";
-import { multisigActions } from "../../utils/redux/slices/multisigsSlice";
-import { networksActions } from "../../utils/redux/slices/networks";
-import { tokensSlice } from "../../utils/redux/slices/tokensSlice";
-import { store } from "../../utils/redux/store";
 import * as useGetOperationsModule from "../../views/operations/useGetOperations";
 
 import { AccountCard } from ".";
@@ -51,8 +49,8 @@ beforeEach(() => {
     loadMore: jest.fn(),
   });
   store.dispatch(networksActions.setCurrent(MAINNET));
-  addAccount(selectedAccount);
-  addAccount(mockMnemonicAccount(1));
+  addTestAccount(selectedAccount);
+  addTestAccount(mockMnemonicAccount(1));
 });
 
 describe("<AccountDrawerDisplay />", () => {
@@ -280,7 +278,7 @@ describe("<AccountDrawerDisplay />", () => {
   });
 
   describe("for multisig account", () => {
-    const multisigAccount = { ...mockMultisigAccount(0), ...multisigs[2] };
+    const multisigAccount = { ...mockMultisigAccount(0), ...multisigsFixture[2] };
 
     beforeEach(() => {
       jest.spyOn(useGetOperationsModule, "useGetOperations").mockReturnValue({
@@ -299,7 +297,7 @@ describe("<AccountDrawerDisplay />", () => {
         isLoading: false,
         loadMore: jest.fn(),
       });
-      multisigs.forEach(addAccount);
+      multisigsFixture.forEach(addTestAccount);
     });
 
     it('hides "Buy Tez" button', async () => {
@@ -320,8 +318,8 @@ describe("<AccountDrawerDisplay />", () => {
     });
 
     it("displays pending operation if any", async () => {
-      multisigs.forEach(addAccount);
-      store.dispatch(multisigActions.setPendingOperations([multisigOperation]));
+      multisigsFixture.forEach(addTestAccount);
+      store.dispatch(multisigActions.setPendingOperations([multisigOperationFixture]));
 
       render(<AccountCard accountPkh={multisigAccount.address.pkh} />);
       await screen.findByTestId("account-card-pending-tab-panel");
@@ -335,10 +333,10 @@ describe("<AccountDrawerDisplay />", () => {
 
     it("hides pending operations tab if there are none", async () => {
       const multisigWithNoOps: Multisig = {
-        ...multisigs[2],
+        ...multisigsFixture[2],
         pendingOperationsBigmapId: 0,
       };
-      addAccount(multisigWithNoOps);
+      addTestAccount(multisigWithNoOps);
 
       render(<AccountCard accountPkh={multisigAccount.address.pkh} />);
       await screen.findByTestId("account-card-operations-tab");

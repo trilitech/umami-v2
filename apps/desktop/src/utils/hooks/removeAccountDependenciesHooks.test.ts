@@ -1,25 +1,27 @@
 import { type ExtendedPeerInfo, NetworkType } from "@airgap/beacon-wallet";
 import { waitFor } from "@testing-library/react";
 import {
+  makeAccountOperations,
   mockImplicitAccount,
   mockMultisigAccount,
   mockTezOperation,
-  multisigOperation,
   rawAccountFixture,
-} from "@umami/test-utils";
+} from "@umami/core";
+import { multisigOperationFixture } from "@umami/multisig";
+import {
+  addTestAccount,
+  assetsActions,
+  batchesActions,
+  beaconActions,
+  multisigActions,
+  store,
+} from "@umami/state";
 import { GHOSTNET, MAINNET } from "@umami/tezos";
 
 import { useRemoveDependenciesAndMultisigs } from "./removeAccountDependenciesHooks";
-import { addAccount } from "../../mocks/helpers";
 import { act, renderHook } from "../../mocks/testUtils";
-import { makeAccountOperations } from "../../types/AccountOperations";
 import { usePeers } from "../beacon/beacon";
 import { WalletClient } from "../beacon/WalletClient";
-import { assetsActions } from "../redux/slices/assetsSlice";
-import { batchesActions } from "../redux/slices/batches";
-import { beaconActions } from "../redux/slices/beaconSlice";
-import { multisigActions } from "../redux/slices/multisigsSlice";
-import { store } from "../redux/store";
 
 beforeEach(() => jest.spyOn(WalletClient, "getPeers").mockResolvedValue([]));
 
@@ -202,7 +204,7 @@ describe("useRemoveDependenciesAndMultisigs", () => {
     ]);
     const multisig2 = mockMultisigAccount(2, [account3.address]);
 
-    beforeEach(() => [account1, account2, multisig0, multisig1, multisig2].forEach(addAccount));
+    beforeEach(() => [account1, account2, multisig0, multisig1, multisig2].forEach(addTestAccount));
 
     it("does not removes multisigs from the storage", () => {
       const {
@@ -239,11 +241,11 @@ describe("useRemoveDependenciesAndMultisigs", () => {
       // pendingOperationsBigmapId is the same as multisig's index
       store.dispatch(
         multisigActions.setPendingOperations([
-          { ...multisigOperation, id: "0", bigmapId: 0 },
-          { ...multisigOperation, id: "1", bigmapId: 0 },
-          { ...multisigOperation, id: "2", bigmapId: 1 },
-          { ...multisigOperation, id: "3", bigmapId: 1 },
-          { ...multisigOperation, id: "4", bigmapId: 2 },
+          { ...multisigOperationFixture, id: "0", bigmapId: 0 },
+          { ...multisigOperationFixture, id: "1", bigmapId: 0 },
+          { ...multisigOperationFixture, id: "2", bigmapId: 1 },
+          { ...multisigOperationFixture, id: "3", bigmapId: 1 },
+          { ...multisigOperationFixture, id: "4", bigmapId: 2 },
         ])
       );
       const {
@@ -254,8 +256,8 @@ describe("useRemoveDependenciesAndMultisigs", () => {
 
       expect(store.getState().multisigs.pendingOperations).toEqual({
         "1": [
-          { ...multisigOperation, id: "2", bigmapId: 1 },
-          { ...multisigOperation, id: "3", bigmapId: 1 },
+          { ...multisigOperationFixture, id: "2", bigmapId: 1 },
+          { ...multisigOperationFixture, id: "3", bigmapId: 1 },
         ],
       });
     });

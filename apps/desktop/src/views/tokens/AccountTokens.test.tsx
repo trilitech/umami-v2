@@ -1,4 +1,4 @@
-import { mockFA12Token, mockFA2Token, mockImplicitAccount } from "@umami/test-utils";
+import { mockFA12Token, mockFA2Token, mockImplicitAccount } from "@umami/core";
 
 import { AccountTokens } from "./AccountTokens";
 import { render, screen } from "../../mocks/testUtils";

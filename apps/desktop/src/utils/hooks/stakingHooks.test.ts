@@ -1,9 +1,9 @@
-import { mockImplicitAddress, rawAccountFixture } from "@umami/test-utils";
+import { rawAccountFixture } from "@umami/core";
+import { assetsActions, store } from "@umami/state";
+import { mockImplicitAddress } from "@umami/tezos";
 
 import { useGetAccountStakedBalance, useGetAccountUnstakeRequests } from "./stakingHooks";
 import { renderHook } from "../../mocks/testUtils";
-import { assetsActions } from "../redux/slices/assetsSlice";
-import { store } from "../redux/store";
 
 const address = mockImplicitAddress(0).pkh;
 

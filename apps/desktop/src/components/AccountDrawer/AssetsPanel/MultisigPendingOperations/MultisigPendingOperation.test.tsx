@@ -1,28 +1,32 @@
 import { type TezosToolkit } from "@taquito/taquito";
 import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
-import { type ImplicitAccount, type MnemonicAccount } from "@umami/core";
-import { makeMultisigApproveOrExecuteOperation } from "@umami/core";
-import { type MultisigOperation } from "@umami/multisig";
 import {
-  mockImplicitAddress,
+  type ImplicitAccount,
+  type MnemonicAccount,
+  estimate,
+  executeOperations,
+  makeAccountOperations,
+  makeMultisigApproveOrExecuteOperation,
   mockMnemonicAccount,
   mockMultisigAccount,
-  pendingOps,
-} from "@umami/test-utils";
-import { MAINNET, parseImplicitPkh } from "@umami/tezos";
+} from "@umami/core";
+import { type MultisigOperation, multisigPendingOpsFixtures } from "@umami/multisig";
+import { addTestAccount } from "@umami/state";
+import { executeParams } from "@umami/test-utils";
+import { MAINNET, makeToolkit, mockImplicitAddress, parseImplicitPkh } from "@umami/tezos";
 
 import { MultisigPendingOperation } from "./MultisigPendingOperation";
-import { executeParams } from "../../../../mocks/executeParams";
-import { addAccount } from "../../../../mocks/helpers";
 import { act, render, screen, userEvent, within } from "../../../../mocks/testUtils";
-import { makeAccountOperations } from "../../../../types/AccountOperations";
 import * as getAccountDataHooks from "../../../../utils/hooks/getAccountDataHooks";
-import { estimate, executeOperations, makeToolkit } from "../../../../utils/tezos";
 
-jest.mock("../../../../utils/tezos", () => ({
-  ...jest.requireActual("../../../../utils/tezos"),
+jest.mock("@umami/core", () => ({
+  ...jest.requireActual("@umami/core"),
   estimate: jest.fn(),
   executeOperations: jest.fn(),
+}));
+
+jest.mock("@umami/tezos", () => ({
+  ...jest.requireActual("@umami/tezos"),
   makeToolkit: jest.fn(),
 }));
 
@@ -78,7 +82,11 @@ describe("<MultisigPendingOperation />", () => {
     const multisig = { ...mockMultisigAccount(0), signers: [account.address] };
 
     const operation = makeAccountOperations(account, account, [
-      makeMultisigApproveOrExecuteOperation(multisig.address, "execute", pendingOps[0].id),
+      makeMultisigApproveOrExecuteOperation(
+        multisig.address,
+        "execute",
+        multisigPendingOpsFixtures[0].id
+      ),
     ]);
 
     jest.mocked(estimate).mockResolvedValueOnce({
@@ -90,13 +98,15 @@ describe("<MultisigPendingOperation />", () => {
       opHash: "mockHash",
     } as BatchWalletOperation);
 
-    addAccount(account);
+    addTestAccount(account);
 
-    const executablePendingOp: MultisigOperation = pendingOps[0];
+    const executablePendingOp: MultisigOperation = multisigPendingOpsFixtures[0];
 
     render(<MultisigPendingOperation operation={executablePendingOp} sender={multisig} />);
 
-    const firstPendingOp = screen.getByTestId("multisig-pending-operation-" + pendingOps[0].id);
+    const firstPendingOp = screen.getByTestId(
+      "multisig-pending-operation-" + multisigPendingOpsFixtures[0].id
+    );
 
     await act(() => user.click(within(firstPendingOp).getByText("Execute")));
 
@@ -134,7 +144,11 @@ describe("<MultisigPendingOperation />", () => {
     const multisig = { ...mockMultisigAccount(0), signers: [signer.address] };
 
     const operations = makeAccountOperations(signer, signer, [
-      makeMultisigApproveOrExecuteOperation(multisig.address, "approve", pendingOps[0].id),
+      makeMultisigApproveOrExecuteOperation(
+        multisig.address,
+        "approve",
+        multisigPendingOpsFixtures[0].id
+      ),
     ]);
 
     jest.mocked(estimate).mockResolvedValueOnce({
@@ -146,14 +160,16 @@ describe("<MultisigPendingOperation />", () => {
       opHash: "mockHash",
     } as BatchWalletOperation);
 
-    addAccount(signer);
+    addTestAccount(signer);
     const approvablePendingOp: MultisigOperation = {
-      ...pendingOps[0],
+      ...multisigPendingOpsFixtures[0],
       approvals: [],
     };
     render(<MultisigPendingOperation operation={approvablePendingOp} sender={multisig} />);
 
-    const firstPendingOp = screen.getByTestId("multisig-pending-operation-" + pendingOps[0].id);
+    const firstPendingOp = screen.getByTestId(
+      "multisig-pending-operation-" + multisigPendingOpsFixtures[0].id
+    );
     await act(() => user.click(within(firstPendingOp).getByText("Approve")));
 
     expect(screen.getByRole("dialog")).toBeInTheDocument();

@@ -1,6 +1,5 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
-import { type Operation } from "@umami/core";
-import { tokenNameSafe, tokenPrettyAmount } from "@umami/core";
+import { type Operation, tokenNameSafe, tokenPrettyAmount } from "@umami/core";
 
 import { OutgoingArrow } from "../../../../assets/icons";
 import colors from "../../../../style/colors";

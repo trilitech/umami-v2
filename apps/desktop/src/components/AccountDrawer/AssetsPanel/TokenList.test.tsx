@@ -1,5 +1,11 @@
-import { type FA2TokenBalance, fromRawTokenBalance } from "@umami/core";
-import { hedgehoge, mockFA12Token, mockFA2Token, mockMnemonicAccount } from "@umami/test-utils";
+import {
+  type FA2TokenBalance,
+  fromRawTokenBalance,
+  mockFA12Token,
+  mockFA2Token,
+  mockMnemonicAccount,
+} from "@umami/core";
+import { hedgehoge } from "@umami/test-utils";
 
 import { TokenList } from "./TokenList";
 import { render, screen } from "../../../mocks/testUtils";

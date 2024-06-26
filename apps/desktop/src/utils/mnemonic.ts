@@ -1,16 +1,16 @@
 import { type MnemonicAccount } from "@umami/core";
-import { type Network } from "@umami/tezos";
-import { makeDerivationPath } from "@umami/tezos";
-import { generateMnemonic } from "bip39";
-
-import { makeMnemonicAccount } from "./account/makeMnemonicAccount";
-import { useGetNextAvailableAccountLabels } from "./hooks/labelsHooks";
 import {
+  type Network,
   type PublicKeyPair,
   derivePublicKeyPair,
   getFingerPrint,
   isAccountRevealed,
-} from "./tezos";
+  makeDerivationPath,
+} from "@umami/tezos";
+import { generateMnemonic } from "bip39";
+
+import { makeMnemonicAccount } from "./account/makeMnemonicAccount";
+import { useGetNextAvailableAccountLabels } from "./hooks/labelsHooks";
 
 // This is put in a separate file for mocking purposes in tests
 export const generate24WordMnemonic = () => generateMnemonic(256);

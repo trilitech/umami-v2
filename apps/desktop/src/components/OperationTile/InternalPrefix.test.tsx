@@ -1,4 +1,5 @@
-import { mockImplicitAccount, mockLedgerAccount } from "@umami/test-utils";
+import { mockImplicitAccount, mockLedgerAccount } from "@umami/core";
+import { addTestAccount } from "@umami/state";
 
 import { InternalPrefix } from "./InternalPrefix";
 import {
@@ -7,7 +8,6 @@ import {
   tokenTransferFixture,
   transactionFixture,
 } from "./testUtils";
-import { addAccount } from "../../mocks/helpers";
 import { render, screen } from "../../mocks/testUtils";
 
 describe("<InternalPrefix />", () => {
@@ -32,7 +32,7 @@ describe("<InternalPrefix />", () => {
     });
 
     it("renders nothing if the sender is owned", () => {
-      addAccount(sender);
+      addTestAccount(sender);
 
       render(<InternalPrefix operation={operation} />);
 
@@ -43,7 +43,7 @@ describe("<InternalPrefix />", () => {
       if (!target) {
         return;
       }
-      addAccount(target);
+      addTestAccount(target);
 
       render(<InternalPrefix operation={operation} />);
 
@@ -54,8 +54,8 @@ describe("<InternalPrefix />", () => {
       if (!target) {
         return;
       }
-      addAccount(sender);
-      addAccount(target);
+      addTestAccount(sender);
+      addTestAccount(target);
 
       render(<InternalPrefix operation={operation} />);
 

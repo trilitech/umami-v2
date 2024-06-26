@@ -1,12 +1,10 @@
-import { mockContractContact, mockImplicitContact } from "@umami/test-utils";
+import { mockContractContact, mockImplicitContact } from "@umami/core";
+import { contactsActions, networksActions, store } from "@umami/state";
 import { GHOSTNET } from "@umami/tezos";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { KnownAccountsAutocomplete } from "./KnownAccountsAutocomplete";
 import { fireEvent, render, renderHook, screen, within } from "../../mocks/testUtils";
-import { contactsActions } from "../../utils/redux/slices/contactsSlice";
-import { networksActions } from "../../utils/redux/slices/networks";
-import { store } from "../../utils/redux/store";
 
 type FormFields = { destination: string };
 

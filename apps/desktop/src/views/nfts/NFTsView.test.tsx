@@ -1,22 +1,13 @@
-import {
-  mockImplicitAccount,
-  mockImplicitAddress,
-  mockMnemonicAccount,
-  mockNFTToken,
-} from "@umami/test-utils";
-import { MAINNET } from "@umami/tezos";
+import { mockImplicitAccount, mockMnemonicAccount, mockNFTToken } from "@umami/core";
+import { addTestAccount, assetsSlice, networksActions, store, tokensSlice } from "@umami/state";
+import { MAINNET, mockImplicitAddress } from "@umami/tezos";
 
 import { NFTsView } from "./NftsView";
-import { addAccount } from "../../mocks/helpers";
 import { act, render, screen, userEvent } from "../../mocks/testUtils";
-import { assetsSlice } from "../../utils/redux/slices/assetsSlice";
-import { networksActions } from "../../utils/redux/slices/networks";
-import { tokensSlice } from "../../utils/redux/slices/tokensSlice";
-import { store } from "../../utils/redux/store";
 
 const { updateTokenBalance } = assetsSlice.actions;
 
-beforeEach(() => addAccount(mockMnemonicAccount(0)));
+beforeEach(() => addTestAccount(mockMnemonicAccount(0)));
 
 describe("NFTsView", () => {
   describe("without NFTs", () => {
@@ -36,7 +27,7 @@ describe("NFTsView", () => {
 
   describe("with NFTs", () => {
     beforeEach(() => {
-      [mockMnemonicAccount(1), mockMnemonicAccount(2)].forEach(addAccount);
+      [mockMnemonicAccount(1), mockMnemonicAccount(2)].forEach(addTestAccount);
       store.dispatch(networksActions.setCurrent(MAINNET));
       store.dispatch(
         updateTokenBalance([

@@ -1,18 +1,21 @@
 import { Box, Button } from "@chakra-ui/react";
 import { type TezosToolkit } from "@taquito/taquito";
-import { type Account, type Operation } from "@umami/core";
-import { type RawPkh } from "@umami/tezos";
+import {
+  type Account,
+  type AccountOperations,
+  type EstimatedAccountOperations,
+  type Operation,
+  estimate,
+  executeOperations,
+  makeAccountOperations,
+  totalFee,
+} from "@umami/core";
+import { type ExecuteParams, type RawPkh } from "@umami/tezos";
 import { repeat } from "lodash";
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { SuccessStep } from "./SuccessStep";
-import {
-  type AccountOperations,
-  type EstimatedAccountOperations,
-  makeAccountOperations,
-  totalFee,
-} from "../../types/AccountOperations";
 import { useClearBatch } from "../../utils/hooks/batchesHooks";
 import {
   useGetBestSignerForAccount,
@@ -21,7 +24,6 @@ import {
 } from "../../utils/hooks/getAccountDataHooks";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
-import { type ExecuteParams, estimate, executeOperations } from "../../utils/tezos";
 import { DynamicModalContext } from "../DynamicModal";
 
 // Convert given optional fields to required

@@ -1,12 +1,18 @@
 import { Modal } from "@chakra-ui/react";
-import { type NFTBalance } from "@umami/core";
-import { mockImplicitAccount, mockMnemonicAccount, mockNFT } from "@umami/test-utils";
+import {
+  type NFTBalance,
+  estimate,
+  makeAccountOperations,
+  mockImplicitAccount,
+  mockMnemonicAccount,
+  mockNFT,
+} from "@umami/core";
+import { addTestAccount } from "@umami/state";
+import { executeParams } from "@umami/test-utils";
 import { parseContractPkh } from "@umami/tezos";
 
 import { FormPage, type FormValues } from "./FormPage";
 import { SignPage } from "./SignPage";
-import { executeParams } from "../../../mocks/executeParams";
-import { addAccount } from "../../../mocks/helpers";
 import {
   act,
   dynamicModalContextMock,
@@ -17,11 +23,12 @@ import {
   waitFor,
 } from "../../../mocks/testUtils";
 import { mockToast } from "../../../mocks/toast";
-import { makeAccountOperations } from "../../../types/AccountOperations";
-import { estimate } from "../../../utils/tezos";
 import { type FormPagePropsWithSender } from "../utils";
 
-jest.mock("../../../utils/tezos/estimate");
+jest.mock("@umami/core", () => ({
+  ...jest.requireActual("@umami/core"),
+  estimate: jest.fn(),
+}));
 
 const fixture = (props: FormPagePropsWithSender<FormValues>, nft: NFTBalance = mockNFT(1, "1")) => (
   <Modal isOpen={true} onClose={() => {}}>
@@ -174,7 +181,7 @@ describe("<FormPage />", () => {
     describe("single transaction", () => {
       it("opens a sign page if estimation succeeds", async () => {
         const user = userEvent.setup();
-        addAccount(mockMnemonicAccount(0));
+        addTestAccount(mockMnemonicAccount(0));
         const sender = mockImplicitAccount(0);
         render(
           fixture({

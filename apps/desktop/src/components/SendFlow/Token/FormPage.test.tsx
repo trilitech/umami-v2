@@ -1,17 +1,19 @@
 import { Modal } from "@chakra-ui/react";
-import { type FA2TokenBalance } from "@umami/core";
 import {
+  type FA2TokenBalance,
+  estimate,
+  makeAccountOperations,
   mockFA2Token,
   mockFA2TokenRaw,
   mockImplicitAccount,
   mockMnemonicAccount,
-} from "@umami/test-utils";
+} from "@umami/core";
+import { addTestAccount, assetsSlice, store } from "@umami/state";
+import { executeParams } from "@umami/test-utils";
 import { parseContractPkh } from "@umami/tezos";
 
 import { FormPage, type FormValues } from "./FormPage";
 import { SignPage } from "./SignPage";
-import { executeParams } from "../../../mocks/executeParams";
-import { addAccount } from "../../../mocks/helpers";
 import {
   act,
   dynamicModalContextMock,
@@ -22,13 +24,12 @@ import {
   waitFor,
 } from "../../../mocks/testUtils";
 import { mockToast } from "../../../mocks/toast";
-import { makeAccountOperations } from "../../../types/AccountOperations";
-import { assetsSlice } from "../../../utils/redux/slices/assetsSlice";
-import { store } from "../../../utils/redux/store";
-import { estimate } from "../../../utils/tezos";
 import { type FormPagePropsWithSender } from "../utils";
 
-jest.mock("../../../utils/tezos/estimate");
+jest.mock("@umami/core", () => ({
+  ...jest.requireActual("@umami/core"),
+  estimate: jest.fn(),
+}));
 
 const mockAccount = mockMnemonicAccount(0);
 const mockTokenRaw = mockFA2TokenRaw(0, mockAccount.address.pkh);
@@ -197,7 +198,7 @@ describe("<FormPage />", () => {
     describe("single transaction", () => {
       it("opens a sign page if estimation succeeds", async () => {
         const user = userEvent.setup();
-        addAccount(mockAccount);
+        addTestAccount(mockAccount);
         store.dispatch(assetsSlice.actions.updateTokenBalance([mockTokenRaw]));
         const sender = mockAccount;
         render(

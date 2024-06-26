@@ -1,25 +1,28 @@
 import { Modal } from "@chakra-ui/react";
 import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
-import { mockImplicitAccount, mockMnemonicAccount, mockTezOperation } from "@umami/test-utils";
+import {
+  estimate,
+  executeOperations,
+  makeAccountOperations,
+  mockImplicitAccount,
+  mockMnemonicAccount,
+  mockTezOperation,
+} from "@umami/core";
+import { addTestAccount, batchesActions, store } from "@umami/state";
+import { executeParams } from "@umami/test-utils";
 import { MAINNET } from "@umami/tezos";
 
 import { BatchPage } from "./BatchPage";
-import { executeParams } from "../../mocks/executeParams";
-import { addAccount } from "../../mocks/helpers";
 import { act, fireEvent, render, screen, userEvent } from "../../mocks/testUtils";
-import { makeAccountOperations } from "../../types/AccountOperations";
-import { batchesActions } from "../../utils/redux/slices/batches";
-import { store } from "../../utils/redux/store";
-import { estimate, executeOperations } from "../../utils/tezos";
 
-jest.mock("../../utils/tezos", () => ({
-  ...jest.requireActual("../../utils/tezos"),
+jest.mock("@umami/core", () => ({
+  ...jest.requireActual("@umami/core"),
   estimate: jest.fn(),
   executeOperations: jest.fn(),
 }));
 
 beforeEach(() => {
-  [mockMnemonicAccount(1), mockMnemonicAccount(2), mockMnemonicAccount(3)].forEach(addAccount);
+  [mockMnemonicAccount(1), mockMnemonicAccount(2), mockMnemonicAccount(3)].forEach(addTestAccount);
   jest.mocked(estimate).mockResolvedValueOnce({
     type: "implicit",
     operations: [],

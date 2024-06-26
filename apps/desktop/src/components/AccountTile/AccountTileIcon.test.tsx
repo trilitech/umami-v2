@@ -1,14 +1,14 @@
-import { type Account } from "@umami/core";
-import { type IDP } from "@umami/social-auth";
 import {
+  type Account,
   mockLedgerAccount,
   mockMnemonicAccount,
   mockMultisigAccount,
   mockSocialAccount,
-} from "@umami/test-utils";
+} from "@umami/core";
+import { type IDP } from "@umami/social-auth";
+import { addTestAccount } from "@umami/state";
 
 import { AccountTileIcon } from "./AccountTileIcon";
-import { addAccount } from "../../mocks/helpers";
 import { render, screen } from "../../mocks/testUtils";
 
 const fixture = (account: Account) => <AccountTileIcon account={account} size="sm" />;
@@ -32,7 +32,7 @@ describe("<AccountTileIcon />", () => {
 
   it("displays the ledger icon", () => {
     const account = mockLedgerAccount(0);
-    addAccount(account);
+    addTestAccount(account);
 
     render(fixture(account));
 
@@ -41,7 +41,7 @@ describe("<AccountTileIcon />", () => {
 
   it("displays the multisig icon", () => {
     const account = mockMultisigAccount(0);
-    addAccount(account);
+    addTestAccount(account);
 
     render(fixture(account));
 

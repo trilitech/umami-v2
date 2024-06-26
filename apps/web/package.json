@@ -36,6 +36,7 @@
     "@taquito/taquito": "^20.0.1",
     "@taquito/utils": "^20.0.1",
     "@tzkt/sdk-api": "^2.2.1",
+    "@umami/core": "workspace:^",
     "bignumber.js": "^9.1.2",
     "bip39": "^3.1.0",
     "cross-env": "^7.0.3",

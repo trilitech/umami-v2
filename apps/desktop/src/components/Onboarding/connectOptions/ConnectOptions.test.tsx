@@ -1,7 +1,7 @@
-import { mockSocialAccount } from "@umami/test-utils";
+import { mockSocialAccount } from "@umami/core";
+import { addTestAccount } from "@umami/state";
 
 import { ConnectOptions } from "./ConnectOptions";
-import { addAccount } from "../../../mocks/helpers";
 import { act, render, screen, userEvent } from "../../../mocks/testUtils";
 import { type OnboardingStep } from "../OnboardingStep";
 
@@ -30,7 +30,7 @@ describe("<ConnectOptions />", () => {
     });
 
     it("hides the button if a user tries to add another account", () => {
-      addAccount(mockSocialAccount(0));
+      addTestAccount(mockSocialAccount(0));
 
       render(fixture(goToStepMock));
 

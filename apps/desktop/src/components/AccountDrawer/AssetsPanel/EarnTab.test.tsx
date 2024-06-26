@@ -1,10 +1,9 @@
-import { mockImplicitAddress, mockMnemonicAccount, rawAccountFixture } from "@umami/test-utils";
+import { mockMnemonicAccount, rawAccountFixture } from "@umami/core";
+import { addTestAccount, assetsSlice, store } from "@umami/state";
+import { mockImplicitAddress } from "@umami/tezos";
 
 import { EarnTab } from "./EarnTab";
-import { addAccount } from "../../../mocks/helpers";
 import { act, render, screen, userEvent } from "../../../mocks/testUtils";
-import { assetsSlice } from "../../../utils/redux/slices/assetsSlice";
-import { store } from "../../../utils/redux/store";
 
 const { updateAccountStates, updateBakers } = assetsSlice.actions;
 const account = mockMnemonicAccount(0);
@@ -58,7 +57,7 @@ describe("<EarnTab />", () => {
       delegate: baker,
     });
 
-    beforeEach(() => addAccount(account));
+    beforeEach(() => addTestAccount(account));
 
     it("displays delegation data", () => {
       store.dispatch(updateAccountStates([accountState]));

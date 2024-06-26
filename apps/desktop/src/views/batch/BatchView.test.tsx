@@ -1,17 +1,23 @@
 import { OpKind, type OperationContentsAndResult } from "@taquito/rpc";
 import { TezosOperationError } from "@taquito/taquito";
-import { type Operation } from "@umami/core";
-import { mockImplicitAccount, mockTezOperation } from "@umami/test-utils";
+import {
+  type Operation,
+  estimate,
+  makeAccountOperations,
+  mockImplicitAccount,
+  mockTezOperation,
+} from "@umami/core";
+import { addTestAccount } from "@umami/state";
+import { executeParams } from "@umami/test-utils";
 
 import { BatchView } from "./BatchView";
-import { executeParams } from "../../mocks/executeParams";
-import { addAccount } from "../../mocks/helpers";
 import { act, render, screen, userEvent, within } from "../../mocks/testUtils";
 import { mockToast } from "../../mocks/toast";
-import { makeAccountOperations } from "../../types/AccountOperations";
-import { estimate } from "../../utils/tezos";
 
-jest.mock("../../utils/tezos/estimate");
+jest.mock("@umami/core", () => ({
+  ...jest.requireActual("@umami/core"),
+  estimate: jest.fn(),
+}));
 
 describe("<BatchView />", () => {
   test("header", () => {
@@ -134,7 +140,7 @@ describe("<BatchView />", () => {
 
     it("renders successful estimation statuses on a successful batch estimation", async () => {
       const user = userEvent.setup();
-      addAccount(mockImplicitAccount(0));
+      addTestAccount(mockImplicitAccount(0));
       jest.mocked(estimate).mockResolvedValueOnce({
         type: "implicit",
         operations: [],

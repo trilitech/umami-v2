@@ -1,12 +1,15 @@
 import { waitFor } from "@testing-library/react";
-import { makeMultisigApproveOrExecuteOperation } from "@umami/core";
-import { mockImplicitAccount, mockMultisigAccount } from "@umami/test-utils";
+import {
+  makeAccountOperations,
+  makeMultisigApproveOrExecuteOperation,
+  mockImplicitAccount,
+  mockMultisigAccount,
+} from "@umami/core";
+import { executeParams } from "@umami/test-utils";
+import { TEZ } from "@umami/tezos";
 
 import { SignPage } from "./SignPage";
-import { executeParams } from "../../../mocks/executeParams";
 import { render, screen } from "../../../mocks/testUtils";
-import { makeAccountOperations } from "../../../types/AccountOperations";
-import { TEZ } from "../../../utils/tezos";
 
 const fixture = () => {
   const account = mockImplicitAccount(0);

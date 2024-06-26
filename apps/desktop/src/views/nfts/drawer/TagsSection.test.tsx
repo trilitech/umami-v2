@@ -1,4 +1,4 @@
-import { mockNFT } from "@umami/test-utils";
+import { mockNFT } from "@umami/core";
 
 import { TagsSection } from "./TagsSection";
 import { render, screen } from "../../../mocks/testUtils";

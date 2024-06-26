@@ -4,13 +4,13 @@ import {
   SigningType,
 } from "@airgap/beacon-wallet";
 import { Modal } from "@chakra-ui/react";
-import { encryptedMnemonic1, mockImplicitAccount, mockMnemonicAccount } from "@umami/test-utils";
+import { mockImplicitAccount, mockMnemonicAccount } from "@umami/core";
+import { accountsActions, store } from "@umami/state";
+import { encryptedMnemonic1 } from "@umami/test-utils";
 
 import { SignPayloadRequestModal } from "./SignPayloadRequestModal";
 import { WalletClient } from "./WalletClient";
 import { act, render, screen, userEvent, waitFor } from "../../mocks/testUtils";
-import { accountsActions } from "../redux/slices/accountsSlice/accountsSlice";
-import { store } from "../redux/store";
 
 jest.mock("./WalletClient", () => ({
   WalletClient: {

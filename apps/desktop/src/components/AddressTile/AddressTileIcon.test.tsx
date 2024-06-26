@@ -1,16 +1,16 @@
-import type { IDP } from "@umami/social-auth";
 import {
-  mockImplicitAddress,
   mockLedgerAccount,
   mockMnemonicAccount,
   mockMultisigAccount,
   mockSecretKeyAccount,
   mockSocialAccount,
-} from "@umami/test-utils";
+} from "@umami/core";
+import type { IDP } from "@umami/social-auth";
+import { addTestAccount } from "@umami/state";
+import { mockImplicitAddress } from "@umami/tezos";
 
 import { AddressTileIcon } from "./AddressTileIcon";
 import { type AddressKind } from "./types";
-import { addAccount } from "../../mocks/helpers";
 import { render, screen } from "../../mocks/testUtils";
 
 const fixture = (addressKind: AddressKind) => (
@@ -21,7 +21,7 @@ describe("<AddressTileIcon />", () => {
   const label = "some label";
 
   it.each([mockMnemonicAccount(0), mockSecretKeyAccount(0)])("displays the $type icon", account => {
-    addAccount(account);
+    addTestAccount(account);
     render(fixture({ ...account, pkh: account.address.pkh }));
     expect(screen.getByTestId("identicon")).toBeVisible();
   });
@@ -34,7 +34,7 @@ describe("<AddressTileIcon />", () => {
     "email" as const,
   ])("displays the %s social icon", (idp: IDP) => {
     const account = mockSocialAccount(0, "account label", idp);
-    addAccount(account);
+    addTestAccount(account);
 
     render(fixture({ ...account.address, type: "social", label }));
 
@@ -43,7 +43,7 @@ describe("<AddressTileIcon />", () => {
 
   it("displays the ledger icon", () => {
     const account = mockLedgerAccount(0);
-    addAccount(account);
+    addTestAccount(account);
 
     render(fixture({ ...account.address, type: "ledger", label }));
 
@@ -52,7 +52,7 @@ describe("<AddressTileIcon />", () => {
 
   it("displays the multisig icon", () => {
     const account = mockMultisigAccount(0);
-    addAccount(account);
+    addTestAccount(account);
 
     render(fixture({ ...account.address, type: "multisig", label }));
 

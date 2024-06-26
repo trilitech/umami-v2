@@ -1,5 +1,10 @@
-import { mockContractAddress, mockImplicitAddress } from "@umami/test-utils";
-import { type ContractAddress, type ImplicitAddress, parseContractPkh } from "@umami/tezos";
+import {
+  type ContractAddress,
+  type ImplicitAddress,
+  mockContractAddress,
+  mockImplicitAddress,
+  parseContractPkh,
+} from "@umami/tezos";
 
 import {
   type FA12Transfer,

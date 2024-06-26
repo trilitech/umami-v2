@@ -10,14 +10,13 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { type TezosToolkit } from "@taquito/taquito";
+import { multisigActions, useAppDispatch } from "@umami/state";
 import { parsePkh } from "@umami/tezos";
 import { FormProvider } from "react-hook-form";
 
 import { type FormValues } from "./FormValues";
 import colors from "../../../style/colors";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
-import { useAppDispatch } from "../../../utils/redux/hooks";
-import { multisigActions } from "../../../utils/redux/slices/multisigsSlice";
 import { OwnedImplicitAccountsAutocomplete } from "../../AddressAutocomplete";
 import { AddressTile } from "../../AddressTile/AddressTile";
 import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";

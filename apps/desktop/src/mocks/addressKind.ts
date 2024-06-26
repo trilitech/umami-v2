@@ -1,4 +1,4 @@
-import { mockContractAddress } from "@umami/test-utils";
+import { mockContractAddress } from "@umami/tezos";
 
 import { type FA2Address } from "../components/AddressPill/types";
 

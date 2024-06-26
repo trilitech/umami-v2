@@ -1,11 +1,7 @@
+import { mockImplicitAccount, mockLedgerAccount } from "@umami/core";
 import { CODE_HASH, TYPE_HASH } from "@umami/multisig";
-import {
-  mockContractAddress,
-  mockImplicitAccount,
-  mockImplicitAddress,
-  mockLedgerAccount,
-  uUSD,
-} from "@umami/test-utils";
+import { uUSD } from "@umami/test-utils";
+import { mockContractAddress, mockImplicitAddress } from "@umami/tezos";
 import {
   type DelegationOperation,
   type FinalizeUnstakeOperation,

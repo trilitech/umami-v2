@@ -1,5 +1,9 @@
-import { type FA12TokenBalance, type FA2TokenBalance } from "@umami/core";
-import { mockFA2Token, mockImplicitAccount } from "@umami/test-utils";
+import {
+  type FA12TokenBalance,
+  type FA2TokenBalance,
+  mockFA2Token,
+  mockImplicitAccount,
+} from "@umami/core";
 
 import { TokenTile } from "./TokenTile";
 import { render, screen } from "../mocks/testUtils";

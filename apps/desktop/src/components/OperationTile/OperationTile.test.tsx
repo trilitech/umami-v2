@@ -1,3 +1,4 @@
+import { assetsActions, store } from "@umami/state";
 import { type TzktCombinedOperation } from "@umami/tzkt";
 
 import { OperationTile } from "./OperationTile";
@@ -13,8 +14,6 @@ import {
   unstakeFixture,
 } from "./testUtils";
 import { render, screen } from "../../mocks/testUtils";
-import { assetsActions } from "../../utils/redux/slices/assetsSlice";
-import { store } from "../../utils/redux/store";
 
 const fixture = (operation: TzktCombinedOperation) => (
   <OperationTileContext.Provider value={{ mode: "page" }}>

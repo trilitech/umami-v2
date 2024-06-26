@@ -1,16 +1,13 @@
-import { mockImplicitAddress, mockLedgerAccount } from "@umami/test-utils";
-import { DefaultNetworks } from "@umami/tezos";
+import { mockLedgerAccount } from "@umami/core";
+import { addTestAccount, networksActions, store } from "@umami/state";
+import { DefaultNetworks, TEZ, mockImplicitAddress } from "@umami/tezos";
 import { type DelegationOperation } from "@umami/tzkt";
 
 import { DelegationTile } from "./DelegationTile";
 import { OperationTileContext } from "./OperationTileContext";
 import { delegationFixture } from "./testUtils";
-import { addAccount } from "../../mocks/helpers";
 import { render, screen } from "../../mocks/testUtils";
 import { formatPkh } from "../../utils/format";
-import { networksActions } from "../../utils/redux/slices/networks";
-import { store } from "../../utils/redux/store";
-import { TEZ } from "../../utils/tezos";
 
 const fixture = (context: any, operation: DelegationOperation) => (
   <OperationTileContext.Provider value={context}>
@@ -56,7 +53,7 @@ describe("<DelegationTile />", () => {
     });
 
     it("displays both the sender and baker contract pills", () => {
-      addAccount(mockLedgerAccount(0));
+      addTestAccount(mockLedgerAccount(0));
 
       render(fixture(contextValue, delegationFixture()));
 
@@ -70,7 +67,7 @@ describe("<DelegationTile />", () => {
 
     describe("fee", () => {
       it("displays fee paid by the user if present", () => {
-        addAccount(mockLedgerAccount(0));
+        addTestAccount(mockLedgerAccount(0));
 
         render(
           fixture(
@@ -114,7 +111,7 @@ describe("<DelegationTile />", () => {
   describe("drawer mode", () => {
     const contextValue = { mode: "drawer", selectedAddress: mockLedgerAccount(0).address };
 
-    beforeEach(() => addAccount(mockLedgerAccount(0)));
+    beforeEach(() => addTestAccount(mockLedgerAccount(0)));
 
     it("hides the fee", () => {
       render(fixture(contextValue, delegationFixture()));

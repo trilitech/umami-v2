@@ -1,5 +1,6 @@
 import { NetworkType } from "@airgap/beacon-wallet";
-import { mockMnemonicAccount, mockSocialAccount } from "@umami/test-utils";
+import { mockMnemonicAccount, mockSocialAccount } from "@umami/core";
+import { beaconActions, store } from "@umami/state";
 import { type RawPkh } from "@umami/tezos";
 
 import {
@@ -9,8 +10,6 @@ import {
   useResetConnections,
 } from "./beaconHooks";
 import { renderHook } from "../../mocks/testUtils";
-import { beaconActions } from "../redux/slices/beaconSlice";
-import { store } from "../redux/store";
 
 const dAppId1 = "test-dAppId-0";
 const dAppId2 = "test-dAppId-1";

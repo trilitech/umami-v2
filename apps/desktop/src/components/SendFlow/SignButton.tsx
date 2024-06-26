@@ -9,14 +9,13 @@ import {
   type SocialAccount,
 } from "@umami/core";
 import * as Auth from "@umami/social-auth";
-import { type Network } from "@umami/tezos";
+import { type Network, makeToolkit } from "@umami/tezos";
 import type React from "react";
 import { FormProvider, useForm, useFormContext } from "react-hook-form";
 
 import { useGetSecretKey } from "../../utils/hooks/getAccountDataHooks";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
-import { makeToolkit } from "../../utils/tezos";
 import { FormErrorMessage } from "../FormErrorMessage";
 import { PasswordInput } from "../PasswordInput";
 

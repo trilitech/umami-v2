@@ -1,22 +1,18 @@
-import { type FA12Transfer, type FA2Transfer } from "@umami/core";
 import {
-  ghostnetThezard,
-  hedgehoge,
+  type FA12Transfer,
+  type FA2Transfer,
   mockDelegationOperation,
   mockFA12Operation,
   mockFA2Operation,
-  mockImplicitAddress,
   mockTezOperation,
   mockUndelegationOperation,
-  uUSD,
-} from "@umami/test-utils";
-import { MAINNET, parseContractPkh } from "@umami/tezos";
+} from "@umami/core";
+import { store, tokensActions } from "@umami/state";
+import { ghostnetThezard, hedgehoge, uUSD } from "@umami/test-utils";
+import { MAINNET, TEZ, mockImplicitAddress, parseContractPkh } from "@umami/tezos";
 
 import { OperationView } from "./OperationView";
 import { render, screen } from "../../mocks/testUtils";
-import { tokensActions } from "../../utils/redux/slices/tokensSlice";
-import { store } from "../../utils/redux/store";
-import { TEZ } from "../../utils/tezos";
 
 describe("Batch <OperationView />", () => {
   it("displays tez transfer operation", () => {
