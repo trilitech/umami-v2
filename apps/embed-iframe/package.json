@@ -5,8 +5,10 @@
     "build": "vite build",
     "dev": "vite dev",
     "preview": "vite preview",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --fix",
-    "format": "prettier --write ."
+    "format:ci": "prettier --ignore-path ../../.gitignore --check .",
+    "format": "prettier --ignore-path ../../.gitignore --write .",
+    "lint:ci": "eslint src --ext .ts --max-warnings=0",
+    "lint": "eslint src --ext .ts --fix"
   },
   "dependencies": {
     "@airgap/beacon-types": "^4.2.2",

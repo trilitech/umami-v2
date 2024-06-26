@@ -1,8 +1,7 @@
-import { mockMnemonicAccount } from "@umami/test-utils";
+import { mnemonic1, mockMnemonicAccount } from "@umami/test-utils";
 
 import { MasterPassword } from "./MasterPassword";
 import { addAccount } from "../../../mocks/helpers";
-import { mnemonic1 } from "../../../mocks/mockMnemonic";
 import { render, screen } from "../../../mocks/testUtils";
 
 const onClose = jest.fn(() => {});

@@ -1,5 +1,6 @@
+import { mnemonic1 } from "@umami/test-utils";
+
 import { DerivationPath } from "./DerivationPath";
-import { mnemonic1 } from "../../../mocks/mockMnemonic";
 import { fireEvent, render, screen, waitFor } from "../../../mocks/testUtils";
 
 const goToStepMock = jest.fn();

@@ -1,6 +1,6 @@
+import { type EncryptedData, decrypt } from "@umami/crypto";
+
 import packageInfo from "../../../../package.json";
-import { decrypt } from "../../../utils/crypto/AES";
-import { type EncryptedData } from "../../../utils/crypto/types";
 import { useRestoreFromMnemonic } from "../../../utils/hooks/setAccountDataHooks";
 import { persistor } from "../../../utils/redux/persistor";
 import { DEFAULT_ACCOUNT_LABEL } from "../nameAccount/NameAccount";

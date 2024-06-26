@@ -1,5 +1,10 @@
 import { type ImplicitAccount } from "@umami/core";
-import { mockContractContact, mockImplicitContact, mockSocialAccount } from "@umami/test-utils";
+import {
+  mnemonic1,
+  mockContractContact,
+  mockImplicitContact,
+  mockSocialAccount,
+} from "@umami/test-utils";
 import { MAINNET, defaultDerivationPathTemplate, getDefaultDerivationPath } from "@umami/tezos";
 
 import { restoreRevealedPublicKeyPairs, useRestoreRevealedMnemonicAccounts } from "./mnemonic";
@@ -8,7 +13,6 @@ import { networksActions } from "./redux/slices/networks";
 import { store } from "./redux/store";
 import * as tezosHelpers from "./tezos/helpers";
 import { addAccount, fakeIsAccountRevealed } from "../mocks/helpers";
-import { mnemonic1 } from "../mocks/mockMnemonic";
 import { renderHook } from "../mocks/testUtils";
 
 const isAccountRevealedMock = jest.spyOn(tezosHelpers, "isAccountRevealed");

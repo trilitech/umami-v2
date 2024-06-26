@@ -1,5 +1,6 @@
 import { type ImplicitAccount, type MnemonicAccount } from "@umami/core";
 import {
+  encryptedMnemonic1,
   mockImplicitAccount,
   mockLedgerAccount,
   mockMnemonicAccount,
@@ -17,7 +18,6 @@ import {
   useValidateMasterPassword,
 } from "./getAccountDataHooks";
 import { addAccount } from "../../mocks/helpers";
-import { encryptedMnemonic1 } from "../../mocks/mockMnemonic";
 import { renderHook, waitFor } from "../../mocks/testUtils";
 import { accountsActions } from "../redux/slices/accountsSlice/accountsSlice";
 import { assetsActions } from "../redux/slices/assetsSlice";

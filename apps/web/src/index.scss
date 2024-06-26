@@ -18,7 +18,8 @@ body {
       padding: 54px 12px 30px;
       gap: 12px;
 
-      & .header, & .navbar {
+      & .header,
+      & .navbar {
         position: fixed;
         width: 100%;
         border-radius: 0;

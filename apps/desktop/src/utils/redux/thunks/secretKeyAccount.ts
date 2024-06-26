@@ -1,8 +1,8 @@
 import { type Curves } from "@taquito/signer";
 import { Prefix } from "@taquito/utils";
+import { encrypt } from "@umami/crypto";
 import { parseImplicitPkh } from "@umami/tezos";
 
-import { encrypt } from "../../crypto/AES";
 import { getPublicKeyPairFromSk } from "../../tezos";
 import { accountsSlice } from "../slices/accountsSlice/accountsSlice";
 import { type AppDispatch } from "../store";

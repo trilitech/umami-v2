@@ -5,6 +5,7 @@ import {
   type SecretKeyAccount,
   type SocialAccount,
 } from "@umami/core";
+import { decrypt, encrypt } from "@umami/crypto";
 import { type IDP } from "@umami/social-auth";
 import { makeDerivationPath } from "@umami/tezos";
 import { useCallback } from "react";
@@ -20,7 +21,6 @@ import { useGetNextAvailableAccountLabels } from "./labelsHooks";
 import { useSelectedNetwork } from "./networkHooks";
 import { useRemoveDependenciesAndMultisigs } from "./removeAccountDependenciesHooks";
 import { makeMnemonicAccount } from "../account/makeMnemonicAccount";
-import { decrypt, encrypt } from "../crypto/AES";
 import { useRestoreRevealedMnemonicAccounts } from "../mnemonic";
 import { useAppDispatch } from "../redux/hooks";
 import { accountsSlice } from "../redux/slices/accountsSlice/accountsSlice";
