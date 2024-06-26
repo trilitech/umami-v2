@@ -62,9 +62,7 @@
     "dev": {
       "persistent": true,
       "cache": false,
-      "dependsOn": [
-        "^build"
-      ]
+      "dependsOn": ["^build"]
     },
     "audit": {},
     "check-circular-deps": {
