@@ -1,5 +1,6 @@
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { Box, Button, Grid, GridItem, Heading, Select, VStack } from "@chakra-ui/react";
+import { mnemonic1 } from "@umami/test-utils";
 import { validateMnemonic } from "bip39";
 import { range } from "lodash";
 import { useState } from "react";
@@ -7,7 +8,6 @@ import { type FieldValues, FormProvider, useForm } from "react-hook-form";
 
 import { KeyIcon } from "../../../assets/icons";
 import { IS_DEV } from "../../../env";
-import { mnemonic1 } from "../../../mocks/mockMnemonic";
 import colors from "../../../style/colors";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
 import { MnemonicAutocomplete } from "../../MnemonicAutocomplete";

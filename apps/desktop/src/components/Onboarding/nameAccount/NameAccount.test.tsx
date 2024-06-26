@@ -1,4 +1,5 @@
 import {
+  mnemonic1,
   mockContractContact,
   mockImplicitContact,
   mockLedgerAccount,
@@ -11,7 +12,6 @@ import { MAINNET } from "@umami/tezos";
 
 import { NameAccount } from "./NameAccount";
 import { addAccount } from "../../../mocks/helpers";
-import { mnemonic1 } from "../../../mocks/mockMnemonic";
 import { act, render, screen, userEvent } from "../../../mocks/testUtils";
 import { contactsActions } from "../../../utils/redux/slices/contactsSlice";
 import { multisigActions } from "../../../utils/redux/slices/multisigsSlice";

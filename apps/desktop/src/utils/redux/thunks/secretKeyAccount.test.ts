@@ -1,9 +1,8 @@
+import { type EncryptedData, decrypt } from "@umami/crypto";
 import { mockMnemonicAccount } from "@umami/test-utils";
 
 import { getCurve, restore } from "./secretKeyAccount";
 import { addAccount } from "../../../mocks/helpers";
-import { decrypt } from "../../crypto/AES";
-import { type EncryptedData } from "../../crypto/types";
 import { store } from "../store";
 
 describe("secretKeyAccount", () => {

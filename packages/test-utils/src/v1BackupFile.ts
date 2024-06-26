@@ -1,7 +1,6 @@
-import { mnemonic1, mnemonic2 } from "./mockMnemonic";
-import { type UmamiV1Backup } from "../types/UmamiBackup";
+import { mnemonic1, mnemonic2 } from "./mnemonic";
 
-export const umamiBackup: UmamiV1Backup = {
+export const umamiBackup = {
   // password = password !
   version: "1.0",
   derivationPaths: ["m/44'/1729'/?'/0'"],

@@ -1,5 +1,6 @@
+import { mnemonic1 } from "@umami/test-utils";
+
 import { RestoreMnemonic } from "./RestoreMnemonic";
-import { mnemonic1 } from "../../../mocks/mockMnemonic";
 import { act, render, screen, userEvent } from "../../../mocks/testUtils";
 import { mockToast } from "../../../mocks/toast";
 import { selectRandomElements } from "../../../utils/tezos";

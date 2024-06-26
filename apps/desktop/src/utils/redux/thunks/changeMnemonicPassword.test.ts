@@ -1,10 +1,8 @@
 import { type MnemonicAccount } from "@umami/core";
-import { mockImplicitAccount } from "@umami/test-utils";
+import { type EncryptedData, decrypt, encrypt } from "@umami/crypto";
+import { mnemonic1, mnemonic2, mockImplicitAccount } from "@umami/test-utils";
 
 import { changeMnemonicPassword } from "./changeMnemonicPassword";
-import { mnemonic1, mnemonic2 } from "../../../mocks/mockMnemonic";
-import { decrypt, encrypt } from "../../crypto/AES";
-import { type EncryptedData } from "../../crypto/types";
 import { getFingerPrint } from "../../tezos";
 import { accountsSlice } from "../slices/accountsSlice/accountsSlice";
 import { store } from "../store";

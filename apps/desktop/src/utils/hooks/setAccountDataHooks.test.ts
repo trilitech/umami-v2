@@ -1,5 +1,7 @@
 import { type ImplicitAccount, type MnemonicAccount } from "@umami/core";
+import { decrypt, encrypt } from "@umami/crypto";
 import {
+  mnemonic1,
   mockImplicitAccount,
   mockLedgerAccount,
   mockSecretKeyAccount,
@@ -16,14 +18,16 @@ import {
   useRestoreFromMnemonic,
 } from "./setAccountDataHooks";
 import { addAccount, fakeIsAccountRevealed } from "../../mocks/helpers";
-import { mnemonic1 } from "../../mocks/mockMnemonic";
 import { act, renderHook } from "../../mocks/testUtils";
-import * as functionsToMock from "../crypto/AES";
 import { accountsSlice } from "../redux/slices/accountsSlice/accountsSlice";
 import { store } from "../redux/store";
 import * as tezosHelpers from "../tezos/helpers";
 
 jest.mock("./removeAccountDependenciesHooks");
+jest.mock("@umami/crypto", () => ({
+  encrypt: jest.fn(),
+  decrypt: jest.fn(),
+}));
 
 const mockedUseRemoveDependenciesAndMultisigs = jest.mocked(useRemoveDependenciesAndMultisigs);
 const mockedRemoveAccountsDependencies = jest.fn();
@@ -36,8 +40,6 @@ describe("setAccountDataHooks", () => {
   describe("mnemonic accounts", () => {
     const isAccountRevealedMock = jest.spyOn(tezosHelpers, "isAccountRevealed");
     const getFingerPrintMock = jest.spyOn(tezosHelpers, "getFingerPrint");
-    const encryptMock = jest.spyOn(functionsToMock, "encrypt");
-    const decryptMock = jest.spyOn(functionsToMock, "decrypt");
 
     const LABEL_BASE = "Test acc";
     const PASSWORD = "password";
@@ -66,7 +68,7 @@ describe("setAccountDataHooks", () => {
     describe("useRestoreFromMnemonic", () => {
       beforeEach(() => {
         getFingerPrintMock.mockResolvedValue(MOCK_FINGERPRINT);
-        encryptMock.mockReturnValue(Promise.resolve(MOCK_ENCRYPTED));
+        jest.mocked(encrypt).mockReturnValue(Promise.resolve(MOCK_ENCRYPTED));
       });
 
       it("restores only one account if none revealed", async () => {
@@ -90,7 +92,7 @@ describe("setAccountDataHooks", () => {
         });
         expect(tezosHelpers.getFingerPrint).toHaveBeenCalledWith(mnemonic1);
         // Encrypts given mnemonic with the given password.
-        expect(encryptMock).toHaveBeenCalledWith(mnemonic1, PASSWORD);
+        expect(jest.mocked(encrypt)).toHaveBeenCalledWith(mnemonic1, PASSWORD);
       });
 
       it("restores revealed accounts", async () => {
@@ -128,7 +130,7 @@ describe("setAccountDataHooks", () => {
         });
         expect(tezosHelpers.getFingerPrint).toHaveBeenCalledWith(mnemonic1);
         // Encrypts given mnemonic with the given password.
-        expect(encryptMock).toHaveBeenCalledWith(mnemonic1, PASSWORD);
+        expect(jest.mocked(encrypt)).toHaveBeenCalledWith(mnemonic1, PASSWORD);
       });
 
       it("assigns unique labels to revealed accounts", async () => {
@@ -170,9 +172,7 @@ describe("setAccountDataHooks", () => {
     });
 
     describe("useDeriveMnemonicAccount", () => {
-      beforeEach(() => {
-        decryptMock.mockReturnValue(Promise.resolve(mnemonic1));
-      });
+      beforeEach(() => jest.mocked(decrypt).mockResolvedValue(mnemonic1));
 
       it("throws if we try to derive from an unknown seedphrase", async () => {
         const UNKNOWN_FINGERPRINT = "unknown fingerprint";
@@ -230,7 +230,7 @@ describe("setAccountDataHooks", () => {
         expect(store.getState().accounts.seedPhrases).toEqual({
           [MOCK_FINGERPRINT]: MOCK_ENCRYPTED,
         });
-        expect(decryptMock).toHaveBeenCalledWith(MOCK_ENCRYPTED, PASSWORD);
+        expect(jest.mocked(decrypt)).toHaveBeenCalledWith(MOCK_ENCRYPTED, PASSWORD);
       });
 
       it("uses decrypt with encrypted mnemonic stored for the group", async () => {
@@ -257,7 +257,7 @@ describe("setAccountDataHooks", () => {
           })
         );
 
-        expect(decryptMock).toHaveBeenCalledWith(MOCK_ENCRYPTED, PASSWORD);
+        expect(jest.mocked(decrypt)).toHaveBeenCalledWith(MOCK_ENCRYPTED, PASSWORD);
       });
 
       it("assigns unique label to derived account", async () => {

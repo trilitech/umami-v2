@@ -2,10 +2,10 @@ import path from "path";
 
 import { Given, Then, When } from "@cucumber/cucumber";
 import { expect } from "@playwright/test";
+import { mnemonic1 as existingSeedphrase } from "@umami/test-utils";
 import { DEFAULT_DERIVATION_PATH_TEMPLATE } from "@umami/tezos";
 
 import { type CustomWorld } from "./world";
-import { mnemonic1 as existingSeedphrase } from "../../mocks/mockMnemonic";
 import {
   v1BackedupAccountGroups,
   v2BackedupAccountGroups,

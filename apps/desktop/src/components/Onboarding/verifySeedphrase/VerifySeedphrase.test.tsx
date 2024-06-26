@@ -1,5 +1,6 @@
+import { mnemonic1 } from "@umami/test-utils";
+
 import { VerifySeedphrase } from "./VerifySeedphrase";
-import { mnemonic1 } from "../../../mocks/mockMnemonic";
 import { act, fireEvent, render, screen, userEvent, waitFor } from "../../../mocks/testUtils";
 import { selectRandomElements } from "../../../utils/tezos";
 import { type OnboardingStep } from "../OnboardingStep";

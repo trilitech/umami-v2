@@ -5,12 +5,12 @@ import {
   type MultisigAccount,
   type SecretKeyAccount,
 } from "@umami/core";
+import { decrypt } from "@umami/crypto";
 import { type RawPkh } from "@umami/tezos";
 import { maxBy } from "lodash";
 
 import { useGetAccountBalance } from "./assetsHooks";
 import { useMultisigAccounts } from "./multisigHooks";
-import { decrypt } from "../crypto/AES";
 import { useAppSelector } from "../redux/hooks";
 import { deriveSecretKey } from "../tezos";
 

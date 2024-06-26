@@ -7,11 +7,11 @@ import {
   type SecretKeyAccount,
   type SocialAccount,
 } from "@umami/core";
+import { type EncryptedData } from "@umami/crypto";
 import { type RawPkh } from "@umami/tezos";
 import { remove } from "lodash";
 
 import { type State } from "./State";
-import { type EncryptedData } from "../../../crypto/types";
 import { changeMnemonicPassword } from "../../thunks/changeMnemonicPassword";
 
 export const initialState: State = {
