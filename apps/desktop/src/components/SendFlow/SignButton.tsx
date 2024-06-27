@@ -69,7 +69,10 @@ export const SignButton: React.FC<{
 
   const onSocialSign = async () =>
     handleAsyncAction(async () => {
-      const { secretKey } = await Auth.forIDP((signer as SocialAccount).idp).getCredentials();
+      const { secretKey } = await Auth.forIDP(
+        (signer as SocialAccount).idp,
+        "desktop"
+      ).getCredentials();
       return onSubmit(await makeToolkit({ type: "social", secretKey, network }));
     });
 

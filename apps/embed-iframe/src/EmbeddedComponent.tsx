@@ -1,6 +1,10 @@
 import { Box, ChakraProvider, ColorModeScript } from "@chakra-ui/react";
-import { type RequestMessage, toMatchingResponseType } from "@trilitech-umami/umami-embed/types";
-import { useEffect } from "react";
+import {
+  type RequestMessage,
+  type TypeOfLogin,
+  toMatchingResponseType,
+} from "@trilitech-umami/umami-embed/types";
+import { useEffect, useState } from "react";
 
 import { type Permissions, getPermissionsForOrigin } from "./ClientsPermissions";
 import theme from "./imported/style/theme";
@@ -10,7 +14,12 @@ import { sendResponse } from "./utils";
 import "./EmbeddedComponent.scss";
 
 export function EmbeddedComponent() {
-  const { onOpen: openLoginModal, modalElement: loginModalElement } = useLoginModal();
+  const [selectedLoginType, setSelectedLoginType] = useState<TypeOfLogin | null>(null);
+
+  const onLoginCallback = (loginType: TypeOfLogin) => setSelectedLoginType(loginType);
+
+  const { onOpen: openLoginModal, modalElement: loginModalElement } =
+    useLoginModal(onLoginCallback);
   const { onOpen: openOperationModal, modalElement: operationModalElement } =
     useSignOperationModal();
 
@@ -46,11 +55,19 @@ export function EmbeddedComponent() {
           openLoginModal();
           break;
         case "logout_request":
-          // TODO: delete user data
+          setSelectedLoginType(null);
           sendResponse({ type: "logout_response" });
           break;
         case "operation_request":
-          openOperationModal(data.operations);
+          if (selectedLoginType === null) {
+            sendResponse({
+              type: toMatchingResponseType(data.type),
+              error: "no_login_data",
+              errorMessage: "User's login data is not available",
+            });
+          } else {
+            openOperationModal(selectedLoginType!, data.operations);
+          }
           break;
       }
     } catch {

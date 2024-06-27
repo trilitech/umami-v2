@@ -10,7 +10,7 @@ const { definePartsStyle, defineMultiStyleConfig } = createMultiStyleConfigHelpe
 const modalButtonBaseStyle = {
   top: "10px",
   position: "absolute" as const,
-  color: colors.gray[400],
+  color: colors.grey[400],
   borderRadius: "18px",
 };
 
@@ -21,18 +21,14 @@ const closeButtonStyle = defineStyle({
 
 const baseStyle = definePartsStyle({
   dialog: {
-    padding: "40px",
-    _dark: {
-      bg: colors.gray[900],
-      border: "1px solid",
-      borderColor: colors.gray[700],
-      borderRadius: "8px",
-    },
-  },
-  overlay: {
-    _dark: {
-      bg: "rgba(0, 0, 0, 0.85)",
-    },
+    paddingTop: "36px",
+    paddingBottom: "36px",
+    paddingLeft: "42px",
+    paddingRight: "42px",
+    bg: colors.grey.white,
+    border: "1.5px solid",
+    borderColor: colors.grey[100],
+    borderRadius: "30px",
   },
   closeButton: closeButtonStyle,
   body: {
@@ -48,5 +44,5 @@ const baseStyle = definePartsStyle({
 
 export const modalTheme = defineMultiStyleConfig({
   baseStyle,
-  sizes: { md: { dialog: { maxW: "482px" } } },
+  sizes: { md: { dialog: { maxW: "384px" } } },
 });
