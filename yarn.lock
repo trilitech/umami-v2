@@ -8299,6 +8299,7 @@ __metadata:
     "@toruslabs/customauth": "npm:16.0.6"
     "@trilitech-umami/umami-embed": "npm:^0.0.4"
     "@umami/eslint-config": "workspace:^"
+    "@umami/social-auth": "workspace:*"
     "@umami/typescript-config": "workspace:^"
     "@vitejs/plugin-react": "npm:^4.3.1"
     eslint: "npm:^8.57.0"
@@ -8386,7 +8387,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@umami/social-auth@workspace:^, @umami/social-auth@workspace:packages/social-auth":
+"@umami/social-auth@workspace:*, @umami/social-auth@workspace:^, @umami/social-auth@workspace:packages/social-auth":
   version: 0.0.0-use.local
   resolution: "@umami/social-auth@workspace:packages/social-auth"
   dependencies:
