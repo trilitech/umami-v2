@@ -1,4 +1,0 @@
-{
-  "extends": "@umami/typescript-config/tsconfig.json",
-  "include": [".storybook/*"],
-}

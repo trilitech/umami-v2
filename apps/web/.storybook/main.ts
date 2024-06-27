@@ -12,8 +12,8 @@ function getAbsolutePath(value: string): any {
 const config: StorybookConfig = {
   stories: [
     {
-      directory: "../../../packages/ui/src/**",
-      titlePrefix: "UI",
+      directory: "../src/**",
+      titlePrefix: "Umami Web",
       files: "*.stories.*",
     },
   ],
