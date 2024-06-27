@@ -1,18 +1,17 @@
 import { Modal } from "@chakra-ui/react";
 import {
+  makeAccountOperations,
   mockContractOrigination,
   mockImplicitAccount,
-  mockImplicitAddress,
   mockMnemonicAccount,
-} from "@umami/test-utils";
+} from "@umami/core";
+import { addTestAccount } from "@umami/state";
+import { executeParams } from "@umami/test-utils";
+import { TEZ, mockImplicitAddress } from "@umami/tezos";
 
 import { type FormValues } from "./FormValues";
 import { SignTransactionFormPage } from "./SignTransactionFormPage";
-import { executeParams } from "../../../mocks/executeParams";
-import { addAccount } from "../../../mocks/helpers";
 import { render, screen, waitFor } from "../../../mocks/testUtils";
-import { makeAccountOperations } from "../../../types/AccountOperations";
-import { TEZ } from "../../../utils/tezos";
 import { type SignPageProps } from "../utils";
 
 const fixture = (props: SignPageProps<FormValues>) => (
@@ -21,7 +20,7 @@ const fixture = (props: SignPageProps<FormValues>) => (
   </Modal>
 );
 
-beforeEach(() => addAccount(mockMnemonicAccount(0)));
+beforeEach(() => addTestAccount(mockMnemonicAccount(0)));
 
 const props: SignPageProps<FormValues> = {
   operations: {

@@ -1,9 +1,9 @@
-import { mockImplicitAccount, mockMnemonicAccount } from "@umami/test-utils";
+import { mockImplicitAccount, mockMnemonicAccount } from "@umami/core";
+import { addTestAccount } from "@umami/state";
 import { type TransactionOperation } from "@umami/tzkt";
 
 import { Fee } from "./Fee";
 import { OperationTileContext } from "./OperationTileContext";
-import { addAccount } from "../../mocks/helpers";
 import { render, screen } from "../../mocks/testUtils";
 
 describe("<Fee />", () => {
@@ -40,7 +40,7 @@ describe("<Fee />", () => {
   });
 
   it("sums up the fees and shows the total", () => {
-    addAccount(mockMnemonicAccount(0));
+    addTestAccount(mockMnemonicAccount(0));
     render(
       <Fee
         operation={
@@ -57,7 +57,7 @@ describe("<Fee />", () => {
   });
 
   it("doesn't render in drawer mode", () => {
-    addAccount(mockMnemonicAccount(0));
+    addTestAccount(mockMnemonicAccount(0));
 
     render(
       <OperationTileContext.Provider value={{ mode: "drawer" } as any}>

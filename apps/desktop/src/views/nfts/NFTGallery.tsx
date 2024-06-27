@@ -1,6 +1,5 @@
 import { SimpleGrid } from "@chakra-ui/react";
-import type { NFTBalance } from "@umami/core";
-import { fullId } from "@umami/core";
+import { type NFTBalance, fullId } from "@umami/core";
 import { type RawPkh } from "@umami/tezos";
 import type React from "react";
 

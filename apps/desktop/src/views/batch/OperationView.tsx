@@ -1,6 +1,5 @@
 import { AspectRatio, Flex, Heading, Image, Link, Tooltip } from "@chakra-ui/react";
-import { type Operation } from "@umami/core";
-import { thumbnailUri, tokenNameSafe, tokenUri } from "@umami/core";
+import { type Operation, thumbnailUri, tokenNameSafe, tokenUri } from "@umami/core";
 
 import { tokenTitle } from "./tokenTitle";
 import { BakerIcon, OutgoingArrow } from "../../assets/icons";

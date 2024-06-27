@@ -1,4 +1,4 @@
-import { mockImplicitContact } from "@umami/test-utils";
+import { mockImplicitContact } from "@umami/core";
 
 import { getSuggestions } from "./getSuggestions";
 

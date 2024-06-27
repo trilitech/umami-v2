@@ -1,9 +1,9 @@
-import { mockImplicitAddress, rawAccountFixture } from "@umami/test-utils";
+import { rawAccountFixture } from "@umami/core";
+import { assetsActions, store } from "@umami/state";
+import { mockImplicitAddress } from "@umami/tezos";
 
 import { AccountBalance } from "./AccountBalance";
 import { render, screen } from "../mocks/testUtils";
-import { assetsActions } from "../utils/redux/slices/assetsSlice";
-import { store } from "../utils/redux/store";
 
 describe("<AccountBalance />", () => {
   it("renders nothing if there is no balance for an account", () => {

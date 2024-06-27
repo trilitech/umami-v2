@@ -1,8 +1,8 @@
+import { store } from "@umami/state";
 import { getTezosPriceInUSD } from "@umami/tzkt";
 
 import { usePollConversionRate } from "./usePollConversionRate";
 import { renderHook, waitFor } from "../../mocks/testUtils";
-import { store } from "../redux/store";
 
 jest.mock("@umami/tzkt");
 

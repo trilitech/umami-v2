@@ -4,3 +4,4 @@ export * from "./UnrecognizedMichelsonError";
 export * from "./types";
 export * from "./fetch";
 export * from "./helpers";
+export * from "./testUtils";

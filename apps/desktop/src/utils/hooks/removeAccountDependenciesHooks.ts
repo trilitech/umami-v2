@@ -1,13 +1,15 @@
 import { type Account, type ImplicitAccount } from "@umami/core";
+import {
+  assetsSlice,
+  batchesSlice,
+  beaconSlice,
+  multisigsSlice,
+  useAppDispatch,
+} from "@umami/state";
 
 import { useImplicitAccounts } from "./getAccountDataHooks";
 import { useMultisigAccounts } from "./multisigHooks";
 import { useRemovePeersByAccounts } from "../beacon/beacon";
-import { useAppDispatch } from "../redux/hooks";
-import { assetsSlice } from "../redux/slices/assetsSlice";
-import { batchesSlice } from "../redux/slices/batches";
-import { beaconSlice } from "../redux/slices/beaconSlice";
-import { multisigsSlice } from "../redux/slices/multisigsSlice";
 
 /**
  * Hook for cleaning up data related to deleted accounts.

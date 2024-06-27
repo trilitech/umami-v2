@@ -1,8 +1,8 @@
-import { mockImplicitAccount, mockMnemonicAccount } from "@umami/test-utils";
+import { mockImplicitAccount, mockMnemonicAccount } from "@umami/core";
+import { addTestAccount } from "@umami/state";
 import { getCombinedOperations, getRelatedTokenTransfers } from "@umami/tzkt";
 
 import { HomeView } from "./HomeView";
-import { addAccount } from "../../mocks/helpers";
 import { fireEvent, render, screen } from "../../mocks/testUtils";
 
 jest.mock("@umami/tzkt", () => ({
@@ -12,7 +12,7 @@ jest.mock("@umami/tzkt", () => ({
 }));
 
 beforeEach(() => {
-  [mockMnemonicAccount(0), mockMnemonicAccount(1), mockMnemonicAccount(2)].forEach(addAccount);
+  [mockMnemonicAccount(0), mockMnemonicAccount(1), mockMnemonicAccount(2)].forEach(addTestAccount);
   jest.mocked(getCombinedOperations).mockResolvedValue([]);
   jest.mocked(getRelatedTokenTransfers).mockResolvedValue([]);
 });

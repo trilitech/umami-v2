@@ -4,7 +4,7 @@ import {
   mockMultisigAccount,
   mockSecretKeyAccount,
   mockSocialAccount,
-} from "@umami/test-utils";
+} from "@umami/core";
 
 import { DerivationInfoButton } from "./DerivationInfoButton";
 import { InfoModal } from "./InfoModal";

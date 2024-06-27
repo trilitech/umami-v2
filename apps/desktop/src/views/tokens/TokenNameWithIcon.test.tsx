@@ -1,4 +1,4 @@
-import { mockFA2Token, mockMnemonicAccount } from "@umami/test-utils";
+import { mockFA2Token, mockMnemonicAccount } from "@umami/core";
 
 import { TokenNameWithIcon } from "./TokenNameWithIcon";
 import { render, screen } from "../../mocks/testUtils";

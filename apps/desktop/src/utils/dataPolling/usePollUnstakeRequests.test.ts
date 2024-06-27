@@ -1,9 +1,9 @@
-import { mockImplicitAddress } from "@umami/test-utils";
+import { store } from "@umami/state";
+import { mockImplicitAddress } from "@umami/tezos";
 import { getPendingUnstakeRequests } from "@umami/tzkt";
 
 import { usePollUnstakeRequests } from "./usePollUnstakeRequests";
 import { renderHook, waitFor } from "../../mocks/testUtils";
-import { store } from "../redux/store";
 
 jest.mock("@umami/tzkt");
 

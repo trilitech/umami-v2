@@ -5,16 +5,13 @@ import {
   mockMultisigAccount,
   mockNFTRaw,
   mockSocialAccount,
-} from "@umami/test-utils";
+} from "@umami/core";
+import { addTestAccount, assetsActions, store, tokensActions } from "@umami/state";
 import { MAINNET } from "@umami/tezos";
 import { type RawTzktTokenBalance } from "@umami/tzkt";
 
 import { AccountTile } from "./AccountTile";
-import { addAccount } from "../../mocks/helpers";
 import { act, render, screen, userEvent } from "../../mocks/testUtils";
-import { assetsActions } from "../../utils/redux/slices/assetsSlice";
-import { tokensActions } from "../../utils/redux/slices/tokensSlice";
-import { store } from "../../utils/redux/store";
 import { SelectedAccountContext } from "../../views/home/SelectedAccountContext";
 
 describe("<AccountTile />", () => {
@@ -36,7 +33,7 @@ describe("<AccountTile />", () => {
       account: mockMultisigAccount(0),
     },
   ])("$account.type account", ({ iconTestId, account }) => {
-    beforeEach(() => addAccount(account));
+    beforeEach(() => addTestAccount(account));
 
     it("renders icon", () => {
       render(<AccountTile account={account} />);

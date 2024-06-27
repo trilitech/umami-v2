@@ -1,22 +1,23 @@
-import { type MnemonicAccount } from "@umami/core";
 import {
+  type MnemonicAccount,
+  estimate,
   mockImplicitAccount,
-  mockImplicitAddress,
   mockMnemonicAccount,
   mockMultisigAccount,
-  pendingOps,
-} from "@umami/test-utils";
+} from "@umami/core";
+import { multisigPendingOpsFixtures } from "@umami/multisig";
+import { addTestAccount, multisigsSlice, store } from "@umami/state";
+import { executeParams } from "@umami/test-utils";
+import { mockImplicitAddress } from "@umami/tezos";
 
-import { executeParams } from "../../../../mocks/executeParams";
-import { addAccount } from "../../../../mocks/helpers";
 import { fireEvent, render, screen, within } from "../../../../mocks/testUtils";
-import { multisigsSlice } from "../../../../utils/redux/slices/multisigsSlice";
-import { store } from "../../../../utils/redux/store";
-import { estimate } from "../../../../utils/tezos";
 
 import { MultisigPendingOperations } from ".";
 
-jest.mock("../../../../utils/tezos/estimate");
+jest.mock("@umami/core", () => ({
+  ...jest.requireActual("@umami/core"),
+  estimate: jest.fn(),
+}));
 
 describe("<MultisigPendingOperations />", () => {
   it("displays multisig executable tez operations", async () => {
@@ -32,21 +33,21 @@ describe("<MultisigPendingOperations />", () => {
       pendingOperationsBigmapId: 3,
     };
     store.dispatch(multisigsSlice.actions.setMultisigs([multisig]));
-    store.dispatch(multisigsSlice.actions.setPendingOperations(pendingOps));
+    store.dispatch(multisigsSlice.actions.setPendingOperations(multisigPendingOpsFixtures));
 
     const mockAccount: MnemonicAccount = {
       ...mockMnemonicAccount(0),
       address: mockImplicitAddress(0),
     };
 
-    addAccount(mockAccount);
+    addTestAccount(mockAccount);
 
     render(<MultisigPendingOperations account={multisig} />);
 
     const allPending = screen.getAllByTestId(/multisig-pending-operation/);
     expect(allPending).toHaveLength(2);
     const { getByText } = within(
-      screen.getByTestId("multisig-pending-operation-" + pendingOps[0].id)
+      screen.getByTestId("multisig-pending-operation-" + multisigPendingOpsFixtures[0].id)
     );
     const executeBtn = getByText(/execute/i);
 

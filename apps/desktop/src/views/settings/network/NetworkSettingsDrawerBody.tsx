@@ -9,6 +9,7 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import { networksActions, useAppDispatch } from "@umami/state";
 import { type Network, isDefault } from "@umami/tezos";
 import { Fragment, useContext } from "react";
 
@@ -22,8 +23,6 @@ import {
   useSelectNetwork,
   useSelectedNetwork,
 } from "../../../utils/hooks/networkHooks";
-import { useAppDispatch } from "../../../utils/redux/hooks";
-import { networksActions } from "../../../utils/redux/slices/networks";
 
 export const NetworkSettingsDrawerBody = () => {
   const { openWith } = useContext(DynamicModalContext);

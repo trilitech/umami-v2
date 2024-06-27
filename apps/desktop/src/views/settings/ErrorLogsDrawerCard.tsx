@@ -12,15 +12,14 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { nanoid } from "@reduxjs/toolkit";
+import { type ErrorContext } from "@umami/core";
+import { errorsSlice, useAppSelector } from "@umami/state";
 import { useDispatch } from "react-redux";
 
 import { OutlineExclamationCircleIcon } from "../../assets/icons";
 import { SettingsCardWithDrawerIcon } from "../../components/ClickableCard";
 import { DrawerTopButtons } from "../../components/DrawerTopButtons";
 import colors from "../../style/colors";
-import { type ErrorContext } from "../../utils/getErrorContext";
-import { useAppSelector } from "../../utils/redux/hooks";
-import { errorsSlice } from "../../utils/redux/slices/errorsSlice";
 
 export const ErrorLogsDrawerCard = () => {
   const { isOpen, onClose: closeDrawer, onOpen } = useDisclosure();

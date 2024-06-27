@@ -7,6 +7,7 @@ import "@testing-library/jest-dom";
 import { webcrypto } from "crypto";
 import { TextDecoder, TextEncoder } from "util";
 
+import { resetStore } from "@umami/state";
 import { setupJestCanvasMock } from "jest-canvas-mock";
 import failOnConsole from "jest-fail-on-console";
 import MockDate from "mockdate";
@@ -19,16 +20,6 @@ import {
   MockModalInnerComponent,
 } from "./mocks/modal";
 import { mockUseToast } from "./mocks/toast";
-import { accountsSlice } from "./utils/redux/slices/accountsSlice/accountsSlice";
-import { announcementSlice } from "./utils/redux/slices/announcementSlice";
-import { batchesActions } from "./utils/redux/slices/batches";
-import { beaconActions } from "./utils/redux/slices/beaconSlice";
-import { contactsActions } from "./utils/redux/slices/contactsSlice";
-import { errorsSlice } from "./utils/redux/slices/errorsSlice";
-import { multisigsSlice } from "./utils/redux/slices/multisigsSlice";
-import { networksActions } from "./utils/redux/slices/networks";
-import { tokensActions } from "./utils/redux/slices/tokensSlice";
-import { store } from "./utils/redux/store";
 
 failOnConsole();
 
@@ -64,15 +55,7 @@ beforeEach(() => {
   window.location.hash = "";
 
   // set clean state before each test
-  store.dispatch(accountsSlice.actions.reset());
-  store.dispatch(announcementSlice.actions.reset());
-  store.dispatch(batchesActions.reset());
-  store.dispatch(beaconActions.reset());
-  store.dispatch(contactsActions.reset());
-  store.dispatch(errorsSlice.actions.reset());
-  store.dispatch(multisigsSlice.actions.reset());
-  store.dispatch(networksActions.reset());
-  store.dispatch(tokensActions.reset());
+  resetStore();
 
   setupJestCanvasMock();
 });

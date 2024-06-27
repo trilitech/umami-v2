@@ -11,13 +11,12 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { type Contact } from "@umami/core";
+import { contactsActions, useAppDispatch } from "@umami/state";
 import { type FC, useContext } from "react";
 
 import { CopyableAddress } from "./CopyableText";
 import { DynamicModalContext } from "./DynamicModal";
 import colors from "../style/colors";
-import { useAppDispatch } from "../utils/redux/hooks";
-import { contactsActions } from "../utils/redux/slices/contactsSlice";
 
 /**
  * Modal used for deleting existing contact.

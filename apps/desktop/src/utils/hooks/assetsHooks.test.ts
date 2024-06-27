@@ -1,10 +1,10 @@
-import { mockBaker, mockImplicitAddress, rawAccountFixture } from "@umami/test-utils";
+import { mockBaker, rawAccountFixture } from "@umami/core";
+import { assetsActions, assetsSlice, store } from "@umami/state";
+import { mockImplicitAddress } from "@umami/tezos";
 import BigNumber from "bignumber.js";
 
 import { useBakerList, useTotalBalance } from "./assetsHooks";
 import { renderHook } from "../../mocks/testUtils";
-import { assetsActions, assetsSlice } from "../redux/slices/assetsSlice";
-import { store } from "../redux/store";
 
 describe("useBakerList", () => {
   it("should return bakers in store", () => {

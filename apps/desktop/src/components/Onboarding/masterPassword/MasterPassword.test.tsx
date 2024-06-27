@@ -1,7 +1,8 @@
-import { mnemonic1, mockMnemonicAccount } from "@umami/test-utils";
+import { mockMnemonicAccount } from "@umami/core";
+import { addTestAccount } from "@umami/state";
+import { mnemonic1 } from "@umami/test-utils";
 
 import { MasterPassword } from "./MasterPassword";
-import { addAccount } from "../../../mocks/helpers";
 import { render, screen } from "../../../mocks/testUtils";
 
 const onClose = jest.fn(() => {});
@@ -26,7 +27,7 @@ describe("<MasterPassword />", () => {
   });
 
   test("Display enter password", () => {
-    addAccount(account);
+    addTestAccount(account);
     render(fixture());
 
     expect(screen.getByTestId("confirmation")).toBeInTheDocument();

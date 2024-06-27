@@ -1,4 +1,4 @@
-import { mockContractAddress } from "@umami/test-utils";
+import { mockContractAddress } from "@umami/tezos";
 
 import { LeftIcon, RightIcon } from "./AddressPillIcon";
 import { mockFA2Address } from "../../mocks/addressKind";

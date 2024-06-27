@@ -1,10 +1,16 @@
 import { Modal } from "@chakra-ui/react";
-import { mockImplicitAccount, mockMnemonicAccount, mockMultisigAccount } from "@umami/test-utils";
+import {
+  estimate,
+  makeAccountOperations,
+  mockImplicitAccount,
+  mockMnemonicAccount,
+  mockMultisigAccount,
+} from "@umami/core";
+import { addTestAccount, assetsSlice, store } from "@umami/state";
+import { executeParams } from "@umami/test-utils";
 
 import { FormPage, type FormValues } from "./FormPage";
 import { SignPage } from "./SignPage";
-import { executeParams } from "../../../mocks/executeParams";
-import { addAccount } from "../../../mocks/helpers";
 import {
   act,
   dynamicModalContextMock,
@@ -14,10 +20,6 @@ import {
   waitFor,
 } from "../../../mocks/testUtils";
 import { mockToast } from "../../../mocks/toast";
-import { makeAccountOperations } from "../../../types/AccountOperations";
-import { assetsSlice } from "../../../utils/redux/slices/assetsSlice";
-import { store } from "../../../utils/redux/store";
-import { estimate } from "../../../utils/tezos";
 import { type FormPageProps } from "../utils";
 
 const fixture = (props: FormPageProps<FormValues>) => (
@@ -26,7 +28,10 @@ const fixture = (props: FormPageProps<FormValues>) => (
   </Modal>
 );
 
-jest.mock("../../../utils/tezos/estimate");
+jest.mock("@umami/core", () => ({
+  ...jest.requireActual("@umami/core"),
+  estimate: jest.fn(),
+}));
 
 describe("<Form />", () => {
   describe("default values", () => {
@@ -122,8 +127,8 @@ describe("<Form />", () => {
 
   describe("single transaction", () => {
     beforeEach(() => {
-      addAccount(mockMnemonicAccount(0));
-      addAccount(mockMultisigAccount(0));
+      addTestAccount(mockMnemonicAccount(0));
+      addTestAccount(mockMultisigAccount(0));
     });
 
     it("shows a toast if estimation fails", async () => {

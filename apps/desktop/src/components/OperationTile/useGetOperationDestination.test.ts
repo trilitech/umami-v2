@@ -1,7 +1,8 @@
-import { mockImplicitAddress, mockLedgerAccount } from "@umami/test-utils";
+import { mockLedgerAccount } from "@umami/core";
+import { addTestAccount } from "@umami/state";
+import { mockImplicitAddress } from "@umami/tezos";
 
 import { useGetOperationDestination } from "./useGetOperationDestination";
-import { addAccount } from "../../mocks/helpers";
 import { renderHook } from "../../mocks/testUtils";
 
 describe("useGetOperationDestination", () => {
@@ -21,7 +22,7 @@ describe("useGetOperationDestination", () => {
   it.each([mockImplicitAddress(2).pkh, null, undefined])(
     "returns 'outgoing' if the sender is owned (receiver is %s)",
     receiver => {
-      addAccount(account);
+      addTestAccount(account);
 
       const {
         result: { current: result },
@@ -34,7 +35,7 @@ describe("useGetOperationDestination", () => {
   it.each([mockImplicitAddress(2).pkh, null, undefined])(
     "returns 'incoming' if the receiver is owned (sender is %s)",
     sender => {
-      addAccount(account);
+      addTestAccount(account);
 
       const {
         result: { current: result },
@@ -45,7 +46,7 @@ describe("useGetOperationDestination", () => {
   );
 
   it("returns 'outgoing' if both the sender and the receiver are owned", () => {
-    addAccount(account);
+    addTestAccount(account);
 
     const {
       result: { current: result },

@@ -10,8 +10,13 @@ import {
   Text,
   Tr,
 } from "@chakra-ui/react";
-import { type Account, type FA12TokenBalance, type FA2TokenBalance } from "@umami/core";
-import { fullId, tokenPrettyAmount } from "@umami/core";
+import {
+  type Account,
+  type FA12TokenBalance,
+  type FA2TokenBalance,
+  fullId,
+  tokenPrettyAmount,
+} from "@umami/core";
 import { parseContractPkh } from "@umami/tezos";
 import type React from "react";
 import { useContext } from "react";

@@ -1,14 +1,17 @@
 import { Modal } from "@chakra-ui/react";
-import { type NFTBalance } from "@umami/core";
-import { mockImplicitAccount, mockMnemonicAccount, mockNFT } from "@umami/test-utils";
-import { parseContractPkh } from "@umami/tezos";
+import {
+  type NFTBalance,
+  makeAccountOperations,
+  mockImplicitAccount,
+  mockMnemonicAccount,
+  mockNFT,
+} from "@umami/core";
+import { addTestAccount } from "@umami/state";
+import { executeParams } from "@umami/test-utils";
+import { TEZ, parseContractPkh } from "@umami/tezos";
 
 import { SignPage } from "./SignPage";
-import { executeParams } from "../../../mocks/executeParams";
-import { addAccount } from "../../../mocks/helpers";
 import { render, screen, waitFor } from "../../../mocks/testUtils";
-import { makeAccountOperations } from "../../../types/AccountOperations";
-import { TEZ } from "../../../utils/tezos";
 import { type SignPageProps } from "../utils";
 
 const fixture = (props: SignPageProps<{ nft: NFTBalance }>) => (
@@ -17,7 +20,7 @@ const fixture = (props: SignPageProps<{ nft: NFTBalance }>) => (
   </Modal>
 );
 
-beforeEach(() => addAccount(mockMnemonicAccount(0)));
+beforeEach(() => addTestAccount(mockMnemonicAccount(0)));
 
 describe("<SignPage />", () => {
   const sender = mockImplicitAccount(0);

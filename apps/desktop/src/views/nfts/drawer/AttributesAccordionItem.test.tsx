@@ -1,5 +1,5 @@
 import { Accordion } from "@chakra-ui/react";
-import { mockNFT } from "@umami/test-utils";
+import { mockNFT } from "@umami/core";
 
 import { AttributesAccordionItem } from "./AttributesAccordionItem";
 import { render, screen } from "../../../mocks/testUtils";

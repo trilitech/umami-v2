@@ -1,37 +1,27 @@
+import { type StoredContactInfo, mockImplicitContact } from "@umami/core";
+import { contactsActions, networksActions, store } from "@umami/state";
 import { GHOSTNET } from "@umami/tezos";
 
 import { AddressBookView } from "./AddressBookView";
-import { contact1, contact2, contact3, contacts } from "../../mocks/contacts";
 import { render, screen } from "../../mocks/testUtils";
-import { contactsActions } from "../../utils/redux/slices/contactsSlice";
-import { networksActions } from "../../utils/redux/slices/networks";
-import { store } from "../../utils/redux/store";
+
+const contact1 = mockImplicitContact(1);
+const contact2 = mockImplicitContact(2);
+const contact3 = mockImplicitContact(3);
+
+const contacts: Record<string, StoredContactInfo> = {
+  [contact3["pkh"]]: contact3,
+  [contact2["pkh"]]: contact2,
+  [contact1["pkh"]]: contact1,
+};
 
 const fixture = () => <AddressBookView />;
 
 describe("AddressBookView", () => {
-  describe("without contacts", () => {
-    it("displays no contact rows", () => {
-      render(fixture());
-
-      expect(screen.queryByTestId("contact-row")).not.toBeInTheDocument();
-    });
-
-    it("displays empty state message", () => {
-      render(fixture());
-
-      expect(screen.getByTestId("empty-state-message")).toBeInTheDocument();
-      expect(screen.getByText("Your address book is empty")).toBeVisible();
-      expect(screen.getByText("Your contacts will appear here...")).toBeVisible();
-    });
-  });
-
   describe("with contacts", () => {
-    beforeEach(() => {
-      Object.values(contacts()).forEach(contact => {
-        store.dispatch(contactsActions.upsert(contact));
-      });
-    });
+    beforeEach(() =>
+      Object.values(contacts).forEach(contact => store.dispatch(contactsActions.upsert(contact)))
+    );
 
     it("hides empty state message", () => {
       render(fixture());

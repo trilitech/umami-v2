@@ -1,4 +1,4 @@
-import { mockContractAddress, mockImplicitAddress } from "@umami/test-utils";
+import { mockContractAddress, mockImplicitAddress } from "@umami/tezos";
 
 import { NFTsGrid } from "./NFTsGrid";
 import { render, screen } from "../../../mocks/testUtils";

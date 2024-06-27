@@ -1,5 +1,5 @@
-import { type NFTBalance } from "@umami/core";
-import { mockImplicitAddress, mockNFT } from "@umami/test-utils";
+import { type NFTBalance, mockNFT } from "@umami/core";
+import { mockImplicitAddress } from "@umami/tezos";
 
 import { NFTDrawerCard } from "./NFTDrawerCard";
 import { render, screen } from "../../mocks/testUtils";

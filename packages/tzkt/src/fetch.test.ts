@@ -7,8 +7,7 @@ import {
   tokensGetTokenBalances,
   tokensGetTokenTransfers,
 } from "@tzkt/sdk-api";
-import { mockImplicitAddress } from "@umami/test-utils";
-import { DefaultNetworks } from "@umami/tezos";
+import { DefaultNetworks, mockImplicitAddress } from "@umami/tezos";
 import axios from "axios";
 import { sortBy } from "lodash";
 

@@ -1,14 +1,12 @@
 import { type ExtendedPeerInfo, NetworkType } from "@airgap/beacon-wallet";
-import { mockMnemonicAccount } from "@umami/test-utils";
+import { mockMnemonicAccount } from "@umami/core";
+import { addTestAccount, beaconActions, store } from "@umami/state";
 
 import * as beaconHelper from "./beacon";
 import { BeaconPeers } from "./BeaconPeers";
 import { WalletClient } from "./WalletClient";
-import { addAccount } from "../../mocks/helpers";
 import { act, render, screen, userEvent, waitFor, within } from "../../mocks/testUtils";
 import { formatPkh } from "../format";
-import { beaconActions } from "../redux/slices/beaconSlice";
-import { store } from "../redux/store";
 
 const peersData: ExtendedPeerInfo[] = [
   {
@@ -38,7 +36,7 @@ const peersData: ExtendedPeerInfo[] = [
 ];
 
 beforeEach(() => {
-  [mockMnemonicAccount(1), mockMnemonicAccount(2)].forEach(addAccount);
+  [mockMnemonicAccount(1), mockMnemonicAccount(2)].forEach(addTestAccount);
   jest.spyOn(beaconHelper, "usePeers").mockReturnValue(peersData);
 });
 

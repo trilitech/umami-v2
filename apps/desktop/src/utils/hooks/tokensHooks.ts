@@ -1,9 +1,9 @@
 import { type Token } from "@umami/core";
+import { useAppSelector } from "@umami/state";
 import { type Network, type RawPkh } from "@umami/tezos";
 import { get } from "lodash";
 
 import { useSelectedNetwork } from "./networkHooks";
-import { useAppSelector } from "../redux/hooks";
 
 export type TokenLookup = (contract: RawPkh, tokenId: string) => Token | undefined;
 

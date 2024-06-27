@@ -1,18 +1,19 @@
 import { Modal } from "@chakra-ui/react";
-import { contract, makeStorageJSON } from "@umami/multisig";
 import {
-  mockContractAddress,
+  estimate,
+  makeAccountOperations,
   mockContractOrigination,
   mockImplicitAccount,
-  mockImplicitAddress,
   mockMnemonicAccount,
-} from "@umami/test-utils";
+} from "@umami/core";
+import { contract, makeStorageJSON } from "@umami/multisig";
+import { addTestAccount } from "@umami/state";
+import { executeParams } from "@umami/test-utils";
+import { mockContractAddress, mockImplicitAddress } from "@umami/tezos";
 
 import { type FormValues } from "./FormValues";
 import { SelectApproversFormPage } from "./SelectApproversFormPage";
 import { SignTransactionFormPage } from "./SignTransactionFormPage";
-import { executeParams } from "../../../mocks/executeParams";
-import { addAccount } from "../../../mocks/helpers";
 import {
   act,
   dynamicModalContextMock,
@@ -22,8 +23,6 @@ import {
   userEvent,
   waitFor,
 } from "../../../mocks/testUtils";
-import { makeAccountOperations } from "../../../types/AccountOperations";
-import { estimate } from "../../../utils/tezos";
 
 const MULTISIG_NAME = "Multisig Account Name";
 const SENDER = mockMnemonicAccount(0);
@@ -41,10 +40,13 @@ const fixture = (formValues?: FormValues) => {
   );
 };
 
-jest.mock("../../../utils/tezos/estimate");
+jest.mock("@umami/core", () => ({
+  ...jest.requireActual("@umami/core"),
+  estimate: jest.fn(),
+}));
 
 beforeEach(() =>
-  [mockMnemonicAccount(0), mockMnemonicAccount(1), mockMnemonicAccount(2)].forEach(addAccount)
+  [mockMnemonicAccount(0), mockMnemonicAccount(1), mockMnemonicAccount(2)].forEach(addTestAccount)
 );
 
 describe("SelectApproversFormPage", () => {

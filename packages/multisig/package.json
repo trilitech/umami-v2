@@ -16,6 +16,7 @@
   "devDependencies": {
     "@types/eslint": "^8",
     "@types/lodash": "^4",
+    "@umami/core": "workspace:^",
     "@umami/eslint-config": "workspace:^",
     "@umami/jest-config": "workspace:^",
     "@umami/test-utils": "workspace:^",

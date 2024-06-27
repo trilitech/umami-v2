@@ -1,13 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { getPendingOperations } from "@umami/multisig";
+import { multisigActions, useAppDispatch } from "@umami/state";
 import { useEffect } from "react";
 
 import { BLOCK_TIME } from "./constants";
 import { useRefetchTrigger } from "../hooks/assetsHooks";
 import { useMultisigAccounts } from "../hooks/multisigHooks";
 import { useSelectedNetwork } from "../hooks/networkHooks";
-import { useAppDispatch } from "../redux/hooks";
-import { multisigActions } from "../redux/slices/multisigsSlice";
 import { useReactQueryErrorHandler } from "../useReactQueryOnError";
 
 export const usePollPendingOperations = () => {

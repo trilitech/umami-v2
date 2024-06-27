@@ -1,6 +1,5 @@
 import * as api from "@tzkt/sdk-api";
-import { mockImplicitAddress } from "@umami/test-utils";
-import { DefaultNetworks, GHOSTNET } from "@umami/tezos";
+import { DefaultNetworks, GHOSTNET, mockImplicitAddress } from "@umami/tezos";
 import axios from "axios";
 
 import {

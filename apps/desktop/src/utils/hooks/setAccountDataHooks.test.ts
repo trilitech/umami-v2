@@ -1,13 +1,21 @@
-import { type ImplicitAccount, type MnemonicAccount } from "@umami/core";
-import { decrypt, encrypt } from "@umami/crypto";
 import {
-  mnemonic1,
+  type ImplicitAccount,
+  type MnemonicAccount,
   mockImplicitAccount,
   mockLedgerAccount,
   mockSecretKeyAccount,
   mockSocialAccount,
-} from "@umami/test-utils";
-import { AVAILABLE_DERIVATION_PATH_TEMPLATES, makeDerivationPath } from "@umami/tezos";
+} from "@umami/core";
+import { decrypt, encrypt } from "@umami/crypto";
+import { accountsSlice, addTestAccount, store } from "@umami/state";
+import { mnemonic1 } from "@umami/test-utils";
+import {
+  AVAILABLE_DERIVATION_PATH_TEMPLATES,
+  derivePublicKeyPair,
+  getFingerPrint,
+  isAccountRevealed,
+  makeDerivationPath,
+} from "@umami/tezos";
 
 import { useRemoveDependenciesAndMultisigs } from "./removeAccountDependenciesHooks";
 import {
@@ -17,30 +25,29 @@ import {
   useRemoveNonMnemonic,
   useRestoreFromMnemonic,
 } from "./setAccountDataHooks";
-import { addAccount, fakeIsAccountRevealed } from "../../mocks/helpers";
+import { fakeIsAccountRevealed } from "../../mocks/helpers";
 import { act, renderHook } from "../../mocks/testUtils";
-import { accountsSlice } from "../redux/slices/accountsSlice/accountsSlice";
-import { store } from "../redux/store";
-import * as tezosHelpers from "../tezos/helpers";
 
 jest.mock("./removeAccountDependenciesHooks");
 jest.mock("@umami/crypto", () => ({
   encrypt: jest.fn(),
   decrypt: jest.fn(),
 }));
+jest.mock("@umami/tezos", () => ({
+  ...jest.requireActual("@umami/tezos"),
+  getFingerPrint: jest.fn(),
+  isAccountRevealed: jest.fn(),
+}));
 
 const mockedUseRemoveDependenciesAndMultisigs = jest.mocked(useRemoveDependenciesAndMultisigs);
 const mockedRemoveAccountsDependencies = jest.fn();
 
 describe("setAccountDataHooks", () => {
-  beforeEach(() => {
-    mockedUseRemoveDependenciesAndMultisigs.mockReturnValue(mockedRemoveAccountsDependencies);
-  });
+  beforeEach(() =>
+    mockedUseRemoveDependenciesAndMultisigs.mockReturnValue(mockedRemoveAccountsDependencies)
+  );
 
   describe("mnemonic accounts", () => {
-    const isAccountRevealedMock = jest.spyOn(tezosHelpers, "isAccountRevealed");
-    const getFingerPrintMock = jest.spyOn(tezosHelpers, "getFingerPrint");
-
     const LABEL_BASE = "Test acc";
     const PASSWORD = "password";
     const DERIVATION_PATH_TEMPLATE = AVAILABLE_DERIVATION_PATH_TEMPLATES[2].value;
@@ -49,7 +56,7 @@ describe("setAccountDataHooks", () => {
     const MOCK_ENCRYPTED = { mock: "encrypted" } as any;
 
     const mnemonicAccount = async (index: number, label: string): Promise<MnemonicAccount> => {
-      const pubKeyPair = await tezosHelpers.derivePublicKeyPair(
+      const pubKeyPair = await derivePublicKeyPair(
         mnemonic1,
         makeDerivationPath(DERIVATION_PATH_TEMPLATE, index)
       );
@@ -67,7 +74,7 @@ describe("setAccountDataHooks", () => {
 
     describe("useRestoreFromMnemonic", () => {
       beforeEach(() => {
-        getFingerPrintMock.mockResolvedValue(MOCK_FINGERPRINT);
+        jest.mocked(getFingerPrint).mockResolvedValue(MOCK_FINGERPRINT);
         jest.mocked(encrypt).mockReturnValue(Promise.resolve(MOCK_ENCRYPTED));
       });
 
@@ -90,9 +97,9 @@ describe("setAccountDataHooks", () => {
         expect(store.getState().accounts.seedPhrases).toEqual({
           [MOCK_FINGERPRINT]: MOCK_ENCRYPTED,
         });
-        expect(tezosHelpers.getFingerPrint).toHaveBeenCalledWith(mnemonic1);
+        expect(getFingerPrint).toHaveBeenCalledWith(mnemonic1);
         // Encrypts given mnemonic with the given password.
-        expect(jest.mocked(encrypt)).toHaveBeenCalledWith(mnemonic1, PASSWORD);
+        expect(encrypt).toHaveBeenCalledWith(mnemonic1, PASSWORD);
       });
 
       it("restores revealed accounts", async () => {
@@ -108,9 +115,11 @@ describe("setAccountDataHooks", () => {
           await mnemonicAccount(4, `${LABEL_BASE} 5`),
           await mnemonicAccount(5, `${LABEL_BASE} 6`),
         ];
-        isAccountRevealedMock.mockImplementation(
-          fakeIsAccountRevealed(revealedAccounts.map(account => account.address))
-        );
+        jest
+          .mocked(isAccountRevealed)
+          .mockImplementation(
+            fakeIsAccountRevealed(revealedAccounts.map(account => account.address))
+          );
 
         const {
           result: { current: restoreFromMnemonic },
@@ -128,10 +137,10 @@ describe("setAccountDataHooks", () => {
         expect(store.getState().accounts.seedPhrases).toEqual({
           [MOCK_FINGERPRINT]: MOCK_ENCRYPTED,
         });
-        expect(tezosHelpers.getFingerPrint).toHaveBeenCalledWith(mnemonic1);
+        expect(getFingerPrint).toHaveBeenCalledWith(mnemonic1);
         // Encrypts given mnemonic with the given password.
-        expect(jest.mocked(encrypt)).toHaveBeenCalledWith(mnemonic1, PASSWORD);
-      });
+        expect(encrypt).toHaveBeenCalledWith(mnemonic1, PASSWORD);
+      }, 10000);
 
       it("assigns unique labels to revealed accounts", async () => {
         // Add existing accounts
@@ -139,7 +148,7 @@ describe("setAccountDataHooks", () => {
           mockSocialAccount(0, LABEL_BASE),
           mockSecretKeyAccount(2, `${LABEL_BASE} 3`),
         ];
-        existingAccounts.forEach(addAccount);
+        existingAccounts.forEach(addTestAccount);
         // Labels "labelBase" & "labelBase 3" are taken by other types of accounts.
         // The next available labels are "labelBase 2" & "labelBase 4".
         const expected = [
@@ -148,9 +157,9 @@ describe("setAccountDataHooks", () => {
           await mnemonicAccount(2, `${LABEL_BASE} 5`),
         ];
         // Reveal mnemonic accounts
-        isAccountRevealedMock.mockImplementation(
-          fakeIsAccountRevealed(expected.map(account => account.address))
-        );
+        jest
+          .mocked(isAccountRevealed)
+          .mockImplementation(fakeIsAccountRevealed(expected.map(account => account.address)));
 
         const {
           result: { current: restoreFromMnemonic },
@@ -265,7 +274,7 @@ describe("setAccountDataHooks", () => {
           mockSocialAccount(0, LABEL_BASE),
           mockSecretKeyAccount(2, `${LABEL_BASE} 5`),
         ];
-        otherAccounts.forEach(addAccount);
+        otherAccounts.forEach(addTestAccount);
         const existingAccounts = [
           await mnemonicAccount(0, `${LABEL_BASE} 2`),
           await mnemonicAccount(1, `${LABEL_BASE} 4`),
@@ -362,7 +371,7 @@ describe("setAccountDataHooks", () => {
       mockSecretKeyAccount(6),
     ];
 
-    beforeEach(() => accounts.forEach(addAccount));
+    beforeEach(() => accounts.forEach(addTestAccount));
 
     describe.each(["social" as const, "ledger" as const, "secret_key" as const])(
       "for %s type",
@@ -397,7 +406,7 @@ describe("setAccountDataHooks", () => {
   describe("useRemoveAccount", () => {
     it("deletes secret key on deleting secret key account", () => {
       const account = mockSecretKeyAccount(0);
-      addAccount(account);
+      addTestAccount(account);
       store.dispatch(
         accountsSlice.actions.addSecretKey({
           pkh: account.address.pkh,

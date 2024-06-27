@@ -1,3 +1,4 @@
+import { getErrorContext } from "@umami/core";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { ErrorBoundary } from "react-error-boundary";
@@ -7,7 +8,6 @@ import { Layout } from "./layout";
 import { ReactQueryProvider } from "./providers/ReactQueryProvider";
 import { ReduxStore } from "./providers/ReduxStore";
 import { UmamiTheme } from "./providers/UmamiTheme";
-import { getErrorContext } from "./utils/getErrorContext";
 import { ErrorPage } from "./views/ErrorPage/ErrorPage";
 
 import "./index.scss";

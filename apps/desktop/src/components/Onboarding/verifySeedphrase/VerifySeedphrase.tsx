@@ -1,10 +1,10 @@
 import { Box, Button, FormControl, Text } from "@chakra-ui/react";
+import { selectRandomElements } from "@umami/core";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { DoubleCheckmarkIcon } from "../../../assets/icons";
 import { IS_DEV } from "../../../env";
-import { selectRandomElements } from "../../../utils/tezos";
 import { FormErrorMessage } from "../../FormErrorMessage";
 import { MnemonicAutocomplete } from "../../MnemonicAutocomplete";
 import { ModalContentWrapper } from "../ModalContentWrapper";

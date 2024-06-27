@@ -6,13 +6,12 @@ import {
 } from "@airgap/beacon-wallet";
 import { Modal } from "@chakra-ui/react";
 import { fireEvent } from "@testing-library/react";
-import { mockMnemonicAccount } from "@umami/test-utils";
+import { mockMnemonicAccount } from "@umami/core";
+import { addTestAccount, store } from "@umami/state";
 
 import { PermissionRequestModal } from "./PermissionRequestModal";
 import { WalletClient } from "./WalletClient";
-import { addAccount } from "../../mocks/helpers";
 import { act, render, screen, userEvent } from "../../mocks/testUtils";
-import { store } from "../redux/store";
 
 jest.mock("./WalletClient", () => ({
   WalletClient: {
@@ -43,7 +42,7 @@ const request: PermissionRequestOutput = {
 };
 
 beforeEach(() =>
-  [mockMnemonicAccount(1), mockMnemonicAccount(2), mockMnemonicAccount(3)].forEach(addAccount)
+  [mockMnemonicAccount(1), mockMnemonicAccount(2), mockMnemonicAccount(3)].forEach(addTestAccount)
 );
 
 describe("<PermissionRequestModal />", () => {

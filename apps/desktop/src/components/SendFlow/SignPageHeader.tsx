@@ -1,11 +1,10 @@
 import { Heading, ModalCloseButton, Text } from "@chakra-ui/react";
-import { type ImplicitAccount } from "@umami/core";
+import { type AccountOperations, type ImplicitAccount } from "@umami/core";
 import { type PropsWithChildren } from "react";
 
 import { HeaderWrapper } from "./FormPageHeader";
 import { type SignPageMode } from "./utils";
 import colors from "../../style/colors";
-import { type AccountOperations } from "../../types/AccountOperations";
 import { ModalBackButton } from "../ModalBackButton";
 
 export const headerText = (

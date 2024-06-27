@@ -1,9 +1,8 @@
+import { networksActions, store } from "@umami/state";
 import { DefaultNetworks } from "@umami/tezos";
 
 import { TzktLink } from "./TzktLink";
 import { render, screen } from "../../mocks/testUtils";
-import { networksActions } from "../../utils/redux/slices/networks";
-import { store } from "../../utils/redux/store";
 
 describe("<TzktLink />", () => {
   describe.each(DefaultNetworks)("$name", network => {

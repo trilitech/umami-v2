@@ -8,8 +8,7 @@ import {
   Image,
   Text,
 } from "@chakra-ui/react";
-import { type Account } from "@umami/core";
-import { fullId, thumbnailUri } from "@umami/core";
+import { type Account, fullId, thumbnailUri } from "@umami/core";
 import type React from "react";
 import { useContext } from "react";
 import { Link } from "react-router-dom";

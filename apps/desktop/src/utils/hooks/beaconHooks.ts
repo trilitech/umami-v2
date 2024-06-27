@@ -1,10 +1,8 @@
 import { type NetworkType } from "@airgap/beacon-wallet";
+import { type DAppConnectionInfo, beaconSlice, useAppSelector } from "@umami/state";
 import { type RawPkh } from "@umami/tezos";
 import { uniq } from "lodash";
 import { useDispatch } from "react-redux";
-
-import { useAppSelector } from "../redux/hooks";
-import { type DAppConnectionInfo, beaconSlice } from "../redux/slices/beaconSlice";
 
 /**
  * Returns connected account pkh & network by a given dAppId.

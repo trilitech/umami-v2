@@ -6,13 +6,12 @@ import {
   type SecretKeyAccount,
 } from "@umami/core";
 import { decrypt } from "@umami/crypto";
-import { type RawPkh } from "@umami/tezos";
+import { useAppSelector } from "@umami/state";
+import { type RawPkh, deriveSecretKey } from "@umami/tezos";
 import { maxBy } from "lodash";
 
 import { useGetAccountBalance } from "./assetsHooks";
 import { useMultisigAccounts } from "./multisigHooks";
-import { useAppSelector } from "../redux/hooks";
-import { deriveSecretKey } from "../tezos";
 
 export const useSeedPhrases = () => useAppSelector(s => s.accounts.seedPhrases);
 

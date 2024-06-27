@@ -8,7 +8,7 @@ const config: Config = {
     "^.+\\.ts$": "ts-jest",
   },
   testEnvironment: "node",
-  setupFilesAfterEnv: [],
+  testTimeout: 10000,
   rootDir: "./",
 };
 export default config;

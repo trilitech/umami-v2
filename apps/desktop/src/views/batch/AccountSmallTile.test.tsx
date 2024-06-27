@@ -1,15 +1,13 @@
-import { mockImplicitAccount, mockMnemonicAccount, rawAccountFixture } from "@umami/test-utils";
+import { mockImplicitAccount, mockMnemonicAccount, rawAccountFixture } from "@umami/core";
+import { addTestAccount, assetsActions, store } from "@umami/state";
 
 import { AccountSmallTile } from "./AccountSmallTile";
-import { addAccount } from "../../mocks/helpers";
 import { render, screen } from "../../mocks/testUtils";
 import { formatPkh } from "../../utils/format";
-import { assetsActions } from "../../utils/redux/slices/assetsSlice";
-import { store } from "../../utils/redux/store";
 
 const account = mockMnemonicAccount(1, "Test account label");
 
-beforeEach(() => addAccount(account));
+beforeEach(() => addTestAccount(account));
 
 describe("<AccountSmallTile />", () => {
   it("shows account label", () => {

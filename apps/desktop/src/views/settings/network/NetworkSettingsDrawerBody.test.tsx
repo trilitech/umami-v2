@@ -1,9 +1,8 @@
+import { networksActions, store } from "@umami/state";
 import { GHOSTNET, MAINNET } from "@umami/tezos";
 
 import { NetworkSettingsDrawerBody } from "./NetworkSettingsDrawerBody";
 import { render, screen, within } from "../../../mocks/testUtils";
-import { networksActions } from "../../../utils/redux/slices/networks";
-import { store } from "../../../utils/redux/store";
 
 describe("<NetworkSettingsDrawerBody />", () => {
   const customNetwork = { ...GHOSTNET, name: "custom" };

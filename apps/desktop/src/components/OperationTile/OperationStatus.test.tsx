@@ -1,7 +1,7 @@
+import { assetsActions, store } from "@umami/state";
+
 import { OperationStatus } from "./OperationStatus";
 import { render, screen } from "../../mocks/testUtils";
-import { assetsActions } from "../../utils/redux/slices/assetsSlice";
-import { store } from "../../utils/redux/store";
 
 describe("<OperationStatus />", () => {
   it("renders a checkmark if the operation is applied and the block is finalised", () => {

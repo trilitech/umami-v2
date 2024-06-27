@@ -1,27 +1,28 @@
+import { mockBaker, mockLedgerAccount, mockMnemonicAccount, mockSocialAccount } from "@umami/core";
+import { multisigsFixture } from "@umami/multisig";
 import {
-  mockBaker,
+  addTestAccount,
+  assetsSlice,
+  contactsSlice,
+  multisigsSlice,
+  networksActions,
+  store,
+} from "@umami/state";
+import {
+  MAINNET,
   mockContractAddress,
   mockImplicitAddress,
-  mockLedgerAccount,
-  mockMnemonicAccount,
-  mockSocialAccount,
-  multisigs,
-} from "@umami/test-utils";
-import { MAINNET, parseImplicitPkh, parsePkh } from "@umami/tezos";
+  parseImplicitPkh,
+  parsePkh,
+} from "@umami/tezos";
 
 import { useAddressKind } from "./useAddressKind";
-import { addAccount } from "../../mocks/helpers";
 import { renderHook } from "../../mocks/testUtils";
-import { assetsSlice } from "../../utils/redux/slices/assetsSlice";
-import { contactsSlice } from "../../utils/redux/slices/contactsSlice";
-import { multisigsSlice } from "../../utils/redux/slices/multisigsSlice";
-import { networksActions } from "../../utils/redux/slices/networks";
-import { store } from "../../utils/redux/store";
 
 describe("useAddressKind", () => {
   it("returns mnemonic account", () => {
     const account = mockMnemonicAccount(0);
-    addAccount(account);
+    addTestAccount(account);
 
     const { result: addressKindRef } = renderHook(() => useAddressKind(account.address));
 
@@ -34,7 +35,7 @@ describe("useAddressKind", () => {
 
   it("returns social account", () => {
     const account = mockSocialAccount(0);
-    addAccount(account);
+    addTestAccount(account);
 
     const { result: addressKindRef } = renderHook(() => useAddressKind(account.address));
 
@@ -47,7 +48,7 @@ describe("useAddressKind", () => {
 
   it("returns ledger account", () => {
     const account = mockLedgerAccount(0);
-    addAccount(account);
+    addTestAccount(account);
 
     const { result: addressKindRef } = renderHook(() => useAddressKind(account.address));
 
@@ -59,13 +60,15 @@ describe("useAddressKind", () => {
   });
 
   it("returns owned multisig account", () => {
-    store.dispatch(multisigsSlice.actions.setMultisigs(multisigs));
+    store.dispatch(multisigsSlice.actions.setMultisigs(multisigsFixture));
 
-    const { result: addressKindRef } = renderHook(() => useAddressKind(multisigs[0].address));
+    const { result: addressKindRef } = renderHook(() =>
+      useAddressKind(multisigsFixture[0].address)
+    );
 
     expect(addressKindRef.current).toEqual({
       type: "multisig",
-      pkh: multisigs[0].address.pkh,
+      pkh: multisigsFixture[0].address.pkh,
       label: "Multisig Account 0",
     });
   });

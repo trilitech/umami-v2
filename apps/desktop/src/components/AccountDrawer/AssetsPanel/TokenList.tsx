@@ -1,6 +1,10 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
-import { type FA12TokenBalance, type FA2TokenBalance } from "@umami/core";
-import { fullId, tokenPrettyAmount } from "@umami/core";
+import {
+  type FA12TokenBalance,
+  type FA2TokenBalance,
+  fullId,
+  tokenPrettyAmount,
+} from "@umami/core";
 import { type RawPkh } from "@umami/tezos";
 
 import { ViewAllLink } from "./ViewAllLink";

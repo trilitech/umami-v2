@@ -1,4 +1,5 @@
-import { mockImplicitAccount, mockMnemonicAccount } from "@umami/test-utils";
+import { mockImplicitAccount, mockMnemonicAccount } from "@umami/core";
+import { addTestAccount, networksActions, store } from "@umami/state";
 import { MAINNET } from "@umami/tezos";
 import {
   type TzktCombinedOperation,
@@ -7,11 +8,8 @@ import {
 } from "@umami/tzkt";
 
 import { OperationsView } from "./OperationsView";
-import { addAccount } from "../../mocks/helpers";
 import { act, render, screen, userEvent, waitFor } from "../../mocks/testUtils";
 import { mockTzktTezTransfer } from "../../mocks/transfers";
-import { networksActions } from "../../utils/redux/slices/networks";
-import { store } from "../../utils/redux/store";
 
 jest.mock("@umami/tzkt", () => ({
   ...jest.requireActual("@umami/tzkt"),
@@ -21,8 +19,8 @@ jest.mock("@umami/tzkt", () => ({
 
 describe("OperationsView", () => {
   beforeEach(() => {
-    addAccount(mockMnemonicAccount(1));
-    addAccount(mockMnemonicAccount(2));
+    addTestAccount(mockMnemonicAccount(1));
+    addTestAccount(mockMnemonicAccount(2));
     store.dispatch(networksActions.setCurrent(MAINNET));
   });
 

@@ -2,22 +2,24 @@ import crypto from "crypto";
 
 import { After, AfterAll, Before, BeforeAll, setDefaultTimeout } from "@cucumber/cucumber";
 import { type ChromiumBrowser, chromium } from "@playwright/test";
+import {
+  accountsInitialState,
+  announcementInitialState,
+  assetsInitialState,
+  batchesInitialState,
+  beaconInitialState,
+  contactsInitialState,
+  errorsInitialState,
+  multisigsInitialState,
+  protocolSettingsInitialState,
+  VERSION as stateVersion,
+  tokensInitialState,
+} from "@umami/state";
 import { secondsToMilliseconds } from "date-fns";
 import { omit } from "lodash";
 
 import { BASE_URL } from "./onboarding";
 import { type CustomWorld } from "./world";
-import { VERSION } from "../../utils/redux/migrations";
-import { initialState as accountsInitialState } from "../../utils/redux/slices/accountsSlice";
-import { initialState as announcementInitialState } from "../../utils/redux/slices/announcementSlice";
-import { initialState as assetsInitialState } from "../../utils/redux/slices/assetsSlice";
-import { initialState as batchesInitialState } from "../../utils/redux/slices/batches";
-import { initialState as beaconInitialState } from "../../utils/redux/slices/beaconSlice";
-import { initialState as contactsInitialState } from "../../utils/redux/slices/contactsSlice";
-import { initialState as errorsInitialState } from "../../utils/redux/slices/errorsSlice";
-import { initialState as multisigsInitialState } from "../../utils/redux/slices/multisigsSlice";
-import { initialState as protocolSettingsInitialState } from "../../utils/redux/slices/protocolSettingsSlice";
-import { initialState as tokensInitialState } from "../../utils/redux/slices/tokensSlice";
 import { TEST_NETWORKS_STATE } from "../constants";
 import { killNode, resetBlockchain } from "../utils";
 
@@ -74,7 +76,7 @@ Before(async function (this: CustomWorld) {
     const prepareObjForRedux = (obj: any): void => {
       // without this redux considers the object to be malformed
       // and overrides it with the default state
-      obj["_persist"] = { version: VERSION, rehydrated: true };
+      obj["_persist"] = { version: stateVersion, rehydrated: true };
 
       // each value should be a valid JSON string
       Object.keys(obj).forEach(key => {

@@ -1,7 +1,7 @@
+// TODO: move this file to @umami/tezos
 import { format } from "@taquito/utils";
+import { TEZ, TEZ_DECIMALS } from "@umami/tezos";
 import BigNumber from "bignumber.js";
-
-import { TEZ, TEZ_DECIMALS } from "./tezos";
 
 export const truncate = (name: string, len: number) =>
   name.length > len ? name.slice(0, len - 3) + "..." : name;

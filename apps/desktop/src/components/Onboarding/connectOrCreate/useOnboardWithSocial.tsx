@@ -1,11 +1,11 @@
 import { useToast } from "@chakra-ui/react";
 import * as Auth from "@umami/social-auth";
+import { getPublicKeyPairFromSk } from "@umami/tezos";
 import { minutesToMilliseconds } from "date-fns";
 import { useCallback } from "react";
 
 import { useRestoreSocial } from "../../../utils/hooks/setAccountDataHooks";
 import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
-import { getPublicKeyPairFromSk } from "../../../utils/tezos";
 import { withTimeout } from "../../../utils/withTimeout";
 
 const LOGIN_TIMEOUT = minutesToMilliseconds(1);

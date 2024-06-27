@@ -1,5 +1,5 @@
 import type { MichelsonV1Expression } from "@taquito/rpc";
-import { mockMultisigAccount } from "@umami/test-utils";
+import { mockMultisigAccount } from "@umami/core";
 import { parseContractPkh, parseImplicitPkh } from "@umami/tezos";
 
 import { decode, parseRawMichelson } from "./decoding";

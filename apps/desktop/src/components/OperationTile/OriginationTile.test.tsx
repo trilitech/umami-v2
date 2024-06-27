@@ -1,15 +1,12 @@
-import { mockContractAddress, mockLedgerAccount } from "@umami/test-utils";
-import { DefaultNetworks } from "@umami/tezos";
+import { mockLedgerAccount } from "@umami/core";
+import { addTestAccount, networksActions, store } from "@umami/state";
+import { DefaultNetworks, TEZ, mockContractAddress } from "@umami/tezos";
 import { type OriginationOperation } from "@umami/tzkt";
 
 import { OperationTileContext } from "./OperationTileContext";
 import { OriginationTile } from "./OriginationTile";
 import { originationFixture } from "./testUtils";
-import { addAccount } from "../../mocks/helpers";
 import { render, screen } from "../../mocks/testUtils";
-import { networksActions } from "../../utils/redux/slices/networks";
-import { store } from "../../utils/redux/store";
-import { TEZ } from "../../utils/tezos";
 
 const fixture = (context: any, operation: OriginationOperation) => (
   <OperationTileContext.Provider value={context}>
@@ -66,7 +63,7 @@ describe("<OriginationTile />", () => {
     });
 
     it("shows the sender pill", () => {
-      addAccount(mockLedgerAccount(0));
+      addTestAccount(mockLedgerAccount(0));
 
       render(
         fixture(
@@ -86,7 +83,7 @@ describe("<OriginationTile />", () => {
 
     describe("fee", () => {
       it("renders if there is any fee paid by the user", () => {
-        addAccount(mockLedgerAccount(0));
+        addTestAccount(mockLedgerAccount(0));
         render(
           fixture(
             contextValue,
@@ -125,7 +122,7 @@ describe("<OriginationTile />", () => {
 
   describe("drawer mode", () => {
     const contextValue = { mode: "drawer", selectedAddress: mockLedgerAccount(0).address };
-    beforeEach(() => addAccount(mockLedgerAccount(0)));
+    beforeEach(() => addTestAccount(mockLedgerAccount(0)));
 
     it("hides the fee", () => {
       render(fixture(contextValue, originationFixture()));

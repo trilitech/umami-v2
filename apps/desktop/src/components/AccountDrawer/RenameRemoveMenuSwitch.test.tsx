@@ -1,10 +1,9 @@
-import { mockLedgerAccount, mockMnemonicAccount, mockSocialAccount } from "@umami/test-utils";
+import { mockLedgerAccount, mockMnemonicAccount, mockSocialAccount } from "@umami/core";
+import { addTestAccount, store } from "@umami/state";
 
 import { RenameRemoveMenuSwitch } from "./RenameRemoveMenuSwitch";
-import { addAccount } from "../../mocks/helpers";
 import { act, render, screen, userEvent } from "../../mocks/testUtils";
 import { WalletClient } from "../../utils/beacon/WalletClient";
-import { store } from "../../utils/redux/store";
 
 beforeEach(() => {
   jest.spyOn(WalletClient, "getPeers").mockResolvedValue([]);
@@ -14,8 +13,8 @@ describe("<RenameRemoveMenuSwitch />", () => {
   it("shows removal message", async () => {
     const user = userEvent.setup();
     const social = mockSocialAccount(1);
-    addAccount(mockMnemonicAccount(0));
-    addAccount(social);
+    addTestAccount(mockMnemonicAccount(0));
+    addTestAccount(social);
     render(<RenameRemoveMenuSwitch account={social} />);
 
     await act(() => user.click(screen.getByTestId("popover-cta")));
@@ -29,7 +28,7 @@ describe("<RenameRemoveMenuSwitch />", () => {
   it("shows offboarding message for last account", async () => {
     const user = userEvent.setup();
     const social = mockSocialAccount(0);
-    addAccount(social);
+    addTestAccount(social);
     render(<RenameRemoveMenuSwitch account={social} />);
 
     await act(() => user.click(screen.getByTestId("popover-cta")));
@@ -46,7 +45,7 @@ describe("<RenameRemoveMenuSwitch />", () => {
     "removes only the $type account",
     async account => {
       const allAccounts = [mockSocialAccount(0), mockLedgerAccount(1), mockMnemonicAccount(2)];
-      allAccounts.forEach(addAccount);
+      allAccounts.forEach(addTestAccount);
       const user = userEvent.setup();
 
       render(<RenameRemoveMenuSwitch account={account} />);

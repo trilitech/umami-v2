@@ -6,8 +6,7 @@ import {
   Flex,
   useDisclosure,
 } from "@chakra-ui/react";
-import { type Account } from "@umami/core";
-import { fullId } from "@umami/core";
+import { type Account, fullId } from "@umami/core";
 import { get } from "lodash";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";

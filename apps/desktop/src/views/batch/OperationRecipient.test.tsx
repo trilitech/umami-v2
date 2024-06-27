@@ -1,5 +1,4 @@
 import {
-  mockContractAddress,
   mockContractOrigination,
   mockDelegationOperation,
   mockFA12Operation,
@@ -7,7 +6,8 @@ import {
   mockNftOperation,
   mockTezOperation,
   mockUndelegationOperation,
-} from "@umami/test-utils";
+} from "@umami/core";
+import { mockContractAddress } from "@umami/tezos";
 
 import { OperationRecipient } from "./OperationRecipient";
 import { render, screen } from "../../mocks/testUtils";

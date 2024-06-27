@@ -1,25 +1,27 @@
+import { mockBaker, mockImplicitAccount, mockMnemonicAccount } from "@umami/core";
+import { multisigsFixture } from "@umami/multisig";
 import {
-  hedgehoge,
-  mockBaker,
+  addTestAccount,
+  assetsSlice,
+  contactsSlice,
+  multisigsSlice,
+  networksActions,
+  store,
+  tokensSlice,
+} from "@umami/state";
+import { hedgehoge, uUSD } from "@umami/test-utils";
+import {
+  MAINNET,
   mockContractAddress,
-  mockImplicitAccount,
   mockImplicitAddress,
-  mockMnemonicAccount,
-  multisigs,
-  uUSD,
-} from "@umami/test-utils";
-import { MAINNET, parseContractPkh, parseImplicitPkh, parsePkh } from "@umami/tezos";
+  parseContractPkh,
+  parseImplicitPkh,
+  parsePkh,
+} from "@umami/tezos";
 import { cloneDeep } from "lodash";
 
 import { useAddressKind } from "./useAddressKind";
-import { addAccount } from "../../mocks/helpers";
 import { renderHook } from "../../mocks/testUtils";
-import { assetsSlice } from "../../utils/redux/slices/assetsSlice";
-import { contactsSlice } from "../../utils/redux/slices/contactsSlice";
-import { multisigsSlice } from "../../utils/redux/slices/multisigsSlice";
-import { networksActions } from "../../utils/redux/slices/networks";
-import { tokensSlice } from "../../utils/redux/slices/tokensSlice";
-import { store } from "../../utils/redux/store";
 
 beforeEach(() => {
   store.dispatch(networksActions.setCurrent(MAINNET));
@@ -28,7 +30,7 @@ beforeEach(() => {
 describe("useAddressKind", () => {
   it("returns owned implicit account", () => {
     const mnemonicAccount = mockMnemonicAccount(0);
-    addAccount(mockMnemonicAccount(0));
+    addTestAccount(mockMnemonicAccount(0));
 
     const { result: addressKindRef } = renderHook(() => useAddressKind(mnemonicAccount.address));
 
@@ -40,13 +42,15 @@ describe("useAddressKind", () => {
   });
 
   it("returns owned multisig account", () => {
-    store.dispatch(multisigsSlice.actions.setMultisigs(multisigs));
+    store.dispatch(multisigsSlice.actions.setMultisigs(multisigsFixture));
 
-    const { result: addressKindRef } = renderHook(() => useAddressKind(multisigs[0].address));
+    const { result: addressKindRef } = renderHook(() =>
+      useAddressKind(multisigsFixture[0].address)
+    );
 
     expect(addressKindRef.current).toEqual({
       type: "multisig",
-      pkh: multisigs[0].address.pkh,
+      pkh: multisigsFixture[0].address.pkh,
       label: "Multisig Account 0",
     });
   });
@@ -59,7 +63,7 @@ describe("useAddressKind", () => {
 
     it("returns empty label if name is not present", () => {
       const withoutName = cloneDeep(tokenBalance);
-      delete withoutName.token.metadata?.name;
+      delete (withoutName.token.metadata as any).name;
       store.dispatch(
         tokensSlice.actions.addTokens({
           network: MAINNET,
@@ -139,7 +143,7 @@ describe("useAddressKind", () => {
 
     it.each([
       { type: "implicit", address: mockImplicitAccount(0).address.pkh },
-      { type: "multisig", address: multisigs[0].address.pkh },
+      { type: "multisig", address: multisigsFixture[0].address.pkh },
       {
         type: "fa1.2",
         address: hedgehoge(mockImplicitAddress(0)).token.contract.address,
@@ -147,8 +151,8 @@ describe("useAddressKind", () => {
       { type: "fa2", address: uUSD(mockImplicitAddress(0)).token.contract.address },
       { type: "baker", address: mockBaker(1).address },
     ])("prioritizes $type over the contact", ({ type, address }) => {
-      addAccount(mockMnemonicAccount(0));
-      store.dispatch(multisigsSlice.actions.setMultisigs(multisigs));
+      addTestAccount(mockMnemonicAccount(0));
+      store.dispatch(multisigsSlice.actions.setMultisigs(multisigsFixture));
       store.dispatch(
         tokensSlice.actions.addTokens({
           network: MAINNET,

@@ -1,13 +1,20 @@
 import {
   mockContractContact,
-  mockImplicitAddress,
+  mockImplicitContact,
   mockLedgerAccount,
   mockMnemonicAccount,
   mockMultisigAccount,
   mockSecretKeyAccount,
   mockSocialAccount,
-} from "@umami/test-utils";
-import { GHOSTNET, MAINNET } from "@umami/tezos";
+} from "@umami/core";
+import {
+  addTestAccount,
+  contactsActions,
+  multisigsSlice,
+  networksActions,
+  store,
+} from "@umami/state";
+import { GHOSTNET, MAINNET, mockImplicitAddress } from "@umami/tezos";
 
 import {
   useAddressExistsInContacts,
@@ -17,19 +24,14 @@ import {
   useSortedContacts,
   useValidateNewContactPkh,
 } from "./contactsHooks";
-import {
-  contact1,
-  contact2,
-  contact3,
-  ghostnetContact,
-  mainnetContact,
-} from "../../mocks/contacts";
-import { addAccount } from "../../mocks/helpers";
 import { renderHook } from "../../mocks/testUtils";
-import { contactsActions } from "../redux/slices/contactsSlice";
-import { multisigsSlice } from "../redux/slices/multisigsSlice";
-import { networksActions } from "../redux/slices/networks";
-import { store } from "../redux/store";
+
+const ghostnetContact = mockContractContact(1, "ghostnet", "Ghostnet Contact");
+const mainnetContact = mockContractContact(2, "mainnet", "Mainnet Contact");
+
+const contact1 = mockImplicitContact(1);
+const contact2 = mockImplicitContact(2);
+const contact3 = mockImplicitContact(3);
 
 describe("contactsHooks", () => {
   beforeEach(() => {
@@ -181,7 +183,7 @@ describe("contactsHooks", () => {
     ])("fails for address used for $type account", account => {
       store.dispatch(contactsActions.reset());
       if (account.type !== "multisig") {
-        addAccount(account);
+        addTestAccount(account);
       } else {
         store.dispatch(multisigsSlice.actions.setMultisigs([account]));
       }

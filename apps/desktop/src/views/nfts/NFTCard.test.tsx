@@ -1,4 +1,5 @@
-import { mockImplicitAddress, mockNFT } from "@umami/test-utils";
+import { mockNFT } from "@umami/core";
+import { mockImplicitAddress } from "@umami/tezos";
 import { type PropsWithChildren, useState } from "react";
 
 import { NFTCard } from "./NFTCard";

@@ -1,11 +1,10 @@
 import { Alert, AlertDescription, Center, CloseButton, Flex } from "@chakra-ui/react";
+import { announcementSlice, useAppDispatch, useAppSelector } from "@umami/state";
 import axios from "axios";
 import { useEffect } from "react";
 
 import { MaintenanceIcon } from "../assets/icons";
 import colors from "../style/colors";
-import { useAppDispatch, useAppSelector } from "../utils/redux/hooks";
-import { announcementSlice } from "../utils/redux/slices/announcementSlice";
 
 const ANNOUNCEMENT_REFRESH_INTERVAL = 60 * 60 * 1000; // once an hour
 const ANNOUNCEMENT_FILE_URL = "https://storage.googleapis.com/umami-artifacts/announcement.html";

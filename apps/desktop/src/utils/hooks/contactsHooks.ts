@@ -1,9 +1,9 @@
 import { type Contact } from "@umami/core";
+import { useAppSelector } from "@umami/state";
 import { isAddressValid, isValidImplicitPkh } from "@umami/tezos";
 
 import { useGetOwnedAccountSafe } from "./getAccountDataHooks";
 import { useSelectedNetwork } from "./networkHooks";
-import { useAppSelector } from "../redux/hooks";
 
 export const useAllContacts = () => useAppSelector(s => s.contacts);
 

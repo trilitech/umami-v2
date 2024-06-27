@@ -1,12 +1,11 @@
 import { Modal } from "@chakra-ui/react";
-import { mockImplicitAccount, mockImplicitAddress, mockMnemonicAccount } from "@umami/test-utils";
+import { makeAccountOperations, mockImplicitAccount, mockMnemonicAccount } from "@umami/core";
+import { addTestAccount } from "@umami/state";
+import { executeParams } from "@umami/test-utils";
+import { TEZ, mockImplicitAddress } from "@umami/tezos";
 
 import { SignPage } from "./SignPage";
-import { executeParams } from "../../../mocks/executeParams";
-import { addAccount } from "../../../mocks/helpers";
 import { render, screen, waitFor } from "../../../mocks/testUtils";
-import { makeAccountOperations } from "../../../types/AccountOperations";
-import { TEZ } from "../../../utils/tezos";
 import { type SignPageProps } from "../utils";
 
 const fixture = (props: SignPageProps) => (
@@ -16,7 +15,7 @@ const fixture = (props: SignPageProps) => (
 );
 
 beforeEach(() => {
-  addAccount(mockMnemonicAccount(0));
+  addTestAccount(mockMnemonicAccount(0));
 });
 
 describe("<SignPage />", () => {

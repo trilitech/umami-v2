@@ -1,5 +1,5 @@
 import { Modal } from "@chakra-ui/react";
-import { mockLedgerAccount, mockMnemonicAccount } from "@umami/test-utils";
+import { mockLedgerAccount, mockMnemonicAccount } from "@umami/core";
 
 import { InfoModal } from "./InfoModal";
 import { render, screen } from "../../../mocks/testUtils";

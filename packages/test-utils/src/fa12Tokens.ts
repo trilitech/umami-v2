@@ -1,7 +1,4 @@
-import { type Address } from "@umami/tezos";
-import { type RawTzktTokenBalance } from "@umami/tzkt";
-
-export const tzBtsc = (owner: Address): RawTzktTokenBalance => ({
+export const tzBtsc: any = (owner: { pkh: string }) => ({
   id: 25018298793985,
   account: {
     address: owner.pkh,
@@ -29,7 +26,7 @@ export const tzBtsc = (owner: Address): RawTzktTokenBalance => ({
   lastTime: "2023-01-04T17:57:29Z",
 });
 
-export const hedgehoge = (owner: Address): RawTzktTokenBalance => ({
+export const hedgehoge = (owner: { pkh: string }) => ({
   id: 53252621074433,
   account: {
     address: owner.pkh,

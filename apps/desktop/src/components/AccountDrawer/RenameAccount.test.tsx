@@ -1,14 +1,15 @@
 import { Modal } from "@chakra-ui/react";
-import { type Account } from "@umami/core";
-import { mockContractContact, mockImplicitAccount, mockMnemonicAccount } from "@umami/test-utils";
+import {
+  type Account,
+  mockContractContact,
+  mockImplicitAccount,
+  mockMnemonicAccount,
+} from "@umami/core";
+import { addTestAccount, contactsActions, networksActions, store } from "@umami/state";
 import { MAINNET } from "@umami/tezos";
 
 import { RenameAccountModal } from "./RenameAccountModal";
-import { addAccount } from "../../mocks/helpers";
 import { fireEvent, render, screen, waitFor } from "../../mocks/testUtils";
-import { contactsActions } from "../../utils/redux/slices/contactsSlice";
-import { networksActions } from "../../utils/redux/slices/networks";
-import { store } from "../../utils/redux/store";
 
 const fixture = (account: Account) => (
   <Modal isOpen={true} onClose={() => {}}>
@@ -38,7 +39,7 @@ describe("<RenameAccountModal />", () => {
 
     it("does not allow the same name", async () => {
       const account = mockMnemonicAccount(0);
-      addAccount(account);
+      addTestAccount(account);
       render(fixture(account));
 
       setName(account.label);
@@ -50,7 +51,7 @@ describe("<RenameAccountModal />", () => {
 
     it("does not allow existing account name", async () => {
       const account = mockMnemonicAccount(0);
-      [account, mockMnemonicAccount(1, "Existing Account Name")].forEach(addAccount);
+      [account, mockMnemonicAccount(1, "Existing Account Name")].forEach(addTestAccount);
       render(fixture(account));
 
       setName("Existing Account Name");

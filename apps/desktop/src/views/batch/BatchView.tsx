@@ -2,7 +2,8 @@ import { Box, Button, Divider, Flex, IconButton, Text } from "@chakra-ui/react";
 import { nanoid } from "@reduxjs/toolkit";
 import type { OperationContentsAndResult } from "@taquito/rpc";
 import { TezosOperationError } from "@taquito/taquito";
-import { type Account, type Operation } from "@umami/core";
+import { type Account, type AccountOperations, type Operation, estimate } from "@umami/core";
+import { TEZ } from "@umami/tezos";
 import pluralize from "pluralize";
 import React, { useContext, useEffect } from "react";
 
@@ -17,11 +18,9 @@ import { DynamicModalContext } from "../../components/DynamicModal";
 import { SignPage } from "../../components/SendFlow/Batch/SignPage";
 import { headerText } from "../../components/SendFlow/SignPageHeader";
 import colors from "../../style/colors";
-import { type AccountOperations } from "../../types/AccountOperations";
 import { useClearBatch, useRemoveBatchItem } from "../../utils/hooks/batchesHooks";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
-import { TEZ, estimate } from "../../utils/tezos";
 
 const RightHeader: React.FC<{
   operations: AccountOperations;

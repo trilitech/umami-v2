@@ -1,8 +1,8 @@
+import { store } from "@umami/state";
 import { getLatestBlock } from "@umami/tzkt";
 
 import { usePollBlock } from "./usePollBlock";
 import { renderHook, waitFor } from "../../mocks/testUtils";
-import { store } from "../redux/store";
 
 jest.mock("@umami/tzkt");
 

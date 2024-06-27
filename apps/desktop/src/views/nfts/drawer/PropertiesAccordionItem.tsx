@@ -10,8 +10,7 @@ import {
   Td,
   Tr,
 } from "@chakra-ui/react";
-import { type NFTBalance } from "@umami/core";
-import { metadataUri, mimeType, royalties } from "@umami/core";
+import { type NFTBalance, metadataUri, mimeType, royalties } from "@umami/core";
 import { parsePkh } from "@umami/tezos";
 import { type CSSProperties } from "react";
 

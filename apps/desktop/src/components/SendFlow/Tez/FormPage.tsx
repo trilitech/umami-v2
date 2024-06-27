@@ -9,13 +9,12 @@ import {
   ModalFooter,
 } from "@chakra-ui/react";
 import { type TezTransfer } from "@umami/core";
-import { type RawPkh, parsePkh } from "@umami/tezos";
+import { type RawPkh, TEZ, TEZ_DECIMALS, parsePkh } from "@umami/tezos";
 import type React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { SignPage } from "./SignPage";
 import { tezToMutez } from "../../../utils/format";
-import { TEZ, TEZ_DECIMALS } from "../../../utils/tezos";
 import { KnownAccountsAutocomplete, OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
 import { FormErrorMessage } from "../../FormErrorMessage";
 import { FormPageHeader } from "../FormPageHeader";

@@ -1,17 +1,19 @@
+import { mockImplicitContact } from "@umami/core";
 import { getNetworksForContracts } from "@umami/multisig";
-import { mockContractAddress, mockImplicitAddress } from "@umami/test-utils";
+import { contactsActions, store } from "@umami/state";
+import { mockContractAddress, mockImplicitAddress } from "@umami/tezos";
 
 import { UpsertContactModal } from "./UpsertContactModal";
-import { contact1, contact2 } from "../mocks/contacts";
 import { act, render, screen, userEvent, waitFor } from "../mocks/testUtils";
 import { mockToast } from "../mocks/toast";
-import { contactsActions } from "../utils/redux/slices/contactsSlice";
-import { store } from "../utils/redux/store";
 
 jest.mock("@umami/multisig", () => ({
   ...jest.requireActual("@umami/multisig"),
   getNetworksForContracts: jest.fn(),
 }));
+
+const contact1 = mockImplicitContact(1);
+const contact2 = mockImplicitContact(2);
 
 describe("<UpsertContactModal />", () => {
   describe("on adding contact", () => {

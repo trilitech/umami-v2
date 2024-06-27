@@ -1,13 +1,13 @@
-import { mockMnemonicAccount } from "@umami/test-utils";
+import { mockMnemonicAccount } from "@umami/core";
+import { addTestAccount } from "@umami/state";
 import { useSearchParams } from "react-router-dom";
 
 import { useAccountsFilter } from "./useAccountsFilter";
-import { addAccount } from "../mocks/helpers";
 import { type UserEvent, act, render, renderHook, screen, userEvent } from "../mocks/testUtils";
 
 const accounts = [mockMnemonicAccount(0), mockMnemonicAccount(1), mockMnemonicAccount(2)];
 
-beforeEach(() => accounts.forEach(addAccount));
+beforeEach(() => accounts.forEach(addTestAccount));
 
 const TestComponent = () => {
   const { accountsFilter } = useAccountsFilter();

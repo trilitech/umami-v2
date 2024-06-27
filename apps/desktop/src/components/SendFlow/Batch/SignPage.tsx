@@ -1,8 +1,8 @@
 import { ModalContent, ModalFooter } from "@chakra-ui/react";
+import { type EstimatedAccountOperations } from "@umami/core";
 import type React from "react";
 import { FormProvider } from "react-hook-form";
 
-import { type EstimatedAccountOperations } from "../../../types/AccountOperations";
 import { BatchModalBody } from "../BatchModalBody";
 import { OperationSignerSelector } from "../OperationSignerSelector";
 import { SignButton } from "../SignButton";

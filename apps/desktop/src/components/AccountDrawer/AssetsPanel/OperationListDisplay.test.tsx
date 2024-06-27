@@ -1,4 +1,5 @@
-import { mockDelegation, mockImplicitAddress } from "@umami/test-utils";
+import { mockDelegation } from "@umami/core";
+import { mockImplicitAddress } from "@umami/tezos";
 import { type TzktCombinedOperation } from "@umami/tzkt";
 
 import { OperationListDisplay } from "./OperationListDisplay";

@@ -1,37 +1,35 @@
-import { mockFA1TokenRaw, mockImplicitAddress } from "@umami/test-utils";
-import { MAINNET, parseContractPkh, parseImplicitPkh } from "@umami/tezos";
+import { mockFA1TokenRaw, mockImplicitContact } from "@umami/core";
+import { contactsActions, networksActions, store, tokensSlice } from "@umami/state";
+import { MAINNET, mockImplicitAddress, parseContractPkh, parseImplicitPkh } from "@umami/tezos";
 
 import { AddressPill } from "./AddressPill";
-import { contact1 } from "../../mocks/contacts";
 import { render, screen } from "../../mocks/testUtils";
-import { contactsActions } from "../../utils/redux/slices/contactsSlice";
-import { networksActions } from "../../utils/redux/slices/networks";
-import { tokensSlice } from "../../utils/redux/slices/tokensSlice";
-import { store } from "../../utils/redux/store";
 const { upsert } = contactsActions;
+
+const contact = mockImplicitContact(1);
 
 describe("<AddressPill />", () => {
   it("displays left icon", () => {
-    store.dispatch(upsert(contact1));
-    render(<AddressPill address={parseImplicitPkh(contact1.pkh)} />);
+    store.dispatch(upsert(contact));
+    render(<AddressPill address={parseImplicitPkh(contact.pkh)} />);
     expect(screen.getByTestId("address-pill-left-icon")).toBeInTheDocument();
   });
 
   it("displays right icon", () => {
-    render(<AddressPill address={parseImplicitPkh(contact1.pkh)} />);
+    render(<AddressPill address={parseImplicitPkh(contact.pkh)} />);
     expect(screen.getByTestId("address-pill-right-icon")).toBeInTheDocument();
   });
 
   it("hides icon", () => {
-    store.dispatch(upsert(contact1));
-    render(<AddressPill address={parseImplicitPkh(contact1.pkh)} mode={{ type: "no_icons" }} />);
+    store.dispatch(upsert(contact));
+    render(<AddressPill address={parseImplicitPkh(contact.pkh)} mode={{ type: "no_icons" }} />);
     expect(screen.queryByTestId("address-pill-left-icon")).not.toBeInTheDocument();
   });
 
   it("is removable", () => {
     render(
       <AddressPill
-        address={parseImplicitPkh(contact1.pkh)}
+        address={parseImplicitPkh(contact.pkh)}
         mode={{ type: "removable", onRemove: () => {} }}
       />
     );

@@ -1,10 +1,11 @@
 import { waitFor } from "@testing-library/react";
-import { mockImplicitAddress, mockNFTToken } from "@umami/test-utils";
+import { mockNFTToken } from "@umami/core";
+import { store } from "@umami/state";
+import { mockImplicitAddress } from "@umami/tezos";
 import { getTokenBalances } from "@umami/tzkt";
 
 import { usePollTokenBalances } from "./usePollTokenBalances";
 import { renderHook } from "../../mocks/testUtils";
-import { store } from "../redux/store";
 
 jest.mock("@umami/tzkt");
 

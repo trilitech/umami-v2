@@ -1,6 +1,7 @@
 import { type DataTable, Given, Then, When } from "@cucumber/cucumber";
 import { expect } from "@playwright/test";
 import { type Account } from "@umami/core";
+import { type AccountsState, makeSecretKeyAccount } from "@umami/state";
 import { getOperationsByHash } from "@umami/tzkt";
 import { minutesToMilliseconds } from "date-fns";
 import { some } from "lodash";
@@ -8,15 +9,13 @@ import { some } from "lodash";
 import { BASE_URL } from "./onboarding";
 import { type CustomWorld } from "./world";
 import { BLOCK_TIME } from "../../utils/dataPolling/constants";
-import { type State } from "../../utils/redux/slices/accountsSlice/State";
-import { makeSecretKeyAccount } from "../../utils/redux/thunks/secretKeyAccount";
 import { TEST_NETWORK } from "../constants";
 import { AccountsPage } from "../pages/AccountsPage";
 import { SignPage } from "../pages/SignPage";
 import { refetch, runDockerCommand, topUpAccount, waitUntilRefetch } from "../utils";
 
 Given(/I have accounts?/, async function (this: CustomWorld, table: DataTable) {
-  const accounts: State = {
+  const accounts: AccountsState = {
     items: [],
     seedPhrases: {},
     secretKeys: {},

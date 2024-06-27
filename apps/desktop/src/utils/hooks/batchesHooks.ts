@@ -1,8 +1,7 @@
 import { type Account } from "@umami/core";
+import { batchesActions, useAppDispatch, useAppSelector } from "@umami/state";
 
 import { useSelectedNetwork } from "./networkHooks";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { batchesActions } from "../redux/slices/batches";
 
 export const useBatches = () => {
   const network = useSelectedNetwork();

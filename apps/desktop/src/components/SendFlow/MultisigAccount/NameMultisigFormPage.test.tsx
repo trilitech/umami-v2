@@ -1,9 +1,9 @@
 import { Modal } from "@chakra-ui/react";
-import { mockMnemonicAccount } from "@umami/test-utils";
+import { mockMnemonicAccount } from "@umami/core";
+import { addTestAccount } from "@umami/state";
 
 import { NameMultisigFormPage } from "./NameMultisigFormPage";
 import { SelectApproversFormPage } from "./SelectApproversFormPage";
-import { addAccount } from "../../../mocks/helpers";
 import {
   dynamicModalContextMock,
   fireEvent,
@@ -63,7 +63,7 @@ describe("NameMultisigFormPage", () => {
     });
 
     it("checks that typed name is unique", async () => {
-      addAccount(mockMnemonicAccount(1, "Used Name"));
+      addTestAccount(mockMnemonicAccount(1, "Used Name"));
       await renderMultisigForm(name);
 
       const input = screen.getByLabelText("Account Name");
@@ -78,7 +78,7 @@ describe("NameMultisigFormPage", () => {
     });
 
     it("checks that typed name is unique - after trim()", async () => {
-      addAccount(mockMnemonicAccount(1, "Used Name"));
+      addTestAccount(mockMnemonicAccount(1, "Used Name"));
       await renderMultisigForm(name);
 
       const input = screen.getByLabelText("Account Name");
@@ -109,7 +109,7 @@ describe("NameMultisigFormPage", () => {
       // The user with the most TEZ will be used as a default signer for create multisig request.
       // The user is pre-selected in this step,
       // so we need to have at least one account in the store in order to submit the form.
-      addAccount(mockMnemonicAccount(1));
+      addTestAccount(mockMnemonicAccount(1));
     });
 
     it("opens Select Approvers form on submit", async () => {
@@ -201,7 +201,7 @@ describe("NameMultisigFormPage", () => {
     });
 
     it("checks that pre-set name is unique", async () => {
-      addAccount(mockMnemonicAccount(1, MULTISIG_NAME));
+      addTestAccount(mockMnemonicAccount(1, MULTISIG_NAME));
       await renderMultisigForm(MULTISIG_NAME);
 
       fireEvent.blur(screen.getByLabelText("Account Name"));
@@ -214,7 +214,7 @@ describe("NameMultisigFormPage", () => {
     });
 
     it("checks that pre-set name is unique - after trim()", async () => {
-      addAccount(mockMnemonicAccount(1, MULTISIG_NAME));
+      addTestAccount(mockMnemonicAccount(1, MULTISIG_NAME));
       await renderMultisigForm(`\t${MULTISIG_NAME}  `);
 
       fireEvent.blur(screen.getByLabelText("Account Name"));

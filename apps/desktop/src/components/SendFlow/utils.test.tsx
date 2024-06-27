@@ -1,5 +1,5 @@
-import { mockImplicitAccount, mockImplicitAddress } from "@umami/test-utils";
-import { type RawPkh } from "@umami/tezos";
+import { mockImplicitAccount } from "@umami/core";
+import { type RawPkh, mockImplicitAddress } from "@umami/tezos";
 
 import {
   FormSubmitButtons,

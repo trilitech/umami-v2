@@ -1,3 +1,5 @@
+import { type Network } from "./types";
+
 export const MAINNET: Network = {
   name: "mainnet",
   rpcUrl: "https://prod.tcinfra.net/rpc/mainnet/",
@@ -12,16 +14,6 @@ export const GHOSTNET: Network = {
   tzktApiUrl: "https://api.ghostnet.tzkt.io",
   tzktExplorerUrl: "https://ghostnet.tzkt.io",
   buyTezUrl: "https://faucet.ghostnet.teztnets.com/",
-};
-
-export type NetworkName = string; // must be unique
-
-export type Network = {
-  name: NetworkName;
-  rpcUrl: string;
-  tzktApiUrl: string;
-  tzktExplorerUrl?: string;
-  buyTezUrl?: string;
 };
 
 export const isDefault = (network: Network) =>

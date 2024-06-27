@@ -1,5 +1,6 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { type Account } from "@umami/core";
+import { type AppDispatch, assetsActions, tokensActions, useAppDispatch } from "@umami/state";
 import { type Network } from "@umami/tezos";
 import {
   type TokenTransferOperation,
@@ -13,10 +14,6 @@ import { useEffect } from "react";
 import { BLOCK_TIME } from "../../utils/dataPolling/constants";
 import { useRefetchTrigger } from "../../utils/hooks/assetsHooks";
 import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
-import { useAppDispatch } from "../../utils/redux/hooks";
-import { assetsActions } from "../../utils/redux/slices/assetsSlice";
-import { tokensActions } from "../../utils/redux/slices/tokensSlice";
-import { type AppDispatch } from "../../utils/redux/store";
 import { useReactQueryErrorHandler } from "../../utils/useReactQueryOnError";
 
 type QueryParams =

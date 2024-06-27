@@ -72,7 +72,6 @@ module.exports = {
     "chakra-ui/props-shorthand": ["warn", { noShorthand: true, applyToAllComponents: true }],
     "chakra-ui/require-specific-component": "warn",
 
-    "import/no-unresolved": "warn",
     "sort-imports": [
       "warn",
       {
@@ -83,6 +82,13 @@ module.exports = {
         allowSeparatedGroups: true,
       },
     ],
+    "import/no-unused-modules": ["warn", { unusedExports: true }],
+    "import/no-unresolved": "off",
+    "import/no-cycle": "warn",
+    "import/no-self-import": "warn",
+    // TODO: enable after React.FC occurrences are removed
+    // "import/no-duplicates": ["warn", { "prefer-inline": true }],
+    // "no-duplicate-imports": "warn",
     "import/order": [
       "warn",
       {
@@ -103,8 +109,6 @@ module.exports = {
     ],
     "@stylistic/quotes": ["warn", "double", { avoidEscape: true }],
     "deprecation/deprecation": "warn",
-    "import/no-unused-modules": ["warn", { unusedExports: true }],
-    "import/no-unresolved": "off",
     "prefer-const": "warn",
     "@typescript-eslint/require-await": "warn",
     "@typescript-eslint/no-floating-promises": "warn",

@@ -1,5 +1,6 @@
+import { useAppSelector } from "@umami/state";
+
 import { useSelectedNetwork } from "./networkHooks";
-import { useAppSelector } from "../redux/hooks";
 
 // TODO: test
 export const useGetProtocolSettings = () => {

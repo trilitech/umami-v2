@@ -1,18 +1,15 @@
-import { type Token, fromRawToken } from "@umami/core";
-import { ghostnetThezard, mockImplicitAddress, mockLedgerAccount } from "@umami/test-utils";
-import { DefaultNetworks } from "@umami/tezos";
+import { type Token, fromRawToken, mockLedgerAccount } from "@umami/core";
+import { addTestAccount, networksActions, store } from "@umami/state";
+import { ghostnetThezard } from "@umami/test-utils";
+import { DefaultNetworks, TEZ, mockImplicitAddress } from "@umami/tezos";
 import { type TokenTransferOperation, type TransactionOperation } from "@umami/tzkt";
 
 import { OperationTileContext } from "./OperationTileContext";
 import { tokenTransferFixture, transactionFixture } from "./testUtils";
 import { TokenTransferTile } from "./TokenTransferTile";
 import * as operationDestinationModule from "./useGetOperationDestination";
-import { addAccount } from "../../mocks/helpers";
 import { render, screen } from "../../mocks/testUtils";
 import { formatPkh } from "../../utils/format";
-import { networksActions } from "../../utils/redux/slices/networks";
-import { store } from "../../utils/redux/store";
-import { TEZ } from "../../utils/tezos";
 
 const fixture = (
   context: any,
@@ -35,7 +32,7 @@ describe("<TokenTransferTile />", () => {
   ])("in $mode mode", contextValue => {
     describe("sign", () => {
       it("shows '+' for incoming transactions", () => {
-        addAccount(mockLedgerAccount(1));
+        addTestAccount(mockLedgerAccount(1));
 
         render(fixture(contextValue, tokenTransferFixture()));
 
@@ -45,7 +42,7 @@ describe("<TokenTransferTile />", () => {
       });
 
       it("shows '-' for outgoing transactions", () => {
-        addAccount(mockLedgerAccount(1));
+        addTestAccount(mockLedgerAccount(1));
 
         render(
           fixture(
@@ -63,8 +60,8 @@ describe("<TokenTransferTile />", () => {
       });
 
       it("shows '-' if sender and target are both owned", () => {
-        addAccount(mockLedgerAccount(0));
-        addAccount(mockLedgerAccount(1));
+        addTestAccount(mockLedgerAccount(0));
+        addTestAccount(mockLedgerAccount(1));
 
         render(
           fixture(
@@ -84,7 +81,7 @@ describe("<TokenTransferTile />", () => {
 
     describe("amount", () => {
       it("does not display decimal if not needed", () => {
-        addAccount(mockLedgerAccount(1));
+        addTestAccount(mockLedgerAccount(1));
         const tokenTransfer = tokenTransferFixture({
           from: { address: mockLedgerAccount(1).address.pkh },
         });
@@ -96,7 +93,7 @@ describe("<TokenTransferTile />", () => {
       });
 
       it("displays decimal if needed", () => {
-        addAccount(mockLedgerAccount(1));
+        addTestAccount(mockLedgerAccount(1));
         const tokenTransfer = tokenTransferFixture({
           from: { address: mockLedgerAccount(1).address.pkh },
         });
@@ -187,7 +184,7 @@ describe("<TokenTransferTile />", () => {
 
     describe("pills", () => {
       beforeEach(() => {
-        addAccount(mockLedgerAccount(0));
+        addTestAccount(mockLedgerAccount(0));
       });
 
       it("shows both if sender is an owned account", () => {
@@ -288,7 +285,7 @@ describe("<TokenTransferTile />", () => {
       });
 
       it("renders if there is any fee paid by the user", () => {
-        addAccount(mockLedgerAccount(0));
+        addTestAccount(mockLedgerAccount(0));
         render(
           fixture(
             contextValue,
@@ -334,7 +331,7 @@ describe("<TokenTransferTile />", () => {
     const contextValue = { mode: "drawer", selectedAddress: mockLedgerAccount(0).address };
 
     beforeEach(() => {
-      addAccount(mockLedgerAccount(0));
+      addTestAccount(mockLedgerAccount(0));
     });
 
     it("hides the fee", () => {

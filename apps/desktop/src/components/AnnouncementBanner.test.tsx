@@ -1,9 +1,8 @@
+import { announcementSlice, store } from "@umami/state";
 import axios from "axios";
 
 import { AnnouncementBanner } from "./AnnouncementBanner";
 import { act, render, screen, userEvent, waitFor } from "../mocks/testUtils";
-import { announcementSlice } from "../utils/redux/slices/announcementSlice";
-import { store } from "../utils/redux/store";
 
 jest.mock("axios");
 

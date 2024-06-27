@@ -1,18 +1,15 @@
-import { type MultisigAccount } from "@umami/core";
 import {
+  type MultisigAccount,
   mockImplicitAccount,
-  mockImplicitAddress,
   mockMnemonicAccount,
   mockMultisigAccount,
-} from "@umami/test-utils";
-import { type RawPkh } from "@umami/tezos";
+} from "@umami/core";
+import { addTestAccount, multisigsSlice, store } from "@umami/state";
+import { type RawPkh, mockImplicitAddress } from "@umami/tezos";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { OperationSignerSelector } from "./OperationSignerSelector";
-import { addAccount } from "../../mocks/helpers";
 import { render, renderHook, screen } from "../../mocks/testUtils";
-import { multisigsSlice } from "../../utils/redux/slices/multisigsSlice";
-import { store } from "../../utils/redux/store";
 
 describe("OperationSignerSelector", () => {
   it("is hidden for implicit operations", () => {
@@ -29,7 +26,7 @@ describe("OperationSignerSelector", () => {
 
   describe("proposal operations", () => {
     it("allows only owned multisig signers to be chosen", () => {
-      [mockMnemonicAccount(0), mockMnemonicAccount(1)].forEach(addAccount);
+      [mockMnemonicAccount(0), mockMnemonicAccount(1)].forEach(addTestAccount);
       const multisigAccount: MultisigAccount = {
         ...mockMultisigAccount(0),
         signers: [

@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { type Contact } from "@umami/core";
 import { getNetworksForContracts } from "@umami/multisig";
+import { contactsActions, useAppDispatch } from "@umami/state";
 import { isValidContractPkh } from "@umami/tezos";
 import { type FC, useContext, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
@@ -22,8 +23,6 @@ import { useValidateNewContactPkh } from "../utils/hooks/contactsHooks";
 import { useValidateName } from "../utils/hooks/labelsHooks";
 import { useAvailableNetworks } from "../utils/hooks/networkHooks";
 import { useAsyncActionHandler } from "../utils/hooks/useAsyncActionHandler";
-import { useAppDispatch } from "../utils/redux/hooks";
-import { contactsActions } from "../utils/redux/slices/contactsSlice";
 
 /**
  * Modal used for both adding new contacts & editing existing contacts.

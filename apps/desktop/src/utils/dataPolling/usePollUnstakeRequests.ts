@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { assetsActions, useAppDispatch } from "@umami/state";
 import { getPendingUnstakeRequests } from "@umami/tzkt";
 import { useEffect } from "react";
 
@@ -6,8 +7,6 @@ import { BLOCK_TIME } from "./constants";
 import { useRefetchTrigger } from "../hooks/assetsHooks";
 import { useAllAccounts } from "../hooks/getAccountDataHooks";
 import { useSelectedNetwork } from "../hooks/networkHooks";
-import { useAppDispatch } from "../redux/hooks";
-import { assetsActions } from "../redux/slices/assetsSlice";
 import { useReactQueryErrorHandler } from "../useReactQueryOnError";
 
 export const usePollUnstakeRequests = () => {

@@ -1,23 +1,14 @@
-import {
-  hedgehoge,
-  mockImplicitAddress,
-  mockMnemonicAccount,
-  tzBtsc,
-  uUSD,
-} from "@umami/test-utils";
-import { DefaultNetworks, MAINNET, type Network } from "@umami/tezos";
+import { mockMnemonicAccount } from "@umami/core";
+import { addTestAccount, assetsSlice, networksActions, store, tokensActions } from "@umami/state";
+import { hedgehoge, tzBtsc, uUSD } from "@umami/test-utils";
+import { DefaultNetworks, MAINNET, type Network, mockImplicitAddress } from "@umami/tezos";
 
 import { TokensPage } from "./TokensPage";
-import { addAccount } from "../../mocks/helpers";
 import { render, screen } from "../../mocks/testUtils";
-import { assetsSlice } from "../../utils/redux/slices/assetsSlice";
-import { networksActions } from "../../utils/redux/slices/networks";
-import { tokensActions } from "../../utils/redux/slices/tokensSlice";
-import { store } from "../../utils/redux/store";
 
 const fixture = () => <TokensPage />;
 
-beforeEach(() => addAccount(mockMnemonicAccount(0)));
+beforeEach(() => addTestAccount(mockMnemonicAccount(0)));
 
 describe("<TokensView />", () => {
   describe("without tokens", () => {
@@ -33,7 +24,7 @@ describe("<TokensView />", () => {
   describe("with tokens", () => {
     const setupTokens = (network: Network) => {
       store.dispatch(networksActions.setCurrent(network));
-      addAccount(mockMnemonicAccount(1));
+      addTestAccount(mockMnemonicAccount(1));
       const tokenBalances = [
         hedgehoge(mockImplicitAddress(0)),
         hedgehoge(mockImplicitAddress(1)),

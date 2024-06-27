@@ -1,6 +1,5 @@
 import { type Multisig, type MultisigOperation } from "@umami/multisig";
-
-import { useAppSelector } from "../redux/hooks";
+import { useAppSelector } from "@umami/state";
 
 export const useMultisigAccounts = () => useAppSelector(s => s.multisigs.items);
 

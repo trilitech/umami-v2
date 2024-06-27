@@ -1,4 +1,4 @@
-import { mockImplicitAddress } from "@umami/test-utils";
+import { mockImplicitAddress } from "@umami/tezos";
 
 import { ViewAllLink } from "./ViewAllLink";
 import { render, screen } from "../../../mocks/testUtils";

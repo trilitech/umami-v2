@@ -1,5 +1,9 @@
-import { mockContractAddress, mockImplicitAddress } from "@umami/test-utils";
-import { type RawPkh, parseContractPkh } from "@umami/tezos";
+import {
+  type RawPkh,
+  mockContractAddress,
+  mockImplicitAddress,
+  parseContractPkh,
+} from "@umami/tezos";
 
 import { parseOperation } from "./utils";
 import { ghostFA12, ghostTezzard } from "../../mocks/tokens";

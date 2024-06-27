@@ -5,6 +5,7 @@ import {
   type NFTBalance,
   type TokenBalanceWithToken,
 } from "@umami/core";
+import { useAppSelector } from "@umami/state";
 import { type RawPkh } from "@umami/tezos";
 import { type TokenTransferOperation } from "@umami/tzkt";
 import { BigNumber } from "bignumber.js";
@@ -12,7 +13,6 @@ import { compact, fromPairs } from "lodash";
 
 import { useGetToken } from "./tokensHooks";
 import { mutezToTez } from "../format";
-import { useAppSelector } from "../redux/hooks";
 
 const useGetAccountStates = () => useAppSelector(s => s.assets.accountStates);
 

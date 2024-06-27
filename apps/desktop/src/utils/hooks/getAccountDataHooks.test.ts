@@ -1,6 +1,6 @@
-import { type ImplicitAccount, type MnemonicAccount } from "@umami/core";
 import {
-  encryptedMnemonic1,
+  type ImplicitAccount,
+  type MnemonicAccount,
   mockImplicitAccount,
   mockLedgerAccount,
   mockMnemonicAccount,
@@ -8,7 +8,15 @@ import {
   mockSecretKeyAccount,
   mockSocialAccount,
   rawAccountFixture,
-} from "@umami/test-utils";
+} from "@umami/core";
+import {
+  accountsActions,
+  addTestAccount,
+  assetsActions,
+  multisigsSlice,
+  store,
+} from "@umami/state";
+import { encryptedMnemonic1 } from "@umami/test-utils";
 
 import {
   useGetAccountsByFingerPrint,
@@ -17,12 +25,7 @@ import {
   useIsOwnedAddress,
   useValidateMasterPassword,
 } from "./getAccountDataHooks";
-import { addAccount } from "../../mocks/helpers";
 import { renderHook, waitFor } from "../../mocks/testUtils";
-import { accountsActions } from "../redux/slices/accountsSlice/accountsSlice";
-import { assetsActions } from "../redux/slices/assetsSlice";
-import { multisigsSlice } from "../redux/slices/multisigsSlice";
-import { store } from "../redux/store";
 
 describe("getAccountDataHooks", () => {
   describe("useGetAccountsByType", () => {
@@ -38,7 +41,7 @@ describe("getAccountDataHooks", () => {
     ];
     const accountTypes: ImplicitAccount["type"][] = ["mnemonic", "social", "ledger", "secret_key"];
 
-    beforeEach(() => accounts.forEach(addAccount));
+    beforeEach(() => accounts.forEach(addTestAccount));
 
     it.each(accountTypes)("returns all accounts of given type %s", type => {
       const {
@@ -95,7 +98,7 @@ describe("getAccountDataHooks", () => {
     it("returns the account itself for implicit accounts", () => {
       const account = mockMnemonicAccount(0);
 
-      addAccount(account);
+      addTestAccount(account);
 
       const { result } = renderHook(() => useGetBestSignerForAccount());
       expect(result.current(account)).toEqual(account);
@@ -105,7 +108,7 @@ describe("getAccountDataHooks", () => {
       const signers = [mockMnemonicAccount(0), mockMnemonicAccount(1), mockMnemonicAccount(2)];
       const multisig = { ...mockMultisigAccount(0), signers: signers.map(s => s.address) };
 
-      signers.forEach(addAccount);
+      signers.forEach(addTestAccount);
       store.dispatch(multisigsSlice.actions.setMultisigs([multisig]));
 
       store.dispatch(
@@ -127,7 +130,7 @@ describe("getAccountDataHooks", () => {
   });
 
   describe("useIsOwnedAddress", () => {
-    beforeEach(() => addAccount(mockMnemonicAccount(0)));
+    beforeEach(() => addTestAccount(mockMnemonicAccount(0)));
 
     it("returns true if account is owned", () => {
       const view = renderHook(() => useIsOwnedAddress());
@@ -152,7 +155,7 @@ describe("getAccountDataHooks", () => {
     });
 
     it("returns null if only social account exists", () => {
-      addAccount(mockSocialAccount(0));
+      addTestAccount(mockSocialAccount(0));
       const {
         result: { current: result },
       } = renderHook(() => useValidateMasterPassword());
@@ -161,7 +164,7 @@ describe("getAccountDataHooks", () => {
     });
 
     it("returns null if only ledger account exists", () => {
-      addAccount(mockLedgerAccount(0));
+      addTestAccount(mockLedgerAccount(0));
       const {
         result: { current: result },
       } = renderHook(() => useValidateMasterPassword());

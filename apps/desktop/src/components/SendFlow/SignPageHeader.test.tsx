@@ -4,7 +4,7 @@ import {
   mockMnemonicAccount,
   mockSecretKeyAccount,
   mockSocialAccount,
-} from "@umami/test-utils";
+} from "@umami/core";
 
 import { SignPageHeader, headerText, subTitle } from "./SignPageHeader";
 import { render, screen } from "../../mocks/testUtils";

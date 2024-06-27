@@ -1,23 +1,21 @@
-import { multisigOperation, multisigs } from "@umami/test-utils";
+import { multisigOperationFixture, multisigsFixture } from "@umami/multisig";
+import { addTestAccount, multisigActions, store } from "@umami/state";
 
 import { useGetPendingMultisigOperations } from "./multisigHooks";
-import { addAccount } from "../../mocks/helpers";
 import { renderHook } from "../../mocks/testUtils";
-import { multisigActions } from "../redux/slices/multisigsSlice";
-import { store } from "../redux/store";
 
 describe("multisigHooks", () => {
   it("useGetSortedMultisigPendingOperations sorts operations by id", () => {
-    const operation1 = multisigOperation;
-    const operation2 = { ...multisigOperation, id: "2" };
-    multisigs.forEach(addAccount);
+    const operation1 = multisigOperationFixture;
+    const operation2 = { ...multisigOperationFixture, id: "2" };
+    multisigsFixture.forEach(addTestAccount);
     store.dispatch(multisigActions.setPendingOperations([operation1, operation2]));
 
     const {
       result: { current: getMultisigOperations },
     } = renderHook(() => useGetPendingMultisigOperations());
 
-    expect(getMultisigOperations(multisigs[0])).toEqual([
+    expect(getMultisigOperations(multisigsFixture[0])).toEqual([
       {
         id: "2",
         bigmapId: 0,
