@@ -72,7 +72,7 @@ export const OperationModalContent: React.FC<{
       </Box>
 
       <Accordion allowToggle={true}>
-        <AccordionItem background={colors.gray[800]} border="none" borderRadius="8px">
+        <AccordionItem background={colors.grey[100]} border="none" borderRadius="8px">
           <AccordionButton>
             <Box flex="1" textAlign="left">
               JSON
@@ -88,14 +88,14 @@ export const OperationModalContent: React.FC<{
       <Button width="100%" isLoading={isLoading} onClick={onClick} size="lg">
         <Flex alignItems="center" justifyContent="flex-start" flex={1}>
           <GoogleLogoIcon position="absolute" />
-          <Heading margin="auto" textColor={colors.white} fontSize="14px" lineHeight="18px">
+          <Heading margin="auto" textColor={colors.grey[900]} fontSize="14px" lineHeight="18px">
             Sign with Google
           </Heading>
         </Flex>
       </Button>
 
       <Center marginTop="30px">
-        <Text marginRight="10px" color={colors.gray[450]} fontSize="xs" lineHeight="14px">
+        <Text marginRight="10px" color={colors.grey[500]} fontSize="xs" lineHeight="14px">
           Powered by
         </Text>
         <TezosLogoIcon />

@@ -1,22 +1,37 @@
-import { Button, Flex, Heading } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { type TypeOfLogin } from "@trilitech-umami/umami-embed/types";
 
 import { FacebookLogoIcon, GoogleLogoIcon, RedditLogoIcon, TwitterLogoIcon } from "./assets/icons";
-import colors from "./imported/style/colors";
 
 export const LoginButtonComponent: React.FC<{
   onClick: () => void;
   loginType: TypeOfLogin;
 }> = ({ onClick, loginType }) => (
-  <Button width="100%" onClick={onClick} size="lg">
-    <Flex alignItems="center" justifyContent="flex-start" flex={1}>
-      <LogoIcon loginType={loginType} />
-      <Heading margin="auto" textColor={colors.white} fontSize="14px" lineHeight="18px">
+  <Button position="relative" width="100%" onClick={onClick} size="lg" borderRadius="36px" padding="0px">
+    <Box position="absolute" left="0px" top="50%" transform="translateY(-50%)">
+      <LogoIconWithBackground loginType={loginType} />
+    </Box>
+    <Heading textAlign="center" flex="1" fontSize="14px" lineHeight="18px">
         {buttonLabel(loginType)}
-      </Heading>
-    </Flex>
+     </Heading>
   </Button>
 );
+
+const LogoIconWithBackground: React.FC<{
+  loginType: TypeOfLogin;
+}> = ({ loginType }) => (
+    <Flex
+      alignItems="center"
+      justifyContent="center"
+      width="36px"
+      height="36px"
+      borderRadius="50%"
+      backgroundColor="white"
+      margin="6px"
+    >
+      <LogoIcon loginType={loginType} />
+    </Flex>
+  );
 
 const LogoIcon: React.FC<{
   loginType: TypeOfLogin;

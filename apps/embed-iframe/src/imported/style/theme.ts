@@ -2,11 +2,9 @@ import { extendTheme } from "@chakra-ui/react";
 
 import colors from "./colors";
 import { buttonTheme } from "./theme/button";
-import { listTheme } from "./theme/list";
 import { modalTheme } from "./theme/modal";
 
 const config = {
-  initialColorMode: "dark",
   useSystemColorMode: false,
 };
 
@@ -61,20 +59,16 @@ const theme = extendTheme({
     },
     Button: buttonTheme,
     Modal: modalTheme,
-    List: listTheme,
   },
   config,
   colors: {
     umami: colors,
-    text: {
-      dark: colors.gray[400],
-    },
+    text: colors.grey[900],
   },
   styles: {
     global: {
       body: {
         bg: "transparent",
-        color: colors.white,
         fontFamily: "Inter",
       },
     },

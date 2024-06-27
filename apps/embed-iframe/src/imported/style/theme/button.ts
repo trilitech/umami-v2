@@ -10,33 +10,12 @@ export const buttonTheme = defineStyleConfig({
   variants: {
     primary: {
       bg: "transparent",
-      border: "1px solid",
-      borderColor: colors.gray[500],
-      _disabled: {
-        color: colors.gray[450],
-        opacity: 1,
-      },
+      border: "1.5px solid",
+      borderColor: colors.grey[100],
       _hover: {
-        border: "1px solid",
-        borderColor: colors.gray[600],
-        bg: colors.gray[600],
-        _disabled: {
-          borderColor: colors.gray[500],
-          color: colors.gray[450],
-          opacity: 1,
-        },
-      },
-    },
-    popover: {
-      color: colors.gray[300],
-      stroke: colors.gray[450],
-      width: "100%",
-      padding: 0,
-      height: "24px",
-      justifyContent: "end",
-      _hover: {
-        color: colors.green,
-        stroke: colors.green,
+        border: "1.5px solid",
+        borderColor: colors.grey[100],
+        bg: colors.grey[100],
       },
     },
   },

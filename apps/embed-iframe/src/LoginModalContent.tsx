@@ -50,7 +50,7 @@ export const LoginModalContent: React.FC<{
       <Box marginBottom="10px">
         <UmamiLogoIcon />
       </Box>
-      <Heading marginBottom="30px" textColor={colors.white} fontSize="16px" lineHeight="22px">
+      <Heading marginBottom="30px" fontSize="16px" lineHeight="22px">
         Continue With
       </Heading>
       <Box position="relative" width="100%">
@@ -77,7 +77,7 @@ export const LoginModalContent: React.FC<{
       </Box>
 
       <Center marginTop="30px">
-        <Text marginRight="10px" color={colors.gray[450]} fontSize="xs" lineHeight="14px">
+        <Text marginRight="10px" color={colors.grey[500]} fontSize="xs" lineHeight="14px">
           Powered by
         </Text>
         <TezosLogoIcon />

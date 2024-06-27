@@ -8,7 +8,7 @@ export const JsValueWrap: React.FC<{ value: any; space?: number } & CardProps> =
   space = 2,
   ...props
 }) => (
-  <Card background={colors.gray[700]} borderRadius="5px" {...props}>
+  <Card background={colors.grey[100]} borderRadius="5px" {...props}>
     <CardBody>
       <pre
         style={{
