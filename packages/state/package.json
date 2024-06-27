@@ -16,6 +16,7 @@
   "devDependencies": {
     "@types/eslint": "^8",
     "@types/lodash": "^4",
+    "@types/react": "18.3.3",
     "@umami/eslint-config": "workspace:^",
     "@umami/jest-config": "workspace:^",
     "@umami/test-utils": "workspace:^",
@@ -62,6 +63,7 @@
     "@umami/tzkt": "workspace:^",
     "immer": "^10.1.1",
     "lodash": "^4.17.21",
+    "react": "^18.3.1",
     "react-redux": "^9.1.2",
     "redux": "^5.0.1",
     "redux-persist": "^6.0.0",
