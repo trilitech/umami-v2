@@ -21,7 +21,8 @@
     "ci": "turbo check-types lint:ci format:ci audit check-circular-deps",
     "test:e2e": "turbo test:e2e",
     "dev:desktop": "turbo dev --filter='./apps/desktop'",
-    "dev:web": "turbo dev --filter='./apps/web'"
+    "dev:web": "turbo dev --filter='./apps/web'",
+    "storybook": "turbo dev --filter='./apps/storybook'"
   },
   "devDependencies": {
     "jest": "^29.7.0",
