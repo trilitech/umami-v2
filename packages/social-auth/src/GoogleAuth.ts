@@ -1,14 +1,10 @@
 /* istanbul ignore file */
 import { Auth } from "./Auth";
-import type { IDP, RedirectSurface } from "./types";
+import type { IDP } from "./types";
 
 export class GoogleAuth extends Auth {
   idpName: IDP = "google";
   clientId = "1070572364808-d31nlkneam5ee6dr0tu28fjjbsdkfta5.apps.googleusercontent.com";
-
-  constructor(redirectSurface: RedirectSurface) {
-    super(redirectSurface);
-  }
 
   override async login() {
     const client = await this.getTorusClient();

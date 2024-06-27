@@ -1,15 +1,11 @@
 /* istanbul ignore file */
 import { Auth } from "./Auth";
 import { JWT_AUTH_DOMAIN } from "./constants";
-import type { IDP, RedirectSurface } from "./types";
+import type { IDP } from "./types";
 
 export class EmailAuth extends Auth {
   clientId = "LTg6fVsacafGmhv14TZlrWF1EavwQoDZ";
   idpName: IDP = "email";
-
-  constructor(redirectSurface: RedirectSurface) {
-    super(redirectSurface);
-  }
 
   override async login() {
     const client = await this.getTorusClient();

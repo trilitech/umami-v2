@@ -7,44 +7,51 @@ export const LoginButtonComponent: React.FC<{
   onClick: () => void;
   loginType: TypeOfLogin;
 }> = ({ onClick, loginType }) => (
-  <Button position="relative" width="100%" onClick={onClick} size="lg" borderRadius="36px" padding="0px">
+  <Button
+    position="relative"
+    width="100%"
+    onClick={onClick}
+    size="lg"
+    borderRadius="36px"
+    padding="0px"
+  >
     <Box position="absolute" left="0px" top="50%" transform="translateY(-50%)">
       <LogoIconWithBackground loginType={loginType} />
     </Box>
     <Heading textAlign="center" flex="1" fontSize="14px" lineHeight="18px">
-        {buttonLabel(loginType)}
-     </Heading>
+      {buttonLabel(loginType)}
+    </Heading>
   </Button>
 );
 
 const LogoIconWithBackground: React.FC<{
   loginType: TypeOfLogin;
 }> = ({ loginType }) => (
-    <Flex
-      alignItems="center"
-      justifyContent="center"
-      width="36px"
-      height="36px"
-      borderRadius="50%"
-      backgroundColor="white"
-      margin="6px"
-    >
-      <LogoIcon loginType={loginType} />
-    </Flex>
-  );
+  <Flex
+    alignItems="center"
+    justifyContent="center"
+    width="36px"
+    height="36px"
+    borderRadius="50%"
+    backgroundColor="white"
+    margin="6px"
+  >
+    <LogoIcon loginType={loginType} />
+  </Flex>
+);
 
 const LogoIcon: React.FC<{
   loginType: TypeOfLogin;
 }> = ({ loginType }) => {
   switch (loginType) {
     case "facebook":
-      return <FacebookLogoIcon position="absolute" />;
+      return <FacebookLogoIcon />;
     case "google":
-      return <GoogleLogoIcon position="absolute" />;
+      return <GoogleLogoIcon />;
     case "twitter":
-      return <TwitterLogoIcon position="absolute" />;
+      return <TwitterLogoIcon />;
     case "reddit":
-      return <RedditLogoIcon position="absolute" />;
+      return <RedditLogoIcon />;
   }
 };
 
@@ -56,7 +63,7 @@ const buttonLabel = (loginType: TypeOfLogin) => {
       return "Google";
     case "twitter":
       return "X";
-    default:
+    case "reddit":
       return "Reddit";
   }
 };

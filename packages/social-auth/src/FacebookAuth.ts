@@ -1,14 +1,10 @@
 /* istanbul ignore file */
 import { Auth } from "./Auth";
-import type { IDP, RedirectSurface } from "./types";
+import type { IDP } from "./types";
 
 export class FacebookAuth extends Auth {
   idpName: IDP = "facebook";
   clientId = "523634882377310";
-
-  constructor(redirectSurface: RedirectSurface) {
-    super(redirectSurface);
-  }
 
   override async login() {
     const client = await this.getTorusClient();

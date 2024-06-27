@@ -29,6 +29,9 @@ export abstract class Auth {
       web3AuthClientId: WEB3_AUTH_CLIENT_ID,
       baseUrl: "https://umamiwallet.com/auth/v2.2.0/",
       redirectPathName: "redirect.html",
+      // Hack to enable reusing of the single redirect.html across different surfaces (e.g., desktop, mobile, embed).
+      // The 'redirectToOpener' is originally designed to accept a boolean value to control redirect behavior.
+      // Here it's adapted to accept different string values based on the 'redirectSurface' context.
       redirectToOpener: this.redirectSurface as any as boolean,
       uxMode: "popup",
       network: "mainnet",
