@@ -140,7 +140,7 @@ describe("setAccountDataHooks", () => {
         expect(getFingerPrint).toHaveBeenCalledWith(mnemonic1);
         // Encrypts given mnemonic with the given password.
         expect(encrypt).toHaveBeenCalledWith(mnemonic1, PASSWORD);
-      }, 10000);
+      });
 
       it("assigns unique labels to revealed accounts", async () => {
         // Add existing accounts
