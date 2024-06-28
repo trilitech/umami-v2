@@ -4,7 +4,7 @@ import { mode } from "@chakra-ui/theme-tools";
 import { dark, light } from "../../styles/colors";
 
 export const Footer = () => {
-  const { colorMode } = useColorMode();
+  const colorMode = useColorMode();
 
   return (
     <Flex lineHeight="1">
@@ -12,7 +12,7 @@ export const Footer = () => {
       <Link
         margin="0 8px"
         padding="0 8px"
-        borderColor={`${mode(light.grey[300], dark.grey[300])({ colorMode })} !important`}
+        borderColor={`${mode(light.grey[300], dark.grey[300])(colorMode)} !important`}
         borderRight="1px solid"
         borderLeft="1px solid"
         href="https://umamiwallet.com/tos.html"
