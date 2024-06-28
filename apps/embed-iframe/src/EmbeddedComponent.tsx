@@ -1,5 +1,6 @@
 import { Box, ChakraProvider, ColorModeScript } from "@chakra-ui/react";
 import {
+  Network,
   type RequestMessage,
   type TypeOfLogin,
   toMatchingResponseType,
@@ -15,6 +16,7 @@ import "./EmbeddedComponent.scss";
 
 export function EmbeddedComponent() {
   const [selectedLoginType, setSelectedLoginType] = useState<TypeOfLogin | null>(null);
+  const [selectedNetwork, setSelectedNetwork] = useState<Network | null>(null);
 
   const onLoginCallback = (loginType: TypeOfLogin) => setSelectedLoginType(loginType);
 
@@ -51,11 +53,12 @@ export function EmbeddedComponent() {
 
       switch (data.type) {
         case "login_request":
-          // TODO: save selected network
+          setSelectedNetwork(data.network);
           openLoginModal();
           break;
         case "logout_request":
           setSelectedLoginType(null);
+          setSelectedNetwork(null);
           sendResponse({ type: "logout_response" });
           break;
         case "operation_request":
@@ -64,6 +67,12 @@ export function EmbeddedComponent() {
               type: toMatchingResponseType(data.type),
               error: "no_login_data",
               errorMessage: "User's login data is not available",
+            });
+          } else if (selectedNetwork === null) {
+            sendResponse({
+              type: toMatchingResponseType(data.type),
+              error: "no_network_data",
+              errorMessage: "User's network data is not available",
             });
           } else {
             openOperationModal(selectedLoginType!, data.operations);
