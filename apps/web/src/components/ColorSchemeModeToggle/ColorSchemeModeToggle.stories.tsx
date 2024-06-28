@@ -7,7 +7,9 @@ const meta: Meta<typeof ColorSchemeModeToggle> = {
   component: ColorSchemeModeToggle,
   argTypes: {},
   args: {},
-  parameters: {},
+  parameters: {
+    backgrounds: { disable: true },
+  },
 };
 
 export default meta;
