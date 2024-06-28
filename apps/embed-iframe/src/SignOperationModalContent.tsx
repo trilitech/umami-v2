@@ -13,11 +13,11 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { InMemorySigner } from "@taquito/signer";
-import { OpKind, TezosToolkit, type WalletParamsWithKind } from "@taquito/taquito";
-import { type TypeOfLogin } from "@trilitech-umami/umami-embed/types";
+import { OpKind, type WalletParamsWithKind } from "@taquito/taquito";
+import { Network, type TypeOfLogin } from "@trilitech-umami/umami-embed/types";
 import * as Auth from "@umami/social-auth";
 import { useState } from "react";
+import { GHOSTNET, MAINNET, makeToolkit } from "@umami/tezos";
 
 import { GoogleLogoIcon } from "./assets/icons/GoogleLogo";
 import { TezosLogoIcon } from "./assets/icons/TezosLogo";
@@ -31,10 +31,11 @@ import { sendOperationErrorResponse, sendResponse } from "./utils";
 const SIGN_TIMEOUT = 5 * 60 * 1000; // 5 minutes
 
 export const OperationModalContent: React.FC<{
+  loginType: TypeOfLogin;
+  network: Network;
   operations: PartialTezosOperation[];
   closeModal: () => void;
-  loginType: TypeOfLogin;
-}> = ({ operations, closeModal, loginType }) => {
+}> = ({ loginType, network, operations, closeModal }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   console.log(operations);
@@ -46,16 +47,12 @@ export const OperationModalContent: React.FC<{
         async () => Auth.forIDP(loginType, "embed").getCredentials(),
         SIGN_TIMEOUT
       );
-      const toolkit = new TezosToolkit("https://ghostnet.ecadinfra.com");
-      const signer = new InMemorySigner(secretKey);
-      toolkit.setSignerProvider(signer);
-
-      console.log("sending request");
-
+      const toolkit = await makeToolkit({
+        type: "social",
+        secretKey,
+        network: toTezosNetwork(network),
+      });
       const { opHash } = await toolkit.wallet.batch(operations.map(toTaquitoOperation)).send();
-
-      console.log("request sent", opHash);
-
       sendResponse({ type: "operation_response", opHash });
     } catch (error) {
       sendOperationErrorResponse(getErrorContext(error).description);
@@ -120,5 +117,14 @@ const toTaquitoOperation = (operation: PartialTezosOperation): WalletParamsWithK
       };
     default:
       throw new Error("Unsupported operation kind");
+  }
+};
+
+const toTezosNetwork = (network: Network) => {
+  switch (network) {
+    case "ghostnet":
+      return GHOSTNET;
+    case "mainnet":
+      return MAINNET;
   }
 };

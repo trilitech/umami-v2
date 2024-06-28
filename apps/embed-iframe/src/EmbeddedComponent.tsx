@@ -75,7 +75,7 @@ export function EmbeddedComponent() {
               errorMessage: "User's network data is not available",
             });
           } else {
-            openOperationModal(selectedLoginType!, data.operations);
+            openOperationModal(selectedLoginType!, selectedNetwork, data.operations);
           }
           break;
       }
