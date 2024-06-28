@@ -1,4 +1,5 @@
-import { type ResponseMessage } from "@trilitech-umami/umami-embed/types";
+import { type Network, type ResponseMessage } from "@trilitech-umami/umami-embed/types";
+import { GHOSTNET, MAINNET } from "@umami/tezos";
 
 export const sendResponse = (response: ResponseMessage) =>
   window.parent.postMessage(JSON.stringify(response), "*");
@@ -17,4 +18,13 @@ export const sendOperationErrorResponse = (errorMessage: string) => {
     error: "operation_failed",
     errorMessage,
   });
+};
+
+export const toTezosNetwork = (network: Network) => {
+  switch (network) {
+    case "ghostnet":
+      return GHOSTNET;
+    case "mainnet":
+      return MAINNET;
+  }
 };

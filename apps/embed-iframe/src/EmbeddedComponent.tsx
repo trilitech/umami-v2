@@ -85,9 +85,17 @@ export function EmbeddedComponent() {
   };
 
   const checkPermissions = (origin: string, request: RequestMessage): Permissions | null => {
-    const clientPermissions = getPermissionsForOrigin(origin);
+    const network = request.type === "login_request" ? request.network : selectedNetwork;
+    if (network === null) {
+      sendResponse({
+        type: toMatchingResponseType(request.type),
+        error: "no_network_data",
+        errorMessage: "User's network data is not available",
+      });
+    }
+
+    const clientPermissions = getPermissionsForOrigin(origin, network!);
     if (!clientPermissions) {
-      console.error(`No permissions for origin (${origin})`);
       sendResponse({
         type: toMatchingResponseType(request.type),
         error: "no_permissions",
@@ -95,6 +103,7 @@ export function EmbeddedComponent() {
       });
       return null;
     }
+
     switch (request.type) {
       case "login_request":
       case "logout_request":

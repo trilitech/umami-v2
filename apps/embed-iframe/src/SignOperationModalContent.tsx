@@ -17,7 +17,7 @@ import { OpKind, type WalletParamsWithKind } from "@taquito/taquito";
 import { Network, type TypeOfLogin } from "@trilitech-umami/umami-embed/types";
 import * as Auth from "@umami/social-auth";
 import { useState } from "react";
-import { GHOSTNET, MAINNET, makeToolkit } from "@umami/tezos";
+import { makeToolkit } from "@umami/tezos";
 
 import { GoogleLogoIcon } from "./assets/icons/GoogleLogo";
 import { TezosLogoIcon } from "./assets/icons/TezosLogo";
@@ -26,7 +26,7 @@ import { JsValueWrap } from "./imported/JsValueWrap";
 import colors from "./imported/style/colors";
 import { getErrorContext } from "./imported/utils/getErrorContext";
 import { withTimeout } from "./imported/utils/withTimeout";
-import { sendOperationErrorResponse, sendResponse } from "./utils";
+import { sendOperationErrorResponse, sendResponse, toTezosNetwork } from "./utils";
 
 const SIGN_TIMEOUT = 5 * 60 * 1000; // 5 minutes
 
@@ -117,14 +117,5 @@ const toTaquitoOperation = (operation: PartialTezosOperation): WalletParamsWithK
       };
     default:
       throw new Error("Unsupported operation kind");
-  }
-};
-
-const toTezosNetwork = (network: Network) => {
-  switch (network) {
-    case "ghostnet":
-      return GHOSTNET;
-    case "mainnet":
-      return MAINNET;
   }
 };
