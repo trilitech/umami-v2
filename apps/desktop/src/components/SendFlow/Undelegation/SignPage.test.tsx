@@ -1,6 +1,6 @@
 import { Modal } from "@chakra-ui/react";
 import { makeAccountOperations, mockImplicitAccount, mockMnemonicAccount } from "@umami/core";
-import { addTestAccount } from "@umami/state";
+import { type UmamiStore, addTestAccount, makeStore } from "@umami/state";
 import { executeParams } from "@umami/test-utils";
 import { TEZ } from "@umami/tezos";
 
@@ -14,7 +14,12 @@ const fixture = (props: SignPageProps) => (
   </Modal>
 );
 
-beforeEach(() => addTestAccount(mockMnemonicAccount(0)));
+let store: UmamiStore;
+
+beforeEach(() => {
+  store = makeStore();
+  addTestAccount(store, mockMnemonicAccount(0));
+});
 
 describe("<SignPage />", () => {
   const sender = mockImplicitAccount(0);
@@ -31,6 +36,7 @@ describe("<SignPage />", () => {
       }),
     ],
   };
+
   describe("fee", () => {
     it("displays the fee in tez", async () => {
       const props: SignPageProps = {
@@ -38,7 +44,7 @@ describe("<SignPage />", () => {
         mode: "single",
         data: undefined,
       };
-      render(fixture(props));
+      render(fixture(props), { store });
 
       await waitFor(() => expect(screen.getByTestId("fee")).toHaveTextContent(`1.234567 ${TEZ}`));
     });

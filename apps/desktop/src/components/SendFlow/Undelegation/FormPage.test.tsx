@@ -6,7 +6,13 @@ import {
   mockMnemonicAccount,
   mockMultisigAccount,
 } from "@umami/core";
-import { addTestAccount, assetsSlice, store } from "@umami/state";
+import {
+  type UmamiStore,
+  addTestAccounts,
+  assetsActions,
+  makeStore,
+  mockToast,
+} from "@umami/state";
 import { executeParams } from "@umami/test-utils";
 import { mockImplicitAddress } from "@umami/tezos";
 
@@ -20,7 +26,6 @@ import {
   userEvent,
   waitFor,
 } from "../../../mocks/testUtils";
-import { mockToast } from "../../../mocks/toast";
 import { type FormPagePropsWithSender } from "../utils";
 
 const fixture = (props: FormPagePropsWithSender<FormValues>) => (
@@ -28,6 +33,12 @@ const fixture = (props: FormPagePropsWithSender<FormValues>) => (
     <FormPage {...props} />
   </Modal>
 );
+
+let store: UmamiStore;
+
+beforeEach(() => {
+  store = makeStore();
+});
 
 jest.mock("@umami/core", () => ({
   ...jest.requireActual("@umami/core"),
@@ -37,7 +48,7 @@ jest.mock("@umami/core", () => ({
 describe("<Form />", () => {
   describe("default values", () => {
     it("renders a form with a prefilled sender", () => {
-      render(fixture({ sender: mockImplicitAccount(0) }));
+      render(fixture({ sender: mockImplicitAccount(0) }), { store });
 
       expect(screen.getAllByTestId("address-tile")[0]).toHaveTextContent(
         mockImplicitAccount(0).address.pkh
@@ -48,7 +59,7 @@ describe("<Form />", () => {
       const sender = mockImplicitAccount(0);
       const baker = mockImplicitAccount(1);
       store.dispatch(
-        assetsSlice.actions.updateBakers([
+        assetsActions.updateBakers([
           { address: baker.address.pkh, name: "baker1", stakingBalance: 1 },
         ])
       );
@@ -60,7 +71,8 @@ describe("<Form />", () => {
             sender: sender.address.pkh,
             baker: baker.address.pkh,
           },
-        })
+        }),
+        { store }
       );
 
       expect(screen.getAllByTestId("address-tile")[1]).toHaveTextContent("baker1");
@@ -69,8 +81,7 @@ describe("<Form />", () => {
 
   describe("single transaction", () => {
     beforeEach(() => {
-      addTestAccount(mockMnemonicAccount(0));
-      addTestAccount(mockMultisigAccount(0));
+      addTestAccounts(store, [mockMnemonicAccount(0), mockMultisigAccount(0)]);
     });
 
     it("shows a toast if estimation fails", async () => {
@@ -82,16 +93,15 @@ describe("<Form />", () => {
             sender: mockImplicitAccount(0).address.pkh,
             baker: mockImplicitAccount(1).address.pkh,
           },
-        })
+        }),
+        { store }
       );
 
       const estimateMock = jest.mocked(estimate);
       estimateMock.mockRejectedValue(new Error("Some error occurred"));
 
       const submitButton = screen.getByText("Preview");
-      await waitFor(() => {
-        expect(submitButton).toBeEnabled();
-      });
+      await waitFor(() => expect(submitButton).toBeEnabled());
       await act(() => user.click(submitButton));
 
       expect(estimateMock).toHaveBeenCalledTimes(1);
@@ -112,7 +122,8 @@ describe("<Form />", () => {
             sender: sender.address.pkh,
             baker: mockImplicitAddress(2).pkh,
           },
-        })
+        }),
+        { store }
       );
       const submitButton = screen.getByText("Preview");
       await waitFor(() => expect(submitButton).toBeEnabled());

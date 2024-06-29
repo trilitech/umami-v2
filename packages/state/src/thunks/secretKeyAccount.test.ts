@@ -1,9 +1,15 @@
 import { mockMnemonicAccount } from "@umami/core";
 import { type EncryptedData, decrypt } from "@umami/crypto";
 
-import { getCurve, restore } from "./secretKeyAccount";
-import { store } from "../store";
-import { addTestAccount } from "../testHelpers";
+import { getCurve, restoreFromSecretKey } from "./secretKeyAccount";
+import { type UmamiStore, makeStore } from "../store";
+import { addTestAccount } from "../testUtils";
+
+let store: UmamiStore;
+
+beforeEach(() => {
+  store = makeStore();
+});
 
 describe("secretKeyAccount", () => {
   describe.each([
@@ -31,7 +37,7 @@ describe("secretKeyAccount", () => {
       const password = "12345678";
 
       await store.dispatch(
-        restore({
+        restoreFromSecretKey({
           secretKey,
           label,
           password,
@@ -60,14 +66,14 @@ describe("secretKeyAccount", () => {
         pk: publicKey,
         address: { type: "implicit" as const, pkh },
       };
-      addTestAccount(existingMnemonic);
+      addTestAccount(store, existingMnemonic);
 
       const label = "Secret Key Acc";
       const password = "12345678";
 
       await expect(() =>
         store.dispatch(
-          restore({
+          restoreFromSecretKey({
             secretKey,
             label,
             password,

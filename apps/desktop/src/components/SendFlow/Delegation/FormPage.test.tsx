@@ -6,7 +6,7 @@ import {
   mockMnemonicAccount,
   mockMultisigAccount,
 } from "@umami/core";
-import { addTestAccount, assetsSlice, store } from "@umami/state";
+import { type UmamiStore, addTestAccount, assetsActions, makeStore, mockToast } from "@umami/state";
 import { executeParams } from "@umami/test-utils";
 
 import { FormPage, type FormValues } from "./FormPage";
@@ -19,7 +19,6 @@ import {
   userEvent,
   waitFor,
 } from "../../../mocks/testUtils";
-import { mockToast } from "../../../mocks/toast";
 import { type FormPageProps } from "../utils";
 
 const fixture = (props: FormPageProps<FormValues>) => (
@@ -33,17 +32,23 @@ jest.mock("@umami/core", () => ({
   estimate: jest.fn(),
 }));
 
+let store: UmamiStore;
+
+beforeEach(() => {
+  store = makeStore();
+});
+
 describe("<Form />", () => {
   describe("default values", () => {
     it("renders an empty form by default", () => {
-      render(fixture({}));
+      render(fixture({}), { store });
 
       expect(screen.getByLabelText("From")).toHaveValue("");
       expect(screen.getByLabelText("From")).toBeEnabled();
     });
 
     it("renders a form with a prefilled sender", () => {
-      render(fixture({ sender: mockImplicitAccount(0) }));
+      render(fixture({ sender: mockImplicitAccount(0) }), { store });
 
       expect(screen.getByTestId("address-tile")).toHaveTextContent(
         mockImplicitAccount(0).address.pkh
@@ -57,7 +62,8 @@ describe("<Form />", () => {
             sender: mockImplicitAccount(0).address.pkh,
             baker: mockImplicitAccount(1).address.pkh,
           },
-        })
+        }),
+        { store }
       );
 
       await waitFor(() => {
@@ -75,7 +81,8 @@ describe("<Form />", () => {
             baker: mockImplicitAccount(1).address.pkh,
           },
           sender: mockImplicitAccount(0),
-        })
+        }),
+        { store }
       );
 
       await waitFor(() => {
@@ -94,7 +101,8 @@ describe("<Form />", () => {
       render(
         fixture({
           sender,
-        })
+        }),
+        { store }
       );
 
       expect(screen.getByText("Delegate")).toBeInTheDocument();
@@ -104,7 +112,7 @@ describe("<Form />", () => {
       const sender = mockImplicitAccount(0);
       const baker = mockImplicitAccount(1);
       store.dispatch(
-        assetsSlice.actions.updateBakers([
+        assetsActions.updateBakers([
           { address: baker.address.pkh, name: "baker1", stakingBalance: 1 },
         ])
       );
@@ -116,7 +124,8 @@ describe("<Form />", () => {
             sender: sender.address.pkh,
             baker: baker.address.pkh,
           },
-        })
+        }),
+        { store }
       );
 
       await waitFor(() => {
@@ -127,8 +136,8 @@ describe("<Form />", () => {
 
   describe("single transaction", () => {
     beforeEach(() => {
-      addTestAccount(mockMnemonicAccount(0));
-      addTestAccount(mockMultisigAccount(0));
+      addTestAccount(store, mockMnemonicAccount(0));
+      addTestAccount(store, mockMultisigAccount(0));
     });
 
     it("shows a toast if estimation fails", async () => {
@@ -140,7 +149,8 @@ describe("<Form />", () => {
             sender: mockImplicitAccount(0).address.pkh,
             baker: mockImplicitAccount(1).address.pkh,
           },
-        })
+        }),
+        { store }
       );
       const submitButton = screen.getByText("Preview");
       await waitFor(() => {
@@ -170,7 +180,8 @@ describe("<Form />", () => {
             sender: sender.address.pkh,
             baker: mockImplicitAccount(1).address.pkh,
           },
-        })
+        }),
+        { store }
       );
       const submitButton = screen.getByText("Preview");
       await waitFor(() => {

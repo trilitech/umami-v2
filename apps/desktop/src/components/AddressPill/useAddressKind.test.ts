@@ -1,13 +1,14 @@
 import { mockBaker, mockImplicitAccount, mockMnemonicAccount } from "@umami/core";
 import { multisigsFixture } from "@umami/multisig";
 import {
+  type UmamiStore,
   addTestAccount,
-  assetsSlice,
-  contactsSlice,
-  multisigsSlice,
+  assetsActions,
+  contactsActions,
+  makeStore,
+  multisigsActions,
   networksActions,
-  store,
-  tokensSlice,
+  tokensActions,
 } from "@umami/state";
 import { hedgehoge, uUSD } from "@umami/test-utils";
 import {
@@ -23,16 +24,21 @@ import { cloneDeep } from "lodash";
 import { useAddressKind } from "./useAddressKind";
 import { renderHook } from "../../mocks/testUtils";
 
+let store: UmamiStore;
+
 beforeEach(() => {
+  store = makeStore();
   store.dispatch(networksActions.setCurrent(MAINNET));
 });
 
 describe("useAddressKind", () => {
   it("returns owned implicit account", () => {
     const mnemonicAccount = mockMnemonicAccount(0);
-    addTestAccount(mockMnemonicAccount(0));
+    addTestAccount(store, mockMnemonicAccount(0));
 
-    const { result: addressKindRef } = renderHook(() => useAddressKind(mnemonicAccount.address));
+    const { result: addressKindRef } = renderHook(() => useAddressKind(mnemonicAccount.address), {
+      store,
+    });
 
     expect(addressKindRef.current).toEqual({
       type: "implicit",
@@ -42,10 +48,11 @@ describe("useAddressKind", () => {
   });
 
   it("returns owned multisig account", () => {
-    store.dispatch(multisigsSlice.actions.setMultisigs(multisigsFixture));
+    store.dispatch(multisigsActions.setMultisigs(multisigsFixture));
 
-    const { result: addressKindRef } = renderHook(() =>
-      useAddressKind(multisigsFixture[0].address)
+    const { result: addressKindRef } = renderHook(
+      () => useAddressKind(multisigsFixture[0].address),
+      { store }
     );
 
     expect(addressKindRef.current).toEqual({
@@ -65,13 +72,15 @@ describe("useAddressKind", () => {
       const withoutName = cloneDeep(tokenBalance);
       delete (withoutName.token.metadata as any).name;
       store.dispatch(
-        tokensSlice.actions.addTokens({
+        tokensActions.addTokens({
           network: MAINNET,
           tokens: [withoutName.token],
         })
       );
 
-      const { result: addressKindRef } = renderHook(() => useAddressKind(tokenContractAddress));
+      const { result: addressKindRef } = renderHook(() => useAddressKind(tokenContractAddress), {
+        store,
+      });
 
       expect(addressKindRef.current).toEqual({
         type: type,
@@ -82,13 +91,15 @@ describe("useAddressKind", () => {
 
     it("returns label if name is present", () => {
       store.dispatch(
-        tokensSlice.actions.addTokens({
+        tokensActions.addTokens({
           network: MAINNET,
           tokens: [tokenBalance.token],
         })
       );
 
-      const { result: addressKindRef } = renderHook(() => useAddressKind(tokenContractAddress));
+      const { result: addressKindRef } = renderHook(() => useAddressKind(tokenContractAddress), {
+        store,
+      });
 
       expect(addressKindRef.current).toEqual({
         type: type,
@@ -100,10 +111,11 @@ describe("useAddressKind", () => {
 
   test("returns baker account", () => {
     const baker = mockBaker(2);
-    store.dispatch(assetsSlice.actions.updateBakers([baker]));
+    store.dispatch(assetsActions.updateBakers([baker]));
 
-    const { result: addressKindRef } = renderHook(() =>
-      useAddressKind(parseImplicitPkh(baker.address))
+    const { result: addressKindRef } = renderHook(
+      () => useAddressKind(parseImplicitPkh(baker.address)),
+      { store }
     );
 
     expect(addressKindRef.current).toEqual({
@@ -116,9 +128,11 @@ describe("useAddressKind", () => {
   describe("for contacts", () => {
     it("returns implicit contact if it exists", () => {
       const contact1 = { name: "name1", pkh: mockImplicitAddress(3).pkh, network: undefined };
-      store.dispatch(contactsSlice.actions.upsert(contact1));
+      store.dispatch(contactsActions.upsert(contact1));
 
-      const { result: addressKindRef } = renderHook(() => useAddressKind(parsePkh(contact1.pkh)));
+      const { result: addressKindRef } = renderHook(() => useAddressKind(parsePkh(contact1.pkh)), {
+        store,
+      });
 
       expect(addressKindRef.current).toEqual({
         type: "contact",
@@ -130,9 +144,11 @@ describe("useAddressKind", () => {
     it("returns contract contact if found in any network", () => {
       store.dispatch(networksActions.setCurrent(MAINNET));
       const contact1 = { name: "name1", pkh: mockContractAddress(0).pkh, network: "ghostnet" };
-      store.dispatch(contactsSlice.actions.upsert(contact1));
+      store.dispatch(contactsActions.upsert(contact1));
 
-      const { result: addressKindRef } = renderHook(() => useAddressKind(parsePkh(contact1.pkh)));
+      const { result: addressKindRef } = renderHook(() => useAddressKind(parsePkh(contact1.pkh)), {
+        store,
+      });
 
       expect(addressKindRef.current).toEqual({
         type: "contact",
@@ -151,24 +167,26 @@ describe("useAddressKind", () => {
       { type: "fa2", address: uUSD(mockImplicitAddress(0)).token.contract.address },
       { type: "baker", address: mockBaker(1).address },
     ])("prioritizes $type over the contact", ({ type, address }) => {
-      addTestAccount(mockMnemonicAccount(0));
-      store.dispatch(multisigsSlice.actions.setMultisigs(multisigsFixture));
+      addTestAccount(store, mockMnemonicAccount(0));
+      store.dispatch(multisigsActions.setMultisigs(multisigsFixture));
       store.dispatch(
-        tokensSlice.actions.addTokens({
+        tokensActions.addTokens({
           network: MAINNET,
           tokens: [hedgehoge(mockImplicitAddress(0)).token, uUSD(mockImplicitAddress(0)).token],
         })
       );
-      store.dispatch(assetsSlice.actions.updateBakers([mockBaker(1)]));
+      store.dispatch(assetsActions.updateBakers([mockBaker(1)]));
       store.dispatch(
-        contactsSlice.actions.upsert({
+        contactsActions.upsert({
           name: "name1",
           pkh: address,
           network: undefined,
         })
       );
 
-      const { result: addressKindRef } = renderHook(() => useAddressKind(parsePkh(address)));
+      const { result: addressKindRef } = renderHook(() => useAddressKind(parsePkh(address)), {
+        store,
+      });
 
       expect(addressKindRef.current.type).toEqual(type);
     });
@@ -177,7 +195,7 @@ describe("useAddressKind", () => {
   it("returns unknown if nothing matched", () => {
     const unknown = mockImplicitAddress(3);
 
-    const { result: addressKindRef } = renderHook(() => useAddressKind(unknown));
+    const { result: addressKindRef } = renderHook(() => useAddressKind(unknown), { store });
 
     expect(addressKindRef.current).toEqual({
       type: "unknown",

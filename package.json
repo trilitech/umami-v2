@@ -19,7 +19,7 @@
     "test": "turbo test",
     "lint": "turbo lint",
     "format": "turbo format",
-    "ci": "turbo check-types lint:ci format:ci audit check-circular-deps",
+    "ci": "turbo check-types lint:ci format:ci audit check-circular-deps test --concurrency 3",
     "test:e2e": "turbo test:e2e",
     "dev:desktop": "turbo dev --filter='./apps/desktop'",
     "dev:web": "turbo dev --filter='./apps/web'",

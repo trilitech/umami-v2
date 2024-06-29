@@ -3,6 +3,7 @@ export * from "./constants";
 export * from "./derivationPathUtils";
 export * from "./fakeSigner";
 export * from "./fetch";
+export * from "./format";
 export * from "./helpers";
 export * from "./Network";
 export * from "./types";

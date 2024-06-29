@@ -1,10 +1,9 @@
 import { type Account } from "@umami/core";
+import { useImplicitAccounts, useRemoveAccount } from "@umami/state";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { RenameAccountModal } from "./RenameAccountModal";
-import { useImplicitAccounts } from "../../utils/hooks/getAccountDataHooks";
-import { useRemoveAccount } from "../../utils/hooks/setAccountDataHooks";
 import { ConfirmationModal } from "../ConfirmationModal";
 import { DynamicModalContext } from "../DynamicModal";
 import { RenameRemoveMenu } from "../RenameRemoveMenu";

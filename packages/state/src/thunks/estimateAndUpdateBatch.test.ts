@@ -9,15 +9,16 @@ import { executeParams } from "@umami/test-utils";
 import { DefaultNetworks } from "@umami/tezos";
 
 import { estimateAndUpdateBatch } from "./estimateAndUpdateBatch";
-import { store } from "../store";
+import { makeStore } from "../store";
 
 jest.mock("@umami/core");
 
 describe("estimateAndUpdateBatch", () => {
   describe.each(DefaultNetworks)("on $name", network => {
     it("adds an operation to batch if the estimation succeeds", async () => {
-      const operation = mockTezOperation(1);
+      const store = makeStore();
 
+      const operation = mockTezOperation(1);
       jest.mocked(estimate).mockResolvedValueOnce({
         type: "implicit",
         operations: [],
@@ -37,6 +38,7 @@ describe("estimateAndUpdateBatch", () => {
     });
 
     it("doesn't add an operation to batch if the estimation fails", async () => {
+      const store = makeStore();
       // add one operation to avoid false negatives
       const operation = mockTezOperation(1);
       const accountOperations = makeAccountOperations(

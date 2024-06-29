@@ -1,11 +1,11 @@
 import { Image } from "@chakra-ui/react";
+import { useGetOwnedAccountSafe } from "@umami/state";
 import { memo } from "react";
 
 import { type AddressTileIconSize } from "./AddressTileIconSize";
 import { type AddressKind } from "./types";
 import { ContactIcon, UnknownContactIcon } from "../../assets/icons";
 import colors from "../../style/colors";
-import { useGetOwnedAccountSafe } from "../../utils/hooks/getAccountDataHooks";
 import { AccountTileIcon } from "../AccountTile/AccountTileIcon";
 
 const baseIconProps = {

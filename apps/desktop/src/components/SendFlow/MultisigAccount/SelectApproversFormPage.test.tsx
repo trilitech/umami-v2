@@ -7,7 +7,7 @@ import {
   mockMnemonicAccount,
 } from "@umami/core";
 import { contract, makeStorageJSON } from "@umami/multisig";
-import { addTestAccount } from "@umami/state";
+import { type UmamiStore, addTestAccount, makeStore } from "@umami/state";
 import { executeParams } from "@umami/test-utils";
 import { mockContractAddress, mockImplicitAddress } from "@umami/tezos";
 
@@ -45,19 +45,24 @@ jest.mock("@umami/core", () => ({
   estimate: jest.fn(),
 }));
 
-beforeEach(() =>
-  [mockMnemonicAccount(0), mockMnemonicAccount(1), mockMnemonicAccount(2)].forEach(addTestAccount)
-);
+let store: UmamiStore;
+
+beforeEach(() => {
+  store = makeStore();
+  [mockMnemonicAccount(0), mockMnemonicAccount(1), mockMnemonicAccount(2)].forEach(account =>
+    addTestAccount(store, account)
+  );
+});
 
 describe("SelectApproversFormPage", () => {
   it("has a title", () => {
-    render(fixture());
+    render(fixture(), { store });
 
     expect(screen.getByRole("heading", { level: 2 })).toHaveTextContent("Select Approvers");
   });
 
   it("has a subtitle", () => {
-    render(fixture());
+    render(fixture(), { store });
 
     expect(
       screen.getByText(
@@ -69,7 +74,7 @@ describe("SelectApproversFormPage", () => {
   describe("back button", () => {
     it("calls the goBack function on click", async () => {
       const user = userEvent.setup();
-      render(fixture());
+      render(fixture(), { store });
 
       await act(() => user.click(screen.getByTestId("back-button")));
       expect(goBackSpy).toHaveBeenCalled();
@@ -80,7 +85,7 @@ describe("SelectApproversFormPage", () => {
     describe("add button", () => {
       it("adds a new approver field", async () => {
         const user = userEvent.setup();
-        render(fixture());
+        render(fixture(), { store });
 
         const addSignerButton = screen.getByRole("button", {
           name: "+ Add Approver",
@@ -98,14 +103,14 @@ describe("SelectApproversFormPage", () => {
 
     describe("remove button", () => {
       it("is hidden when there is only one approver", () => {
-        render(fixture());
+        render(fixture(), { store });
 
         expect(screen.queryByTestId(/remove-signer-/)).not.toBeInTheDocument();
       });
 
       it("appears when you have 2+ approvers", async () => {
         const user = userEvent.setup();
-        render(fixture());
+        render(fixture(), { store });
 
         const addSignerButton = screen.getByRole("button", {
           name: "+ Add Approver",
@@ -118,7 +123,7 @@ describe("SelectApproversFormPage", () => {
 
       it("removes the correct approver", async () => {
         const user = userEvent.setup();
-        render(fixture());
+        render(fixture(), { store });
         const addSignerButton = screen.getByRole("button", {
           name: "+ Add Approver",
         });
@@ -157,7 +162,7 @@ describe("SelectApproversFormPage", () => {
 
     it("doesn't allow non-tz addresses", async () => {
       const user = userEvent.setup();
-      render(fixture());
+      render(fixture(), { store });
 
       await act(() =>
         user.type(screen.getByLabelText("Select 1st approver"), mockContractAddress(0).pkh)
@@ -170,7 +175,7 @@ describe("SelectApproversFormPage", () => {
 
     it("doesn't allow duplications", async () => {
       const user = userEvent.setup();
-      render(fixture());
+      render(fixture(), { store });
 
       const addSignerButton = screen.getByRole("button", {
         name: "+ Add Approver",
@@ -189,7 +194,7 @@ describe("SelectApproversFormPage", () => {
 
   describe("threshold", () => {
     it("doesn't allow values < 1", async () => {
-      render(fixture());
+      render(fixture(), { store });
 
       fireEvent.change(screen.getByTestId("threshold-input"), {
         target: { value: "0" },
@@ -204,7 +209,7 @@ describe("SelectApproversFormPage", () => {
     });
 
     it("doesn't allow values above the number of approvers", async () => {
-      render(fixture());
+      render(fixture(), { store });
 
       fireEvent.change(screen.getByTestId("threshold-input"), {
         target: { value: "2" },
@@ -225,16 +230,14 @@ describe("SelectApproversFormPage", () => {
       });
       fireEvent.blur(screen.getByTestId("threshold-input"));
 
-      await waitFor(() => {
-        expect(screen.getByTestId("threshold-error")).toHaveTextContent(
-          "Max no. of approvals is 2"
-        );
-      });
+      await waitFor(() =>
+        expect(screen.getByTestId("threshold-error")).toHaveTextContent("Max no. of approvals is 2")
+      );
     });
 
     it("shows the correct max threshold", async () => {
       const user = userEvent.setup();
-      render(fixture());
+      render(fixture(), { store });
 
       expect(screen.getByTestId("max-signers")).toHaveTextContent("out of 1");
 
@@ -258,7 +261,8 @@ describe("SelectApproversFormPage", () => {
             { val: mockImplicitAccount(1).address.pkh },
           ],
           threshold: 2,
-        })
+        }),
+        { store }
       );
 
       expect(screen.getByTestId("real-address-input-signers.0.val")).toHaveValue(
@@ -269,9 +273,7 @@ describe("SelectApproversFormPage", () => {
       );
       expect(screen.getByTestId("threshold-input")).toHaveValue(2);
 
-      await waitFor(() => {
-        expect(screen.getByText("Review")).toBeEnabled();
-      });
+      await waitFor(() => expect(screen.getByText("Review")).toBeEnabled());
     });
 
     it("builds operation that can be submitted from the next step", async () => {
@@ -286,7 +288,8 @@ describe("SelectApproversFormPage", () => {
             { val: mockImplicitAccount(1).address.pkh },
           ],
           threshold: 1,
-        })
+        }),
+        { store }
       );
 
       const operations = {
@@ -328,16 +331,16 @@ describe("SelectApproversFormPage", () => {
 
   describe("empty form", () => {
     it("builds operation that can be submitted from the next step", async () => {
-      render(fixture());
+      render(fixture(), { store });
 
       // select values
       const addSignerButton = screen.getByRole("button", {
         name: "+ Add Approver",
       });
       fireEvent.click(addSignerButton);
-      await waitFor(() => {
-        expect(screen.getAllByTestId(/^address-autocomplete-signer/)).toHaveLength(2);
-      });
+      await waitFor(() =>
+        expect(screen.getAllByTestId(/^address-autocomplete-signer/)).toHaveLength(2)
+      );
       fireEvent.change(screen.getByLabelText("Select 1st approver"), {
         target: { value: mockImplicitAddress(1).pkh },
       });
@@ -350,9 +353,7 @@ describe("SelectApproversFormPage", () => {
 
       // open sign form
       const reviewButton = screen.getByText("Review");
-      await waitFor(() => {
-        expect(reviewButton).toBeEnabled();
-      });
+      await waitFor(() => expect(reviewButton).toBeEnabled());
       fireEvent.click(reviewButton);
 
       const operations = {
@@ -371,7 +372,7 @@ describe("SelectApproversFormPage", () => {
       };
       jest.mocked(estimate).mockResolvedValueOnce(operations);
 
-      await waitFor(() => {
+      await waitFor(() =>
         expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
           <SignTransactionFormPage
             data={{
@@ -384,8 +385,8 @@ describe("SelectApproversFormPage", () => {
             mode="single"
             operations={operations}
           />
-        );
-      });
+        )
+      );
     });
   });
 });

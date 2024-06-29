@@ -1,5 +1,5 @@
 import { mockContractContact, mockImplicitContact } from "@umami/core";
-import { contactsActions, networksActions, store } from "@umami/state";
+import { type UmamiStore, contactsActions, makeStore, networksActions } from "@umami/state";
 import { GHOSTNET } from "@umami/tezos";
 import { FormProvider, useForm } from "react-hook-form";
 
@@ -8,6 +8,12 @@ import { fireEvent, render, renderHook, screen, within } from "../../mocks/testU
 
 type FormFields = { destination: string };
 
+let store: UmamiStore;
+
+beforeEach(() => {
+  store = makeStore();
+});
+
 describe("<KnownAccountsAutocomplete />", () => {
   it("returns all implicit contacts", () => {
     const contact1 = mockImplicitContact(1);
@@ -15,11 +21,14 @@ describe("<KnownAccountsAutocomplete />", () => {
     store.dispatch(contactsActions.upsert(contact1));
     store.dispatch(contactsActions.upsert(contact2));
 
-    const view = renderHook(() => useForm<FormFields>({ defaultValues: { destination: "" } }));
+    const view = renderHook(() => useForm<FormFields>({ defaultValues: { destination: "" } }), {
+      store,
+    });
     render(
       <FormProvider {...view.result.current}>
         <KnownAccountsAutocomplete allowUnknown inputName="destination" label="" />
-      </FormProvider>
+      </FormProvider>,
+      { store }
     );
 
     fireEvent.focus(screen.getByLabelText("destination"));
@@ -38,11 +47,14 @@ describe("<KnownAccountsAutocomplete />", () => {
     store.dispatch(contactsActions.upsert(contact2));
     store.dispatch(contactsActions.upsert(contact3));
 
-    const view = renderHook(() => useForm<FormFields>({ defaultValues: { destination: "" } }));
+    const view = renderHook(() => useForm<FormFields>({ defaultValues: { destination: "" } }), {
+      store,
+    });
     render(
       <FormProvider {...view.result.current}>
         <KnownAccountsAutocomplete allowUnknown inputName="destination" label="" />
-      </FormProvider>
+      </FormProvider>,
+      { store }
     );
 
     fireEvent.focus(screen.getByLabelText("destination"));

@@ -7,7 +7,6 @@ const config: Config = {
   transform: {
     "^.+\\.ts$": "ts-jest",
   },
-  testEnvironment: "node",
   setupFilesAfterEnv: ["<rootDir>/src/setupTests.ts"],
   rootDir: "./",
 };

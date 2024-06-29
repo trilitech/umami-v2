@@ -1,6 +1,6 @@
 import { Modal } from "@chakra-ui/react";
 import { makeAccountOperations, mockImplicitAccount, mockMnemonicAccount } from "@umami/core";
-import { addTestAccount, assetsSlice, store } from "@umami/state";
+import { type UmamiStore, addTestAccount, assetsActions, makeStore } from "@umami/state";
 import { executeParams } from "@umami/test-utils";
 import { TEZ } from "@umami/tezos";
 
@@ -14,7 +14,12 @@ const fixture = (props: SignPageProps) => (
   </Modal>
 );
 
-beforeEach(() => addTestAccount(mockMnemonicAccount(0)));
+let store: UmamiStore;
+
+beforeEach(() => {
+  store = makeStore();
+  addTestAccount(store, mockMnemonicAccount(0));
+});
 
 describe("<SignPage />", () => {
   const sender = mockImplicitAccount(0);
@@ -35,7 +40,7 @@ describe("<SignPage />", () => {
       mode: "single",
       data: undefined,
     };
-    render(fixture(props));
+    render(fixture(props), { store });
 
     await waitFor(() => expect(screen.getByTestId("fee")).toHaveTextContent(`1.234567 ${TEZ}`));
   });
@@ -44,7 +49,7 @@ describe("<SignPage />", () => {
     const baker = mockImplicitAccount(1);
 
     store.dispatch(
-      assetsSlice.actions.updateBakers([
+      assetsActions.updateBakers([
         { address: baker.address.pkh, name: "baker1", stakingBalance: 1 },
       ])
     );
@@ -54,7 +59,7 @@ describe("<SignPage />", () => {
       mode: "single",
       data: undefined,
     };
-    render(fixture(props));
+    render(fixture(props), { store });
 
     await waitFor(() =>
       expect(screen.getAllByTestId("address-tile")[1]).toHaveTextContent("baker1")

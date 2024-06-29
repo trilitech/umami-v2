@@ -1,4 +1,5 @@
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
+import { useBatches } from "@umami/state";
 
 import { BatchView } from "./BatchView";
 import { ExternalLinkIcon } from "../../assets/icons";
@@ -7,7 +8,6 @@ import { ExternalLink } from "../../components/ExternalLink";
 import { NoItems } from "../../components/NoItems";
 import { TopBar } from "../../components/TopBar";
 import colors from "../../style/colors";
-import { useBatches } from "../../utils/hooks/batchesHooks";
 
 const FilterController = ({ batchPending }: { batchPending: number }) => (
   <Flex alignItems="center" marginTop="24px" marginBottom="24px">

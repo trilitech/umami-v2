@@ -2,19 +2,7 @@ import crypto from "crypto";
 
 import { After, AfterAll, Before, BeforeAll, setDefaultTimeout } from "@cucumber/cucumber";
 import { type ChromiumBrowser, chromium } from "@playwright/test";
-import {
-  accountsInitialState,
-  announcementInitialState,
-  assetsInitialState,
-  batchesInitialState,
-  beaconInitialState,
-  contactsInitialState,
-  errorsInitialState,
-  multisigsInitialState,
-  protocolSettingsInitialState,
-  VERSION as stateVersion,
-  tokensInitialState,
-} from "@umami/state";
+import { makeStore, VERSION as stateVersion } from "@umami/state";
 import { secondsToMilliseconds } from "date-fns";
 import { omit } from "lodash";
 
@@ -58,18 +46,11 @@ Before(async function (this: CustomWorld) {
 
   void (async () => {
     const predefinedState = await this.getReduxState();
-    const accounts = { ...accountsInitialState, ...predefinedState["accounts"] };
+    const initialState = makeStore().getState();
+    const accounts = { ...initialState.accounts, ...predefinedState["accounts"] };
     const state: any = {
-      assets: assetsInitialState,
-      announcement: announcementInitialState,
-      batches: batchesInitialState,
-      beacon: beaconInitialState,
-      contacts: contactsInitialState,
-      errors: errorsInitialState,
-      multisigs: multisigsInitialState,
+      ...omit(initialState, ["accounts", "_persist"]),
       networks: TEST_NETWORKS_STATE,
-      protocolSettings: protocolSettingsInitialState,
-      tokens: tokensInitialState,
       ...omit(predefinedState, "accounts"),
     };
 
@@ -108,6 +89,9 @@ Before(async function (this: CustomWorld) {
       },
     });
     this.page = await this.context.newPage();
+    if (process.env.PRINT_BROWSER_LOGS) {
+      this.page.on("console", msg => console.log("PAGE LOG:", msg.text()));
+    }
     this.page.setDefaultTimeout(secondsToMilliseconds(10));
   })();
 

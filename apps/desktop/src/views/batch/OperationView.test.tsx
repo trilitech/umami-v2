@@ -7,30 +7,36 @@ import {
   mockTezOperation,
   mockUndelegationOperation,
 } from "@umami/core";
-import { store, tokensActions } from "@umami/state";
+import { type UmamiStore, makeStore, tokensActions } from "@umami/state";
 import { ghostnetThezard, hedgehoge, uUSD } from "@umami/test-utils";
 import { MAINNET, TEZ, mockImplicitAddress, parseContractPkh } from "@umami/tezos";
 
 import { OperationView } from "./OperationView";
 import { render, screen } from "../../mocks/testUtils";
 
+let store: UmamiStore;
+
+beforeEach(() => {
+  store = makeStore();
+});
+
 describe("Batch <OperationView />", () => {
   it("displays tez transfer operation", () => {
-    render(<OperationView operation={mockTezOperation(1)} />);
+    render(<OperationView operation={mockTezOperation(1)} />, { store });
 
     expect(screen.getByRole("heading", { name: `0.000001 ${TEZ}` })).toBeInTheDocument();
     expect(screen.getByTestId("outgoing-arrow-icon")).toBeInTheDocument();
   });
 
   it("displays delegation operation", () => {
-    render(<OperationView operation={mockDelegationOperation(0)} />);
+    render(<OperationView operation={mockDelegationOperation(0)} />, { store });
 
     expect(screen.getByRole("heading", { name: "Delegate" })).toBeInTheDocument();
     expect(screen.getByTestId("baker-icon")).toBeInTheDocument();
   });
 
   it("displays undelegation operation", () => {
-    render(<OperationView operation={mockUndelegationOperation(0)} />);
+    render(<OperationView operation={mockUndelegationOperation(0)} />, { store });
 
     expect(screen.getByRole("heading", { name: "End Delegation" })).toBeInTheDocument();
     expect(screen.getByTestId("baker-icon")).toBeInTheDocument();
@@ -38,7 +44,7 @@ describe("Batch <OperationView />", () => {
 
   describe("for tokens", () => {
     it("displays unknown token operation", () => {
-      render(<OperationView operation={{ ...mockFA12Operation(2), amount: "1234" }} />);
+      render(<OperationView operation={{ ...mockFA12Operation(2), amount: "1234" }} />, { store });
 
       expect(screen.getByRole("heading", { name: "1234 Unknown Token" })).toBeInTheDocument();
       expect(screen.getByTestId("outgoing-arrow-icon")).toBeInTheDocument();
@@ -54,7 +60,7 @@ describe("Batch <OperationView />", () => {
         amount: "1234",
       };
 
-      render(<OperationView operation={operation} />);
+      render(<OperationView operation={operation} />, { store });
 
       expect(screen.getByRole("heading", { name: "0.001234 Hedgehoge" })).toBeInTheDocument();
       expect(screen.getByTestId("outgoing-arrow-icon")).toBeInTheDocument();
@@ -76,7 +82,7 @@ describe("Batch <OperationView />", () => {
         amount: "1234",
       };
 
-      render(<OperationView operation={operation} />);
+      render(<OperationView operation={operation} />, { store });
 
       expect(
         screen.getByRole("heading", { name: "0.000000001234 youves uUSD" })
@@ -100,7 +106,7 @@ describe("Batch <OperationView />", () => {
         amount: "12345",
       };
 
-      render(<OperationView operation={operation} />);
+      render(<OperationView operation={operation} />, { store });
 
       expect(screen.getByRole("heading", { name: "x12345" })).toBeInTheDocument();
       expect(screen.getByRole("heading", { name: "Tezzardz #24" })).toBeInTheDocument();

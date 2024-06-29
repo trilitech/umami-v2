@@ -1,8 +1,7 @@
 import { useToast } from "@chakra-ui/react";
 import { parseTorusRedirectParams } from "@umami/social-auth";
+import { useAddPeer } from "@umami/state";
 import { useEffect, useRef } from "react";
-
-import { useAddPeer } from "./beacon/beacon";
 
 export const useDeeplinkHandler = () => {
   const toast = useToast();

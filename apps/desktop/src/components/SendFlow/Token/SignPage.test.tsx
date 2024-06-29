@@ -7,7 +7,7 @@ import {
   mockImplicitAccount,
   mockMnemonicAccount,
 } from "@umami/core";
-import { addTestAccount } from "@umami/state";
+import { type UmamiStore, addTestAccount, makeStore } from "@umami/state";
 import { executeParams } from "@umami/test-utils";
 import { TEZ, parseContractPkh } from "@umami/tezos";
 
@@ -21,7 +21,12 @@ const fixture = (props: SignPageProps<{ token: FA12TokenBalance | FA2TokenBalanc
   </Modal>
 );
 
-beforeEach(() => addTestAccount(mockMnemonicAccount(0)));
+let store: UmamiStore;
+
+beforeEach(() => {
+  store = makeStore();
+  addTestAccount(store, mockMnemonicAccount(0));
+});
 
 const mockAccount = mockMnemonicAccount(0);
 const mockFAToken = mockFA2Token(0, mockAccount);
@@ -53,7 +58,7 @@ describe("<SignPage />", () => {
         mode: "single",
         data: { token: mockFAToken },
       };
-      render(fixture(props));
+      render(fixture(props), { store });
 
       await waitFor(() => expect(screen.getByTestId("fee")).toHaveTextContent(`1.234567 ${TEZ}`));
     });
@@ -68,7 +73,7 @@ describe("<SignPage />", () => {
         mode: "single",
         data: { token: mockFAToken },
       };
-      render(fixture(props));
+      render(fixture(props), { store });
 
       await waitFor(() =>
         expect(screen.getByTestId("token-tile")).toHaveTextContent(
@@ -85,7 +90,7 @@ describe("<SignPage />", () => {
         mode: "single",
         data: { token: mockFA2Token(0, mockAccount, 1, 0) },
       };
-      render(fixture(props));
+      render(fixture(props), { store });
 
       await waitFor(() => expect(screen.getByTestId("pretty-number")).toHaveTextContent("10"));
     });

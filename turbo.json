@@ -82,7 +82,9 @@
       ],
       "env": [
         "TZKT_SYNC_IMAGE",
-        "TZKT_API_IMAGE"
+        "TZKT_API_IMAGE",
+        "OPEN_BROWSER",
+        "PRINT_BROWSER_LOGS"
       ]
     }
   }

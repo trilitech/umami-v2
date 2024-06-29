@@ -1,5 +1,5 @@
 import { Alert, AlertDescription, Center, CloseButton, Flex } from "@chakra-ui/react";
-import { announcementSlice, useAppDispatch, useAppSelector } from "@umami/state";
+import { announcementActions, useAppDispatch, useAppSelector } from "@umami/state";
 import axios from "axios";
 import { useEffect } from "react";
 
@@ -23,9 +23,7 @@ export const AnnouncementBanner: React.FC = () => {
     const updateCurrentAnnouncement = () => {
       axios
         .get(ANNOUNCEMENT_FILE_URL)
-        .then(response => {
-          dispatch(announcementSlice.actions.setCurrent(response.data));
-        })
+        .then(response => dispatch(announcementActions.setCurrent(response.data)))
         .catch(_ => {
           // if we can't fetch the announcement (whether it's 404 or network error)
           // we just don't do anything
@@ -59,10 +57,7 @@ export const AnnouncementBanner: React.FC = () => {
             dangerouslySetInnerHTML={{ __html: announcementHTML }}
           />
         </Center>
-        <CloseButton
-          data-testid="close"
-          onClick={() => dispatch(announcementSlice.actions.setSeen())}
-        />
+        <CloseButton data-testid="close" onClick={() => dispatch(announcementActions.setSeen())} />
       </Flex>
     </Alert>
   );

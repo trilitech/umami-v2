@@ -1,7 +1,7 @@
 import { BeaconMessageType, NetworkType, type OperationRequestOutput } from "@airgap/beacon-wallet";
 import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
 import { executeOperations, mockImplicitAccount, mockTezOperation } from "@umami/core";
-import { networksActions, store } from "@umami/state";
+import { WalletClient, makeStore, networksActions, useGetSecretKey } from "@umami/state";
 import { executeParams } from "@umami/test-utils";
 import { GHOSTNET, MAINNET, makeToolkit } from "@umami/tezos";
 
@@ -14,8 +14,6 @@ import {
   userEvent,
   waitFor,
 } from "../../../mocks/testUtils";
-import { WalletClient } from "../../../utils/beacon/WalletClient";
-import { useGetSecretKey } from "../../../utils/hooks/getAccountDataHooks";
 import { SuccessStep } from "../SuccessStep";
 
 jest.mock("@umami/core", () => ({
@@ -29,13 +27,15 @@ jest.mock("@umami/tezos", () => ({
   makeToolkit: jest.fn(),
 }));
 
-jest.mock("../../../utils/hooks/getAccountDataHooks", () => ({
-  ...jest.requireActual("../../../utils/hooks/getAccountDataHooks"),
+jest.mock("@umami/state", () => ({
+  ...jest.requireActual("@umami/state"),
   useGetSecretKey: jest.fn(),
 }));
 
 describe("<TezSignPage />", () => {
   it("uses correct network", async () => {
+    const store = makeStore();
+
     const user = userEvent.setup();
     const message = {
       id: "messageid",
@@ -56,7 +56,7 @@ describe("<TezSignPage />", () => {
     jest.mocked(executeOperations).mockResolvedValue({ opHash: "ophash" } as BatchWalletOperation);
     jest.spyOn(WalletClient, "respond").mockResolvedValue();
 
-    render(<TezSignPage message={message} operation={operation} />);
+    render(<TezSignPage message={message} operation={operation} />, { store });
 
     expect(screen.getByText("Ghostnet")).toBeVisible();
     expect(screen.queryByText("Mainnet")).not.toBeInTheDocument();

@@ -1,5 +1,5 @@
 import { getErrorContext } from "@umami/core";
-import { accountsSlice, getPersistor, store } from "@umami/state";
+import { accountsActions } from "@umami/state";
 import { encryptedMnemonic1 } from "@umami/test-utils";
 import React from "react";
 import ReactDOM from "react-dom/client";
@@ -12,6 +12,8 @@ import { Layout } from "./Layout";
 import { ReactQueryProvider } from "./providers/ReactQueryProvider";
 import { ReduxStore } from "./providers/ReduxStore";
 import { UmamiTheme } from "./providers/UmamiTheme";
+import { persistor } from "./utils/persistor";
+import { store } from "./utils/store";
 import { ErrorPage } from "./views/ErrorPage/ErrorPage";
 
 import "./index.scss";
@@ -19,7 +21,7 @@ import "./index.scss";
 const logError = (error: Error, info: { componentStack?: string | null }) => {
   const _errorContext = { ...getErrorContext(error), stacktrace: String(info.componentStack) };
   // TODO: use error dispatch from redux store package
-  // store.dispatch(errorsSlice.actions.add(errorContext));
+  // store.dispatch(errorsActions.add(errorContext));
 };
 
 if (IS_DEV) {
@@ -27,7 +29,7 @@ if (IS_DEV) {
   if (!state.accounts.items.length) {
     // Add a testing account if there are no accounts in the store
     store.dispatch(
-      accountsSlice.actions.addMnemonicAccounts({
+      accountsActions.addMnemonicAccounts({
         seedFingerprint: "test group",
         accounts: [
           {
@@ -54,7 +56,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <UmamiTheme>
       <ReduxStore>
-        <PersistGate loading={<div>loading</div>} persistor={getPersistor()}>
+        <PersistGate loading={<div>loading</div>} persistor={persistor}>
           <ErrorBoundary fallback={<ErrorPage />} onError={logError}>
             <ReactQueryProvider>
               <BrowserRouter>

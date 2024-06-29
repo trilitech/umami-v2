@@ -1,21 +1,22 @@
 import { mockSocialAccount } from "@umami/core";
-import { addTestAccount } from "@umami/state";
+import { type UmamiStore, addTestAccount, makeStore } from "@umami/state";
 
 import { ConnectOptions } from "./ConnectOptions";
 import { act, render, screen, userEvent } from "../../../mocks/testUtils";
-import { type OnboardingStep } from "../OnboardingStep";
 
 const goToStepMock = jest.fn();
 
-const fixture = (goToStep: (step: OnboardingStep) => void) => (
-  <ConnectOptions goToStep={goToStep} />
-);
+let store: UmamiStore;
+
+beforeEach(() => {
+  store = makeStore();
+});
 
 describe("<ConnectOptions />", () => {
   describe("restore from backup", () => {
     it("navigates to the restore backup step", async () => {
       const user = userEvent.setup();
-      render(fixture(goToStepMock));
+      render(<ConnectOptions goToStep={goToStepMock} />, { store });
 
       await act(() =>
         user.click(
@@ -30,9 +31,9 @@ describe("<ConnectOptions />", () => {
     });
 
     it("hides the button if a user tries to add another account", () => {
-      addTestAccount(mockSocialAccount(0));
+      addTestAccount(store, mockSocialAccount(0));
 
-      render(fixture(goToStepMock));
+      render(<ConnectOptions goToStep={goToStepMock} />, { store });
 
       expect(screen.queryByRole("button", { name: "Restore from Backup" })).not.toBeInTheDocument();
     });
@@ -40,7 +41,7 @@ describe("<ConnectOptions />", () => {
 
   it("navigates to import seed phrase step", async () => {
     const user = userEvent.setup();
-    render(fixture(goToStepMock));
+    render(<ConnectOptions goToStep={goToStepMock} />, { store });
 
     await user.click(
       screen.getByRole("button", {
@@ -54,7 +55,7 @@ describe("<ConnectOptions />", () => {
 
   it("navigates to import secret key step", async () => {
     const user = userEvent.setup();
-    render(fixture(goToStepMock));
+    render(<ConnectOptions goToStep={goToStepMock} />, { store });
 
     await user.click(
       screen.getByRole("button", {
@@ -68,7 +69,7 @@ describe("<ConnectOptions />", () => {
 
   it("navigates to connect ledger step", async () => {
     const user = userEvent.setup();
-    render(fixture(goToStepMock));
+    render(<ConnectOptions goToStep={goToStepMock} />, { store });
 
     await user.click(
       screen.getByRole("button", {

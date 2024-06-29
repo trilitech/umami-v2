@@ -7,7 +7,7 @@ import {
   mockMnemonicAccount,
   mockNFT,
 } from "@umami/core";
-import { addTestAccount } from "@umami/state";
+import { type UmamiStore, addTestAccount, makeStore, mockToast } from "@umami/state";
 import { executeParams } from "@umami/test-utils";
 import { parseContractPkh } from "@umami/tezos";
 
@@ -22,7 +22,6 @@ import {
   userEvent,
   waitFor,
 } from "../../../mocks/testUtils";
-import { mockToast } from "../../../mocks/toast";
 import { type FormPagePropsWithSender } from "../utils";
 
 jest.mock("@umami/core", () => ({
@@ -36,10 +35,16 @@ const fixture = (props: FormPagePropsWithSender<FormValues>, nft: NFTBalance = m
   </Modal>
 );
 
+let store: UmamiStore;
+
+beforeEach(() => {
+  store = makeStore();
+});
+
 describe("<FormPage />", () => {
   describe("default values", () => {
     it("renders a form with a prefilled sender", () => {
-      render(fixture({ sender: mockImplicitAccount(1) }));
+      render(fixture({ sender: mockImplicitAccount(1) }), { store });
 
       expect(screen.getByTestId("address-tile")).toHaveTextContent(
         mockImplicitAccount(1).address.pkh
@@ -55,7 +60,8 @@ describe("<FormPage />", () => {
             quantity: 1,
             recipient: mockImplicitAccount(1).address.pkh,
           },
-        })
+        }),
+        { store }
       );
 
       await waitFor(() => {
@@ -78,7 +84,8 @@ describe("<FormPage />", () => {
             sender: mockImplicitAccount(0),
           },
           mockNFT(1, "10")
-        )
+        ),
+        { store }
       );
 
       expect(screen.getByTestId("nft-owned")).toHaveTextContent("10");
@@ -92,7 +99,8 @@ describe("<FormPage />", () => {
             sender: mockImplicitAccount(0),
           },
           mockNFT(1, "10")
-        )
+        ),
+        { store }
       );
 
       expect(screen.getByTestId("nft-owned")).toHaveTextContent("10");
@@ -106,7 +114,8 @@ describe("<FormPage />", () => {
         render(
           fixture({
             sender: mockImplicitAccount(0),
-          })
+          }),
+          { store }
         );
 
         fireEvent.blur(screen.getByLabelText("To"));
@@ -121,7 +130,8 @@ describe("<FormPage />", () => {
         render(
           fixture({
             sender: mockImplicitAccount(0),
-          })
+          }),
+          { store }
         );
 
         fireEvent.change(screen.getByLabelText("To"), {
@@ -148,7 +158,8 @@ describe("<FormPage />", () => {
         render(
           fixture({
             sender: mockImplicitAccount(0),
-          })
+          }),
+          { store }
         );
         fireEvent.change(screen.getByTestId("quantity-input"), {
           target: { value: "0" },
@@ -166,7 +177,8 @@ describe("<FormPage />", () => {
               sender: mockImplicitAccount(0),
             },
             mockNFT(1, "5")
-          )
+          ),
+          { store }
         );
         fireEvent.change(screen.getByTestId("quantity-input"), {
           target: { value: "7" },
@@ -181,7 +193,7 @@ describe("<FormPage />", () => {
     describe("single transaction", () => {
       it("opens a sign page if estimation succeeds", async () => {
         const user = userEvent.setup();
-        addTestAccount(mockMnemonicAccount(0));
+        addTestAccount(store, mockMnemonicAccount(0));
         const sender = mockImplicitAccount(0);
         render(
           fixture({
@@ -191,7 +203,8 @@ describe("<FormPage />", () => {
               recipient: mockImplicitAccount(1).address.pkh,
               quantity: 1,
             },
-          })
+          }),
+          { store }
         );
         const submitButton = screen.getByText("Preview");
         await waitFor(() => {

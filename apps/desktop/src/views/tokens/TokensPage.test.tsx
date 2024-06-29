@@ -1,19 +1,29 @@
 import { mockMnemonicAccount } from "@umami/core";
-import { addTestAccount, assetsSlice, networksActions, store, tokensActions } from "@umami/state";
+import {
+  type UmamiStore,
+  addTestAccount,
+  assetsActions,
+  makeStore,
+  networksActions,
+  tokensActions,
+} from "@umami/state";
 import { hedgehoge, tzBtsc, uUSD } from "@umami/test-utils";
 import { DefaultNetworks, MAINNET, type Network, mockImplicitAddress } from "@umami/tezos";
 
 import { TokensPage } from "./TokensPage";
 import { render, screen } from "../../mocks/testUtils";
 
-const fixture = () => <TokensPage />;
+let store: UmamiStore;
 
-beforeEach(() => addTestAccount(mockMnemonicAccount(0)));
+beforeEach(() => {
+  store = makeStore();
+  addTestAccount(store, mockMnemonicAccount(0));
+});
 
 describe("<TokensView />", () => {
   describe("without tokens", () => {
     it("displays empty state message", () => {
-      render(fixture());
+      render(<TokensPage />, { store });
 
       expect(screen.getByTestId("empty-state-message")).toBeVisible();
       expect(screen.getByText("No tokens to show")).toBeInTheDocument();
@@ -24,14 +34,14 @@ describe("<TokensView />", () => {
   describe("with tokens", () => {
     const setupTokens = (network: Network) => {
       store.dispatch(networksActions.setCurrent(network));
-      addTestAccount(mockMnemonicAccount(1));
+      addTestAccount(store, mockMnemonicAccount(1));
       const tokenBalances = [
         hedgehoge(mockImplicitAddress(0)),
         hedgehoge(mockImplicitAddress(1)),
         tzBtsc(mockImplicitAddress(1)),
         uUSD(mockImplicitAddress(0)),
       ];
-      store.dispatch(assetsSlice.actions.updateTokenBalance(tokenBalances));
+      store.dispatch(assetsActions.updateTokenBalance(tokenBalances));
       store.dispatch(
         tokensActions.addTokens({ network, tokens: tokenBalances.map(tb => tb.token) })
       );
@@ -40,7 +50,7 @@ describe("<TokensView />", () => {
     it("hides empty state message", () => {
       setupTokens(MAINNET);
 
-      render(fixture());
+      render(<TokensPage />, { store });
 
       expect(screen.queryByTestId("empty-state-message")).not.toBeInTheDocument();
     });
@@ -48,7 +58,7 @@ describe("<TokensView />", () => {
     it.each(DefaultNetworks)("shows all available tokens from all accounts on $name", network => {
       setupTokens(network);
 
-      render(fixture());
+      render(<TokensPage />, { store });
 
       expect(screen.getAllByText("Hedgehoge")).toHaveLength(2);
       expect(screen.getAllByText("tzBTC")).toHaveLength(1);

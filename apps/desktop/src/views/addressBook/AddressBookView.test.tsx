@@ -1,5 +1,5 @@
 import { type StoredContactInfo, mockImplicitContact } from "@umami/core";
-import { contactsActions, networksActions, store } from "@umami/state";
+import { type UmamiStore, contactsActions, makeStore, networksActions } from "@umami/state";
 import { GHOSTNET } from "@umami/tezos";
 
 import { AddressBookView } from "./AddressBookView";
@@ -15,7 +15,11 @@ const contacts: Record<string, StoredContactInfo> = {
   [contact1["pkh"]]: contact1,
 };
 
-const fixture = () => <AddressBookView />;
+let store: UmamiStore;
+
+beforeEach(() => {
+  store = makeStore();
+});
 
 describe("AddressBookView", () => {
   describe("with contacts", () => {
@@ -24,13 +28,13 @@ describe("AddressBookView", () => {
     );
 
     it("hides empty state message", () => {
-      render(fixture());
+      render(<AddressBookView />, { store });
 
       expect(screen.queryByTestId("empty-state-message")).not.toBeInTheDocument();
     });
 
     it("displays all sorted implicit contacts", () => {
-      render(fixture());
+      render(<AddressBookView />, { store });
 
       expect(screen.getAllByTestId("contact-row")).toHaveLength(3);
       const names = screen.getAllByTestId("contact-row-name");
@@ -50,7 +54,7 @@ describe("AddressBookView", () => {
       store.dispatch(contactsActions.upsert({ name: "Label 1", pkh: "pkh1", network: "mainnet" }));
       store.dispatch(contactsActions.upsert({ name: "Label 0", pkh: "pkh5", network: "ghostnet" }));
 
-      render(fixture());
+      render(<AddressBookView />, { store });
 
       expect(screen.getAllByTestId("contact-row")).toHaveLength(2);
       const names = screen.getAllByTestId("contact-row-name");

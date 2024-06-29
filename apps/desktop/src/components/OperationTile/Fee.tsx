@@ -1,4 +1,6 @@
 import { Center, Heading, Text } from "@chakra-ui/react";
+import { useIsOwnedAddress } from "@umami/state";
+import { prettyTezAmount } from "@umami/tezos";
 import {
   type DelegationOperation,
   type FinalizeUnstakeOperation,
@@ -14,8 +16,6 @@ import { useContext } from "react";
 
 import { OperationTileContext } from "./OperationTileContext";
 import colors from "../../style/colors";
-import { prettyTezAmount } from "../../utils/format";
-import { useIsOwnedAddress } from "../../utils/hooks/getAccountDataHooks";
 
 const FEE_FIELDS = ["bakerFee", "storageFee", "allocationFee"];
 

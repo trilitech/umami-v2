@@ -14,12 +14,12 @@ import {
 } from "@chakra-ui/react";
 import { type Unstake } from "@umami/core";
 import { type RawPkh, TEZ, TEZ_DECIMALS, parsePkh } from "@umami/tezos";
+import { tezToMutez } from "@umami/tezos";
 import BigNumber from "bignumber.js";
 import type React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { SignPage } from "./SignPage";
-import { tezToMutez } from "../../../utils/format";
 import { TezTile } from "../../AssetTiles/TezTile";
 import { FormErrorMessage } from "../../FormErrorMessage";
 import {

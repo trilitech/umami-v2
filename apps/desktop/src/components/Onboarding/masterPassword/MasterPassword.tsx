@@ -1,13 +1,13 @@
 import { useToast } from "@chakra-ui/react";
+import {
+  useAsyncActionHandler,
+  useRestoreFromMnemonic,
+  useRestoreFromSecretKey,
+  useValidateMasterPassword,
+} from "@umami/state";
 
 import { EnterAndConfirmPassword } from "./password/EnterAndConfirmPassword";
 import { EnterPassword } from "./password/EnterPassword";
-import { useValidateMasterPassword } from "../../../utils/hooks/getAccountDataHooks";
-import {
-  useRestoreFromMnemonic,
-  useRestoreFromSecretKey,
-} from "../../../utils/hooks/setAccountDataHooks";
-import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
 import { type MasterPasswordStep } from "../OnboardingStep";
 
 export const MasterPassword = ({

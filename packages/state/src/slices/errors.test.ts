@@ -1,8 +1,13 @@
 import { errorContext1, errorContext2 } from "@umami/test-utils";
 
 import { errorsSlice } from "./errors";
-import { store } from "../store";
+import { type UmamiStore, makeStore } from "../store";
 const { add } = errorsSlice.actions;
+
+let store: UmamiStore;
+beforeEach(() => {
+  store = makeStore();
+});
 
 describe("Errors reducer", () => {
   test("store should initialize with empty state", () => {

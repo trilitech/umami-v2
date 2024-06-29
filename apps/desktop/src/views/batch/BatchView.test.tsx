@@ -7,24 +7,29 @@ import {
   mockImplicitAccount,
   mockTezOperation,
 } from "@umami/core";
-import { addTestAccount } from "@umami/state";
+import { type UmamiStore, addTestAccount, makeStore, mockToast } from "@umami/state";
 import { executeParams } from "@umami/test-utils";
 
 import { BatchView } from "./BatchView";
 import { act, render, screen, userEvent, within } from "../../mocks/testUtils";
-import { mockToast } from "../../mocks/toast";
 
 jest.mock("@umami/core", () => ({
   ...jest.requireActual("@umami/core"),
   estimate: jest.fn(),
 }));
 
+let store: UmamiStore;
+
+beforeEach(() => {
+  store = makeStore();
+});
+
 describe("<BatchView />", () => {
   test("header", () => {
     const operations = makeAccountOperations(mockImplicitAccount(0), mockImplicitAccount(0), [
       mockTezOperation(0),
     ]);
-    render(<BatchView operations={operations} />);
+    render(<BatchView operations={operations} />, { store });
 
     const header = screen.getByTestId("header");
     expect(header).toBeInTheDocument();
@@ -37,7 +42,7 @@ describe("<BatchView />", () => {
       mockTezOperation(0),
       mockTezOperation(0),
     ]);
-    render(<BatchView operations={operations} />);
+    render(<BatchView operations={operations} />, { store });
 
     expect(screen.getAllByTestId("operation").length).toEqual(3);
   });
@@ -47,7 +52,7 @@ describe("<BatchView />", () => {
       const operations = makeAccountOperations(mockImplicitAccount(0), mockImplicitAccount(0), [
         mockTezOperation(0),
       ]);
-      render(<BatchView operations={operations} />);
+      render(<BatchView operations={operations} />, { store });
 
       expect(screen.queryByTestId("footer")).not.toBeInTheDocument();
     });
@@ -58,7 +63,7 @@ describe("<BatchView />", () => {
         ops.push(mockTezOperation(i));
       }
       const operations = makeAccountOperations(mockImplicitAccount(0), mockImplicitAccount(0), ops);
-      render(<BatchView operations={operations} />);
+      render(<BatchView operations={operations} />, { store });
 
       const footer = screen.getByTestId("footer");
       expect(within(footer).getByTestId("right-header")).toBeInTheDocument();
@@ -73,7 +78,7 @@ describe("<BatchView />", () => {
     ]);
 
     it("is hidden until we run the estimation", () => {
-      render(<BatchView operations={operations} />);
+      render(<BatchView operations={operations} />, { store });
 
       expect(screen.queryByTestId("estimation-status")).not.toBeInTheDocument();
     });
@@ -82,7 +87,7 @@ describe("<BatchView />", () => {
       const user = userEvent.setup();
       jest.mocked(estimate).mockRejectedValue(new Error("something went wrong"));
 
-      render(<BatchView operations={operations} />);
+      render(<BatchView operations={operations} />, { store });
 
       await act(() => user.click(screen.getByRole("button", { name: "Submit Batch" })));
 
@@ -126,7 +131,7 @@ describe("<BatchView />", () => {
             new TezosOperationError([{ kind: "error", id: "id" }], "", operationEstimationResults)
           );
 
-        render(<BatchView operations={operations} />);
+        render(<BatchView operations={operations} />, { store });
 
         await act(() => user.click(screen.getByRole("button", { name: "Submit Batch" })));
 
@@ -140,7 +145,7 @@ describe("<BatchView />", () => {
 
     it("renders successful estimation statuses on a successful batch estimation", async () => {
       const user = userEvent.setup();
-      addTestAccount(mockImplicitAccount(0));
+      addTestAccount(store, mockImplicitAccount(0));
       jest.mocked(estimate).mockResolvedValueOnce({
         type: "implicit",
         operations: [],
@@ -149,7 +154,7 @@ describe("<BatchView />", () => {
         estimates: [executeParams()],
       });
 
-      render(<BatchView operations={operations} />);
+      render(<BatchView operations={operations} />, { store });
 
       await act(() => user.click(screen.getByRole("button", { name: "Submit Batch" })));
 

@@ -1,5 +1,5 @@
 import { mockMnemonicAccount } from "@umami/core";
-import { addTestAccount } from "@umami/state";
+import { type UmamiStore, addTestAccounts, makeStore } from "@umami/state";
 import { useSearchParams } from "react-router-dom";
 
 import { useAccountsFilter } from "./useAccountsFilter";
@@ -7,7 +7,12 @@ import { type UserEvent, act, render, renderHook, screen, userEvent } from "../m
 
 const accounts = [mockMnemonicAccount(0), mockMnemonicAccount(1), mockMnemonicAccount(2)];
 
-beforeEach(() => accounts.forEach(addTestAccount));
+let store: UmamiStore;
+
+beforeEach(() => {
+  store = makeStore();
+  addTestAccounts(store, accounts);
+});
 
 const TestComponent = () => {
   const { accountsFilter } = useAccountsFilter();
@@ -20,7 +25,7 @@ describe("AccountsFilter", () => {
   describe("initial state", () => {
     describe("with no pre-selected accounts", () => {
       it("doesn't display account pills", () => {
-        render(<TestComponent />);
+        render(<TestComponent />, { store });
 
         expect(screen.queryByTestId("account-pill")).not.toBeInTheDocument();
       });
@@ -29,14 +34,14 @@ describe("AccountsFilter", () => {
         const { result: routerHook } = renderHook(() => useSearchParams());
         const [searchParams, _] = routerHook.current;
 
-        render(<TestComponent />);
+        render(<TestComponent />, { store });
 
         expect(searchParams.getAll("accounts")).toEqual([]);
       });
 
       it("displays a list of all accounts on click", async () => {
         const user = userEvent.setup();
-        render(<TestComponent />);
+        render(<TestComponent />, { store });
 
         await act(() => user.click(screen.getByTestId("account-filter")));
 
@@ -55,7 +60,7 @@ describe("AccountsFilter", () => {
         const { result: routerHook } = renderHook(() => useSearchParams());
         const [_, setSearchParams] = routerHook.current;
         act(() => setSearchParams({ accounts: preSelectedAccounts }));
-        render(<TestComponent />);
+        render(<TestComponent />, { store });
 
         const pills = screen.getAllByTestId("account-pill");
         expect(pills).toHaveLength(2);
@@ -67,7 +72,7 @@ describe("AccountsFilter", () => {
         const { result: routerHook } = renderHook(() => useSearchParams());
         let [searchParams, setSearchParams] = routerHook.current;
         act(() => setSearchParams({ accounts: preSelectedAccounts }));
-        render(<TestComponent />);
+        render(<TestComponent />, { store });
 
         [searchParams, setSearchParams] = routerHook.current;
         expect(searchParams.getAll("accounts")).toEqual(preSelectedAccounts);
@@ -78,7 +83,7 @@ describe("AccountsFilter", () => {
         const { result: routerHook } = renderHook(() => useSearchParams());
         const [_, setSearchParams] = routerHook.current;
         act(() => setSearchParams({ accounts: preSelectedAccounts }));
-        render(<TestComponent />);
+        render(<TestComponent />, { store });
 
         await act(() => user.click(screen.getByTestId("account-filter")));
 
@@ -110,7 +115,7 @@ describe("AccountsFilter", () => {
     describe("with no pre-selected accounts", () => {
       it("removes selected accounts from the list", async () => {
         const user = userEvent.setup();
-        render(<TestComponent />);
+        render(<TestComponent />, { store });
 
         await selectAccountListItems(user, [0, 2]);
 
@@ -120,7 +125,7 @@ describe("AccountsFilter", () => {
 
       it("adds selected accounts as pills", async () => {
         const user = userEvent.setup();
-        render(<TestComponent />);
+        render(<TestComponent />, { store });
 
         await selectAccountListItems(user, [0, 2]);
 
@@ -132,7 +137,7 @@ describe("AccountsFilter", () => {
 
       it("adds selected accounts to url params", async () => {
         const user = userEvent.setup();
-        render(<TestComponent />);
+        render(<TestComponent />, { store });
 
         await selectAccountListItems(user, [0, 2]);
 
@@ -146,7 +151,7 @@ describe("AccountsFilter", () => {
 
       it("removes account pills on click", async () => {
         const user = userEvent.setup();
-        render(<TestComponent />);
+        render(<TestComponent />, { store });
         await selectAccountListItems(user, [0, 2]);
 
         // remove first added account
@@ -158,7 +163,7 @@ describe("AccountsFilter", () => {
 
       it("removes un-selected accounts from url params on removing selection", async () => {
         const user = userEvent.setup();
-        render(<TestComponent />);
+        render(<TestComponent />, { store });
         await selectAccountListItems(user, [0, 2]);
 
         // remove first added account
@@ -172,7 +177,7 @@ describe("AccountsFilter", () => {
 
       it("makes accounts from removed account pills available for selection", async () => {
         const user = userEvent.setup();
-        render(<TestComponent />);
+        render(<TestComponent />, { store });
         await selectAccountListItems(user, [0, 2]);
 
         // remove last added account - accounts[2]
@@ -190,7 +195,7 @@ describe("AccountsFilter", () => {
         const { result: routerHook } = renderHook(() => useSearchParams());
         const [_, setSearchParams] = routerHook.current;
         act(() => setSearchParams({ accounts: [accounts[0].address.pkh] }));
-        render(<TestComponent />);
+        render(<TestComponent />, { store });
 
         // select accounts[2], wait for the second pill to appear
         await selectAccountListItems(user, [1], 2);
@@ -204,7 +209,7 @@ describe("AccountsFilter", () => {
         const { result: routerHook } = renderHook(() => useSearchParams());
         const [_, setSearchParams] = routerHook.current;
         act(() => setSearchParams({ accounts: [accounts[0].address.pkh] }));
-        render(<TestComponent />);
+        render(<TestComponent />, { store });
 
         // select accounts[2], wait for the second pill to appear
         await selectAccountListItems(user, [1], 2);
@@ -220,7 +225,7 @@ describe("AccountsFilter", () => {
         const { result: routerHook } = renderHook(() => useSearchParams());
         let [searchParams, setSearchParams] = routerHook.current;
         act(() => setSearchParams({ accounts: [accounts[0].address.pkh] }));
-        render(<TestComponent />);
+        render(<TestComponent />, { store });
 
         // select accounts[2], wait for the second pill to appear
         await selectAccountListItems(user, [1], 2);
@@ -242,7 +247,7 @@ describe("AccountsFilter", () => {
         act(() =>
           setSearchParams({ accounts: [accounts[0].address.pkh, accounts[2].address.pkh] })
         );
-        render(<TestComponent />);
+        render(<TestComponent />, { store });
 
         await act(() => user.click(screen.getAllByTestId("xmark-icon-path")[0]));
 
@@ -255,7 +260,7 @@ describe("AccountsFilter", () => {
         const { result: routerHook } = renderHook(() => useSearchParams());
         const [_, setSearchParams] = routerHook.current;
         act(() => setSearchParams({ accounts: [accounts[2].address.pkh] }));
-        render(<TestComponent />);
+        render(<TestComponent />, { store });
         // select accounts[0], wait for the second pill to appear
         await selectAccountListItems(user, [0], 2);
 
@@ -271,7 +276,7 @@ describe("AccountsFilter", () => {
         const { result: routerHook } = renderHook(() => useSearchParams());
         let [searchParams, setSearchParams] = routerHook.current;
         act(() => setSearchParams({ accounts: [accounts[2].address.pkh] }));
-        render(<TestComponent />);
+        render(<TestComponent />, { store });
         // select accounts[0], wait for the second pill to appear
         await selectAccountListItems(user, [0], 2);
 
@@ -289,7 +294,7 @@ describe("AccountsFilter", () => {
         const { result: routerHook } = renderHook(() => useSearchParams());
         let [searchParams, setSearchParams] = routerHook.current;
         act(() => setSearchParams({ accounts: [accounts[2].address.pkh] }));
-        render(<TestComponent />);
+        render(<TestComponent />, { store });
         // select accounts[0], wait for the second pill to appear
         await selectAccountListItems(user, [0], 2);
 
@@ -309,7 +314,7 @@ describe("AccountsFilter", () => {
         act(() =>
           setSearchParams({ accounts: [accounts[0].address.pkh, accounts[2].address.pkh] })
         );
-        render(<TestComponent />);
+        render(<TestComponent />, { store });
 
         await act(() => user.click(screen.getAllByTestId("xmark-icon-path")[0]));
 
@@ -323,7 +328,7 @@ describe("AccountsFilter", () => {
         const { result: routerHook } = renderHook(() => useSearchParams());
         const [_, setSearchParams] = routerHook.current;
         act(() => setSearchParams({ accounts: [accounts[2].address.pkh] }));
-        render(<TestComponent />);
+        render(<TestComponent />, { store });
         // select accounts[0], wait for the second pill to appear
         await selectAccountListItems(user, [0], 2);
 

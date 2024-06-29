@@ -5,12 +5,16 @@ import { MAINNET } from "@umami/tezos";
 import { renameAccount } from "./renameAccount";
 import { contactsActions } from "../slices/contacts";
 import { networksActions } from "../slices/networks";
-import { store } from "../store";
-import { addTestAccount } from "../testHelpers";
+import { type UmamiStore, makeStore } from "../store";
+import { addTestAccount } from "../testUtils";
 
-beforeEach(() =>
-  [mockMnemonicAccount(0), mockMnemonicAccount(1), ...multisigsFixture].forEach(addTestAccount)
-);
+let store: UmamiStore;
+beforeEach(() => {
+  store = makeStore();
+  [mockMnemonicAccount(0), mockMnemonicAccount(1), ...multisigsFixture].forEach(account =>
+    addTestAccount(store, account)
+  );
+});
 
 describe("renameAccount", () => {
   describe("validation", () => {

@@ -13,6 +13,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { artifactUri, mimeType, tokenName } from "@umami/core";
+import { useGetOwnedAccount } from "@umami/state";
 import { useContext } from "react";
 import ReactPlayer from "react-player";
 
@@ -23,7 +24,6 @@ import { JsValueWrap } from "../../components/AccountDrawer/JsValueWrap";
 import { DynamicModalContext } from "../../components/DynamicModal";
 import { FormPage as SendNFTForm } from "../../components/SendFlow/NFT/FormPage";
 import colors from "../../style/colors";
-import { useGetOwnedAccount } from "../../utils/hooks/getAccountDataHooks";
 import { type NFTWithOwner, getIPFSurl } from "../../utils/token/utils";
 
 export const NFTDrawerCard = ({ nft }: { nft: NFTWithOwner }) => {

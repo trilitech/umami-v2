@@ -10,11 +10,11 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useAddPeer } from "@umami/state";
 
 import { SettingsCardWithDrawerIcon } from "../../components/ClickableCard";
 import { DrawerTopButtons } from "../../components/DrawerTopButtons";
 import colors from "../../style/colors";
-import { useAddPeer } from "../../utils/beacon/beacon";
 import { BeaconPeers } from "../../utils/beacon/BeaconPeers";
 
 export const DAppsDrawerCard = () => {

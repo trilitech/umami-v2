@@ -7,10 +7,15 @@ import {
   mockSocialAccount,
 } from "@umami/core";
 
-import { store } from "../../store";
-import { addTestAccount } from "../../testHelpers";
+import { accountsActions } from "./accounts";
+import { type UmamiStore, makeStore } from "../../store";
+import { addTestAccount } from "../../testUtils";
 
-import { accountsActions } from ".";
+let store: UmamiStore;
+
+beforeEach(() => {
+  store = makeStore();
+});
 
 describe("accountsSlice", () => {
   test("store should initialize with empty state", () => {
@@ -71,12 +76,12 @@ describe("accountsSlice", () => {
     const secretKey2 = mockSecretKeyAccount(5);
 
     beforeEach(() => {
-      addTestAccount(mnemonic);
-      addTestAccount(social1);
-      addTestAccount(social2);
-      addTestAccount(ledger);
-      addTestAccount(secretKey1);
-      addTestAccount(secretKey2);
+      addTestAccount(store, mnemonic);
+      addTestAccount(store, social1);
+      addTestAccount(store, social2);
+      addTestAccount(store, ledger);
+      addTestAccount(store, secretKey1);
+      addTestAccount(store, secretKey2);
       store.dispatch(
         accountsActions.addSecretKey({
           pkh: secretKey1.address.pkh,
@@ -146,11 +151,11 @@ describe("accountsSlice", () => {
     const secretKey = mockSecretKeyAccount(4);
 
     beforeEach(() => {
-      addTestAccount(mnemonic);
-      addTestAccount(social1);
-      addTestAccount(social2);
-      addTestAccount(ledger);
-      addTestAccount(secretKey);
+      addTestAccount(store, mnemonic);
+      addTestAccount(store, social1);
+      addTestAccount(store, social2);
+      addTestAccount(store, ledger);
+      addTestAccount(store, secretKey);
     });
 
     const accounts = [social1, social2, ledger, secretKey];
@@ -217,10 +222,10 @@ describe("accountsSlice", () => {
     const ledger = mockLedgerAccount(4);
 
     beforeEach(() => {
-      addTestAccount(mnemonic1);
-      addTestAccount(mnemonic2);
-      addTestAccount(social);
-      addTestAccount(ledger);
+      addTestAccount(store, mnemonic1);
+      addTestAccount(store, mnemonic2);
+      addTestAccount(store, social);
+      addTestAccount(store, ledger);
     });
 
     it("throws when the new name is empty", () => {

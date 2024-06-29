@@ -1,16 +1,7 @@
-import { store } from "@umami/state";
-import { Provider } from "react-redux";
+import { mockToast } from "@umami/state";
 
 import { RestoreSecretKey } from "./RestoreSecretKey";
 import { act, fireEvent, render, screen, userEvent, waitFor } from "../../../mocks/testUtils";
-import { mockToast } from "../../../mocks/toast";
-import { type OnboardingStep } from "../OnboardingStep";
-
-const fixture = (goToStep: (step: OnboardingStep) => void = jest.fn()) => (
-  <Provider store={store}>
-    <RestoreSecretKey goToStep={goToStep} />;
-  </Provider>
-);
 
 const ENCRYPTED_SECRET_KEY =
   "edesk1GXwWmGjXiLHBKxGBxwmNvG21vKBh6FBxc4CyJ8adQQE2avP5vBB57ZUZ93Anm7i4k8RmsHaPzVAvpnHkFF";
@@ -20,7 +11,7 @@ const UNENCRYPTED_SECRET_KEY =
 describe("<RestoreSecretKey />", () => {
   describe("validations", () => {
     it("requires the secret key", async () => {
-      render(fixture());
+      render(<RestoreSecretKey goToStep={() => {}} />);
 
       fireEvent.blur(screen.getByTestId("secret-key"));
 
@@ -30,7 +21,7 @@ describe("<RestoreSecretKey />", () => {
     });
 
     it("requires the password when the secret key is encrypted", async () => {
-      render(fixture());
+      render(<RestoreSecretKey goToStep={() => {}} />);
 
       fireEvent.change(screen.getByTestId("secret-key"), {
         target: { value: "edesk..." },
@@ -47,7 +38,7 @@ describe("<RestoreSecretKey />", () => {
 
   it("doesn't show the password field when the secret key is not encrypted", async () => {
     const user = userEvent.setup();
-    render(fixture());
+    render(<RestoreSecretKey goToStep={() => {}} />);
 
     expect(screen.queryByTestId("password")).not.toBeInTheDocument();
 
@@ -69,7 +60,7 @@ describe("<RestoreSecretKey />", () => {
   ])("goes to the name account step with $title", async ({ password, secretKey }) => {
     const user = userEvent.setup();
     const goToStepMock = jest.fn();
-    render(fixture(goToStepMock));
+    render(<RestoreSecretKey goToStep={goToStepMock} />);
 
     await act(() => user.type(screen.getByTestId("secret-key"), `  \t ${secretKey} `));
 
@@ -92,7 +83,7 @@ describe("<RestoreSecretKey />", () => {
 
   it("shows an error when the password is invalid", async () => {
     const user = userEvent.setup();
-    render(fixture());
+    render(<RestoreSecretKey goToStep={() => {}} />);
 
     await act(() => user.type(screen.getByTestId("secret-key"), ENCRYPTED_SECRET_KEY));
 
@@ -111,7 +102,7 @@ describe("<RestoreSecretKey />", () => {
 
   it("shows an error when the secret key is invalid", async () => {
     const user = userEvent.setup();
-    render(fixture());
+    render(<RestoreSecretKey goToStep={() => {}} />);
 
     await act(() => user.type(screen.getByTestId("secret-key"), UNENCRYPTED_SECRET_KEY + "asdasd"));
 
@@ -128,7 +119,7 @@ describe("<RestoreSecretKey />", () => {
 
   it("shows an error when the secret key is completely invalid", async () => {
     const user = userEvent.setup();
-    render(fixture());
+    render(<RestoreSecretKey goToStep={() => {}} />);
 
     await act(() => user.type(screen.getByTestId("secret-key"), "something invalid"));
 

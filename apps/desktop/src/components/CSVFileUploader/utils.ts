@@ -1,4 +1,5 @@
 import { type Operation, getRealAmount } from "@umami/core";
+import { type TokenLookup } from "@umami/state";
 import {
   type Address,
   isAddressValid,
@@ -6,10 +7,9 @@ import {
   parseContractPkh,
   parsePkh,
 } from "@umami/tezos";
+import { tezToMutez } from "@umami/tezos";
 
-import { tezToMutez } from "../../utils/format";
 import { validateNonNegativeNumber } from "../../utils/helpers";
-import { type TokenLookup } from "../../utils/hooks/tokensHooks";
 
 export const parseOperation = (
   sender: Address,

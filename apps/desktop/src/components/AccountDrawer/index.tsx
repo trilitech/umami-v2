@@ -1,9 +1,8 @@
+import { useGetAccountAllTokens, useGetAccountNFTs, useGetOwnedAccount } from "@umami/state";
 import { type RawPkh } from "@umami/tezos";
 import { useContext } from "react";
 
 import { AccountDrawerDisplay } from "./AccountDrawerDisplay";
-import { useGetAccountAllTokens, useGetAccountNFTs } from "../../utils/hooks/assetsHooks";
-import { useGetOwnedAccount } from "../../utils/hooks/getAccountDataHooks";
 import { sortedByLastUpdate } from "../../utils/token/utils";
 import { DynamicModalContext } from "../DynamicModal";
 import { ReceiveModal } from "../ReceiveModal";

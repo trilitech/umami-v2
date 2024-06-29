@@ -1,13 +1,13 @@
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { Box, Button, Center, Menu, MenuButton, Wrap } from "@chakra-ui/react";
 import { type Account } from "@umami/core";
+import { useAllAccounts } from "@umami/state";
 import { differenceBy } from "lodash";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import { AccountListDisplay } from "./AccountSelector/AccountListDisplay";
 import { AddressPill } from "./AddressPill/AddressPill";
-import { useAllAccounts } from "../utils/hooks/getAccountDataHooks";
 
 export const useAccountsFilter = () => {
   const allAccounts = useAllAccounts();

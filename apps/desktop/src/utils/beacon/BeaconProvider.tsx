@@ -1,10 +1,10 @@
 import { useToast } from "@chakra-ui/react";
+import { WalletClient } from "@umami/state";
 import { type PropsWithChildren, useEffect } from "react";
 
 import { useHandleBeaconMessage } from "./useHandleBeaconMessage";
-import { WalletClient } from "./WalletClient";
 
-export const BeaconProvider: React.FC<PropsWithChildren<object>> = ({ children }) => {
+export const BeaconProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const toast = useToast();
 
   const handleBeaconMessage = useHandleBeaconMessage();

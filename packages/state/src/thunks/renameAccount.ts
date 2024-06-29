@@ -1,8 +1,7 @@
 import { type Action, type ThunkAction } from "@reduxjs/toolkit";
 import { type Account } from "@umami/core";
 
-import { accountsSlice } from "../slices/accounts";
-import { multisigsSlice } from "../slices/multisigs";
+import { accountsActions, multisigsActions } from "../slices";
 import { type RootState } from "../store";
 
 export const renameAccount =
@@ -21,8 +20,8 @@ export const renameAccount =
     }
 
     if (isMultisig) {
-      dispatch(multisigsSlice.actions.setName({ newName, account }));
+      dispatch(multisigsActions.setName({ newName, account }));
     } else {
-      dispatch(accountsSlice.actions.renameAccount({ newName, account }));
+      dispatch(accountsActions.renameAccount({ newName, account }));
     }
   };

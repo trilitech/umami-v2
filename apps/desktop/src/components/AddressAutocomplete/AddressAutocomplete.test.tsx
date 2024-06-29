@@ -1,5 +1,5 @@
 import { type Contact, mockImplicitContact } from "@umami/core";
-import { contactsActions, store } from "@umami/state";
+import { type UmamiStore, contactsActions, makeStore } from "@umami/state";
 import { mockImplicitAddress } from "@umami/tezos";
 import { FormProvider, useForm } from "react-hook-form";
 
@@ -7,6 +7,12 @@ import { AddressAutocomplete } from "./AddressAutocomplete";
 import { fireEvent, render, screen, within } from "../../mocks/testUtils";
 
 type FormFields = { destination: string };
+
+let store: UmamiStore;
+
+beforeEach(() => {
+  store = makeStore();
+});
 
 const TestComponent: React.FC<{
   defaultDestination?: string;
@@ -38,7 +44,7 @@ const TestComponent: React.FC<{
 
 describe("<AddressAutocomplete />", () => {
   it("should set the real input when a valid pkh is entered by the user", () => {
-    render(<TestComponent />);
+    render(<TestComponent />, { store });
 
     const rawInput = screen.getByLabelText("destination");
     const realInput = screen.getByTestId("real-address-input-destination");
@@ -49,7 +55,7 @@ describe("<AddressAutocomplete />", () => {
   });
 
   test("the input is never shown when keepValid is set to true, but suggestions are available", () => {
-    render(<TestComponent defaultDestination={mockImplicitContact(0).pkh} keepValid />);
+    render(<TestComponent defaultDestination={mockImplicitContact(0).pkh} keepValid />, { store });
 
     const realInput = screen.getByTestId("real-address-input-destination");
     expect(realInput).toHaveValue(mockImplicitContact(0).pkh);
@@ -69,12 +75,12 @@ describe("<AddressAutocomplete />", () => {
   });
 
   it("hides suggestions by default", () => {
-    render(<TestComponent />);
+    render(<TestComponent />, { store });
     expect(screen.queryByTestId("suggestions-list")).not.toBeInTheDocument();
   });
 
   it("shows suggestions when the input is focused", () => {
-    render(<TestComponent />);
+    render(<TestComponent />, { store });
 
     const rawInput = screen.getByLabelText("destination");
     fireEvent.focus(rawInput);
@@ -85,7 +91,7 @@ describe("<AddressAutocomplete />", () => {
   });
 
   it("hides suggestions if input is an exact suggestion", () => {
-    render(<TestComponent />);
+    render(<TestComponent />, { store });
 
     const rawInput = screen.getByLabelText("destination");
 
@@ -97,7 +103,7 @@ describe("<AddressAutocomplete />", () => {
   it("displays suggestions if user input has suggestions", () => {
     store.dispatch(contactsActions.upsert(mockImplicitContact(0)));
     store.dispatch(contactsActions.upsert(mockImplicitContact(1)));
-    render(<TestComponent />);
+    render(<TestComponent />, { store });
 
     const rawInput = screen.getByLabelText("destination");
     expect(rawInput).toBeEnabled();
@@ -123,7 +129,8 @@ describe("<AddressAutocomplete />", () => {
           mockImplicitContact(2),
           mockImplicitContact(3),
         ]}
-      />
+      />,
+      { store }
     );
 
     const rawInput = screen.getByLabelText("destination");
@@ -147,7 +154,7 @@ describe("<AddressAutocomplete />", () => {
       { ...mockImplicitContact(0), name: "Same Name" },
       { ...mockImplicitContact(1), name: "Same Name" },
     ];
-    render(<TestComponent contacts={contacts} />);
+    render(<TestComponent contacts={contacts} />, { store });
 
     fireEvent.focus(screen.getByLabelText("destination"));
     fireEvent.mouseDown(screen.getByTestId(`suggestion-${contacts[1].pkh}`));
@@ -158,7 +165,7 @@ describe("<AddressAutocomplete />", () => {
   });
 
   it("displays default address, and does not display any suggestions", () => {
-    render(<TestComponent defaultDestination={mockImplicitContact(1).pkh} />);
+    render(<TestComponent defaultDestination={mockImplicitContact(1).pkh} />, { store });
 
     const realInput = screen.getByTestId("real-address-input-destination");
 
@@ -169,7 +176,7 @@ describe("<AddressAutocomplete />", () => {
   });
 
   test("when allowUnknown is false it doesn't set the value to an unknown address even if it's valid", () => {
-    render(<TestComponent allowUnknown={false} contacts={[mockImplicitContact(1)]} />);
+    render(<TestComponent allowUnknown={false} contacts={[mockImplicitContact(1)]} />, { store });
     const rawInput = screen.getByLabelText("destination");
     const realInput = screen.getByTestId("real-address-input-destination");
     fireEvent.change(rawInput, { target: { value: mockImplicitContact(2).pkh } });
@@ -180,13 +187,13 @@ describe("<AddressAutocomplete />", () => {
 
   describe("right icon", () => {
     it("shows a chevron when the input is empty", () => {
-      render(<TestComponent />);
+      render(<TestComponent />, { store });
       expect(screen.getByTestId("chevron-icon")).toBeVisible();
       expect(screen.queryByTestId("clear-input-button")).not.toBeInTheDocument();
     });
 
     it("shows a clear button when the input is not empty", () => {
-      render(<TestComponent />);
+      render(<TestComponent />, { store });
       const input = screen.getByLabelText("destination");
       fireEvent.change(input, { target: { value: "123" } });
       expect(screen.queryByTestId("chevron-icon")).not.toBeInTheDocument();
@@ -194,7 +201,7 @@ describe("<AddressAutocomplete />", () => {
     });
 
     it("clears input and shows suggestions when clear input button is clicked", () => {
-      render(<TestComponent />);
+      render(<TestComponent />, { store });
       const input = screen.getByLabelText("destination");
       fireEvent.focus(input);
       fireEvent.change(input, { target: { value: "Contact" } });

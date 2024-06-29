@@ -21,3 +21,5 @@ export const errorsSlice = createSlice({
     },
   },
 });
+
+export const errorsActions = errorsSlice.actions;

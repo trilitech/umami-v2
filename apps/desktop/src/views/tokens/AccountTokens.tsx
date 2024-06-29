@@ -17,7 +17,7 @@ import {
   fullId,
   tokenPrettyAmount,
 } from "@umami/core";
-import { parseContractPkh } from "@umami/tezos";
+import { formatPkh, parseContractPkh } from "@umami/tezos";
 import type React from "react";
 import { useContext } from "react";
 
@@ -31,7 +31,6 @@ import { DynamicModalContext } from "../../components/DynamicModal";
 import { SendButton } from "../../components/SendButton";
 import { FormPage as SendTokenFormPage } from "../../components/SendFlow/Token/FormPage";
 import colors from "../../style/colors";
-import { formatPkh } from "../../utils/format";
 
 const Header: React.FC<{
   account: Account;

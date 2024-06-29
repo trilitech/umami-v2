@@ -8,15 +8,15 @@ import {
   ModalContent,
   ModalFooter,
 } from "@chakra-ui/react";
+import {
+  useGetMostFundedImplicitAccount,
+  useImplicitAccounts,
+  useValidateName,
+} from "@umami/state";
 import { useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { SelectApproversFormPage } from "./SelectApproversFormPage";
-import {
-  useGetMostFundedImplicitAccount,
-  useImplicitAccounts,
-} from "../../../utils/hooks/getAccountDataHooks";
-import { useValidateName } from "../../../utils/hooks/labelsHooks";
 import { DynamicModalContext } from "../../DynamicModal";
 import { FormErrorMessage } from "../../FormErrorMessage";
 import { FormPageHeader } from "../FormPageHeader";

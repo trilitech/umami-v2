@@ -7,6 +7,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { type Account, fullId } from "@umami/core";
+import { useAllNfts } from "@umami/state";
 import { get } from "lodash";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -16,7 +17,6 @@ import { SelectedAccountContext } from "./SelectedAccountContext";
 import { AccountCard } from "../../components/AccountDrawer";
 import { DerivationInfoButton } from "../../components/AccountDrawer/DerivationInfo";
 import { CloseDrawerButton } from "../../components/CloseDrawerButton";
-import { useAllNfts } from "../../utils/hooks/assetsHooks";
 import { NFTDrawerBody } from "../nfts/NFTDrawerBody";
 
 export const AccountListWithDrawer: React.FC = () => {

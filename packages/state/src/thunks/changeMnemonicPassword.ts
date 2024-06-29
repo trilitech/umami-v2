@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { type EncryptedData, decrypt, encrypt } from "@umami/crypto";
 import { fromPairs } from "lodash";
 
-import { type AccountsState } from "../slices/accounts";
+import { type AccountsState } from "../slices/accounts/State";
 
 export const changeMnemonicPassword = createAsyncThunk<
   {

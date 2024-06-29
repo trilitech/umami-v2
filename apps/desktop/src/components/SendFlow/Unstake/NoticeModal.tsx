@@ -9,12 +9,12 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { type Account } from "@umami/core";
+import { useGetAccountStakedBalance } from "@umami/state";
 import { useContext } from "react";
 
 import { FormPage } from "./FormPage";
 import { WarningIcon } from "../../../assets/icons";
 import colors from "../../../style/colors";
-import { useGetAccountStakedBalance } from "../../../utils/hooks/stakingHooks";
 import { DynamicModalContext } from "../../DynamicModal";
 import { NoticeSteps } from "../NoticeSteps";
 // TODO: test

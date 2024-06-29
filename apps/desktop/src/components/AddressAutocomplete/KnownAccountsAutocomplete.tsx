@@ -1,9 +1,8 @@
+import { useAllAccounts, useContactsForSelectedNetwork } from "@umami/state";
 import { type FieldValues, type Path } from "react-hook-form";
 
 import { AddressAutocomplete } from "./AddressAutocomplete";
 import { type BaseProps } from "./BaseProps";
-import { useContactsForSelectedNetwork } from "../../utils/hooks/contactsHooks";
-import { useAllAccounts } from "../../utils/hooks/getAccountDataHooks";
 
 export const KnownAccountsAutocomplete = <T extends FieldValues, U extends Path<T>>(
   props: BaseProps<T, U>

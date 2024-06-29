@@ -1,6 +1,6 @@
 import { type Locator, type Page, expect } from "@playwright/test";
+import { formatPkh } from "@umami/tezos";
 
-import { formatPkh } from "../../utils/format";
 import { type Account, type AccountGroup } from "../helpers/AccountGroup";
 
 export class AccountsPage {

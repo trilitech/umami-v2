@@ -1,8 +1,8 @@
+import { mockToast } from "@umami/state";
 import { defaultDerivationPathTemplate, getLedgerPublicKeyPair } from "@umami/tezos";
 
 import { RestoreLedger } from "./RestoreLedger";
 import { act, render, screen, userEvent } from "../../../mocks/testUtils";
-import { mockToast } from "../../../mocks/toast";
 
 const closeModalMock = jest.fn(() => {});
 
