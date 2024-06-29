@@ -7,11 +7,11 @@ import {
   Input,
   ModalBody,
 } from "@chakra-ui/react";
+import { useAsyncActionHandler } from "@umami/state";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { reload, restoreV2BackupFile, useRestoreV1BackupFile } from "./utils";
 import { RotateIcon } from "../../../assets/icons";
-import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
 import { PasswordInput } from "../../PasswordInput";
 import { ModalContentWrapper } from "../ModalContentWrapper";
 

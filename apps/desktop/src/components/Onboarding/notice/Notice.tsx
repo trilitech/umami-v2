@@ -1,8 +1,8 @@
 import { Box, Button, ListItem, OrderedList } from "@chakra-ui/react";
+import { generate24WordMnemonic } from "@umami/state";
 import type React from "react";
 
 import { NoticeIcon } from "../../../assets/icons";
-import { generate24WordMnemonic } from "../../../utils/mnemonic";
 import { ModalContentWrapper } from "../ModalContentWrapper";
 import { type OnboardingStep } from "../OnboardingStep";
 

@@ -1,9 +1,9 @@
 import { mockImplicitAccount, mockMnemonicAccount, rawAccountFixture } from "@umami/core";
 import { addTestAccount, assetsActions, store } from "@umami/state";
+import { formatPkh } from "@umami/tezos";
 
 import { AccountSmallTile } from "./AccountSmallTile";
 import { render, screen } from "../../mocks/testUtils";
-import { formatPkh } from "../../utils/format";
 
 const account = mockMnemonicAccount(1, "Test account label");
 

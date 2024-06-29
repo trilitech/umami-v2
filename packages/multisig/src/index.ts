@@ -5,3 +5,4 @@ export * from "./types";
 export * from "./fetch";
 export * from "./helpers";
 export * from "./testUtils";
+export * from "./hooks";

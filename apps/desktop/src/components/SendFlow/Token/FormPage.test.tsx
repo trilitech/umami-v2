@@ -8,8 +8,8 @@ import {
   mockImplicitAccount,
   mockMnemonicAccount,
 } from "@umami/core";
-import { addTestAccount, assetsSlice, store } from "@umami/state";
-import { executeParams } from "@umami/test-utils";
+import { addTestAccount, assetsActions, store } from "@umami/state";
+import { executeParams, mockToast } from "@umami/test-utils";
 import { parseContractPkh } from "@umami/tezos";
 
 import { FormPage, type FormValues } from "./FormPage";
@@ -23,7 +23,6 @@ import {
   userEvent,
   waitFor,
 } from "../../../mocks/testUtils";
-import { mockToast } from "../../../mocks/toast";
 import { type FormPagePropsWithSender } from "../utils";
 
 jest.mock("@umami/core", () => ({
@@ -199,7 +198,7 @@ describe("<FormPage />", () => {
       it("opens a sign page if estimation succeeds", async () => {
         const user = userEvent.setup();
         addTestAccount(mockAccount);
-        store.dispatch(assetsSlice.actions.updateTokenBalance([mockTokenRaw]));
+        store.dispatch(assetsActions.updateTokenBalance([mockTokenRaw]));
         const sender = mockAccount;
         render(
           fixture(

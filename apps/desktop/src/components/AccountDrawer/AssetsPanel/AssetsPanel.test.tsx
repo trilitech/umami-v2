@@ -1,6 +1,6 @@
 import { estimate, mockImplicitAccount, mockMultisigAccount } from "@umami/core";
 import { multisigPendingOpsFixtures } from "@umami/multisig";
-import { multisigsSlice, store } from "@umami/state";
+import { multisigsActions, store } from "@umami/state";
 import { executeParams } from "@umami/test-utils";
 import { getCombinedOperations, getRelatedTokenTransfers } from "@umami/tzkt";
 
@@ -46,8 +46,8 @@ describe("<AssetsPanel />", () => {
         ...mockMultisigAccount(0),
         pendingOperationsBigmapId: 3,
       };
-      store.dispatch(multisigsSlice.actions.setMultisigs([multisig]));
-      store.dispatch(multisigsSlice.actions.setPendingOperations(multisigPendingOpsFixtures));
+      store.dispatch(multisigsActions.setMultisigs([multisig]));
+      store.dispatch(multisigsActions.setPendingOperations(multisigPendingOpsFixtures));
 
       render(<AssetsPanel account={multisig} nfts={[]} tokens={[]} />);
       await screen.findByTestId("account-card-operations-tab");

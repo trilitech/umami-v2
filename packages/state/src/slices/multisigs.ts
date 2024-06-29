@@ -85,4 +85,4 @@ export const multisigsSlice = createSlice({
   },
 });
 
-export const multisigActions = multisigsSlice.actions;
+export const multisigsActions = multisigsSlice.actions;

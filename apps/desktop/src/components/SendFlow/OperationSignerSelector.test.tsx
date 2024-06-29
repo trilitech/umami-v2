@@ -4,7 +4,7 @@ import {
   mockMnemonicAccount,
   mockMultisigAccount,
 } from "@umami/core";
-import { addTestAccount, multisigsSlice, store } from "@umami/state";
+import { addTestAccount, multisigsActions, store } from "@umami/state";
 import { type RawPkh, mockImplicitAddress } from "@umami/tezos";
 import { FormProvider, useForm } from "react-hook-form";
 
@@ -35,7 +35,7 @@ describe("OperationSignerSelector", () => {
           mockImplicitAccount(2).address,
         ],
       };
-      store.dispatch(multisigsSlice.actions.setMultisigs([multisigAccount]));
+      store.dispatch(multisigsActions.setMultisigs([multisigAccount]));
 
       const { result } = renderHook(() =>
         useForm<{ signer: RawPkh }>({

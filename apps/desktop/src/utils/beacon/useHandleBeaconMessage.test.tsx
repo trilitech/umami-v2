@@ -10,13 +10,14 @@ import {
   TezosOperationType,
 } from "@airgap/beacon-wallet";
 import {
+  WalletClient,
   estimate,
   makeAccountOperations,
   mockImplicitAccount,
   mockTezOperation,
 } from "@umami/core";
 import { addTestAccount } from "@umami/state";
-import { executeParams } from "@umami/test-utils";
+import { executeParams, mockToast } from "@umami/test-utils";
 import { mockContractAddress, mockImplicitAddress } from "@umami/tezos";
 import { without } from "lodash";
 
@@ -25,11 +26,9 @@ import {
   toAccountOperations,
   useHandleBeaconMessage,
 } from "./useHandleBeaconMessage";
-import { WalletClient } from "./WalletClient";
 import { BatchSignPage } from "../../components/SendFlow/Beacon/BatchSignPage";
 import { BeaconSignPage } from "../../components/SendFlow/Beacon/BeaconSignPage";
 import { act, dynamicModalContextMock, renderHook, screen, waitFor } from "../../mocks/testUtils";
-import { mockToast } from "../../mocks/toast";
 
 jest.mock("./WalletClient", () => ({
   WalletClient: {

@@ -4,7 +4,6 @@
     "src",
     "jest.config.ts",
     ".eslintrc.cjs",
-    "../tezos/src/derivationPathUtils.test.ts",
-    "../tezos/src/derivationPathUtils.ts"
+    "../data-polling/src/useReactQueryErrorHandler.ts"
   ]
 }

@@ -8,16 +8,12 @@ import {
   PopoverTrigger,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useAvailableNetworks, useSelectNetwork, useSelectedNetwork } from "@umami/state";
 import { capitalize } from "lodash";
 import { Fragment } from "react";
 
 import { ChevronDownIcon, ChevronUpIcon } from "../assets/icons";
 import colors from "../style/colors";
-import {
-  useAvailableNetworks,
-  useSelectNetwork,
-  useSelectedNetwork,
-} from "../utils/hooks/networkHooks";
 
 export const NetworkSelector = () => {
   const currentNetwork = useSelectedNetwork();

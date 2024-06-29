@@ -1,7 +1,7 @@
 import { Button, VStack } from "@chakra-ui/react";
+import { useImplicitAccounts } from "@umami/state";
 
 import { LinkIcon } from "../../../assets/icons";
-import { useImplicitAccounts } from "../../../utils/hooks/getAccountDataHooks";
 import { ModalContentWrapper } from "../ModalContentWrapper";
 import { type OnboardingStep } from "../OnboardingStep";
 

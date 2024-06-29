@@ -1,5 +1,5 @@
 import { getErrorContext } from "@umami/core";
-import { accountsSlice, getPersistor, store } from "@umami/state";
+import { accountsActions, getPersistor, store } from "@umami/state";
 import { encryptedMnemonic1 } from "@umami/test-utils";
 import React from "react";
 import ReactDOM from "react-dom/client";
@@ -19,7 +19,7 @@ import "./index.scss";
 const logError = (error: Error, info: { componentStack?: string | null }) => {
   const _errorContext = { ...getErrorContext(error), stacktrace: String(info.componentStack) };
   // TODO: use error dispatch from redux store package
-  // store.dispatch(errorsSlice.actions.add(errorContext));
+  // store.dispatch(errorsActions.add(errorContext));
 };
 
 if (IS_DEV) {
@@ -27,7 +27,7 @@ if (IS_DEV) {
   if (!state.accounts.items.length) {
     // Add a testing account if there are no accounts in the store
     store.dispatch(
-      accountsSlice.actions.addMnemonicAccounts({
+      accountsActions.addMnemonicAccounts({
         seedFingerprint: "test group",
         accounts: [
           {

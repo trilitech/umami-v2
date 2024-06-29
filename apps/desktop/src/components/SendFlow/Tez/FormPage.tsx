@@ -10,11 +10,11 @@ import {
 } from "@chakra-ui/react";
 import { type TezTransfer } from "@umami/core";
 import { type RawPkh, TEZ, TEZ_DECIMALS, parsePkh } from "@umami/tezos";
+import { tezToMutez } from "@umami/tezos";
 import type React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { SignPage } from "./SignPage";
-import { tezToMutez } from "../../../utils/format";
 import { KnownAccountsAutocomplete, OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
 import { FormErrorMessage } from "../../FormErrorMessage";
 import { FormPageHeader } from "../FormPageHeader";

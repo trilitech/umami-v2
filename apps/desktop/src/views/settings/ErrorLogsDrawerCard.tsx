@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { nanoid } from "@reduxjs/toolkit";
 import { type ErrorContext } from "@umami/core";
-import { errorsSlice, useAppSelector } from "@umami/state";
+import { errorsActions, useAppSelector } from "@umami/state";
 import { useDispatch } from "react-redux";
 
 import { OutlineExclamationCircleIcon } from "../../assets/icons";
@@ -44,9 +44,7 @@ const ErrorLogsDrawerBody = () => {
   const errors = [...useAppSelector(s => s.errors)].reverse();
   const dispatch = useDispatch();
 
-  const clearErrors = () => {
-    dispatch(errorsSlice.actions.reset());
-  };
+  const clearErrors = () => dispatch(errorsActions.reset());
 
   return (
     <Flex flexDirection="column" height="100%">

@@ -8,6 +8,12 @@ import {
   InputRightElement,
 } from "@chakra-ui/react";
 import { type Account, type Contact } from "@umami/core";
+import {
+  useAllAccounts,
+  useBakerList,
+  useGetOwnedSignersForAccount,
+  useImplicitAccounts,
+} from "@umami/state";
 import { isAddressValid, parsePkh } from "@umami/tezos";
 import { get } from "lodash";
 import { useId, useState } from "react";
@@ -18,12 +24,6 @@ import { getSuggestions } from "./getSuggestions";
 import { Suggestions } from "./Suggestions";
 import { ChevronDownIcon, XMarkIcon } from "../../assets/icons";
 import colors from "../../style/colors";
-import { useBakerList } from "../../utils/hooks/assetsHooks";
-import {
-  useAllAccounts,
-  useGetOwnedSignersForAccount,
-  useImplicitAccounts,
-} from "../../utils/hooks/getAccountDataHooks";
 import { AddressTile } from "../AddressTile/AddressTile";
 
 export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({

@@ -1,9 +1,9 @@
 import { Flex, type FlexProps, Text, useToast } from "@chakra-ui/react";
+import { formatPkh } from "@umami/tezos";
 import type React from "react";
 
 import { FileCopyIcon } from "../assets/icons";
 import colors from "../style/colors";
-import { formatPkh } from "../utils/format";
 
 const TOAST_ID = "TOAST_ID";
 

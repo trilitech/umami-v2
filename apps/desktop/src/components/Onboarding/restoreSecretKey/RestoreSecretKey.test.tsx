@@ -1,9 +1,9 @@
 import { store } from "@umami/state";
+import { mockToast } from "@umami/test-utils";
 import { Provider } from "react-redux";
 
 import { RestoreSecretKey } from "./RestoreSecretKey";
 import { act, fireEvent, render, screen, userEvent, waitFor } from "../../../mocks/testUtils";
-import { mockToast } from "../../../mocks/toast";
 import { type OnboardingStep } from "../OnboardingStep";
 
 const fixture = (goToStep: (step: OnboardingStep) => void = jest.fn()) => (

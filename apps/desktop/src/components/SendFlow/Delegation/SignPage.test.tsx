@@ -1,6 +1,6 @@
 import { Modal } from "@chakra-ui/react";
 import { makeAccountOperations, mockImplicitAccount, mockMnemonicAccount } from "@umami/core";
-import { addTestAccount, assetsSlice, store } from "@umami/state";
+import { addTestAccount, assetsActions, store } from "@umami/state";
 import { executeParams } from "@umami/test-utils";
 import { TEZ } from "@umami/tezos";
 
@@ -44,7 +44,7 @@ describe("<SignPage />", () => {
     const baker = mockImplicitAccount(1);
 
     store.dispatch(
-      assetsSlice.actions.updateBakers([
+      assetsActions.updateBakers([
         { address: baker.address.pkh, name: "baker1", stakingBalance: 1 },
       ])
     );

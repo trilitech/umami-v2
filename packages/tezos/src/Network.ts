@@ -16,7 +16,6 @@ export const GHOSTNET: Network = {
   buyTezUrl: "https://faucet.ghostnet.teztnets.com/",
 };
 
-export const isDefault = (network: Network) =>
-  DefaultNetworks.map(n => n.name).includes(network.name);
+export const isDefault = (network: Network) => !!DefaultNetworks.find(n => n.name === network.name);
 
 export const DefaultNetworks: Network[] = [MAINNET, GHOSTNET];

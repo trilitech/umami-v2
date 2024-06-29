@@ -8,6 +8,7 @@ import { webcrypto } from "crypto";
 import { TextDecoder, TextEncoder } from "util";
 
 import { resetStore } from "@umami/state";
+import { mockToast } from "@umami/test-utils";
 import { setupJestCanvasMock } from "jest-canvas-mock";
 import failOnConsole from "jest-fail-on-console";
 import MockDate from "mockdate";
@@ -19,7 +20,6 @@ import {
   MockModalHeader,
   MockModalInnerComponent,
 } from "./mocks/modal";
-import { mockUseToast } from "./mocks/toast";
 
 failOnConsole();
 
@@ -62,9 +62,7 @@ beforeEach(() => {
 
 jest.mock("@chakra-ui/react", () => ({
   ...jest.requireActual("@chakra-ui/react"),
-  // Mock toast since it has an erratic behavior in RTL
-  // https://github.com/chakra-ui/chakra-ui/issues/2969
-  useToast: mockUseToast,
+  useToast: () => mockToast,
   Modal: MockModal,
   ModalContent: MockModalContent,
   ModalBody: MockModalInnerComponent,

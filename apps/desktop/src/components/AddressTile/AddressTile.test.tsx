@@ -1,9 +1,9 @@
 import { mockMnemonicAccount, rawAccountFixture } from "@umami/core";
 import { addTestAccount, assetsActions, store } from "@umami/state";
+import { formatPkh } from "@umami/tezos";
 
 import { AddressTile } from "./AddressTile";
 import { act, render, screen, userEvent } from "../../mocks/testUtils";
-import { formatPkh } from "../../utils/format";
 
 describe("<AddressTileIcon />", () => {
   it("displays label", () => {

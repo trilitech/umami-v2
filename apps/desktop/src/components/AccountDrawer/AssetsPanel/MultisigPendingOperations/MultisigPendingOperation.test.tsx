@@ -11,13 +11,13 @@ import {
   mockMultisigAccount,
 } from "@umami/core";
 import { type MultisigOperation, multisigPendingOpsFixtures } from "@umami/multisig";
+import * as getAccountDataHooks from "@umami/state";
 import { addTestAccount } from "@umami/state";
 import { executeParams } from "@umami/test-utils";
 import { MAINNET, makeToolkit, mockImplicitAddress, parseImplicitPkh } from "@umami/tezos";
 
 import { MultisigPendingOperation } from "./MultisigPendingOperation";
 import { act, render, screen, userEvent, within } from "../../../../mocks/testUtils";
-import * as getAccountDataHooks from "../../../../utils/hooks/getAccountDataHooks";
 
 jest.mock("@umami/core", () => ({
   ...jest.requireActual("@umami/core"),

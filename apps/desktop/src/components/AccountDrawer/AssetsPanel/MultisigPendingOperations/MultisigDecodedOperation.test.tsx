@@ -1,4 +1,4 @@
-import { assetsActions, networksActions, store, tokensSlice } from "@umami/state";
+import { assetsActions, networksActions, store, tokensActions } from "@umami/state";
 import { MAINNET, mockContractAddress, mockImplicitAddress } from "@umami/tezos";
 import { type RawTzktTokenBalance } from "@umami/tzkt";
 
@@ -66,7 +66,7 @@ describe("<MultisigDecodedOperation />", () => {
     };
     store.dispatch(updateTokenBalance([mockBalancePayload]));
     store.dispatch(
-      tokensSlice.actions.addTokens({
+      tokensActions.addTokens({
         network: MAINNET,
         tokens: [mockBalancePayload.token],
       })
@@ -114,7 +114,7 @@ describe("<MultisigDecodedOperation />", () => {
 
     store.dispatch(updateTokenBalance([mockBalancePlayload]));
     store.dispatch(
-      tokensSlice.actions.addTokens({
+      tokensActions.addTokens({
         network: MAINNET,
         tokens: [mockBalancePlayload.token],
       })

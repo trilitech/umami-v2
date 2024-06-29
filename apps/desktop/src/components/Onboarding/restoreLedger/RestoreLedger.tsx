@@ -1,9 +1,8 @@
 import { Button, ListItem, OrderedList, VStack, useToast } from "@chakra-ui/react";
+import { useAsyncActionHandler, useRestoreLedger } from "@umami/state";
 import { getLedgerPublicKeyPair, makeDerivationPath } from "@umami/tezos";
 
 import { USBIcon } from "../../../assets/icons";
-import { useRestoreLedger } from "../../../utils/hooks/setAccountDataHooks";
-import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
 import { withTimeout } from "../../../utils/withTimeout";
 import { ModalContentWrapper } from "../ModalContentWrapper";
 import { type RestoreLedgerStep } from "../OnboardingStep";

@@ -1,7 +1,7 @@
 import { type Token, fromRawToken, mockLedgerAccount } from "@umami/core";
 import { addTestAccount, networksActions, store } from "@umami/state";
 import { ghostnetThezard } from "@umami/test-utils";
-import { DefaultNetworks, TEZ, mockImplicitAddress } from "@umami/tezos";
+import { DefaultNetworks, TEZ, formatPkh, mockImplicitAddress } from "@umami/tezos";
 import { type TokenTransferOperation, type TransactionOperation } from "@umami/tzkt";
 
 import { OperationTileContext } from "./OperationTileContext";
@@ -9,7 +9,6 @@ import { tokenTransferFixture, transactionFixture } from "./testUtils";
 import { TokenTransferTile } from "./TokenTransferTile";
 import * as operationDestinationModule from "./useGetOperationDestination";
 import { render, screen } from "../../mocks/testUtils";
-import { formatPkh } from "../../utils/format";
 
 const fixture = (
   context: any,

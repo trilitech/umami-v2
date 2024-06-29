@@ -3,7 +3,7 @@ import { Prefix } from "@taquito/utils";
 import { encrypt } from "@umami/crypto";
 import { getPublicKeyPairFromSk, parseImplicitPkh } from "@umami/tezos";
 
-import { accountsSlice } from "../slices/accounts";
+import { accountsActions } from "../slices/accounts";
 import { type AppDispatch } from "../store";
 
 export const getCurve = (secretKey: string): Curves => {
@@ -47,7 +47,7 @@ export const makeSecretKeyAccount = async ({
   };
 };
 
-export const restore =
+export const restoreFromSecretKey =
   ({ secretKey, label, password }: { secretKey: string; label: string; password: string }) =>
   async (dispatch: AppDispatch) => {
     const { account, encryptedSecretKey } = await makeSecretKeyAccount({
@@ -55,6 +55,6 @@ export const restore =
       label,
       password,
     });
-    dispatch(accountsSlice.actions.addAccount(account));
-    dispatch(accountsSlice.actions.addSecretKey({ pkh: account.address.pkh, encryptedSecretKey }));
+    dispatch(accountsActions.addAccount(account));
+    dispatch(accountsActions.addSecretKey({ pkh: account.address.pkh, encryptedSecretKey }));
   };

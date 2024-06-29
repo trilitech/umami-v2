@@ -1,5 +1,5 @@
 import { mockFA1TokenRaw, mockImplicitContact } from "@umami/core";
-import { contactsActions, networksActions, store, tokensSlice } from "@umami/state";
+import { contactsActions, networksActions, store, tokensActions } from "@umami/state";
 import { MAINNET, mockImplicitAddress, parseContractPkh, parseImplicitPkh } from "@umami/tezos";
 
 import { AddressPill } from "./AddressPill";
@@ -40,7 +40,7 @@ describe("<AddressPill />", () => {
     const address = mockImplicitAddress(0);
     const fa1 = mockFA1TokenRaw(1, address.pkh, 123);
     store.dispatch(networksActions.setCurrent(MAINNET));
-    store.dispatch(tokensSlice.actions.addTokens({ network: MAINNET, tokens: [fa1.token] }));
+    store.dispatch(tokensActions.addTokens({ network: MAINNET, tokens: [fa1.token] }));
     render(
       <AddressPill
         address={parseContractPkh(fa1.token.contract.address)}

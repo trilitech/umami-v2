@@ -1,5 +1,5 @@
 import { mockImplicitAccount, mockMnemonicAccount, mockNFTToken } from "@umami/core";
-import { addTestAccount, assetsSlice, networksActions, store, tokensSlice } from "@umami/state";
+import { addTestAccount, assetsSlice, networksActions, store, tokensActions } from "@umami/state";
 import { MAINNET, mockImplicitAddress } from "@umami/tezos";
 
 import { NFTsView } from "./NftsView";
@@ -38,7 +38,7 @@ describe("NFTsView", () => {
         ])
       );
       store.dispatch(
-        tokensSlice.actions.addTokens({
+        tokensActions.addTokens({
           network: MAINNET,
           tokens: [
             mockNFTToken(1, mockImplicitAddress(1).pkh).token,
@@ -75,7 +75,7 @@ describe("NFTsView", () => {
     beforeEach(() => {
       store.dispatch(updateTokenBalance([mockNFTToken(1, mockMnemonicAccount(0).address.pkh)]));
       store.dispatch(
-        tokensSlice.actions.addTokens({
+        tokensActions.addTokens({
           network: MAINNET,
           tokens: [mockNFTToken(1, mockMnemonicAccount(0).address.pkh).token],
         })

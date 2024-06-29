@@ -10,7 +10,7 @@ import {
 import {
   addTestAccount,
   contactsActions,
-  multisigActions,
+  multisigsActions,
   networksActions,
   renameAccount,
   store,
@@ -112,7 +112,7 @@ describe("<NameAccount />", () => {
       it("among multisig accounts sets group label", async () => {
         const user = userEvent.setup();
         store.dispatch(
-          multisigActions.setMultisigs([mockMultisigAccount(0), mockMultisigAccount(1)])
+          multisigsActions.setMultisigs([mockMultisigAccount(0), mockMultisigAccount(1)])
         );
         store.dispatch(renameAccount(mockMultisigAccount(0), labelBase));
         store.dispatch(renameAccount(mockMultisigAccount(1), `${labelBase} 3`));
@@ -174,7 +174,7 @@ describe("<NameAccount />", () => {
       it("among multisig accounts sets unique default label", async () => {
         const user = userEvent.setup();
         store.dispatch(
-          multisigActions.setMultisigs([mockMultisigAccount(0), mockMultisigAccount(1)])
+          multisigsActions.setMultisigs([mockMultisigAccount(0), mockMultisigAccount(1)])
         );
         store.dispatch(renameAccount(mockMultisigAccount(0), labelBase));
         store.dispatch(renameAccount(mockMultisigAccount(1), `${labelBase} 3`));

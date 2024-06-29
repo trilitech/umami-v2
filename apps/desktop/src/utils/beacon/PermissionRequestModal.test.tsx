@@ -6,11 +6,10 @@ import {
 } from "@airgap/beacon-wallet";
 import { Modal } from "@chakra-ui/react";
 import { fireEvent } from "@testing-library/react";
-import { mockMnemonicAccount } from "@umami/core";
+import { WalletClient, mockMnemonicAccount } from "@umami/core";
 import { addTestAccount, store } from "@umami/state";
 
 import { PermissionRequestModal } from "./PermissionRequestModal";
-import { WalletClient } from "./WalletClient";
 import { act, render, screen, userEvent } from "../../mocks/testUtils";
 
 jest.mock("./WalletClient", () => ({

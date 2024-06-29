@@ -1,4 +1,4 @@
-import { umamiBackup } from "@umami/test-utils";
+import { mockToast, umamiBackup } from "@umami/test-utils";
 
 import { RestoreBackupFile } from "./RestoreBackupFile";
 import { reload, restoreV2BackupFile, useRestoreV1BackupFile } from "./utils";
@@ -11,7 +11,6 @@ import {
   userEvent,
   waitFor,
 } from "../../../mocks/testUtils";
-import { mockToast } from "../../../mocks/toast";
 
 jest.mock("./utils");
 

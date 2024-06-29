@@ -1,8 +1,8 @@
+import { generate24WordMnemonic } from "@umami/state";
 import { mnemonic1 } from "@umami/test-utils";
 
 import { Notice } from "./Notice";
 import { act, render, screen, userEvent } from "../../../mocks/testUtils";
-import { generate24WordMnemonic } from "../../../utils/mnemonic";
 
 // TODO refactor mocks
 jest.mock("../../../utils/mnemonic");

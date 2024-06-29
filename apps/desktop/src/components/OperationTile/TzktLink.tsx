@@ -1,8 +1,7 @@
 import { Link, type LinkProps } from "@chakra-ui/react";
+import { useSelectedNetwork } from "@umami/state";
 import { compact } from "lodash";
 import { type PropsWithChildren } from "react";
-
-import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 
 // Following types prevent passing both hash and id props
 type OperationHashProps = {

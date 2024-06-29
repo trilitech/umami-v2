@@ -8,11 +8,10 @@ import {
   mockTezOperation,
 } from "@umami/core";
 import { addTestAccount } from "@umami/state";
-import { executeParams } from "@umami/test-utils";
+import { executeParams, mockToast } from "@umami/test-utils";
 
 import { BatchView } from "./BatchView";
 import { act, render, screen, userEvent, within } from "../../mocks/testUtils";
-import { mockToast } from "../../mocks/toast";
 
 jest.mock("@umami/core", () => ({
   ...jest.requireActual("@umami/core"),

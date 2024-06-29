@@ -1,9 +1,13 @@
-import { mockLedgerAccount, mockMnemonicAccount, mockSocialAccount } from "@umami/core";
+import {
+  WalletClient,
+  mockLedgerAccount,
+  mockMnemonicAccount,
+  mockSocialAccount,
+} from "@umami/core";
 import { addTestAccount, store } from "@umami/state";
 
 import { RenameRemoveMenuSwitch } from "./RenameRemoveMenuSwitch";
 import { act, render, screen, userEvent } from "../../mocks/testUtils";
-import { WalletClient } from "../../utils/beacon/WalletClient";
 
 beforeEach(() => {
   jest.spyOn(WalletClient, "getPeers").mockResolvedValue([]);

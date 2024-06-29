@@ -8152,6 +8152,35 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@umami/data-polling@workspace:^, @umami/data-polling@workspace:packages/data-polling":
+  version: 0.0.0-use.local
+  resolution: "@umami/data-polling@workspace:packages/data-polling"
+  dependencies:
+    "@taquito/rpc": "npm:^20.0.1"
+    "@taquito/utils": "npm:^20.0.1"
+    "@types/eslint": "npm:^8"
+    "@types/lodash": "npm:^4"
+    "@tzkt/sdk-api": "npm:^2.2.1"
+    "@umami/core": "workspace:^"
+    "@umami/eslint-config": "workspace:^"
+    "@umami/jest-config": "workspace:^"
+    "@umami/multisig": "workspace:^"
+    "@umami/test-utils": "workspace:^"
+    "@umami/tezos": "workspace:^"
+    "@umami/typescript-config": "workspace:^"
+    "@umami/tzkt": "workspace:^"
+    axios: "npm:^1.7.2"
+    eslint: "npm:^8.57.0"
+    jest: "npm:^29.7.0"
+    lodash: "npm:^4.17.21"
+    prettier: "npm:^3.3.2"
+    ts-jest: "npm:^29.1.5"
+    tsup: "npm:^8.1.0"
+    typescript: "npm:^5.5.2"
+    zod: "npm:^3.23.8"
+  languageName: unknown
+  linkType: soft
+
 "@umami/desktop@workspace:apps/desktop":
   version: 0.0.0-use.local
   resolution: "@umami/desktop@workspace:apps/desktop"
@@ -8204,6 +8233,7 @@ __metadata:
     "@tzkt/sdk-api": "npm:^2.2.1"
     "@umami/core": "workspace:^"
     "@umami/crypto": "workspace:^"
+    "@umami/data-polling": "workspace:^"
     "@umami/eslint-config": "workspace:^"
     "@umami/jest-config": "workspace:^"
     "@umami/multisig": "workspace:^"

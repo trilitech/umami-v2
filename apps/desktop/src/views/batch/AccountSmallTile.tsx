@@ -1,10 +1,10 @@
 import { Flex, type FlexProps, Heading, Text } from "@chakra-ui/react";
 import { type Account } from "@umami/core";
+import { useGetAccountBalance } from "@umami/state";
+import { formatPkh, prettyTezAmount } from "@umami/tezos";
 
 import { AccountTileIcon } from "../../components/AccountTile/AccountTileIcon";
 import colors from "../../style/colors";
-import { formatPkh, prettyTezAmount } from "../../utils/format";
-import { useGetAccountBalance } from "../../utils/hooks/assetsHooks";
 
 /**
  * Component used to display account info for batched transactions.

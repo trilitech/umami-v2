@@ -1,13 +1,12 @@
 import { mockLedgerAccount } from "@umami/core";
 import { addTestAccount, networksActions, store } from "@umami/state";
-import { DefaultNetworks, TEZ, mockImplicitAddress } from "@umami/tezos";
+import { DefaultNetworks, TEZ, formatPkh, mockImplicitAddress } from "@umami/tezos";
 import { type TransactionOperation } from "@umami/tzkt";
 
 import { OperationTileContext } from "./OperationTileContext";
 import { transactionFixture } from "./testUtils";
 import { TransactionTile } from "./TransactionTile";
 import { render, screen } from "../../mocks/testUtils";
-import { formatPkh } from "../../utils/format";
 
 const fixture = (context: any, operation: TransactionOperation) => (
   <OperationTileContext.Provider value={context}>

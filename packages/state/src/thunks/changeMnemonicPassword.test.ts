@@ -4,7 +4,7 @@ import { mnemonic1, mnemonic2 } from "@umami/test-utils";
 import { getFingerPrint } from "@umami/tezos";
 
 import { changeMnemonicPassword } from "./changeMnemonicPassword";
-import { accountsSlice } from "../slices/accounts/accounts";
+import { accountsActions } from "../slices/accounts/accounts";
 import { store } from "../store";
 
 const currentPassword = "currentPassword";
@@ -13,7 +13,7 @@ const newPassword = "newPassword";
 beforeEach(async () => {
   const fingerPrint1 = await getFingerPrint(mnemonic1);
   store.dispatch(
-    accountsSlice.actions.addMnemonicAccounts({
+    accountsActions.addMnemonicAccounts({
       seedFingerprint: fingerPrint1,
       accounts: [
         mockImplicitAccount(0, undefined, fingerPrint1, "Mnemonic 1.1"),
@@ -25,7 +25,7 @@ beforeEach(async () => {
 
   const fingerPrint2 = await getFingerPrint(mnemonic2);
   store.dispatch(
-    accountsSlice.actions.addMnemonicAccounts({
+    accountsActions.addMnemonicAccounts({
       seedFingerprint: fingerPrint2,
       accounts: [
         mockImplicitAccount(4, undefined, fingerPrint2, "Mnemonic 2"),

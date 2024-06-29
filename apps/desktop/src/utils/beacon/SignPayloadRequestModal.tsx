@@ -15,16 +15,16 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { type TezosToolkit } from "@taquito/taquito";
+import { WalletClient } from "@umami/core";
+import { useGetImplicitAccount } from "@umami/state";
 import type React from "react";
 import { useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { decodePayload } from "./decodePayload";
-import { WalletClient } from "./WalletClient";
 import { DynamicModalContext } from "../../components/DynamicModal";
 import { SignButton } from "../../components/SendFlow/SignButton";
 import colors from "../../style/colors";
-import { useGetImplicitAccount } from "../hooks/getAccountDataHooks";
 
 export const SignPayloadRequestModal: React.FC<{
   request: SignPayloadRequestOutput;

@@ -1,13 +1,12 @@
 import { mockLedgerAccount } from "@umami/core";
 import { addTestAccount, networksActions, store } from "@umami/state";
-import { DefaultNetworks, TEZ } from "@umami/tezos";
+import { DefaultNetworks, TEZ, formatPkh } from "@umami/tezos";
 import { type StakeOperation } from "@umami/tzkt";
 
 import { OperationTileContext } from "./OperationTileContext";
 import { StakeTile } from "./StakeTile";
 import { stakeFixture } from "./testUtils";
 import { render, screen } from "../../mocks/testUtils";
-import { formatPkh } from "../../utils/format";
 
 const fixture = (context: any, operation: StakeOperation) => (
   <OperationTileContext.Provider value={context}>

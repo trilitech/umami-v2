@@ -5,11 +5,13 @@ import {
   mockMnemonicAccount,
   mockSocialAccount,
 } from "@umami/core";
+import { WalletClient } from "@umami/core";
 import { decrypt } from "@umami/crypto";
 import { mockMultisigWithOperations } from "@umami/multisig";
-import { accountsSlice, addTestAccount, store } from "@umami/state";
+import { accountsActions, addTestAccount, store } from "@umami/state";
 import {
   derivePublicKeyPair,
+  formatPkh,
   getDefaultDerivationPath,
   mockImplicitAddress,
   mockPk,
@@ -17,8 +19,6 @@ import {
 
 import { AccountsList } from "./AccountsList";
 import { act, render, screen, userEvent, waitFor, within } from "../../mocks/testUtils";
-import { WalletClient } from "../../utils/beacon/WalletClient";
-import { formatPkh } from "../../utils/format";
 
 jest.mock("@umami/core", () => ({
   ...jest.requireActual("@umami/core"),
@@ -225,7 +225,7 @@ describe("<AccountsList />", () => {
 
 const restore = () => {
   store.dispatch(
-    accountsSlice.actions.addMnemonicAccounts({
+    accountsActions.addMnemonicAccounts({
       seedFingerprint: MOCK_FINGERPRINT1,
       accounts: [
         mockImplicitAccount(0, undefined, MOCK_FINGERPRINT1, "Mnemonic 1.1"),
@@ -235,7 +235,7 @@ const restore = () => {
     })
   );
   store.dispatch(
-    accountsSlice.actions.addMnemonicAccounts({
+    accountsActions.addMnemonicAccounts({
       seedFingerprint: MOCK_FINGERPRINT2,
       accounts: [
         mockImplicitAccount(4, undefined, MOCK_FINGERPRINT2, "Mnemonic 2"),

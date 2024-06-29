@@ -1,11 +1,10 @@
 import { Button, FormControl, FormErrorMessage, FormLabel, Textarea } from "@chakra-ui/react";
 import { InMemorySigner } from "@taquito/signer";
-import { isEncryptedSecretKeyPrefix } from "@umami/state";
+import { isEncryptedSecretKeyPrefix, useAsyncActionHandler } from "@umami/state";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { KeyIcon } from "../../../assets/icons";
-import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
 import { PasswordInput } from "../../PasswordInput";
 import { ModalContentWrapper } from "../ModalContentWrapper";
 import { type OnboardingStep } from "../OnboardingStep";
