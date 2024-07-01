@@ -1,8 +1,9 @@
-import { multisigOperationFixture, multisigsFixture } from "./testUtils";
-import { addTestAccount, multisigsActions, store } from "@umami/state";
+import { multisigOperationFixture, multisigsFixture } from "@umami/multisig";
 
-import { useGetPendingMultisigOperations } from "./hooks";
-import { renderHook } from "../../core/src/testUtils";
+import { useGetPendingMultisigOperations } from "./multisig";
+import { addTestAccount, renderHook } from "../testUtils";
+import { multisigsActions } from "../slices";
+import { store } from "../store";
 
 describe("useGetPendingMultisigOperations", () => {
   it("sorts operations by id", () => {

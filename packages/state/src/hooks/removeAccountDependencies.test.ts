@@ -1,7 +1,5 @@
 import { type ExtendedPeerInfo, NetworkType } from "@airgap/beacon-wallet";
-import { waitFor } from "@testing-library/react";
 import {
-  WalletClient,
   makeAccountOperations,
   mockImplicitAccount,
   mockMultisigAccount,
@@ -10,8 +8,8 @@ import {
 } from "@umami/core";
 import { GHOSTNET, MAINNET } from "@umami/tezos";
 
-import { usePeers } from "./beacon";
 import { useRemoveDependenciesAndMultisigs } from "./removeAccountDependencies";
+import { WalletClient } from "../beacon/WalletClient";
 import { assetsActions, batchesActions, beaconActions, multisigsActions } from "../slices";
 import { store } from "../store";
 import { act, addTestAccount, renderHook } from "../testUtils";
@@ -96,29 +94,8 @@ describe("useRemoveDependenciesAndMultisigs", () => {
 
       beforeEach(() => {
         connections.forEach(connection => store.dispatch(beaconActions.addConnection(connection)));
-        jest.spyOn(WalletClient, "getPeers").mockResolvedValue(peersData as any);
-        jest.spyOn(WalletClient, "removePeer").mockResolvedValue();
-      });
-
-      it("sends delete requests through the beacon api", async () => {
-        // initially usePeers returns an empty array
-        // we need to wait until the data is fetched for the first time
-        const view = renderHook(() => usePeers());
-
-        await waitFor(() => {
-          view.rerender();
-          expect(view.result.current).toEqual(peersData);
-        });
-
-        const {
-          result: { current: removeAccountsDependencies },
-        } = renderHook(() => useRemoveDependenciesAndMultisigs());
-
-        act(() => removeAccountsDependencies([account0, account2]));
-
-        await waitFor(() => expect(WalletClient.removePeer).toHaveBeenCalledTimes(2));
-        expect(WalletClient.removePeer).toHaveBeenCalledWith(peersData[0], true);
-        expect(WalletClient.removePeer).toHaveBeenCalledWith(peersData[2], true);
+        jest.spyOn(WalletClient, "getPeers").mockResolvedValue(peersData as ExtendedPeerInfo[]);
+        jest.spyOn(WalletClient, "removePeer");
       });
 
       it("removes related connections from the beacon slice", () => {

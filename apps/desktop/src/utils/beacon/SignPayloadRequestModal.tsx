@@ -15,8 +15,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { type TezosToolkit } from "@taquito/taquito";
-import { WalletClient } from "@umami/core";
-import { useGetImplicitAccount } from "@umami/state";
+import { WalletClient, useGetImplicitAccount } from "@umami/state";
 import type React from "react";
 import { useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";

@@ -12,6 +12,7 @@ import { generateMnemonic } from "bip39";
 import { useGetNextAvailableAccountLabels } from "./labels";
 
 // This is put in a separate file for mocking purposes in tests
+// TODO: inline this function and remove it from here
 export const generate24WordMnemonic = () => generateMnemonic(256);
 
 /**

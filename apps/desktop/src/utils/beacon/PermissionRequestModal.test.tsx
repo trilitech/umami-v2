@@ -6,18 +6,11 @@ import {
 } from "@airgap/beacon-wallet";
 import { Modal } from "@chakra-ui/react";
 import { fireEvent } from "@testing-library/react";
-import { WalletClient, mockMnemonicAccount } from "@umami/core";
-import { addTestAccount, store } from "@umami/state";
+import { mockMnemonicAccount } from "@umami/core";
+import { WalletClient, addTestAccount, store } from "@umami/state";
 
 import { PermissionRequestModal } from "./PermissionRequestModal";
 import { act, render, screen, userEvent } from "../../mocks/testUtils";
-
-jest.mock("./WalletClient", () => ({
-  WalletClient: {
-    getPeers: () => Promise.resolve([]),
-    respond: jest.fn(),
-  },
-}));
 
 const TestComponent = ({ request }: { request: PermissionRequestOutput }) => (
   <Modal isOpen={true} onClose={() => {}}>
@@ -58,6 +51,8 @@ describe("<PermissionRequestModal />", () => {
 
   it("allows user to select account and grant permission", async () => {
     const user = userEvent.setup();
+
+    jest.spyOn(WalletClient, "respond");
 
     render(<TestComponent request={request} />);
 

@@ -1,6 +1,6 @@
-import { useAppSelector } from "@umami/state";
+import { type Multisig, type MultisigOperation } from "@umami/multisig";
 
-import { type Multisig, type MultisigOperation } from "./types";
+import { useAppSelector } from "./useAppSelector";
 
 export const useMultisigAccounts = () => useAppSelector(s => s.multisigs.items);
 

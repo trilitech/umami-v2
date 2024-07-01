@@ -1,8 +1,7 @@
 import { webcrypto } from "crypto";
 import { TextDecoder, TextEncoder } from "util";
 
-import { resetStore } from "@umami/state";
-import { mockToast } from "@umami/test-utils";
+import { mockToast, resetStore } from "@umami/state";
 
 beforeEach(() => {
   Object.defineProperties(global, {

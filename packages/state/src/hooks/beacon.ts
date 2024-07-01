@@ -5,13 +5,13 @@ import {
   Serializer,
 } from "@airgap/beacon-wallet";
 import { useToast } from "@chakra-ui/react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { WalletClient, parsePeerInfo } from "@umami/core";
 import { type RawPkh } from "@umami/tezos";
 import { uniq } from "lodash";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { useAppSelector } from "./useAppSelector";
+import { WalletClient, parsePeerInfo } from "../beacon";
 import { type DAppConnectionInfo, beaconActions } from "../slices";
 /**
  * Returns connected account pkh & network by a given dAppId.
@@ -59,23 +59,23 @@ export const useRemoveConnection = () => {
   return (dAppId: string) => dispatch(beaconActions.removeConnection(dAppId));
 };
 
-const PEERS_QUERY_KEY = "beaconPeers";
+export const usePeers = () => {
+  const [peers, setPeers] = useState<ExtendedPeerInfo[]>([]);
 
-export const useRefreshPeers = () => {
-  const client = useQueryClient();
-  return () => client.refetchQueries({ queryKey: [PEERS_QUERY_KEY] });
+  const refresh = useCallback(async () => {
+    const peers = await WalletClient.getPeers();
+    setPeers(peers as ExtendedPeerInfo[]);
+  }, []);
+
+  useEffect(() => {
+    void refresh();
+  }, [refresh]);
+
+  return { peers, refresh };
 };
 
-export const usePeers = () =>
-  useQuery({
-    queryKey: [PEERS_QUERY_KEY],
-    // getPeers actually returns ExtendedPeerInfo (with the senderId)
-    queryFn: () => WalletClient.getPeers(),
-    initialData: [],
-  }).data as ExtendedPeerInfo[];
-
 export const useRemovePeer = () => {
-  const refresh = useRefreshPeers();
+  const { refresh } = usePeers();
   const removeConnectionFromBeaconSlice = useRemoveConnection();
 
   return (peerInfo: ExtendedPeerInfo) =>
@@ -85,7 +85,7 @@ export const useRemovePeer = () => {
 };
 
 export const useRemovePeerBySenderId = () => {
-  const peers = usePeers();
+  const { peers } = usePeers();
   const removePeer = useRemovePeer();
 
   return (senderId: string) =>
@@ -100,7 +100,7 @@ export const useRemovePeersByAccounts = () => {
 };
 
 export const useAddPeer = () => {
-  const refresh = useRefreshPeers();
+  const { refresh } = usePeers();
   const toast = useToast();
 
   return (payload: string) =>

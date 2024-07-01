@@ -1,7 +1,6 @@
 /* istanbul ignore file */
-import { WalletClient } from "@umami/core";
 import { useDataPolling } from "@umami/data-polling";
-import { useImplicitAccounts, useResetConnections } from "@umami/state";
+import { WalletClient, useImplicitAccounts, useResetConnections } from "@umami/state";
 import { noop } from "lodash";
 import { useEffect } from "react";
 import { HashRouter, Navigate, Route, Routes } from "react-router-dom";

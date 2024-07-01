@@ -25,7 +25,7 @@ import colors from "../../style/colors";
  * Loads dApps data from {@link usePeers} hook & zips it with generated dAppIds.
  */
 export const BeaconPeers = () => {
-  const peers = usePeers();
+  const { peers } = usePeers();
 
   const [peersWithId, setPeersWithId] = useState<ExtendedPeerInfo[]>([]);
 

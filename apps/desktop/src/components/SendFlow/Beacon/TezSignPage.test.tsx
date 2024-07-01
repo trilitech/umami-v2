@@ -1,12 +1,7 @@
 import { BeaconMessageType, NetworkType, type OperationRequestOutput } from "@airgap/beacon-wallet";
 import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
-import {
-  WalletClient,
-  executeOperations,
-  mockImplicitAccount,
-  mockTezOperation,
-} from "@umami/core";
-import { networksActions, store, useGetSecretKey } from "@umami/state";
+import { executeOperations, mockImplicitAccount, mockTezOperation } from "@umami/core";
+import { WalletClient, networksActions, store, useGetSecretKey } from "@umami/state";
 import { executeParams } from "@umami/test-utils";
 import { GHOSTNET, MAINNET, makeToolkit } from "@umami/tezos";
 
@@ -32,8 +27,8 @@ jest.mock("@umami/tezos", () => ({
   makeToolkit: jest.fn(),
 }));
 
-jest.mock("@umami/core", () => ({
-  ...jest.requireActual("@umami/core"),
+jest.mock("@umami/state", () => ({
+  ...jest.requireActual("@umami/state"),
   useGetSecretKey: jest.fn(),
 }));
 

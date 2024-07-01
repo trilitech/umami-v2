@@ -6,8 +6,8 @@ import {
   mockMnemonicAccount,
   mockMultisigAccount,
 } from "@umami/core";
-import { addTestAccount, assetsActions, store } from "@umami/state";
-import { executeParams, mockToast } from "@umami/test-utils";
+import { addTestAccount, assetsActions, mockToast, store } from "@umami/state";
+import { executeParams } from "@umami/test-utils";
 
 import { FormPage, type FormValues } from "./FormPage";
 import { SignPage } from "./SignPage";

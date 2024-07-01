@@ -44,3 +44,7 @@ export { customRenderHook as renderHook, act };
 
 export const fakeIsAccountRevealed = (revealedKeyPairs: { pkh: RawPkh }[]) => (pkh: RawPkh) =>
   Promise.resolve(revealedKeyPairs.map(keyPair => keyPair.pkh).includes(pkh));
+
+// TODO: clean it
+export const mockToast = typeof jest !== "undefined" ? jest.fn() : function () {};
+(mockToast as any).close = typeof jest !== "undefined" ? jest.fn() : function () {};

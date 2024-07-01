@@ -7,7 +7,7 @@ const config: Config = {
   transform: {
     "^.+\\.tsx?$": "ts-jest",
   },
-  setupFilesAfterEnv: ["<rootDir>/src/setupTests.ts"],
+  testEnvironment: "node",
   rootDir: "./",
 };
 export default config;

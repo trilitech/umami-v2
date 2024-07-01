@@ -8,8 +8,8 @@ import {
   mockImplicitAccount,
   mockMnemonicAccount,
 } from "@umami/core";
-import { addTestAccount, assetsActions, store } from "@umami/state";
-import { executeParams, mockToast } from "@umami/test-utils";
+import { addTestAccount, assetsActions, mockToast, store } from "@umami/state";
+import { executeParams } from "@umami/test-utils";
 import { parseContractPkh } from "@umami/tezos";
 
 import { FormPage, type FormValues } from "./FormPage";

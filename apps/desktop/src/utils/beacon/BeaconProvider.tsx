@@ -1,5 +1,5 @@
 import { useToast } from "@chakra-ui/react";
-import { WalletClient } from "@umami/core";
+import { WalletClient } from "@umami/state";
 import { type PropsWithChildren, useEffect } from "react";
 
 import { useHandleBeaconMessage } from "./useHandleBeaconMessage";

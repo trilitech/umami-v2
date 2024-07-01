@@ -17,8 +17,11 @@ import {
   type ImplicitAccount,
   type NFTBalance,
 } from "@umami/core";
-import { useGetPendingMultisigOperations } from "@umami/multisig";
-import { useGetAccountUnstakeRequests, useSelectedNetwork } from "@umami/state";
+import {
+  useGetAccountUnstakeRequests,
+  useGetPendingMultisigOperations,
+  useSelectedNetwork,
+} from "@umami/state";
 import type React from "react";
 
 import { EarnTab } from "./EarnTab";

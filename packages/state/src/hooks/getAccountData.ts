@@ -6,11 +6,11 @@ import {
   type SecretKeyAccount,
 } from "@umami/core";
 import { decrypt } from "@umami/crypto";
-import { useMultisigAccounts } from "@umami/multisig";
 import { type RawPkh, deriveSecretKey } from "@umami/tezos";
 import { maxBy } from "lodash";
 
 import { useGetAccountBalance } from "./assets";
+import { useMultisigAccounts } from "./multisig";
 import { useAppSelector } from "./useAppSelector";
 
 export const useSeedPhrases = () => useAppSelector(s => s.accounts.seedPhrases);

@@ -1,6 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import { getPendingOperations, useMultisigAccounts } from "@umami/multisig";
-import { multisigsActions, useAppDispatch, useSelectedNetwork } from "@umami/state";
+import { getPendingOperations } from "@umami/multisig";
+import {
+  multisigsActions,
+  useAppDispatch,
+  useMultisigAccounts,
+  useSelectedNetwork,
+} from "@umami/state";
 import { BLOCK_TIME } from "@umami/tezos";
 import { useEffect } from "react";
 

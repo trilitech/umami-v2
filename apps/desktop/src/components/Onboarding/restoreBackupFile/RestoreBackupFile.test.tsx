@@ -1,4 +1,5 @@
-import { mockToast, umamiBackup } from "@umami/test-utils";
+import { mockToast } from "@umami/state";
+import { umamiBackup } from "@umami/test-utils";
 
 import { RestoreBackupFile } from "./RestoreBackupFile";
 import { reload, restoreV2BackupFile, useRestoreV1BackupFile } from "./utils";

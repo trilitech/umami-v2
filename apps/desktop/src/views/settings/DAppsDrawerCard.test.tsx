@@ -1,4 +1,4 @@
-import { useAddPeer } from "@umami/state";
+import * as stateMod from "@umami/state";
 
 import { DAppsDrawerCard } from "./DAppsDrawerCard";
 import { act, render, screen, userEvent } from "../../mocks/testUtils";
@@ -24,7 +24,7 @@ describe("<DAppsDrawerCard />", () => {
     const user = userEvent.setup();
     jest.spyOn(navigator.clipboard, "readText").mockResolvedValue("some text");
     const mockAddPeer = jest.fn();
-    jest.mocked(useAddPeer).mockReturnValue(mockAddPeer);
+    jest.spyOn(stateMod, "useAddPeer").mockReturnValue(mockAddPeer);
 
     render(<DAppsDrawerCard />);
 

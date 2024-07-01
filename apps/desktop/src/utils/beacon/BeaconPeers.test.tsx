@@ -1,6 +1,6 @@
 import { type ExtendedPeerInfo, NetworkType } from "@airgap/beacon-wallet";
-import { WalletClient, mockMnemonicAccount } from "@umami/core";
-import { addTestAccount, beaconActions, store, usePeers } from "@umami/state";
+import { mockMnemonicAccount } from "@umami/core";
+import { WalletClient, addTestAccount, beaconActions, store } from "@umami/state";
 import { formatPkh } from "@umami/tezos";
 
 import { BeaconPeers } from "./BeaconPeers";
@@ -35,7 +35,7 @@ const peersData: ExtendedPeerInfo[] = [
 
 beforeEach(() => {
   [mockMnemonicAccount(1), mockMnemonicAccount(2)].forEach(addTestAccount);
-  jest.mocked(usePeers).mockReturnValue(peersData);
+  jest.spyOn(WalletClient, "getPeers").mockResolvedValue(peersData);
 });
 
 describe("<BeaconPeers />", () => {
@@ -50,7 +50,7 @@ describe("<BeaconPeers />", () => {
 
   describe("list of paired dApps", () => {
     it("shows empty state message when no paired dApps", async () => {
-      jest.mocked(usePeers).mockReturnValue([]);
+      jest.spyOn(WalletClient, "getPeers").mockResolvedValue([]);
       render(<BeaconPeers />);
 
       await waitFor(() => {

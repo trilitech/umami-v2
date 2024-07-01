@@ -1,6 +1,5 @@
 export * from "./Account";
 export * from "./AccountOperations";
-export * from "./beacon";
 export * from "./Contact";
 export * from "./Delegate";
 export * from "./ErrorContext";

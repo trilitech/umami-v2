@@ -23,8 +23,12 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
-import { WalletClient } from "@umami/core";
-import { useAddConnection, useAsyncActionHandler, useGetImplicitAccount } from "@umami/state";
+import {
+  WalletClient,
+  useAddConnection,
+  useAsyncActionHandler,
+  useGetImplicitAccount,
+} from "@umami/state";
 import { capitalize } from "lodash";
 import type React from "react";
 import { useContext } from "react";

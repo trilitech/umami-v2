@@ -1,7 +1,8 @@
-import { mockToast } from "@umami/test-utils";
-import { resetStore } from "./store";
 import { webcrypto } from "crypto";
 import { TextDecoder, TextEncoder } from "util";
+
+import { resetStore } from "./store";
+import { mockToast } from "./testUtils";
 
 Object.defineProperties(global, {
   crypto: { value: webcrypto, writable: true },
@@ -12,6 +13,13 @@ Object.defineProperties(global, {
 jest.mock("@chakra-ui/react", () => ({
   ...jest.requireActual("@chakra-ui/react"),
   useToast: () => mockToast,
+}));
+
+jest.mock("./beacon/WalletClient", () => ({
+  WalletClient: {
+    getPeers: jest.fn(),
+    removePeer: jest.fn(),
+  },
 }));
 
 beforeEach(() => resetStore());

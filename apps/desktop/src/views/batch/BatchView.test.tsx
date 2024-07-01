@@ -7,8 +7,8 @@ import {
   mockImplicitAccount,
   mockTezOperation,
 } from "@umami/core";
-import { addTestAccount } from "@umami/state";
-import { executeParams, mockToast } from "@umami/test-utils";
+import { addTestAccount, mockToast } from "@umami/state";
+import { executeParams } from "@umami/test-utils";
 
 import { BatchView } from "./BatchView";
 import { act, render, screen, userEvent, within } from "../../mocks/testUtils";

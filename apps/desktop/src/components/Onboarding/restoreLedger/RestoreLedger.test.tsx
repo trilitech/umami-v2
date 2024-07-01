@@ -1,4 +1,4 @@
-import { mockToast } from "@umami/test-utils";
+import { mockToast } from "@umami/state";
 import { defaultDerivationPathTemplate, getLedgerPublicKeyPair } from "@umami/tezos";
 
 import { RestoreLedger } from "./RestoreLedger";

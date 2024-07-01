@@ -1,7 +1,5 @@
-import { mockToast } from "@umami/test-utils";
-
 import { useAsyncActionHandler } from "./useAsyncActionHandler";
-import { act, renderHook, waitFor } from "../testUtils";
+import { act, mockToast, renderHook, waitFor } from "../testUtils";
 
 const fixture = () => renderHook(() => useAsyncActionHandler());
 

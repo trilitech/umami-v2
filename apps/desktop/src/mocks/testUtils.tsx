@@ -1,10 +1,10 @@
 import * as testingLibrary from "@testing-library/react";
 import { type PropsWithChildren, act } from "react";
+import { Provider } from "react-redux";
 import { HashRouter } from "react-router-dom";
 
 import { DynamicModalContext, useDynamicModal } from "../components/DynamicModal";
 import { ReactQueryProvider } from "../providers/ReactQueryProvider";
-import { ReduxStore } from "../providers/ReduxStore";
 import { UmamiTheme } from "../providers/UmamiTheme";
 
 // can be used to spyOn the openWith and onClose methods
@@ -31,12 +31,12 @@ const AllTheProviders = ({ children }: PropsWithChildren<object>) => {
     <HashRouter>
       <ReactQueryProvider>
         <UmamiTheme>
-          <ReduxStore>
+          <Provider store={(global as any).reduxStore}>
             <DynamicModalContext.Provider value={dynamicModal}>
               {children}
               {dynamicModal.content}
             </DynamicModalContext.Provider>
-          </ReduxStore>
+          </Provider>
         </UmamiTheme>
       </ReactQueryProvider>
     </HashRouter>

@@ -2,8 +2,8 @@ import { type Account, type ImplicitAccount } from "@umami/core";
 
 import { useRemovePeersByAccounts } from "./beacon";
 import { useImplicitAccounts } from "./getAccountData";
+import { useMultisigAccounts } from "./multisig";
 import { useAppDispatch } from "./useAppDispatch";
-import { useMultisigAccounts } from "../../../multisig/src/hooks";
 import { assetsActions, batchesActions, beaconActions, multisigsActions } from "../slices";
 
 /**

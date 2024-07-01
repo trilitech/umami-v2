@@ -1,7 +1,6 @@
 import { mockImplicitContact } from "@umami/core";
 import { getNetworksForContracts } from "@umami/multisig";
-import { contactsActions, store } from "@umami/state";
-import { mockToast } from "@umami/test-utils";
+import { contactsActions, mockToast, store } from "@umami/state";
 import { mockContractAddress, mockImplicitAddress } from "@umami/tezos";
 
 import { UpsertContactModal } from "./UpsertContactModal";

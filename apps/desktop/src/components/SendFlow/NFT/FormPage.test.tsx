@@ -7,8 +7,8 @@ import {
   mockMnemonicAccount,
   mockNFT,
 } from "@umami/core";
-import { addTestAccount } from "@umami/state";
-import { executeParams, mockToast } from "@umami/test-utils";
+import { addTestAccount, mockToast } from "@umami/state";
+import { executeParams } from "@umami/test-utils";
 import { parseContractPkh } from "@umami/tezos";
 
 import { FormPage, type FormValues } from "./FormPage";

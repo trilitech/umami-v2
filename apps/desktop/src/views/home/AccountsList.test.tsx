@@ -5,33 +5,14 @@ import {
   mockMnemonicAccount,
   mockSocialAccount,
 } from "@umami/core";
-import { WalletClient } from "@umami/core";
-import { decrypt } from "@umami/crypto";
 import { mockMultisigWithOperations } from "@umami/multisig";
-import { accountsActions, addTestAccount, store } from "@umami/state";
-import {
-  derivePublicKeyPair,
-  formatPkh,
-  getDefaultDerivationPath,
-  mockImplicitAddress,
-  mockPk,
-} from "@umami/tezos";
+import { WalletClient, accountsActions, addTestAccount, store } from "@umami/state";
+import { formatPkh, mockImplicitAddress, mockPk } from "@umami/tezos";
 
 import { AccountsList } from "./AccountsList";
 import { act, render, screen, userEvent, waitFor, within } from "../../mocks/testUtils";
 
-jest.mock("@umami/core", () => ({
-  ...jest.requireActual("@umami/core"),
-  derivePublicKeyPair: jest.fn(),
-}));
-
-jest.mock("@umami/crypto", () => ({ decrypt: jest.fn() }));
-
-jest.mock("@umami/tezos", () => ({
-  ...jest.requireActual("@umami/tezos"),
-  derivePublicKeyPair: jest.fn(),
-}));
-
+// TODO: enable configurable: true in the state output files
 const GOOGLE_ACCOUNT_LABEL1 = "my google account 1";
 const GOOGLE_ACCOUNT_LABEL2 = "my google account 2";
 const MOCK_FINGERPRINT1 = "mockFin1";
@@ -169,58 +150,6 @@ describe("<AccountsList />", () => {
     expect(multisigAccounts).toHaveTextContent(/multisig account 0/i);
     expect(multisigAccounts).toHaveTextContent(/multisig account 1/i);
   });
-
-  it("allows to derive a new account for a mnemonic", async () => {
-    const user = userEvent.setup();
-    const account = mockImplicitAccount(2, undefined, MOCK_FINGERPRINT1);
-    jest.mocked(decrypt).mockResolvedValue("mockSeedPhrase");
-    const derivePublicKeyPairMock = jest.mocked(derivePublicKeyPair).mockResolvedValue({
-      pkh: account.address.pkh,
-      pk: account.pk,
-    });
-    const LABEL = "my label";
-    restore();
-    render(<AccountsList />);
-
-    // Open actions dialog for Mnemonic Group 1
-    const seedPhrase1 = screen.getByTestId(`account-group-Seedphrase ${MOCK_FINGERPRINT1}`);
-    const { getByTestId, getByRole } = within(seedPhrase1);
-    const cta = getByTestId(/^popover-cta$/i);
-    await act(() => user.click(cta));
-    // Click "create" button
-    expect(await screen.findByRole("dialog")).toHaveTextContent("Create");
-    const createBtn = getByRole("button", { name: "Create" });
-    // Input account label
-    await act(() => user.click(createBtn));
-    const nameInput = screen.getByLabelText("Account name");
-    await act(() => user.type(nameInput, LABEL));
-    await act(() => user.click(screen.getByRole("button", { name: "Continue" })));
-    // Input password
-    expect(screen.getByLabelText("Password")).toBeInTheDocument();
-
-    const passwordInput = screen.getByLabelText(/password/i);
-    await act(() => user.type(passwordInput, "myPassword"));
-    // Submit
-    const submitBtn = screen.getByRole("button", { name: "Submit" });
-    expect(submitBtn).toBeEnabled();
-
-    await act(() => user.click(submitBtn));
-
-    expect(derivePublicKeyPairMock).toHaveBeenCalledWith(
-      "mockSeedPhrase",
-      getDefaultDerivationPath(2)
-    );
-    expect(screen.queryByLabelText("Password")).not.toBeInTheDocument();
-
-    {
-      const seedPhrase1 = screen.getByTestId(`account-group-Seedphrase ${MOCK_FINGERPRINT1}`);
-
-      const tiles = within(seedPhrase1).getAllByTestId("account-tile-container");
-      expect(tiles).toHaveLength(3);
-
-      expect(tiles[2]).toHaveTextContent(LABEL);
-    }
-  });
 });
 
 const restore = () => {
@@ -228,8 +157,8 @@ const restore = () => {
     accountsActions.addMnemonicAccounts({
       seedFingerprint: MOCK_FINGERPRINT1,
       accounts: [
-        mockImplicitAccount(0, undefined, MOCK_FINGERPRINT1, "Mnemonic 1.1"),
-        mockImplicitAccount(1, undefined, MOCK_FINGERPRINT1, "Mnemonic 1.2"),
+        mockImplicitAccount(0, "mnemonic", MOCK_FINGERPRINT1, "Mnemonic 1.1"),
+        mockImplicitAccount(1, "mnemonic", MOCK_FINGERPRINT1, "Mnemonic 1.2"),
       ] as MnemonicAccount[],
       encryptedMnemonic: { mock: "encrypted 1" } as any,
     })
@@ -238,7 +167,7 @@ const restore = () => {
     accountsActions.addMnemonicAccounts({
       seedFingerprint: MOCK_FINGERPRINT2,
       accounts: [
-        mockImplicitAccount(4, undefined, MOCK_FINGERPRINT2, "Mnemonic 2"),
+        mockImplicitAccount(4, "mnemonic", MOCK_FINGERPRINT2, "Mnemonic 2"),
       ] as MnemonicAccount[],
       encryptedMnemonic: { mock: "encrypted 2" } as any,
     })

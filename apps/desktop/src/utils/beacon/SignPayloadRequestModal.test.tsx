@@ -3,26 +3,12 @@ import {
   type SignPayloadRequestOutput,
   SigningType,
 } from "@airgap/beacon-wallet";
-import { Modal } from "@chakra-ui/react";
-import { WalletClient, mockImplicitAccount, mockMnemonicAccount } from "@umami/core";
-import { accountsActions, store } from "@umami/state";
+import { mockImplicitAccount, mockMnemonicAccount } from "@umami/core";
+import { WalletClient, accountsActions, store } from "@umami/state";
 import { encryptedMnemonic1 } from "@umami/test-utils";
 
 import { SignPayloadRequestModal } from "./SignPayloadRequestModal";
 import { act, render, screen, userEvent, waitFor } from "../../mocks/testUtils";
-
-jest.mock("./WalletClient", () => ({
-  WalletClient: {
-    getPeers: () => Promise.resolve([]),
-    respond: jest.fn(),
-  },
-}));
-
-const TestComponent = ({ request }: { request: SignPayloadRequestOutput }) => (
-  <Modal isOpen={true} onClose={() => {}}>
-    <SignPayloadRequestModal request={request} />
-  </Modal>
-);
 
 const payload =
   "05010000004254657a6f73205369676e6564204d6573736167653a206d79646170702e636f6d20323032312d30312d31345431353a31363a30345a2048656c6c6f20776f726c6421";
@@ -52,7 +38,7 @@ beforeEach(() => {
 
 describe("<SignPayloadRequestModal />", () => {
   it("renders the dapp name", async () => {
-    render(<TestComponent request={request} />);
+    render(<SignPayloadRequestModal request={request} />);
 
     await waitFor(() =>
       expect(screen.getByText("mockDappName/dApp Pairing Request")).toBeVisible()
@@ -60,22 +46,21 @@ describe("<SignPayloadRequestModal />", () => {
   });
 
   it("renders the payload to sign", async () => {
-    render(<TestComponent request={request} />);
+    render(<SignPayloadRequestModal request={request} />);
 
     await waitFor(() => expect(screen.getByText(decodedPayload)).toBeVisible());
   });
 
   it("sends the signed payload back to the DApp", async () => {
     const user = userEvent.setup();
-
-    render(<TestComponent request={request} />);
+    jest.spyOn(WalletClient, "respond");
+    render(<SignPayloadRequestModal request={request} />);
 
     await act(() => user.click(screen.getByLabelText("Password")));
     await act(() => user.type(screen.getByLabelText("Password"), "123123123"));
     const confirmButton = screen.getByRole("button", { name: "Sign" });
     expect(confirmButton).toBeEnabled();
 
-    jest.restoreAllMocks();
     await act(() => user.click(confirmButton));
 
     await waitFor(() =>

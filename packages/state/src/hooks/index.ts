@@ -9,6 +9,7 @@ export * from "./contacts";
 export * from "./getAccountData";
 export * from "./labels";
 export * from "./mnemonic";
+export * from "./multisig";
 export * from "./network";
 export * from "./protocolSettings";
 export * from "./removeAccountDependencies";

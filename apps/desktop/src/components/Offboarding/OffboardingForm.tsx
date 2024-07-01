@@ -12,8 +12,7 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
-import { WalletClient } from "@umami/core";
-import { getPersistor } from "@umami/state";
+import { WalletClient, getPersistor } from "@umami/state";
 import { noop } from "lodash";
 import { FormProvider, useForm } from "react-hook-form";
 

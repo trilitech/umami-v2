@@ -1,4 +1,4 @@
-import { GHOSTNET, isDefault, MAINNET } from "./Network";
+import { GHOSTNET, MAINNET, isDefault } from "./Network";
 
 describe("Network", () => {
   describe("isDefault", () => {
@@ -8,7 +8,7 @@ describe("Network", () => {
     });
 
     it("returns false for custom networks", () => {
-      expect(isDefault({ ...MAINNET, name: "custom" }));
+      expect(isDefault({ ...MAINNET, name: "custom" })).toEqual(false);
     });
   });
 });
