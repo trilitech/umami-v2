@@ -27,6 +27,53 @@ export function EmbeddedComponent() {
 
   useEffect(() => {
     document.body.style.background = "none";
+  });
+
+  useEffect(() => {
+    const handleRequest = (event: any) => {
+      try {
+        const data: RequestMessage = JSON.parse(event.data);
+
+        const clientPermissions = checkPermissions(event.origin, data);
+        if (!clientPermissions) {
+          return;
+        }
+
+        switch (data.type) {
+          case "login_request":
+            setSelectedNetwork(data.network);
+            console.log("network is set");
+            openLoginModal();
+            break;
+          case "logout_request":
+            setSelectedNetwork(null);
+            setUserData(null);
+            sendResponse({ type: "logout_response" });
+            break;
+          case "operation_request":
+            console.log(userData, selectedNetwork, data.operations);
+            if (userData === null) {
+              sendResponse({
+                type: toMatchingResponseType(data.type),
+                error: "no_login_data",
+                errorMessage: "User's login data is not available",
+              });
+            } else if (selectedNetwork === null) {
+              sendResponse({
+                type: toMatchingResponseType(data.type),
+                error: "no_network_data",
+                errorMessage: "User's network data is not available",
+              });
+            } else {
+              // TODO: wrap in try catch and send error response if any error occurs
+              openOperationModal(userData!, selectedNetwork, data.operations);
+            }
+            break;
+        }
+      } catch {
+        /* empty */
+      }
+    };
 
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (window.addEventListener) {
@@ -36,53 +83,13 @@ export function EmbeddedComponent() {
       (window as any).attachEvent("onmessage", handleRequest);
     }
 
-    sendResponse({ type: "init_complete" });
-  });
-
-  const handleRequest = (event: any) => {
-    try {
-      const data: RequestMessage = JSON.parse(event.data);
-
-      console.log(`Received ${event.data} from ${event.origin}`);
-      console.log(data);
-
-      const clientPermissions = checkPermissions(event.origin, data);
-      if (!clientPermissions) {
-        return;
-      }
-
-      switch (data.type) {
-        case "login_request":
-          setSelectedNetwork(data.network);
-          openLoginModal();
-          break;
-        case "logout_request":
-          setSelectedNetwork(null);
-          setUserData(null);
-          sendResponse({ type: "logout_response" });
-          break;
-        case "operation_request":
-          if (userData === null) {
-            sendResponse({
-              type: toMatchingResponseType(data.type),
-              error: "no_login_data",
-              errorMessage: "User's login data is not available",
-            });
-          } else if (selectedNetwork === null) {
-            sendResponse({
-              type: toMatchingResponseType(data.type),
-              error: "no_network_data",
-              errorMessage: "User's network data is not available",
-            });
-          } else {
-            openOperationModal(userData!, selectedNetwork, data.operations);
-          }
-          break;
-      }
-    } catch {
-      /* empty */
+    if (userData === null && selectedNetwork === null) {
+      // TODO: send init_complete only when once
+      sendResponse({ type: "init_complete" });
     }
-  };
+
+    return () => window.removeEventListener("message", handleRequest);
+  }, [userData, selectedNetwork, openLoginModal, openOperationModal]);
 
   const checkPermissions = (origin: string, request: RequestMessage): Permissions | null => {
     const network = request.type === "login_request" ? request.network : selectedNetwork;

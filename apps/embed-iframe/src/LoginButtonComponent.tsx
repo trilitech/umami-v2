@@ -6,7 +6,8 @@ import { FacebookLogoIcon, GoogleLogoIcon, RedditLogoIcon, TwitterLogoIcon } fro
 export const LoginButtonComponent: React.FC<{
   onClick: () => void;
   loginType: TypeOfLogin;
-}> = ({ onClick, loginType }) => (
+  labelPrefix?: string;
+}> = ({ onClick, loginType, labelPrefix }) => (
   <Button
     position="relative"
     width="100%"
@@ -19,6 +20,7 @@ export const LoginButtonComponent: React.FC<{
       <LogoIconWithBackground loginType={loginType} />
     </Box>
     <Heading textAlign="center" flex="1" fontSize="14px" lineHeight="18px">
+      {labelPrefix ? `${labelPrefix} ` : ""}
       {buttonLabel(loginType)}
     </Heading>
   </Button>
