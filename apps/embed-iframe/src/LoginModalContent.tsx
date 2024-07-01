@@ -1,6 +1,6 @@
 import { Box, Center, Flex, Heading, Spinner, Text, VStack } from "@chakra-ui/react";
 import { InMemorySigner } from "@taquito/signer";
-import { type TypeOfLogin } from "@trilitech-umami/umami-embed/types";
+import { type UserData, type TypeOfLogin } from "@trilitech-umami/umami-embed/types";
 import * as Auth from "@umami/social-auth";
 import { useState } from "react";
 
@@ -15,7 +15,7 @@ const LOGIN_TIMEOUT = 3 * 60 * 1000; // 3 minutes
 
 export const LoginModalContent: React.FC<{
   closeModal: () => void;
-  onLoginCallback: (loginType: TypeOfLogin) => void;
+  onLoginCallback: (userData: UserData) => void;
 }> = ({ closeModal, onLoginCallback }) => {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -30,13 +30,14 @@ export const LoginModalContent: React.FC<{
       const signer = new InMemorySigner(secretKey);
       const { pk, pkh } = { pk: await signer.publicKey(), pkh: await signer.publicKeyHash() };
 
-      onLoginCallback(loginType);
-      sendResponse({
-        type: "login_response",
+      const userData = {
         pk,
         pkh,
-        userData: { typeOfLogin: "google", id: name },
-      });
+        typeOfLogin: loginType,
+        id: name,
+      };
+      onLoginCallback(userData);
+      sendResponse({ ...userData, type: "login_response" });
     } catch (error) {
       sendLoginErrorResponse(getErrorContext(error).description);
     } finally {

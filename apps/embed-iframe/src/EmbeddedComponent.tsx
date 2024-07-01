@@ -2,7 +2,7 @@ import { Box, ChakraProvider, ColorModeScript } from "@chakra-ui/react";
 import {
   Network,
   type RequestMessage,
-  type TypeOfLogin,
+  type UserData,
   toMatchingResponseType,
 } from "@trilitech-umami/umami-embed/types";
 import { useEffect, useState } from "react";
@@ -15,10 +15,10 @@ import { sendResponse } from "./utils";
 import "./EmbeddedComponent.scss";
 
 export function EmbeddedComponent() {
-  const [selectedLoginType, setSelectedLoginType] = useState<TypeOfLogin | null>(null);
   const [selectedNetwork, setSelectedNetwork] = useState<Network | null>(null);
+  const [userData, setUserData] = useState<UserData | null>(null);
 
-  const onLoginCallback = (loginType: TypeOfLogin) => setSelectedLoginType(loginType);
+  const onLoginCallback = (userData: UserData) => setUserData(userData);
 
   const { onOpen: openLoginModal, modalElement: loginModalElement } =
     useLoginModal(onLoginCallback);
@@ -57,12 +57,12 @@ export function EmbeddedComponent() {
           openLoginModal();
           break;
         case "logout_request":
-          setSelectedLoginType(null);
           setSelectedNetwork(null);
+          setUserData(null);
           sendResponse({ type: "logout_response" });
           break;
         case "operation_request":
-          if (selectedLoginType === null) {
+          if (userData === null) {
             sendResponse({
               type: toMatchingResponseType(data.type),
               error: "no_login_data",
@@ -75,7 +75,7 @@ export function EmbeddedComponent() {
               errorMessage: "User's network data is not available",
             });
           } else {
-            openOperationModal(selectedLoginType!, selectedNetwork, data.operations);
+            openOperationModal(userData!, selectedNetwork, data.operations);
           }
           break;
       }

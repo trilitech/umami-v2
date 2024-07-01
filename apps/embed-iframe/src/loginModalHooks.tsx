@@ -1,10 +1,10 @@
 import { Center, Modal, ModalCloseButton, ModalContent, useDisclosure } from "@chakra-ui/react";
-import { type TypeOfLogin } from "@trilitech-umami/umami-embed/types";
+import { type UserData } from "@trilitech-umami/umami-embed/types";
 
 import { LoginModalContent } from "./LoginModalContent";
 import { sendLoginErrorResponse } from "./utils";
 
-export const useLoginModal = (onLoginCallback: (loginType: TypeOfLogin) => void) => {
+export const useLoginModal = (onLoginCallback: (userData: UserData) => void) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const onModalCLose = () => {
