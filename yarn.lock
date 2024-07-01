@@ -8298,6 +8298,7 @@ __metadata:
     "@testing-library/user-event": "npm:14.5.2"
     "@toruslabs/customauth": "npm:16.0.6"
     "@trilitech-umami/umami-embed": "npm:^0.0.4"
+    "@umami/core": "workspace:^"
     "@umami/eslint-config": "workspace:^"
     "@umami/social-auth": "workspace:^"
     "@umami/tezos": "workspace:^"

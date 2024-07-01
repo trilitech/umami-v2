@@ -27,6 +27,7 @@ import colors from "./imported/style/colors";
 import { getErrorContext } from "./imported/utils/getErrorContext";
 import { withTimeout } from "./imported/utils/withTimeout";
 import { sendOperationErrorResponse, sendResponse, toTezosNetwork } from "./utils";
+import { type EstimatedAccountOperations } from "@umami/core";
 
 const SIGN_TIMEOUT = 5 * 60 * 1000; // 5 minutes
 
@@ -34,11 +35,12 @@ export const OperationModalContent: React.FC<{
   userData: UserData;
   network: Network;
   operations: PartialTezosOperation[];
+  estimatedOperations: EstimatedAccountOperations;
   closeModal: () => void;
-}> = ({ userData, network, operations, closeModal }) => {
+}> = ({ userData, network, operations, estimatedOperations, closeModal }) => {
   const [isLoading, setIsLoading] = useState(false);
 
-  console.log(operations);
+  console.log("estimatedOperations: " + estimatedOperations);
 
   const onClick = async () => {
     setIsLoading(true);

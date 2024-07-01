@@ -1,4 +1,9 @@
-import { type Network, type ResponseMessage } from "@trilitech-umami/umami-embed/types";
+import {
+  type Network,
+  type ResponseMessage,
+  type UserData,
+} from "@trilitech-umami/umami-embed/types";
+import { type SocialAccount } from "@umami/core";
 import { GHOSTNET, MAINNET } from "@umami/tezos";
 
 export const sendResponse = (response: ResponseMessage) =>
@@ -28,3 +33,14 @@ export const toTezosNetwork = (network: Network) => {
       return MAINNET;
   }
 };
+
+export const toSocialAccount = (userData: UserData): SocialAccount => ({
+  label: userData.id,
+  type: "social",
+  idp: userData.typeOfLogin,
+  address: {
+    type: "implicit",
+    pkh: userData.pkh,
+  },
+  pk: userData.pk,
+});
