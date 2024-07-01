@@ -2,8 +2,16 @@
   "$schema": "https://turbo.build/schema.json",
   "tasks": {
     "build": {
-      "outputs": ["dist/**", "storybook-static/**"],
-      "dependsOn": ["^build"]
+      "outputs": [
+        "dist/**",
+        "storybook-static/**"
+      ],
+      "dependsOn": [
+        "^build"
+      ]
+    },
+    "clean": {
+      "cache": false
     },
     "lint": {
       "dependsOn": [
@@ -58,7 +66,9 @@
     "dev": {
       "persistent": true,
       "cache": false,
-      "dependsOn": ["^build"]
+      "dependsOn": [
+        "^build"
+      ]
     },
     "audit": {},
     "check-circular-deps": {

@@ -2,5 +2,8 @@
   "name": "@umami/oauth",
   "files": [
     "public/redirect.html"
-  ]
+  ],
+  "devDependencies": {
+    "rimraf": "^5.0.7"
+  }
 }
