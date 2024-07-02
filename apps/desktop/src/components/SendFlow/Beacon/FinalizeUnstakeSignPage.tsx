@@ -1,10 +1,10 @@
 import { Flex, FormLabel, ModalBody, ModalContent, ModalFooter } from "@chakra-ui/react";
+import { useAccountTotalFinalizableUnstakeAmount } from "@umami/state";
 import { FormProvider } from "react-hook-form";
 
 import { type BeaconSignPageProps } from "./BeaconSignPageProps";
 import { Header } from "./Header";
 import { useSignWithBeacon } from "./useSignWithBeacon";
-import { useAccountTotalFinalizableUnstakeAmount } from "../../../utils/hooks/stakingHooks";
 import { AddressTile } from "../../AddressTile/AddressTile";
 import { TezTile } from "../../AssetTiles/TezTile";
 import { SignButton } from "../SignButton";

@@ -1,11 +1,10 @@
 import { mockImplicitContact } from "@umami/core";
 import { getNetworksForContracts } from "@umami/multisig";
-import { contactsActions, store } from "@umami/state";
+import { contactsActions, mockToast, store } from "@umami/state";
 import { mockContractAddress, mockImplicitAddress } from "@umami/tezos";
 
 import { UpsertContactModal } from "./UpsertContactModal";
 import { act, render, screen, userEvent, waitFor } from "../mocks/testUtils";
-import { mockToast } from "../mocks/toast";
 
 jest.mock("@umami/multisig", () => ({
   ...jest.requireActual("@umami/multisig"),

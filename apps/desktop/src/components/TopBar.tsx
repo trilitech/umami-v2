@@ -8,7 +8,7 @@ import {
   Text,
   useMediaQuery,
 } from "@chakra-ui/react";
-import { assetsActions, useAppDispatch } from "@umami/state";
+import { assetsActions, useAppDispatch, useIsLoading, useLastTimeUpdated } from "@umami/state";
 import { differenceInMinutes, differenceInSeconds, formatDistance } from "date-fns";
 import type React from "react";
 import { useContext, useEffect, useState } from "react";
@@ -19,7 +19,6 @@ import { FormPage as SendTezForm } from "./SendFlow/Tez/FormPage";
 import { FetchingIcon } from "../assets/icons";
 import { CheckIcon } from "../assets/icons/CheckIcon";
 import colors from "../style/colors";
-import { useIsLoading, useLastTimeUpdated } from "../utils/hooks/assetsHooks";
 
 const UpdateButton = () => {
   const dispatch = useAppDispatch();

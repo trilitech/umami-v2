@@ -1,5 +1,6 @@
+import { useIsBlockFinalised } from "@umami/state";
+
 import { CheckmarkIcon, CrossedCircleIcon, HourglassIcon } from "../../assets/icons";
-import { useIsBlockFinalised } from "../../utils/hooks/assetsHooks";
 
 export const OperationStatus: React.FC<{ level: number; status?: string }> = ({
   level,

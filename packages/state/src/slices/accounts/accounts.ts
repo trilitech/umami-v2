@@ -95,14 +95,14 @@ export const accountsSlice = createSlice({
       }
     },
     /**
-     * For mnemonics used as a part of {@link utils/hooks/setAccountDataHooks#useDeriveMnemonicAccount} hook (for setting unique account name).
+     * For mnemonics used as a part of {@link ./hooks/mnemonic#useDeriveMnemonicAccount} hook (for setting unique account name).
      * */
     addAccount: (state, { payload }: { payload: ImplicitAccount }) => {
       state.items = concatUnique(state.items, [payload]);
     },
     /**
      * Creates a mnemonic group.
-     * Used as a part of {@link utils/hooks/setAccountDataHooks#useRestoreRevealedMnemonicAccounts} hook (for setting unique account names inside the group).
+     * Used as a part of {@link ./hooks/mnemonic#useRestoreRevealedMnemonicAccounts} hook (for setting unique account names inside the group).
      * */
     addMnemonicAccounts: (
       state,

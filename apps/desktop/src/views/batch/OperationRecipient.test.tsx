@@ -7,11 +7,10 @@ import {
   mockTezOperation,
   mockUndelegationOperation,
 } from "@umami/core";
-import { mockContractAddress } from "@umami/tezos";
+import { formatPkh, mockContractAddress } from "@umami/tezos";
 
 import { OperationRecipient } from "./OperationRecipient";
 import { render, screen } from "../../mocks/testUtils";
-import { formatPkh } from "../../utils/format";
 
 describe("<OperationRecipient />", () => {
   it.each([mockUndelegationOperation(0), mockContractOrigination(0)])(

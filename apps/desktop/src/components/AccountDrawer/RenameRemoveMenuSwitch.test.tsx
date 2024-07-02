@@ -1,13 +1,10 @@
 import { mockLedgerAccount, mockMnemonicAccount, mockSocialAccount } from "@umami/core";
-import { addTestAccount, store } from "@umami/state";
+import { WalletClient, addTestAccount, store } from "@umami/state";
 
 import { RenameRemoveMenuSwitch } from "./RenameRemoveMenuSwitch";
 import { act, render, screen, userEvent } from "../../mocks/testUtils";
-import { WalletClient } from "../../utils/beacon/WalletClient";
 
-beforeEach(() => {
-  jest.spyOn(WalletClient, "getPeers").mockResolvedValue([]);
-});
+beforeEach(() => jest.spyOn(WalletClient, "getPeers").mockResolvedValue([]));
 
 describe("<RenameRemoveMenuSwitch />", () => {
   it("shows removal message", async () => {

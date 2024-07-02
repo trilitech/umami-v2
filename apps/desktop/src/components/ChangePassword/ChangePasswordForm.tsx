@@ -9,12 +9,11 @@ import {
   ModalHeader,
   useToast,
 } from "@chakra-ui/react";
-import { changeMnemonicPassword, useAppDispatch } from "@umami/state";
+import { changeMnemonicPassword, useAppDispatch, useAsyncActionHandler } from "@umami/state";
 import { useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import colors from "../../style/colors";
-import { useAsyncActionHandler } from "../../utils/hooks/useAsyncActionHandler";
 import { DynamicModalContext } from "../DynamicModal";
 import { FormErrorMessage } from "../FormErrorMessage";
 import { PasswordInput } from "../PasswordInput";

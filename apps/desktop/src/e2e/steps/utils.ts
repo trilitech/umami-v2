@@ -2,13 +2,13 @@ import { type DataTable, Given, Then, When } from "@cucumber/cucumber";
 import { expect } from "@playwright/test";
 import { type Account } from "@umami/core";
 import { type AccountsState, makeSecretKeyAccount } from "@umami/state";
+import { BLOCK_TIME } from "@umami/tezos";
 import { getOperationsByHash } from "@umami/tzkt";
 import { minutesToMilliseconds } from "date-fns";
 import { some } from "lodash";
 
 import { BASE_URL } from "./onboarding";
 import { type CustomWorld } from "./world";
-import { BLOCK_TIME } from "../../utils/dataPolling/constants";
 import { TEST_NETWORK } from "../constants";
 import { AccountsPage } from "../pages/AccountsPage";
 import { SignPage } from "../pages/SignPage";

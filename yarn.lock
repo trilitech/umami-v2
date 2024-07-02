@@ -6493,6 +6493,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/query-core@npm:5.49.1":
+  version: 5.49.1
+  resolution: "@tanstack/query-core@npm:5.49.1"
+  checksum: 10/38c4a6dbf61ec9d8490717702a18254b26672b7601f793c7d26f35bd4d9f5a5ec739c3d2eed09a3d2b3e8d3c36c9c21a51b6808214d01a29818e2803d21e1e5c
+  languageName: node
+  linkType: hard
+
 "@tanstack/query-devtools@npm:5.47.0":
   version: 5.47.0
   resolution: "@tanstack/query-devtools@npm:5.47.0"
@@ -6520,6 +6527,17 @@ __metadata:
   peerDependencies:
     react: ^18.0.0
   checksum: 10/7e7b64a7aec837e2e3af7dca414eb749350cbf3c00ad8890613fec9b6916502d61725b507082371a80facd3489116d6bc5cc9e9d4d0d6ab0e45b0f89be79118b
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query@npm:^5.49.2":
+  version: 5.49.2
+  resolution: "@tanstack/react-query@npm:5.49.2"
+  dependencies:
+    "@tanstack/query-core": "npm:5.49.1"
+  peerDependencies:
+    react: ^18.0.0
+  checksum: 10/16232d373ac805cc79c23bdce5a355e6ab2aaf29ac3ef1436388f068eac799bcdfbc375d1569f549405a3ace1f5b7ba0d68b18175ea6abf0396d53923c4b4de2
   languageName: node
   linkType: hard
 
@@ -8127,6 +8145,7 @@ __metadata:
     jest: "npm:^29.7.0"
     lodash: "npm:^4.17.21"
     prettier: "npm:^3.3.2"
+    rimraf: "npm:^5.0.7"
     ts-jest: "npm:^29.1.5"
     tsup: "npm:^8.1.0"
     typescript: "npm:^5.5.2"
@@ -8146,6 +8165,45 @@ __metadata:
     eslint: "npm:^8.57.0"
     jest: "npm:^29.7.0"
     prettier: "npm:^3.3.2"
+    rimraf: "npm:^5.0.7"
+    ts-jest: "npm:^29.1.5"
+    tsup: "npm:^8.1.0"
+    typescript: "npm:^5.5.2"
+  languageName: unknown
+  linkType: soft
+
+"@umami/data-polling@workspace:^, @umami/data-polling@workspace:packages/data-polling":
+  version: 0.0.0-use.local
+  resolution: "@umami/data-polling@workspace:packages/data-polling"
+  dependencies:
+    "@chakra-ui/react": "npm:^2.8.2"
+    "@emotion/react": "npm:^11.11.4"
+    "@emotion/styled": "npm:^11.11.5"
+    "@tanstack/react-query": "npm:^5.49.2"
+    "@testing-library/dom": "npm:^10.2.0"
+    "@testing-library/react": "npm:^16.0.0"
+    "@types/eslint": "npm:^8"
+    "@types/lodash": "npm:^4"
+    "@types/react": "npm:18.3.3"
+    "@types/react-dom": "npm:18.3.0"
+    "@umami/core": "workspace:^"
+    "@umami/eslint-config": "workspace:^"
+    "@umami/jest-config": "workspace:^"
+    "@umami/multisig": "workspace:^"
+    "@umami/state": "workspace:^"
+    "@umami/tezos": "workspace:^"
+    "@umami/typescript-config": "workspace:^"
+    "@umami/tzkt": "workspace:^"
+    date-fns: "npm:^3.6.0"
+    eslint: "npm:^8.57.0"
+    framer-motion: "npm:^11.2.12"
+    jest: "npm:^29.7.0"
+    lodash: "npm:^4.17.21"
+    prettier: "npm:^3.3.2"
+    react: "npm:^18.3.1"
+    react-dom: "npm:^18.3.1"
+    react-redux: "npm:^9.1.2"
+    rimraf: "npm:^5.0.7"
     ts-jest: "npm:^29.1.5"
     tsup: "npm:^8.1.0"
     typescript: "npm:^5.5.2"
@@ -8204,6 +8262,7 @@ __metadata:
     "@tzkt/sdk-api": "npm:^2.2.1"
     "@umami/core": "workspace:^"
     "@umami/crypto": "workspace:^"
+    "@umami/data-polling": "workspace:^"
     "@umami/eslint-config": "workspace:^"
     "@umami/jest-config": "workspace:^"
     "@umami/multisig": "workspace:^"
@@ -8259,6 +8318,7 @@ __metadata:
     react-test-renderer: "npm:^18.3.1"
     redux: "npm:^5.0.1"
     redux-persist: "npm:^6.0.0"
+    rimraf: "npm:^5.0.7"
     start-server-and-test: "npm:^2.0.4"
     ts-node: "npm:^10.9.2"
     typedoc: "npm:^0.26.2"
@@ -8308,6 +8368,7 @@ __metadata:
     react: "npm:^18.3.1"
     react-dom: "npm:^18.3.1"
     react-router-dom: "npm:^6.24.0"
+    rimraf: "npm:^5.0.7"
     sass: "npm:^1.77.6"
     typescript: "npm:5.5.2"
     vite: "npm:^5.3.2"
@@ -8339,6 +8400,7 @@ __metadata:
     eslint-plugin-testing-library: "npm:^6.2.2"
     eslint-plugin-tsdoc: "npm:^0.3.0"
     eslint-plugin-unused-imports: "npm:^3.2.0"
+    rimraf: "npm:^5.0.7"
     typescript: "npm:^5.5.2"
   languageName: unknown
   linkType: soft
@@ -8348,6 +8410,7 @@ __metadata:
   resolution: "@umami/jest-config@workspace:packages/jest-config"
   dependencies:
     jest: "npm:^29.7.0"
+    rimraf: "npm:^5.0.7"
     tsup: "npm:^8.1.0"
     typescript: "npm:^5.5.2"
   languageName: unknown
@@ -8365,7 +8428,6 @@ __metadata:
     "@umami/core": "workspace:^"
     "@umami/eslint-config": "workspace:^"
     "@umami/jest-config": "workspace:^"
-    "@umami/test-utils": "workspace:^"
     "@umami/tezos": "workspace:^"
     "@umami/typescript-config": "workspace:^"
     "@umami/tzkt": "workspace:^"
@@ -8374,6 +8436,7 @@ __metadata:
     jest: "npm:^29.7.0"
     lodash: "npm:^4.17.21"
     prettier: "npm:^3.3.2"
+    rimraf: "npm:^5.0.7"
     ts-jest: "npm:^29.1.5"
     tsup: "npm:^8.1.0"
     typescript: "npm:^5.5.2"
@@ -8384,6 +8447,8 @@ __metadata:
 "@umami/oauth@workspace:apps/oauth":
   version: 0.0.0-use.local
   resolution: "@umami/oauth@workspace:apps/oauth"
+  dependencies:
+    rimraf: "npm:^5.0.7"
   languageName: unknown
   linkType: soft
 
@@ -8401,6 +8466,7 @@ __metadata:
     eslint: "npm:^8.57.0"
     jest: "npm:^29.7.0"
     prettier: "npm:^3.3.2"
+    rimraf: "npm:^5.0.7"
     ts-jest: "npm:^29.1.5"
     tsup: "npm:^8.1.0"
     typescript: "npm:^5.5.2"
@@ -8412,34 +8478,47 @@ __metadata:
   resolution: "@umami/state@workspace:packages/state"
   dependencies:
     "@airgap/beacon-wallet": "npm:^4.2.2"
+    "@chakra-ui/react": "npm:^2.8.2"
+    "@emotion/react": "npm:^11.11.4"
+    "@emotion/styled": "npm:^11.11.5"
     "@reduxjs/toolkit": "npm:^2.2.5"
     "@taquito/signer": "npm:^20.0.1"
     "@taquito/utils": "npm:^20.0.1"
+    "@testing-library/dom": "npm:^10.2.0"
+    "@testing-library/react": "npm:^16.0.0"
     "@types/eslint": "npm:^8"
     "@types/lodash": "npm:^4"
     "@types/react": "npm:18.3.3"
+    "@types/react-dom": "npm:18.3.0"
     "@umami/core": "workspace:^"
     "@umami/crypto": "workspace:^"
     "@umami/eslint-config": "workspace:^"
     "@umami/jest-config": "workspace:^"
     "@umami/multisig": "workspace:^"
+    "@umami/social-auth": "workspace:^"
     "@umami/test-utils": "workspace:^"
     "@umami/tezos": "workspace:^"
     "@umami/typescript-config": "workspace:^"
     "@umami/tzkt": "workspace:^"
+    bignumber.js: "npm:^9.1.2"
+    bip39: "npm:^3.1.0"
     eslint: "npm:^8.57.0"
+    framer-motion: "npm:^11.2.12"
     immer: "npm:^10.1.1"
     jest: "npm:^29.7.0"
     lodash: "npm:^4.17.21"
     prettier: "npm:^3.3.2"
     react: "npm:^18.3.1"
+    react-dom: "npm:^18.3.1"
     react-redux: "npm:^9.1.2"
     redux: "npm:^5.0.1"
     redux-persist: "npm:^6.0.0"
     redux-thunk: "npm:^3.1.0"
+    rimraf: "npm:^5.0.7"
     ts-jest: "npm:^29.1.5"
     tsup: "npm:^8.1.0"
     typescript: "npm:^5.5.2"
+    zod: "npm:^3.23.8"
   languageName: unknown
   linkType: soft
 
@@ -8458,6 +8537,7 @@ __metadata:
     jest: "npm:^29.7.0"
     lodash: "npm:^4.17.21"
     prettier: "npm:^3.3.2"
+    rimraf: "npm:^5.0.7"
     ts-jest: "npm:^29.1.5"
     tsup: "npm:^8.1.0"
     typescript: "npm:^5.5.2"
@@ -8482,9 +8562,11 @@ __metadata:
     "@umami/test-utils": "workspace:^"
     "@umami/typescript-config": "workspace:^"
     axios: "npm:^1.7.2"
+    bignumber.js: "npm:^9.1.2"
     eslint: "npm:^8.57.0"
     jest: "npm:^29.7.0"
     prettier: "npm:^3.3.2"
+    rimraf: "npm:^5.0.7"
     ts-jest: "npm:^29.1.5"
     tsup: "npm:^8.1.0"
     typescript: "npm:^5.5.2"
@@ -8494,6 +8576,8 @@ __metadata:
 "@umami/typescript-config@workspace:^, @umami/typescript-config@workspace:packages/typescript-config":
   version: 0.0.0-use.local
   resolution: "@umami/typescript-config@workspace:packages/typescript-config"
+  dependencies:
+    rimraf: "npm:^5.0.7"
   languageName: unknown
   linkType: soft
 
@@ -8517,6 +8601,7 @@ __metadata:
     lodash: "npm:^4.17.21"
     prettier: "npm:^3.3.2"
     promise-retry: "npm:^2.0.1"
+    rimraf: "npm:^5.0.7"
     ts-jest: "npm:^29.1.5"
     tsup: "npm:^8.1.0"
     typescript: "npm:^5.5.2"
@@ -8597,6 +8682,7 @@ __metadata:
     react-test-renderer: "npm:^18.3.1"
     redux: "npm:^5.0.1"
     redux-persist: "npm:^6.0.0"
+    rimraf: "npm:^5.0.7"
     storybook: "npm:^8.1.11"
     ts-node: "npm:^10.9.2"
     typescript: "npm:^5.5.2"
@@ -13695,7 +13781,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob@npm:^10.0.0, glob@npm:^10.2.2, glob@npm:^10.3.10":
+"glob@npm:^10.0.0, glob@npm:^10.2.2, glob@npm:^10.3.10, glob@npm:^10.3.7":
   version: 10.4.2
   resolution: "glob@npm:10.4.2"
   dependencies:
@@ -18957,6 +19043,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"rimraf@npm:^5.0.7":
+  version: 5.0.7
+  resolution: "rimraf@npm:5.0.7"
+  dependencies:
+    glob: "npm:^10.3.7"
+  bin:
+    rimraf: dist/esm/bin.mjs
+  checksum: 10/1e3cecfe59ee2383dfd9ba5373caeed48ed941318a0360119419b7dffc63115661408b9427f67e1f66b5bbb8855a3953db09e55a7362b3df904a44453dfa22fb
+  languageName: node
+  linkType: hard
+
 "rimraf@npm:~2.6.2":
   version: 2.6.3
   resolution: "rimraf@npm:2.6.3"
@@ -20982,6 +21079,7 @@ __metadata:
   resolution: "umami@workspace:."
   dependencies:
     jest: "npm:^29.7.0"
+    rimraf: "npm:^5.0.7"
     tsup: "npm:^8.1.0"
     turbo: "npm:^2.0.5"
   languageName: unknown

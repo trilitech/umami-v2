@@ -11,13 +11,12 @@ import {
   mockMultisigAccount,
 } from "@umami/core";
 import { type MultisigOperation, multisigPendingOpsFixtures } from "@umami/multisig";
-import { addTestAccount } from "@umami/state";
+import { addTestAccount, useGetSecretKey } from "@umami/state";
 import { executeParams } from "@umami/test-utils";
 import { MAINNET, makeToolkit, mockImplicitAddress, parseImplicitPkh } from "@umami/tezos";
 
 import { MultisigPendingOperation } from "./MultisigPendingOperation";
 import { act, render, screen, userEvent, within } from "../../../../mocks/testUtils";
-import * as getAccountDataHooks from "../../../../utils/hooks/getAccountDataHooks";
 
 jest.mock("@umami/core", () => ({
   ...jest.requireActual("@umami/core"),
@@ -30,11 +29,15 @@ jest.mock("@umami/tezos", () => ({
   makeToolkit: jest.fn(),
 }));
 
+jest.mock("@umami/state", () => ({
+  ...jest.requireActual("@umami/state"),
+  useGetSecretKey: jest.fn(),
+  getAccountDataHooks: () => Promise.resolve("mockkey"),
+}));
+
 const MOCK_TEZOS_TOOLKIT = {};
 beforeEach(() => {
-  jest
-    .spyOn(getAccountDataHooks, "useGetSecretKey")
-    .mockReturnValue(() => Promise.resolve("mockkey"));
+  jest.mocked(useGetSecretKey).mockReturnValue(() => Promise.resolve("mockkey"));
   jest.mocked(makeToolkit).mockResolvedValue(MOCK_TEZOS_TOOLKIT as TezosToolkit);
 });
 
@@ -73,7 +76,7 @@ describe("<MultisigPendingOperation />", () => {
     expect(screen.getByTestId("pending-approvals-count")).toHaveTextContent("0");
   });
 
-  test("User can accomplish a proposal execution", async () => {
+  it("User can accomplish a proposal execution", async () => {
     const user = userEvent.setup();
     const account: MnemonicAccount = {
       ...mockMnemonicAccount(0),

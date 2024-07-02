@@ -34,3 +34,5 @@ export const announcementSlice = createSlice({
     },
   },
 });
+
+export const announcementActions = announcementSlice.actions;

@@ -5,6 +5,7 @@ import {
   ModalOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useImplicitAccounts } from "@umami/state";
 
 import { ConnectOptions } from "./connectOptions/ConnectOptions";
 import { ConnectOrCreate } from "./connectOrCreate/ConnectOrCreate";
@@ -21,7 +22,6 @@ import { RestoreMnemonic } from "./restoreMnemonic/RestoreMnemonic";
 import { RestoreSecretKey } from "./restoreSecretKey/RestoreSecretKey";
 import { ShowSeedphrase } from "./showSeedphrase/ShowSeedphrase";
 import { VerifySeedphrase } from "./verifySeedphrase/VerifySeedphrase";
-import { useImplicitAccounts } from "../../utils/hooks/getAccountDataHooks";
 import { ModalBackButton } from "../ModalBackButton";
 import { useStepHistory } from "../useStepHistory";
 

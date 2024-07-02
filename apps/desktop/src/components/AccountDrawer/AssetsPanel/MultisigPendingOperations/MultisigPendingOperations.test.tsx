@@ -6,7 +6,7 @@ import {
   mockMultisigAccount,
 } from "@umami/core";
 import { multisigPendingOpsFixtures } from "@umami/multisig";
-import { addTestAccount, multisigsSlice, store } from "@umami/state";
+import { addTestAccount, multisigsActions, store } from "@umami/state";
 import { executeParams } from "@umami/test-utils";
 import { mockImplicitAddress } from "@umami/tezos";
 
@@ -32,8 +32,8 @@ describe("<MultisigPendingOperations />", () => {
       ...mockMultisigAccount(0),
       pendingOperationsBigmapId: 3,
     };
-    store.dispatch(multisigsSlice.actions.setMultisigs([multisig]));
-    store.dispatch(multisigsSlice.actions.setPendingOperations(multisigPendingOpsFixtures));
+    store.dispatch(multisigsActions.setMultisigs([multisig]));
+    store.dispatch(multisigsActions.setPendingOperations(multisigPendingOpsFixtures));
 
     const mockAccount: MnemonicAccount = {
       ...mockMnemonicAccount(0),

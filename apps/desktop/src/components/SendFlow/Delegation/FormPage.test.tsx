@@ -6,7 +6,7 @@ import {
   mockMnemonicAccount,
   mockMultisigAccount,
 } from "@umami/core";
-import { addTestAccount, assetsSlice, store } from "@umami/state";
+import { addTestAccount, assetsActions, mockToast, store } from "@umami/state";
 import { executeParams } from "@umami/test-utils";
 
 import { FormPage, type FormValues } from "./FormPage";
@@ -19,7 +19,6 @@ import {
   userEvent,
   waitFor,
 } from "../../../mocks/testUtils";
-import { mockToast } from "../../../mocks/toast";
 import { type FormPageProps } from "../utils";
 
 const fixture = (props: FormPageProps<FormValues>) => (
@@ -104,7 +103,7 @@ describe("<Form />", () => {
       const sender = mockImplicitAccount(0);
       const baker = mockImplicitAccount(1);
       store.dispatch(
-        assetsSlice.actions.updateBakers([
+        assetsActions.updateBakers([
           { address: baker.address.pkh, name: "baker1", stakingBalance: 1 },
         ])
       );

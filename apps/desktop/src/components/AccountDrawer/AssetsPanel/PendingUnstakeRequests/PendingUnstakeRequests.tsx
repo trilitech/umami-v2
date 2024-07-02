@@ -1,13 +1,13 @@
 import { Flex, type FlexProps, Heading, Text } from "@chakra-ui/react";
 import { type ImplicitAccount } from "@umami/core";
+import {
+  useAccountPendingUnstakeRequests,
+  useAccountTotalFinalizableUnstakeAmount,
+} from "@umami/state";
 
 import { FinalizableUnstakeRequest } from "./FinalizableUnstakeRequest";
 import { PendingUnstakeRequest } from "./PendingUnstakeRequest";
 import colors from "../../../../style/colors";
-import {
-  useAccountPendingUnstakeRequests,
-  useAccountTotalFinalizableUnstakeAmount,
-} from "../../../../utils/hooks/stakingHooks";
 
 /**
  * Component that displays the pending unstake requests for an account

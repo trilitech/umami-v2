@@ -9,11 +9,11 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
+import { useSelectedNetwork } from "@umami/state";
 import { type RawPkh } from "@umami/tezos";
 import { FormProvider, useForm } from "react-hook-form";
 
 import colors from "../../style/colors";
-import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
 import { OwnedImplicitAccountsAutocomplete } from "../AddressAutocomplete";
 import { FormErrorMessage } from "../FormErrorMessage";
 

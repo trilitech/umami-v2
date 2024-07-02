@@ -10,18 +10,17 @@ import { type Multisig, multisigOperationFixture, multisigsFixture } from "@umam
 import {
   addTestAccount,
   assetsSlice,
-  multisigActions,
+  multisigsActions,
   networksActions,
   store,
-  tokensSlice,
+  tokensActions,
 } from "@umami/state";
 import { hedgehoge, tzBtsc, uUSD } from "@umami/test-utils";
-import { GHOSTNET, MAINNET } from "@umami/tezos";
+import { GHOSTNET, MAINNET, formatPkh } from "@umami/tezos";
 import { type TzktCombinedOperation } from "@umami/tzkt";
 
 import { act, render, screen, userEvent, waitFor, within } from "../../mocks/testUtils";
 import { mockTzktTezTransfer } from "../../mocks/transfers";
-import { formatPkh } from "../../utils/format";
 import * as useGetOperationsModule from "../../views/operations/useGetOperations";
 
 import { AccountCard } from ".";
@@ -188,7 +187,7 @@ describe("<AccountDrawerDisplay />", () => {
     beforeEach(() => {
       store.dispatch(updateTokenBalance([mockNft]));
       store.dispatch(
-        tokensSlice.actions.addTokens({
+        tokensActions.addTokens({
           network: MAINNET,
           tokens: [mockNft.token],
         })
@@ -240,7 +239,7 @@ describe("<AccountDrawerDisplay />", () => {
     beforeEach(() => {
       store.dispatch(updateTokenBalance(tokens));
       store.dispatch(
-        tokensSlice.actions.addTokens({
+        tokensActions.addTokens({
           network: MAINNET,
           tokens: tokens.map(t => t.token),
         })
@@ -319,7 +318,7 @@ describe("<AccountDrawerDisplay />", () => {
 
     it("displays pending operation if any", async () => {
       multisigsFixture.forEach(addTestAccount);
-      store.dispatch(multisigActions.setPendingOperations([multisigOperationFixture]));
+      store.dispatch(multisigsActions.setPendingOperations([multisigOperationFixture]));
 
       render(<AccountCard accountPkh={multisigAccount.address.pkh} />);
       await screen.findByTestId("account-card-pending-tab-panel");

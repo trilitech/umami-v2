@@ -12,13 +12,12 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
-import { getPersistor } from "@umami/state";
+import { WalletClient, getPersistor } from "@umami/state";
 import { noop } from "lodash";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { WarningIcon } from "../../assets/icons";
 import colors from "../../style/colors";
-import { WalletClient } from "../../utils/beacon/WalletClient";
 import { FormErrorMessage } from "../FormErrorMessage";
 
 const CONFIRMATION_CODE = "wasabi";

@@ -1,4 +1,4 @@
-import { announcementSlice } from "./announcement";
+import { announcementActions } from "./announcement";
 import { store } from "../store";
 
 describe("announcementSlice", () => {
@@ -10,7 +10,7 @@ describe("announcementSlice", () => {
   });
 
   it("updates the current announcement", () => {
-    store.dispatch(announcementSlice.actions.setCurrent("test"));
+    store.dispatch(announcementActions.setCurrent("test"));
 
     expect(store.getState().announcement).toEqual({
       html: "test",
@@ -19,8 +19,8 @@ describe("announcementSlice", () => {
   });
 
   it("marks the current announcement as seen", () => {
-    store.dispatch(announcementSlice.actions.setCurrent("test"));
-    store.dispatch(announcementSlice.actions.setSeen());
+    store.dispatch(announcementActions.setCurrent("test"));
+    store.dispatch(announcementActions.setSeen());
 
     expect(store.getState().announcement).toEqual({
       html: "test",
@@ -29,8 +29,8 @@ describe("announcementSlice", () => {
   });
 
   it("doesn't mark the message as seen if it hasn't changed", () => {
-    store.dispatch(announcementSlice.actions.setCurrent("test"));
-    store.dispatch(announcementSlice.actions.setCurrent("test"));
+    store.dispatch(announcementActions.setCurrent("test"));
+    store.dispatch(announcementActions.setCurrent("test"));
 
     expect(store.getState().announcement).toEqual({
       html: "test",
@@ -39,21 +39,21 @@ describe("announcementSlice", () => {
   });
 
   it("doesn't mark the message as not seen if it hasn't changed", () => {
-    store.dispatch(announcementSlice.actions.setCurrent("test"));
+    store.dispatch(announcementActions.setCurrent("test"));
 
     expect(store.getState().announcement).toEqual({
       html: "test",
       seen: false,
     });
 
-    store.dispatch(announcementSlice.actions.setSeen());
+    store.dispatch(announcementActions.setSeen());
 
     expect(store.getState().announcement).toEqual({
       html: "test",
       seen: true,
     });
 
-    store.dispatch(announcementSlice.actions.setCurrent("test"));
+    store.dispatch(announcementActions.setCurrent("test"));
 
     expect(store.getState().announcement).toEqual({
       html: "test",

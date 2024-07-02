@@ -7,7 +7,7 @@ import {
   mockMnemonicAccount,
   mockNFT,
 } from "@umami/core";
-import { addTestAccount } from "@umami/state";
+import { addTestAccount, mockToast } from "@umami/state";
 import { executeParams } from "@umami/test-utils";
 import { parseContractPkh } from "@umami/tezos";
 
@@ -22,7 +22,6 @@ import {
   userEvent,
   waitFor,
 } from "../../../mocks/testUtils";
-import { mockToast } from "../../../mocks/toast";
 import { type FormPagePropsWithSender } from "../utils";
 
 jest.mock("@umami/core", () => ({

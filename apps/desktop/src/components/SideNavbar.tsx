@@ -1,4 +1,5 @@
 import { Box, Divider, Flex, type FlexProps, Text, useMediaQuery } from "@chakra-ui/react";
+import { useTotalBalance } from "@umami/state";
 import type React from "react";
 import { Link, useLocation } from "react-router-dom";
 
@@ -19,7 +20,6 @@ import {
   RefreshClockIcon,
 } from "../assets/icons";
 import colors from "../style/colors";
-import { useTotalBalance } from "../utils/hooks/assetsHooks";
 
 export const SideNavbar = () => {
   const { isCollapsed, toggle } = useCollapseMenu();

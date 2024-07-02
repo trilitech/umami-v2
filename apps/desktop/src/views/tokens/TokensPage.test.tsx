@@ -1,5 +1,5 @@
 import { mockMnemonicAccount } from "@umami/core";
-import { addTestAccount, assetsSlice, networksActions, store, tokensActions } from "@umami/state";
+import { addTestAccount, assetsActions, networksActions, store, tokensActions } from "@umami/state";
 import { hedgehoge, tzBtsc, uUSD } from "@umami/test-utils";
 import { DefaultNetworks, MAINNET, type Network, mockImplicitAddress } from "@umami/tezos";
 
@@ -31,7 +31,7 @@ describe("<TokensView />", () => {
         tzBtsc(mockImplicitAddress(1)),
         uUSD(mockImplicitAddress(0)),
       ];
-      store.dispatch(assetsSlice.actions.updateTokenBalance(tokenBalances));
+      store.dispatch(assetsActions.updateTokenBalance(tokenBalances));
       store.dispatch(
         tokensActions.addTokens({ network, tokens: tokenBalances.map(tb => tb.token) })
       );

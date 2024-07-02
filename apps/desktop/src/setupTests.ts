@@ -7,7 +7,7 @@ import "@testing-library/jest-dom";
 import { webcrypto } from "crypto";
 import { TextDecoder, TextEncoder } from "util";
 
-import { resetStore } from "@umami/state";
+import { mockToast, resetStore } from "@umami/state";
 import { setupJestCanvasMock } from "jest-canvas-mock";
 import failOnConsole from "jest-fail-on-console";
 import MockDate from "mockdate";
@@ -19,7 +19,6 @@ import {
   MockModalHeader,
   MockModalInnerComponent,
 } from "./mocks/modal";
-import { mockUseToast } from "./mocks/toast";
 
 failOnConsole();
 
@@ -49,22 +48,22 @@ beforeEach(() => {
       })),
       writable: true,
     },
+
+    // reset store to an initial state and
+    // make it available for testUtils to be picked up correctly
+    // otherwise, it'll use the first store it took from the @umami/state package
+    reduxStore: { value: resetStore(), writable: true },
   });
 
   // Hack for testing HashRouter: clears URL between tests.
   window.location.hash = "";
 
-  // set clean state before each test
-  resetStore();
-
   setupJestCanvasMock();
 });
 
-jest.mock("@chakra-ui/react", () => ({
+jest.doMock("@chakra-ui/react", () => ({
   ...jest.requireActual("@chakra-ui/react"),
-  // Mock toast since it has an erratic behavior in RTL
-  // https://github.com/chakra-ui/chakra-ui/issues/2969
-  useToast: mockUseToast,
+  useToast: () => mockToast,
   Modal: MockModal,
   ModalContent: MockModalContent,
   ModalBody: MockModalInnerComponent,

@@ -24,6 +24,9 @@ export const makeStore = () =>
 
 export let store = makeStore();
 
+// Important! to be used only in tests!
+// TODO: migrate it to e2e tests setup
 export const resetStore = () => {
   store = makeStore();
+  return store;
 };

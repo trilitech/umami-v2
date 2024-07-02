@@ -6,7 +6,7 @@ import { renameAccount } from "./renameAccount";
 import { contactsActions } from "../slices/contacts";
 import { networksActions } from "../slices/networks";
 import { store } from "../store";
-import { addTestAccount } from "../testHelpers";
+import { addTestAccount } from "../testUtils";
 
 beforeEach(() =>
   [mockMnemonicAccount(0), mockMnemonicAccount(1), ...multisigsFixture].forEach(addTestAccount)

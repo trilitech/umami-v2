@@ -1,4 +1,4 @@
-import { announcementSlice, store } from "@umami/state";
+import { announcementActions, store } from "@umami/state";
 import axios from "axios";
 
 import { AnnouncementBanner } from "./AnnouncementBanner";
@@ -27,7 +27,7 @@ describe("<AnnouncementBanner />", () => {
 
   it("shows up if there's an announcement and it hasn't been seen", async () => {
     mockedAxios.get.mockResolvedValue({ data: "" });
-    store.dispatch(announcementSlice.actions.setCurrent("announcement-text"));
+    store.dispatch(announcementActions.setCurrent("announcement-text"));
 
     render(<AnnouncementBanner />);
 
@@ -39,7 +39,7 @@ describe("<AnnouncementBanner />", () => {
   it("hides the announcement when the close button is clicked", async () => {
     const user = userEvent.setup();
     mockedAxios.get.mockResolvedValue({ data: "test" });
-    store.dispatch(announcementSlice.actions.setCurrent("announcement-text"));
+    store.dispatch(announcementActions.setCurrent("announcement-text"));
 
     render(<AnnouncementBanner />);
 
@@ -54,7 +54,7 @@ describe("<AnnouncementBanner />", () => {
 
   it("replaces the announcement when the new one is fetched", async () => {
     mockedAxios.get.mockResolvedValue({ data: "another-announcement" });
-    store.dispatch(announcementSlice.actions.setCurrent("announcement-text"));
+    store.dispatch(announcementActions.setCurrent("announcement-text"));
 
     render(<AnnouncementBanner />);
 

@@ -1,3 +1,4 @@
+import { useGetBaker, useGetContactName, useGetOwnedAccountSafe } from "@umami/state";
 import { type Address } from "@umami/tezos";
 
 import {
@@ -6,9 +7,6 @@ import {
   type ContactAddress,
   type OwnedAddress,
 } from "./types";
-import { useGetBaker } from "../../utils/hooks/assetsHooks";
-import { useGetContactName } from "../../utils/hooks/contactsHooks";
-import { useGetOwnedAccountSafe } from "../../utils/hooks/getAccountDataHooks";
 
 export const useAddressKind = (address: Address): AddressKind => {
   const ownedAccount = useOwnedAccountAddressKind(address);

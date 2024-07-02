@@ -6,7 +6,7 @@ import {
   mockMnemonicAccount,
   mockMultisigAccount,
 } from "@umami/core";
-import { addTestAccount } from "@umami/state";
+import { addTestAccount, mockToast } from "@umami/state";
 import { executeParams } from "@umami/test-utils";
 
 import { FormPage, type FormValues } from "./FormPage";
@@ -20,7 +20,6 @@ import {
   userEvent,
   waitFor,
 } from "../../../mocks/testUtils";
-import { mockToast } from "../../../mocks/toast";
 import { type FormPageProps } from "../utils";
 
 const fixture = (props: FormPageProps<FormValues> = {}) => (

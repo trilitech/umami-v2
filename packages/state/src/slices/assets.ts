@@ -10,7 +10,7 @@ import {
 } from "@umami/tzkt";
 import { compact, groupBy, omit, sortBy } from "lodash";
 
-import { accountsSlice } from "./accounts/accounts";
+import { accountsActions } from "./accounts/accounts";
 
 type TransactionId = number;
 
@@ -53,7 +53,7 @@ export const assetsSlice = createSlice({
   name: "assets",
   initialState: assetsInitialState,
   // Reset assets state if accounts are reset
-  extraReducers: builder => builder.addCase(accountsSlice.actions.reset, () => assetsInitialState),
+  extraReducers: builder => builder.addCase(accountsActions.reset, () => assetsInitialState),
   reducers: {
     reset: () => assetsInitialState,
     updateBlock: (state, { payload }: { payload: { level: number; cycle: number } }) => {

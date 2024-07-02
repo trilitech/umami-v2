@@ -1,6 +1,7 @@
+import * as stateMod from "@umami/state";
+
 import { DAppsDrawerCard } from "./DAppsDrawerCard";
 import { act, render, screen, userEvent } from "../../mocks/testUtils";
-import * as beacon from "../../utils/beacon/beacon";
 
 describe("<DAppsDrawerCard />", () => {
   it("has the drawer closed by default", () => {
@@ -23,7 +24,7 @@ describe("<DAppsDrawerCard />", () => {
     const user = userEvent.setup();
     jest.spyOn(navigator.clipboard, "readText").mockResolvedValue("some text");
     const mockAddPeer = jest.fn();
-    jest.spyOn(beacon, "useAddPeer").mockReturnValue(mockAddPeer);
+    jest.spyOn(stateMod, "useAddPeer").mockReturnValue(mockAddPeer);
 
     render(<DAppsDrawerCard />);
 

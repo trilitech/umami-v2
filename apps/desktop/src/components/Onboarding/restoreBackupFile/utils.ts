@@ -1,8 +1,7 @@
 import { type EncryptedData, decrypt } from "@umami/crypto";
-import { getPersistor } from "@umami/state";
+import { getPersistor, useRestoreFromMnemonic } from "@umami/state";
 
 import packageInfo from "../../../../package.json";
-import { useRestoreFromMnemonic } from "../../../utils/hooks/setAccountDataHooks";
 import { DEFAULT_ACCOUNT_LABEL } from "../nameAccount/NameAccount";
 
 // This method is wrapped in a function so that we can mock it in tests.

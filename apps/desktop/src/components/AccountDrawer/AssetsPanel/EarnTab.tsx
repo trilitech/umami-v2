@@ -1,15 +1,17 @@
 import { Box, Button, Center, Flex, type FlexProps, Heading, Text } from "@chakra-ui/react";
 import { type Account, type ImplicitAccount } from "@umami/core";
+import {
+  useGetAccountDelegate,
+  useGetAccountStakedBalance,
+  useSelectedNetwork,
+} from "@umami/state";
+import { prettyTezAmount } from "@umami/tezos";
 import type React from "react";
 import { type ReactNode, useContext } from "react";
 
 import { PendingUnstakeRequests } from "./PendingUnstakeRequests/PendingUnstakeRequests";
 import { ExternalLinkIcon, PenIcon, XMarkIcon } from "../../../assets/icons";
 import colors from "../../../style/colors";
-import { prettyTezAmount } from "../../../utils/format";
-import { useGetAccountDelegate } from "../../../utils/hooks/assetsHooks";
-import { useSelectedNetwork } from "../../../utils/hooks/networkHooks";
-import { useGetAccountStakedBalance } from "../../../utils/hooks/stakingHooks";
 import { AddressPill } from "../../AddressPill/AddressPill";
 import { DynamicModalContext } from "../../DynamicModal";
 import { ExternalLink } from "../../ExternalLink";

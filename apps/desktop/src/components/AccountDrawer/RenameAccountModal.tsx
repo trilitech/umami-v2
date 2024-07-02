@@ -10,11 +10,10 @@ import {
   ModalFooter,
 } from "@chakra-ui/react";
 import { type Account } from "@umami/core";
-import { renameAccount, useAppDispatch } from "@umami/state";
+import { renameAccount, useAppDispatch, useValidateName } from "@umami/state";
 import { type FC, useContext } from "react";
 import { useForm } from "react-hook-form";
 
-import { useValidateName } from "../../utils/hooks/labelsHooks";
 import { DynamicModalContext } from "../DynamicModal";
 import { FormPageHeader } from "../SendFlow/FormPageHeader";
 

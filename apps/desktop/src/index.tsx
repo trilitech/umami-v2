@@ -2,7 +2,7 @@
 import "./index.css";
 
 import { getErrorContext } from "@umami/core";
-import { errorsSlice, getPersistor, store } from "@umami/state";
+import { errorsActions, getPersistor, store } from "@umami/state";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { ErrorBoundary } from "react-error-boundary";
@@ -16,7 +16,7 @@ import { Router } from "./Router";
 
 const logError = (error: Error, info: { componentStack?: string | null }) => {
   const errorContext = { ...getErrorContext(error), stacktrace: String(info.componentStack) };
-  store.dispatch(errorsSlice.actions.add(errorContext));
+  store.dispatch(errorsActions.add(errorContext));
 };
 
 // is used in e2e tests to simplify state reading

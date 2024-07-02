@@ -2,9 +2,9 @@ import { mockBaker, mockLedgerAccount, mockMnemonicAccount, mockSocialAccount } 
 import { multisigsFixture } from "@umami/multisig";
 import {
   addTestAccount,
-  assetsSlice,
-  contactsSlice,
-  multisigsSlice,
+  assetsActions,
+  contactsActions,
+  multisigsActions,
   networksActions,
   store,
 } from "@umami/state";
@@ -60,7 +60,7 @@ describe("useAddressKind", () => {
   });
 
   it("returns owned multisig account", () => {
-    store.dispatch(multisigsSlice.actions.setMultisigs(multisigsFixture));
+    store.dispatch(multisigsActions.setMultisigs(multisigsFixture));
 
     const { result: addressKindRef } = renderHook(() =>
       useAddressKind(multisigsFixture[0].address)
@@ -75,7 +75,7 @@ describe("useAddressKind", () => {
 
   it("returns implicit contact", () => {
     const contact1 = { name: "name1", pkh: mockImplicitAddress(3).pkh, network: undefined };
-    store.dispatch(contactsSlice.actions.upsert(contact1));
+    store.dispatch(contactsActions.upsert(contact1));
 
     const { result: addressKindRef } = renderHook(() => useAddressKind(parsePkh(contact1.pkh)));
 
@@ -89,7 +89,7 @@ describe("useAddressKind", () => {
   it("returns contract contact if found in any network", () => {
     store.dispatch(networksActions.setCurrent(MAINNET));
     const contact1 = { name: "name1", pkh: mockContractAddress(0).pkh, network: "ghostnet" };
-    store.dispatch(contactsSlice.actions.upsert(contact1));
+    store.dispatch(contactsActions.upsert(contact1));
 
     const { result: addressKindRef } = renderHook(() => useAddressKind(parsePkh(contact1.pkh)));
 
@@ -102,7 +102,7 @@ describe("useAddressKind", () => {
 
   it("returns baker", () => {
     const baker = mockBaker(2);
-    store.dispatch(assetsSlice.actions.updateBakers([baker]));
+    store.dispatch(assetsActions.updateBakers([baker]));
 
     const { result: addressKindRef } = renderHook(() =>
       useAddressKind(parseImplicitPkh(baker.address))

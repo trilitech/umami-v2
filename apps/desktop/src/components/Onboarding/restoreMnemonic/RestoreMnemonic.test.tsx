@@ -1,9 +1,9 @@
 import { selectRandomElements } from "@umami/core";
+import { mockToast } from "@umami/state";
 import { mnemonic1 } from "@umami/test-utils";
 
 import { RestoreMnemonic } from "./RestoreMnemonic";
 import { act, render, screen, userEvent } from "../../../mocks/testUtils";
-import { mockToast } from "../../../mocks/toast";
 
 const goToStepMock = jest.fn();
 

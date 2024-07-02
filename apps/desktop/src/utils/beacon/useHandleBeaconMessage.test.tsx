@@ -15,7 +15,7 @@ import {
   mockImplicitAccount,
   mockTezOperation,
 } from "@umami/core";
-import { addTestAccount } from "@umami/state";
+import { WalletClient, addTestAccount, mockToast } from "@umami/state";
 import { executeParams } from "@umami/test-utils";
 import { mockContractAddress, mockImplicitAddress } from "@umami/tezos";
 import { without } from "lodash";
@@ -25,23 +25,16 @@ import {
   toAccountOperations,
   useHandleBeaconMessage,
 } from "./useHandleBeaconMessage";
-import { WalletClient } from "./WalletClient";
 import { BatchSignPage } from "../../components/SendFlow/Beacon/BatchSignPage";
 import { BeaconSignPage } from "../../components/SendFlow/Beacon/BeaconSignPage";
 import { act, dynamicModalContextMock, renderHook, screen, waitFor } from "../../mocks/testUtils";
-import { mockToast } from "../../mocks/toast";
-
-jest.mock("./WalletClient", () => ({
-  WalletClient: {
-    getPeers: () => Promise.resolve([]),
-    respond: jest.fn(),
-  },
-}));
 
 jest.mock("@umami/core", () => ({
   ...jest.requireActual("@umami/core"),
   estimate: jest.fn(),
 }));
+
+jest.spyOn(WalletClient, "respond");
 
 const SENDER_ID = "mockSenderId";
 
@@ -64,7 +57,7 @@ describe("<useHandleBeaconMessage />", () => {
 
       const {
         result: { current: handleMessage },
-      } = renderHook(useHandleBeaconMessage);
+      } = renderHook(() => useHandleBeaconMessage());
 
       act(() => handleMessage(message));
 
@@ -84,7 +77,7 @@ describe("<useHandleBeaconMessage />", () => {
 
       const {
         result: { current: handleMessage },
-      } = renderHook(useHandleBeaconMessage);
+      } = renderHook(() => useHandleBeaconMessage());
 
       act(() => handleMessage(message));
 
@@ -115,7 +108,7 @@ describe("<useHandleBeaconMessage />", () => {
 
       const {
         result: { current: handleMessage },
-      } = renderHook(useHandleBeaconMessage);
+      } = renderHook(() => useHandleBeaconMessage());
 
       act(() => handleMessage(message));
 
@@ -136,7 +129,7 @@ describe("<useHandleBeaconMessage />", () => {
 
       const {
         result: { current: handleMessage },
-      } = renderHook(useHandleBeaconMessage);
+      } = renderHook(() => useHandleBeaconMessage());
 
       act(() => handleMessage(message));
 
@@ -159,7 +152,7 @@ describe("<useHandleBeaconMessage />", () => {
 
     const {
       result: { current: handleMessage },
-    } = renderHook(useHandleBeaconMessage);
+    } = renderHook(() => useHandleBeaconMessage());
 
     act(() => handleMessage(message));
 
@@ -185,7 +178,7 @@ describe("<useHandleBeaconMessage />", () => {
 
       const {
         result: { current: handleMessage },
-      } = renderHook(useHandleBeaconMessage);
+      } = renderHook(() => useHandleBeaconMessage());
 
       act(() => handleMessage(message));
 
@@ -209,7 +202,7 @@ describe("<useHandleBeaconMessage />", () => {
 
       const {
         result: { current: handleMessage },
-      } = renderHook(useHandleBeaconMessage);
+      } = renderHook(() => useHandleBeaconMessage());
 
       act(() => handleMessage(message));
 
@@ -243,7 +236,7 @@ describe("<useHandleBeaconMessage />", () => {
 
       const {
         result: { current: handleMessage },
-      } = renderHook(useHandleBeaconMessage);
+      } = renderHook(() => useHandleBeaconMessage());
 
       act(() => handleMessage(message));
 
@@ -284,7 +277,7 @@ describe("<useHandleBeaconMessage />", () => {
 
       const {
         result: { current: handleMessage },
-      } = renderHook(useHandleBeaconMessage);
+      } = renderHook(() => useHandleBeaconMessage());
 
       act(() => handleMessage(message));
 
@@ -311,7 +304,7 @@ describe("<useHandleBeaconMessage />", () => {
 
       const {
         result: { current: handleMessage },
-      } = renderHook(useHandleBeaconMessage);
+      } = renderHook(() => useHandleBeaconMessage());
 
       act(() => handleMessage(message));
 
@@ -359,7 +352,7 @@ describe("<useHandleBeaconMessage />", () => {
 
         const {
           result: { current: handleMessage },
-        } = renderHook(useHandleBeaconMessage);
+        } = renderHook(() => useHandleBeaconMessage());
 
         act(() => handleMessage(message));
 
@@ -406,7 +399,7 @@ describe("<useHandleBeaconMessage />", () => {
 
         const {
           result: { current: handleMessage },
-        } = renderHook(useHandleBeaconMessage);
+        } = renderHook(() => useHandleBeaconMessage());
 
         act(() => handleMessage(message));
 
@@ -455,7 +448,7 @@ describe("<useHandleBeaconMessage />", () => {
 
         const {
           result: { current: handleMessage },
-        } = renderHook(useHandleBeaconMessage);
+        } = renderHook(() => useHandleBeaconMessage());
 
         act(() => handleMessage(message));
 
@@ -504,7 +497,7 @@ describe("<useHandleBeaconMessage />", () => {
 
       const {
         result: { current: handleMessage },
-      } = renderHook(useHandleBeaconMessage);
+      } = renderHook(() => useHandleBeaconMessage());
 
       act(() => handleMessage(message));
 

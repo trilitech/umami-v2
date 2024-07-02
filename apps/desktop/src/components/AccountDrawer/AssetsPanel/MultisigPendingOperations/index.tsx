@@ -1,9 +1,9 @@
 import { Box } from "@chakra-ui/react";
 import { type MultisigAccount } from "@umami/core";
+import { useGetPendingMultisigOperations } from "@umami/state";
 import type React from "react";
 
 import { MultisigPendingOperation } from "./MultisigPendingOperation";
-import { useGetPendingMultisigOperations } from "../../../../utils/hooks/multisigHooks";
 
 export const MultisigPendingOperations: React.FC<{
   account: MultisigAccount;

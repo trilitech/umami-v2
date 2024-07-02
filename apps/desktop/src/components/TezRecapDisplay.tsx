@@ -1,9 +1,9 @@
 import { Box, Heading, Text } from "@chakra-ui/react";
+import { prettyTezAmount } from "@umami/tezos";
 import type { BigNumber } from "bignumber.js";
 import type React from "react";
 
 import colors from "../style/colors";
-import { prettyTezAmount } from "../utils/format";
 
 export const TezRecapDisplay: React.FC<{
   balance: BigNumber | number | string;

@@ -1,10 +1,9 @@
 import { contactsActions, networksActions, store } from "@umami/state";
-import { GHOSTNET, mockImplicitAddress } from "@umami/tezos";
+import { GHOSTNET, formatPkh, mockImplicitAddress } from "@umami/tezos";
 
 import { AddressPillText } from "./AddressPillText";
 import { mockFA2Address } from "../../mocks/addressKind";
 import { render, screen } from "../../mocks/testUtils";
-import { formatPkh } from "../../utils/format";
 const { upsert } = contactsActions;
 
 describe("<AddressPillText />", () => {

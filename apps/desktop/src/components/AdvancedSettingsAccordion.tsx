@@ -12,12 +12,12 @@ import {
   InputRightElement,
 } from "@chakra-ui/react";
 import { type Estimation, TEZ_DECIMALS } from "@umami/tezos";
+import { mutezToTez, tezToMutez } from "@umami/tezos";
 import { useState } from "react";
 import { useFormContext } from "react-hook-form";
 
 import { getSmallestUnit, makeValidateDecimals } from "./SendFlow/utils";
 import colors from "../style/colors";
-import { mutezToTez, tezToMutez } from "../utils/format";
 
 type AdvancedSettingsAccordionProps = {
   index?: number;

@@ -9,7 +9,13 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { networksActions, useAppDispatch } from "@umami/state";
+import {
+  networksActions,
+  useAppDispatch,
+  useAvailableNetworks,
+  useSelectNetwork,
+  useSelectedNetwork,
+} from "@umami/state";
 import { type Network, isDefault } from "@umami/tezos";
 import { Fragment, useContext } from "react";
 
@@ -18,11 +24,6 @@ import { PenIcon, PlusIcon, TrashIcon } from "../../../assets/icons";
 import { DynamicModalContext } from "../../../components/DynamicModal";
 import { PopoverMenu } from "../../../components/PopoverMenu";
 import colors from "../../../style/colors";
-import {
-  useAvailableNetworks,
-  useSelectNetwork,
-  useSelectedNetwork,
-} from "../../../utils/hooks/networkHooks";
 
 export const NetworkSettingsDrawerBody = () => {
   const { openWith } = useContext(DynamicModalContext);
