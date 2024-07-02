@@ -14,9 +14,11 @@ const sizes = {
   },
   sm: {
     fontSize: "14px",
+    lineHeight: "18px",
   },
   md: {
     fontSize: "16px",
+    lineHeight: "22px",
   },
   lg: {
     fontSize: "18px",
@@ -26,6 +28,7 @@ const sizes = {
   },
   "2xl": {
     fontSize: "24px",
+    lineHeight: "32px",
   },
   "3xl": {
     fontSize: "30px",
@@ -45,12 +48,18 @@ const theme = extendTheme({
   components: {
     Text: {
       sizes,
+      variants: {
+        bold: {
+          fontWeight: "600",
+          color: "gray.900",
+        },
+      },
     },
     Card: {
       baseStyle: {
         container: {
           color: "inherit",
-          bg: "var(--chakra-colors-white)",
+          bg: "white",
           boxShadow: "2px 4px 12px 0px rgba(45, 55, 72, 0.05)",
         },
       },
@@ -91,8 +100,8 @@ const theme = extendTheme({
         tab: {
           color: "green",
           _selected: {
-            bg: "var(--chakra-colors-gray-200)",
-            color: "var(--chakra-colors-gray-900)",
+            bg: "gray.200",
+            color: "gray.900",
           },
         },
       },
@@ -116,14 +125,64 @@ const theme = extendTheme({
       }),
     },
     Button: {
+      sizes: {
+        md: { height: "42px", width: "42px", padding: "0 12px" },
+        lg: { height: "48px", minWidth: "48px", padding: "0 12px" },
+      },
       variants: {
-        solid: {
-          bg: "var(--chakra-colors-gray-100)",
-          _dark: {
-            _hover: {
-              bg: "var(--chakra-colors-gray-300)",
-            },
+        primary: {
+          bg: light.blue,
+          color: dark.grey.black,
+          _hover: {
+            bg: light.blueDark,
           },
+        },
+        secondary: {
+          bg: light.grey[900],
+          color: dark.grey.black,
+          _hover: {
+            bg: light.grey[600],
+          },
+        },
+        tertiary: {
+          border: "2px solid",
+          borderColor: light.blue,
+          color: light.blue,
+          _hover: {
+            borderColor: light.blueDark,
+            color: light.blueDark,
+          },
+          _dark: {
+            color: dark.grey.black,
+          },
+        },
+        iconButtonSolid: {
+          bg: light.grey[100],
+          color: light.grey[900],
+          _hover: { bg: light.grey[200] },
+          _dark: {
+            bg: dark.grey[100],
+            color: dark.grey[900],
+            _hover: { bg: dark.grey[300] },
+          },
+        },
+        iconButtonOutline: {
+          border: "2px solid",
+          borderColor: light.blue,
+          color: light.blue,
+          _hover: {
+            borderColor: "transparent",
+            bg: light.blueDark,
+            color: dark.grey.black,
+          },
+          _dark: {
+            color: dark.grey.black,
+          },
+        },
+        empty: {
+          bg: "transparent",
+          minWidth: "auto",
+          height: "auto",
         },
       },
     },
@@ -137,7 +196,7 @@ const theme = extendTheme({
         bgImage: mode(light.bgGradient, dark.bgGradient)(props),
         _before: {
           bgColor: mode(light.bgMaskColor, dark.bgMaskColor)(props),
-          maskImage: "url(public/static/bg.svg)",
+          maskImage: "url(/static/bg.svg)",
         },
       },
       ":root": {

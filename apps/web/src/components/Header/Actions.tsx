@@ -1,6 +1,6 @@
 import { Flex, IconButton } from "@chakra-ui/react";
 
-import { MenuIcon } from "../../assets/icons/Menu";
+import { MenuIcon } from "../../assets/icons";
 import { ColorSchemeModeToggle } from "../ColorSchemeModeToggle/ColorSchemeModeToggle";
 
 export const Actions = () => (
@@ -8,9 +8,13 @@ export const Actions = () => (
     <ColorSchemeModeToggle />
     <IconButton
       aria-label="Open menu"
-      icon={<MenuIcon width="18px" height="18px" />}
+      icon={<MenuIcon />}
       isRound
-      variant="solid"
+      size={{
+        base: "md",
+        lg: "lg",
+      }}
+      variant="iconButtonSolid"
     />
   </Flex>
 );

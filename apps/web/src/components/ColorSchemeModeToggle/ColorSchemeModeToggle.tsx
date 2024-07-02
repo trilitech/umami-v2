@@ -6,7 +6,14 @@ export const ColorSchemeModeToggle = () => {
   const switchText = colorMode === "dark" ? "Light mode" : "Dark mode";
 
   return (
-    <Flex alignItems="center" gap="14px">
+    <Flex
+      alignItems="center"
+      gap="14px"
+      display={{
+        base: "none",
+        lg: "flex",
+      }}
+    >
       {switchText}
       <Switch isChecked={colorMode === "dark"} onChange={toggleColorMode} />
     </Flex>

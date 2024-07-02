@@ -76,6 +76,9 @@
     "@storybook/react": "^8.1.11",
     "@storybook/react-vite": "^8.1.11",
     "@storybook/test": "^8.1.11",
+    "@svgr/core": "^8.1.0",
+    "@svgr/plugin-jsx": "^8.1.0",
+    "@svgr/plugin-svgo": "^8.1.0",
     "@testing-library/dom": "^10.2.0",
     "@testing-library/react": "^16.0.0",
     "@testing-library/user-event": "^14.5.2",
@@ -96,7 +99,9 @@
     "storybook": "^8.1.11",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.2",
-    "vite": "^5.3.2"
+    "vite": "^5.3.2",
+    "vite-plugin-svgr": "^4.2.0",
+    "vite-tsconfig-paths": "^4.3.2"
   },
   "packageManager": "yarn@4.3.1"
 }
