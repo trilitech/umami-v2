@@ -2965,16 +2965,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@chromatic-com/storybook@npm:^1.5.0":
-  version: 1.5.0
-  resolution: "@chromatic-com/storybook@npm:1.5.0"
+"@chromatic-com/storybook@npm:^1.6.0":
+  version: 1.6.0
+  resolution: "@chromatic-com/storybook@npm:1.6.0"
   dependencies:
     chromatic: "npm:^11.4.0"
     filesize: "npm:^10.0.12"
     jsonfile: "npm:^6.1.0"
     react-confetti: "npm:^6.1.0"
     strip-ansi: "npm:^7.1.0"
-  checksum: 10/06ca51df331062300e77b80e970a2ff1df47da03d1414ed211413c2e493656d9f13c141834157386d557550a1e2ff887f46f7d0519bb25d77ddd353825b8c256
+  checksum: 10/5f1d332f40bb9d53a45aacbb3e995d09b44bb79e77bcb59914cc96c238aab9c2003fb322bca4fee2add73c6070f0535f1f20228276a24ce5c3416acb3525d61c
   languageName: node
   linkType: hard
 
@@ -8551,7 +8551,7 @@ __metadata:
     "@chakra-ui/styled-system": "npm:2.9.2"
     "@chakra-ui/system": "npm:^2.6.2"
     "@chakra-ui/theme-tools": "npm:^2.1.2"
-    "@chromatic-com/storybook": "npm:^1.5.0"
+    "@chromatic-com/storybook": "npm:^1.6.0"
     "@emotion/react": "npm:^11.11.4"
     "@emotion/styled": "npm:^11.11.5"
     "@reduxjs/toolkit": "npm:^2.2.5"
