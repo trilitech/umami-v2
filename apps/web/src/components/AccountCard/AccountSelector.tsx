@@ -1,41 +1,46 @@
-import { Flex, IconButton, Text, useColorMode } from "@chakra-ui/react";
-import { mode } from "@chakra-ui/theme-tools";
+import { Flex, IconButton, Text } from "@chakra-ui/react";
 import { useAppSelector } from "@umami/state";
 
 import { ChevronDownIcon, FileCopyIcon, GoogleSocialIcon } from "../../assets/icons";
-import { dark, light } from "../../styles/colors";
+import { useColor } from "../../styles/useColor";
+import { SocialIconWrapper } from "../shared/SocialIconWrapper";
 
 export const AccountSelector = () => {
-  const colorMode = useColorMode();
+  const color = useColor();
   const accounts = useAppSelector(s => s.accounts.items);
 
   return (
     <Flex
       alignItems="center"
       padding="12px 20px 12px 12px"
-      background={mode(light.grey[50], dark.grey[50])(colorMode)}
+      background={color("50")}
       borderRadius="100px"
-      _hover={{ background: mode(light.grey[100], dark.grey[100])(colorMode) }}
+      _hover={{ background: color("100") }}
     >
-      <GoogleSocialIcon color={mode(light.grey.white, dark.grey.white)(colorMode)} />
+      <SocialIconWrapper>
+        <GoogleSocialIcon color={color("white")} />
+      </SocialIconWrapper>
       <Flex flexDirection="column" gap="4px" margin="0 25px 0 10px">
         <Text size="md" variant="bold">
           helloumami@email.com
         </Text>
         <Flex alignItems="center" gap="4px">
-          <Text color={mode(light.grey[700], dark.grey[700])(colorMode)} size="sm">
+          <Text color={color("700")} size="sm">
             {accounts[0].label}
           </Text>
           <IconButton
+            width="fit-content"
             aria-label="Copy Address"
-            icon={<FileCopyIcon color={mode(light.grey[400], dark.grey[400])(colorMode)} />}
+            icon={<FileCopyIcon color={color("400")} />}
             variant="empty"
           />
         </Flex>
       </Flex>
       <IconButton
+        width="fit-content"
+        marginLeft="auto"
         aria-label="Account Selector"
-        icon={<ChevronDownIcon color={mode(light.grey[500], dark.grey[500])(colorMode)} />}
+        icon={<ChevronDownIcon color={color("500")} />}
         variant="empty"
       />
     </Flex>

@@ -10,7 +10,10 @@ export const Actions = () => (
       aria-label="Open menu"
       icon={<MenuIcon />}
       isRound
-      size="lg"
+      size={{
+        base: "md",
+        lg: "lg",
+      }}
       variant="iconButtonSolid"
     />
   </Flex>

@@ -1,18 +1,27 @@
-import { Flex, Link, Text, useColorMode } from "@chakra-ui/react";
-import { mode } from "@chakra-ui/theme-tools";
+import { Flex, Link, Text } from "@chakra-ui/react";
 
-import { dark, light } from "../../styles/colors";
+import { useColor } from "../../styles/useColor";
 
 export const Footer = () => {
-  const colorMode = useColorMode();
+  const color = useColor();
 
   return (
-    <Flex lineHeight="1">
+    <Flex
+      justifyContent={{
+        base: "center",
+        lg: "flex-start",
+      }}
+      fontSize={{
+        base: "sm",
+        lg: "md",
+      }}
+      lineHeight="1"
+    >
       <Text>© 2024 Umami</Text>
       <Link
         margin="0 8px"
         padding="0 8px"
-        borderColor={`${mode(light.grey[300], dark.grey[300])(colorMode)} !important`}
+        borderColor={`${color("300")} !important`}
         borderRight="1px solid"
         borderLeft="1px solid"
         href="https://umamiwallet.com/tos.html"
