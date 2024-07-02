@@ -51,7 +51,7 @@ const theme = extendTheme({
       variants: {
         bold: {
           fontWeight: "600",
-          color: "var(--chakra-colors-gray-900)",
+          color: "gray.900",
         },
       },
     },
@@ -59,7 +59,7 @@ const theme = extendTheme({
       baseStyle: {
         container: {
           color: "inherit",
-          bg: "var(--chakra-colors-white)",
+          bg: "white",
           boxShadow: "2px 4px 12px 0px rgba(45, 55, 72, 0.05)",
         },
       },
@@ -100,8 +100,8 @@ const theme = extendTheme({
         tab: {
           color: "green",
           _selected: {
-            bg: "var(--chakra-colors-gray-200)",
-            color: "var(--chakra-colors-gray-900)",
+            bg: "gray.200",
+            color: "gray.900",
           },
         },
       },
@@ -125,22 +125,26 @@ const theme = extendTheme({
       }),
     },
     Button: {
+      sizes: {
+        md: { height: "42px", width: "42px", padding: "0 12px" },
+        lg: { height: "48px", minWidth: "48px", padding: "0 12px" },
+      },
       variants: {
-        solidPrimary: {
+        primary: {
           bg: light.blue,
-          color: "#FFF",
+          color: dark.grey.black,
           _hover: {
             bg: light.blueDark,
           },
         },
-        solidSecondary: {
+        secondary: {
           bg: light.grey[900],
-          color: "#FFF",
+          color: dark.grey.black,
           _hover: {
             bg: light.grey[600],
           },
         },
-        outlinePrimary: {
+        tertiary: {
           border: "2px solid",
           borderColor: light.blue,
           color: light.blue,
@@ -149,19 +153,19 @@ const theme = extendTheme({
             color: light.blueDark,
           },
           _dark: {
-            color: "#FFF",
+            color: dark.grey.black,
           },
         },
-        iconButtonSolid: (props: StyleFunctionProps) => ({
-          bg: mode(light.grey[100], dark.grey[100])(props),
-          color: mode(light.grey[900], dark.grey[900])(props),
+        iconButtonSolid: {
+          bg: light.grey[100],
+          color: light.grey[900],
           _hover: { bg: light.grey[200] },
           _dark: {
-            _hover: {
-              bg: dark.grey[300],
-            },
+            bg: dark.grey[100],
+            color: dark.grey[900],
+            _hover: { bg: dark.grey[300] },
           },
-        }),
+        },
         iconButtonOutline: {
           border: "2px solid",
           borderColor: light.blue,
@@ -169,10 +173,10 @@ const theme = extendTheme({
           _hover: {
             borderColor: "transparent",
             bg: light.blueDark,
-            color: "#FFF",
+            color: dark.grey.black,
           },
           _dark: {
-            color: "#FFF",
+            color: dark.grey.black,
           },
         },
         empty: {

@@ -1,0 +1,1 @@
+export { SocialIconWrapper } from "./SocialIconWrapper";

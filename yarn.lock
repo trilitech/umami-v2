@@ -2965,7 +2965,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@chromatic-com/storybook@npm:^1.5.0":
+"@chromatic-com/storybook@npm:^1.6.0":
   version: 1.6.0
   resolution: "@chromatic-com/storybook@npm:1.6.0"
   dependencies:
@@ -8586,7 +8586,7 @@ __metadata:
     "@svgr/core": "npm:^8.1.0"
     "@svgr/plugin-jsx": "npm:^8.1.0"
     "@svgr/plugin-svgo": "npm:^8.1.0"
-    "@tanstack/react-query": "npm:^5.48.0"
+    "@tanstack/react-query": "npm:^5.49.2"
     "@taquito/beacon-wallet": "npm:^20.0.1"
     "@taquito/ledger-signer": "npm:^20.0.1"
     "@taquito/michel-codec": "npm:^20.0.1"
@@ -21131,7 +21131,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typedoc@npm:^0.26.2":
+"typedoc@npm:^0.26.3":
   version: 0.26.3
   resolution: "typedoc@npm:0.26.3"
   dependencies:

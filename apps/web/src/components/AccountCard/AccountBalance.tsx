@@ -5,7 +5,14 @@ import { ArrowDownLeftIcon, PlusIcon } from "../../assets/icons";
 export const AccountBalance = () => (
   <Box paddingX="12px">
     <Flex flexDirection="column" gap="4px">
-      <Text fontWeight="600" size="sm">
+      <Text
+        display={{
+          base: "none",
+          lg: "block",
+        }}
+        fontWeight="600"
+        size="sm"
+      >
         Tez Balance
       </Text>
       <Text size="2xl" variant="bold">
@@ -13,7 +20,11 @@ export const AccountBalance = () => (
       </Text>
       <Text size="sm">$3603.34</Text>
     </Flex>
-    <Flex alignItems="center" justifyContent="space-between" marginTop="40px">
+    <Flex
+      alignItems="center"
+      justifyContent="space-between"
+      marginTop={{ base: "20px", lg: "40px" }}
+    >
       <IconButton
         aria-label="Deposit"
         icon={<PlusIcon width="24px" height="24px" />}
@@ -30,7 +41,12 @@ export const AccountBalance = () => (
         size="lg"
         variant="iconButtonOutline"
       />
-      <Button padding="10px 40px" borderRadius="full" size="lg" variant="solidPrimary">
+      <Button
+        padding={{ base: "10px 24px", lg: "10px 40px" }}
+        borderRadius="full"
+        size="lg"
+        variant="primary"
+      >
         Send
       </Button>
     </Flex>
