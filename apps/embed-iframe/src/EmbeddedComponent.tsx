@@ -1,5 +1,6 @@
 import { Box, ChakraProvider, ColorModeScript } from "@chakra-ui/react";
 import {
+  Network,
   type RequestMessage,
   type TypeOfLogin,
   toMatchingResponseType,
@@ -15,6 +16,7 @@ import "./EmbeddedComponent.scss";
 
 export function EmbeddedComponent() {
   const [selectedLoginType, setSelectedLoginType] = useState<TypeOfLogin | null>(null);
+  const [selectedNetwork, setSelectedNetwork] = useState<Network | null>(null);
 
   const onLoginCallback = (loginType: TypeOfLogin) => setSelectedLoginType(loginType);
 
@@ -51,11 +53,12 @@ export function EmbeddedComponent() {
 
       switch (data.type) {
         case "login_request":
-          // TODO: save selected network
+          setSelectedNetwork(data.network);
           openLoginModal();
           break;
         case "logout_request":
           setSelectedLoginType(null);
+          setSelectedNetwork(null);
           sendResponse({ type: "logout_response" });
           break;
         case "operation_request":
@@ -65,8 +68,14 @@ export function EmbeddedComponent() {
               error: "no_login_data",
               errorMessage: "User's login data is not available",
             });
+          } else if (selectedNetwork === null) {
+            sendResponse({
+              type: toMatchingResponseType(data.type),
+              error: "no_network_data",
+              errorMessage: "User's network data is not available",
+            });
           } else {
-            openOperationModal(selectedLoginType!, data.operations);
+            openOperationModal(selectedLoginType!, selectedNetwork, data.operations);
           }
           break;
       }
@@ -76,9 +85,17 @@ export function EmbeddedComponent() {
   };
 
   const checkPermissions = (origin: string, request: RequestMessage): Permissions | null => {
-    const clientPermissions = getPermissionsForOrigin(origin);
+    const network = request.type === "login_request" ? request.network : selectedNetwork;
+    if (network === null) {
+      sendResponse({
+        type: toMatchingResponseType(request.type),
+        error: "no_network_data",
+        errorMessage: "User's network data is not available",
+      });
+    }
+
+    const clientPermissions = getPermissionsForOrigin(origin, network!);
     if (!clientPermissions) {
-      console.error(`No permissions for origin (${origin})`);
       sendResponse({
         type: toMatchingResponseType(request.type),
         error: "no_permissions",
@@ -86,6 +103,7 @@ export function EmbeddedComponent() {
       });
       return null;
     }
+
     switch (request.type) {
       case "login_request":
       case "logout_request":
