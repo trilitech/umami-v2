@@ -55,7 +55,7 @@
   },
   "dependencies": {
     "@airgap/beacon-wallet": "^4.2.2",
-    "@reduxjs/toolkit": "^2.2.5",
+    "@reduxjs/toolkit": "^2.2.6",
     "@taquito/signer": "^20.0.1",
     "@taquito/utils": "^20.0.1",
     "@umami/core": "workspace:^",
