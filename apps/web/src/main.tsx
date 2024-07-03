@@ -1,5 +1,5 @@
 import { getErrorContext } from "@umami/core";
-import { accountsActions } from "@umami/state";
+import { accountsActions, errorsActions } from "@umami/state";
 import { encryptedMnemonic1 } from "@umami/test-utils";
 import React from "react";
 import ReactDOM from "react-dom/client";
@@ -7,8 +7,8 @@ import { ErrorBoundary } from "react-error-boundary";
 import { BrowserRouter } from "react-router-dom";
 import { PersistGate } from "redux-persist/integration/react";
 
+import { App } from "./App";
 import { IS_DEV } from "./env";
-import { Layout } from "./Layout";
 import { ReactQueryProvider } from "./providers/ReactQueryProvider";
 import { ReduxStore } from "./providers/ReduxStore";
 import { UmamiTheme } from "./providers/UmamiTheme";
@@ -18,10 +18,10 @@ import { ErrorPage } from "./views/ErrorPage/ErrorPage";
 
 import "./index.scss";
 
+// TODO: Move to a hook in @umami/state
 const logError = (error: Error, info: { componentStack?: string | null }) => {
-  const _errorContext = { ...getErrorContext(error), stacktrace: String(info.componentStack) };
-  // TODO: use error dispatch from redux store package
-  // store.dispatch(errorsActions.add(errorContext));
+  const errorContext = { ...getErrorContext(error), stacktrace: String(info.componentStack) };
+  store.dispatch(errorsActions.add(errorContext));
 };
 
 if (IS_DEV) {
@@ -60,7 +60,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           <ErrorBoundary fallback={<ErrorPage />} onError={logError}>
             <ReactQueryProvider>
               <BrowserRouter>
-                <Layout />
+                <App />
               </BrowserRouter>
               {/* Uncomment to use react-query devtools */}
               {/* <ReactQueryDevtools initialIsOpen={true} /> */}

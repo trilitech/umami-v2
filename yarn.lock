@@ -8728,6 +8728,7 @@ __metadata:
     "@types/react-dom": "npm:^18.3.0"
     "@tzkt/sdk-api": "npm:^2.2.1"
     "@umami/core": "workspace:^"
+    "@umami/data-polling": "workspace:^"
     "@umami/eslint-config": "workspace:^"
     "@umami/jest-config": "workspace:^"
     "@umami/state": "workspace:^"
