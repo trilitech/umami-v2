@@ -1,9 +1,9 @@
 import { multisigOperationFixture, multisigsFixture } from "@umami/multisig";
 
 import { useGetPendingMultisigOperations } from "./multisig";
-import { addTestAccounts, renderHook } from "../testUtils";
 import { multisigsActions } from "../slices";
-import { makeStore, UmamiStore } from "../store";
+import { type UmamiStore, makeStore } from "../store";
+import { addTestAccounts, renderHook } from "../testUtils";
 
 let store: UmamiStore;
 beforeEach(() => {
