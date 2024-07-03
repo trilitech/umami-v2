@@ -1,13 +1,20 @@
 import { mockImplicitAccount, mockMnemonicAccount, mockMultisigAccount } from "@umami/core";
 import { multisigPendingOpsFixtures } from "@umami/multisig";
-import { addTestAccount } from "@umami/state";
+import { type UmamiStore, addTestAccount, makeStore } from "@umami/state";
 
 import { MultisigSignerTile } from "./MultisigSignerTile";
 import { render, screen } from "../../../../mocks/testUtils";
 
+let store: UmamiStore;
+
+beforeEach(() => {
+  store = makeStore();
+});
+
 const signer = mockMnemonicAccount(0);
+
 describe("<MultisigSignerTile />", () => {
-  beforeEach(() => addTestAccount(signer));
+  beforeEach(() => addTestAccount(store, signer));
 
   it("displays the action button", () => {
     render(
@@ -16,7 +23,8 @@ describe("<MultisigSignerTile />", () => {
         pendingApprovals={1}
         sender={mockMultisigAccount(0)}
         signerAddress={signer.address}
-      />
+      />,
+      { store }
     );
     expect(screen.getByTestId("multisig-signer-button")).toBeVisible();
   });
@@ -28,7 +36,8 @@ describe("<MultisigSignerTile />", () => {
         pendingApprovals={1}
         sender={mockMultisigAccount(0)}
         signerAddress={signer.address}
-      />
+      />,
+      { store }
     );
     expect(screen.getByTestId("account-tile-base")).toBeVisible();
   });
@@ -40,7 +49,8 @@ describe("<MultisigSignerTile />", () => {
         pendingApprovals={0}
         sender={mockMultisigAccount(0)}
         signerAddress={signer.address}
-      />
+      />,
+      { store }
     );
     expect(screen.getByTestId("multisig-signer-button")).toBeInTheDocument();
   });
@@ -52,7 +62,8 @@ describe("<MultisigSignerTile />", () => {
         pendingApprovals={1}
         sender={mockMultisigAccount(0)}
         signerAddress={signer.address}
-      />
+      />,
+      { store }
     );
     expect(screen.queryByTestId("multisig-signer-button")).not.toBeInTheDocument();
   });
@@ -65,7 +76,8 @@ describe("<MultisigSignerTile />", () => {
         pendingApprovals={1}
         sender={account}
         signerAddress={mockImplicitAccount(1).address}
-      />
+      />,
+      { store }
     );
     expect(screen.queryByTestId("multisig-signer-button")).not.toBeInTheDocument();
   });

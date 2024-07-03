@@ -9,7 +9,7 @@ import {
   ModalFooter,
   ModalHeader,
 } from "@chakra-ui/react";
-import { networksActions } from "@umami/state";
+import { networksActions, useAvailableNetworks } from "@umami/state";
 import { type Network } from "@umami/tezos";
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
@@ -17,7 +17,6 @@ import { useDispatch } from "react-redux";
 
 import { DynamicModalContext } from "../../../components/DynamicModal";
 import { FormErrorMessage } from "../../../components/FormErrorMessage";
-import { useAvailableNetworks } from "../../../utils/hooks/networkHooks";
 
 const removeTrailingSlashes = (url: string) => url.replace(/\/+$/g, "");
 

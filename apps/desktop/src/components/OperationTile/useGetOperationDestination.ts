@@ -1,7 +1,7 @@
+import { useIsOwnedAddress } from "@umami/state";
 import { type RawPkh } from "@umami/tezos";
 
 import colors from "../../style/colors";
-import { useIsOwnedAddress } from "../../utils/hooks/getAccountDataHooks";
 
 export type OperationDestination = "incoming" | "outgoing" | "unrelated";
 

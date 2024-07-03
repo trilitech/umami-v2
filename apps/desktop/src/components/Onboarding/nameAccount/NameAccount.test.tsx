@@ -8,12 +8,13 @@ import {
   mockSocialAccount,
 } from "@umami/core";
 import {
+  type UmamiStore,
   addTestAccount,
   contactsActions,
-  multisigActions,
+  makeStore,
+  multisigsActions,
   networksActions,
   renameAccount,
-  store,
 } from "@umami/state";
 import { mnemonic1 } from "@umami/test-utils";
 import { MAINNET } from "@umami/tezos";
@@ -27,6 +28,12 @@ const goToStepMock = jest.fn();
 const fixture = (account: NameAccountStep["account"]) => (
   <NameAccount account={account} goToStep={goToStepMock} />
 );
+
+let store: UmamiStore;
+
+beforeEach(() => {
+  store = makeStore();
+});
 
 const getNameInput = () => screen.getByTestId("name");
 const getConfirmBtn = () => screen.getByRole("button", { name: "Continue" });
@@ -55,7 +62,7 @@ describe("<NameAccount />", () => {
     describe.each(accounts)("for $type", account => {
       it(`sets a ${label.desc}`, async () => {
         const user = userEvent.setup();
-        render(fixture(account));
+        render(fixture(account), { store });
 
         if (label.withNameProvided) {
           await act(() => user.type(getNameInput(), labelBase));
@@ -94,8 +101,8 @@ describe("<NameAccount />", () => {
       describe.each(existingAccountGroups)("among $type accounts", existingAccountGroup => {
         it("sets group label", async () => {
           const user = userEvent.setup();
-          existingAccountGroup.accounts.forEach(addTestAccount);
-          render(fixture(account));
+          existingAccountGroup.accounts.forEach(account => addTestAccount(store, account));
+          render(fixture(account), { store });
 
           if (label.withNameProvided) {
             await act(() => user.type(getNameInput(), labelBase));
@@ -112,11 +119,11 @@ describe("<NameAccount />", () => {
       it("among multisig accounts sets group label", async () => {
         const user = userEvent.setup();
         store.dispatch(
-          multisigActions.setMultisigs([mockMultisigAccount(0), mockMultisigAccount(1)])
+          multisigsActions.setMultisigs([mockMultisigAccount(0), mockMultisigAccount(1)])
         );
         store.dispatch(renameAccount(mockMultisigAccount(0), labelBase));
         store.dispatch(renameAccount(mockMultisigAccount(1), `${labelBase} 3`));
-        render(fixture(account));
+        render(fixture(account), { store });
 
         if (label.withNameProvided) {
           await act(() => user.type(getNameInput(), labelBase));
@@ -137,7 +144,7 @@ describe("<NameAccount />", () => {
           contactsActions.upsert(mockContractContact(0, "ghostnet", `${labelBase} 3`))
         );
         store.dispatch(contactsActions.upsert(mockContractContact(2, "mainnet", `${labelBase} 7`)));
-        render(fixture(account));
+        render(fixture(account), { store });
 
         if (label.withNameProvided) {
           await act(() => user.type(getNameInput(), labelBase));
@@ -155,9 +162,9 @@ describe("<NameAccount />", () => {
       describe.each(existingAccountGroups)("among $type accounts", existingAccounts => {
         it("sets unique default label", async () => {
           const user = userEvent.setup();
-          existingAccounts.accounts.forEach(addTestAccount);
+          existingAccounts.accounts.forEach(account => addTestAccount(store, account));
 
-          render(fixture(account));
+          render(fixture(account), { store });
 
           if (label.withNameProvided) {
             await act(() => user.type(getNameInput(), labelBase));
@@ -174,11 +181,11 @@ describe("<NameAccount />", () => {
       it("among multisig accounts sets unique default label", async () => {
         const user = userEvent.setup();
         store.dispatch(
-          multisigActions.setMultisigs([mockMultisigAccount(0), mockMultisigAccount(1)])
+          multisigsActions.setMultisigs([mockMultisigAccount(0), mockMultisigAccount(1)])
         );
         store.dispatch(renameAccount(mockMultisigAccount(0), labelBase));
         store.dispatch(renameAccount(mockMultisigAccount(1), `${labelBase} 3`));
-        render(fixture(account));
+        render(fixture(account), { store });
 
         if (label.withNameProvided) {
           await act(() => user.type(getNameInput(), labelBase));
@@ -199,7 +206,7 @@ describe("<NameAccount />", () => {
           contactsActions.upsert(mockContractContact(0, "ghostnet", `${labelBase} 2`))
         );
         store.dispatch(contactsActions.upsert(mockContractContact(2, "mainnet", `${labelBase} 4`)));
-        render(fixture(account));
+        render(fixture(account), { store });
 
         if (label.withNameProvided) {
           await act(() => user.type(getNameInput(), labelBase));

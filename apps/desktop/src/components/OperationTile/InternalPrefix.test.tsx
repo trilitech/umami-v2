@@ -1,5 +1,5 @@
 import { mockImplicitAccount, mockLedgerAccount } from "@umami/core";
-import { addTestAccount } from "@umami/state";
+import { type UmamiStore, addTestAccount, makeStore } from "@umami/state";
 
 import { InternalPrefix } from "./InternalPrefix";
 import {
@@ -9,6 +9,12 @@ import {
   transactionFixture,
 } from "./testUtils";
 import { render, screen } from "../../mocks/testUtils";
+
+let store: UmamiStore;
+
+beforeEach(() => {
+  store = makeStore();
+});
 
 describe("<InternalPrefix />", () => {
   describe.each([
@@ -26,15 +32,15 @@ describe("<InternalPrefix />", () => {
     { operation: originationFixture(), sender: mockLedgerAccount(0) },
   ])("for $operation.type", ({ operation, sender, target }) => {
     it('renders "Internal" if neither sender nor receiver is owned', () => {
-      render(<InternalPrefix operation={operation} />);
+      render(<InternalPrefix operation={operation} />, { store });
 
       expect(screen.getByText("Internal:")).toBeVisible();
     });
 
     it("renders nothing if the sender is owned", () => {
-      addTestAccount(sender);
+      addTestAccount(store, sender);
 
-      render(<InternalPrefix operation={operation} />);
+      render(<InternalPrefix operation={operation} />, { store });
 
       expect(screen.queryByText("Internal:")).not.toBeInTheDocument();
     });
@@ -43,9 +49,9 @@ describe("<InternalPrefix />", () => {
       if (!target) {
         return;
       }
-      addTestAccount(target);
+      addTestAccount(store, target);
 
-      render(<InternalPrefix operation={operation} />);
+      render(<InternalPrefix operation={operation} />, { store });
 
       expect(screen.queryByText("Internal:")).not.toBeInTheDocument();
     });
@@ -54,10 +60,10 @@ describe("<InternalPrefix />", () => {
       if (!target) {
         return;
       }
-      addTestAccount(sender);
-      addTestAccount(target);
+      addTestAccount(store, sender);
+      addTestAccount(store, target);
 
-      render(<InternalPrefix operation={operation} />);
+      render(<InternalPrefix operation={operation} />, { store });
 
       expect(screen.queryByText("Internal:")).not.toBeInTheDocument();
     });

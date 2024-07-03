@@ -1,4 +1,10 @@
-import { assetsActions, networksActions, store, tokensSlice } from "@umami/state";
+import {
+  type UmamiStore,
+  assetsActions,
+  makeStore,
+  networksActions,
+  tokensActions,
+} from "@umami/state";
 import { MAINNET, mockContractAddress, mockImplicitAddress } from "@umami/tezos";
 import { type RawTzktTokenBalance } from "@umami/tzkt";
 
@@ -7,7 +13,12 @@ import { render, screen } from "../../../../mocks/testUtils";
 
 const { updateTokenBalance } = assetsActions;
 
-beforeEach(() => store.dispatch(networksActions.setCurrent(MAINNET)));
+let store: UmamiStore;
+
+beforeEach(() => {
+  store = makeStore();
+  store.dispatch(networksActions.setCurrent(MAINNET));
+});
 
 describe("<MultisigDecodedOperation />", () => {
   it("displays delegate", () => {
@@ -18,7 +29,8 @@ describe("<MultisigDecodedOperation />", () => {
           sender: mockImplicitAddress(0),
           recipient: mockImplicitAddress(1),
         }}
-      />
+      />,
+      { store }
     );
 
     expect(screen.getByTestId("decoded-item-delegate")).toHaveTextContent("Delegate to");
@@ -31,7 +43,8 @@ describe("<MultisigDecodedOperation />", () => {
           type: "undelegation",
           sender: mockImplicitAddress(0),
         }}
-      />
+      />,
+      { store }
     );
 
     expect(screen.getByTestId("decoded-item-undelegate")).toHaveTextContent("End Delegation");
@@ -41,7 +54,8 @@ describe("<MultisigDecodedOperation />", () => {
     render(
       <MultisigDecodedOperation
         operation={{ type: "tez", recipient: mockImplicitAddress(0), amount: "1000000" }}
-      />
+      />,
+      { store }
     );
 
     expect(screen.getByTestId("decoded-tez-amount")).toHaveTextContent("-1.000000 ꜩ");
@@ -66,7 +80,7 @@ describe("<MultisigDecodedOperation />", () => {
     };
     store.dispatch(updateTokenBalance([mockBalancePayload]));
     store.dispatch(
-      tokensSlice.actions.addTokens({
+      tokensActions.addTokens({
         network: MAINNET,
         tokens: [mockBalancePayload.token],
       })
@@ -88,7 +102,8 @@ describe("<MultisigDecodedOperation />", () => {
           },
           tokenId: "0",
         }}
-      />
+      />,
+      { store }
     );
 
     expect(screen.getByTestId("decoded-fa-amount")).toHaveTextContent("-3.00 mockSymbol");
@@ -114,10 +129,11 @@ describe("<MultisigDecodedOperation />", () => {
 
     store.dispatch(updateTokenBalance([mockBalancePlayload]));
     store.dispatch(
-      tokensSlice.actions.addTokens({
+      tokensActions.addTokens({
         network: MAINNET,
         tokens: [mockBalancePlayload.token],
-      })
+      }),
+      { store }
     );
 
     render(
@@ -130,7 +146,8 @@ describe("<MultisigDecodedOperation />", () => {
           contract: mockContract,
           tokenId: "3",
         }}
-      />
+      />,
+      { store }
     );
 
     expect(screen.getByTestId("decoded-fa-amount")).toHaveTextContent("300mockNFTName");

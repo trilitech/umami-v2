@@ -13,7 +13,6 @@ export const protocolSettingsInitialState: State = fromPairs(
   DefaultNetworks.map(network => [network.name, { maxSlashingPeriod: 2, consensusRightsDelay: 2 }])
 );
 
-// TODO: test
 export const protocolSettingsSlice = createSlice({
   name: "protocolSettings",
   initialState: protocolSettingsInitialState,

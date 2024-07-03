@@ -1,10 +1,16 @@
 import { mockImplicitAccount, mockMnemonicAccount } from "@umami/core";
-import { addTestAccount } from "@umami/state";
+import { type UmamiStore, addTestAccount, makeStore } from "@umami/state";
 import { type TransactionOperation } from "@umami/tzkt";
 
 import { Fee } from "./Fee";
 import { OperationTileContext } from "./OperationTileContext";
 import { render, screen } from "../../mocks/testUtils";
+
+let store: UmamiStore;
+
+beforeEach(() => {
+  store = makeStore();
+});
 
 describe("<Fee />", () => {
   it("doesn't render if fee is 0", () => {
@@ -18,7 +24,8 @@ describe("<Fee />", () => {
             allocationFee: 0,
           } as TransactionOperation
         }
-      />
+      />,
+      { store }
     );
     expect(screen.queryByTestId("fee")).not.toBeInTheDocument();
   });
@@ -34,13 +41,14 @@ describe("<Fee />", () => {
             allocationFee: 3,
           } as TransactionOperation
         }
-      />
+      />,
+      { store }
     );
     expect(screen.queryByTestId("fee")).not.toBeInTheDocument();
   });
 
   it("sums up the fees and shows the total", () => {
-    addTestAccount(mockMnemonicAccount(0));
+    addTestAccount(store, mockMnemonicAccount(0));
     render(
       <Fee
         operation={
@@ -51,13 +59,14 @@ describe("<Fee />", () => {
             allocationFee: 3,
           } as TransactionOperation
         }
-      />
+      />,
+      { store }
     );
     expect(screen.getByTestId("fee")).toHaveTextContent("0.000123");
   });
 
   it("doesn't render in drawer mode", () => {
-    addTestAccount(mockMnemonicAccount(0));
+    addTestAccount(store, mockMnemonicAccount(0));
 
     render(
       <OperationTileContext.Provider value={{ mode: "drawer" } as any}>
@@ -71,7 +80,8 @@ describe("<Fee />", () => {
             } as TransactionOperation
           }
         />
-      </OperationTileContext.Provider>
+      </OperationTileContext.Provider>,
+      { store }
     );
     expect(screen.queryByTestId("fee")).not.toBeInTheDocument();
   });

@@ -1,7 +1,10 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { type Account } from "@umami/core";
+import { useReactQueryErrorHandler, useRefetchTrigger } from "@umami/data-polling";
+import { useSelectedNetwork } from "@umami/state";
 import { type AppDispatch, assetsActions, tokensActions, useAppDispatch } from "@umami/state";
 import { type Network } from "@umami/tezos";
+import { BLOCK_TIME } from "@umami/tezos";
 import {
   type TokenTransferOperation,
   type TzktCombinedOperation,
@@ -10,11 +13,6 @@ import {
 } from "@umami/tzkt";
 import { maxBy } from "lodash";
 import { useEffect } from "react";
-
-import { BLOCK_TIME } from "../../utils/dataPolling/constants";
-import { useRefetchTrigger } from "../../utils/hooks/assetsHooks";
-import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
-import { useReactQueryErrorHandler } from "../../utils/useReactQueryOnError";
 
 type QueryParams =
   | {

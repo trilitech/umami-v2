@@ -1,6 +1,6 @@
 import { estimate, mockImplicitAccount, mockMultisigAccount } from "@umami/core";
 import { multisigPendingOpsFixtures } from "@umami/multisig";
-import { multisigsSlice, store } from "@umami/state";
+import { type UmamiStore, makeStore, multisigsActions } from "@umami/state";
 import { executeParams } from "@umami/test-utils";
 import { getCombinedOperations, getRelatedTokenTransfers } from "@umami/tzkt";
 
@@ -18,6 +18,12 @@ jest.mock("@umami/tzkt", () => ({
   getRelatedTokenTransfers: jest.fn(),
 }));
 
+let store: UmamiStore;
+
+beforeEach(() => {
+  store = makeStore();
+});
+
 describe("<AssetsPanel />", () => {
   describe("multisig account", () => {
     it("hides pending tab when no pending operations", async () => {
@@ -25,7 +31,7 @@ describe("<AssetsPanel />", () => {
       jest.mocked(getRelatedTokenTransfers).mockResolvedValue([]);
 
       const multisigAccount = mockMultisigAccount(0);
-      render(<AssetsPanel account={multisigAccount} nfts={[]} tokens={[]} />);
+      render(<AssetsPanel account={multisigAccount} nfts={[]} tokens={[]} />, { store });
       await screen.findByTestId("account-card-operations-tab");
 
       expect(screen.queryByTestId("account-card-pending-tab-panel")).not.toBeInTheDocument();
@@ -46,10 +52,10 @@ describe("<AssetsPanel />", () => {
         ...mockMultisigAccount(0),
         pendingOperationsBigmapId: 3,
       };
-      store.dispatch(multisigsSlice.actions.setMultisigs([multisig]));
-      store.dispatch(multisigsSlice.actions.setPendingOperations(multisigPendingOpsFixtures));
+      store.dispatch(multisigsActions.setMultisigs([multisig]));
+      store.dispatch(multisigsActions.setPendingOperations(multisigPendingOpsFixtures));
 
-      render(<AssetsPanel account={multisig} nfts={[]} tokens={[]} />);
+      render(<AssetsPanel account={multisig} nfts={[]} tokens={[]} />, { store });
       await screen.findByTestId("account-card-operations-tab");
 
       expect(screen.getByTestId("account-card-pending-tab-panel")).toBeInTheDocument();

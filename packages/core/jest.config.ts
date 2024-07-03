@@ -5,10 +5,9 @@ const config: Config = {
   ...baseConfig,
   preset: "ts-jest",
   transform: {
-    "^.+\\.ts$": "ts-jest",
+    "^.+\\.tsx?$": "ts-jest",
   },
   testEnvironment: "node",
-
   rootDir: "./",
 };
 export default config;

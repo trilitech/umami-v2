@@ -11,13 +11,12 @@ import {
   mockMultisigAccount,
 } from "@umami/core";
 import { type MultisigOperation, multisigPendingOpsFixtures } from "@umami/multisig";
-import { addTestAccount } from "@umami/state";
+import { type UmamiStore, addTestAccount, makeStore, useGetSecretKey } from "@umami/state";
 import { executeParams } from "@umami/test-utils";
 import { MAINNET, makeToolkit, mockImplicitAddress, parseImplicitPkh } from "@umami/tezos";
 
 import { MultisigPendingOperation } from "./MultisigPendingOperation";
 import { act, render, screen, userEvent, within } from "../../../../mocks/testUtils";
-import * as getAccountDataHooks from "../../../../utils/hooks/getAccountDataHooks";
 
 jest.mock("@umami/core", () => ({
   ...jest.requireActual("@umami/core"),
@@ -30,11 +29,18 @@ jest.mock("@umami/tezos", () => ({
   makeToolkit: jest.fn(),
 }));
 
+jest.mock("@umami/state", () => ({
+  ...jest.requireActual("@umami/state"),
+  useGetSecretKey: jest.fn(),
+  getAccountDataHooks: () => Promise.resolve("mockkey"),
+}));
+
 const MOCK_TEZOS_TOOLKIT = {};
+let store: UmamiStore;
+
 beforeEach(() => {
-  jest
-    .spyOn(getAccountDataHooks, "useGetSecretKey")
-    .mockReturnValue(() => Promise.resolve("mockkey"));
+  store = makeStore();
+  jest.mocked(useGetSecretKey).mockReturnValue(() => Promise.resolve("mockkey"));
   jest.mocked(makeToolkit).mockResolvedValue(MOCK_TEZOS_TOOLKIT as TezosToolkit);
 });
 
@@ -51,7 +57,8 @@ describe("<MultisigPendingOperation />", () => {
           approvals: [pkh0],
         }}
         sender={account}
-      />
+      />,
+      { store }
     );
 
     expect(screen.getByTestId("pending-approvals-count")).toHaveTextContent("2");
@@ -67,13 +74,14 @@ describe("<MultisigPendingOperation />", () => {
           approvals: [mockImplicitAddress(0), mockImplicitAddress(1)],
         }}
         sender={mockMultisigAccount(0)}
-      />
+      />,
+      { store }
     );
 
     expect(screen.getByTestId("pending-approvals-count")).toHaveTextContent("0");
   });
 
-  test("User can accomplish a proposal execution", async () => {
+  it("User can accomplish a proposal execution", async () => {
     const user = userEvent.setup();
     const account: MnemonicAccount = {
       ...mockMnemonicAccount(0),
@@ -98,11 +106,13 @@ describe("<MultisigPendingOperation />", () => {
       opHash: "mockHash",
     } as BatchWalletOperation);
 
-    addTestAccount(account);
+    addTestAccount(store, account);
 
     const executablePendingOp: MultisigOperation = multisigPendingOpsFixtures[0];
 
-    render(<MultisigPendingOperation operation={executablePendingOp} sender={multisig} />);
+    render(<MultisigPendingOperation operation={executablePendingOp} sender={multisig} />, {
+      store,
+    });
 
     const firstPendingOp = screen.getByTestId(
       "multisig-pending-operation-" + multisigPendingOpsFixtures[0].id
@@ -160,12 +170,14 @@ describe("<MultisigPendingOperation />", () => {
       opHash: "mockHash",
     } as BatchWalletOperation);
 
-    addTestAccount(signer);
+    addTestAccount(store, signer);
     const approvablePendingOp: MultisigOperation = {
       ...multisigPendingOpsFixtures[0],
       approvals: [],
     };
-    render(<MultisigPendingOperation operation={approvablePendingOp} sender={multisig} />);
+    render(<MultisigPendingOperation operation={approvablePendingOp} sender={multisig} />, {
+      store,
+    });
 
     const firstPendingOp = screen.getByTestId(
       "multisig-pending-operation-" + multisigPendingOpsFixtures[0].id

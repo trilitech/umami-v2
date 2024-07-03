@@ -5,12 +5,10 @@ import {
 } from "@airgap/beacon-wallet";
 import { type TezosToolkit } from "@taquito/taquito";
 import { type EstimatedAccountOperations, executeOperations, totalFee } from "@umami/core";
+import { WalletClient, useAsyncActionHandler, useFindNetwork } from "@umami/state";
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
 
-import { WalletClient } from "../../../utils/beacon/WalletClient";
-import { useFindNetwork } from "../../../utils/hooks/networkHooks";
-import { useAsyncActionHandler } from "../../../utils/hooks/useAsyncActionHandler";
 import { DynamicModalContext } from "../../DynamicModal";
 import { SuccessStep } from "../SuccessStep";
 

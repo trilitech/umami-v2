@@ -1,19 +1,24 @@
 import { mockLedgerAccount } from "@umami/core";
-import { addTestAccount, networksActions, store } from "@umami/state";
-import { DefaultNetworks, TEZ } from "@umami/tezos";
+import { type UmamiStore, addTestAccount, makeStore, networksActions } from "@umami/state";
+import { DefaultNetworks, TEZ, formatPkh } from "@umami/tezos";
 import { type UnstakeOperation } from "@umami/tzkt";
 
 import { OperationTileContext } from "./OperationTileContext";
 import { unstakeFixture } from "./testUtils";
 import { UnstakeTile } from "./UnstakeTile";
 import { render, screen } from "../../mocks/testUtils";
-import { formatPkh } from "../../utils/format";
 
 const fixture = (context: any, operation: UnstakeOperation) => (
   <OperationTileContext.Provider value={context}>
     <UnstakeTile operation={operation} />
   </OperationTileContext.Provider>
 );
+
+let store: UmamiStore;
+
+beforeEach(() => {
+  store = makeStore();
+});
 
 describe("<UnstakeTile />", () => {
   describe.each([
@@ -25,7 +30,7 @@ describe("<UnstakeTile />", () => {
         it("links to the operation page on tzkt", () => {
           store.dispatch(networksActions.setCurrent(network));
 
-          render(fixture(contextValue, unstakeFixture()));
+          render(fixture(contextValue, unstakeFixture()), { store });
 
           expect(screen.getByTestId("title")).toHaveAttribute(
             "href",
@@ -42,14 +47,15 @@ describe("<UnstakeTile />", () => {
           unstakeFixture({
             timestamp: "2021-01-02T00:00:00.000Z",
           })
-        )
+        ),
+        { store }
       );
 
       expect(screen.getByTestId("timestamp")).toHaveTextContent("02 Jan 2021");
     });
 
     describe("pills", () => {
-      beforeEach(() => addTestAccount(mockLedgerAccount(0)));
+      beforeEach(() => addTestAccount(store, mockLedgerAccount(0)));
 
       it("shows both if sender is an owned account", () => {
         render(
@@ -60,7 +66,8 @@ describe("<UnstakeTile />", () => {
               baker: { address: mockLedgerAccount(1).address.pkh },
               sender: { address: mockLedgerAccount(0).address.pkh },
             })
-          )
+          ),
+          { store }
         );
 
         expect(screen.getByTestId("from")).toHaveTextContent("Account");
@@ -78,7 +85,8 @@ describe("<UnstakeTile />", () => {
               baker: { address: mockLedgerAccount(0).address.pkh },
               sender: { address: mockLedgerAccount(1).address.pkh },
             })
-          )
+          ),
+          { store }
         );
 
         expect(screen.getByTestId("from")).toHaveTextContent(
@@ -96,7 +104,8 @@ describe("<UnstakeTile />", () => {
               baker: { address: mockLedgerAccount(0).address.pkh },
               sender: { address: mockLedgerAccount(0).address.pkh },
             })
-          )
+          ),
+          { store }
         );
 
         expect(screen.getByTestId("from")).toHaveTextContent("Account");
@@ -110,7 +119,7 @@ describe("<UnstakeTile />", () => {
 
     describe("fee", () => {
       it("renders if there is any fee paid by the user", () => {
-        addTestAccount(mockLedgerAccount(0));
+        addTestAccount(store, mockLedgerAccount(0));
         render(
           fixture(
             contextValue,
@@ -119,7 +128,8 @@ describe("<UnstakeTile />", () => {
               storageFee: 20,
               allocationFee: 3,
             })
-          )
+          ),
+          { store }
         );
 
         expect(screen.getByTestId("fee")).toHaveTextContent(`0.000123 ${TEZ}`);
@@ -134,7 +144,8 @@ describe("<UnstakeTile />", () => {
               storageFee: 0,
               allocationFee: 0,
             })
-          )
+          ),
+          { store }
         );
 
         expect(screen.queryByTestId("fee")).not.toBeInTheDocument();
@@ -142,7 +153,7 @@ describe("<UnstakeTile />", () => {
     });
 
     it("shows operation type", () => {
-      render(fixture(contextValue, unstakeFixture()));
+      render(fixture(contextValue, unstakeFixture()), { store });
 
       expect(screen.getByTestId("operation-type")).toHaveTextContent("Unstake");
     });
@@ -151,7 +162,7 @@ describe("<UnstakeTile />", () => {
   describe("drawer mode", () => {
     const contextValue = { mode: "drawer", selectedAddress: mockLedgerAccount(0).address };
 
-    beforeEach(() => addTestAccount(mockLedgerAccount(0)));
+    beforeEach(() => addTestAccount(store, mockLedgerAccount(0)));
 
     it("hides the fee", () => {
       render(
@@ -162,14 +173,15 @@ describe("<UnstakeTile />", () => {
             storageFee: 20,
             allocationFee: 3,
           })
-        )
+        ),
+        { store }
       );
 
       expect(screen.queryByTestId("fee")).not.toBeInTheDocument();
     });
 
     it("hides the operation type", () => {
-      render(fixture(contextValue, unstakeFixture()));
+      render(fixture(contextValue, unstakeFixture()), { store });
 
       expect(screen.queryByTestId("operation-type")).not.toBeInTheDocument();
     });

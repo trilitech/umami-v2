@@ -3,10 +3,10 @@ import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE } from "redux-persist
 
 import { reducer } from "./reducer";
 
-// Infer the `RootState` and `AppDispatch` types from the store itself
-export type RootState = ReturnType<typeof store.getState>;
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
-export type AppDispatch = typeof store.dispatch;
+export type UmamiStore = ReturnType<typeof makeStore>;
+
+export type RootState = ReturnType<UmamiStore["getState"]>;
+export type AppDispatch = UmamiStore["dispatch"];
 
 export const makeStore = () =>
   configureStore({
@@ -21,9 +21,3 @@ export const makeStore = () =>
         },
       }),
   });
-
-export let store = makeStore();
-
-export const resetStore = () => {
-  store = makeStore();
-};

@@ -1,8 +1,8 @@
 import { type IconProps } from "@chakra-ui/react";
+import { useSelectedNetwork } from "@umami/state";
 import type React from "react";
 
 import { MakiIcon } from "../assets/icons";
-import { useSelectedNetwork } from "../utils/hooks/networkHooks";
 
 const ORANGE = "#F74F18";
 

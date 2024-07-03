@@ -1,4 +1,3 @@
-import { Modal } from "@chakra-ui/react";
 import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
 import {
   estimate,
@@ -8,7 +7,7 @@ import {
   mockMnemonicAccount,
   mockTezOperation,
 } from "@umami/core";
-import { addTestAccount, batchesActions, store } from "@umami/state";
+import { type UmamiStore, addTestAccounts, batchesActions, makeStore } from "@umami/state";
 import { executeParams } from "@umami/test-utils";
 import { MAINNET } from "@umami/tezos";
 
@@ -21,8 +20,11 @@ jest.mock("@umami/core", () => ({
   executeOperations: jest.fn(),
 }));
 
+let store: UmamiStore;
+
 beforeEach(() => {
-  [mockMnemonicAccount(1), mockMnemonicAccount(2), mockMnemonicAccount(3)].forEach(addTestAccount);
+  store = makeStore();
+  addTestAccounts(store, [mockMnemonicAccount(1), mockMnemonicAccount(2), mockMnemonicAccount(3)]);
   jest.mocked(estimate).mockResolvedValueOnce({
     type: "implicit",
     operations: [],
@@ -36,7 +38,7 @@ beforeEach(() => {
 
 describe("<BatchPage />", () => {
   it("shows empty batch message by default", () => {
-    render(<BatchPage />);
+    render(<BatchPage />, { store });
 
     expect(screen.getByTestId("empty-state-message")).toBeInTheDocument();
     expect(screen.getByText("No batches to show")).toBeVisible();
@@ -54,14 +56,14 @@ describe("<BatchPage />", () => {
       })
     );
 
-    render(<BatchPage />);
+    render(<BatchPage />, { store });
 
     expect(screen.queryByTestId("empty-state-message")).not.toBeInTheDocument();
   });
 
   describe("pending", () => {
     it("shows 0 when no batches exist", () => {
-      render(<BatchPage />);
+      render(<BatchPage />, { store });
 
       expect(screen.getByText(/0 pending/i)).toBeInTheDocument();
     });
@@ -76,7 +78,7 @@ describe("<BatchPage />", () => {
           ]),
         })
       );
-      render(<BatchPage />);
+      render(<BatchPage />, { store });
 
       expect(screen.getByText(/1 pending/i)).toBeInTheDocument();
       act(() => {
@@ -114,7 +116,7 @@ describe("<BatchPage />", () => {
       })
     );
 
-    render(<BatchPage />);
+    render(<BatchPage />, { store });
 
     expect(screen.getAllByTestId(/batch-table/i)).toHaveLength(2);
   });
@@ -135,7 +137,7 @@ describe("<BatchPage />", () => {
     });
 
     test("delete batch", () => {
-      render(<BatchPage />);
+      render(<BatchPage />, { store });
 
       const deleteButton = screen.getByTestId("remove-batch");
       fireEvent.click(deleteButton);
@@ -151,11 +153,7 @@ describe("<BatchPage />", () => {
         estimates: [executeParams()],
       });
 
-      render(
-        <Modal isOpen={true} onClose={() => {}}>
-          <BatchPage />
-        </Modal>
-      );
+      render(<BatchPage />, { store });
 
       await act(() => user.click(screen.getByRole("button", { name: "Submit Batch" })));
 

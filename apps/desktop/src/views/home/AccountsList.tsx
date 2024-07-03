@@ -1,4 +1,5 @@
 import { Box, Button, Text } from "@chakra-ui/react";
+import { useAllAccounts } from "@umami/state";
 import { compact, groupBy } from "lodash";
 import { useContext } from "react";
 
@@ -9,7 +10,6 @@ import { DynamicModalContext } from "../../components/DynamicModal";
 import { NestedScroll } from "../../components/NestedScroll";
 import { NameMultisigFormPage } from "../../components/SendFlow/MultisigAccount/NameMultisigFormPage";
 import colors from "../../style/colors";
-import { useAllAccounts } from "../../utils/hooks/getAccountDataHooks";
 
 export const AccountsList = () => {
   const accounts = useAllAccounts();

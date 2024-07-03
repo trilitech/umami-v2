@@ -3,7 +3,12 @@ import { mockMnemonicAccount, mockSecretKeyAccount, mockSocialAccount } from "@u
 import { type RawPkh } from "@umami/tezos";
 
 import { beaconActions } from "./beacon";
-import { store } from "../store";
+import { type UmamiStore, makeStore } from "../store";
+
+let store: UmamiStore;
+beforeEach(() => {
+  store = makeStore();
+});
 
 describe("Beacon slice", () => {
   const dAppId1 = "test-dAppId-0";

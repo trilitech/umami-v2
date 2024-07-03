@@ -5,7 +5,7 @@ import {
   mockImplicitAccount,
   mockMnemonicAccount,
 } from "@umami/core";
-import { addTestAccount } from "@umami/state";
+import { type UmamiStore, addTestAccount, makeStore } from "@umami/state";
 import { executeParams } from "@umami/test-utils";
 import { TEZ, mockImplicitAddress } from "@umami/tezos";
 
@@ -20,7 +20,12 @@ const fixture = (props: SignPageProps<FormValues>) => (
   </Modal>
 );
 
-beforeEach(() => addTestAccount(mockMnemonicAccount(0)));
+let store: UmamiStore;
+
+beforeEach(() => {
+  store = makeStore();
+  addTestAccount(store, mockMnemonicAccount(0));
+});
 
 const props: SignPageProps<FormValues> = {
   operations: {
@@ -40,7 +45,7 @@ const props: SignPageProps<FormValues> = {
 
 describe("<SignPage />", () => {
   it("has a title", async () => {
-    render(fixture(props));
+    render(fixture(props), { store });
 
     await waitFor(() =>
       expect(screen.getByTestId("sign-page-header")).toHaveTextContent("Review & Submit")
@@ -48,13 +53,13 @@ describe("<SignPage />", () => {
   });
 
   it("has a subtitle", async () => {
-    render(fixture(props));
+    render(fixture(props), { store });
 
     await screen.findByText("Please review the details and then continue to submit contract.");
   });
 
   it("displays the contract name", async () => {
-    render(fixture(props));
+    render(fixture(props), { store });
 
     await waitFor(() =>
       expect(screen.getByTestId("contract-name")).toHaveTextContent("Contract name")
@@ -62,7 +67,7 @@ describe("<SignPage />", () => {
   });
 
   it("displays the approvers", async () => {
-    render(fixture(props));
+    render(fixture(props), { store });
 
     await waitFor(() => {
       props.data.signers.forEach(signer => {
@@ -72,7 +77,7 @@ describe("<SignPage />", () => {
   });
 
   it("displays the threshold", async () => {
-    render(fixture(props));
+    render(fixture(props), { store });
 
     await waitFor(() => {
       expect(screen.getByTestId("threshold")).toHaveTextContent("No. of approvals:");
@@ -82,7 +87,7 @@ describe("<SignPage />", () => {
   });
 
   it("displays the fee in tez", async () => {
-    render(fixture(props));
+    render(fixture(props), { store });
 
     await waitFor(() => expect(screen.getByTestId("fee")).toHaveTextContent(`1.234567 ${TEZ}`));
   });

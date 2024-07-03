@@ -1,6 +1,6 @@
 import { Modal } from "@chakra-ui/react";
 import { mockImplicitAccount } from "@umami/core";
-import { networksActions, store } from "@umami/state";
+import { type UmamiStore, makeStore, networksActions } from "@umami/state";
 import { GHOSTNET, type RawPkh } from "@umami/tezos";
 
 import { BuyTezForm } from "./BuyTezForm";
@@ -12,10 +12,16 @@ const fixture = (recipient?: RawPkh) => (
   </Modal>
 );
 
+let store: UmamiStore;
+
+beforeEach(() => {
+  store = makeStore();
+});
+
 describe("<BuyTezForm />", () => {
   describe("mainnet", () => {
     it("renders with default recipient", async () => {
-      render(fixture(mockImplicitAccount(0).address.pkh));
+      render(fixture(mockImplicitAccount(0).address.pkh), { store });
 
       await waitFor(() => {
         expect(screen.getByTestId("address-tile")).toHaveTextContent(
@@ -25,7 +31,7 @@ describe("<BuyTezForm />", () => {
     });
 
     it("renders Buy Tez on mainnet", async () => {
-      render(fixture());
+      render(fixture(), { store });
 
       await waitFor(() => {
         const result = screen.getByTestId("buy-tez-button");
@@ -37,7 +43,7 @@ describe("<BuyTezForm />", () => {
   describe("ghostnet", () => {
     it("renders request Tez from faucet on ghostnet", async () => {
       store.dispatch(networksActions.setCurrent(GHOSTNET));
-      render(fixture());
+      render(fixture(), { store });
 
       await waitFor(() => {
         const result = screen.getByTestId("buy-tez-button");

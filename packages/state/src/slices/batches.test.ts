@@ -10,9 +10,14 @@ import {
 import { DefaultNetworks, type Network } from "@umami/tezos";
 
 import { batchesActions } from "./batches";
-import { store } from "../store";
+import { type UmamiStore, makeStore } from "../store";
 
 const { add, clear, removeItem, removeByAccounts } = batchesActions;
+
+let store: UmamiStore;
+beforeEach(() => {
+  store = makeStore();
+});
 
 describe("batchesSlice", () => {
   describe.each(DefaultNetworks)("on $name", network => {

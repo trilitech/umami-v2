@@ -11,6 +11,7 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { type NFTBalance, metadataUri, mimeType, royalties } from "@umami/core";
+import { useSelectedNetwork } from "@umami/state";
 import { parsePkh } from "@umami/tezos";
 import { type CSSProperties } from "react";
 
@@ -18,7 +19,6 @@ import { AddressPill } from "../../../components/AddressPill/AddressPill";
 import { TruncatedTextWithTooltip } from "../../../components/TruncatedTextWithTooltip";
 import { TzktLink } from "../../../components/TzktLink";
 import colors from "../../../style/colors";
-import { useSelectedNetwork } from "../../../utils/hooks/networkHooks";
 
 const CreatorElement = ({ nft }: { nft: NFTBalance }) => {
   if (!nft.metadata.creators || nft.metadata.creators.length === 0) {

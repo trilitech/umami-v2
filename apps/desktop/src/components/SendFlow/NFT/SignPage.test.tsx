@@ -6,7 +6,7 @@ import {
   mockMnemonicAccount,
   mockNFT,
 } from "@umami/core";
-import { addTestAccount } from "@umami/state";
+import { type UmamiStore, addTestAccount, makeStore } from "@umami/state";
 import { executeParams } from "@umami/test-utils";
 import { TEZ, parseContractPkh } from "@umami/tezos";
 
@@ -20,7 +20,12 @@ const fixture = (props: SignPageProps<{ nft: NFTBalance }>) => (
   </Modal>
 );
 
-beforeEach(() => addTestAccount(mockMnemonicAccount(0)));
+let store: UmamiStore;
+
+beforeEach(() => {
+  store = makeStore();
+  addTestAccount(store, mockMnemonicAccount(0));
+});
 
 describe("<SignPage />", () => {
   const sender = mockImplicitAccount(0);
@@ -37,6 +42,7 @@ describe("<SignPage />", () => {
     ]),
     estimates: [executeParams({ fee: 1234567 })],
   };
+
   describe("fee", () => {
     it("displays the fee in tez", async () => {
       const props: SignPageProps<{ nft: NFTBalance }> = {
@@ -44,11 +50,12 @@ describe("<SignPage />", () => {
         mode: "single",
         data: { nft: mockNFT(1) },
       };
-      render(fixture(props));
+      render(fixture(props), { store });
 
       await waitFor(() => expect(screen.getByTestId("fee")).toHaveTextContent(`1.234567 ${TEZ}`));
     });
   });
+
   describe("nft", () => {
     it("displays the correct name", async () => {
       const props: SignPageProps<{ nft: NFTBalance }> = {
@@ -56,7 +63,7 @@ describe("<SignPage />", () => {
         mode: "single",
         data: { nft: mockNFT(1) },
       };
-      render(fixture(props));
+      render(fixture(props), { store });
 
       await waitFor(() =>
         expect(screen.getByTestId("nft-name")).toHaveTextContent(mockNFT(1).metadata.name as string)
@@ -69,7 +76,7 @@ describe("<SignPage />", () => {
         mode: "single",
         data: { nft: mockNFT(1) },
       };
-      render(fixture(props));
+      render(fixture(props), { store });
       await waitFor(() =>
         expect(screen.getByTestId("nft-owned")).toHaveTextContent(mockNFT(1).balance)
       );

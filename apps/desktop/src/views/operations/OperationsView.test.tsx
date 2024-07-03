@@ -1,5 +1,5 @@
 import { mockImplicitAccount, mockMnemonicAccount } from "@umami/core";
-import { addTestAccount, networksActions, store } from "@umami/state";
+import { type UmamiStore, addTestAccount, makeStore, networksActions } from "@umami/state";
 import { MAINNET } from "@umami/tezos";
 import {
   type TzktCombinedOperation,
@@ -17,10 +17,15 @@ jest.mock("@umami/tzkt", () => ({
   getRelatedTokenTransfers: jest.fn(),
 }));
 
+let store: UmamiStore;
+beforeEach(() => {
+  store = makeStore();
+});
+
 describe("OperationsView", () => {
   beforeEach(() => {
-    addTestAccount(mockMnemonicAccount(1));
-    addTestAccount(mockMnemonicAccount(2));
+    addTestAccount(store, mockMnemonicAccount(1));
+    addTestAccount(store, mockMnemonicAccount(2));
     store.dispatch(networksActions.setCurrent(MAINNET));
   });
 
@@ -31,7 +36,7 @@ describe("OperationsView", () => {
     });
 
     it("displays an empty state when no account filter applied", async () => {
-      render(<OperationsView />);
+      render(<OperationsView />, { store });
 
       await waitFor(() => {
         expect(screen.getByTestId("empty-state-message")).toBeVisible();
@@ -43,7 +48,7 @@ describe("OperationsView", () => {
 
     it("displays an empty state when account filter applied", async () => {
       const user = userEvent.setup();
-      render(<OperationsView />);
+      render(<OperationsView />, { store });
 
       // filter by one of the accounts
       await act(() => user.click(screen.getByTestId("account-filter")));
@@ -81,7 +86,7 @@ describe("OperationsView", () => {
     });
 
     it("hides empty state component", async () => {
-      render(<OperationsView />);
+      render(<OperationsView />, { store });
 
       await waitFor(() => {
         expect(screen.queryByTestId("empty-state-message")).not.toBeInTheDocument();

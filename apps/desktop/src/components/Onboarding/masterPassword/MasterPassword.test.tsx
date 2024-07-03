@@ -1,5 +1,5 @@
 import { mockMnemonicAccount } from "@umami/core";
-import { addTestAccount } from "@umami/state";
+import { type UmamiStore, addTestAccount, makeStore } from "@umami/state";
 import { mnemonic1 } from "@umami/test-utils";
 
 import { MasterPassword } from "./MasterPassword";
@@ -19,16 +19,22 @@ const fixture = () => {
   return <MasterPassword account={account} onClose={onClose} />;
 };
 
+let store: UmamiStore;
+
+beforeEach(() => {
+  store = makeStore();
+});
+
 describe("<MasterPassword />", () => {
   test("Display set password", () => {
-    render(fixture());
+    render(fixture(), { store });
 
     expect(screen.getByTestId("confirmation")).toBeInTheDocument();
   });
 
   test("Display enter password", () => {
-    addTestAccount(account);
-    render(fixture());
+    addTestAccount(store, account);
+    render(fixture(), { store });
 
     expect(screen.getByTestId("confirmation")).toBeInTheDocument();
   });

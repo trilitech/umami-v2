@@ -6,13 +6,25 @@ import {
   mockNFTRaw,
   mockSocialAccount,
 } from "@umami/core";
-import { addTestAccount, assetsActions, store, tokensActions } from "@umami/state";
+import {
+  type UmamiStore,
+  addTestAccount,
+  assetsActions,
+  makeStore,
+  tokensActions,
+} from "@umami/state";
 import { MAINNET } from "@umami/tezos";
 import { type RawTzktTokenBalance } from "@umami/tzkt";
 
 import { AccountTile } from "./AccountTile";
 import { act, render, screen, userEvent } from "../../mocks/testUtils";
 import { SelectedAccountContext } from "../../views/home/SelectedAccountContext";
+
+let store: UmamiStore;
+
+beforeEach(() => {
+  store = makeStore();
+});
 
 describe("<AccountTile />", () => {
   describe.each([
@@ -33,16 +45,16 @@ describe("<AccountTile />", () => {
       account: mockMultisigAccount(0),
     },
   ])("$account.type account", ({ iconTestId, account }) => {
-    beforeEach(() => addTestAccount(account));
+    beforeEach(() => addTestAccount(store, account));
 
     it("renders icon", () => {
-      render(<AccountTile account={account} />);
+      render(<AccountTile account={account} />, { store });
 
       expect(screen.getByTestId(iconTestId)).toBeInTheDocument();
     });
 
     it("renders label", () => {
-      render(<AccountTile account={account} />);
+      render(<AccountTile account={account} />, { store });
 
       expect(screen.getByText(account.label)).toBeInTheDocument();
     });
@@ -56,7 +68,8 @@ describe("<AccountTile />", () => {
             value={{ selectAccount: jest.fn(), selectedAccount: null }}
           >
             <AccountTile account={account} />
-          </SelectedAccountContext.Provider>
+          </SelectedAccountContext.Provider>,
+          { store }
         );
 
         expect(screen.getByTestId(testId, { exact: true })).toBeInTheDocument();
@@ -69,7 +82,8 @@ describe("<AccountTile />", () => {
             value={{ selectAccount: jest.fn(), selectedAccount: mockImplicitAccount(1) }}
           >
             <AccountTile account={account} />
-          </SelectedAccountContext.Provider>
+          </SelectedAccountContext.Provider>,
+          { store }
         );
 
         expect(screen.getByTestId(testId, { exact: true })).toBeInTheDocument();
@@ -82,7 +96,8 @@ describe("<AccountTile />", () => {
             value={{ selectedAccount: account, selectAccount: jest.fn() }}
           >
             <AccountTile account={account} />
-          </SelectedAccountContext.Provider>
+          </SelectedAccountContext.Provider>,
+          { store }
         );
 
         expect(screen.queryByTestId(testId, { exact: true })).not.toBeInTheDocument();
@@ -96,7 +111,8 @@ describe("<AccountTile />", () => {
         render(
           <SelectedAccountContext.Provider value={{ selectedAccount: null, selectAccount: spy }}>
             <AccountTile account={account} />
-          </SelectedAccountContext.Provider>
+          </SelectedAccountContext.Provider>,
+          { store }
         );
 
         await act(() => user.click(screen.getByTestId("account-tile-container")));
@@ -107,7 +123,7 @@ describe("<AccountTile />", () => {
 
     describe("NFTs", () => {
       it("doesn't render NFTs if none are owned by the account", () => {
-        render(<AccountTile account={account} />);
+        render(<AccountTile account={account} />, { store });
 
         expect(screen.queryByTestId("nfts-list")).not.toBeInTheDocument();
       });
@@ -122,7 +138,7 @@ describe("<AccountTile />", () => {
           tokensActions.addTokens({ network: MAINNET, tokens: balances.map(b => b.token) })
         );
 
-        render(<AccountTile account={account} />);
+        render(<AccountTile account={account} />, { store });
 
         expect(screen.getByTestId("nfts-list")).toBeInTheDocument();
       });
@@ -141,7 +157,7 @@ describe("<AccountTile />", () => {
           tokensActions.addTokens({ network: MAINNET, tokens: balances.map(b => b.token) })
         );
 
-        render(<AccountTile account={account} />);
+        render(<AccountTile account={account} />, { store });
 
         expect(screen.getByTestId("nfts-list")).toBeInTheDocument();
         expect(screen.getAllByTestId("nft-link")).toHaveLength(6);
@@ -167,7 +183,7 @@ describe("<AccountTile />", () => {
           tokensActions.addTokens({ network: MAINNET, tokens: balances.map(b => b.token) })
         );
 
-        render(<AccountTile account={account} />);
+        render(<AccountTile account={account} />, { store });
 
         expect(screen.getByTestId("nfts-list")).toBeInTheDocument();
         const urlPrefix = `#/home/${account.address.pkh}/${balances[0].token.contract.address}`;

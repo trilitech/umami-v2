@@ -1,10 +1,4 @@
 {
   "extends": "@umami/typescript-config/tsconfig.json",
-  "include": [
-    "src",
-    "jest.config.ts",
-    ".eslintrc.cjs",
-    "../tezos/src/derivationPathUtils.test.ts",
-    "../tezos/src/derivationPathUtils.ts"
-  ]
+  "include": ["src", "jest.config.ts", ".eslintrc.cjs"]
 }

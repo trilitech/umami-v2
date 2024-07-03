@@ -1,5 +1,5 @@
 import { mockLedgerAccount } from "@umami/core";
-import { addTestAccount, networksActions, store } from "@umami/state";
+import { type UmamiStore, addTestAccount, makeStore, networksActions } from "@umami/state";
 import { DefaultNetworks, TEZ, mockContractAddress } from "@umami/tezos";
 import { type OriginationOperation } from "@umami/tzkt";
 
@@ -14,6 +14,12 @@ const fixture = (context: any, operation: OriginationOperation) => (
   </OperationTileContext.Provider>
 );
 
+let store: UmamiStore;
+
+beforeEach(() => {
+  store = makeStore();
+});
+
 describe("<OriginationTile />", () => {
   describe.each([
     { mode: "page" } as const,
@@ -21,12 +27,10 @@ describe("<OriginationTile />", () => {
   ])("in $mode mode", contextValue => {
     describe("title link", () => {
       describe.each(DefaultNetworks)("on $name", network => {
-        beforeEach(() => {
-          store.dispatch(networksActions.setCurrent(network));
-        });
+        beforeEach(() => store.dispatch(networksActions.setCurrent(network)));
 
         it("links to the operation page on tzkt", () => {
-          render(fixture(contextValue, originationFixture()));
+          render(fixture(contextValue, originationFixture()), { store });
 
           expect(screen.getByTestId("title")).toHaveAttribute(
             "href",
@@ -35,7 +39,7 @@ describe("<OriginationTile />", () => {
         });
 
         it("shows a multisig account created title if it is a multisig contract", () => {
-          render(fixture(contextValue, originationFixture()));
+          render(fixture(contextValue, originationFixture()), { store });
           expect(screen.getByTestId("title")).toHaveTextContent("Multisig Account Created");
         });
 
@@ -50,7 +54,8 @@ describe("<OriginationTile />", () => {
                   address: mockContractAddress(0).pkh,
                 },
               })
-            )
+            ),
+            { store }
           );
           expect(screen.getByTestId("title")).toHaveTextContent("Contract Origination");
         });
@@ -58,12 +63,12 @@ describe("<OriginationTile />", () => {
     });
 
     it("displays timestamp", () => {
-      render(fixture(contextValue, originationFixture()));
+      render(fixture(contextValue, originationFixture()), { store });
       expect(screen.getByTestId("timestamp")).toHaveTextContent("02 Jan 2021");
     });
 
     it("shows the sender pill", () => {
-      addTestAccount(mockLedgerAccount(0));
+      addTestAccount(store, mockLedgerAccount(0));
 
       render(
         fixture(
@@ -71,7 +76,8 @@ describe("<OriginationTile />", () => {
           originationFixture({
             sender: { address: mockLedgerAccount(0).address.pkh },
           })
-        )
+        ),
+        { store }
       );
 
       expect(screen.getByTestId("from")).toHaveTextContent("Account");
@@ -83,7 +89,7 @@ describe("<OriginationTile />", () => {
 
     describe("fee", () => {
       it("renders if there is any fee paid by the user", () => {
-        addTestAccount(mockLedgerAccount(0));
+        addTestAccount(store, mockLedgerAccount(0));
         render(
           fixture(
             contextValue,
@@ -92,7 +98,8 @@ describe("<OriginationTile />", () => {
               storageFee: 20,
               allocationFee: 3,
             })
-          )
+          ),
+          { store }
         );
 
         expect(screen.getByTestId("fee")).toHaveTextContent(`0.000123 ${TEZ}`);
@@ -107,7 +114,8 @@ describe("<OriginationTile />", () => {
               storageFee: 0,
               allocationFee: 0,
             })
-          )
+          ),
+          { store }
         );
 
         expect(screen.queryByTestId("fee")).not.toBeInTheDocument();
@@ -115,23 +123,23 @@ describe("<OriginationTile />", () => {
     });
 
     it("shows operation type", () => {
-      render(fixture(contextValue, originationFixture()));
+      render(fixture(contextValue, originationFixture()), { store });
       expect(screen.getByTestId("operation-type")).toHaveTextContent("Contract Origination");
     });
   });
 
   describe("drawer mode", () => {
     const contextValue = { mode: "drawer", selectedAddress: mockLedgerAccount(0).address };
-    beforeEach(() => addTestAccount(mockLedgerAccount(0)));
+    beforeEach(() => addTestAccount(store, mockLedgerAccount(0)));
 
     it("hides the fee", () => {
-      render(fixture(contextValue, originationFixture()));
+      render(fixture(contextValue, originationFixture()), { store });
 
       expect(screen.queryByTestId("fee")).not.toBeInTheDocument();
     });
 
     it("hides the operation type", () => {
-      render(fixture(contextValue, originationFixture()));
+      render(fixture(contextValue, originationFixture()), { store });
 
       expect(screen.queryByTestId("operation-type")).not.toBeInTheDocument();
     });

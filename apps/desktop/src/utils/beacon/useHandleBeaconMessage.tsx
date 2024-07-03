@@ -13,19 +13,21 @@ import {
   type Operation,
   estimate,
 } from "@umami/core";
+import {
+  WalletClient,
+  useAsyncActionHandler,
+  useFindNetwork,
+  useGetOwnedAccountSafe,
+  useRemovePeerBySenderId,
+} from "@umami/state";
 import { type Network, isValidImplicitPkh, parseImplicitPkh, parsePkh } from "@umami/tezos";
 import { useContext } from "react";
 
-import { useRemovePeerBySenderId } from "./beacon";
 import { PermissionRequestModal } from "./PermissionRequestModal";
 import { SignPayloadRequestModal } from "./SignPayloadRequestModal";
-import { WalletClient } from "./WalletClient";
 import { DynamicModalContext } from "../../components/DynamicModal";
 import { BatchSignPage } from "../../components/SendFlow/Beacon/BatchSignPage";
 import { BeaconSignPage } from "../../components/SendFlow/Beacon/BeaconSignPage";
-import { useGetOwnedAccountSafe } from "../hooks/getAccountDataHooks";
-import { useFindNetwork } from "../hooks/networkHooks";
-import { useAsyncActionHandler } from "../hooks/useAsyncActionHandler";
 
 /**
  * @returns a function that handles a beacon message and opens a modal with the appropriate content

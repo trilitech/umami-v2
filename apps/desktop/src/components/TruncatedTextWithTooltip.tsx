@@ -1,7 +1,6 @@
 import { Text, Tooltip } from "@chakra-ui/react";
+import { truncate } from "@umami/tezos";
 import type React from "react";
-
-import { truncate } from "../utils/format";
 
 export const TruncatedTextWithTooltip: React.FC<{
   text: string;

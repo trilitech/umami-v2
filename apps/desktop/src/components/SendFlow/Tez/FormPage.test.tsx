@@ -6,7 +6,7 @@ import {
   mockMnemonicAccount,
   mockMultisigAccount,
 } from "@umami/core";
-import { addTestAccount } from "@umami/state";
+import { type UmamiStore, addTestAccount, makeStore, mockToast } from "@umami/state";
 import { executeParams } from "@umami/test-utils";
 
 import { FormPage, type FormValues } from "./FormPage";
@@ -20,7 +20,6 @@ import {
   userEvent,
   waitFor,
 } from "../../../mocks/testUtils";
-import { mockToast } from "../../../mocks/toast";
 import { type FormPageProps } from "../utils";
 
 const fixture = (props: FormPageProps<FormValues> = {}) => (
@@ -34,10 +33,16 @@ jest.mock("@umami/core", () => ({
   estimate: jest.fn(),
 }));
 
+let store: UmamiStore;
+
+beforeEach(() => {
+  store = makeStore();
+});
+
 describe("<Form />", () => {
   describe("default values", () => {
     it("renders an empty form by default", () => {
-      render(fixture());
+      render(fixture(), { store });
 
       expect(screen.getByLabelText("From")).toHaveValue("");
       expect(screen.getByLabelText("From")).toBeEnabled();
@@ -46,7 +51,7 @@ describe("<Form />", () => {
     });
 
     it("renders a form with a prefilled sender", () => {
-      render(fixture({ sender: mockImplicitAccount(0) }));
+      render(fixture({ sender: mockImplicitAccount(0) }), { store });
 
       expect(screen.getByTestId("real-address-input-sender")).toHaveValue(
         mockImplicitAccount(0).address.pkh
@@ -61,14 +66,15 @@ describe("<Form />", () => {
             prettyAmount: "1",
             recipient: mockImplicitAccount(1).address.pkh,
           },
-        })
+        }),
+        { store }
       );
 
-      await waitFor(() => {
+      await waitFor(() =>
         expect(screen.getByTestId("real-address-input-sender")).toHaveValue(
           mockImplicitAccount(0).address.pkh
-        );
-      });
+        )
+      );
       expect(screen.getByTestId("real-address-input-recipient")).toHaveValue(
         mockImplicitAccount(1).address.pkh
       );
@@ -84,14 +90,15 @@ describe("<Form />", () => {
             recipient: mockImplicitAccount(1).address.pkh,
           },
           sender: mockImplicitAccount(0),
-        })
+        }),
+        { store }
       );
 
-      await waitFor(() => {
+      await waitFor(() =>
         expect(screen.getByTestId("real-address-input-sender")).toHaveValue(
           mockImplicitAccount(0).address.pkh
-        );
-      });
+        )
+      );
       expect(screen.getByTestId("real-address-input-recipient")).toHaveValue(
         mockImplicitAccount(1).address.pkh
       );
@@ -106,14 +113,15 @@ describe("<Form />", () => {
             prettyAmount: "",
             recipient: mockImplicitAccount(1).address.pkh,
           },
-        })
+        }),
+        { store }
       );
 
-      await waitFor(() => {
+      await waitFor(() =>
         expect(screen.getByTestId("real-address-input-recipient")).toHaveValue(
           mockImplicitAccount(1).address.pkh
-        );
-      });
+        )
+      );
     });
   });
 
@@ -121,105 +129,101 @@ describe("<Form />", () => {
   describe("validations", () => {
     describe("From", () => {
       it("is required", async () => {
-        render(fixture());
+        render(fixture(), { store });
 
         fireEvent.blur(screen.getByLabelText("From"));
-        await waitFor(() => {
-          expect(screen.getByTestId("from-error")).toHaveTextContent("Invalid address or contact");
-        });
+        await waitFor(() =>
+          expect(screen.getByTestId("from-error")).toHaveTextContent("Invalid address or contact")
+        );
       });
 
       it("allows only owned accounts", async () => {
-        addTestAccount(mockMnemonicAccount(0));
-        render(fixture());
+        addTestAccount(store, mockMnemonicAccount(0));
+        render(fixture(), { store });
 
         fireEvent.change(screen.getByLabelText("From"), {
           target: { value: mockImplicitAccount(1).address.pkh },
         });
-        await waitFor(() => {
-          expect(screen.getByTestId("from-error")).toHaveTextContent("Invalid address or contact");
-        });
+        await waitFor(() =>
+          expect(screen.getByTestId("from-error")).toHaveTextContent("Invalid address or contact")
+        );
 
         fireEvent.change(screen.getByLabelText("From"), {
           target: { value: mockImplicitAccount(0).address.pkh },
         });
 
-        await waitFor(() => {
-          expect(screen.queryByTestId("from-error")).not.toBeInTheDocument();
-        });
+        await waitFor(() => expect(screen.queryByTestId("from-error")).not.toBeInTheDocument());
       });
 
       it("allows owned multisig accounts", async () => {
-        addTestAccount(mockMultisigAccount(0));
-        render(fixture());
+        addTestAccount(store, mockMultisigAccount(0));
+        render(fixture(), { store });
 
         fireEvent.change(screen.getByLabelText("From"), {
           target: { value: mockMultisigAccount(1).address.pkh },
         });
-        await waitFor(() => {
-          expect(screen.getByTestId("from-error")).toHaveTextContent("Invalid address or contact");
-        });
+        await waitFor(() =>
+          expect(screen.getByTestId("from-error")).toHaveTextContent("Invalid address or contact")
+        );
 
         fireEvent.change(screen.getByLabelText("From"), {
           target: { value: mockMultisigAccount(0).address.pkh },
         });
 
-        await waitFor(() => {
-          expect(screen.queryByTestId("from-error")).not.toBeInTheDocument();
-        });
+        await waitFor(() => expect(screen.queryByTestId("from-error")).not.toBeInTheDocument());
       });
     });
 
     describe("To", () => {
       it("is required", async () => {
-        render(fixture());
+        render(fixture(), { store });
 
         fireEvent.blur(screen.getByLabelText("To"));
-        await waitFor(() => {
+        await waitFor(() =>
           expect(screen.getByTestId("recipient-error")).toHaveTextContent(
             "Invalid address or contact"
-          );
-        });
+          )
+        );
       });
 
       it("allows only valid addresses", async () => {
-        render(fixture());
+        render(fixture(), { store });
 
         fireEvent.change(screen.getByLabelText("To"), {
           target: { value: "invalid" },
         });
-        await waitFor(() => {
+        await waitFor(() =>
           expect(screen.getByTestId("recipient-error")).toHaveTextContent(
             "Invalid address or contact"
-          );
-        });
+          )
+        );
 
         fireEvent.change(screen.getByLabelText("To"), {
           target: { value: mockImplicitAccount(0).address.pkh },
         });
 
-        await waitFor(() => {
-          expect(screen.queryByTestId("recipient-error")).not.toBeInTheDocument();
-        });
+        await waitFor(() =>
+          expect(screen.queryByTestId("recipient-error")).not.toBeInTheDocument()
+        );
       });
     });
 
     describe("Amount", () => {
       it("is required", async () => {
-        render(fixture());
+        render(fixture(), { store });
 
         fireEvent.blur(screen.getByLabelText("Amount"));
-        await waitFor(() => {
-          expect(screen.getByTestId("amount-error")).toHaveTextContent("Amount is required");
-        });
+        await waitFor(() =>
+          expect(screen.getByTestId("amount-error")).toHaveTextContent("Amount is required")
+        );
       });
     });
   });
 
   describe("single transaction", () => {
     beforeEach(() => {
-      addTestAccount(mockMnemonicAccount(0));
-      addTestAccount(mockMultisigAccount(0));
+      addTestAccount(store, mockMnemonicAccount(0));
+      addTestAccount(store, mockMultisigAccount(0));
     });
 
     it("shows a toast if estimation fails", async () => {
@@ -231,12 +235,11 @@ describe("<Form />", () => {
             recipient: mockImplicitAccount(1).address.pkh,
             prettyAmount: "1",
           },
-        })
+        }),
+        { store }
       );
       const submitButton = screen.getByText("Preview");
-      await waitFor(() => {
-        expect(submitButton).toBeEnabled();
-      });
+      await waitFor(() => expect(submitButton).toBeEnabled());
       const estimateMock = jest.mocked(estimate);
       estimateMock.mockRejectedValue(new Error("Some error occurred"));
 
@@ -261,12 +264,11 @@ describe("<Form />", () => {
               recipient: mockImplicitAccount(1).address.pkh,
               prettyAmount: "1",
             },
-          })
+          }),
+          { store }
         );
         const submitButton = screen.getByText("Preview");
-        await waitFor(() => {
-          expect(submitButton).toBeEnabled();
-        });
+        await waitFor(() => expect(submitButton).toBeEnabled());
 
         const operations = {
           ...makeAccountOperations(sender, mockImplicitAccount(0), [

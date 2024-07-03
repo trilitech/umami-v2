@@ -6,7 +6,7 @@ import {
   mockMultisigAccount,
 } from "@umami/core";
 import { multisigPendingOpsFixtures } from "@umami/multisig";
-import { addTestAccount, multisigsSlice, store } from "@umami/state";
+import { addTestAccount, makeStore, multisigsActions } from "@umami/state";
 import { executeParams } from "@umami/test-utils";
 import { mockImplicitAddress } from "@umami/tezos";
 
@@ -21,6 +21,7 @@ jest.mock("@umami/core", () => ({
 
 describe("<MultisigPendingOperations />", () => {
   it("displays multisig executable tez operations", async () => {
+    const store = makeStore();
     jest.mocked(estimate).mockResolvedValueOnce({
       type: "implicit",
       operations: [],
@@ -32,17 +33,17 @@ describe("<MultisigPendingOperations />", () => {
       ...mockMultisigAccount(0),
       pendingOperationsBigmapId: 3,
     };
-    store.dispatch(multisigsSlice.actions.setMultisigs([multisig]));
-    store.dispatch(multisigsSlice.actions.setPendingOperations(multisigPendingOpsFixtures));
+    store.dispatch(multisigsActions.setMultisigs([multisig]));
+    store.dispatch(multisigsActions.setPendingOperations(multisigPendingOpsFixtures));
 
     const mockAccount: MnemonicAccount = {
       ...mockMnemonicAccount(0),
       address: mockImplicitAddress(0),
     };
 
-    addTestAccount(mockAccount);
+    addTestAccount(store, mockAccount);
 
-    render(<MultisigPendingOperations account={multisig} />);
+    render(<MultisigPendingOperations account={multisig} />, { store });
 
     const allPending = screen.getAllByTestId(/multisig-pending-operation/);
     expect(allPending).toHaveLength(2);

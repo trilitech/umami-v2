@@ -1,8 +1,8 @@
 import { type DataTable, Then, When } from "@cucumber/cucumber";
 import { expect } from "@playwright/test";
+import { formatPkh } from "@umami/tezos";
 
 import { type CustomWorld } from "./world";
-import { formatPkh } from "../../utils/format";
 import { AccountsPage } from "../pages/AccountsPage";
 import { CreateMultisigPage } from "../pages/CreateMultisigPage";
 

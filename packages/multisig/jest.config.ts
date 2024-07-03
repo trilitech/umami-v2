@@ -7,8 +7,6 @@ const config: Config = {
   transform: {
     "^.+\\.ts$": "ts-jest",
   },
-  testEnvironment: "node",
-
   rootDir: "./",
 };
 export default config;

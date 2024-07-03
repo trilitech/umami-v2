@@ -17,6 +17,11 @@ import {
   type ImplicitAccount,
   type NFTBalance,
 } from "@umami/core";
+import {
+  useGetAccountUnstakeRequests,
+  useGetPendingMultisigOperations,
+  useSelectedNetwork,
+} from "@umami/state";
 import type React from "react";
 
 import { EarnTab } from "./EarnTab";
@@ -27,9 +32,6 @@ import { PendingUnstakeRequests } from "./PendingUnstakeRequests";
 import { TokenList } from "./TokenList";
 import { ExternalLinkIcon } from "../../../assets/icons";
 import colors from "../../../style/colors";
-import { useGetPendingMultisigOperations } from "../../../utils/hooks/multisigHooks";
-import { useSelectedNetwork } from "../../../utils/hooks/networkHooks";
-import { useGetAccountUnstakeRequests } from "../../../utils/hooks/stakingHooks";
 import { useGetOperations } from "../../../views/operations/useGetOperations";
 import { ExternalLink } from "../../ExternalLink";
 import { OperationTileContext } from "../../OperationTile";

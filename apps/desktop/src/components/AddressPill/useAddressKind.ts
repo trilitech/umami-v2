@@ -1,3 +1,4 @@
+import { useGetTokenType, useSelectedNetwork } from "@umami/state";
 import { type Address } from "@umami/tezos";
 
 import {
@@ -6,8 +7,6 @@ import {
   type FA2Address,
   type OwnedImplicitAddress,
 } from "./types";
-import { useSelectedNetwork } from "../../utils/hooks/networkHooks";
-import { useGetTokenType } from "../../utils/hooks/tokensHooks";
 import { type OwnedMultisigAddress } from "../AddressTile/types";
 import {
   useOwnedAccountAddressKind as useAddressTileOwnedAccountAddressKind,

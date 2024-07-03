@@ -23,19 +23,21 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
+import {
+  WalletClient,
+  useAddConnection,
+  useAsyncActionHandler,
+  useGetImplicitAccount,
+} from "@umami/state";
 import { capitalize } from "lodash";
 import type React from "react";
 import { useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
-import { WalletClient } from "./WalletClient";
 import { JsValueWrap } from "../../components/AccountDrawer/JsValueWrap";
 import { OwnedImplicitAccountsAutocomplete } from "../../components/AddressAutocomplete";
 import { DynamicModalContext } from "../../components/DynamicModal";
 import colors from "../../style/colors";
-import { useAddConnection } from "../hooks/beaconHooks";
-import { useGetImplicitAccount } from "../hooks/getAccountDataHooks";
-import { useAsyncActionHandler } from "../hooks/useAsyncActionHandler";
 
 export const PermissionRequestModal: React.FC<{
   request: PermissionRequestOutput;

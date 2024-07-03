@@ -2,9 +2,9 @@ import { mockTokenTransaction, rawAccountFixture } from "@umami/core";
 import { hedgehoge } from "@umami/test-utils";
 import { mockImplicitAddress } from "@umami/tezos";
 
-import { accountsSlice } from "./accounts/accounts";
+import { accountsActions } from "./accounts/accounts";
 import { assetsSlice } from "./assets";
-import { store } from "../store";
+import { type UmamiStore, makeStore } from "../store";
 
 const {
   actions: {
@@ -16,6 +16,11 @@ const {
     updateTokenTransfers,
   },
 } = assetsSlice;
+
+let store: UmamiStore;
+beforeEach(() => {
+  store = makeStore();
+});
 
 describe("assetsSlice", () => {
   it("is initialized with empty state", () => {
@@ -52,7 +57,7 @@ describe("assetsSlice", () => {
     );
     store.dispatch(updateTokenBalance([hedgehoge(mockImplicitAddress(0))]));
 
-    store.dispatch(accountsSlice.actions.reset());
+    store.dispatch(accountsActions.reset());
 
     expect(store.getState().assets).toEqual({
       accountStates: {},

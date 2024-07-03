@@ -4,12 +4,18 @@ import {
   mockMnemonicAccount,
   mockMultisigAccount,
 } from "@umami/core";
-import { addTestAccount, multisigsSlice, store } from "@umami/state";
+import { type UmamiStore, addTestAccount, makeStore, multisigsActions } from "@umami/state";
 import { type RawPkh, mockImplicitAddress } from "@umami/tezos";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { OperationSignerSelector } from "./OperationSignerSelector";
 import { render, renderHook, screen } from "../../mocks/testUtils";
+
+let store: UmamiStore;
+
+beforeEach(() => {
+  store = makeStore();
+});
 
 describe("OperationSignerSelector", () => {
   it("is hidden for implicit operations", () => {
@@ -19,14 +25,17 @@ describe("OperationSignerSelector", () => {
         operationType="implicit"
         reEstimate={jest.fn()}
         sender={mockImplicitAccount(0)}
-      />
+      />,
+      { store }
     );
     expect(screen.queryByTestId("signer-selector")).not.toBeInTheDocument();
   });
 
   describe("proposal operations", () => {
     it("allows only owned multisig signers to be chosen", () => {
-      [mockMnemonicAccount(0), mockMnemonicAccount(1)].forEach(addTestAccount);
+      [mockMnemonicAccount(0), mockMnemonicAccount(1)].forEach(account =>
+        addTestAccount(store, account)
+      );
       const multisigAccount: MultisigAccount = {
         ...mockMultisigAccount(0),
         signers: [
@@ -35,13 +44,15 @@ describe("OperationSignerSelector", () => {
           mockImplicitAccount(2).address,
         ],
       };
-      store.dispatch(multisigsSlice.actions.setMultisigs([multisigAccount]));
+      store.dispatch(multisigsActions.setMultisigs([multisigAccount]));
 
-      const { result } = renderHook(() =>
-        useForm<{ signer: RawPkh }>({
-          // it's assumed that we don't preselect an invalid signer
-          defaultValues: { signer: mockImplicitAddress(0).pkh },
-        })
+      const { result } = renderHook(
+        () =>
+          useForm<{ signer: RawPkh }>({
+            // it's assumed that we don't preselect an invalid signer
+            defaultValues: { signer: mockImplicitAddress(0).pkh },
+          }),
+        { store }
       );
 
       const reEstimateSpy = jest.fn();
@@ -54,7 +65,8 @@ describe("OperationSignerSelector", () => {
             reEstimate={reEstimateSpy}
             sender={multisigAccount}
           />
-        </FormProvider>
+        </FormProvider>,
+        { store }
       );
 
       // there is no input, just a select box

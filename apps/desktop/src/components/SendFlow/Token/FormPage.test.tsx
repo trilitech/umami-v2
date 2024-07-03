@@ -8,7 +8,7 @@ import {
   mockImplicitAccount,
   mockMnemonicAccount,
 } from "@umami/core";
-import { addTestAccount, assetsSlice, store } from "@umami/state";
+import { type UmamiStore, addTestAccount, assetsActions, makeStore, mockToast } from "@umami/state";
 import { executeParams } from "@umami/test-utils";
 import { parseContractPkh } from "@umami/tezos";
 
@@ -23,7 +23,6 @@ import {
   userEvent,
   waitFor,
 } from "../../../mocks/testUtils";
-import { mockToast } from "../../../mocks/toast";
 import { type FormPagePropsWithSender } from "../utils";
 
 jest.mock("@umami/core", () => ({
@@ -43,10 +42,16 @@ const fixture = (
   </Modal>
 );
 
+let store: UmamiStore;
+
+beforeEach(() => {
+  store = makeStore();
+});
+
 describe("<FormPage />", () => {
   describe("default values", () => {
     it("renders a form with a prefilled sender", () => {
-      render(fixture({ sender: mockImplicitAccount(1) }));
+      render(fixture({ sender: mockImplicitAccount(1) }), { store });
 
       expect(screen.getByTestId("address-tile")).toHaveTextContent(
         mockImplicitAccount(1).address.pkh
@@ -62,14 +67,13 @@ describe("<FormPage />", () => {
             prettyAmount: "1",
             recipient: mockImplicitAccount(1).address.pkh,
           },
-        })
+        }),
+        { store }
       );
 
-      await waitFor(() => {
-        expect(screen.getByTestId("real-address-input-sender")).toHaveValue(
-          mockAccount.address.pkh
-        );
-      });
+      await waitFor(() =>
+        expect(screen.getByTestId("real-address-input-sender")).toHaveValue(mockAccount.address.pkh)
+      );
       expect(screen.getByTestId("real-address-input-recipient")).toHaveValue(
         mockImplicitAccount(1).address.pkh
       );
@@ -82,14 +86,15 @@ describe("<FormPage />", () => {
       render(
         fixture({
           sender: mockAccount,
-        })
+        }),
+        { store }
       );
 
-      await waitFor(() => {
+      await waitFor(() =>
         expect(screen.getByTestId("token-symbol")).toHaveTextContent(
           mockToken.metadata?.symbol as string
-        );
-      });
+        )
+      );
     });
   });
 
@@ -99,40 +104,42 @@ describe("<FormPage />", () => {
         render(
           fixture({
             sender: mockAccount,
-          })
+          }),
+          { store }
         );
 
         fireEvent.blur(screen.getByLabelText("To"));
-        await waitFor(() => {
+        await waitFor(() =>
           expect(screen.getByTestId("recipient-error")).toHaveTextContent(
             "Invalid address or contact"
-          );
-        });
+          )
+        );
       });
 
       it("allows only valid addresses", async () => {
         render(
           fixture({
             sender: mockAccount,
-          })
+          }),
+          { store }
         );
 
         fireEvent.change(screen.getByLabelText("To"), {
           target: { value: "invalid" },
         });
-        await waitFor(() => {
+        await waitFor(() =>
           expect(screen.getByTestId("recipient-error")).toHaveTextContent(
             "Invalid address or contact"
-          );
-        });
+          )
+        );
 
         fireEvent.change(screen.getByLabelText("To"), {
           target: { value: mockAccount.address.pkh },
         });
 
-        await waitFor(() => {
-          expect(screen.queryByTestId("recipient-error")).not.toBeInTheDocument();
-        });
+        await waitFor(() =>
+          expect(screen.queryByTestId("recipient-error")).not.toBeInTheDocument()
+        );
       });
     });
 
@@ -144,15 +151,16 @@ describe("<FormPage />", () => {
               sender: mockAccount,
             },
             mockFA2Token(1, mockAccount, 5, 0)
-          )
+          ),
+          { store }
         );
         fireEvent.change(screen.getByLabelText("Amount"), {
           target: { value: "7" },
         });
         fireEvent.blur(screen.getByLabelText("Amount"));
-        await waitFor(() => {
-          expect(screen.getByTestId("amount-error")).toHaveTextContent("Max amount is 5");
-        });
+        await waitFor(() =>
+          expect(screen.getByTestId("amount-error")).toHaveTextContent("Max amount is 5")
+        );
       });
 
       it("doesn't allow values above the token balance with decimals", async () => {
@@ -162,15 +170,16 @@ describe("<FormPage />", () => {
               sender: mockAccount,
             },
             mockFA2Token(1, mockAccount, 1234)
-          )
+          ),
+          { store }
         );
         fireEvent.change(screen.getByLabelText("Amount"), {
           target: { value: "0.1235" },
         });
         fireEvent.blur(screen.getByLabelText("Amount"));
-        await waitFor(() => {
-          expect(screen.getByTestId("amount-error")).toHaveTextContent("Max amount is 0.1234");
-        });
+        await waitFor(() =>
+          expect(screen.getByTestId("amount-error")).toHaveTextContent("Max amount is 0.1234")
+        );
       });
 
       it("doesn't allow values with more decmial places", async () => {
@@ -181,25 +190,26 @@ describe("<FormPage />", () => {
               sender: mockAccount,
             },
             mockFA2Token(1, mockAccount, 1, decimals)
-          )
+          ),
+          { store }
         );
         fireEvent.change(screen.getByLabelText("Amount"), {
           target: { value: "0.00007" },
         });
         fireEvent.blur(screen.getByLabelText("Amount"));
-        await waitFor(() => {
+        await waitFor(() =>
           expect(screen.getByTestId("amount-error")).toHaveTextContent(
             `Please enter a value with up to ${decimals} decimal places`
-          );
-        });
+          )
+        );
       });
     });
 
     describe("single transaction", () => {
       it("opens a sign page if estimation succeeds", async () => {
         const user = userEvent.setup();
-        addTestAccount(mockAccount);
-        store.dispatch(assetsSlice.actions.updateTokenBalance([mockTokenRaw]));
+        addTestAccount(store, mockAccount);
+        store.dispatch(assetsActions.updateTokenBalance([mockTokenRaw]));
         const sender = mockAccount;
         render(
           fixture(
@@ -212,7 +222,8 @@ describe("<FormPage />", () => {
               },
             },
             mockFA2Token(0, mockAccount, 2, 0)
-          )
+          ),
+          { store }
         );
         const submitButton = screen.getByText("Preview");
         await waitFor(() => expect(submitButton).toBeEnabled());

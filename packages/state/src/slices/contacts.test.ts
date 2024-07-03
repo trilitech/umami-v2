@@ -1,11 +1,16 @@
 import { mockContractContact, mockImplicitContact } from "@umami/core";
 
 import { contactsActions } from "./contacts";
-import { store } from "../store";
+import { type UmamiStore, makeStore } from "../store";
 const { remove } = contactsActions;
 
 const contact1 = mockContractContact(2, "mainnet", "Mainnet Contact");
 const contact2 = mockImplicitContact(3, "Mainnet Contact 2");
+
+let store: UmamiStore;
+beforeEach(() => {
+  store = makeStore();
+});
 
 describe("Contacts reducer", () => {
   it("is initialized with empty state", () => {

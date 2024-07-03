@@ -1,10 +1,11 @@
-import * as testingLibrary from "@testing-library/react";
+import * as testLib from "@testing-library/react";
+import { type UmamiStore, makeStore } from "@umami/state";
 import { type PropsWithChildren, act } from "react";
+import { Provider } from "react-redux";
 import { HashRouter } from "react-router-dom";
 
 import { DynamicModalContext, useDynamicModal } from "../components/DynamicModal";
 import { ReactQueryProvider } from "../providers/ReactQueryProvider";
-import { ReduxStore } from "../providers/ReduxStore";
 import { UmamiTheme } from "../providers/UmamiTheme";
 
 // can be used to spyOn the openWith and onClose methods
@@ -13,53 +14,76 @@ export const dynamicModalContextMock = {
   openWith: jest.fn(),
 };
 
-const AllTheProviders = ({ children }: PropsWithChildren<object>) => {
-  const dynamicModal = useDynamicModal();
+const makeWrapper =
+  (store: UmamiStore) =>
+  ({ children }: PropsWithChildren) => {
+    const dynamicModal = useDynamicModal();
 
-  const openWith = dynamicModal.openWith;
-  const onClose = dynamicModal.onClose;
-  jest.spyOn(dynamicModal, "openWith").mockImplementation(async (...args) => {
-    dynamicModalContextMock.openWith(...args);
-    return openWith(...args);
-  });
-  jest.spyOn(dynamicModal, "onClose").mockImplementation((...args) => {
-    dynamicModalContextMock.onClose(...args);
-    return onClose(...args);
-  });
+    const openWith = dynamicModal.openWith;
+    const onClose = dynamicModal.onClose;
+    jest.spyOn(dynamicModal, "openWith").mockImplementation(async (...args) => {
+      dynamicModalContextMock.openWith(...args);
+      return openWith(...args);
+    });
+    jest.spyOn(dynamicModal, "onClose").mockImplementation((...args) => {
+      dynamicModalContextMock.onClose(...args);
+      return onClose(...args);
+    });
 
-  return (
-    <HashRouter>
-      <ReactQueryProvider>
-        <UmamiTheme>
-          <ReduxStore>
-            <DynamicModalContext.Provider value={dynamicModal}>
-              {children}
-              {dynamicModal.content}
-            </DynamicModalContext.Provider>
-          </ReduxStore>
-        </UmamiTheme>
-      </ReactQueryProvider>
-    </HashRouter>
-  );
+    return (
+      <HashRouter>
+        <ReactQueryProvider>
+          <UmamiTheme>
+            <Provider store={store}>
+              <DynamicModalContext.Provider value={dynamicModal}>
+                {children}
+                {dynamicModal.content}
+              </DynamicModalContext.Provider>
+            </Provider>
+          </UmamiTheme>
+        </ReactQueryProvider>
+      </HashRouter>
+    );
+  };
+
+const customRender = <
+  Q extends testLib.Queries = typeof testLib.queries,
+  Container extends Element | DocumentFragment = HTMLElement,
+  BaseElement extends Element | DocumentFragment = Container,
+>(
+  ui: React.ReactNode,
+  options?: testLib.RenderOptions<Q, Container, BaseElement> & { store?: UmamiStore }
+): testLib.RenderResult<Q, Container, BaseElement> & { store: UmamiStore } => {
+  const store = options?.store ?? makeStore();
+
+  return {
+    store,
+    ...testLib.render(ui, { wrapper: makeWrapper(store), ...options }),
+  };
 };
-
-const customRender = (...args: Parameters<typeof testingLibrary.render>) =>
-  testingLibrary.render(args[0], { wrapper: AllTheProviders, ...args[1] });
 
 const customRenderHook = <
   Result,
   Props,
-  Q extends testingLibrary.Queries = typeof testingLibrary.queries,
+  Q extends testLib.Queries = typeof testLib.queries,
   Container extends Element | DocumentFragment = HTMLElement,
   BaseElement extends Element | DocumentFragment = Container,
 >(
   render: (initialProps: Props) => Result,
-  options?: testingLibrary.RenderHookOptions<Props, Q, Container, BaseElement>
-): testingLibrary.RenderHookResult<Result, Props> =>
-  testingLibrary.renderHook(render, { wrapper: AllTheProviders, ...options });
+  options?: testLib.RenderHookOptions<Props, Q, Container, BaseElement> & {
+    store?: UmamiStore;
+  }
+): testLib.RenderHookResult<Result, Props> & { store?: UmamiStore } => {
+  const store = options?.store ?? makeStore();
+
+  return {
+    store,
+    ...testLib.renderHook(render, { wrapper: makeWrapper(store), ...options }),
+  };
+};
 
 // re-export everything
 // override render methods
 export { customRender as render, customRenderHook as renderHook, act };
-export const { fireEvent, screen, waitFor, within } = testingLibrary;
+export const { fireEvent, screen, waitFor, within } = testLib;
 export * from "@testing-library/user-event";

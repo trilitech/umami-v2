@@ -1,18 +1,15 @@
-import { Modal } from "@chakra-ui/react";
-import { networksActions, store } from "@umami/state";
+import { type UmamiStore, makeStore, networksActions } from "@umami/state";
 import { GHOSTNET, MAINNET } from "@umami/tezos";
-import { type ReactElement } from "react";
 
 import { UpsertNetworkModal } from "./UpsertNetworkModal";
 import { act, fireEvent, render, screen, userEvent, waitFor } from "../../../mocks/testUtils";
 
-const fixture = (element: ReactElement) => (
-  <Modal isOpen={true} onClose={() => {}}>
-    {element}
-  </Modal>
-);
-
 const customNetwork = { ...GHOSTNET, name: "custom" };
+
+let store: UmamiStore;
+beforeEach(() => {
+  store = makeStore();
+});
 
 describe("<UpsertNetworkModal />", () => {
   describe("edit mode", () => {
@@ -21,14 +18,14 @@ describe("<UpsertNetworkModal />", () => {
     });
 
     it("doesn't render name field", async () => {
-      render(fixture(<UpsertNetworkModal network={MAINNET} />));
+      render(<UpsertNetworkModal network={MAINNET} />, { store });
 
       await waitFor(() => expect(screen.queryByLabelText("Name")).not.toBeInTheDocument());
     });
 
     it("saves the updates", async () => {
       const user = userEvent.setup();
-      render(fixture(<UpsertNetworkModal network={customNetwork} />));
+      render(<UpsertNetworkModal network={customNetwork} />, { store });
 
       const updatedNetwork = {
         ...customNetwork,
@@ -56,7 +53,7 @@ describe("<UpsertNetworkModal />", () => {
 
     it("ignores trailing slashes", async () => {
       const user = userEvent.setup();
-      render(fixture(<UpsertNetworkModal network={customNetwork} />));
+      render(<UpsertNetworkModal network={customNetwork} />, { store });
 
       const updatedNetwork = {
         ...customNetwork,
@@ -91,7 +88,7 @@ describe("<UpsertNetworkModal />", () => {
   describe("create mode", () => {
     describe("name field", () => {
       it("validates uniqueness", async () => {
-        render(fixture(<UpsertNetworkModal />));
+        render(<UpsertNetworkModal />, { store });
         fireEvent.change(screen.getByLabelText("Name"), { target: { value: MAINNET.name } });
         fireEvent.blur(screen.getByLabelText("Name"));
         await waitFor(() => {
@@ -100,7 +97,7 @@ describe("<UpsertNetworkModal />", () => {
       });
 
       it("validates presence", async () => {
-        render(fixture(<UpsertNetworkModal />));
+        render(<UpsertNetworkModal />, { store });
         fireEvent.blur(screen.getByLabelText("Name"));
         await waitFor(() => {
           expect(screen.getByText("Name is required")).toBeInTheDocument();
@@ -109,7 +106,7 @@ describe("<UpsertNetworkModal />", () => {
     });
 
     it("validates RPC URL field presence", async () => {
-      render(fixture(<UpsertNetworkModal />));
+      render(<UpsertNetworkModal />, { store });
       fireEvent.blur(screen.getByLabelText("RPC URL"));
       await waitFor(() => {
         expect(screen.getByText("RPC URL is required")).toBeInTheDocument();
@@ -117,7 +114,7 @@ describe("<UpsertNetworkModal />", () => {
     });
 
     it("validates Tzkt API URL field presence", async () => {
-      render(fixture(<UpsertNetworkModal />));
+      render(<UpsertNetworkModal />, { store });
       fireEvent.blur(screen.getByLabelText("Tzkt API URL"));
       await waitFor(() => {
         expect(screen.getByText("Tzkt API URL is required")).toBeInTheDocument();
@@ -125,7 +122,7 @@ describe("<UpsertNetworkModal />", () => {
     });
 
     it("validates Tzkt Explorer URL field presence", async () => {
-      render(fixture(<UpsertNetworkModal />));
+      render(<UpsertNetworkModal />, { store });
       fireEvent.blur(screen.getByLabelText("Tzkt Explorer URL"));
       await waitFor(() => {
         expect(screen.getByText("Tzkt Explorer URL is required")).toBeInTheDocument();
@@ -134,7 +131,7 @@ describe("<UpsertNetworkModal />", () => {
 
     it("creates new network", async () => {
       const user = userEvent.setup();
-      render(fixture(<UpsertNetworkModal />));
+      render(<UpsertNetworkModal />, { store });
 
       await act(() => user.clear(screen.getByLabelText("Name")));
       await act(() => user.clear(screen.getByLabelText("RPC URL")));

@@ -15,7 +15,7 @@ import {
   mockImplicitAccount,
   mockTezOperation,
 } from "@umami/core";
-import { addTestAccount } from "@umami/state";
+import { type UmamiStore, WalletClient, addTestAccount, makeStore, mockToast } from "@umami/state";
 import { executeParams } from "@umami/test-utils";
 import { mockContractAddress, mockImplicitAddress } from "@umami/tezos";
 import { without } from "lodash";
@@ -25,29 +25,27 @@ import {
   toAccountOperations,
   useHandleBeaconMessage,
 } from "./useHandleBeaconMessage";
-import { WalletClient } from "./WalletClient";
 import { BatchSignPage } from "../../components/SendFlow/Beacon/BatchSignPage";
 import { BeaconSignPage } from "../../components/SendFlow/Beacon/BeaconSignPage";
 import { act, dynamicModalContextMock, renderHook, screen, waitFor } from "../../mocks/testUtils";
-import { mockToast } from "../../mocks/toast";
-
-jest.mock("./WalletClient", () => ({
-  WalletClient: {
-    getPeers: () => Promise.resolve([]),
-    respond: jest.fn(),
-  },
-}));
 
 jest.mock("@umami/core", () => ({
   ...jest.requireActual("@umami/core"),
   estimate: jest.fn(),
 }));
 
+jest.spyOn(WalletClient, "respond");
+
 const SENDER_ID = "mockSenderId";
 
 const account = mockImplicitAccount(1);
 
-beforeEach(() => addTestAccount(account));
+let store: UmamiStore;
+
+beforeEach(() => {
+  store = makeStore();
+  addTestAccount(store, account);
+});
 
 describe("<useHandleBeaconMessage />", () => {
   describe("permission request", () => {
@@ -64,7 +62,7 @@ describe("<useHandleBeaconMessage />", () => {
 
       const {
         result: { current: handleMessage },
-      } = renderHook(useHandleBeaconMessage);
+      } = renderHook(() => useHandleBeaconMessage(), { store });
 
       act(() => handleMessage(message));
 
@@ -84,7 +82,7 @@ describe("<useHandleBeaconMessage />", () => {
 
       const {
         result: { current: handleMessage },
-      } = renderHook(useHandleBeaconMessage);
+      } = renderHook(() => useHandleBeaconMessage(), { store });
 
       act(() => handleMessage(message));
 
@@ -115,7 +113,7 @@ describe("<useHandleBeaconMessage />", () => {
 
       const {
         result: { current: handleMessage },
-      } = renderHook(useHandleBeaconMessage);
+      } = renderHook(() => useHandleBeaconMessage(), { store });
 
       act(() => handleMessage(message));
 
@@ -136,7 +134,7 @@ describe("<useHandleBeaconMessage />", () => {
 
       const {
         result: { current: handleMessage },
-      } = renderHook(useHandleBeaconMessage);
+      } = renderHook(() => useHandleBeaconMessage(), { store });
 
       act(() => handleMessage(message));
 
@@ -159,7 +157,7 @@ describe("<useHandleBeaconMessage />", () => {
 
     const {
       result: { current: handleMessage },
-    } = renderHook(useHandleBeaconMessage);
+    } = renderHook(() => useHandleBeaconMessage(), { store });
 
     act(() => handleMessage(message));
 
@@ -185,7 +183,7 @@ describe("<useHandleBeaconMessage />", () => {
 
       const {
         result: { current: handleMessage },
-      } = renderHook(useHandleBeaconMessage);
+      } = renderHook(() => useHandleBeaconMessage(), { store });
 
       act(() => handleMessage(message));
 
@@ -209,7 +207,7 @@ describe("<useHandleBeaconMessage />", () => {
 
       const {
         result: { current: handleMessage },
-      } = renderHook(useHandleBeaconMessage);
+      } = renderHook(() => useHandleBeaconMessage(), { store });
 
       act(() => handleMessage(message));
 
@@ -243,7 +241,7 @@ describe("<useHandleBeaconMessage />", () => {
 
       const {
         result: { current: handleMessage },
-      } = renderHook(useHandleBeaconMessage);
+      } = renderHook(() => useHandleBeaconMessage(), { store });
 
       act(() => handleMessage(message));
 
@@ -284,7 +282,7 @@ describe("<useHandleBeaconMessage />", () => {
 
       const {
         result: { current: handleMessage },
-      } = renderHook(useHandleBeaconMessage);
+      } = renderHook(() => useHandleBeaconMessage(), { store });
 
       act(() => handleMessage(message));
 
@@ -311,7 +309,7 @@ describe("<useHandleBeaconMessage />", () => {
 
       const {
         result: { current: handleMessage },
-      } = renderHook(useHandleBeaconMessage);
+      } = renderHook(() => useHandleBeaconMessage(), { store });
 
       act(() => handleMessage(message));
 
@@ -359,7 +357,7 @@ describe("<useHandleBeaconMessage />", () => {
 
         const {
           result: { current: handleMessage },
-        } = renderHook(useHandleBeaconMessage);
+        } = renderHook(() => useHandleBeaconMessage(), { store });
 
         act(() => handleMessage(message));
 
@@ -406,7 +404,7 @@ describe("<useHandleBeaconMessage />", () => {
 
         const {
           result: { current: handleMessage },
-        } = renderHook(useHandleBeaconMessage);
+        } = renderHook(() => useHandleBeaconMessage(), { store });
 
         act(() => handleMessage(message));
 
@@ -455,7 +453,7 @@ describe("<useHandleBeaconMessage />", () => {
 
         const {
           result: { current: handleMessage },
-        } = renderHook(useHandleBeaconMessage);
+        } = renderHook(() => useHandleBeaconMessage(), { store });
 
         act(() => handleMessage(message));
 
@@ -504,7 +502,7 @@ describe("<useHandleBeaconMessage />", () => {
 
       const {
         result: { current: handleMessage },
-      } = renderHook(useHandleBeaconMessage);
+      } = renderHook(() => useHandleBeaconMessage(), { store });
 
       act(() => handleMessage(message));
 

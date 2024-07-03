@@ -1,5 +1,5 @@
 import { rawAccountFixture } from "@umami/core";
-import { assetsActions, store } from "@umami/state";
+import { assetsActions, makeStore } from "@umami/state";
 import { mockImplicitAddress } from "@umami/tezos";
 
 import { AccountBalance } from "./AccountBalance";
@@ -12,13 +12,14 @@ describe("<AccountBalance />", () => {
   });
 
   it("renders the balance for an account", () => {
+    const store = makeStore();
     store.dispatch(
       assetsActions.updateAccountStates([
         rawAccountFixture({ balance: 1234567 }),
         rawAccountFixture({ address: mockImplicitAddress(1).pkh, balance: 9234567 }),
       ])
     );
-    render(<AccountBalance address={mockImplicitAddress(0).pkh} />);
+    render(<AccountBalance address={mockImplicitAddress(0).pkh} />, { store });
     expect(screen.getByTestId("account-balance")).toHaveTextContent("1.234567");
   });
 });

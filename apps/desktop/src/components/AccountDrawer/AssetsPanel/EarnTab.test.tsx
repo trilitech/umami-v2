@@ -1,5 +1,5 @@
 import { mockMnemonicAccount, rawAccountFixture } from "@umami/core";
-import { addTestAccount, assetsSlice, store } from "@umami/state";
+import { type UmamiStore, addTestAccount, assetsSlice, makeStore } from "@umami/state";
 import { mockImplicitAddress } from "@umami/tezos";
 
 import { EarnTab } from "./EarnTab";
@@ -8,10 +8,16 @@ import { act, render, screen, userEvent } from "../../../mocks/testUtils";
 const { updateAccountStates, updateBakers } = assetsSlice.actions;
 const account = mockMnemonicAccount(0);
 
+let store: UmamiStore;
+
+beforeEach(() => {
+  store = makeStore();
+});
+
 describe("<EarnTab />", () => {
   describe("when not delegating", () => {
     it("shows an empty state", () => {
-      render(<EarnTab account={account} />);
+      render(<EarnTab account={account} />, { store });
 
       expect(screen.getByTestId("delegation-status")).toHaveTextContent("Inactive");
       expect(screen.getByTestId("staked-balance")).toHaveTextContent("0.000000 ꜩ");
@@ -32,7 +38,7 @@ describe("<EarnTab />", () => {
 
     it('opens delegation form on "Delegate" button click', async () => {
       const user = userEvent.setup();
-      render(<EarnTab account={account} />);
+      render(<EarnTab account={account} />, { store });
 
       await act(() => user.click(screen.getByRole("button", { name: "Delegate" })));
 
@@ -57,13 +63,13 @@ describe("<EarnTab />", () => {
       delegate: baker,
     });
 
-    beforeEach(() => addTestAccount(account));
+    beforeEach(() => addTestAccount(store, account));
 
     it("displays delegation data", () => {
       store.dispatch(updateAccountStates([accountState]));
       store.dispatch(updateBakers([baker]));
 
-      render(<EarnTab account={account} />);
+      render(<EarnTab account={account} />, { store });
 
       expect(screen.getByTestId("delegation-status")).toHaveTextContent("Active");
       expect(screen.getByTestId("staked-balance")).toHaveTextContent("0.001234 ꜩ");
@@ -86,7 +92,7 @@ describe("<EarnTab />", () => {
       store.dispatch(updateAccountStates([{ ...accountState, stakedBalance: 0 }]));
       store.dispatch(updateBakers([baker]));
 
-      render(<EarnTab account={account} />);
+      render(<EarnTab account={account} />, { store });
 
       expect(screen.getByRole("button", { name: "Unstake" })).toBeDisabled();
     });
@@ -96,7 +102,7 @@ describe("<EarnTab />", () => {
       store.dispatch(updateBakers([baker]));
       const user = userEvent.setup();
 
-      render(<EarnTab account={account} />);
+      render(<EarnTab account={account} />, { store });
 
       await act(() => user.click(screen.getByTestId("end-delegation-button")));
 
@@ -108,7 +114,7 @@ describe("<EarnTab />", () => {
       store.dispatch(updateBakers([baker]));
 
       const user = userEvent.setup();
-      render(<EarnTab account={account} />);
+      render(<EarnTab account={account} />, { store });
 
       await act(() => user.click(screen.getByTestId("change-delegation-button")));
 

@@ -1,4 +1,5 @@
 import { type IconProps } from "@chakra-ui/react";
+import { useAddressExistsInContacts } from "@umami/state";
 import { useContext } from "react";
 
 import { type AddressPillMode } from "./AddressPillMode";
@@ -12,7 +13,6 @@ import {
   KeyIcon,
   XMarkIcon,
 } from "../../assets/icons";
-import { useAddressExistsInContacts } from "../../utils/hooks/contactsHooks";
 import { DynamicModalContext } from "../DynamicModal";
 import { UpsertContactModal } from "../UpsertContactModal";
 

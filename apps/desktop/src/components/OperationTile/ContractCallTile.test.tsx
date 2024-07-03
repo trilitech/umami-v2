@@ -1,19 +1,24 @@
 import { mockLedgerAccount } from "@umami/core";
-import { addTestAccount, networksActions, store } from "@umami/state";
-import { DefaultNetworks, TEZ, mockContractAddress } from "@umami/tezos";
+import { type UmamiStore, addTestAccount, makeStore, networksActions } from "@umami/state";
+import { DefaultNetworks, TEZ, formatPkh, mockContractAddress } from "@umami/tezos";
 import { type TransactionOperation } from "@umami/tzkt";
 
 import { ContractCallTile } from "./ContractCallTile";
 import { OperationTileContext } from "./OperationTileContext";
 import { contractCallFixture } from "./testUtils";
 import { render, screen } from "../../mocks/testUtils";
-import { formatPkh } from "../../utils/format";
 
 const fixture = (context: any, operation: TransactionOperation) => (
   <OperationTileContext.Provider value={context}>
     <ContractCallTile operation={operation} />
   </OperationTileContext.Provider>
 );
+
+let store: UmamiStore;
+
+beforeEach(() => {
+  store = makeStore();
+});
 
 describe("<ContractCallTile />", () => {
   describe.each([
@@ -25,7 +30,7 @@ describe("<ContractCallTile />", () => {
         it("links to the operation page on tzkt", () => {
           store.dispatch(networksActions.setCurrent(network));
 
-          render(fixture(contextValue, contractCallFixture()));
+          render(fixture(contextValue, contractCallFixture()), { store });
 
           expect(screen.getByTestId("title")).toHaveAttribute(
             "href",
@@ -37,12 +42,12 @@ describe("<ContractCallTile />", () => {
     });
 
     it("displays timestamp", () => {
-      render(fixture(contextValue, contractCallFixture()));
+      render(fixture(contextValue, contractCallFixture()), { store });
       expect(screen.getByTestId("timestamp")).toHaveTextContent("02 Jan 2021");
     });
 
     it("shows both the sender and target contract pills", () => {
-      addTestAccount(mockLedgerAccount(0));
+      addTestAccount(store, mockLedgerAccount(0));
 
       render(
         fixture(
@@ -50,7 +55,8 @@ describe("<ContractCallTile />", () => {
           contractCallFixture({
             sender: { address: mockLedgerAccount(0).address.pkh },
           })
-        )
+        ),
+        { store }
       );
 
       expect(screen.getByTestId("from")).toHaveTextContent("Account");
@@ -63,7 +69,7 @@ describe("<ContractCallTile />", () => {
 
     describe("fee", () => {
       it("renders if there is any fee paid by the user", () => {
-        addTestAccount(mockLedgerAccount(0));
+        addTestAccount(store, mockLedgerAccount(0));
         render(
           fixture(
             contextValue,
@@ -73,7 +79,8 @@ describe("<ContractCallTile />", () => {
               storageFee: 20,
               allocationFee: 3,
             })
-          )
+          ),
+          { store }
         );
 
         expect(screen.getByTestId("fee")).toHaveTextContent(`0.000123 ${TEZ}`);
@@ -88,7 +95,8 @@ describe("<ContractCallTile />", () => {
               storageFee: 0,
               allocationFee: 0,
             })
-          )
+          ),
+          { store }
         );
 
         expect(screen.queryByTestId("fee")).not.toBeInTheDocument();
@@ -96,7 +104,7 @@ describe("<ContractCallTile />", () => {
     });
 
     it("shows operation type", () => {
-      render(fixture(contextValue, contractCallFixture()));
+      render(fixture(contextValue, contractCallFixture()), { store });
 
       expect(screen.getByTestId("operation-type")).toHaveTextContent("Contract Call");
     });
@@ -104,16 +112,16 @@ describe("<ContractCallTile />", () => {
 
   describe("drawer mode", () => {
     const contextValue = { mode: "drawer", selectedAddress: mockLedgerAccount(0).address };
-    beforeEach(() => addTestAccount(mockLedgerAccount(0)));
+    beforeEach(() => addTestAccount(store, mockLedgerAccount(0)));
 
     it("hides the fee", () => {
-      render(fixture(contextValue, contractCallFixture()));
+      render(fixture(contextValue, contractCallFixture()), { store });
 
       expect(screen.queryByTestId("fee")).not.toBeInTheDocument();
     });
 
     it("hides the operation type", () => {
-      render(fixture(contextValue, contractCallFixture()));
+      render(fixture(contextValue, contractCallFixture()), { store });
 
       expect(screen.queryByTestId("operation-type")).not.toBeInTheDocument();
     });

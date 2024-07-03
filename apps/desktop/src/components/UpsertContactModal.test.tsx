@@ -1,11 +1,10 @@
 import { mockImplicitContact } from "@umami/core";
 import { getNetworksForContracts } from "@umami/multisig";
-import { contactsActions, store } from "@umami/state";
+import { type UmamiStore, contactsActions, makeStore, mockToast } from "@umami/state";
 import { mockContractAddress, mockImplicitAddress } from "@umami/tezos";
 
 import { UpsertContactModal } from "./UpsertContactModal";
 import { act, render, screen, userEvent, waitFor } from "../mocks/testUtils";
-import { mockToast } from "../mocks/toast";
 
 jest.mock("@umami/multisig", () => ({
   ...jest.requireActual("@umami/multisig"),
@@ -14,6 +13,12 @@ jest.mock("@umami/multisig", () => ({
 
 const contact1 = mockImplicitContact(1);
 const contact2 = mockImplicitContact(2);
+
+let store: UmamiStore;
+
+beforeEach(() => {
+  store = makeStore();
+});
 
 describe("<UpsertContactModal />", () => {
   describe("on adding contact", () => {
@@ -34,14 +39,14 @@ describe("<UpsertContactModal />", () => {
       },
     ])("for $testCase", ({ modalComponent }) => {
       it("shows correct title & button label for new contact", () => {
-        render(modalComponent);
+        render(modalComponent, { store });
 
         expect(screen.getByRole("dialog")).toHaveTextContent("Add Contact");
         expect(screen.getByTestId("confirmation-button")).toHaveTextContent("Add to Address Book");
       });
 
       it("has editable address & name fields", () => {
-        render(modalComponent);
+        render(modalComponent, { store });
 
         expect(screen.getByLabelText("Address")).toBeEnabled();
         expect(screen.getByLabelText("Name")).toBeEnabled();
@@ -49,7 +54,7 @@ describe("<UpsertContactModal />", () => {
 
       it("validates updated address", async () => {
         const user = userEvent;
-        render(modalComponent);
+        render(modalComponent, { store });
 
         const addressInput = screen.getByLabelText("Address");
         await act(() => user.clear(addressInput));
@@ -65,7 +70,7 @@ describe("<UpsertContactModal />", () => {
       it("checks the name is unique", async () => {
         const user = userEvent;
         store.dispatch(contactsActions.upsert(contact2));
-        render(modalComponent);
+        render(modalComponent, { store });
 
         const nameInput = screen.getByLabelText("Name");
         await act(() => user.clear(nameInput));
@@ -83,7 +88,7 @@ describe("<UpsertContactModal />", () => {
       it("adds contact to address book", async () => {
         const user = userEvent;
         store.dispatch(contactsActions.upsert(contact2));
-        render(modalComponent);
+        render(modalComponent, { store });
 
         // Set name
         const nameInput = screen.getByLabelText("Name");
@@ -112,7 +117,7 @@ describe("<UpsertContactModal />", () => {
           .mocked(getNetworksForContracts)
           .mockResolvedValue(new Map([[contractPkh, "ghostnet"]]));
         const user = userEvent;
-        render(modalComponent);
+        render(modalComponent, { store });
 
         // Set name
         const nameInput = screen.getByLabelText("Name");
@@ -139,7 +144,7 @@ describe("<UpsertContactModal />", () => {
       it("shows error toast on unknown network for contract addresses", async () => {
         jest.mocked(getNetworksForContracts).mockResolvedValue(new Map());
         const user = userEvent;
-        render(modalComponent);
+        render(modalComponent, { store });
 
         // Set name
         const nameInput = screen.getByLabelText("Name");
@@ -169,7 +174,8 @@ describe("<UpsertContactModal />", () => {
               name: "",
               pkh: mockImplicitAddress(0).pkh,
             }}
-          />
+          />,
+          { store }
         );
 
         expect(screen.getByLabelText("Address")).toHaveValue(mockImplicitAddress(0).pkh);
@@ -183,7 +189,8 @@ describe("<UpsertContactModal />", () => {
               name: "",
               pkh: "invalid pkh",
             }}
-          />
+          />,
+          { store }
         );
 
         await act(() => user.click(screen.getByLabelText("Address")));
@@ -204,7 +211,8 @@ describe("<UpsertContactModal />", () => {
               name: "",
               pkh: contact1.pkh,
             }}
-          />
+          />,
+          { store }
         );
 
         // Set name
@@ -236,7 +244,8 @@ describe("<UpsertContactModal />", () => {
               name: "",
               pkh: contractPkh,
             }}
-          />
+          />,
+          { store }
         );
 
         // Set name
@@ -266,7 +275,8 @@ describe("<UpsertContactModal />", () => {
               name: "",
               pkh: contractPkh,
             }}
-          />
+          />,
+          { store }
         );
 
         // Set name
@@ -292,14 +302,14 @@ describe("<UpsertContactModal />", () => {
     });
 
     it("shows correct title & button label", () => {
-      render(<UpsertContactModal contact={contact1} />);
+      render(<UpsertContactModal contact={contact1} />, { store });
 
       expect(screen.getByRole("dialog")).toHaveTextContent("Edit Contact");
       expect(screen.getByTestId("confirmation-button")).toHaveTextContent("Update");
     });
 
     it("has uneditable address field", () => {
-      render(<UpsertContactModal contact={contact1} />);
+      render(<UpsertContactModal contact={contact1} />, { store });
 
       expect(screen.getByLabelText("Address")).toHaveValue(contact1.pkh);
       expect(screen.getByLabelText("Address")).toBeDisabled();
@@ -307,7 +317,7 @@ describe("<UpsertContactModal />", () => {
 
     it("checks the name was updated", async () => {
       const user = userEvent;
-      render(<UpsertContactModal contact={contact1} />);
+      render(<UpsertContactModal contact={contact1} />, { store });
 
       await act(() => user.click(screen.getByLabelText("Name")));
       // click outside of address input to trigger blur event
@@ -321,7 +331,7 @@ describe("<UpsertContactModal />", () => {
     it("checks the name is unique", async () => {
       const user = userEvent;
       store.dispatch(contactsActions.upsert(contact2));
-      render(<UpsertContactModal contact={contact1} />);
+      render(<UpsertContactModal contact={contact1} />, { store });
 
       const nameInput = screen.getByLabelText("Name");
       await act(() => user.clear(nameInput));
@@ -339,7 +349,7 @@ describe("<UpsertContactModal />", () => {
     it("updates contact in address book", async () => {
       const user = userEvent;
       store.dispatch(contactsActions.upsert(contact2));
-      render(<UpsertContactModal contact={contact1} />);
+      render(<UpsertContactModal contact={contact1} />, { store });
 
       // Update name
       const nameInput = screen.getByLabelText("Name");

@@ -1,7 +1,7 @@
 import { type Token, fromRawToken, mockLedgerAccount } from "@umami/core";
-import { addTestAccount, networksActions, store } from "@umami/state";
+import { type UmamiStore, addTestAccount, makeStore, networksActions } from "@umami/state";
 import { ghostnetThezard } from "@umami/test-utils";
-import { DefaultNetworks, TEZ, mockImplicitAddress } from "@umami/tezos";
+import { DefaultNetworks, TEZ, formatPkh, mockImplicitAddress } from "@umami/tezos";
 import { type TokenTransferOperation, type TransactionOperation } from "@umami/tzkt";
 
 import { OperationTileContext } from "./OperationTileContext";
@@ -9,7 +9,6 @@ import { tokenTransferFixture, transactionFixture } from "./testUtils";
 import { TokenTransferTile } from "./TokenTransferTile";
 import * as operationDestinationModule from "./useGetOperationDestination";
 import { render, screen } from "../../mocks/testUtils";
-import { formatPkh } from "../../utils/format";
 
 const fixture = (
   context: any,
@@ -25,6 +24,12 @@ const fixture = (
   </OperationTileContext.Provider>
 );
 
+let store: UmamiStore;
+
+beforeEach(() => {
+  store = makeStore();
+});
+
 describe("<TokenTransferTile />", () => {
   describe.each([
     { mode: "page" } as const,
@@ -32,9 +37,9 @@ describe("<TokenTransferTile />", () => {
   ])("in $mode mode", contextValue => {
     describe("sign", () => {
       it("shows '+' for incoming transactions", () => {
-        addTestAccount(mockLedgerAccount(1));
+        addTestAccount(store, mockLedgerAccount(1));
 
-        render(fixture(contextValue, tokenTransferFixture()));
+        render(fixture(contextValue, tokenTransferFixture()), { store });
 
         expect(screen.getByTestId("incoming-arrow")).toBeInTheDocument();
         expect(screen.queryByTestId("outgoing-arrow")).not.toBeInTheDocument();
@@ -42,7 +47,7 @@ describe("<TokenTransferTile />", () => {
       });
 
       it("shows '-' for outgoing transactions", () => {
-        addTestAccount(mockLedgerAccount(1));
+        addTestAccount(store, mockLedgerAccount(1));
 
         render(
           fixture(
@@ -51,7 +56,8 @@ describe("<TokenTransferTile />", () => {
               from: { address: mockLedgerAccount(1).address.pkh },
               to: { address: mockImplicitAddress(2).pkh },
             })
-          )
+          ),
+          { store }
         );
 
         expect(screen.queryByTestId("incoming-arrow")).not.toBeInTheDocument();
@@ -60,8 +66,8 @@ describe("<TokenTransferTile />", () => {
       });
 
       it("shows '-' if sender and target are both owned", () => {
-        addTestAccount(mockLedgerAccount(0));
-        addTestAccount(mockLedgerAccount(1));
+        addTestAccount(store, mockLedgerAccount(0));
+        addTestAccount(store, mockLedgerAccount(1));
 
         render(
           fixture(
@@ -70,7 +76,8 @@ describe("<TokenTransferTile />", () => {
               to: { address: mockLedgerAccount(0).address.pkh },
               from: { address: mockLedgerAccount(1).address.pkh },
             })
-          )
+          ),
+          { store }
         );
 
         expect(screen.queryByTestId("incoming-arrow")).not.toBeInTheDocument();
@@ -81,25 +88,25 @@ describe("<TokenTransferTile />", () => {
 
     describe("amount", () => {
       it("does not display decimal if not needed", () => {
-        addTestAccount(mockLedgerAccount(1));
+        addTestAccount(store, mockLedgerAccount(1));
         const tokenTransfer = tokenTransferFixture({
           from: { address: mockLedgerAccount(1).address.pkh },
         });
         delete tokenTransfer.token.metadata.decimals;
 
-        render(fixture(contextValue, tokenTransfer));
+        render(fixture(contextValue, tokenTransfer), { store });
 
         expect(screen.getByTestId("title")).toHaveTextContent("-500 uUSD");
       });
 
       it("displays decimal if needed", () => {
-        addTestAccount(mockLedgerAccount(1));
+        addTestAccount(store, mockLedgerAccount(1));
         const tokenTransfer = tokenTransferFixture({
           from: { address: mockLedgerAccount(1).address.pkh },
         });
         tokenTransfer.token.metadata.decimals = 2;
 
-        render(fixture(contextValue, tokenTransfer));
+        render(fixture(contextValue, tokenTransfer), { store });
 
         expect(screen.getByTestId("title")).toHaveTextContent("-5.00 uUSD");
       });
@@ -115,7 +122,7 @@ describe("<TokenTransferTile />", () => {
             decimals: undefined,
             displayUri: "some-uri",
           };
-          render(fixture(contextValue, tokenTransfer));
+          render(fixture(contextValue, tokenTransfer), { store });
 
           expect(screen.getByTestId("title")).toHaveTextContent("some-name");
         });
@@ -129,7 +136,7 @@ describe("<TokenTransferTile />", () => {
             displayUri: "some-uri",
           };
 
-          render(fixture(contextValue, tokenTransfer));
+          render(fixture(contextValue, tokenTransfer), { store });
 
           expect(screen.getByTestId("title")).toHaveTextContent("NFT");
         });
@@ -144,7 +151,7 @@ describe("<TokenTransferTile />", () => {
         tokenTransfer.token.metadata.name = "some-name";
 
         it("shows the token symbol", () => {
-          render(fixture(contextValue, tokenTransfer));
+          render(fixture(contextValue, tokenTransfer), { store });
 
           expect(screen.getByTestId("title")).toHaveTextContent("uUSD");
         });
@@ -152,7 +159,7 @@ describe("<TokenTransferTile />", () => {
         it("shows the default token symbol if the token symbol is empty and name is present", () => {
           tokenTransfer.token.metadata.symbol = undefined;
           tokenTransfer.token.metadata.name = undefined;
-          render(fixture(contextValue, tokenTransfer));
+          render(fixture(contextValue, tokenTransfer), { store });
 
           expect(screen.getByTestId("title")).toHaveTextContent(defaultSymbol);
         });
@@ -164,7 +171,7 @@ describe("<TokenTransferTile />", () => {
         it("links to the operation page on tzkt", () => {
           store.dispatch(networksActions.setCurrent(network));
 
-          render(fixture(contextValue, tokenTransferFixture()));
+          render(fixture(contextValue, tokenTransferFixture()), { store });
 
           expect(screen.getByTestId("title")).toHaveAttribute(
             "href",
@@ -176,16 +183,15 @@ describe("<TokenTransferTile />", () => {
 
     it("displays timestamp", () => {
       render(
-        fixture(contextValue, tokenTransferFixture({ timestamp: "2021-01-02T00:00:00.000Z" }))
+        fixture(contextValue, tokenTransferFixture({ timestamp: "2021-01-02T00:00:00.000Z" })),
+        { store }
       );
 
       expect(screen.getByTestId("timestamp")).toHaveTextContent("2 Jan 2021");
     });
 
     describe("pills", () => {
-      beforeEach(() => {
-        addTestAccount(mockLedgerAccount(0));
-      });
+      beforeEach(() => addTestAccount(store, mockLedgerAccount(0)));
 
       it("shows both if sender is an owned account", () => {
         render(
@@ -195,7 +201,8 @@ describe("<TokenTransferTile />", () => {
               from: { address: mockLedgerAccount(0).address.pkh },
               to: { address: mockLedgerAccount(1).address.pkh },
             })
-          )
+          ),
+          { store }
         );
 
         expect(screen.getByTestId("from")).toHaveTextContent("Account");
@@ -212,7 +219,8 @@ describe("<TokenTransferTile />", () => {
               to: { address: mockLedgerAccount(0).address.pkh },
               from: { address: mockLedgerAccount(1).address.pkh },
             })
-          )
+          ),
+          { store }
         );
 
         expect(screen.getByTestId("from")).toHaveTextContent(
@@ -229,7 +237,8 @@ describe("<TokenTransferTile />", () => {
               to: { address: mockLedgerAccount(0).address.pkh },
               from: { address: mockLedgerAccount(0).address.pkh },
             })
-          )
+          ),
+          { store }
         );
 
         expect(screen.getByTestId("from")).toHaveTextContent("Account");
@@ -248,7 +257,7 @@ describe("<TokenTransferTile />", () => {
           .spyOn(operationDestinationModule, "useGetOperationDestination")
           .mockReturnValue("unrelated");
 
-        render(fixture(contextValue, transfer));
+        render(fixture(contextValue, transfer), { store });
 
         expect(screen.getByTestId("internal-prefix")).toBeVisible();
       });
@@ -257,7 +266,7 @@ describe("<TokenTransferTile />", () => {
         jest
           .spyOn(operationDestinationModule, "useGetOperationDestination")
           .mockReturnValue("incoming");
-        render(fixture(contextValue, transfer));
+        render(fixture(contextValue, transfer), { store });
 
         expect(screen.queryByTestId("internal-prefix")).not.toBeInTheDocument();
       });
@@ -278,14 +287,15 @@ describe("<TokenTransferTile />", () => {
               storageFee: 20,
               allocationFee: 3,
             })
-          )
+          ),
+          { store }
         );
 
         expect(screen.queryByTestId("fee")).not.toBeInTheDocument();
       });
 
       it("renders if there is any fee paid by the user", () => {
-        addTestAccount(mockLedgerAccount(0));
+        addTestAccount(store, mockLedgerAccount(0));
         render(
           fixture(
             contextValue,
@@ -296,7 +306,8 @@ describe("<TokenTransferTile />", () => {
               storageFee: 20,
               allocationFee: 3,
             })
-          )
+          ),
+          { store }
         );
 
         expect(screen.getByTestId("fee")).toHaveTextContent(`0.000123 ${TEZ}`);
@@ -313,7 +324,8 @@ describe("<TokenTransferTile />", () => {
               storageFee: 0,
               allocationFee: 0,
             })
-          )
+          ),
+          { store }
         );
 
         expect(screen.queryByTestId("fee")).not.toBeInTheDocument();
@@ -321,7 +333,7 @@ describe("<TokenTransferTile />", () => {
     });
 
     it("shows operation type", () => {
-      render(fixture(contextValue, tokenTransferFixture()));
+      render(fixture(contextValue, tokenTransferFixture()), { store });
 
       expect(screen.getByTestId("operation-type")).toHaveTextContent("Token Transfer");
     });
@@ -330,9 +342,7 @@ describe("<TokenTransferTile />", () => {
   describe("drawer mode", () => {
     const contextValue = { mode: "drawer", selectedAddress: mockLedgerAccount(0).address };
 
-    beforeEach(() => {
-      addTestAccount(mockLedgerAccount(0));
-    });
+    beforeEach(() => addTestAccount(store, mockLedgerAccount(0)));
 
     it("hides the fee", () => {
       render(
@@ -344,14 +354,15 @@ describe("<TokenTransferTile />", () => {
             storageFee: 20,
             allocationFee: 3,
           })
-        )
+        ),
+        { store }
       );
 
       expect(screen.queryByTestId("fee")).not.toBeInTheDocument();
     });
 
     it("hides the operation type", () => {
-      render(fixture(contextValue, tokenTransferFixture()));
+      render(fixture(contextValue, tokenTransferFixture()), { store });
 
       expect(screen.queryByTestId("operation-type")).not.toBeInTheDocument();
     });

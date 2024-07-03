@@ -1,7 +1,13 @@
 import { DefaultNetworks, GHOSTNET, MAINNET } from "@umami/tezos";
 
 import { networksActions } from "./networks";
-import { store } from "../store";
+import { type UmamiStore, makeStore } from "../store";
+
+let store: UmamiStore;
+
+beforeEach(() => {
+  store = makeStore();
+});
 
 describe("networksSlice", () => {
   test("initialState", () => {

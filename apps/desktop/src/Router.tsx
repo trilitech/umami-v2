@@ -1,4 +1,6 @@
 /* istanbul ignore file */
+import { useDataPolling } from "@umami/data-polling";
+import { WalletClient, useImplicitAccounts, useResetConnections } from "@umami/state";
 import { noop } from "lodash";
 import { useEffect } from "react";
 import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
@@ -6,10 +8,6 @@ import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
 import { AnnouncementBanner } from "./components/AnnouncementBanner";
 import { DynamicModalContext, useDynamicModal } from "./components/DynamicModal";
 import { BeaconProvider } from "./utils/beacon/BeaconProvider";
-import { WalletClient } from "./utils/beacon/WalletClient";
-import { useDataPolling } from "./utils/dataPolling/useDataPolling";
-import { useResetConnections } from "./utils/hooks/beaconHooks";
-import { useImplicitAccounts } from "./utils/hooks/getAccountDataHooks";
 import { useDeeplinkHandler } from "./utils/useDeeplinkHandler";
 import { AddressBookView } from "./views/addressBook/AddressBookView";
 import { BatchPage } from "./views/batch/BatchPage";

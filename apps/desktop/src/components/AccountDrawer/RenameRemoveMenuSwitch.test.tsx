@@ -1,11 +1,13 @@
 import { mockLedgerAccount, mockMnemonicAccount, mockSocialAccount } from "@umami/core";
-import { addTestAccount, store } from "@umami/state";
+import { type UmamiStore, WalletClient, addTestAccount, makeStore } from "@umami/state";
 
 import { RenameRemoveMenuSwitch } from "./RenameRemoveMenuSwitch";
 import { act, render, screen, userEvent } from "../../mocks/testUtils";
-import { WalletClient } from "../../utils/beacon/WalletClient";
+
+let store: UmamiStore;
 
 beforeEach(() => {
+  store = makeStore();
   jest.spyOn(WalletClient, "getPeers").mockResolvedValue([]);
 });
 
@@ -13,9 +15,9 @@ describe("<RenameRemoveMenuSwitch />", () => {
   it("shows removal message", async () => {
     const user = userEvent.setup();
     const social = mockSocialAccount(1);
-    addTestAccount(mockMnemonicAccount(0));
-    addTestAccount(social);
-    render(<RenameRemoveMenuSwitch account={social} />);
+    addTestAccount(store, mockMnemonicAccount(0));
+    addTestAccount(store, social);
+    render(<RenameRemoveMenuSwitch account={social} />, { store });
 
     await act(() => user.click(screen.getByTestId("popover-cta")));
     await act(() => user.click(screen.getByTestId("popover-remove")));
@@ -28,8 +30,8 @@ describe("<RenameRemoveMenuSwitch />", () => {
   it("shows offboarding message for last account", async () => {
     const user = userEvent.setup();
     const social = mockSocialAccount(0);
-    addTestAccount(social);
-    render(<RenameRemoveMenuSwitch account={social} />);
+    addTestAccount(store, social);
+    render(<RenameRemoveMenuSwitch account={social} />, { store });
 
     await act(() => user.click(screen.getByTestId("popover-cta")));
     await act(() => user.click(screen.getByTestId("popover-remove")));
@@ -45,10 +47,10 @@ describe("<RenameRemoveMenuSwitch />", () => {
     "removes only the $type account",
     async account => {
       const allAccounts = [mockSocialAccount(0), mockLedgerAccount(1), mockMnemonicAccount(2)];
-      allAccounts.forEach(addTestAccount);
+      allAccounts.forEach(account => addTestAccount(store, account));
       const user = userEvent.setup();
 
-      render(<RenameRemoveMenuSwitch account={account} />);
+      render(<RenameRemoveMenuSwitch account={account} />, { store });
 
       expect(store.getState().accounts.items).toEqual(allAccounts);
 

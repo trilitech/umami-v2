@@ -2,12 +2,12 @@
 import { Button, FormControl, FormLabel, Input } from "@chakra-ui/react";
 import { RpcClient } from "@taquito/rpc";
 import type { IDP } from "@umami/social-auth";
+import { useRestoreLedger, useRestoreSocial } from "@umami/state";
 import { GHOSTNET, defaultDerivationPathTemplate, makeDerivationPath } from "@umami/tezos";
 import { useForm } from "react-hook-form";
 
 import { ModalContentWrapper } from "./ModalContentWrapper";
 import { WalletPlusIcon } from "../../assets/icons";
-import { useRestoreLedger, useRestoreSocial } from "../../utils/hooks/setAccountDataHooks";
 
 export const FakeAccount = ({ onClose }: { onClose: () => void }) => {
   const {

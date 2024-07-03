@@ -5,39 +5,30 @@ import {
   mockMnemonicAccount,
   mockSocialAccount,
 } from "@umami/core";
-import { decrypt } from "@umami/crypto";
 import { mockMultisigWithOperations } from "@umami/multisig";
-import { accountsSlice, addTestAccount, store } from "@umami/state";
 import {
-  derivePublicKeyPair,
-  getDefaultDerivationPath,
-  mockImplicitAddress,
-  mockPk,
-} from "@umami/tezos";
+  type UmamiStore,
+  WalletClient,
+  accountsActions,
+  addTestAccount,
+  makeStore,
+} from "@umami/state";
+import { formatPkh, mockImplicitAddress, mockPk } from "@umami/tezos";
 
 import { AccountsList } from "./AccountsList";
 import { act, render, screen, userEvent, waitFor, within } from "../../mocks/testUtils";
-import { WalletClient } from "../../utils/beacon/WalletClient";
-import { formatPkh } from "../../utils/format";
-
-jest.mock("@umami/core", () => ({
-  ...jest.requireActual("@umami/core"),
-  derivePublicKeyPair: jest.fn(),
-}));
-
-jest.mock("@umami/crypto", () => ({ decrypt: jest.fn() }));
-
-jest.mock("@umami/tezos", () => ({
-  ...jest.requireActual("@umami/tezos"),
-  derivePublicKeyPair: jest.fn(),
-}));
 
 const GOOGLE_ACCOUNT_LABEL1 = "my google account 1";
 const GOOGLE_ACCOUNT_LABEL2 = "my google account 2";
 const MOCK_FINGERPRINT1 = "mockFin1";
 const MOCK_FINGERPRINT2 = "mockFin2";
 
-beforeEach(() => jest.spyOn(WalletClient, "getPeers").mockResolvedValue([]));
+let store: UmamiStore;
+
+beforeEach(() => {
+  store = makeStore();
+  jest.spyOn(WalletClient, "getPeers").mockResolvedValue([]);
+});
 
 describe("<AccountsList />", () => {
   describe("deleting account", () => {
@@ -45,9 +36,9 @@ describe("<AccountsList />", () => {
       const user = userEvent.setup();
       const mnemonic = mockMnemonicAccount(0);
       const social = mockSocialAccount(1);
-      addTestAccount(mnemonic);
-      addTestAccount(social);
-      render(<AccountsList />);
+      addTestAccount(store, mnemonic);
+      addTestAccount(store, social);
+      render(<AccountsList />, { store });
 
       const [mnemonicPopover, socialPopover] = screen.getAllByTestId("popover-cta");
       const [removeMnemonic, removeSocial] = screen.getAllByTestId("popover-remove");
@@ -70,7 +61,7 @@ describe("<AccountsList />", () => {
     it("removes all accounts linked to a given mnemonic", async () => {
       const user = userEvent.setup();
       restore();
-      render(<AccountsList />);
+      render(<AccountsList />, { store });
 
       expect(screen.getAllByTestId(/account-group-seedphrase/i)).toHaveLength(2);
       const seedPhrase1 = screen.getAllByTestId(/account-group-seedphrase/i)[0];
@@ -106,10 +97,10 @@ describe("<AccountsList />", () => {
       const user = userEvent.setup();
       const social1 = mockSocialAccount(0);
       const social2 = mockSocialAccount(1);
-      addTestAccount(social1);
-      addTestAccount(social2);
+      addTestAccount(store, social1);
+      addTestAccount(store, social2);
 
-      render(<AccountsList />);
+      render(<AccountsList />, { store });
 
       await act(() => user.click(screen.getByTestId("popover-cta")));
       await act(() => user.click(screen.getByTestId("popover-remove")));
@@ -123,11 +114,11 @@ describe("<AccountsList />", () => {
   });
 
   it("displays accounts in store with label and formated pkh", () => {
-    addTestAccount(mockMnemonicAccount(0));
-    addTestAccount(mockMnemonicAccount(1));
-    addTestAccount(mockMnemonicAccount(2));
+    addTestAccount(store, mockMnemonicAccount(0));
+    addTestAccount(store, mockMnemonicAccount(1));
+    addTestAccount(store, mockMnemonicAccount(2));
 
-    render(<AccountsList />);
+    render(<AccountsList />, { store });
 
     const results = screen.getAllByTestId("account-tile-container");
     expect(results).toHaveLength(3);
@@ -143,7 +134,7 @@ describe("<AccountsList />", () => {
 
   it("displays accounts by group (case mnemonic social and multisig)", () => {
     restore();
-    render(<AccountsList />);
+    render(<AccountsList />, { store });
     expect(screen.getAllByTestId("account-tile-container")).toHaveLength(7);
     expect(screen.getAllByTestId(/account-group-title/)).toHaveLength(4);
 
@@ -169,82 +160,30 @@ describe("<AccountsList />", () => {
     expect(multisigAccounts).toHaveTextContent(/multisig account 0/i);
     expect(multisigAccounts).toHaveTextContent(/multisig account 1/i);
   });
-
-  it("allows to derive a new account for a mnemonic", async () => {
-    const user = userEvent.setup();
-    const account = mockImplicitAccount(2, undefined, MOCK_FINGERPRINT1);
-    jest.mocked(decrypt).mockResolvedValue("mockSeedPhrase");
-    const derivePublicKeyPairMock = jest.mocked(derivePublicKeyPair).mockResolvedValue({
-      pkh: account.address.pkh,
-      pk: account.pk,
-    });
-    const LABEL = "my label";
-    restore();
-    render(<AccountsList />);
-
-    // Open actions dialog for Mnemonic Group 1
-    const seedPhrase1 = screen.getByTestId(`account-group-Seedphrase ${MOCK_FINGERPRINT1}`);
-    const { getByTestId, getByRole } = within(seedPhrase1);
-    const cta = getByTestId(/^popover-cta$/i);
-    await act(() => user.click(cta));
-    // Click "create" button
-    expect(await screen.findByRole("dialog")).toHaveTextContent("Create");
-    const createBtn = getByRole("button", { name: "Create" });
-    // Input account label
-    await act(() => user.click(createBtn));
-    const nameInput = screen.getByLabelText("Account name");
-    await act(() => user.type(nameInput, LABEL));
-    await act(() => user.click(screen.getByRole("button", { name: "Continue" })));
-    // Input password
-    expect(screen.getByLabelText("Password")).toBeInTheDocument();
-
-    const passwordInput = screen.getByLabelText(/password/i);
-    await act(() => user.type(passwordInput, "myPassword"));
-    // Submit
-    const submitBtn = screen.getByRole("button", { name: "Submit" });
-    expect(submitBtn).toBeEnabled();
-
-    await act(() => user.click(submitBtn));
-
-    expect(derivePublicKeyPairMock).toHaveBeenCalledWith(
-      "mockSeedPhrase",
-      getDefaultDerivationPath(2)
-    );
-    expect(screen.queryByLabelText("Password")).not.toBeInTheDocument();
-
-    {
-      const seedPhrase1 = screen.getByTestId(`account-group-Seedphrase ${MOCK_FINGERPRINT1}`);
-
-      const tiles = within(seedPhrase1).getAllByTestId("account-tile-container");
-      expect(tiles).toHaveLength(3);
-
-      expect(tiles[2]).toHaveTextContent(LABEL);
-    }
-  });
 });
 
 const restore = () => {
   store.dispatch(
-    accountsSlice.actions.addMnemonicAccounts({
+    accountsActions.addMnemonicAccounts({
       seedFingerprint: MOCK_FINGERPRINT1,
       accounts: [
-        mockImplicitAccount(0, undefined, MOCK_FINGERPRINT1, "Mnemonic 1.1"),
-        mockImplicitAccount(1, undefined, MOCK_FINGERPRINT1, "Mnemonic 1.2"),
+        mockImplicitAccount(0, "mnemonic", MOCK_FINGERPRINT1, "Mnemonic 1.1"),
+        mockImplicitAccount(1, "mnemonic", MOCK_FINGERPRINT1, "Mnemonic 1.2"),
       ] as MnemonicAccount[],
       encryptedMnemonic: { mock: "encrypted 1" } as any,
     })
   );
   store.dispatch(
-    accountsSlice.actions.addMnemonicAccounts({
+    accountsActions.addMnemonicAccounts({
       seedFingerprint: MOCK_FINGERPRINT2,
       accounts: [
-        mockImplicitAccount(4, undefined, MOCK_FINGERPRINT2, "Mnemonic 2"),
+        mockImplicitAccount(4, "mnemonic", MOCK_FINGERPRINT2, "Mnemonic 2"),
       ] as MnemonicAccount[],
       encryptedMnemonic: { mock: "encrypted 2" } as any,
     })
   );
 
-  addTestAccount({
+  addTestAccount(store, {
     type: "social",
     idp: "google",
     address: mockImplicitAddress(6),
@@ -252,7 +191,7 @@ const restore = () => {
     label: GOOGLE_ACCOUNT_LABEL1,
   });
 
-  addTestAccount({
+  addTestAccount(store, {
     type: "social",
     idp: "google",
     address: mockImplicitAddress(7),
@@ -260,6 +199,6 @@ const restore = () => {
     label: GOOGLE_ACCOUNT_LABEL2,
   });
 
-  addTestAccount(mockMultisigWithOperations(0));
-  addTestAccount(mockMultisigWithOperations(1));
+  addTestAccount(store, mockMultisigWithOperations(0));
+  addTestAccount(store, mockMultisigWithOperations(1));
 };

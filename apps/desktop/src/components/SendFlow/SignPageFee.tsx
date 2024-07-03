@@ -1,7 +1,7 @@
 import { Flex, Heading, Text } from "@chakra-ui/react";
+import { prettyTezAmount } from "@umami/tezos";
 
 import colors from "../../style/colors";
-import { prettyTezAmount } from "../../utils/format";
 
 export const SignPageFee: React.FC<{ fee: string | number }> = ({ fee }) => (
   <Flex alignItems="center">

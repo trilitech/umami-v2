@@ -1,4 +1,5 @@
 import { fromRawToken } from "@umami/core";
+import { useGetTokenTransfer } from "@umami/state";
 import { type TzktCombinedOperation } from "@umami/tzkt";
 import type React from "react";
 
@@ -10,7 +11,6 @@ import { StakeTile } from "./StakeTile";
 import { TokenTransferTile } from "./TokenTransferTile";
 import { TransactionTile } from "./TransactionTile";
 import { UnstakeTile } from "./UnstakeTile";
-import { useGetTokenTransfer } from "../../utils/hooks/assetsHooks";
 
 export const OperationTile: React.FC<{
   operation: TzktCombinedOperation;

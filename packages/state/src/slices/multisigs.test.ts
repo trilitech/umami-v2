@@ -2,9 +2,14 @@ import { mockMultisigAccount } from "@umami/core";
 import { multisigOperationFixture, multisigsFixture } from "@umami/multisig";
 import { mockContractAddress } from "@umami/tezos";
 
-import { multisigActions } from "./multisigs";
-import { store } from "../store";
-import { addTestAccount } from "../testHelpers";
+import { multisigsActions } from "./multisigs";
+import { type UmamiStore, makeStore } from "../store";
+import { addTestAccount } from "../testUtils";
+
+let store: UmamiStore;
+beforeEach(() => {
+  store = makeStore();
+});
 
 describe("Multisig reducer", () => {
   describe("default values", () => {
@@ -19,7 +24,7 @@ describe("Multisig reducer", () => {
 
   describe("setMultisigs", () => {
     it("should set new multisigs", () => {
-      store.dispatch(multisigActions.setMultisigs(multisigsFixture));
+      store.dispatch(multisigsActions.setMultisigs(multisigsFixture));
       expect(store.getState().multisigs.items).toEqual(
         multisigsFixture.map((multisig, i) => ({
           ...multisig,
@@ -32,8 +37,8 @@ describe("Multisig reducer", () => {
     it("should set default label for new multisigs", () => {
       const oldMultisigs = [multisigsFixture[0], multisigsFixture[1]];
       const newMultisigs = multisigsFixture;
-      store.dispatch(multisigActions.setMultisigs(oldMultisigs));
-      store.dispatch(multisigActions.setMultisigs(newMultisigs));
+      store.dispatch(multisigsActions.setMultisigs(oldMultisigs));
+      store.dispatch(multisigsActions.setMultisigs(newMultisigs));
       expect(store.getState().multisigs.items).toEqual(
         newMultisigs.map((multisig, i) => ({
           ...multisig,
@@ -47,10 +52,10 @@ describe("Multisig reducer", () => {
       const multisig = multisigsFixture[0];
 
       store.dispatch(
-        multisigActions.addMultisigLabel({ pkh: multisig.address.pkh, label: "test label" })
+        multisigsActions.addMultisigLabel({ pkh: multisig.address.pkh, label: "test label" })
       );
 
-      store.dispatch(multisigActions.setMultisigs([multisig]));
+      store.dispatch(multisigsActions.setMultisigs([multisig]));
 
       expect(store.getState().multisigs.items).toEqual([
         {
@@ -65,9 +70,9 @@ describe("Multisig reducer", () => {
   describe("setName", () => {
     it("should not do anything if account does not exist", () => {
       const account = mockMultisigAccount(0);
-      addTestAccount(account);
+      addTestAccount(store, account);
       store.dispatch(
-        multisigActions.setName({
+        multisigsActions.setName({
           newName: "new name",
           account: { ...account, address: mockContractAddress(2) },
         })
@@ -78,9 +83,9 @@ describe("Multisig reducer", () => {
 
     it("should update the label", () => {
       const account = mockMultisigAccount(0);
-      addTestAccount(account);
+      addTestAccount(store, account);
       store.dispatch(
-        multisigActions.setName({
+        multisigsActions.setName({
           newName: "new name",
           account,
         })
@@ -95,7 +100,7 @@ describe("Multisig reducer", () => {
       const operation1 = multisigOperationFixture;
       const operation2 = { ...multisigOperationFixture, id: "2" };
       const operation3 = { ...multisigOperationFixture, bigmapId: 1 };
-      store.dispatch(multisigActions.setPendingOperations([operation1, operation2, operation3]));
+      store.dispatch(multisigsActions.setPendingOperations([operation1, operation2, operation3]));
       expect(store.getState().multisigs.pendingOperations).toEqual({
         "0": [
           {
@@ -144,7 +149,7 @@ describe("Multisig reducer", () => {
   describe("addMultisigLabel", () => {
     it("sets the multisig label", () => {
       const { pkh } = mockContractAddress(0);
-      store.dispatch(multisigActions.addMultisigLabel({ pkh, label: "test label" }));
+      store.dispatch(multisigsActions.addMultisigLabel({ pkh, label: "test label" }));
 
       expect(store.getState().multisigs.labelsMap).toEqual({ [pkh]: "test label" });
     });
@@ -153,7 +158,7 @@ describe("Multisig reducer", () => {
   describe("removeMultisigsData", () => {
     beforeEach(() => {
       store.dispatch(
-        multisigActions.setMultisigs([
+        multisigsActions.setMultisigs([
           mockMultisigAccount(0),
           mockMultisigAccount(1),
           mockMultisigAccount(2),
@@ -163,7 +168,7 @@ describe("Multisig reducer", () => {
 
     it("does not removes multisigs", () => {
       store.dispatch(
-        multisigActions.removeMultisigsData([
+        multisigsActions.removeMultisigsData([
           mockContractAddress(0).pkh,
           mockContractAddress(2).pkh,
         ])
@@ -178,14 +183,14 @@ describe("Multisig reducer", () => {
 
     it("removes labels", () => {
       store.dispatch(
-        multisigActions.addMultisigLabel({ pkh: mockContractAddress(0).pkh, label: "Multisig 0" })
+        multisigsActions.addMultisigLabel({ pkh: mockContractAddress(0).pkh, label: "Multisig 0" })
       );
       store.dispatch(
-        multisigActions.addMultisigLabel({ pkh: mockContractAddress(1).pkh, label: "Multisig 1" })
+        multisigsActions.addMultisigLabel({ pkh: mockContractAddress(1).pkh, label: "Multisig 1" })
       );
 
       store.dispatch(
-        multisigActions.removeMultisigsData([
+        multisigsActions.removeMultisigsData([
           mockContractAddress(0).pkh,
           mockContractAddress(2).pkh,
         ])
@@ -202,10 +207,10 @@ describe("Multisig reducer", () => {
       const operation2 = { ...multisigOperationFixture, id: "2" };
       // pending operation for multisig 1
       const operation3 = { ...multisigOperationFixture, bigmapId: 1 };
-      store.dispatch(multisigActions.setPendingOperations([operation1, operation2, operation3]));
+      store.dispatch(multisigsActions.setPendingOperations([operation1, operation2, operation3]));
 
       store.dispatch(
-        multisigActions.removeMultisigsData([
+        multisigsActions.removeMultisigsData([
           mockContractAddress(0).pkh,
           mockContractAddress(2).pkh,
         ])

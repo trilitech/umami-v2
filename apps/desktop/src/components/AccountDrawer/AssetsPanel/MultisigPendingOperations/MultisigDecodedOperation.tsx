@@ -1,10 +1,10 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { type Operation, tokenNameSafe, tokenPrettyAmount } from "@umami/core";
+import { useGetToken } from "@umami/state";
+import { prettyTezAmount } from "@umami/tezos";
 
 import { OutgoingArrow } from "../../../../assets/icons";
 import colors from "../../../../style/colors";
-import { prettyTezAmount } from "../../../../utils/format";
-import { useGetToken } from "../../../../utils/hooks/tokensHooks";
 import { AddressPill } from "../../../AddressPill/AddressPill";
 
 export const MultisigDecodedOperation: React.FC<{

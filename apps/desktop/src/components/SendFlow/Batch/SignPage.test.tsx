@@ -6,7 +6,7 @@ import {
   mockMultisigAccount,
   mockNFT,
 } from "@umami/core";
-import { addTestAccount } from "@umami/state";
+import { type UmamiStore, addTestAccount, makeStore } from "@umami/state";
 import { executeParams } from "@umami/test-utils";
 import { TEZ, parseContractPkh } from "@umami/tezos";
 
@@ -30,14 +30,17 @@ const operation = {
   estimates: [executeParams({ fee: 1234567 })],
 };
 
-const fixture = () => <SignPage initialOperations={operation} />;
+let store: UmamiStore;
 
-beforeEach(() => addTestAccount(mockMnemonicAccount(0)));
+beforeEach(() => {
+  store = makeStore();
+  addTestAccount(store, mockMnemonicAccount(0));
+});
 
 describe("<SignPage />", () => {
   describe("fee", () => {
     it("displays the fee in tez", async () => {
-      render(fixture());
+      render(<SignPage initialOperations={operation} />, { store });
 
       await waitFor(() => expect(screen.getByTestId("fee")).toHaveTextContent(`1.234567 ${TEZ}`));
     });
@@ -45,7 +48,7 @@ describe("<SignPage />", () => {
 
   describe("number of transactions", () => {
     it("displays the correct number of transactions", async () => {
-      render(fixture());
+      render(<SignPage initialOperations={operation} />, { store });
 
       await waitFor(() => expect(screen.getByTestId("transaction-length")).toHaveTextContent("2"));
     });

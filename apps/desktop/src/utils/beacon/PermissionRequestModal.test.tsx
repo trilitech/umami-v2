@@ -7,18 +7,10 @@ import {
 import { Modal } from "@chakra-ui/react";
 import { fireEvent } from "@testing-library/react";
 import { mockMnemonicAccount } from "@umami/core";
-import { addTestAccount, store } from "@umami/state";
+import { type UmamiStore, WalletClient, addTestAccounts, makeStore } from "@umami/state";
 
 import { PermissionRequestModal } from "./PermissionRequestModal";
-import { WalletClient } from "./WalletClient";
 import { act, render, screen, userEvent } from "../../mocks/testUtils";
-
-jest.mock("./WalletClient", () => ({
-  WalletClient: {
-    getPeers: () => Promise.resolve([]),
-    respond: jest.fn(),
-  },
-}));
 
 const TestComponent = ({ request }: { request: PermissionRequestOutput }) => (
   <Modal isOpen={true} onClose={() => {}}>
@@ -41,13 +33,16 @@ const request: PermissionRequestOutput = {
   version: "2",
 };
 
-beforeEach(() =>
-  [mockMnemonicAccount(1), mockMnemonicAccount(2), mockMnemonicAccount(3)].forEach(addTestAccount)
-);
+let store: UmamiStore;
+
+beforeEach(() => {
+  store = makeStore();
+  addTestAccounts(store, [mockMnemonicAccount(1), mockMnemonicAccount(2), mockMnemonicAccount(3)]);
+});
 
 describe("<PermissionRequestModal />", () => {
   it("requires the account", async () => {
-    render(<TestComponent request={request} />);
+    render(<TestComponent request={request} />, { store });
     const grantButton = screen.getByRole("button", { name: "Allow" });
 
     expect(grantButton).toBeDisabled();
@@ -60,7 +55,9 @@ describe("<PermissionRequestModal />", () => {
   it("allows user to select account and grant permission", async () => {
     const user = userEvent.setup();
 
-    render(<TestComponent request={request} />);
+    jest.spyOn(WalletClient, "respond");
+
+    render(<TestComponent request={request} />, { store });
 
     // select account
     const account = mockMnemonicAccount(1);
@@ -85,7 +82,7 @@ describe("<PermissionRequestModal />", () => {
   it("saves new connection to beaconSlice", async () => {
     const user = userEvent.setup();
 
-    render(<TestComponent request={request} />);
+    render(<TestComponent request={request} />, { store });
 
     // select account
     const account = mockMnemonicAccount(1);

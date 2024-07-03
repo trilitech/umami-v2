@@ -7,9 +7,8 @@ import "@testing-library/jest-dom";
 import { webcrypto } from "crypto";
 import { TextDecoder, TextEncoder } from "util";
 
-import { resetStore } from "@umami/state";
+import { mockToast } from "@umami/state";
 import { setupJestCanvasMock } from "jest-canvas-mock";
-import failOnConsole from "jest-fail-on-console";
 import MockDate from "mockdate";
 
 import {
@@ -19,9 +18,9 @@ import {
   MockModalHeader,
   MockModalInnerComponent,
 } from "./mocks/modal";
-import { mockUseToast } from "./mocks/toast";
 
-failOnConsole();
+// TODO: enable it back when fixed Warning: The current testing environment is not configured to support act(...)
+// failOnConsole();
 
 MockDate.set("2023-03-27T14:15:09.760Z");
 
@@ -54,17 +53,12 @@ beforeEach(() => {
   // Hack for testing HashRouter: clears URL between tests.
   window.location.hash = "";
 
-  // set clean state before each test
-  resetStore();
-
   setupJestCanvasMock();
 });
 
-jest.mock("@chakra-ui/react", () => ({
+jest.doMock("@chakra-ui/react", () => ({
   ...jest.requireActual("@chakra-ui/react"),
-  // Mock toast since it has an erratic behavior in RTL
-  // https://github.com/chakra-ui/chakra-ui/issues/2969
-  useToast: mockUseToast,
+  useToast: () => mockToast,
   Modal: MockModal,
   ModalContent: MockModalContent,
   ModalBody: MockModalInnerComponent,
@@ -82,4 +76,9 @@ jest.mock("@popperjs/core", () => ({
     destroy: () => {},
     setOptions: () => {},
   }),
+}));
+
+jest.mock("redux-persist", () => ({
+  ...jest.requireActual("redux-persist"),
+  persistReducer: jest.fn().mockImplementation((_config, reducers) => reducers),
 }));

@@ -1,10 +1,10 @@
 import { Box, Flex } from "@chakra-ui/react";
+import { useGetAccountAllTokens } from "@umami/state";
 
 import { AccountTokens } from "./AccountTokens";
 import { NoTokens } from "../../components/NoItems";
 import { TopBar } from "../../components/TopBar";
 import { useAccountsFilter } from "../../components/useAccountsFilter";
-import { useGetAccountAllTokens } from "../../utils/hooks/assetsHooks";
 
 export const TokensPage = () => {
   const { accountsFilter, selectedAccounts } = useAccountsFilter();

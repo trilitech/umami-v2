@@ -1,21 +1,21 @@
-import { Modal } from "@chakra-ui/react";
+import { mockContractContact, mockImplicitAccount, mockMnemonicAccount } from "@umami/core";
 import {
-  type Account,
-  mockContractContact,
-  mockImplicitAccount,
-  mockMnemonicAccount,
-} from "@umami/core";
-import { addTestAccount, contactsActions, networksActions, store } from "@umami/state";
+  type UmamiStore,
+  addTestAccount,
+  contactsActions,
+  makeStore,
+  networksActions,
+} from "@umami/state";
 import { MAINNET } from "@umami/tezos";
 
 import { RenameAccountModal } from "./RenameAccountModal";
 import { fireEvent, render, screen, waitFor } from "../../mocks/testUtils";
 
-const fixture = (account: Account) => (
-  <Modal isOpen={true} onClose={() => {}}>
-    <RenameAccountModal account={account} />
-  </Modal>
-);
+let store: UmamiStore;
+
+beforeEach(() => {
+  store = makeStore();
+});
 
 describe("<RenameAccountModal />", () => {
   const setName = (name: string) => {
@@ -28,19 +28,19 @@ describe("<RenameAccountModal />", () => {
   describe("validations", () => {
     it("is required", async () => {
       const account = mockImplicitAccount(0);
-      render(fixture(account));
+      render(<RenameAccountModal account={account} />, { store });
 
       setName("");
 
-      await waitFor(() => {
-        expect(screen.getByTestId("name-error")).toHaveTextContent("Name is required");
-      });
+      await waitFor(() =>
+        expect(screen.getByTestId("name-error")).toHaveTextContent("Name is required")
+      );
     });
 
     it("does not allow the same name", async () => {
       const account = mockMnemonicAccount(0);
-      addTestAccount(account);
-      render(fixture(account));
+      addTestAccount(store, account);
+      render(<RenameAccountModal account={account} />, { store });
 
       setName(account.label);
 
@@ -51,8 +51,10 @@ describe("<RenameAccountModal />", () => {
 
     it("does not allow existing account name", async () => {
       const account = mockMnemonicAccount(0);
-      [account, mockMnemonicAccount(1, "Existing Account Name")].forEach(addTestAccount);
-      render(fixture(account));
+      [account, mockMnemonicAccount(1, "Existing Account Name")].forEach(account =>
+        addTestAccount(store, account)
+      );
+      render(<RenameAccountModal account={account} />, { store });
 
       setName("Existing Account Name");
 
@@ -69,7 +71,7 @@ describe("<RenameAccountModal />", () => {
         contactsActions.upsert(mockContractContact(0, "ghostnet", "Existing Contact Name"))
       );
       const account = mockMnemonicAccount(0);
-      render(fixture(account));
+      render(<RenameAccountModal account={account} />, { store });
 
       setName("Existing Contact Name");
 
