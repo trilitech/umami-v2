@@ -1,5 +1,25 @@
-import { Card, Tab, TabList, Tabs } from "@chakra-ui/react";
-import { NavLink } from "react-router-dom";
+import { Card, TabList, Tabs } from "@chakra-ui/react";
+
+import { Tab } from "../Tab";
+
+const tabs = [
+  {
+    label: "Activity",
+    to: "/activity",
+  },
+  {
+    label: "NFTs",
+    to: "/nfts",
+  },
+  {
+    label: "Tokens",
+    to: "/tokens",
+  },
+  {
+    label: "Earn",
+    to: "/earn",
+  },
+];
 
 export const Navbar = () => (
   <Card
@@ -10,20 +30,11 @@ export const Navbar = () => (
       lg: "2px 4px 12px 0px rgba(45, 55, 72, 0.05)",
     }}
   >
-    <Tabs variant="solid-rounded">
+    <Tabs defaultIndex={-1} isFitted variant="solid-rounded">
       <TabList justifyContent="space-between">
-        <Tab as={NavLink} flex="1" to="/activity">
-          Activity
-        </Tab>
-        <Tab as={NavLink} flex="1" to="/nfts">
-          NFTs
-        </Tab>
-        <Tab as={NavLink} flex="1" to="/tokens">
-          Tokens
-        </Tab>
-        <Tab as={NavLink} flex="1" to="/earn">
-          Earn
-        </Tab>
+        {tabs.map(tab => (
+          <Tab key={tab.to} label={tab.label} to={tab.to} />
+        ))}
       </TabList>
     </Tabs>
   </Card>
