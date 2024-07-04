@@ -104,6 +104,7 @@
     "bip39": "^3.1.0",
     "cross-env": "^7.0.3",
     "date-fns": "^3.6.0",
+    "depcheck": "^1.4.7",
     "electron": "31.1.0",
     "electron-builder": "^24.13.3",
     "electronmon": "^2.0.3",

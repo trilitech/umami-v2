@@ -1,54 +1,20 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "tasks": {
+    "audit": {},
     "build": {
       "outputs": [
         "dist/**",
+        "build/**",
         "storybook-static/**"
       ],
       "dependsOn": [
         "^build"
       ]
     },
-    "clean": {
-      "cache": false
-    },
-    "lint": {
+    "check-circular-deps": {
       "dependsOn": [
         "^build"
-      ]
-    },
-    "lint:ci": {
-      "dependsOn": [
-        "^build"
-      ]
-    },
-    "format:ci": {
-      "dependsOn": [
-        "lint:ci"
-      ]
-    },
-    "test": {
-      "outputs": [
-        "coverage/**"
-      ],
-      "env": [
-        "CI"
-      ],
-      "dependsOn": [
-        "^build"
-      ]
-    },
-    "test:watch": {
-      "persistent": true,
-      "cache": false,
-      "dependsOn": [
-        "^build"
-      ]
-    },
-    "format": {
-      "dependsOn": [
-        "lint"
       ]
     },
     "check-types": {
@@ -63,6 +29,10 @@
         "^build"
       ]
     },
+    "clean": {
+      "cache": false
+    },
+    "depcheck": {},
     "dev": {
       "persistent": true,
       "cache": false,
@@ -70,8 +40,33 @@
         "^build"
       ]
     },
-    "audit": {},
-    "check-circular-deps": {
+    "format": {
+      "dependsOn": [
+        "lint"
+      ]
+    },
+    "format:ci": {
+      "dependsOn": [
+        "lint:ci"
+      ]
+    },
+    "lint": {
+      "dependsOn": [
+        "^build"
+      ]
+    },
+    "lint:ci": {
+      "dependsOn": [
+        "^build"
+      ]
+    },
+    "test": {
+      "outputs": [
+        "coverage/**"
+      ],
+      "env": [
+        "CI"
+      ],
       "dependsOn": [
         "^build"
       ]
@@ -85,6 +80,13 @@
         "TZKT_API_IMAGE",
         "OPEN_BROWSER",
         "PRINT_BROWSER_LOGS"
+      ]
+    },
+    "test:watch": {
+      "persistent": true,
+      "cache": false,
+      "dependsOn": [
+        "^build"
       ]
     }
   }
