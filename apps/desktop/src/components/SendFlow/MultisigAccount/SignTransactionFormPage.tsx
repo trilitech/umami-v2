@@ -24,7 +24,7 @@ import { SignPageFee } from "../SignPageFee";
 import { SignPageHeader } from "../SignPageHeader";
 import { type SignPageProps, useSignPageHelpers } from "../utils";
 
-export const SignTransactionFormPage: React.FC<SignPageProps<FormValues>> = props => {
+export const SignTransactionFormPage = (props: SignPageProps<FormValues>) => {
   const dispatch = useAppDispatch();
 
   const { isLoading: contractNameObtainingIsLoading, handleAsyncAction } = useAsyncActionHandler();
@@ -142,10 +142,7 @@ export const SignTransactionFormPage: React.FC<SignPageProps<FormValues>> = prop
   );
 };
 
-const Threshold: React.FC<{ threshold: number; signersAmount: number }> = ({
-  threshold,
-  signersAmount,
-}) => (
+const Threshold = ({ threshold, signersAmount }: { threshold: number; signersAmount: number }) => (
   <Flex alignItems="center" data-testid="threshold">
     <Heading marginRight="4px" color={colors.gray[450]} size="sm">
       No. of approvals:

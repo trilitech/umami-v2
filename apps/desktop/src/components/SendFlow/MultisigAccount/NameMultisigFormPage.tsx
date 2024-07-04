@@ -25,7 +25,7 @@ type FormValues = {
   name: string;
 };
 
-export const NameMultisigFormPage: React.FC<{ name?: string }> = ({ name }) => {
+export const NameMultisigFormPage = ({ name }: { name?: string }) => {
   const form = useForm<FormValues>({
     mode: "onBlur",
     defaultValues: { name: name || "" },

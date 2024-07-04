@@ -1,6 +1,6 @@
 import { Icon, type IconProps } from "@chakra-ui/react";
 
-export const RedditIcon: React.FC<IconProps> = props => (
+export const RedditIcon = (props: IconProps) => (
   <Icon
     width="24px"
     height="24px"

@@ -10,9 +10,11 @@ import { PrettyNumber } from "./PrettyNumber";
 import { TokenIcon } from "../assets/icons";
 import colors from "../style/colors";
 
-export const TokenTile: React.FC<
-  { token: FA12TokenBalance | FA2TokenBalance; amount: string } & FlexProps
-> = ({ token, amount, ...flexProps }) => {
+export const TokenTile = ({
+  token,
+  amount,
+  ...flexProps
+}: { token: FA12TokenBalance | FA2TokenBalance; amount: string } & FlexProps) => {
   const { contract } = token;
 
   const prettyAmount = tokenPrettyAmount(amount, token);

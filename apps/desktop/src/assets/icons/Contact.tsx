@@ -1,6 +1,6 @@
 import { Icon, type IconProps } from "@chakra-ui/react";
 
-export const ContactIcon: React.FC<IconProps> = props => (
+export const ContactIcon = (props: IconProps) => (
   <Icon
     width="18px"
     height="18px"

@@ -11,7 +11,7 @@ import { FormPage } from "../../components/SendFlow/Tez/FormPage";
 import { UpsertContactModal } from "../../components/UpsertContactModal";
 import colors from "../../style/colors";
 
-export const ContactTable: React.FC<{ contacts: Contact[] }> = ({ contacts }) => {
+export const ContactTable = ({ contacts }: { contacts: Contact[] }) => {
   const { openWith } = useContext(DynamicModalContext);
   return (
     <Box overflow="auto" background={colors.gray[900]} borderRadius="8px" paddingX="30px">

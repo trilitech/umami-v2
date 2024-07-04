@@ -1,9 +1,8 @@
 import { Tab, type TabProps } from "@chakra-ui/react";
-import type React from "react";
-import { type ReactNode } from "react";
+import { type PropsWithChildren } from "react";
 
-export const SmallTab: React.FC<{ children: ReactNode } & TabProps> = ({ children, ...props }) => (
-  <Tab {...props} fontSize="sm" paddingX={3}>
+export const SmallTab = ({ children, ...props }: PropsWithChildren<TabProps>) => (
+  <Tab {...props} fontSize="sm" paddingX="12px">
     {children}
   </Tab>
 );

@@ -1,5 +1,5 @@
 import { Box, Flex, Grid, GridItem, Heading, Text } from "@chakra-ui/react";
-import type React from "react";
+import { type PropsWithChildren } from "react";
 import { Link } from "react-router-dom";
 
 import { ExternalLinkIcon } from "../../assets/icons";
@@ -55,11 +55,15 @@ export const HelpView = () => (
   </Grid>
 );
 
-const HelpLinkRow: React.FC<{
+const HelpLinkRow = ({
+  about,
+  externalLink,
+  linkDescription,
+}: {
   about: string;
   externalLink: string;
   linkDescription?: string;
-}> = ({ about, externalLink, linkDescription }) => (
+}) => (
   <Link rel="noopener noreferrer" target="_blank" to={externalLink}>
     <ClickableCard cursor="pointer" isSelected={false}>
       <Flex alignItems="center" justifyContent="space-between">
@@ -78,10 +82,12 @@ const HelpLinkRow: React.FC<{
   </Link>
 );
 
-const HelpCard: React.FC<{
+const HelpCard = ({
+  title,
+  children,
+}: PropsWithChildren<{
   title: string;
-  children: React.ReactNode;
-}> = ({ title, children }) => (
+}>) => (
   <Box data-testid="help-card" marginY="10px">
     <Flex>
       <Box width="550px">

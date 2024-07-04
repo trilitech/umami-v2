@@ -28,10 +28,7 @@ import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
 import { headerText } from "../SignPageHeader";
 
-export const OriginationOperationSignPage: React.FC<BeaconSignPageProps> = ({
-  operation,
-  message,
-}) => {
+export const OriginationOperationSignPage = ({ operation, message }: BeaconSignPageProps) => {
   const { isSigning, onSign, network, form, fee } = useSignWithBeacon(operation, message);
   const { code, storage } = operation.operations[0] as ContractOrigination;
 

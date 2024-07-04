@@ -4,7 +4,7 @@ import { type PropsWithChildren, useEffect } from "react";
 
 import { useHandleBeaconMessage } from "./useHandleBeaconMessage";
 
-export const BeaconProvider: React.FC<PropsWithChildren> = ({ children }) => {
+export const BeaconProvider = ({ children }: PropsWithChildren) => {
   const toast = useToast();
 
   const handleBeaconMessage = useHandleBeaconMessage();

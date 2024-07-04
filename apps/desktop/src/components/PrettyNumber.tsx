@@ -5,12 +5,14 @@ const splitNumber = (num: string) => {
   return { integer, decimal };
 };
 
-export const PrettyNumber: React.FC<
-  {
-    number: string;
-    size?: "md" | "lg";
-  } & FlexProps
-> = ({ number, size = "md", ...props }) => {
+export const PrettyNumber = ({
+  number,
+  size = "md",
+  ...props
+}: {
+  number: string;
+  size?: "md" | "lg";
+} & FlexProps) => {
   const intSize = size === "md" ? "md" : "lg";
   const fractionSize = size === "md" ? "sm" : "md";
 

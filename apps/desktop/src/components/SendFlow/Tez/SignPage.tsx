@@ -11,7 +11,7 @@ import { SignPageFee } from "../SignPageFee";
 import { SignPageHeader, headerText } from "../SignPageHeader";
 import { type SignPageProps, useSignPageHelpers } from "../utils";
 
-export const SignPage: React.FC<SignPageProps> = props => {
+export const SignPage = (props: SignPageProps) => {
   const { mode, operations: initialOperations } = props;
   const { fee, operations, estimationFailed, isLoading, form, signer, reEstimate, onSign } =
     useSignPageHelpers(initialOperations, mode);

@@ -1,6 +1,6 @@
 import { Icon, type IconProps } from "@chakra-ui/react";
 
-export const TwitterIcon: React.FC<IconProps> = props => (
+export const TwitterIcon = (props: IconProps) => (
   <Icon
     width="20px"
     height="18px"

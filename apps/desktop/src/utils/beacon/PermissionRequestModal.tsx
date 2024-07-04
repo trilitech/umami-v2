@@ -31,7 +31,6 @@ import {
   useGetImplicitAccount,
 } from "@umami/state";
 import { capitalize } from "lodash";
-import type React from "react";
 import { useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
@@ -39,9 +38,7 @@ import { JsValueWrap } from "../../components/AccountDrawer/JsValueWrap";
 import { OwnedImplicitAccountsAutocomplete } from "../../components/AddressAutocomplete";
 import colors from "../../style/colors";
 
-export const PermissionRequestModal: React.FC<{
-  request: PermissionRequestOutput;
-}> = ({ request }) => {
+export const PermissionRequestModal = ({ request }: { request: PermissionRequestOutput }) => {
   const addConnectionToBeaconSlice = useAddConnection();
   const getAccount = useGetImplicitAccount();
   const { onClose } = useContext(DynamicModalContext);

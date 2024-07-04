@@ -15,12 +15,17 @@ import { useContext } from "react";
 import { WarningIcon } from "../assets/icons";
 import colors from "../style/colors";
 
-export const ConfirmationModal: React.FC<{
+export const ConfirmationModal = ({
+  title,
+  description,
+  buttonLabel,
+  onSubmit,
+}: {
   title: string;
   buttonLabel: string;
   description?: string;
   onSubmit: () => void;
-}> = ({ title, description, buttonLabel, onSubmit }) => {
+}) => {
   const { onClose } = useContext(DynamicModalContext);
   const onClick = () => {
     onSubmit();

@@ -17,7 +17,7 @@ import {
 import colors from "../../style/colors";
 import { AddressPill } from "../AddressPill/AddressPill";
 
-export const TransactionTile: React.FC<{ operation: TransactionOperation }> = ({ operation }) => {
+export const TransactionTile = ({ operation }: { operation: TransactionOperation }) => {
   const operationDestination = useGetOperationDestination(
     operation.sender.address,
     operation.target?.address

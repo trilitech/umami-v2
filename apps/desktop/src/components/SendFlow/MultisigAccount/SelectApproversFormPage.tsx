@@ -41,9 +41,9 @@ const toOperation = (formValues: FormValues) => ({
   ),
 });
 
-export const SelectApproversFormPage: React.FC<
-  FormPageProps<FormValues> & { sender: ImplicitAccount; goBack: () => void }
-> = props => {
+export const SelectApproversFormPage = (
+  props: FormPageProps<FormValues> & { sender: ImplicitAccount; goBack: () => void }
+) => {
   const { goBack, sender, ...formValues } = props;
   const form = useForm<FormValues>({
     mode: "onBlur",

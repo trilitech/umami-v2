@@ -11,7 +11,7 @@ import { BakerIcon } from "../../assets/icons";
 import colors from "../../style/colors";
 import { AddressPill } from "../AddressPill/AddressPill";
 
-export const DelegationTile: React.FC<{ operation: DelegationOperation }> = ({ operation }) => {
+export const DelegationTile = ({ operation }: { operation: DelegationOperation }) => {
   const operationType = operation.newDelegate ? "Delegate" : "Delegation Ended";
 
   return (

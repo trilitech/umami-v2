@@ -24,17 +24,20 @@ import { TezRecapDisplay } from "../TezRecapDisplay";
 type Props = {
   onSend: () => void;
   onReceive?: () => void;
-  onBuyTez?: () => void;
   tokens: Array<FA12TokenBalance | FA2TokenBalance>;
   nfts: Array<NFTBalance>;
   account: Account;
 };
 
-const RoundButton: React.FC<{
+const RoundButton = ({
+  icon,
+  label,
+  onClick = () => {},
+}: {
   label: string;
   icon: ReactElement;
   onClick?: () => void;
-}> = ({ icon, label, onClick = () => {} }) => (
+}) => (
   <Box
     className="account-drawer-cta-button"
     color={colors.gray[300]}
@@ -59,13 +62,13 @@ const RoundButton: React.FC<{
   </Box>
 );
 
-export const AccountDrawerDisplay: React.FC<Props> = ({
+export const AccountDrawerDisplay = ({
   onSend,
   onReceive = () => {},
   tokens,
   nfts,
   account,
-}) => {
+}: Props) => {
   const isMultisig = account.type === "multisig";
   const { openWith } = useContext(DynamicModalContext);
   const pkh = account.address.pkh;

@@ -1,6 +1,5 @@
 import { ModalContent, ModalFooter } from "@chakra-ui/react";
 import { type EstimatedAccountOperations } from "@umami/core";
-import type React from "react";
 import { FormProvider } from "react-hook-form";
 
 import { BatchModalBody } from "../BatchModalBody";
@@ -9,9 +8,11 @@ import { SignButton } from "../SignButton";
 import { headerText } from "../SignPageHeader";
 import { useSignPageHelpers } from "../utils";
 
-export const SignPage: React.FC<{
+export const SignPage = ({
+  initialOperations,
+}: {
   initialOperations: EstimatedAccountOperations;
-}> = ({ initialOperations }) => {
+}) => {
   const { operations, estimationFailed, isLoading, signer, form, reEstimate, onSign } =
     useSignPageHelpers(initialOperations, "batch");
   const title = headerText(operations.type, "batch");

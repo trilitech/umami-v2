@@ -13,10 +13,8 @@ import {
   ModalHeader,
 } from "@chakra-ui/react";
 import { type Unstake } from "@umami/core";
-import { type RawPkh, TEZ, TEZ_DECIMALS, parsePkh } from "@umami/tezos";
-import { tezToMutez } from "@umami/tezos";
+import { type RawPkh, TEZ, TEZ_DECIMALS, parsePkh, tezToMutez } from "@umami/tezos";
 import BigNumber from "bignumber.js";
-import type React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { SignPage } from "./SignPage";
@@ -41,7 +39,7 @@ type FormValues = {
 };
 
 // TODO: test
-export const FormPage: React.FC<FormPageProps<FormValues> & { stakedBalance: number }> = props => {
+export const FormPage = (props: FormPageProps<FormValues> & { stakedBalance: number }) => {
   const stakedBalance = props.stakedBalance;
 
   const openSignPage = useOpenSignPageFormAction({

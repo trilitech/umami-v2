@@ -6,10 +6,13 @@ import { FormErrorMessage } from "../../../FormErrorMessage";
 import { PasswordInput } from "../../../PasswordInput";
 import { ModalContentWrapper } from "../../ModalContentWrapper";
 
-export const EnterAndConfirmPassword: React.FC<{
+export const EnterAndConfirmPassword = ({
+  onSubmit: onSubmitPassword,
+  isLoading,
+}: {
   onSubmit: (password: string) => void;
   isLoading: boolean;
-}> = ({ onSubmit: onSubmitPassword, isLoading }) => {
+}) => {
   type ConfirmPasswordFormValues = {
     password: string;
     confirm: string;

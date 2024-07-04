@@ -2,7 +2,7 @@ import { Icon, type IconProps } from "@chakra-ui/react";
 
 import colors from "../../style/colors";
 
-export const BurgerMenuIcon: React.FC<IconProps> = props => (
+export const BurgerMenuIcon = (props: IconProps) => (
   <Icon
     width="24px"
     height="24px"

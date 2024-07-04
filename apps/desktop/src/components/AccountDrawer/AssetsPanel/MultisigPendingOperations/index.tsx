@@ -1,13 +1,10 @@
 import { Box } from "@chakra-ui/react";
 import { type MultisigAccount } from "@umami/core";
 import { useGetPendingMultisigOperations } from "@umami/state";
-import type React from "react";
 
 import { MultisigPendingOperation } from "./MultisigPendingOperation";
 
-export const MultisigPendingOperations: React.FC<{
-  account: MultisigAccount;
-}> = ({ account }) => {
+export const MultisigPendingOperations = ({ account }: { account: MultisigAccount }) => {
   const getPendingOperations = useGetPendingMultisigOperations();
   const pendingOperations = getPendingOperations(account);
 

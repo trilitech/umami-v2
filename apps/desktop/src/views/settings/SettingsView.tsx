@@ -1,6 +1,6 @@
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { DynamicModalContext } from "@umami/components";
-import { useContext } from "react";
+import { type PropsWithChildren, useContext } from "react";
 
 import { DAppsDrawerCard } from "./DAppsDrawerCard";
 import { ErrorLogsDrawerCard } from "./ErrorLogsDrawerCard";
@@ -81,10 +81,12 @@ const AdvancedSection = () => {
   );
 };
 
-const SectionContainer: React.FC<{
+const SectionContainer = ({
+  title,
+  children,
+}: PropsWithChildren<{
   title: string;
-  children: React.ReactNode;
-}> = ({ title, children }) => (
+}>) => (
   <Box marginTop="8px">
     <Flex>
       <Box width="550px">

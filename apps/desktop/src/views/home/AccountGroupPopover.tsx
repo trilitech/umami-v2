@@ -4,10 +4,13 @@ import { PlusIcon } from "../../assets/icons";
 import { TrashIcon } from "../../assets/icons/Trash";
 import { PopoverMenu } from "../../components/PopoverMenu";
 
-export const AccountGroupPopover: React.FC<{
+export const AccountGroupPopover = ({
+  onRemove,
+  onCreate,
+}: {
   onRemove: () => void;
   onCreate?: () => void;
-}> = ({ onRemove, onCreate }) => (
+}) => (
   <PopoverMenu>
     <Box paddingY="0">
       <Button

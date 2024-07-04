@@ -11,9 +11,8 @@ import {
   InputGroup,
   InputRightElement,
 } from "@chakra-ui/react";
-import { type Estimation, TEZ_DECIMALS } from "@umami/tezos";
-import { mutezToTez, tezToMutez } from "@umami/tezos";
-import { useState } from "react";
+import { type Estimation, TEZ_DECIMALS, mutezToTez, tezToMutez } from "@umami/tezos";
+import { type ChangeEvent, useState } from "react";
 import { useFormContext } from "react-hook-form";
 
 import { getSmallestUnit, makeValidateDecimals } from "./SendFlow/utils";
@@ -37,7 +36,7 @@ export const AdvancedSettingsAccordion = ({ index = 0 }: AdvancedSettingsAccordi
     mutezToTez(getValues().executeParams[index].fee).toFixed()
   );
 
-  const handleFeeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFeeChange = (event: ChangeEvent<HTMLInputElement>) => {
     const newFeeValue = event.target.value;
 
     if (makeValidateDecimals(TEZ_DECIMALS)(newFeeValue) === true) {

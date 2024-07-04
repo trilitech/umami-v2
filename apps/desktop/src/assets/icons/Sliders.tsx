@@ -2,7 +2,7 @@ import { Icon, type IconProps } from "@chakra-ui/react";
 
 import colors from "../../style/colors";
 
-export const SlidersIcon: React.FC<IconProps> = props => (
+export const SlidersIcon = (props: IconProps) => (
   <Icon
     width="32px"
     height="32px"

@@ -12,7 +12,7 @@ import { ContractIcon } from "../../assets/icons";
 import colors from "../../style/colors";
 import { AddressPill } from "../AddressPill/AddressPill";
 
-export const OriginationTile: React.FC<{ operation: OriginationOperation }> = ({ operation }) => {
+export const OriginationTile = ({ operation }: { operation: OriginationOperation }) => {
   const isMultisig =
     operation.originatedContract.codeHash === CODE_HASH &&
     operation.originatedContract.typeHash === TYPE_HASH;

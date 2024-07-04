@@ -1,6 +1,6 @@
 import { Flex, FormLabel, ModalBody, Text } from "@chakra-ui/react";
 import { type EstimatedAccountOperations, totalFee } from "@umami/core";
-import type React from "react";
+import { type PropsWithChildren } from "react";
 
 import { FormPageHeader } from "./FormPageHeader";
 import { SignPageFee } from "./SignPageFee";
@@ -8,12 +8,16 @@ import { subTitle } from "./SignPageHeader";
 import colors from "../../style/colors";
 import { AddressTile } from "../AddressTile/AddressTile";
 
-export const BatchModalBody: React.FC<{
+export const BatchModalBody = ({
+  title,
+  operation,
+  transactionCount,
+  children,
+}: PropsWithChildren<{
   title: string;
   operation: EstimatedAccountOperations;
   transactionCount: number;
-  children?: React.ReactNode;
-}> = ({ title, operation, transactionCount, children }) => (
+}>) => (
   <>
     <FormPageHeader subTitle={subTitle(operation.signer)} title={title} />
     <ModalBody>

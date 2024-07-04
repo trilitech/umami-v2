@@ -2,7 +2,7 @@ import { Icon, type IconProps } from "@chakra-ui/react";
 
 import colors from "../../style/colors";
 
-export const DocumentIcon: React.FC<IconProps> = props => (
+export const DocumentIcon = (props: IconProps) => (
   <Icon
     width="24px"
     height="24px"

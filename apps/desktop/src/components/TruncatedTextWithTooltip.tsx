@@ -1,11 +1,13 @@
 import { Text, Tooltip } from "@chakra-ui/react";
 import { truncate } from "@umami/tezos";
-import type React from "react";
 
-export const TruncatedTextWithTooltip: React.FC<{
+export const TruncatedTextWithTooltip = ({
+  text,
+  maxLength,
+}: {
   text: string;
   maxLength: number;
-}> = ({ text, maxLength }) => {
+}) => {
   if (text.length <= maxLength) {
     return <Text data-testid="truncated-text">{text}</Text>;
   }

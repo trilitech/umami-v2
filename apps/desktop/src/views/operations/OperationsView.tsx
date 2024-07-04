@@ -1,5 +1,5 @@
 import { Box, Center, Divider, Flex, Image } from "@chakra-ui/react";
-import { useRef } from "react";
+import { type UIEvent, useRef } from "react";
 
 import { useGetOperations } from "./useGetOperations";
 import { NoOperations } from "../../components/NoItems";
@@ -16,7 +16,7 @@ export const OperationsView = () => {
   // otherwise it might be called multiple times which would trigger multiple fetches
   const skipLoadMore = useRef<boolean>(false);
 
-  const onScroll = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
+  const onScroll = (e: UIEvent<HTMLDivElement>) => {
     if (skipLoadMore.current || !hasMore || isLoading) {
       return;
     }

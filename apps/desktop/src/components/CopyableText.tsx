@@ -1,20 +1,23 @@
 import { Flex, type FlexProps, Text, useToast } from "@chakra-ui/react";
 import { formatPkh } from "@umami/tezos";
-import type React from "react";
 
 import { FileCopyIcon } from "../assets/icons";
 import colors from "../style/colors";
 
 const TOAST_ID = "TOAST_ID";
 
-export const CopyableAddress: React.FC<
-  {
-    pkh: string;
-    formatAddress?: boolean;
-    copyable?: boolean;
-    iconColor?: string;
-  } & FlexProps
-> = ({ pkh, formatAddress = true, copyable = true, iconColor = colors.gray[600], ...rest }) => (
+export const CopyableAddress = ({
+  pkh,
+  formatAddress = true,
+  copyable = true,
+  iconColor = colors.gray[600],
+  ...rest
+}: {
+  pkh: string;
+  formatAddress?: boolean;
+  copyable?: boolean;
+  iconColor?: string;
+} & FlexProps) => (
   <CopyableText
     copyValue={copyable ? pkh : undefined}
     displayText={formatAddress ? formatPkh(pkh) : pkh}
@@ -24,14 +27,18 @@ export const CopyableAddress: React.FC<
   />
 );
 
-const CopyableText: React.FC<
-  {
-    displayText: string;
-    copyValue?: string;
-    toastMessage?: string;
-    iconColor?: string;
-  } & FlexProps
-> = ({ displayText, copyValue, toastMessage, iconColor, ...rest }) => {
+const CopyableText = ({
+  displayText,
+  copyValue,
+  toastMessage,
+  iconColor,
+  ...rest
+}: {
+  displayText: string;
+  copyValue?: string;
+  toastMessage?: string;
+  iconColor?: string;
+} & FlexProps) => {
   const toast = useToast();
   const onClickCopyIcon = async () => {
     if (!copyValue) {

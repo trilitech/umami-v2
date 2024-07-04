@@ -10,10 +10,13 @@ import { getAccountGroupLabel } from "./getAccountGroupLabel";
 import { AccountTile } from "../../components/AccountTile/AccountTile";
 import { ConfirmationModal } from "../../components/ConfirmationModal";
 
-export const AccountGroup: React.FC<{
+export const AccountGroup = ({
+  groupLabel,
+  accounts,
+}: {
   accounts: Account[];
   groupLabel: string;
-}> = ({ groupLabel, accounts }) => {
+}) => {
   const first = accounts[0];
   const isMultisig = first.type === "multisig";
   const isMnemonic = first.type === "mnemonic";

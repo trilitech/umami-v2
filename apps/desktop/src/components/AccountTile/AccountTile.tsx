@@ -11,8 +11,7 @@ import {
 import { type Account, fullId, thumbnailUri } from "@umami/core";
 import { useGetAccountBalance, useGetAccountDelegate, useGetAccountNFTs } from "@umami/state";
 import { formatPkh, prettyTezAmount } from "@umami/tezos";
-import type React from "react";
-import { useContext } from "react";
+import { type ReactNode, useContext } from "react";
 import { Link } from "react-router-dom";
 
 import { AccountTileIcon } from "./AccountTileIcon";
@@ -22,13 +21,16 @@ import { SelectedAccountContext } from "../../views/home/SelectedAccountContext"
 import { useAddressKind } from "../AddressTile/useAddressKind";
 import { color as identiconColor } from "../Identicon";
 
-export const AccountTileBase: React.FC<
-  {
-    icon: React.ReactNode;
-    leftElement: React.ReactNode;
-    rightElement: React.ReactNode;
-  } & FlexProps
-> = ({ icon, leftElement, rightElement, ...flexProps }) => (
+export const AccountTileBase = ({
+  icon,
+  leftElement,
+  rightElement,
+  ...flexProps
+}: {
+  icon: ReactNode;
+  leftElement: ReactNode;
+  rightElement: ReactNode;
+} & FlexProps) => (
   <Flex
     alignItems="center"
     height="90px"
@@ -47,10 +49,7 @@ export const AccountTileBase: React.FC<
   </Flex>
 );
 
-export const LabelAndAddress: React.FC<{ label: string | null; pkh: string }> = ({
-  label,
-  pkh,
-}) => (
+export const LabelAndAddress = ({ label, pkh }: { label: string | null; pkh: string }) => (
   <Box margin={4} data-testid="account-identifier">
     {label && <Heading size="md">{label}</Heading>}
     <Flex alignItems="center">
@@ -109,9 +108,7 @@ export const accountIconGradient = ({
   }px, transparent ${radius}), ${mainBackgroundColor}`;
 };
 
-export const AccountTile: React.FC<{
-  account: Account;
-}> = ({ account }) => {
+export const AccountTile = ({ account }: { account: Account }) => {
   const pkh = account.address.pkh;
   const { selectedAccount, selectAccount } = useContext(SelectedAccountContext);
   const isSelected = selectedAccount?.address.pkh === pkh;

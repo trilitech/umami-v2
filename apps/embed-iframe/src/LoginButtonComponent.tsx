@@ -3,10 +3,13 @@ import { type TypeOfLogin } from "@trilitech-umami/umami-embed/types";
 
 import { FacebookLogoIcon, GoogleLogoIcon, RedditLogoIcon, TwitterLogoIcon } from "./assets/icons";
 
-export const LoginButtonComponent: React.FC<{
+export const LoginButtonComponent = ({
+  onClick,
+  loginType,
+}: {
   onClick: () => void;
   loginType: TypeOfLogin;
-}> = ({ onClick, loginType }) => (
+}) => (
   <Button
     position="relative"
     width="100%"
@@ -24,9 +27,7 @@ export const LoginButtonComponent: React.FC<{
   </Button>
 );
 
-const LogoIconWithBackground: React.FC<{
-  loginType: TypeOfLogin;
-}> = ({ loginType }) => (
+const LogoIconWithBackground = ({ loginType }: { loginType: TypeOfLogin }) => (
   <Flex
     alignItems="center"
     justifyContent="center"
@@ -40,9 +41,7 @@ const LogoIconWithBackground: React.FC<{
   </Flex>
 );
 
-const LogoIcon: React.FC<{
-  loginType: TypeOfLogin;
-}> = ({ loginType }) => {
+const LogoIcon = ({ loginType }: { loginType: TypeOfLogin }) => {
   switch (loginType) {
     case "facebook":
       return <FacebookLogoIcon />;

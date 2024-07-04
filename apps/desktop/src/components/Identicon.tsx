@@ -1,18 +1,19 @@
 import { Box, type ChakraProps } from "@chakra-ui/react";
 import { type Address, type RawPkh } from "@umami/tezos";
 import md5 from "md5";
-import type React from "react";
 
 import { ReactIdenticon } from "./ReactIdenticon";
 
 export const color = (address: RawPkh) => `#${md5(address).slice(0, 6)}`;
 
-export const Identicon: React.FC<
-  {
-    address: Address;
-    identiconSize: number;
-  } & ChakraProps
-> = ({ address, identiconSize, ...props }) => (
+export const Identicon = ({
+  address,
+  identiconSize,
+  ...props
+}: {
+  address: Address;
+  identiconSize: number;
+} & ChakraProps) => (
   <Box
     sx={{
       canvas: {
@@ -25,13 +26,6 @@ export const Identicon: React.FC<
     data-testid="identicon"
     {...props}
   >
-    <ReactIdenticon
-      background="white"
-      size={identiconSize}
-      string={address.pkh}
-      style={{
-        borderRadius: 4,
-      }}
-    />
+    <ReactIdenticon background="white" size={identiconSize} string={address.pkh} />
   </Box>
 );

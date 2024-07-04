@@ -22,7 +22,7 @@ type OperationIdProps = {
 
 type Props = OperationHashProps | OperationIdProps;
 
-export const TzktLink: React.FC<PropsWithChildren<Props & LinkProps>> = ({
+export const TzktLink = ({
   hash,
   counter,
   transactionId,
@@ -30,7 +30,7 @@ export const TzktLink: React.FC<PropsWithChildren<Props & LinkProps>> = ({
   migrationId,
   children,
   ...props
-}) => {
+}: PropsWithChildren<Props & LinkProps>) => {
   const { tzktExplorerUrl } = useSelectedNetwork();
   let url = tzktExplorerUrl;
 

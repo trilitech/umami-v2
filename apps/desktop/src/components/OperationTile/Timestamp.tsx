@@ -3,7 +3,7 @@ import { differenceInDays, format, formatDistance } from "date-fns";
 
 import colors from "../../style/colors";
 
-export const Timestamp: React.FC<{ timestamp: string | undefined }> = ({ timestamp }) => {
+export const Timestamp = ({ timestamp }: { timestamp: string | undefined }) => {
   if (!timestamp) {
     return null;
   }

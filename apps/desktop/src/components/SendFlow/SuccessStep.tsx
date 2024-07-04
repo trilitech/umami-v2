@@ -11,13 +11,12 @@ import {
 } from "@chakra-ui/react";
 import { DynamicModalContext } from "@umami/components";
 import { useSelectedNetwork } from "@umami/state";
-import type React from "react";
 import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { WindowLinkIcon } from "../../assets/icons/WindowLink";
 
-export const SuccessStep: React.FC<{ hash: string }> = ({ hash }) => {
+export const SuccessStep = ({ hash }: { hash: string }) => {
   const network = useSelectedNetwork();
   const tzktUrl = `${network.tzktExplorerUrl}/${hash}`;
   const { onClose } = useContext(DynamicModalContext);

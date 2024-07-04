@@ -1,6 +1,6 @@
 import { Icon, type IconProps } from "@chakra-ui/react";
 
-export const MakiIcon: React.FC<IconProps & { fishColor: string }> = ({ fishColor, ...props }) => (
+export const MakiIcon = ({ fishColor, ...props }: IconProps & { fishColor: string }) => (
   <Icon
     width="38px"
     height="38px"

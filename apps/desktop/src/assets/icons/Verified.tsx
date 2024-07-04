@@ -2,7 +2,7 @@ import { Flex, Icon, type IconProps } from "@chakra-ui/react";
 
 import colors from "../../style/colors";
 
-export const VerifiedIcon: React.FC = () => (
+export const VerifiedIcon = () => (
   <Flex position="relative" alignItems="center" justifyContent="center" data-testid="verified-icon">
     <StarIcon />
     <Flex position="absolute" alignItems="center" justifyContent="center">
@@ -11,7 +11,7 @@ export const VerifiedIcon: React.FC = () => (
   </Flex>
 );
 
-const StarIcon: React.FC<IconProps> = props => (
+const StarIcon = (props: IconProps) => (
   <Icon
     width="14px"
     height="14px"
@@ -28,7 +28,7 @@ const StarIcon: React.FC<IconProps> = props => (
   </Icon>
 );
 
-const CheckIcon: React.FC<IconProps> = props => (
+const CheckIcon = (props: IconProps) => (
   <Icon
     width="7px"
     height="5px"

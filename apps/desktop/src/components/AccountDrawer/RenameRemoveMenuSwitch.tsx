@@ -8,7 +8,7 @@ import { RenameAccountModal } from "./RenameAccountModal";
 import { ConfirmationModal } from "../ConfirmationModal";
 import { RenameRemoveMenu } from "../RenameRemoveMenu";
 
-export const RenameRemoveMenuSwitch: React.FC<{ account: Account }> = ({ account }) => {
+export const RenameRemoveMenuSwitch = ({ account }: { account: Account }) => {
   const { openWith, onClose: closeModal } = useContext(DynamicModalContext);
   const navigate = useNavigate();
   const isLastImplicitAccount = useImplicitAccounts().length === 1;

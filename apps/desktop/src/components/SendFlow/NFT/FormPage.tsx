@@ -12,7 +12,6 @@ import {
 } from "@chakra-ui/react";
 import { type FA2Transfer, type NFTBalance } from "@umami/core";
 import { type RawPkh, parseContractPkh, parsePkh } from "@umami/tezos";
-import type React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { SignPage } from "./SignPage";
@@ -34,9 +33,7 @@ export type FormValues = {
   recipient: RawPkh;
 };
 
-export const FormPage: React.FC<
-  FormPagePropsWithSender<FormValues> & { nft: NFTBalance }
-> = props => {
+export const FormPage = (props: FormPagePropsWithSender<FormValues> & { nft: NFTBalance }) => {
   const { nft } = props;
 
   const openSignPage = useOpenSignPageFormAction({

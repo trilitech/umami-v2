@@ -9,14 +9,11 @@ import {
   Wrap,
 } from "@chakra-ui/react";
 import { type ImplicitAddress } from "@umami/tezos";
-import type React from "react";
 
 import colors from "../../style/colors";
 import { AddressPill } from "../AddressPill/AddressPill";
 
-export const MultisigApprovers: React.FC<{
-  signers: ImplicitAddress[];
-}> = ({ signers }) => (
+export const MultisigApprovers = ({ signers }: { signers: ImplicitAddress[] }) => (
   <Box
     width="100%"
     marginTop="40px"

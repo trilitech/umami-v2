@@ -9,7 +9,7 @@ import { NoItems } from "../../components/NoItems";
 import { TopBar } from "../../components/TopBar";
 import { UpsertContactModal } from "../../components/UpsertContactModal";
 
-const AddContact: React.FC = () => {
+const AddContact = () => {
   const { openWith } = useContext(DynamicModalContext);
   return (
     <Button

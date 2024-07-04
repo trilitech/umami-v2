@@ -8,7 +8,7 @@ import { TezSignPage as BeaconTezSignPage } from "./TezSignPage";
 import { UndelegationSignPage } from "./UndelegationSignPage";
 import { UnstakeSignPage } from "./UnstakeSignPage";
 
-export const BeaconSignPage: React.FC<BeaconSignPageProps> = ({ operation, message }) => {
+export const BeaconSignPage = ({ operation, message }: BeaconSignPageProps) => {
   const operationType = operation.operations[0].type;
 
   switch (operationType) {

@@ -4,14 +4,17 @@ import { type PropsWithChildren } from "react";
 import { ChevronRightIcon } from "../assets/icons";
 import colors from "../style/colors";
 
-export const ClickableCard: React.FC<
-  PropsWithChildren<
-    {
-      onClick?: () => void;
-      isSelected: boolean;
-    } & CardProps
-  >
-> = ({ onClick, children, isSelected, ...props }) => (
+export const ClickableCard = ({
+  onClick,
+  children,
+  isSelected,
+  ...props
+}: PropsWithChildren<
+  {
+    onClick?: () => void;
+    isSelected: boolean;
+  } & CardProps
+>) => (
   <Card
     justifyContent="center"
     height="66px"
@@ -30,11 +33,15 @@ export const ClickableCard: React.FC<
   </Card>
 );
 
-export const SettingsCardWithDrawerIcon: React.FC<{
+export const SettingsCardWithDrawerIcon = ({
+  left,
+  isSelected,
+  onClick,
+}: {
   left: string;
   isSelected: boolean;
   onClick?: () => void;
-}> = ({ left, isSelected, onClick }) => (
+}) => (
   <ClickableCard isSelected={isSelected} onClick={onClick}>
     <Flex alignItems="center" height="100%">
       <Flex alignItems="center" justifyContent="space-between" width="100%">

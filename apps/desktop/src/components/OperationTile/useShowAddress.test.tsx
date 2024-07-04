@@ -1,14 +1,15 @@
 import { mockImplicitAddress } from "@umami/tezos";
+import { type PropsWithChildren } from "react";
 
 import { OperationTileContext } from "./OperationTileContext";
 import { useShowAddress } from "./useShowAddress";
 import { renderHook } from "../../mocks/testUtils";
 
-const PageWrapper = ({ children }: { children: React.ReactNode }) => (
+const PageWrapper = ({ children }: PropsWithChildren) => (
   <OperationTileContext.Provider value={{ mode: "page" }}>{children}</OperationTileContext.Provider>
 );
 
-const DrawerWrapper = ({ children }: { children: React.ReactNode }) => (
+const DrawerWrapper = ({ children }: PropsWithChildren) => (
   <OperationTileContext.Provider
     value={{ mode: "drawer", selectedAddress: mockImplicitAddress(0) }}
   >

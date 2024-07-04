@@ -22,56 +22,55 @@ const baseIconProps = {
  * @param addressKind - The address to display the icon for.
  * @param size - The size of the icon.
  */
-export const AddressTileIcon: React.FC<{
-  addressKind: AddressKind;
-  size: AddressTileIconSize;
-}> = memo(({ addressKind, size }) => {
-  const getAccount = useGetOwnedAccountSafe();
-  const account = getAccount(addressKind.pkh);
+export const AddressTileIcon = memo(
+  ({ addressKind, size }: { addressKind: AddressKind; size: AddressTileIconSize }) => {
+    const getAccount = useGetOwnedAccountSafe();
+    const account = getAccount(addressKind.pkh);
 
-  if (account) {
-    return <AccountTileIcon account={account} size={size} />;
-  }
+    if (account) {
+      return <AccountTileIcon account={account} size={size} />;
+    }
 
-  let sizeInPx;
-  let padding;
-  switch (size) {
-    case "sm":
-      sizeInPx = "30px";
-      padding = "5px";
-      break;
-    case "lg":
-      sizeInPx = "48px";
-      padding = "10px";
-  }
+    let sizeInPx;
+    let padding;
+    switch (size) {
+      case "sm":
+        sizeInPx = "30px";
+        padding = "5px";
+        break;
+      case "lg":
+        sizeInPx = "48px";
+        padding = "10px";
+    }
 
-  switch (addressKind.type) {
-    case "contact":
-      return (
-        <ContactIcon width={sizeInPx} height={sizeInPx} padding={padding} {...baseIconProps} />
-      );
-    case "unknown":
-      return (
-        <UnknownContactIcon
-          width={sizeInPx}
-          height={sizeInPx}
-          padding={padding}
-          {...baseIconProps}
-        />
-      );
-    case "baker":
-      return (
-        <Image
-          height={sizeInPx}
-          data-testid="baker-icon"
-          src={`https://services.tzkt.io/v1/avatars/${addressKind.pkh}`}
-        />
-      );
-    case "secret_key":
-    case "mnemonic":
-    case "social":
-    case "ledger":
-    case "multisig":
-      return null; // impossible state
+    switch (addressKind.type) {
+      case "contact":
+        return (
+          <ContactIcon width={sizeInPx} height={sizeInPx} padding={padding} {...baseIconProps} />
+        );
+      case "unknown":
+        return (
+          <UnknownContactIcon
+            width={sizeInPx}
+            height={sizeInPx}
+            padding={padding}
+            {...baseIconProps}
+          />
+        );
+      case "baker":
+        return (
+          <Image
+            height={sizeInPx}
+            data-testid="baker-icon"
+            src={`https://services.tzkt.io/v1/avatars/${addressKind.pkh}`}
+          />
+        );
+      case "secret_key":
+      case "mnemonic":
+      case "social":
+      case "ledger":
+      case "multisig":
+        return null; // impossible state
+    }
   }
-});
+);

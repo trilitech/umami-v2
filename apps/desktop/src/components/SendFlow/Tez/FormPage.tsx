@@ -9,9 +9,7 @@ import {
   ModalFooter,
 } from "@chakra-ui/react";
 import { type TezTransfer } from "@umami/core";
-import { type RawPkh, TEZ, TEZ_DECIMALS, parsePkh } from "@umami/tezos";
-import { tezToMutez } from "@umami/tezos";
-import type React from "react";
+import { type RawPkh, TEZ, TEZ_DECIMALS, parsePkh, tezToMutez } from "@umami/tezos";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { SignPage } from "./SignPage";
@@ -37,10 +35,10 @@ export type FormValues = {
   prettyAmount: string;
 };
 
-export const FormPage: React.FC<FormPageProps<FormValues> & { showPreview?: boolean }> = ({
+export const FormPage = ({
   showPreview = true,
   ...props
-}) => {
+}: FormPageProps<FormValues> & { showPreview?: boolean }) => {
   const openSignPage = useOpenSignPageFormAction({
     SignPage,
     signPageExtraData: undefined,

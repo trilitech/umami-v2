@@ -10,7 +10,7 @@ import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
 import { headerText } from "../SignPageHeader";
 
-export const UndelegationSignPage: React.FC<BeaconSignPageProps> = ({ operation, message }) => {
+export const UndelegationSignPage = ({ operation, message }: BeaconSignPageProps) => {
   const { isSigning, onSign, network, form, fee } = useSignWithBeacon(operation, message);
 
   return (

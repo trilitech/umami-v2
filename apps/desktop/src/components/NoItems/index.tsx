@@ -19,13 +19,16 @@ const SIZES = {
 };
 type AvailableSizes = keyof typeof SIZES;
 
-export const NoItems: React.FC<
-  PropsWithChildren<{
-    title: string;
-    description: string;
-    size: AvailableSizes;
-  }>
-> = ({ title, description, children, size }) => (
+export const NoItems = ({
+  title,
+  description,
+  children,
+  size,
+}: PropsWithChildren<{
+  title: string;
+  description: string;
+  size: AvailableSizes;
+}>) => (
   <Flex alignItems="center" justifyContent="center" width="100%" height="100%">
     <Box padding="30px" data-testid="empty-state-message">
       <Heading marginBottom="10px" textAlign="center" size={SIZES[size].heading}>
@@ -44,7 +47,7 @@ export const NoItems: React.FC<
   </Flex>
 );
 
-export const NoOperations: React.FC<{ size: AvailableSizes }> = ({ size }) => (
+export const NoOperations = ({ size }: { size: AvailableSizes }) => (
   <NoItems
     description="Your operations history will appear here..."
     size={size}
@@ -52,7 +55,7 @@ export const NoOperations: React.FC<{ size: AvailableSizes }> = ({ size }) => (
   />
 );
 
-export const NoNFTs: React.FC<{ size: AvailableSizes }> = ({ size }) => (
+export const NoNFTs = ({ size }: { size: AvailableSizes }) => (
   <NoItems
     description="Your NFT collection will appear here..."
     size={size}
@@ -64,7 +67,7 @@ export const NoNFTs: React.FC<{ size: AvailableSizes }> = ({ size }) => (
   </NoItems>
 );
 
-export const NoTokens: React.FC<{ size: AvailableSizes }> = ({ size }) => (
+export const NoTokens = ({ size }: { size: AvailableSizes }) => (
   <NoItems
     description="All of your tokens will appear here..."
     size={size}

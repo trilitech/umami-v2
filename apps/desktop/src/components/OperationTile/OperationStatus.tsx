@@ -2,10 +2,7 @@ import { useIsBlockFinalised } from "@umami/state";
 
 import { CheckmarkIcon, CrossedCircleIcon, HourglassIcon } from "../../assets/icons";
 
-export const OperationStatus: React.FC<{ level: number; status?: string }> = ({
-  level,
-  status,
-}) => {
+export const OperationStatus = ({ level, status }: { level: number; status?: string }) => {
   const isFinalised = useIsBlockFinalised(level);
 
   // if we don't know the status we assume it's applied

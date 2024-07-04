@@ -1,14 +1,16 @@
 import { MenuItem, MenuList } from "@chakra-ui/react";
 import { type Account } from "@umami/core";
-import type React from "react";
 
 import colors from "../../style/colors";
 import { AddressTile } from "../AddressTile/AddressTile";
 
-export const AccountListDisplay: React.FC<{
+export const AccountListDisplay = ({
+  accounts,
+  onSelect,
+}: {
   accounts: Account[];
   onSelect: (account: Account) => void;
-}> = ({ accounts, onSelect }) => (
+}) => (
   <MenuList
     zIndex="docked"
     overflowY="scroll"

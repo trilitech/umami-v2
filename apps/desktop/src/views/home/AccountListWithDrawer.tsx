@@ -19,7 +19,7 @@ import { DerivationInfoButton } from "../../components/AccountDrawer/DerivationI
 import { CloseDrawerButton } from "../../components/CloseDrawerButton";
 import { NFTDrawerBody } from "../nfts/NFTDrawerBody";
 
-export const AccountListWithDrawer: React.FC = () => {
+export const AccountListWithDrawer = () => {
   const [selectedAccount, setSelectedAccount] = useState<Account | null>(null);
 
   const { ownerPkh, nftId } = useParams();

@@ -1,6 +1,6 @@
 import { Icon, type IconProps } from "@chakra-ui/react";
 
-export const ReloadIcon: React.FC<IconProps> = props => (
+export const ReloadIcon = (props: IconProps) => (
   <Icon
     width="22px"
     height="22px"

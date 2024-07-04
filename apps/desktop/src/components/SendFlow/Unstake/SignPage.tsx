@@ -10,7 +10,7 @@ import { SignPageFee } from "../SignPageFee";
 import { SignPageHeader, headerText } from "../SignPageHeader";
 import { type SignPageProps, useSignPageHelpers } from "../utils";
 // TODO: test
-export const SignPage: React.FC<SignPageProps<{ stakedBalance: number }>> = props => {
+export const SignPage = (props: SignPageProps<{ stakedBalance: number }>) => {
   const {
     mode,
     operations,

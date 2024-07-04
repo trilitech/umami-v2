@@ -39,16 +39,22 @@ export const subTitle = (signer: ImplicitAccount): string | undefined => {
 };
 
 // TODO: pass in AccountOperations instead of signer & operationsType
-export const SignPageHeader: React.FC<
-  PropsWithChildren<{
-    goBack?: () => void;
-    mode: SignPageMode;
-    operationsType: AccountOperations["type"];
-    signer: ImplicitAccount;
-    title?: string;
-    description?: string;
-  }>
-> = ({ goBack, mode, operationsType, signer, title, description, children }) => (
+export const SignPageHeader = ({
+  goBack,
+  mode,
+  operationsType,
+  signer,
+  title,
+  description,
+  children,
+}: PropsWithChildren<{
+  goBack?: () => void;
+  mode: SignPageMode;
+  operationsType: AccountOperations["type"];
+  signer: ImplicitAccount;
+  title?: string;
+  description?: string;
+}>) => (
   <HeaderWrapper>
     {goBack && <ModalBackButton onClick={goBack} />}
     <Heading data-testid="sign-page-header" size="2xl">

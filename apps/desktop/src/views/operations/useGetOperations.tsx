@@ -1,10 +1,14 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { type Account } from "@umami/core";
 import { useReactQueryErrorHandler, useRefetchTrigger } from "@umami/data-polling";
-import { useSelectedNetwork } from "@umami/state";
-import { type AppDispatch, assetsActions, tokensActions, useAppDispatch } from "@umami/state";
-import { type Network } from "@umami/tezos";
-import { BLOCK_TIME } from "@umami/tezos";
+import {
+  type AppDispatch,
+  assetsActions,
+  tokensActions,
+  useAppDispatch,
+  useSelectedNetwork,
+} from "@umami/state";
+import { BLOCK_TIME, type Network } from "@umami/tezos";
 import {
   type TokenTransferOperation,
   type TzktCombinedOperation,

@@ -2,6 +2,6 @@ import { type IconProps } from "@chakra-ui/react";
 
 import { OutgoingArrow } from "./OutgoingArrow";
 
-export const IncomingArrow: React.FC<IconProps> = props => (
+export const IncomingArrow = (props: IconProps) => (
   <OutgoingArrow css={{ rotate: "180deg" }} {...props} />
 );

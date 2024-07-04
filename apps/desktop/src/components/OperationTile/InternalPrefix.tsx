@@ -11,9 +11,7 @@ import colors from "../../style/colors";
  *
  * @param operation -
  */
-export const InternalPrefix: React.FC<{
-  operation: TzktCombinedOperation;
-}> = ({ operation }) => {
+export const InternalPrefix = ({ operation }: { operation: TzktCombinedOperation }) => {
   let target;
   let sender;
 

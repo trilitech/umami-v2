@@ -9,7 +9,6 @@ import {
 } from "@umami/core";
 import { useAsyncActionHandler } from "@umami/state";
 import { capitalize } from "lodash";
-import type React from "react";
 import { useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
@@ -18,14 +17,19 @@ import { BatchModalBody } from "../BatchModalBody";
 import { SignButton } from "../SignButton";
 import { SuccessStep } from "../SuccessStep";
 
-export const SignPage: React.FC<{
+export const SignPage = ({
+  signer,
+  operation,
+  actionType,
+  transactionCount,
+}: {
   operation: EstimatedAccountOperations;
   actionType: ApproveOrExecute;
   signer: ImplicitAccount;
   // A single approve/execute `ContractCall` operation could contain multiple transactions
   // so we need to pass the transaction count by decoding the proposed multisig action separately
   transactionCount: number;
-}> = ({ signer, operation, actionType, transactionCount }) => {
+}) => {
   const { handleAsyncAction } = useAsyncActionHandler();
   const { openWith } = useContext(DynamicModalContext);
   const form = useForm({

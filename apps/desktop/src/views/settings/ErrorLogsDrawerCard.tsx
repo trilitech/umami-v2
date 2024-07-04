@@ -72,9 +72,7 @@ const ErrorLogsDrawerBody = () => {
   );
 };
 
-const ErrorLogRow: React.FC<{
-  errorLog: ErrorContext;
-}> = ({ errorLog }) => (
+const ErrorLogRow = ({ errorLog }: { errorLog: ErrorContext }) => (
   <>
     <Divider marginY={1} />
     <Flex justifyContent="space-between" paddingY="12px">

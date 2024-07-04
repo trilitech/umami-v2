@@ -12,10 +12,7 @@ import { FolderInfoIcon } from "../../../assets/icons";
  * @param account -
  * @returns null if the account's derivation path is unknown, a button to open the modal otherwise
  */
-export const DerivationInfoButton: React.FC<{ account: Account } & ButtonProps> = ({
-  account,
-  ...props
-}) => {
+export const DerivationInfoButton = ({ account, ...props }: { account: Account } & ButtonProps) => {
   const { openWith } = useContext(DynamicModalContext);
 
   switch (account.type) {

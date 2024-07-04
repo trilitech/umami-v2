@@ -11,26 +11,25 @@ import {
 import * as Auth from "@umami/social-auth";
 import { useAsyncActionHandler, useGetSecretKey, useSelectedNetwork } from "@umami/state";
 import { type Network, makeToolkit } from "@umami/tezos";
-import type React from "react";
 import { FormProvider, useForm, useFormContext } from "react-hook-form";
 
 import { FormErrorMessage } from "../FormErrorMessage";
 import { PasswordInput } from "../PasswordInput";
 
-export const SignButton: React.FC<{
-  onSubmit: (tezosToolkit: TezosToolkit) => Promise<BatchWalletOperation | void>;
-  signer: ImplicitAccount;
-  isLoading?: boolean;
-  isDisabled?: boolean;
-  text?: string; // TODO: after FillStep migration change to the header value from SignPage
-  network?: Network;
-}> = ({
+export const SignButton = ({
   signer,
   onSubmit,
   isLoading: externalIsLoading,
   isDisabled,
   text,
   network: preferredNetwork,
+}: {
+  onSubmit: (tezosToolkit: TezosToolkit) => Promise<BatchWalletOperation | void>;
+  signer: ImplicitAccount;
+  isLoading?: boolean;
+  isDisabled?: boolean;
+  text?: string; // TODO: after FillStep migration change to the header value from SignPage
+  network?: Network;
 }) => {
   const form = useForm<{ password: string }>({ mode: "onBlur", defaultValues: { password: "" } });
   const {

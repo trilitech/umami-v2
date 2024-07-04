@@ -24,7 +24,7 @@ type ChangePasswordFormValues = {
   newPasswordConfirmation: string;
 };
 
-export const ChangePasswordForm: React.FC = () => {
+export const ChangePasswordForm = () => {
   const { onClose } = useContext(DynamicModalContext);
   const form = useForm<ChangePasswordFormValues>({ mode: "onBlur" });
   const toast = useToast();

@@ -11,9 +11,7 @@ import { SignPageFee } from "../SignPageFee";
 import { SignPageHeader, headerText } from "../SignPageHeader";
 import { type SignPageProps, useSignPageHelpers } from "../utils";
 
-export const SignPage: React.FC<
-  SignPageProps<{ token: FA12TokenBalance | FA2TokenBalance }>
-> = props => {
+export const SignPage = (props: SignPageProps<{ token: FA12TokenBalance | FA2TokenBalance }>) => {
   const {
     mode,
     operations: initialOperations,

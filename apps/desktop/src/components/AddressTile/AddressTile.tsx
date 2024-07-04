@@ -1,6 +1,5 @@
 import { Box, Flex, type FlexProps, Heading, Text, Tooltip } from "@chakra-ui/react";
-import { type Address } from "@umami/tezos";
-import { formatPkh } from "@umami/tezos";
+import { type Address, formatPkh } from "@umami/tezos";
 
 import { AddressTileIcon } from "./AddressTileIcon";
 import { useAddressKind } from "./useAddressKind";
@@ -17,11 +16,11 @@ import { AccountBalance } from "../AccountBalance";
  * @param flexProps - Defines component style.
  * @param hideBalance - If true, balance will not be displayed.
  */
-export const AddressTile: React.FC<{ address: Address; hideBalance?: boolean } & FlexProps> = ({
+export const AddressTile = ({
   address,
   hideBalance = false,
   ...flexProps
-}) => {
+}: { address: Address; hideBalance?: boolean } & FlexProps) => {
   const addressKind = useAddressKind(address);
 
   return (

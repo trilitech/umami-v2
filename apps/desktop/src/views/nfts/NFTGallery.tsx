@@ -1,14 +1,15 @@
 import { SimpleGrid } from "@chakra-ui/react";
 import { type NFTBalance, fullId } from "@umami/core";
 import { type RawPkh } from "@umami/tezos";
-import type React from "react";
 
 import { NFTCard } from "./NFTCard";
 import { sortedByLastUpdate } from "../../utils/token/utils";
 
-export const NFTGallery: React.FC<{
+export const NFTGallery = ({
+  nftsByOwner,
+}: {
   nftsByOwner: Record<RawPkh, NFTBalance[] | undefined>;
-}> = ({ nftsByOwner }) => {
+}) => {
   const allNFTs = Object.entries(nftsByOwner).flatMap(([owner, nfts]) =>
     (nfts || []).map(nft => ({ owner, ...nft }))
   );

@@ -21,7 +21,7 @@ import { SignPageFee } from "../SignPageFee";
 import { SignPageHeader, headerText } from "../SignPageHeader";
 import { type SignPageProps, useSignPageHelpers } from "../utils";
 
-export const SignPage: React.FC<SignPageProps<{ nft: NFTBalance }>> = props => {
+export const SignPage = (props: SignPageProps<{ nft: NFTBalance }>) => {
   const {
     mode,
     operations: initialOperations,

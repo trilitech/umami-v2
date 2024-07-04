@@ -1,5 +1,4 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
-import type React from "react";
 
 import { CheckmarkIcon, HourglassIcon } from "../../../../assets/icons";
 import colors from "../../../../style/colors";
@@ -10,11 +9,15 @@ export type MultisigSignerState =
   | "executable"
   | "approvable";
 
-export const MultisigActionButton: React.FC<{
+export const MultisigActionButton = ({
+  approveOrExecute,
+  isLoading,
+  signerState,
+}: {
   signerState: MultisigSignerState;
   approveOrExecute: () => void;
   isLoading: boolean;
-}> = ({ approveOrExecute, isLoading, signerState }) => {
+}) => {
   switch (signerState) {
     case "awaitingApprovalByExternalSigner": {
       return (

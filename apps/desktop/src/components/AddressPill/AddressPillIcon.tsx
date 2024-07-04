@@ -16,10 +16,10 @@ import {
 } from "../../assets/icons";
 import { UpsertContactModal } from "../UpsertContactModal";
 
-export const LeftIcon: React.FC<{ addressKind: AddressKind } & IconProps> = ({
+export const LeftIcon = ({
   addressKind: { type },
   ...props
-}) => {
+}: { addressKind: AddressKind } & IconProps) => {
   switch (type) {
     case "multisig":
       return <KeyIcon data-testid={`${type}-icon`} {...props} />;
@@ -37,9 +37,11 @@ export const LeftIcon: React.FC<{ addressKind: AddressKind } & IconProps> = ({
   }
 };
 
-export const RightIcon: React.FC<
-  { addressKind: AddressKind; addressPillMode: AddressPillMode } & IconProps
-> = ({ addressKind: { type, pkh }, addressPillMode, ...rest }) => {
+export const RightIcon = ({
+  addressKind: { type, pkh },
+  addressPillMode,
+  ...rest
+}: { addressKind: AddressKind; addressPillMode: AddressPillMode } & IconProps) => {
   const addressExistsInContacts = useAddressExistsInContacts();
   const { openWith } = useContext(DynamicModalContext);
 
