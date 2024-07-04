@@ -3,8 +3,5 @@
   "license": "MIT",
   "files": [
     "tsconfig.json"
-  ],
-  "devDependencies": {
-    "rimraf": "^5.0.7"
-  }
+  ]
 }

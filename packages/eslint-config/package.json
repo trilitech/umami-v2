@@ -27,8 +27,5 @@
     "eslint-plugin-tsdoc": "^0.3.0",
     "eslint-plugin-unused-imports": "^3.2.0",
     "typescript": "^5.5.3"
-  },
-  "devDependencies": {
-    "rimraf": "^5.0.7"
   }
 }

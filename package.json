@@ -16,10 +16,10 @@
   "scripts": {
     "build": "turbo build",
     "clean": "rimraf .turbo && turbo clean",
-    "test": "turbo test",
+    "test": "turbo test --concurrency 2",
     "lint": "turbo lint",
     "format": "turbo format",
-    "ci": "turbo check-types lint:ci format:ci audit check-circular-deps test --concurrency 3",
+    "ci": "turbo check-types lint:ci format:ci audit check-circular-deps",
     "test:e2e": "turbo test:e2e",
     "dev:desktop": "turbo dev --filter='./apps/desktop'",
     "dev:web": "turbo dev --filter='./apps/web'",
@@ -30,5 +30,8 @@
     "rimraf": "^5.0.7",
     "tsup": "^8.1.0",
     "turbo": "^2.0.6"
+  },
+  "resolutions": {
+    "@typescript-eslint/utils": "^7.15.0"
   }
 }
