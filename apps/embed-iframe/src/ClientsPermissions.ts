@@ -16,11 +16,10 @@ const clientPermissions: Record<string, Permissions> = {
   },
 };
 
-export const getPermissionsForOrigin = (origin: string): Permissions | null => {
+export const getPermissionsForOrigin = (origin: string, network: Network): Permissions | null => {
   for (const key in clientPermissions) {
     const permissions = clientPermissions[key];
-    console.log(key, permissions);
-    if (permissions.origins.includes(origin)) {
+    if (permissions.origins.includes(origin) && permissions.networks.includes(network)) {
       return permissions;
     }
   }
