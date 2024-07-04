@@ -25,6 +25,7 @@
     "babel-jest": "^29.7.0",
     "eslint": "^8.57.0",
     "jest": "^29.7.0",
+    "madge": "^7.0.0",
     "prettier": "^3.3.2",
     "rimraf": "^5.0.7",
     "tsup": "^8.1.0",
@@ -33,6 +34,7 @@
   "scripts": {
     "build": "tsup-node",
     "clean": "rimraf build dist .turbo",
+    "check-circular-deps": "madge --circular src/index.ts",
     "check-types:watch": "yarn check-types --watch",
     "check-types": "tsc",
     "dev": "tsup-node --watch",

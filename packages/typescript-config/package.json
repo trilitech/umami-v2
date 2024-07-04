@@ -5,6 +5,7 @@
     "tsconfig.json"
   ],
   "devDependencies": {
+    "madge": "^7.0.0",
     "rimraf": "^5.0.7"
   }
 }
