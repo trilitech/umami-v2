@@ -1,9 +1,11 @@
 import { Flex, IconButton, Text } from "@chakra-ui/react";
 import { useAppSelector } from "@umami/state";
+import { formatPkh } from "@umami/tezos";
 
-import { ChevronDownIcon, FileCopyIcon, GoogleSocialIcon } from "../../assets/icons";
+import { ChevronDownIcon, GoogleSocialIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
-import { SocialIconWrapper } from "../shared/SocialIconWrapper";
+import { CopyButton } from "../CopyButton/CopyButton";
+import { SocialIconWrapper } from "../IconWrapper";
 
 export const AccountSelector = () => {
   const color = useColor();
@@ -26,15 +28,9 @@ export const AccountSelector = () => {
         </Text>
         <Flex alignItems="center" gap="4px">
           <Text color={color("700")} size="sm">
-            {accounts[0].label}
+            {formatPkh(accounts[0].address.pkh)}
           </Text>
-          <IconButton
-            width="fit-content"
-            color={color("400")}
-            aria-label="Copy Address"
-            icon={<FileCopyIcon />}
-            variant="empty"
-          />
+          <CopyButton value={accounts[0].address.pkh} />
         </Flex>
       </Flex>
       <IconButton

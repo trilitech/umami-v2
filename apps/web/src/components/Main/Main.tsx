@@ -8,8 +8,6 @@ import { Tokens } from "../../views/Tokens";
 
 export const Main = () => (
   <Card
-    alignItems="center"
-    justifyContent="center"
     height="full"
     padding={{
       base: "12px",

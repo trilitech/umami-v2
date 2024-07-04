@@ -1,9 +1,9 @@
 import { Flex } from "@chakra-ui/react";
 
-import { EmptyMessage } from "../../components/shared/EmptyMessage";
+import { EmptyMessage } from "../../components/EmptyMessage";
 
 export const NFTs = () => (
-  <Flex>
+  <Flex height="full">
     <EmptyMessage subtitle="NFTs" title="NFT" />
   </Flex>
 );
