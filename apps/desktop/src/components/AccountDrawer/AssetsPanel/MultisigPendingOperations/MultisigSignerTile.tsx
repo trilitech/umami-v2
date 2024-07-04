@@ -1,3 +1,4 @@
+import { DynamicModalContext } from "@umami/components";
 import {
   type ImplicitAccount,
   type MultisigAccount,
@@ -16,7 +17,6 @@ import colors from "../../../../style/colors";
 import { AccountTileBase, LabelAndAddress } from "../../../AccountTile/AccountTile";
 import { AddressTileIcon } from "../../../AddressTile/AddressTileIcon";
 import { useAddressKind } from "../../../AddressTile/useAddressKind";
-import { DynamicModalContext } from "../../../DynamicModal";
 import { SignPage } from "../../../SendFlow/Multisig/SignPage";
 
 export const MultisigSignerTile: React.FC<{

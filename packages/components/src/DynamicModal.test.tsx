@@ -1,5 +1,5 @@
 import { useDynamicModal } from "./DynamicModal";
-import { act, render, renderHook, screen } from "../mocks/testUtils";
+import { act, render, renderHook, screen } from "./testUtils";
 
 describe("useDynamicModal", () => {
   it("is closed by default", () => {
@@ -32,5 +32,13 @@ describe("useDynamicModal", () => {
     expect(view.result.current.isOpen).toBe(false);
     render(view.result.current.content);
     expect(screen.queryByText("test data")).not.toBeInTheDocument();
+  });
+
+  it("calls the onClose callback when the modal is closed", async () => {
+    const onClose = jest.fn();
+    const view = renderHook(() => useDynamicModal());
+    await act(() => view.result.current.openWith(<div>test data</div>, { onClose }));
+    act(() => view.result.current.onClose());
+    expect(onClose).toHaveBeenCalled();
   });
 });

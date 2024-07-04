@@ -23,6 +23,7 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
+import { DynamicModalContext } from "@umami/components";
 import {
   WalletClient,
   useAddConnection,
@@ -36,7 +37,6 @@ import { FormProvider, useForm } from "react-hook-form";
 
 import { JsValueWrap } from "../../components/AccountDrawer/JsValueWrap";
 import { OwnedImplicitAccountsAutocomplete } from "../../components/AddressAutocomplete";
-import { DynamicModalContext } from "../../components/DynamicModal";
 import colors from "../../style/colors";
 
 export const PermissionRequestModal: React.FC<{

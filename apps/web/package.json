@@ -41,6 +41,7 @@
     "@taquito/taquito": "^20.0.1",
     "@taquito/utils": "^20.0.1",
     "@tzkt/sdk-api": "^2.2.1",
+    "@umami/components": "workspace:^",
     "@umami/core": "workspace:^",
     "@umami/data-polling": "workspace:^",
     "@umami/state": "workspace:^",
@@ -84,6 +85,7 @@
     "@svgr/plugin-svgo": "^8.1.0",
     "@testing-library/dom": "^10.3.0",
     "@testing-library/react": "^16.0.0",
+    "@testing-library/react-hooks": "^8.0.1",
     "@testing-library/user-event": "^14.5.2",
     "@types/jest": "^29.5.12",
     "@types/node": "20.14.9",
@@ -102,7 +104,6 @@
     "react-hooks-testing-library": "^0.6.0",
     "rimraf": "^5.0.7",
     "storybook": "^8.1.11",
-    "ts-node": "^10.9.2",
     "typescript": "^5.5.3",
     "vite": "^5.3.3",
     "vite-plugin-svgr": "^4.2.0"

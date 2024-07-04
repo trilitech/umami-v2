@@ -1,4 +1,5 @@
 import { useToast } from "@chakra-ui/react";
+import { DynamicModalContext } from "@umami/components";
 import { type Operation, estimate } from "@umami/core";
 import {
   estimateAndUpdateBatch,
@@ -14,7 +15,6 @@ import {
   type SignPageProps,
   useMakeFormOperations,
 } from "./utils";
-import { DynamicModalContext } from "../DynamicModal";
 
 // This file defines hooks to create actions when form is submitted.
 

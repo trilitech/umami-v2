@@ -1,4 +1,5 @@
 import { Box, Button, Center, Flex, type FlexProps, Heading, Text } from "@chakra-ui/react";
+import { DynamicModalContext } from "@umami/components";
 import { type Account, type ImplicitAccount } from "@umami/core";
 import {
   useGetAccountDelegate,
@@ -13,7 +14,6 @@ import { PendingUnstakeRequests } from "./PendingUnstakeRequests/PendingUnstakeR
 import { ExternalLinkIcon, PenIcon, XMarkIcon } from "../../../assets/icons";
 import colors from "../../../style/colors";
 import { AddressPill } from "../../AddressPill/AddressPill";
-import { DynamicModalContext } from "../../DynamicModal";
 import { ExternalLink } from "../../ExternalLink";
 import { NoticeModal as DelegateNoticeModal } from "../../SendFlow/Delegation/NoticeModal";
 import { NoticeModal as StakeNoticeModal } from "../../SendFlow/Stake/NoticeModal";

@@ -1,4 +1,5 @@
 /* istanbul ignore file */
+import { DynamicModalContext, useDynamicModal } from "@umami/components";
 import { useDataPolling } from "@umami/data-polling";
 import { WalletClient, useImplicitAccounts, useResetConnections } from "@umami/state";
 import { noop } from "lodash";
@@ -6,7 +7,6 @@ import { useEffect } from "react";
 import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
 
 import { AnnouncementBanner } from "./components/AnnouncementBanner";
-import { DynamicModalContext, useDynamicModal } from "./components/DynamicModal";
 import { BeaconProvider } from "./utils/beacon/BeaconProvider";
 import { useDeeplinkHandler } from "./utils/useDeeplinkHandler";
 import { AddressBookView } from "./views/addressBook/AddressBookView";

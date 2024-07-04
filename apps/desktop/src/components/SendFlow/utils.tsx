@@ -1,5 +1,6 @@
 import { Box, Button } from "@chakra-ui/react";
 import { type TezosToolkit } from "@taquito/taquito";
+import { DynamicModalContext } from "@umami/components";
 import {
   type Account,
   type AccountOperations,
@@ -24,7 +25,6 @@ import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { SuccessStep } from "./SuccessStep";
-import { DynamicModalContext } from "../DynamicModal";
 
 // Convert given optional fields to required
 // For example:

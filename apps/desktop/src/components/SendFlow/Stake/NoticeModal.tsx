@@ -9,6 +9,7 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
+import { DynamicModalContext } from "@umami/components";
 import { type Account } from "@umami/core";
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
@@ -16,7 +17,6 @@ import { useForm } from "react-hook-form";
 import { FormPage } from "./FormPage";
 import { WarningIcon } from "../../../assets/icons";
 import colors from "../../../style/colors";
-import { DynamicModalContext } from "../../DynamicModal";
 
 export const NoticeModal = ({ account }: { account: Account }) => {
   const { openWith } = useContext(DynamicModalContext);

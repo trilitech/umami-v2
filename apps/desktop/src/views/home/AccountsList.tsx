@@ -1,4 +1,5 @@
 import { Box, Button, Text } from "@chakra-ui/react";
+import { DynamicModalContext } from "@umami/components";
 import { useAllAccounts } from "@umami/state";
 import { compact, groupBy } from "lodash";
 import { useContext } from "react";
@@ -6,7 +7,6 @@ import { useContext } from "react";
 import { AccountGroup } from "./AccountGroup";
 import { getAccountGroupLabel } from "./getAccountGroupLabel";
 import { KeyIcon } from "../../assets/icons";
-import { DynamicModalContext } from "../../components/DynamicModal";
 import { NestedScroll } from "../../components/NestedScroll";
 import { NameMultisigFormPage } from "../../components/SendFlow/MultisigAccount/NameMultisigFormPage";
 import colors from "../../style/colors";

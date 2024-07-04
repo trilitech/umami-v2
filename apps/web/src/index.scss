@@ -3,10 +3,10 @@ body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  padding: 20px 46px 0;
   position: relative;
 
   & .layout {
+    padding: 20px 46px 0;
     height: calc(100vh - 20px);
   }
 

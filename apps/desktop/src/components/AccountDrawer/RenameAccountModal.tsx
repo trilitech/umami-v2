@@ -9,12 +9,12 @@ import {
   ModalContent,
   ModalFooter,
 } from "@chakra-ui/react";
+import { DynamicModalContext } from "@umami/components";
 import { type Account } from "@umami/core";
 import { renameAccount, useAppDispatch, useValidateName } from "@umami/state";
 import { type FC, useContext } from "react";
 import { useForm } from "react-hook-form";
 
-import { DynamicModalContext } from "../DynamicModal";
 import { FormPageHeader } from "../SendFlow/FormPageHeader";
 
 export const RenameAccountModal: FC<{

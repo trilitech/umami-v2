@@ -1,4 +1,5 @@
 import { Box, Center, Heading } from "@chakra-ui/react";
+import { DynamicModalContext } from "@umami/components";
 import { type Account } from "@umami/core";
 import { useImplicitAccounts, useRemoveMnemonic, useRemoveNonMnemonic } from "@umami/state";
 import { useContext } from "react";
@@ -8,7 +9,6 @@ import { DeriveMnemonicAccountModal } from "./DeriveMnemonicAccountModal";
 import { getAccountGroupLabel } from "./getAccountGroupLabel";
 import { AccountTile } from "../../components/AccountTile/AccountTile";
 import { ConfirmationModal } from "../../components/ConfirmationModal";
-import { DynamicModalContext } from "../../components/DynamicModal";
 
 export const AccountGroup: React.FC<{
   accounts: Account[];

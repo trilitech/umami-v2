@@ -8,13 +8,13 @@ import {
   Text,
   useMediaQuery,
 } from "@chakra-ui/react";
+import { DynamicModalContext } from "@umami/components";
 import { assetsActions, useAppDispatch, useIsLoading, useLastTimeUpdated } from "@umami/state";
 import { differenceInMinutes, differenceInSeconds, formatDistance } from "date-fns";
 import type React from "react";
 import { useContext, useEffect, useState } from "react";
 
 import { BuyTezForm } from "./BuyTez/BuyTezForm";
-import { DynamicModalContext } from "./DynamicModal";
 import { FormPage as SendTezForm } from "./SendFlow/Tez/FormPage";
 import { FetchingIcon } from "../assets/icons";
 import { CheckIcon } from "../assets/icons/CheckIcon";

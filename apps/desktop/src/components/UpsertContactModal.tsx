@@ -10,6 +10,7 @@ import {
   ModalFooter,
   ModalHeader,
 } from "@chakra-ui/react";
+import { DynamicModalContext } from "@umami/components";
 import { type Contact } from "@umami/core";
 import { getNetworksForContracts } from "@umami/multisig";
 import {
@@ -24,7 +25,6 @@ import { isValidContractPkh } from "@umami/tezos";
 import { type FC, useContext, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 
-import { DynamicModalContext } from "./DynamicModal";
 import { FormErrorMessage } from "./FormErrorMessage";
 
 /**

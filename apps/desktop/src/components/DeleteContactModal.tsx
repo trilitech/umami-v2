@@ -10,12 +10,12 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
+import { DynamicModalContext } from "@umami/components";
 import { type Contact } from "@umami/core";
 import { contactsActions, useAppDispatch } from "@umami/state";
 import { type FC, useContext } from "react";
 
 import { CopyableAddress } from "./CopyableText";
-import { DynamicModalContext } from "./DynamicModal";
 import colors from "../style/colors";
 
 /**

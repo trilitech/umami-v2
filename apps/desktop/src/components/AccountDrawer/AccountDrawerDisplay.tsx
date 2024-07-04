@@ -1,4 +1,5 @@
 import { Box, Center, Flex, Heading, IconButton, Text } from "@chakra-ui/react";
+import { DynamicModalContext } from "@umami/components";
 import {
   type Account,
   type FA12TokenBalance,
@@ -17,7 +18,6 @@ import { accountIconGradient } from "../AccountTile/AccountTile";
 import { AccountTileIcon } from "../AccountTile/AccountTileIcon";
 import { AddressPill } from "../AddressPill/AddressPill";
 import { BuyTezForm } from "../BuyTez/BuyTezForm";
-import { DynamicModalContext } from "../DynamicModal";
 import { NoticeModal as DelegateNoticeModal } from "../SendFlow/Delegation/NoticeModal";
 import { TezRecapDisplay } from "../TezRecapDisplay";
 

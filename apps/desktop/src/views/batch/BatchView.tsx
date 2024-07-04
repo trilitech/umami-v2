@@ -2,6 +2,7 @@ import { Box, Button, Divider, Flex, IconButton, Text } from "@chakra-ui/react";
 import { nanoid } from "@reduxjs/toolkit";
 import type { OperationContentsAndResult } from "@taquito/rpc";
 import { TezosOperationError } from "@taquito/taquito";
+import { DynamicModalContext } from "@umami/components";
 import { type Account, type AccountOperations, type Operation, estimate } from "@umami/core";
 import {
   useAsyncActionHandler,
@@ -20,7 +21,6 @@ import { OperationView } from "./OperationView";
 import { TrashIcon } from "../../assets/icons";
 import { accountIconGradient } from "../../components/AccountTile/AccountTile";
 import { ConfirmationModal } from "../../components/ConfirmationModal";
-import { DynamicModalContext } from "../../components/DynamicModal";
 import { SignPage } from "../../components/SendFlow/Batch/SignPage";
 import { headerText } from "../../components/SendFlow/SignPageHeader";
 import colors from "../../style/colors";

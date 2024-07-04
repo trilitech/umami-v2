@@ -1,10 +1,10 @@
 import { Box, Flex, Table, TableContainer, Tbody, Td, Text, Tr } from "@chakra-ui/react";
+import { DynamicModalContext } from "@umami/components";
 import { type Contact } from "@umami/core";
 import { useContext } from "react";
 
 import { CopyableAddress } from "../../components/CopyableText";
 import { DeleteContactModal } from "../../components/DeleteContactModal";
-import { DynamicModalContext } from "../../components/DynamicModal";
 import { RenameRemoveMenu } from "../../components/RenameRemoveMenu";
 import { SendButton } from "../../components/SendButton";
 import { FormPage } from "../../components/SendFlow/Tez/FormPage";

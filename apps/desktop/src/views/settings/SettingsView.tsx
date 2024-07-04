@@ -1,4 +1,5 @@
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
+import { DynamicModalContext } from "@umami/components";
 import { useContext } from "react";
 
 import { DAppsDrawerCard } from "./DAppsDrawerCard";
@@ -7,7 +8,6 @@ import { NetworkSettingsDrawerCard } from "./network/NetworkSettingsDrawerCard";
 import { DownloadIcon } from "../../assets/icons";
 import { ChangePasswordForm } from "../../components/ChangePassword/ChangePasswordForm";
 import { ClickableCard, SettingsCardWithDrawerIcon } from "../../components/ClickableCard";
-import { DynamicModalContext } from "../../components/DynamicModal";
 import { useOffboardingModal } from "../../components/Offboarding/useOffboardingModal";
 import { downloadBackupFile } from "../../components/Onboarding/restoreBackupFile/utils";
 import { TopBar } from "../../components/TopBar";
