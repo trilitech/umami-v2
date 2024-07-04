@@ -1667,7 +1667,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.0.0, @babel/runtime@npm:^7.12.13, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.16.3, @babel/runtime@npm:^7.17.8, @babel/runtime@npm:^7.18.3, @babel/runtime@npm:^7.22.10, @babel/runtime@npm:^7.24.7, @babel/runtime@npm:^7.4.2, @babel/runtime@npm:^7.8.4, @babel/runtime@npm:^7.9.2":
+"@babel/runtime@npm:^7.0.0, @babel/runtime@npm:^7.12.13, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.16.3, @babel/runtime@npm:^7.17.8, @babel/runtime@npm:^7.18.3, @babel/runtime@npm:^7.22.10, @babel/runtime@npm:^7.24.7, @babel/runtime@npm:^7.8.4, @babel/runtime@npm:^7.9.2":
   version: 7.24.7
   resolution: "@babel/runtime@npm:7.24.7"
   dependencies:
@@ -6830,42 +6830,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/react-hooks@npm:^8.0.1":
-  version: 8.0.1
-  resolution: "@testing-library/react-hooks@npm:8.0.1"
-  dependencies:
-    "@babel/runtime": "npm:^7.12.5"
-    react-error-boundary: "npm:^3.1.0"
-  peerDependencies:
-    "@types/react": ^16.9.0 || ^17.0.0
-    react: ^16.9.0 || ^17.0.0
-    react-dom: ^16.9.0 || ^17.0.0
-    react-test-renderer: ^16.9.0 || ^17.0.0
-  peerDependenciesMeta:
-    "@types/react":
-      optional: true
-    react-dom:
-      optional: true
-    react-test-renderer:
-      optional: true
-  checksum: 10/f7b69373feebe99bc7d60595822cc5c00a1a5a4801bc4f99b597256a5c1d23c45a51f359051dd8a7bdffcc23b26f324c582e9433c25804934fd351a886812790
-  languageName: node
-  linkType: hard
-
-"@testing-library/react-hooks@npm:~1.0.2":
-  version: 1.0.4
-  resolution: "@testing-library/react-hooks@npm:1.0.4"
-  dependencies:
-    "@babel/runtime": "npm:^7.4.2"
-    "@types/react": "npm:^16.8.22"
-    "@types/react-test-renderer": "npm:^16.8.2"
-  peerDependencies:
-    react: ">=16.8.0"
-    react-test-renderer: ">=16.8.0"
-  checksum: 10/c9204b5fc70a273f1bc39e4dc96ed0eab194f384c6e1b0b217c372177d462529531c912e463271abc3a71169aa0c4fbc9858d45b594ee5afc63856d91da25e95
-  languageName: node
-  linkType: hard
-
 "@testing-library/react@npm:14.3.1":
   version: 14.3.1
   resolution: "@testing-library/react@npm:14.3.1"
@@ -7658,15 +7622,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-test-renderer@npm:^16.8.2":
-  version: 16.9.12
-  resolution: "@types/react-test-renderer@npm:16.9.12"
-  dependencies:
-    "@types/react": "npm:^16"
-  checksum: 10/491e2ad6174e2db6ee4a0d0f05b972cb9470da0f71b63c4110f76e7ba7095e7221a3b14c566ddd77e0dfca45044f186c1bad1c5246782712b336837b0243061f
-  languageName: node
-  linkType: hard
-
 "@types/react-test-renderer@npm:^18.3.0":
   version: 18.3.0
   resolution: "@types/react-test-renderer@npm:18.3.0"
@@ -7683,17 +7638,6 @@ __metadata:
     "@types/prop-types": "npm:*"
     csstype: "npm:^3.0.2"
   checksum: 10/68e203b7f1f91d6cf21f33fc7af9d6d228035a26c83f514981e54aa3da695d0ec6af10c277c6336de1dd76c4adbe9563f3a21f80c4462000f41e5f370b46e96c
-  languageName: node
-  linkType: hard
-
-"@types/react@npm:^16, @types/react@npm:^16.8.22":
-  version: 16.14.60
-  resolution: "@types/react@npm:16.14.60"
-  dependencies:
-    "@types/prop-types": "npm:*"
-    "@types/scheduler": "npm:^0.16"
-    csstype: "npm:^3.0.2"
-  checksum: 10/ddb352d64ca8811464aeb531ed37bd80225140fb3ec307e20d6d3374fc69c477d1ba2c193efb0fac8d9c92e68f07595723e16a2283f2c2c3749c64c8c1cfa217
   languageName: node
   linkType: hard
 
@@ -7717,13 +7661,6 @@ __metadata:
   version: 0.12.5
   resolution: "@types/retry@npm:0.12.5"
   checksum: 10/3fb6bf91835ca0eb2987567d6977585235a7567f8aeb38b34a8bb7bbee57ac050ed6f04b9998cda29701b8c893f5dfe315869bc54ac17e536c9235637fe351a2
-  languageName: node
-  linkType: hard
-
-"@types/scheduler@npm:^0.16":
-  version: 0.16.8
-  resolution: "@types/scheduler@npm:0.16.8"
-  checksum: 10/6c091b096daa490093bf30dd7947cd28e5b2cd612ec93448432b33f724b162587fed9309a0acc104d97b69b1d49a0f3fc755a62282054d62975d53d7fd13472d
   languageName: node
   linkType: hard
 
@@ -8246,7 +8183,6 @@ __metadata:
     react-dom: "npm:^18.3.1"
     react-error-boundary: "npm:^4.0.13"
     react-hook-form: "npm:^7.52.1"
-    react-hooks-testing-library: "npm:^0.6.0"
     react-player: "npm:^2.16.0"
     react-qrcode-logo: "npm:^3.0.0"
     react-redux: "npm:9.1.2"
@@ -8604,7 +8540,6 @@ __metadata:
     "@taquito/utils": "npm:^20.0.1"
     "@testing-library/dom": "npm:^10.3.0"
     "@testing-library/react": "npm:^16.0.0"
-    "@testing-library/react-hooks": "npm:^8.0.1"
     "@testing-library/user-event": "npm:^14.5.2"
     "@types/jest": "npm:^29.5.12"
     "@types/node": "npm:20.14.9"
@@ -8640,7 +8575,6 @@ __metadata:
     react-dom: "npm:^18.2.0"
     react-error-boundary: "npm:^4.0.13"
     react-hook-form: "npm:^7.52.1"
-    react-hooks-testing-library: "npm:^0.6.0"
     react-redux: "npm:^9.1.2"
     react-remove-scroll: "npm:^2.5.10"
     react-responsive-carousel: "npm:^3.2.23"
@@ -18944,17 +18878,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-error-boundary@npm:^3.1.0":
-  version: 3.1.4
-  resolution: "react-error-boundary@npm:3.1.4"
-  dependencies:
-    "@babel/runtime": "npm:^7.12.5"
-  peerDependencies:
-    react: ">=16.13.1"
-  checksum: 10/7418637bf352b88f35ff3798e6faa094ee046df9d422fc08f54c017892c3c0738dac661ba3d64d97209464e7a60e7fbbeffdbeaee5edc38f3aaf5f1f4a8bf610
-  languageName: node
-  linkType: hard
-
 "react-error-boundary@npm:^4.0.13":
   version: 4.0.13
   resolution: "react-error-boundary@npm:4.0.13"
@@ -18999,18 +18922,6 @@ __metadata:
   peerDependencies:
     react: ^16.8.0 || ^17 || ^18 || ^19
   checksum: 10/5d117cb767114749163f3c52cc09e6dbefca8b450c91abe9958884b4df505a44f0b088046d1c98504bfcd5d4104126cfeb8917c25cb25b0610d89f713b4b2080
-  languageName: node
-  linkType: hard
-
-"react-hooks-testing-library@npm:^0.6.0":
-  version: 0.6.0
-  resolution: "react-hooks-testing-library@npm:0.6.0"
-  dependencies:
-    "@testing-library/react-hooks": "npm:~1.0.2"
-  peerDependencies:
-    react: ^16.8.0
-    react-test-renderer: ^16.8.0
-  checksum: 10/01ef520cf816f625ad332c5832c2b9bd66ce21c8891d626335206cd4d49655202029badc79c7926df8a3a9f31a76c9938ddb908ded8f85a80d30d682eefa04eb
   languageName: node
   linkType: hard
 

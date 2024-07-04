@@ -1,5 +1,5 @@
 import { useColorMode } from "@chakra-ui/react";
-import { renderHook } from "@testing-library/react-hooks";
+import { renderHook } from "@testing-library/react";
 
 import { dark, light } from "./colors";
 import { useColor } from "./useColor";
