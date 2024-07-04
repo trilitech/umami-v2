@@ -1,10 +1,10 @@
 import * as testLib from "@testing-library/react";
+import { DynamicModalContext, useDynamicModal } from "@umami/components";
 import { type UmamiStore, makeStore } from "@umami/state";
 import { type PropsWithChildren, act } from "react";
 import { Provider } from "react-redux";
 import { HashRouter } from "react-router-dom";
 
-import { DynamicModalContext, useDynamicModal } from "../components/DynamicModal";
 import { ReactQueryProvider } from "../providers/ReactQueryProvider";
 import { UmamiTheme } from "../providers/UmamiTheme";
 

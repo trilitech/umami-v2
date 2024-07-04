@@ -8,6 +8,7 @@ import {
   ModalContent,
   ModalFooter,
 } from "@chakra-ui/react";
+import { DynamicModalContext } from "@umami/components";
 import {
   useGetMostFundedImplicitAccount,
   useImplicitAccounts,
@@ -17,7 +18,6 @@ import { useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { SelectApproversFormPage } from "./SelectApproversFormPage";
-import { DynamicModalContext } from "../../DynamicModal";
 import { FormErrorMessage } from "../../FormErrorMessage";
 import { FormPageHeader } from "../FormPageHeader";
 

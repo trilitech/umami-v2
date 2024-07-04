@@ -10,6 +10,7 @@ import {
   Text,
   Tr,
 } from "@chakra-ui/react";
+import { DynamicModalContext } from "@umami/components";
 import {
   type Account,
   type FA12TokenBalance,
@@ -27,7 +28,6 @@ import { AccountBalance } from "../../components/AccountBalance";
 import { accountIconGradient } from "../../components/AccountTile/AccountTile";
 import { AccountTileIcon } from "../../components/AccountTile/AccountTileIcon";
 import { AddressPill } from "../../components/AddressPill/AddressPill";
-import { DynamicModalContext } from "../../components/DynamicModal";
 import { SendButton } from "../../components/SendButton";
 import { FormPage as SendTokenFormPage } from "../../components/SendFlow/Token/FormPage";
 import colors from "../../style/colors";

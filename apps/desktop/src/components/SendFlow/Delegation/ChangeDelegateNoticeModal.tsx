@@ -8,6 +8,7 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
+import { DynamicModalContext } from "@umami/components";
 import { type Account } from "@umami/core";
 import { type TzktAlias } from "@umami/tzkt";
 import { useContext } from "react";
@@ -15,7 +16,6 @@ import { useContext } from "react";
 import { FormPage } from "./FormPage";
 import { WarningIcon } from "../../../assets/icons";
 import colors from "../../../style/colors";
-import { DynamicModalContext } from "../../DynamicModal";
 
 export const ChangeDelegateNoticeModal = ({
   account,

@@ -6,6 +6,7 @@ import {
   type PartialTezosOperation,
   TezosOperationType,
 } from "@airgap/beacon-wallet";
+import { DynamicModalContext } from "@umami/components";
 import {
   type ContractOrigination,
   type ImplicitAccount,
@@ -25,7 +26,6 @@ import { useContext } from "react";
 
 import { PermissionRequestModal } from "./PermissionRequestModal";
 import { SignPayloadRequestModal } from "./SignPayloadRequestModal";
-import { DynamicModalContext } from "../../components/DynamicModal";
 import { BatchSignPage } from "../../components/SendFlow/Beacon/BatchSignPage";
 import { BeaconSignPage } from "../../components/SendFlow/Beacon/BeaconSignPage";
 

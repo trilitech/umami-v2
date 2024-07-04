@@ -1,3 +1,4 @@
+import { DynamicModalContext } from "@umami/components";
 import { type Account } from "@umami/core";
 import { useImplicitAccounts, useRemoveAccount } from "@umami/state";
 import { useContext } from "react";
@@ -5,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 
 import { RenameAccountModal } from "./RenameAccountModal";
 import { ConfirmationModal } from "../ConfirmationModal";
-import { DynamicModalContext } from "../DynamicModal";
 import { RenameRemoveMenu } from "../RenameRemoveMenu";
 
 export const RenameRemoveMenuSwitch: React.FC<{ account: Account }> = ({ account }) => {

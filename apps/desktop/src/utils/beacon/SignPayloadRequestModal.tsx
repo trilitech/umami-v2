@@ -15,13 +15,13 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { type TezosToolkit } from "@taquito/taquito";
+import { DynamicModalContext } from "@umami/components";
 import { WalletClient, useGetImplicitAccount } from "@umami/state";
 import type React from "react";
 import { useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { decodePayload } from "./decodePayload";
-import { DynamicModalContext } from "../../components/DynamicModal";
 import { SignButton } from "../../components/SendFlow/SignButton";
 import colors from "../../style/colors";
 

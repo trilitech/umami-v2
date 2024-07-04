@@ -13,6 +13,7 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
+import { DynamicModalContext } from "@umami/components";
 import { type Operation, makeAccountOperations } from "@umami/core";
 import {
   estimateAndUpdateBatch,
@@ -31,7 +32,6 @@ import { FormProvider, useForm } from "react-hook-form";
 import { parseOperation } from "./utils";
 import colors from "../../style/colors";
 import { OwnedAccountsAutocomplete } from "../AddressAutocomplete";
-import { DynamicModalContext } from "../DynamicModal";
 import { FormErrorMessage } from "../FormErrorMessage";
 
 type FormFields = {

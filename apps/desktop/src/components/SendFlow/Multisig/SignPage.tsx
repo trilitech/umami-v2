@@ -1,5 +1,6 @@
 import { ModalContent, ModalFooter } from "@chakra-ui/react";
 import { type TezosToolkit } from "@taquito/taquito";
+import { DynamicModalContext } from "@umami/components";
 import {
   type ApproveOrExecute,
   type EstimatedAccountOperations,
@@ -13,7 +14,6 @@ import { useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";
-import { DynamicModalContext } from "../../DynamicModal";
 import { BatchModalBody } from "../BatchModalBody";
 import { SignButton } from "../SignButton";
 import { SuccessStep } from "../SuccessStep";

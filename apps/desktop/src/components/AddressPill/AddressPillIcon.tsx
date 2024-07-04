@@ -1,4 +1,5 @@
 import { type IconProps } from "@chakra-ui/react";
+import { DynamicModalContext } from "@umami/components";
 import { useAddressExistsInContacts } from "@umami/state";
 import { useContext } from "react";
 
@@ -13,7 +14,6 @@ import {
   KeyIcon,
   XMarkIcon,
 } from "../../assets/icons";
-import { DynamicModalContext } from "../DynamicModal";
 import { UpsertContactModal } from "../UpsertContactModal";
 
 export const LeftIcon: React.FC<{ addressKind: AddressKind } & IconProps> = ({

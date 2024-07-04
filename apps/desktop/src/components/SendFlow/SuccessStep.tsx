@@ -9,13 +9,13 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
+import { DynamicModalContext } from "@umami/components";
 import { useSelectedNetwork } from "@umami/state";
 import type React from "react";
 import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { WindowLinkIcon } from "../../assets/icons/WindowLink";
-import { DynamicModalContext } from "../DynamicModal";
 
 export const SuccessStep: React.FC<{ hash: string }> = ({ hash }) => {
   const network = useSelectedNetwork();

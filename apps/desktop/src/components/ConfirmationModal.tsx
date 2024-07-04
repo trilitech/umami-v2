@@ -9,9 +9,9 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
+import { DynamicModalContext } from "@umami/components";
 import { useContext } from "react";
 
-import { DynamicModalContext } from "./DynamicModal";
 import { WarningIcon } from "../assets/icons";
 import colors from "../style/colors";
 

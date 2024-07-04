@@ -1,10 +1,10 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
+import { DynamicModalContext } from "@umami/components";
 import { useSortedContacts } from "@umami/state";
 import { useContext } from "react";
 
 import { ContactTable } from "./ContactTable";
 import { AddContactIcon } from "../../assets/icons";
-import { DynamicModalContext } from "../../components/DynamicModal";
 import { NoItems } from "../../components/NoItems";
 import { TopBar } from "../../components/TopBar";
 import { UpsertContactModal } from "../../components/UpsertContactModal";

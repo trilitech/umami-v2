@@ -1,10 +1,10 @@
 import { Button, type ButtonProps } from "@chakra-ui/react";
+import { DynamicModalContext } from "@umami/components";
 import { type Account } from "@umami/core";
 import { useContext } from "react";
 
 import { InfoModal } from "./InfoModal";
 import { FolderInfoIcon } from "../../../assets/icons";
-import { DynamicModalContext } from "../../DynamicModal";
 
 /**
  * Button to open a modal with the account's derivation info

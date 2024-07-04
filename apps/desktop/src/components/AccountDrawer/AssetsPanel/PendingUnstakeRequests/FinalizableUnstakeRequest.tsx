@@ -1,4 +1,5 @@
 import { Box, Button, Center, Flex, type FlexProps, Text } from "@chakra-ui/react";
+import { DynamicModalContext } from "@umami/components";
 import { type ImplicitAccount, estimate, makeAccountOperations } from "@umami/core";
 import {
   useAccountTotalFinalizableUnstakeAmount,
@@ -9,7 +10,6 @@ import { prettyTezAmount } from "@umami/tezos";
 import { useContext } from "react";
 
 import colors from "../../../../style/colors";
-import { DynamicModalContext } from "../../../DynamicModal";
 import { PrettyNumber } from "../../../PrettyNumber";
 import { SignPage } from "../../../SendFlow/FinalizeUnstake/SignPage";
 

@@ -8,13 +8,13 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
+import { DynamicModalContext } from "@umami/components";
 import { type Account } from "@umami/core";
 import { useContext } from "react";
 
 import { FormPage } from "./FormPage";
 import { NoticeIcon } from "../../../assets/icons";
 import colors from "../../../style/colors";
-import { DynamicModalContext } from "../../DynamicModal";
 import { NoticeSteps } from "../NoticeSteps";
 
 export const NewDelegateNoticeModal = ({ account }: { account: Account }) => {
