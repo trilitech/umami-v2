@@ -6498,14 +6498,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/eslint-plugin-query@npm:^5.50.0":
-  version: 5.50.0
-  resolution: "@tanstack/eslint-plugin-query@npm:5.50.0"
+"@tanstack/eslint-plugin-query@npm:^5.50.1":
+  version: 5.50.1
+  resolution: "@tanstack/eslint-plugin-query@npm:5.50.1"
   dependencies:
     "@typescript-eslint/utils": "npm:8.0.0-alpha.30"
   peerDependencies:
     eslint: ^8 || ^9
-  checksum: 10/39cd664180733b856b919c04b1b1544427ba9e32ca0286753a4fead2dba4022854e0de109f37ccdd0879e42d874bc7b3db8deab3fe953cdd0212ef1e615034c9
+  checksum: 10/8a45162e708e83bf100e7cf5250d90b6e2bb91d6a98f652fba7a8f237251cadf2a8efece0b365e69cecfac49bb23b6739b823f15102a42f87e5026d32f5e6a72
   languageName: node
   linkType: hard
 
@@ -8259,7 +8259,7 @@ __metadata:
   resolution: "@umami/eslint-config@workspace:packages/eslint-config"
   dependencies:
     "@stylistic/eslint-plugin": "npm:^2.3.0"
-    "@tanstack/eslint-plugin-query": "npm:^5.50.0"
+    "@tanstack/eslint-plugin-query": "npm:^5.50.1"
     "@typescript-eslint/eslint-plugin": "npm:^7.15.0"
     "@typescript-eslint/parser": "npm:^7.15.0"
     "@umami/typescript-config": "workspace:^"
