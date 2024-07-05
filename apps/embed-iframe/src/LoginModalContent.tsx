@@ -38,7 +38,7 @@ export const LoginModalContent = ({
         type: "login_response",
         pk,
         pkh,
-        typeOfLogin: "google", 
+        typeOfLogin: "google",
         id: name,
       });
     } catch (error) {

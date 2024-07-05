@@ -7883,6 +7883,7 @@ __metadata:
     "@trilitech-umami/umami-embed": "npm:^0.0.4"
     "@umami/eslint-config": "workspace:^"
     "@umami/social-auth": "workspace:^"
+    "@umami/tezos": "workspace:^"
     "@umami/typescript-config": "workspace:^"
     "@vitejs/plugin-react": "npm:^4.3.1"
     depcheck: "npm:^1.4.7"

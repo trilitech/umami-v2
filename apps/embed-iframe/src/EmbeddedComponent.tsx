@@ -63,7 +63,7 @@ export function EmbeddedComponent() {
           break;
         case "operation_request":
           if (validateUserSession(data.type)) {
-            openOperationModal(selectedLoginType!, data.operations);
+            openOperationModal(selectedLoginType!, selectedNetwork!, data.operations);
           }
           break;
       }
@@ -72,7 +72,10 @@ export function EmbeddedComponent() {
     }
   };
 
-  const validateClientPermissions = (origin: string, request: RequestMessage): Permissions | null => {
+  const validateClientPermissions = (
+    origin: string,
+    request: RequestMessage
+  ): Permissions | null => {
     const clientPermissions = getPermissionsForOrigin(origin);
     if (!clientPermissions) {
       console.error(`No permissions for origin (${origin})`);
@@ -128,7 +131,7 @@ export function EmbeddedComponent() {
       return false;
     }
     return true;
-  }
+  };
 
   return (
     <ChakraProvider theme={theme}>

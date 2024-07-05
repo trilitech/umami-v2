@@ -1,6 +1,6 @@
 import { type PartialTezosOperation } from "@airgap/beacon-types";
 import { Center, Modal, ModalCloseButton, ModalContent, useDisclosure } from "@chakra-ui/react";
-import { type TypeOfLogin } from "@trilitech-umami/umami-embed/types";
+import { type Network, type TypeOfLogin } from "@trilitech-umami/umami-embed/types";
 import { useState } from "react";
 
 import { OperationModalContent } from "./SignOperationModalContent";
@@ -10,6 +10,7 @@ export const useSignOperationModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [operations, setOperations] = useState<PartialTezosOperation[]>([]);
   const [loginType, setLoginType] = useState<TypeOfLogin | null>(null);
+  const [network, setNetwork] = useState<Network | null>(null);
 
   const onModalCLose = () => {
     sendOperationErrorResponse("User closed the modal");
@@ -31,14 +32,20 @@ export const useSignOperationModal = () => {
             <OperationModalContent
               closeModal={onClose}
               loginType={loginType!}
+              network={network!}
               operations={operations}
             />
           </ModalContent>
         </Modal>
       </Center>
     ),
-    onOpen: (selectedLoginType: TypeOfLogin, operations: PartialTezosOperation[]) => {
+    onOpen: (
+      selectedLoginType: TypeOfLogin,
+      network: Network,
+      operations: PartialTezosOperation[]
+    ) => {
       setOperations(operations);
+      setNetwork(network);
       setLoginType(selectedLoginType);
       onOpen();
     },

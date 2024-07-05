@@ -13,9 +13,8 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { InMemorySigner } from "@taquito/signer";
-import { OpKind, TezosToolkit, type WalletParamsWithKind } from "@taquito/taquito";
-import { type TypeOfLogin } from "@trilitech-umami/umami-embed/types";
+import { OpKind, type WalletParamsWithKind } from "@taquito/taquito";
+import { type Network, type TypeOfLogin } from "@trilitech-umami/umami-embed/types";
 import * as Auth from "@umami/social-auth";
 import { useState } from "react";
 
@@ -26,22 +25,23 @@ import { JsValueWrap } from "./imported/JsValueWrap";
 import colors from "./imported/style/colors";
 import { getErrorContext } from "./imported/utils/getErrorContext";
 import { withTimeout } from "./imported/utils/withTimeout";
-import { sendOperationErrorResponse, sendResponse } from "./utils";
+import { sendOperationErrorResponse, sendResponse, toTezosNetwork } from "./utils";
+import { makeToolkit } from "@umami/tezos";
 
 const SIGN_TIMEOUT = 5 * 60 * 1000; // 5 minutes
 
 export const OperationModalContent = ({
+  loginType,
+  network,
   operations,
   closeModal,
-  loginType,
 }: {
+  loginType: TypeOfLogin;
+  network: Network;
   operations: PartialTezosOperation[];
   closeModal: () => void;
-  loginType: TypeOfLogin;
 }) => {
   const [isLoading, setIsLoading] = useState(false);
-
-  console.log(operations);
 
   const onClick = async () => {
     setIsLoading(true);
@@ -50,11 +50,11 @@ export const OperationModalContent = ({
         async () => Auth.forIDP(loginType, "embed").getCredentials(),
         SIGN_TIMEOUT
       );
-      const toolkit = new TezosToolkit("https://ghostnet.ecadinfra.com");
-      const signer = new InMemorySigner(secretKey);
-      toolkit.setSignerProvider(signer);
-
-      console.log("sending request");
+      const toolkit = await makeToolkit({
+        type: "social",
+        secretKey,
+        network: toTezosNetwork(network),
+      });
 
       const { opHash } = await toolkit.wallet.batch(operations.map(toTaquitoOperation)).send();
 
