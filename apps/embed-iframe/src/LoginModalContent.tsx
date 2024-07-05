@@ -38,7 +38,8 @@ export const LoginModalContent = ({
         type: "login_response",
         pk,
         pkh,
-        userData: { typeOfLogin: "google", id: name },
+        typeOfLogin: "google", 
+        id: name,
       });
     } catch (error) {
       sendLoginErrorResponse(getErrorContext(error).description);
