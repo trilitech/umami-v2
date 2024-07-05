@@ -1,6 +1,8 @@
 import { Box, ChakraProvider, ColorModeScript } from "@chakra-ui/react";
 import {
+  type Network,
   type RequestMessage,
+  type RequestType,
   type TypeOfLogin,
   toMatchingResponseType,
 } from "@trilitech-umami/umami-embed/types";
@@ -15,6 +17,7 @@ import "./EmbeddedComponent.scss";
 
 export function EmbeddedComponent() {
   const [selectedLoginType, setSelectedLoginType] = useState<TypeOfLogin | null>(null);
+  const [selectedNetwork, setSelectedNetwork] = useState<Network | null>(null);
 
   const onLoginCallback = (loginType: TypeOfLogin) => setSelectedLoginType(loginType);
 
@@ -44,28 +47,22 @@ export function EmbeddedComponent() {
       console.log(`Received ${event.data} from ${event.origin}`);
       console.log(data);
 
-      const clientPermissions = checkPermissions(event.origin, data);
-      if (!clientPermissions) {
+      if (validateClientPermissions(event.origin, data) === null) {
         return;
       }
 
       switch (data.type) {
         case "login_request":
-          // TODO: save selected network
+          setSelectedNetwork(data.network);
           openLoginModal();
           break;
         case "logout_request":
           setSelectedLoginType(null);
+          setSelectedNetwork(null);
           sendResponse({ type: "logout_response" });
           break;
         case "operation_request":
-          if (selectedLoginType === null) {
-            sendResponse({
-              type: toMatchingResponseType(data.type),
-              error: "no_login_data",
-              errorMessage: "User's login data is not available",
-            });
-          } else {
+          if (validateUserSession(data.type)) {
             openOperationModal(selectedLoginType!, data.operations);
           }
           break;
@@ -75,7 +72,7 @@ export function EmbeddedComponent() {
     }
   };
 
-  const checkPermissions = (origin: string, request: RequestMessage): Permissions | null => {
+  const validateClientPermissions = (origin: string, request: RequestMessage): Permissions | null => {
     const clientPermissions = getPermissionsForOrigin(origin);
     if (!clientPermissions) {
       console.error(`No permissions for origin (${origin})`);
@@ -113,6 +110,25 @@ export function EmbeddedComponent() {
     }
     return clientPermissions;
   };
+
+  const validateUserSession = (requestType: RequestType): boolean => {
+    if (selectedLoginType === null) {
+      sendResponse({
+        type: toMatchingResponseType(requestType),
+        error: "no_login_data",
+        errorMessage: "User's login data is not available",
+      });
+      return false;
+    } else if (selectedNetwork === null) {
+      sendResponse({
+        type: toMatchingResponseType(requestType),
+        error: "no_network_data",
+        errorMessage: "User's network data is not available",
+      });
+      return false;
+    }
+    return true;
+  }
 
   return (
     <ChakraProvider theme={theme}>
