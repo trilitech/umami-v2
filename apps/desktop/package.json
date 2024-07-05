@@ -60,7 +60,7 @@
     "@playwright/test": "^1.45.1",
     "@reduxjs/toolkit": "^2.2.6",
     "@tanstack/react-query": "^5.49.2",
-    "@tanstack/react-query-devtools": "^5.49.2",
+    "@tanstack/react-query-devtools": "^5.50.1",
     "@taquito/ledger-signer": "^20.0.1",
     "@taquito/michel-codec": "^20.0.1",
     "@taquito/rpc": "^20.0.1",
