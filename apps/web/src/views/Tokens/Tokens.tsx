@@ -1,65 +1,26 @@
-import { Flex } from "@chakra-ui/react";
+import { Flex, Wrap } from "@chakra-ui/react";
+import { fullId } from "@umami/core";
+import { useAppSelector, useGetAccountAllTokens } from "@umami/state";
 
 import { Token } from "./Token";
 import { EmptyMessage } from "../../components/EmptyMessage";
 
-const mockedTokens = [
-  {
-    title: "Token 1",
-    address: "0x1234567890",
-    amount: "100",
-    price: "0.1",
-  },
-  {
-    title: "Token 1",
-    address: "0x1234567890",
-    amount: "100",
-    price: "0.1",
-  },
-  {
-    title: "Token 1",
-    address: "0x1234567890",
-    amount: "100",
-    price: "0.1",
-  },
-  {
-    title: "Token 1",
-    address: "0x1234567890",
-    amount: "100",
-    price: "0.1",
-  },
-  {
-    title: "Token 1",
-    address: "0x1234567890",
-    amount: "100",
-    price: "0.1",
-  },
-  {
-    title: "Token 1",
-    address: "0x1234567890",
-    amount: "100",
-    price: "0.1",
-  },
-  {
-    title: "Token 1",
-    address: "0x1234567890",
-    amount: "100",
-    price: "0.1",
-  },
-  {
-    title: "Token 1",
-    address: "0x1234567890",
-    amount: "100",
-    price: "0.1",
-  },
-];
+export const Tokens = () => {
+  const getTokens = useGetAccountAllTokens();
+  const account = useAppSelector(s => s.accounts.items)[0];
+  const availableTokens = [...getTokens(account.address.pkh)];
 
-export const Tokens = () => (
-  <Flex flexDirection="column" width="full">
-    {mockedTokens.length ? (
-      mockedTokens.map(token => <Token key={token.address} token={token} />)
-    ) : (
-      <EmptyMessage subtitle="Tokens" title="Tokens" />
-    )}
-  </Flex>
-);
+  return (
+    <Flex width="full">
+      {availableTokens.length ? (
+        <Wrap flexDirection="column" width="full">
+          {availableTokens.map(token => (
+            <Token key={fullId(token)} token={token} />
+          ))}
+        </Wrap>
+      ) : (
+        <EmptyMessage subtitle="Tokens" title="Tokens" />
+      )}
+    </Flex>
+  );
+};

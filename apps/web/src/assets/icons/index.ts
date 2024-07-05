@@ -1,3 +1,5 @@
+export { TokenIcon } from "./TokenIcon";
+
 export { default as AddContactIcon } from "./add-contact-s.svg";
 export { default as ArrowDownLeftIcon } from "./arrow-down-left.svg";
 export { default as ChevronDownIcon } from "./chevron-down.svg";

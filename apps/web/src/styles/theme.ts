@@ -64,32 +64,39 @@ const theme = extendTheme({
         },
       },
     },
-    Input: (props: StyleFunctionProps) => ({
+    Input: {
       sizes: { md: { field: { height: "48px" } } },
+      baseStyle: {
+        element: {
+          fontSize: "14px",
+        },
+      },
       defaultProps: { variant: "filled" },
       variants: {
         filled: {
           field: {
-            bg: mode(light.grey[800], dark.grey[800])(props),
+            padding: "16px",
+            bg: "white",
             border: "1px solid",
-            borderColor: mode(light.grey[500], dark.grey[500])(props),
+            borderRadius: "6px",
+            borderColor: "gray.300",
+            _hover: {
+              bg: "white",
+            },
             _invalid: {
               borderColor: light.red,
             },
-            _hover: {
-              bg: mode(light.grey[800], dark.grey[800])(props),
-            },
             _focusVisible: {
-              bg: mode(light.grey[800], dark.grey[800])(props),
-              borderColor: mode(light.grey[400], dark.grey[400])(props),
+              borderColor: "gray.400",
             },
           },
         },
       },
-    }),
+    },
     FormLabel: {
       baseStyle: {
         fontWeight: "600",
+        color: "gray.900",
         marginBottom: "12px",
         size: "md",
       },
@@ -98,7 +105,6 @@ const theme = extendTheme({
     Tabs: {
       baseStyle: {
         tab: {
-          color: "green",
           _selected: {
             bg: "gray.200",
             color: "gray.900",
@@ -183,6 +189,33 @@ const theme = extendTheme({
           bg: "transparent",
           minWidth: "auto",
           height: "auto",
+        },
+      },
+    },
+    Modal: {
+      baseStyle: {
+        dialog: {
+          borderRadius: "30px",
+          bg: "white",
+          padding: {
+            lg: "36px",
+          },
+          gap: { lg: "30px" },
+        },
+        header: {
+          textAlign: "center",
+          padding: 0,
+          fontWeight: "600",
+          color: "gray.900",
+        },
+        body: {
+          padding: 0,
+          justifyContent: "center",
+          display: "flex",
+        },
+        footer: {
+          padding: 0,
+          justifyContent: "center",
         },
       },
     },

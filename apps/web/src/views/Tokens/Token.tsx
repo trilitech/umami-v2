@@ -1,15 +1,29 @@
-import { Button, Flex, Text } from "@chakra-ui/react";
+import { Flex, Text, WrapItem, useBreakpointValue } from "@chakra-ui/react";
+import { type FA12TokenBalance, type FA2TokenBalance, tokenPrettyAmount } from "@umami/core";
+import { formatPkh, parseContractPkh } from "@umami/tezos";
+import { useContext } from "react";
 
-import { UnknownSocialIcon } from "../../assets/icons";
+import { SendTokensForm } from "./SendTokensForm";
+import { TokenIcon } from "../../assets/icons";
 import { CopyButton } from "../../components/CopyButton/CopyButton";
 import { TokenIconWrapper } from "../../components/IconWrapper";
+import { SendButton } from "../../components/SendButton";
+import { TokenNameWithIcon } from "../../components/TokenNameWithIcon/TokenNameWithIcon";
+import { DynamicModalContext } from "../../providers/DynamicModalProvider";
 import { useColor } from "../../styles/useColor";
 
-export const Token = ({ token }) => {
+type TokenProps = {
+  token: FA12TokenBalance | FA2TokenBalance;
+};
+
+export const Token = ({ token }: TokenProps) => {
   const color = useColor();
+  const { openWith } = useContext(DynamicModalContext);
+  const address = parseContractPkh(token.contract).pkh;
+  const formattedAddress = useBreakpointValue({ base: formatPkh(address), lg: address });
 
   return (
-    <Flex
+    <WrapItem
       alignItems="center"
       justifyContent="space-between"
       width="full"
@@ -25,27 +39,25 @@ export const Token = ({ token }) => {
       paddingY="30px"
     >
       <TokenIconWrapper>
-        {/* TODO: replace with real icon from api */}
-        <UnknownSocialIcon />
+        <TokenIcon width="48px" minWidth="48px" contract={token.contract} rounded="full" />
       </TokenIconWrapper>
       <Flex flexDirection="column" flex="1" gap="4px" marginLeft="12px">
         <Text size="md" variant="bold">
-          {token.title}
+          <TokenNameWithIcon token={token} />
         </Text>
         <Flex gap="4px">
-          <Text size="sm">{token.address}</Text>
-          <CopyButton value={token.address} />
+          <Text size="sm">{formattedAddress}</Text>
+          <CopyButton value={address} />
         </Flex>
       </Flex>
       <Flex flexDirection="column" flex="1" gap="4px">
         <Text size="md" variant="bold">
-          {token.amount}
+          {tokenPrettyAmount(token.balance, token, { showSymbol: false })}
         </Text>
-        <Text size="sm">{token.price}</Text>
+        {/* TODO: implement $ price later */}
+        {/* <Text size="sm">{token.price}</Text> */}
       </Flex>
-      <Button padding="10px 24px" borderRadius="full" size="lg" variant="primary">
-        Send
-      </Button>
-    </Flex>
+      <SendButton onClick={() => openWith(<SendTokensForm token={token} />)} />
+    </WrapItem>
   );
 };

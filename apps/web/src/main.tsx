@@ -8,6 +8,7 @@ import { BrowserRouter } from "react-router-dom";
 import { PersistGate } from "redux-persist/integration/react";
 
 import { App } from "./App";
+import { DynamicModalProvider } from "./providers/DynamicModalProvider";
 import { ReactQueryProvider } from "./providers/ReactQueryProvider";
 import { ReduxStore } from "./providers/ReduxStore";
 import { UmamiTheme } from "./providers/UmamiTheme";
@@ -58,7 +59,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           <ErrorBoundary fallback={<ErrorPage />} onError={logError}>
             <ReactQueryProvider>
               <BrowserRouter>
-                <App />
+                <DynamicModalProvider>
+                  <App />
+                </DynamicModalProvider>
               </BrowserRouter>
               {/* Uncomment to use react-query devtools */}
               {/* <ReactQueryDevtools initialIsOpen={true} /> */}

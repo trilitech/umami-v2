@@ -14,6 +14,7 @@ import { DynamicModalContext } from "@umami/components";
 import { useContext } from "react";
 
 import { ArrowDownLeftIcon, PlusIcon } from "../../assets/icons";
+import { SendButton } from "../SendButton";
 
 export const AccountBalance = () => {
   const { openWith, isOpen } = useContext(DynamicModalContext);

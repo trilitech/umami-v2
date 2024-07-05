@@ -24,16 +24,30 @@ export const Layout = () => (
     <GridItem className="navbar" gridArea="nav">
       <Navbar />
     </GridItem>
-    <GridItem gridArea="main" marginBottom={{ lg: "46px" }}>
+    <GridItem
+      gridArea="main"
+      marginBottom={{ lg: "46px" }}
+      paddingX={{
+        base: "12px",
+        lg: "0",
+      }}
+    >
       <Main />
     </GridItem>
-    <GridItem gridArea="sidebar">
+    <GridItem
+      gridArea="sidebar"
+      paddingX={{
+        base: "12px",
+        lg: "0",
+      }}
+    >
       <Sidebar />
     </GridItem>
     <GridItem
+      position="relative"
       gridArea="footer"
-      marginTop={{ base: "18px" }}
-      marginBottom={{ base: "36px", lg: "46px" }}
+      marginTop={{ base: "30px" }}
+      marginBottom={{ base: "30px", lg: "46px" }}
     >
       <Footer />
     </GridItem>

@@ -3,6 +3,7 @@ body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  padding: 20px 46px 0 !important;
   position: relative;
 
   & .layout {
@@ -11,28 +12,24 @@ body {
   }
 
   @media (max-width: 768px) {
-    padding: 0;
+    padding: 0 !important;
 
     & .layout {
-      height: 100vh;
-      padding: 54px 12px 30px;
-
-      & .header,
-      & .navbar {
-        position: fixed;
-        width: 100%;
-        border-radius: 0;
-      }
+      height: 100dvh;
+      padding-top: 54px;
 
       & .header {
         top: 0;
         left: 0;
         z-index: 2;
+        position: fixed;
+        width: 100%;
+        border-radius: 0;
       }
 
       & .navbar {
+        position: sticky;
         bottom: 0;
-        left: 0;
         z-index: 2;
       }
     }
