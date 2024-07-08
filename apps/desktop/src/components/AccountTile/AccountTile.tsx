@@ -8,6 +8,7 @@ import {
   Image,
   Text,
 } from "@chakra-ui/react";
+import { useAddressKind } from "@umami/components";
 import { type Account, fullId, thumbnailUri } from "@umami/core";
 import { useGetAccountBalance, useGetAccountDelegate, useGetAccountNFTs } from "@umami/state";
 import { formatPkh, prettyTezAmount } from "@umami/tezos";
@@ -18,7 +19,6 @@ import { AccountTileIcon } from "./AccountTileIcon";
 import colors from "../../style/colors";
 import { getIPFSurl, sortedByLastUpdate } from "../../utils/token/utils";
 import { SelectedAccountContext } from "../../views/home/SelectedAccountContext";
-import { useAddressKind } from "../AddressTile/useAddressKind";
 import { color as identiconColor } from "../Identicon";
 
 export const AccountTileBase = ({

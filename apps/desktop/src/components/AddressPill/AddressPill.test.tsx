@@ -34,20 +34,14 @@ describe("<AddressPill />", () => {
 
   it("hides icon", () => {
     store.dispatch(upsert(contact));
-    render(<AddressPill address={parseImplicitPkh(contact.pkh)} mode={{ type: "no_icons" }} />, {
+    render(<AddressPill address={parseImplicitPkh(contact.pkh)} mode="no_icons" />, {
       store,
     });
     expect(screen.queryByTestId("address-pill-left-icon")).not.toBeInTheDocument();
   });
 
   it("is removable", () => {
-    render(
-      <AddressPill
-        address={parseImplicitPkh(contact.pkh)}
-        mode={{ type: "removable", onRemove: () => {} }}
-      />,
-      { store }
-    );
+    render(<AddressPill address={parseImplicitPkh(contact.pkh)} onRemove={jest.fn()} />, { store });
     expect(screen.getByTestId("xmark-icon-path")).toBeInTheDocument();
   });
 
@@ -57,10 +51,7 @@ describe("<AddressPill />", () => {
     store.dispatch(networksActions.setCurrent(MAINNET));
     store.dispatch(tokensActions.addTokens({ network: MAINNET, tokens: [fa1.token] }));
     render(
-      <AddressPill
-        address={parseContractPkh(fa1.token.contract.address)}
-        mode={{ type: "removable", onRemove: () => {} }}
-      />,
+      <AddressPill address={parseContractPkh(fa1.token.contract.address)} onRemove={jest.fn()} />,
       { store }
     );
     expect(screen.getByTestId("address-pill-left-icon")).toBeInTheDocument();

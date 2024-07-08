@@ -16,4 +16,33 @@ export type OwnedAddress =
   | LedgerAddress
   | OwnedMultisigAddress;
 
-export type AddressKind = OwnedAddress | BakerAddress | ContactAddress | UnknownAddress;
+export type FA12Address = {
+  type: "fa1.2";
+  pkh: RawPkh;
+  label: null;
+};
+
+export type FA2Address = {
+  type: "fa2";
+  pkh: RawPkh;
+  label: null;
+};
+
+export type AddressKind =
+  | OwnedAddress
+  | FA12Address
+  | FA2Address
+  | BakerAddress
+  | ContactAddress
+  | UnknownAddress;
+
+export type AddressPillMode = "default" | "no_icons";
+
+export const KNOWN_ADDRESS_TYPES = [
+  "mnemonic",
+  "social",
+  "secret_key",
+  "ledger",
+  "multisig",
+  "baker",
+];

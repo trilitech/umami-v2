@@ -100,7 +100,7 @@ export const AccountDrawerDisplay = ({
         {account.label}
       </Heading>
       <Flex alignItems="center" marginTop="8px" marginBottom="30px">
-        <AddressPill marginRight="4px" address={account.address} mode={{ type: "no_icons" }} />
+        <AddressPill marginRight="4px" address={account.address} mode="no_icons" />
         <RenameRemoveMenuSwitch account={account} />
       </Flex>
       {balance && <TezRecapDisplay balance={balance} center dollarBalance={dollarBalance} />}

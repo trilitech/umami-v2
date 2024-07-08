@@ -1,4 +1,4 @@
-import { DynamicModalContext } from "@umami/components";
+import { DynamicModalContext, useAddressKind } from "@umami/components";
 import {
   type ImplicitAccount,
   type MultisigAccount,
@@ -15,7 +15,6 @@ import { MultisigActionButton, type MultisigSignerState } from "./MultisigAction
 import colors from "../../../../style/colors";
 import { AccountTileBase, LabelAndAddress } from "../../../AccountTile/AccountTile";
 import { AddressTileIcon } from "../../../AddressTile/AddressTileIcon";
-import { useAddressKind } from "../../../AddressTile/useAddressKind";
 import { SignPage } from "../../../SendFlow/Multisig/SignPage";
 
 export const MultisigSignerTile = ({

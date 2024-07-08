@@ -1,18 +1,20 @@
-import { useGetTokenType, useSelectedNetwork } from "@umami/state";
+import {
+  useGetBaker,
+  useGetContactName,
+  useGetOwnedAccountSafe,
+  useGetTokenType,
+  useSelectedNetwork,
+} from "@umami/state";
 import { type Address } from "@umami/tezos";
 
 import {
   type AddressKind,
+  type BakerAddress,
+  type ContactAddress,
   type FA12Address,
   type FA2Address,
-  type OwnedImplicitAddress,
+  type OwnedAddress,
 } from "./types";
-import { type OwnedMultisigAddress } from "../AddressTile/types";
-import {
-  useOwnedAccountAddressKind as useAddressTileOwnedAccountAddressKind,
-  useBakerAddressKind,
-  useContactAddressKind,
-} from "../AddressTile/useAddressKind";
 
 export const useAddressKind = (address: Address): AddressKind => {
   const ownedAccount = useOwnedAccountAddressKind(address);
@@ -28,29 +30,41 @@ export const useAddressKind = (address: Address): AddressKind => {
   return known || { pkh: address.pkh, type: "unknown", label: null };
 };
 
-const useOwnedAccountAddressKind = (
-  address: Address
-): OwnedImplicitAddress | OwnedMultisigAddress | null => {
-  const addressTileAddressKind = useAddressTileOwnedAccountAddressKind(address);
-  if (!addressTileAddressKind) {
-    return null;
-  }
-  const { pkh, label } = addressTileAddressKind;
+const useBakerAddressKind = ({ pkh }: Address): BakerAddress | null => {
+  const getBaker = useGetBaker();
+  const baker = getBaker(pkh);
 
-  return {
-    type: addressTileAddressKind.type === "multisig" ? "multisig" : "implicit",
-    pkh,
-    label,
-  };
+  return baker
+    ? {
+        pkh,
+        type: "baker",
+        label: baker.name,
+      }
+    : null;
+};
+
+const useOwnedAccountAddressKind = ({ pkh }: Address): OwnedAddress | null => {
+  const getOwnedAccount = useGetOwnedAccountSafe();
+  const account = getOwnedAccount(pkh);
+
+  return account
+    ? {
+        type: account.type,
+        pkh,
+        label: account.label,
+      }
+    : null;
 };
 
 const useTokenAddressKind = ({ pkh }: Address): FA12Address | FA2Address | null => {
   const network = useSelectedNetwork();
   const getTokenType = useGetTokenType(network);
   const tokenType = getTokenType(pkh);
+
   if (!tokenType) {
     return null;
   }
+
   switch (tokenType) {
     case "fa1.2":
       return {
@@ -66,4 +80,17 @@ const useTokenAddressKind = ({ pkh }: Address): FA12Address | FA2Address | null 
         label: null,
       };
   }
+};
+
+const useContactAddressKind = ({ pkh }: Address): ContactAddress | null => {
+  const getContactName = useGetContactName();
+  const contactName = getContactName(pkh);
+  if (!contactName) {
+    return null;
+  }
+  return {
+    pkh,
+    type: "contact",
+    label: contactName,
+  };
 };

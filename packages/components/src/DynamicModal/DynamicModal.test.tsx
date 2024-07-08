@@ -1,5 +1,5 @@
 import { useDynamicModal } from "./DynamicModal";
-import { act, render, renderHook, screen } from "./testUtils";
+import { act, render, renderHook, screen } from "../testUtils";
 
 describe("useDynamicModal", () => {
   it("is closed by default", () => {

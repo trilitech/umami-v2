@@ -1,4 +1,10 @@
-import { mockBaker, mockImplicitAccount, mockMnemonicAccount } from "@umami/core";
+import {
+  mockBaker,
+  mockLedgerAccount,
+  mockMnemonicAccount,
+  mockSecretKeyAccount,
+  mockSocialAccount,
+} from "@umami/core";
 import { multisigsFixture } from "@umami/multisig";
 import {
   type UmamiStore,
@@ -22,7 +28,7 @@ import {
 import { cloneDeep } from "lodash";
 
 import { useAddressKind } from "./useAddressKind";
-import { renderHook } from "../../mocks/testUtils";
+import { renderHook } from "../testUtils";
 
 let store: UmamiStore;
 
@@ -32,17 +38,18 @@ beforeEach(() => {
 });
 
 describe("useAddressKind", () => {
-  it("returns owned implicit account", () => {
-    const mnemonicAccount = mockMnemonicAccount(0);
-    addTestAccount(store, mockMnemonicAccount(0));
+  it.each([
+    (mockMnemonicAccount(0), mockLedgerAccount(0), mockSocialAccount(0), mockSecretKeyAccount(0)),
+  ])("returns owned $type account", account => {
+    addTestAccount(store, account);
 
-    const { result: addressKindRef } = renderHook(() => useAddressKind(mnemonicAccount.address), {
+    const { result: addressKindRef } = renderHook(() => useAddressKind(account.address), {
       store,
     });
 
     expect(addressKindRef.current).toEqual({
-      type: "implicit",
-      pkh: mnemonicAccount.address.pkh,
+      type: account.type,
+      pkh: account.address.pkh,
       label: "Account",
     });
   });
@@ -158,16 +165,22 @@ describe("useAddressKind", () => {
     });
 
     it.each([
-      { type: "implicit", address: mockImplicitAccount(0).address.pkh },
+      { type: "mnemonic", address: mockMnemonicAccount(0).address.pkh },
+      { type: "social", address: mockSocialAccount(1).address.pkh },
+      { type: "ledger", address: mockLedgerAccount(2).address.pkh },
+      { type: "secret_key", address: mockSecretKeyAccount(3).address.pkh },
       { type: "multisig", address: multisigsFixture[0].address.pkh },
       {
         type: "fa1.2",
         address: hedgehoge(mockImplicitAddress(0)).token.contract.address,
       },
       { type: "fa2", address: uUSD(mockImplicitAddress(0)).token.contract.address },
-      { type: "baker", address: mockBaker(1).address },
+      { type: "baker", address: mockBaker(4).address },
     ])("prioritizes $type over the contact", ({ type, address }) => {
       addTestAccount(store, mockMnemonicAccount(0));
+      addTestAccount(store, mockSocialAccount(1));
+      addTestAccount(store, mockLedgerAccount(2));
+      addTestAccount(store, mockSecretKeyAccount(3));
       store.dispatch(multisigsActions.setMultisigs(multisigsFixture));
       store.dispatch(
         tokensActions.addTokens({
@@ -175,7 +188,7 @@ describe("useAddressKind", () => {
           tokens: [hedgehoge(mockImplicitAddress(0)).token, uUSD(mockImplicitAddress(0)).token],
         })
       );
-      store.dispatch(assetsActions.updateBakers([mockBaker(1)]));
+      store.dispatch(assetsActions.updateBakers([mockBaker(4)]));
       store.dispatch(
         contactsActions.upsert({
           name: "name1",

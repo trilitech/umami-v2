@@ -8,7 +8,7 @@ export const AddressPillText = ({
   addressKind: { pkh, label },
   showPkh,
   alias,
-  ...rest
+  ...props
 }: {
   addressKind: AddressKind;
   showPkh: boolean;
@@ -19,8 +19,8 @@ export const AddressPillText = ({
   const nameOrLabel = getContactName(pkh) || label || alias;
 
   if (showPkh) {
-    return <Text {...rest}>{formattedPkh}</Text>;
+    return <Text {...props}>{formattedPkh}</Text>;
   }
 
-  return <Text {...rest}>{nameOrLabel ? truncate(nameOrLabel, 21) : formattedPkh}</Text>;
+  return <Text {...props}>{nameOrLabel ? truncate(nameOrLabel, 21) : formattedPkh}</Text>;
 };
