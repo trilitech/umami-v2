@@ -14,7 +14,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { OpKind, type WalletParamsWithKind } from "@taquito/taquito";
-import { type Network, type TypeOfLogin } from "@trilitech-umami/umami-embed/types";
+import type { UserData, Network } from "@trilitech-umami/umami-embed/types";
 import * as Auth from "@umami/social-auth";
 import { useState } from "react";
 
@@ -31,12 +31,12 @@ import { makeToolkit } from "@umami/tezos";
 const SIGN_TIMEOUT = 5 * 60 * 1000; // 5 minutes
 
 export const OperationModalContent = ({
-  loginType,
+  userData,
   network,
   operations,
   closeModal,
 }: {
-  loginType: TypeOfLogin;
+  userData: UserData;
   network: Network;
   operations: PartialTezosOperation[];
   closeModal: () => void;
@@ -47,7 +47,7 @@ export const OperationModalContent = ({
     setIsLoading(true);
     try {
       const { secretKey } = await withTimeout(
-        async () => Auth.forIDP(loginType, "embed").getCredentials(),
+        async () => Auth.forIDP(userData.typeOfLogin, "embed").getCredentials(),
         SIGN_TIMEOUT
       );
       const toolkit = await makeToolkit({

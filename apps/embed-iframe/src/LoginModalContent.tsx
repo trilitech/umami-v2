@@ -1,6 +1,6 @@
 import { Box, Center, Flex, Heading, Spinner, Text, VStack } from "@chakra-ui/react";
 import { InMemorySigner } from "@taquito/signer";
-import { type TypeOfLogin } from "@trilitech-umami/umami-embed/types";
+import type { UserData, TypeOfLogin } from "@trilitech-umami/umami-embed/types";
 import * as Auth from "@umami/social-auth";
 import { useState } from "react";
 
@@ -18,7 +18,7 @@ export const LoginModalContent = ({
   onLoginCallback,
 }: {
   closeModal: () => void;
-  onLoginCallback: (loginType: TypeOfLogin) => void;
+  onLoginCallback: (userData: UserData) => void;
 }) => {
   const [isLoading, setIsLoading] = useState(false);
 
@@ -29,17 +29,14 @@ export const LoginModalContent = ({
         async () => Auth.forIDP(loginType, "embed").getCredentials(),
         LOGIN_TIMEOUT
       );
-
       const signer = new InMemorySigner(secretKey);
       const { pk, pkh } = { pk: await signer.publicKey(), pkh: await signer.publicKeyHash() };
 
-      onLoginCallback(loginType);
+      const userData = { pk, pkh, typeOfLogin: loginType, id: name };
+      onLoginCallback(userData);
       sendResponse({
+        ...userData,
         type: "login_response",
-        pk,
-        pkh,
-        typeOfLogin: "google",
-        id: name,
       });
     } catch (error) {
       sendLoginErrorResponse(getErrorContext(error).description);
