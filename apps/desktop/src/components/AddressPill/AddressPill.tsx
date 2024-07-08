@@ -22,9 +22,11 @@ import { AddressPillText } from "./AddressPillText";
 import { useAddressKind } from "./useAddressKind";
 import colors from "../../style/colors";
 
-export const AddressPill: React.FC<
-  { address: Address | TzktAlias; mode?: AddressPillMode } & BoxProps
-> = ({ address: rawAddress, mode = { type: "default" }, ...rest }) => {
+export const AddressPill = ({
+  address: rawAddress,
+  mode = { type: "default" },
+  ...rest
+}: { address: Address | TzktAlias; mode?: AddressPillMode } & BoxProps) => {
   const isAlias = !("pkh" in rawAddress && "type" in rawAddress);
   const address = isAlias ? parsePkh(rawAddress.address) : rawAddress;
   const addressKind = useAddressKind(address);

@@ -8,7 +8,6 @@ import {
 } from "@chakra-ui/react";
 import { type Delegation } from "@umami/core";
 import { type RawPkh, parseImplicitPkh, parsePkh } from "@umami/tezos";
-import type React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { SignPage } from "./SignPage";
@@ -27,7 +26,7 @@ export type FormValues = {
   baker: RawPkh;
 };
 
-export const FormPage: React.FC<FormPageProps<FormValues>> = props => {
+export const FormPage = (props: FormPageProps<FormValues>) => {
   const baker = props.form?.baker;
 
   const openSignPage = useOpenSignPageFormAction({

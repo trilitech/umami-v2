@@ -26,7 +26,7 @@ import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
 import { headerText } from "../SignPageHeader";
 
-export const ContractCallSignPage: React.FC<BeaconSignPageProps> = ({ operation, message }) => {
+export const ContractCallSignPage = ({ operation, message }: BeaconSignPageProps) => {
   const {
     amount: mutezAmount,
     contract,

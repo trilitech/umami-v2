@@ -6,9 +6,7 @@ import { TezIcon } from "../../assets/icons";
 import colors from "../../style/colors";
 import { PrettyNumber } from "../PrettyNumber";
 
-export const TezTile: React.FC<{ mutezAmount: string | number | BigNumber }> = ({
-  mutezAmount,
-}) => (
+export const TezTile = ({ mutezAmount }: { mutezAmount: string | number | BigNumber }) => (
   <Flex
     alignItems="center"
     height="60px"

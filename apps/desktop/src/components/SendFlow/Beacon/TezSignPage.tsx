@@ -12,7 +12,7 @@ import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
 import { headerText } from "../SignPageHeader";
 
-export const TezSignPage: React.FC<BeaconSignPageProps> = ({ operation, message }) => {
+export const TezSignPage = ({ operation, message }: BeaconSignPageProps) => {
   const { amount: mutezAmount, recipient } = operation.operations[0] as TezTransfer;
 
   const { isSigning, onSign, network, fee, form } = useSignWithBeacon(operation, message);

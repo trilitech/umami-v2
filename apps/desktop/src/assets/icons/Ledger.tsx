@@ -2,7 +2,7 @@ import { Icon, type IconProps } from "@chakra-ui/react";
 
 import colors from "../../style/colors";
 
-export const LedgerIcon: React.FC<IconProps> = props => (
+export const LedgerIcon = (props: IconProps) => (
   <Icon
     width="18px"
     height="18px"

@@ -17,7 +17,6 @@ import {
 import { type TezosToolkit } from "@taquito/taquito";
 import { DynamicModalContext } from "@umami/components";
 import { WalletClient, useGetImplicitAccount } from "@umami/state";
-import type React from "react";
 import { useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
@@ -25,9 +24,7 @@ import { decodePayload } from "./decodePayload";
 import { SignButton } from "../../components/SendFlow/SignButton";
 import colors from "../../style/colors";
 
-export const SignPayloadRequestModal: React.FC<{
-  request: SignPayloadRequestOutput;
-}> = ({ request }) => {
+export const SignPayloadRequestModal = ({ request }: { request: SignPayloadRequestOutput }) => {
   const { onClose } = useContext(DynamicModalContext);
   const getAccount = useGetImplicitAccount();
   const signerAccount = getAccount(request.sourceAddress);

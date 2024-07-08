@@ -1,16 +1,18 @@
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { type MultisigAccount } from "@umami/core";
 import { type MultisigOperation } from "@umami/multisig";
-import type React from "react";
 
 import { MultisigDecodedOperations } from "./MultisigDecodedOperations";
 import { MultisigSignerTile } from "./MultisigSignerTile";
 import colors from "../../../../style/colors";
 
-export const MultisigPendingOperation: React.FC<{
+export const MultisigPendingOperation = ({
+  operation,
+  sender,
+}: {
   operation: MultisigOperation;
   sender: MultisigAccount;
-}> = ({ operation, sender }) => {
+}) => {
   const { signers, threshold } = sender;
   const pendingApprovals = Math.max(threshold - operation.approvals.length, 0);
   return (

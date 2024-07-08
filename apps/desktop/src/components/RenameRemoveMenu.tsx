@@ -3,9 +3,12 @@ import { Box, Button, Divider, Flex, Text } from "@chakra-ui/react";
 import { PopoverMenu } from "./PopoverMenu";
 import { PenIcon, TrashIcon } from "../assets/icons";
 
-export const RenameRemoveMenu: React.FC<{ onRename: () => void; onRemove?: () => void }> = ({
+export const RenameRemoveMenu = ({
   onRename,
   onRemove,
+}: {
+  onRename: () => void;
+  onRemove?: () => void;
 }) => (
   <Flex alignItems="center">
     <PopoverMenu>

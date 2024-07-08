@@ -19,7 +19,7 @@ import { CircleIcon } from "../../CircleIcon";
  *
  * @param account -
  */
-export const InfoModal: React.FC<{ account: LedgerAccount | MnemonicAccount }> = ({ account }) => {
+export const InfoModal = ({ account }: { account: LedgerAccount | MnemonicAccount }) => {
   const values = [
     {
       title: "Template",

@@ -4,13 +4,16 @@ import { formatPkh, truncate } from "@umami/tezos";
 
 import { type AddressKind } from "./types";
 
-export const AddressPillText: React.FC<
-  {
-    addressKind: AddressKind;
-    showPkh: boolean;
-    alias?: string;
-  } & TextProps
-> = ({ addressKind: { pkh, label }, showPkh, alias, ...rest }) => {
+export const AddressPillText = ({
+  addressKind: { pkh, label },
+  showPkh,
+  alias,
+  ...rest
+}: {
+  addressKind: AddressKind;
+  showPkh: boolean;
+  alias?: string;
+} & TextProps) => {
   const getContactName = useGetContactName();
   const formattedPkh = formatPkh(pkh);
   const nameOrLabel = getContactName(pkh) || label || alias;

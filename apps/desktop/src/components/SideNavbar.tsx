@@ -1,6 +1,6 @@
 import { Box, Divider, Flex, type FlexProps, Text, useMediaQuery } from "@chakra-ui/react";
 import { useTotalBalance } from "@umami/state";
-import type React from "react";
+import { type ReactElement } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import { AppVersion } from "./AppVersion";
@@ -112,14 +112,18 @@ export const SideNavbar = () => {
   );
 };
 
-const MenuItem: React.FC<
-  {
-    label: string;
-    icon: React.ReactElement;
-    to: string;
-    isCollapsed: boolean;
-  } & FlexProps
-> = ({ icon, label, to, isCollapsed, ...flexProps }) => {
+const MenuItem = ({
+  icon,
+  label,
+  to,
+  isCollapsed,
+  ...flexProps
+}: {
+  label: string;
+  icon: ReactElement;
+  to: string;
+  isCollapsed: boolean;
+} & FlexProps) => {
   const currentLocation = useLocation();
   // TODO: check if there are named routes in react-router-dom
   const isSelected = currentLocation.pathname.startsWith(to);

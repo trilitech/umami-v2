@@ -30,11 +30,15 @@ import { sendOperationErrorResponse, sendResponse } from "./utils";
 
 const SIGN_TIMEOUT = 5 * 60 * 1000; // 5 minutes
 
-export const OperationModalContent: React.FC<{
+export const OperationModalContent = ({
+  operations,
+  closeModal,
+  loginType,
+}: {
   operations: PartialTezosOperation[];
   closeModal: () => void;
   loginType: TypeOfLogin;
-}> = ({ operations, closeModal, loginType }) => {
+}) => {
   const [isLoading, setIsLoading] = useState(false);
 
   console.log(operations);

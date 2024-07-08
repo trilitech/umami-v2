@@ -9,7 +9,7 @@ import { ReceiveModal } from "../ReceiveModal";
 import { FormPage as SendTezForm } from "../SendFlow/Tez/FormPage";
 
 // TODO: replace current component with the underlying one
-export const AccountCard: React.FC<{ accountPkh: RawPkh }> = ({ accountPkh }) => {
+export const AccountCard = ({ accountPkh }: { accountPkh: RawPkh }) => {
   const getOwnedAccount = useGetOwnedAccount();
 
   const getTokens = useGetAccountAllTokens();

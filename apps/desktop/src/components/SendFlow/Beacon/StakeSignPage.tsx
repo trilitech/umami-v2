@@ -11,7 +11,7 @@ import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
 import { headerText } from "../SignPageHeader";
 
-export const StakeSignPage: React.FC<BeaconSignPageProps> = ({ operation, message }) => {
+export const StakeSignPage = ({ operation, message }: BeaconSignPageProps) => {
   const { amount: mutezAmount } = operation.operations[0] as Stake;
 
   const { isSigning, onSign, network, fee, form } = useSignWithBeacon(operation, message);

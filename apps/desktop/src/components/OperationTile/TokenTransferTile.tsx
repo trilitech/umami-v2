@@ -18,7 +18,11 @@ import colors from "../../style/colors";
 import { getIPFSurl } from "../../utils/token/utils";
 import { AddressPill } from "../AddressPill/AddressPill";
 
-export const TokenTransferTile: React.FC<{
+export const TokenTransferTile = ({
+  operation,
+  tokenTransfer,
+  token,
+}: {
   // externally originated token transfers
   // do not have a corresponding operation in the list
   // in fact, they might not even have a corresponding transaction
@@ -26,7 +30,7 @@ export const TokenTransferTile: React.FC<{
   operation?: TransactionOperation;
   tokenTransfer: TokenTransferOperation;
   token: Token;
-}> = ({ operation, tokenTransfer, token }) => {
+}) => {
   const rawAmount = tokenTransfer.amount;
 
   const operationDestination = useGetOperationDestination(

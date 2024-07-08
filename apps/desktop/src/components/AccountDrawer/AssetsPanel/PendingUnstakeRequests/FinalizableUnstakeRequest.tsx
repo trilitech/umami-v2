@@ -21,11 +21,12 @@ import { SignPage } from "../../../SendFlow/FinalizeUnstake/SignPage";
  * @param account - account to display the finalizable unstake request for
  */
 // TODO: test
-export const FinalizableUnstakeRequest: React.FC<
-  {
-    account: ImplicitAccount;
-  } & FlexProps
-> = ({ account, ...props }) => {
+export const FinalizableUnstakeRequest = ({
+  account,
+  ...props
+}: {
+  account: ImplicitAccount;
+} & FlexProps) => {
   const { openWith } = useContext(DynamicModalContext);
   const { handleAsyncAction, isLoading } = useAsyncActionHandler();
   const network = useSelectedNetwork();

@@ -1,15 +1,14 @@
 import { Box, Heading, Text } from "@chakra-ui/react";
 import { prettyTezAmount } from "@umami/tezos";
 import type { BigNumber } from "bignumber.js";
-import type React from "react";
 
 import colors from "../style/colors";
 
-export const TezRecapDisplay: React.FC<{
+export const TezRecapDisplay = (props: {
   balance: BigNumber | number | string;
   dollarBalance: BigNumber | undefined;
   center?: boolean;
-}> = props => (
+}) => (
   <Box textAlign={props.center ? "center" : "initial"}>
     <Heading size="md">{prettyTezAmount(props.balance)}</Heading>
     {props.dollarBalance !== undefined && (

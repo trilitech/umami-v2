@@ -14,18 +14,18 @@ beforeEach(() => {
   store = makeStore();
 });
 
-const TestComponent: React.FC<{
-  defaultDestination?: string;
-  contacts?: Contact[];
-  allowUnknown?: boolean;
-  label?: string;
-  keepValid?: boolean;
-}> = ({
+const TestComponent = ({
   defaultDestination = "",
   allowUnknown = true,
   contacts = [mockImplicitContact(0), mockImplicitContact(1), mockImplicitContact(2)],
   label = "",
   keepValid,
+}: {
+  defaultDestination?: string;
+  contacts?: Contact[];
+  allowUnknown?: boolean;
+  label?: string;
+  keepValid?: boolean;
 }) => {
   const form = useForm<FormFields>({ defaultValues: { destination: defaultDestination } });
 

@@ -5,7 +5,7 @@ import { OperationTileContext } from "./OperationTileContext";
 import colors from "../../style/colors";
 
 // It hides the operation type in the drawer to save space
-export const OperationTypeWrapper: React.FC<PropsWithChildren> = ({ children }) => {
+export const OperationTypeWrapper = ({ children }: PropsWithChildren) => {
   const tileContext = useContext(OperationTileContext);
 
   if (tileContext.mode === "drawer") {

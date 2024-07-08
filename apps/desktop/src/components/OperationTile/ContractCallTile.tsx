@@ -11,9 +11,7 @@ import { ContractIcon } from "../../assets/icons";
 import colors from "../../style/colors";
 import { AddressPill } from "../AddressPill/AddressPill";
 
-export const ContractCallTile: React.FC<{
-  operation: TransactionOperation;
-}> = ({ operation }) => (
+export const ContractCallTile = ({ operation }: { operation: TransactionOperation }) => (
   <Flex flexDirection="column" width="100%" data-testid="operation-tile-contract-call">
     <Flex justifyContent="space-between" marginBottom="10px">
       <Center>

@@ -1,7 +1,7 @@
 import * as testLib from "@testing-library/react";
 import { DynamicModalContext, useDynamicModal } from "@umami/components";
 import { type UmamiStore, makeStore } from "@umami/state";
-import { type PropsWithChildren, act } from "react";
+import { type PropsWithChildren, type ReactNode, act } from "react";
 import { Provider } from "react-redux";
 import { HashRouter } from "react-router-dom";
 
@@ -51,7 +51,7 @@ const customRender = <
   Container extends Element | DocumentFragment = HTMLElement,
   BaseElement extends Element | DocumentFragment = Container,
 >(
-  ui: React.ReactNode,
+  ui: ReactNode,
   options?: testLib.RenderOptions<Q, Container, BaseElement> & { store?: UmamiStore }
 ): testLib.RenderResult<Q, Container, BaseElement> & { store: UmamiStore } => {
   const store = options?.store ?? makeStore();

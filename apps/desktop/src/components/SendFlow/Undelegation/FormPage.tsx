@@ -1,7 +1,6 @@
 import { FormControl, FormLabel, ModalBody, ModalContent, ModalFooter } from "@chakra-ui/react";
 import { type Undelegation } from "@umami/core";
 import { type RawPkh, parsePkh } from "@umami/tezos";
-import type React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { SignPage } from "./SignPage";
@@ -20,7 +19,7 @@ export type FormValues = {
   baker: RawPkh;
 };
 
-export const FormPage: React.FC<FormPagePropsWithSender<FormValues>> = props => {
+export const FormPage = (props: FormPagePropsWithSender<FormValues>) => {
   const { sender } = props;
   // it must always be passed in from the parent component
   const baker = props.form?.baker;

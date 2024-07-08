@@ -12,7 +12,7 @@ import {
 } from "@umami/state";
 import { TEZ } from "@umami/tezos";
 import pluralize from "pluralize";
-import React, { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { AccountSmallTile } from "./AccountSmallTile";
 import { OperationEstimationStatus } from "./OperationEstimationStatus";
@@ -25,11 +25,15 @@ import { SignPage } from "../../components/SendFlow/Batch/SignPage";
 import { headerText } from "../../components/SendFlow/SignPageHeader";
 import colors from "../../style/colors";
 
-const RightHeader: React.FC<{
+const RightHeader = ({
+  operations: accountOperations,
+  onSubmit,
+  isLoading,
+}: {
   operations: AccountOperations;
   onSubmit: () => Promise<void>;
   isLoading: boolean;
-}> = ({ operations: accountOperations, onSubmit, isLoading }) => {
+}) => {
   const { type: operationsType, sender, operations } = accountOperations;
   const { openWith } = useContext(DynamicModalContext);
 
@@ -93,16 +97,14 @@ const SUCCESSFUL_ESTIMATION_RESULT = {
   metadata: { operation_result: { status: "applied" } },
 } as OperationContentsAndResult;
 
-export const BatchView: React.FC<{
-  operations: AccountOperations;
-}> = ({ operations: accountOperations }) => {
+export const BatchView = ({ operations: accountOperations }: { operations: AccountOperations }) => {
   const { operations, sender } = accountOperations;
   const showFooter = operations.length > 9;
 
   const removeItem = useRemoveBatchItem();
   const { openWith } = useContext(DynamicModalContext);
   const network = useSelectedNetwork();
-  const [operationsEstimationResults, setOperationsEstimationResults] = React.useState<
+  const [operationsEstimationResults, setOperationsEstimationResults] = useState<
     OperationContentsAndResult[]
   >([]);
 

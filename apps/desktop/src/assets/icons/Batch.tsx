@@ -2,7 +2,7 @@ import { Icon, type IconProps } from "@chakra-ui/react";
 
 import colors from "../../style/colors";
 
-export const BatchIcon: React.FC<IconProps> = props => (
+export const BatchIcon = (props: IconProps) => (
   <Icon
     width="24px"
     height="24px"

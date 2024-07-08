@@ -5,11 +5,15 @@ import { ChevronDownIcon } from "../assets/icons";
 import colors from "../style/colors";
 
 type Option = { label: string; value: string };
-export const Select: React.FC<{
+export const Select = ({
+  selected,
+  options,
+  onChange,
+}: {
   selected: Option;
   options: Option[];
   onChange: (newValue: string) => void;
-}> = ({ selected, options, onChange }) => {
+}) => {
   const [currentOption, setCurrentOption] = useState(selected);
   const [showOptions, setShowOptions] = useState(false);
 

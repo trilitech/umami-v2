@@ -7,7 +7,6 @@ import {
   useSelectedNetwork,
 } from "@umami/state";
 import { prettyTezAmount } from "@umami/tezos";
-import type React from "react";
 import { type ReactNode, useContext } from "react";
 
 import { PendingUnstakeRequests } from "./PendingUnstakeRequests/PendingUnstakeRequests";
@@ -20,12 +19,14 @@ import { NoticeModal as StakeNoticeModal } from "../../SendFlow/Stake/NoticeModa
 import { FormPage as UndelegationFormPage } from "../../SendFlow/Undelegation/FormPage";
 import { NoticeModal as UnstakeNoticeModal } from "../../SendFlow/Unstake/NoticeModal";
 
-const Row: React.FC<
-  {
-    label: string;
-    value: ReactNode;
-  } & FlexProps
-> = ({ label, value, ...props }) => (
+const Row = ({
+  label,
+  value,
+  ...props
+}: {
+  label: string;
+  value: ReactNode;
+} & FlexProps) => (
   <Flex alignItems="center" height="50px" padding="16px" data-testid={label} {...props}>
     <Box flex={1}>
       <Heading color={colors.gray[400]} size="sm">
@@ -47,9 +48,7 @@ const RoundStatusDot = ({ background }: { background: string }) => (
   />
 );
 
-export const EarnTab: React.FC<{
-  account: Account;
-}> = ({ account }) => {
+export const EarnTab = ({ account }: { account: Account }) => {
   const { openWith } = useContext(DynamicModalContext);
   const network = useSelectedNetwork();
   const pkh = account.address.pkh;

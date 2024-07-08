@@ -19,7 +19,6 @@ import {
   tokenPrettyAmount,
 } from "@umami/core";
 import { formatPkh, parseContractPkh } from "@umami/tezos";
-import type React from "react";
 import { useContext } from "react";
 
 import { TokenNameWithIcon } from "./TokenNameWithIcon";
@@ -32,9 +31,7 @@ import { SendButton } from "../../components/SendButton";
 import { FormPage as SendTokenFormPage } from "../../components/SendFlow/Token/FormPage";
 import colors from "../../style/colors";
 
-const Header: React.FC<{
-  account: Account;
-}> = ({ account }) => {
+const Header = ({ account }: { account: Account }) => {
   const { address, label } = account;
   return (
     <Flex
@@ -70,10 +67,13 @@ const Header: React.FC<{
   );
 };
 
-export const AccountTokens: React.FC<{
+export const AccountTokens = ({
+  account,
+  tokens,
+}: {
   account: Account;
   tokens: (FA12TokenBalance | FA2TokenBalance)[];
-}> = ({ account, tokens }) => {
+}) => {
   const { openWith } = useContext(DynamicModalContext);
 
   return (

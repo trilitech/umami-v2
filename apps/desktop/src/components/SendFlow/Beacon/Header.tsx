@@ -7,11 +7,15 @@ import colors from "../../../style/colors";
 import { SignPageHeader } from "../SignPageHeader";
 import { type SignPageMode } from "../utils";
 
-export const Header: React.FC<{
+export const Header = ({
+  operation,
+  message,
+  mode,
+}: {
   operation: AccountOperations;
   message: OperationRequestOutput;
   mode: SignPageMode;
-}> = ({ operation, message, mode }) => (
+}) => (
   <SignPageHeader mode={mode} operationsType={operation.type} signer={operation.signer}>
     <Flex alignItems="center" justifyContent="center" marginTop="10px">
       <Heading marginRight="4px" color={colors.gray[450]} size="sm">

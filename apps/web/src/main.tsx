@@ -1,7 +1,7 @@
 import { getErrorContext } from "@umami/core";
 import { accountsActions, errorsActions } from "@umami/state";
 import { encryptedMnemonic1 } from "@umami/test-utils";
-import React from "react";
+import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import { ErrorBoundary } from "react-error-boundary";
 import { BrowserRouter } from "react-router-dom";
@@ -53,7 +53,7 @@ if (IS_DEV) {
 }
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
+  <StrictMode>
     <UmamiTheme>
       <ReduxStore>
         <PersistGate loading={<div>loading</div>} persistor={persistor}>
@@ -69,5 +69,5 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         </PersistGate>
       </ReduxStore>
     </UmamiTheme>
-  </React.StrictMode>
+  </StrictMode>
 );

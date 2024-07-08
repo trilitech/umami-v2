@@ -86,9 +86,9 @@ module.exports = {
     "import/no-unresolved": "off",
     "import/no-cycle": "warn",
     "import/no-self-import": "warn",
-    // TODO: enable after React.FC occurrences are removed
-    // "import/no-duplicates": ["warn", { "prefer-inline": true }],
-    // "no-duplicate-imports": "warn",
+
+    "import/no-duplicates": ["warn", { "prefer-inline": true }],
+    "no-duplicate-imports": "warn",
     "import/order": [
       "warn",
       {
@@ -118,6 +118,15 @@ module.exports = {
     "react-redux/useSelector-prefer-selectors": "off",
     eqeqeq: ["warn", "always"],
     "@typescript-eslint/consistent-type-imports": ["error", { fixStyle: "inline-type-imports" }],
+    "no-restricted-imports": [
+      "warn", {
+        "paths": [{
+          "name": "react",
+          "importNames": ["default"],
+          "message": "use `import { <...> } from 'react'` instead"
+        }]
+      }
+    ]
   },
   overrides: [
     {

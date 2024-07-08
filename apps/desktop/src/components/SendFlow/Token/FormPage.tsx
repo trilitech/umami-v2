@@ -19,7 +19,6 @@ import {
   tokenSymbolSafe,
 } from "@umami/core";
 import { type RawPkh, parseContractPkh, parsePkh } from "@umami/tezos";
-import type React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { SignPage } from "./SignPage";
@@ -45,9 +44,9 @@ export type FormValues = {
   prettyAmount: string;
 };
 
-export const FormPage: React.FC<
-  FormPagePropsWithSender<FormValues> & { token: FA12TokenBalance | FA2TokenBalance }
-> = props => {
+export const FormPage = (
+  props: FormPagePropsWithSender<FormValues> & { token: FA12TokenBalance | FA2TokenBalance }
+) => {
   const { token } = props;
   const openSignPage = useOpenSignPageFormAction({
     SignPage,

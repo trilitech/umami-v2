@@ -11,7 +11,6 @@ import {
 } from "@umami/tzkt";
 import { BigNumber } from "bignumber.js";
 import { get } from "lodash";
-import type React from "react";
 import { useContext } from "react";
 
 import { OperationTileContext } from "./OperationTileContext";
@@ -19,7 +18,9 @@ import colors from "../../style/colors";
 
 const FEE_FIELDS = ["bakerFee", "storageFee", "allocationFee"];
 
-export const Fee: React.FC<{
+export const Fee = ({
+  operation,
+}: {
   operation:
     | TransactionOperation
     | DelegationOperation
@@ -27,7 +28,7 @@ export const Fee: React.FC<{
     | StakeOperation
     | UnstakeOperation
     | FinalizeUnstakeOperation;
-}> = ({ operation }) => {
+}) => {
   const tileContext = useContext(OperationTileContext);
   const isOwned = useIsOwnedAddress();
   const isOutgoing = isOwned(operation.sender.address);

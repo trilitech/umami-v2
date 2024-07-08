@@ -1,7 +1,6 @@
 import { fromRawToken } from "@umami/core";
 import { useGetTokenTransfer } from "@umami/state";
 import { type TzktCombinedOperation } from "@umami/tzkt";
-import type React from "react";
 
 import { ContractCallTile } from "./ContractCallTile";
 import { DelegationTile } from "./DelegationTile";
@@ -12,9 +11,7 @@ import { TokenTransferTile } from "./TokenTransferTile";
 import { TransactionTile } from "./TransactionTile";
 import { UnstakeTile } from "./UnstakeTile";
 
-export const OperationTile: React.FC<{
-  operation: TzktCombinedOperation;
-}> = ({ operation }) => {
+export const OperationTile = ({ operation }: { operation: TzktCombinedOperation }) => {
   const getTokenTransfer = useGetTokenTransfer();
 
   switch (operation.type) {

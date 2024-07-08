@@ -1,12 +1,11 @@
 import { type IconProps } from "@chakra-ui/react";
 import { useSelectedNetwork } from "@umami/state";
-import type React from "react";
 
 import { MakiIcon } from "../assets/icons";
 
 const ORANGE = "#F74F18";
 
-export const MakiLogo: React.FC<IconProps> = props => {
+export const MakiLogo = (props: IconProps) => {
   const network = useSelectedNetwork();
 
   return (

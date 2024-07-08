@@ -13,10 +13,13 @@ import { sendLoginErrorResponse, sendResponse } from "./utils";
 
 const LOGIN_TIMEOUT = 3 * 60 * 1000; // 3 minutes
 
-export const LoginModalContent: React.FC<{
+export const LoginModalContent = ({
+  closeModal,
+  onLoginCallback,
+}: {
   closeModal: () => void;
   onLoginCallback: (loginType: TypeOfLogin) => void;
-}> = ({ closeModal, onLoginCallback }) => {
+}) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const onLoginClick = async (loginType: TypeOfLogin) => {

@@ -15,10 +15,13 @@ import { MultisigDecodedOperation } from "./MultisigDecodedOperation";
 import colors from "../../../../style/colors";
 import { JsValueWrap } from "../../JsValueWrap";
 
-export const MultisigDecodedOperations: React.FC<{
+export const MultisigDecodedOperations = ({
+  rawMichelson,
+  sender,
+}: {
   rawMichelson: string;
   sender: MultisigAccount;
-}> = ({ rawMichelson, sender }) => {
+}) => {
   try {
     const operations = parseRawMichelson(rawMichelson, sender);
     return (
@@ -51,7 +54,7 @@ export const MultisigDecodedOperations: React.FC<{
   }
 };
 
-const UnrecognizedOperation: React.FC<{ rawMichelson: string }> = ({ rawMichelson }) => (
+const UnrecognizedOperation = ({ rawMichelson }: { rawMichelson: string }) => (
   <Accordion
     width="100%"
     marginBottom="8px"

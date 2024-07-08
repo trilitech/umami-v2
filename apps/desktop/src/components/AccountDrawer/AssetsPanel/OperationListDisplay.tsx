@@ -1,7 +1,6 @@
 import { Box, Divider } from "@chakra-ui/react";
 import { type RawPkh } from "@umami/tezos";
 import { type TzktCombinedOperation } from "@umami/tzkt";
-import type React from "react";
 
 import { ViewAllLink } from "./ViewAllLink";
 import { NoOperations } from "../../NoItems";
@@ -18,10 +17,13 @@ const MAX_OPERATIONS_SIZE = 20;
  * @param owner - Address of the account for which the drawer was opened.
  * @param operations - List of owner's operations.
  */
-export const OperationListDisplay: React.FC<{
+export const OperationListDisplay = ({
+  owner,
+  operations,
+}: {
   owner: RawPkh;
   operations: TzktCombinedOperation[];
-}> = ({ owner, operations }) => {
+}) => {
   if (operations.length === 0) {
     return <NoOperations size="md" />;
   }

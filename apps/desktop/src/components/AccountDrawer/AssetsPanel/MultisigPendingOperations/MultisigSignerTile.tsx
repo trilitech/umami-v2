@@ -9,7 +9,6 @@ import {
 import { type MultisigOperation, parseRawMichelson } from "@umami/multisig";
 import { useAsyncActionHandler, useGetImplicitAccountSafe, useSelectedNetwork } from "@umami/state";
 import { type ImplicitAddress } from "@umami/tezos";
-import type React from "react";
 import { useContext } from "react";
 
 import { MultisigActionButton, type MultisigSignerState } from "./MultisigActionButton";
@@ -19,12 +18,17 @@ import { AddressTileIcon } from "../../../AddressTile/AddressTileIcon";
 import { useAddressKind } from "../../../AddressTile/useAddressKind";
 import { SignPage } from "../../../SendFlow/Multisig/SignPage";
 
-export const MultisigSignerTile: React.FC<{
+export const MultisigSignerTile = ({
+  pendingApprovals,
+  sender,
+  operation,
+  signerAddress,
+}: {
   signerAddress: ImplicitAddress;
   pendingApprovals: number;
   operation: MultisigOperation;
   sender: MultisigAccount;
-}> = ({ pendingApprovals, sender, operation, signerAddress }) => {
+}) => {
   const addressKind = useAddressKind(signerAddress);
   const getImplicitAccount = useGetImplicitAccountSafe();
   const { isLoading, handleAsyncAction } = useAsyncActionHandler();

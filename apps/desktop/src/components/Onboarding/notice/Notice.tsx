@@ -1,14 +1,11 @@
 import { Box, Button, ListItem, OrderedList } from "@chakra-ui/react";
 import { generate24WordMnemonic } from "@umami/state";
-import type React from "react";
 
 import { NoticeIcon } from "../../../assets/icons";
 import { ModalContentWrapper } from "../ModalContentWrapper";
 import { type OnboardingStep } from "../OnboardingStep";
 
-export const Notice: React.FC<{
-  goToStep: (step: OnboardingStep) => void;
-}> = ({ goToStep }) => {
+export const Notice = ({ goToStep }: { goToStep: (step: OnboardingStep) => void }) => {
   const noticeItems = [
     {
       content: "Write down your seed phrase and store it in a safe place.",

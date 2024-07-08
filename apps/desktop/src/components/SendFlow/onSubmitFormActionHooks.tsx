@@ -7,7 +7,7 @@ import {
   useAsyncActionHandler,
   useSelectedNetwork,
 } from "@umami/state";
-import { useContext } from "react";
+import { type FunctionComponent, useContext } from "react";
 
 import {
   type BaseFormValues,
@@ -28,11 +28,11 @@ type UseOpenSignPageArgs<
   FormProps extends FormPageProps<FormValues>,
 > = {
   // Sign page component to render.
-  SignPage: React.FC<SignPageProps<ExtraData>>;
+  SignPage: FunctionComponent<SignPageProps<ExtraData>>;
   // Extra data to pass to the Sign page component (e.g. NFT or Token)
   signPageExtraData: ExtraData;
   // Form page component to render when the user goes back from the sign page.
-  FormPage: React.FC<FormProps>;
+  FormPage: FunctionComponent<FormProps>;
   // Form page props, used to render the form page again when the user goes back from the sign page
   defaultFormPageProps: FormProps;
   // Function to convert raw form values to the Operation type we can work with

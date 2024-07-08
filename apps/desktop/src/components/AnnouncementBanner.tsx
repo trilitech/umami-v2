@@ -15,7 +15,7 @@ const ANNOUNCEMENT_FILE_URL = "https://storage.googleapis.com/umami-artifacts/an
  * Once the user closes the notification, it won't show up again until
  * we post a new one
  */
-export const AnnouncementBanner: React.FC = () => {
+export const AnnouncementBanner = () => {
   const { html: announcementHTML, seen } = useAppSelector(s => s.announcement);
   const dispatch = useAppDispatch();
 

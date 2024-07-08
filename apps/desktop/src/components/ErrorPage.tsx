@@ -14,7 +14,7 @@ const refresh = () => {
   window.location.href = "/";
 };
 
-export const ErrorPage: React.FC = () => {
+export const ErrorPage = () => {
   const { modalElement: OffboardingModal, onOpen: onOpenOffboardingModal } = useOffboardingModal();
 
   return (

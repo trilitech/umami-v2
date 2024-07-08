@@ -7,14 +7,12 @@ import {
   PopoverTrigger,
   useDisclosure,
 } from "@chakra-ui/react";
-import { type ReactNode } from "react";
+import { type PropsWithChildren } from "react";
 
 import { ThreeDotsIcon } from "../assets/icons";
 import colors from "../style/colors";
 
-export const PopoverMenu: React.FC<{
-  children: ReactNode;
-}> = props => {
+export const PopoverMenu = (props: PropsWithChildren) => {
   const { onOpen, onClose, isOpen } = useDisclosure();
   return (
     <Popover isOpen={isOpen} onClose={onClose} onOpen={onOpen} placement="bottom-start">

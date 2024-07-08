@@ -6,8 +6,8 @@ import {
   isValidContractPkh,
   parseContractPkh,
   parsePkh,
+  tezToMutez,
 } from "@umami/tezos";
-import { tezToMutez } from "@umami/tezos";
 
 import { validateNonNegativeNumber } from "../../utils/helpers";
 

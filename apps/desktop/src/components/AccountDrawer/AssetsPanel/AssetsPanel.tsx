@@ -22,7 +22,6 @@ import {
   useGetPendingMultisigOperations,
   useSelectedNetwork,
 } from "@umami/state";
-import type React from "react";
 
 import { EarnTab } from "./EarnTab";
 import { MultisigPendingOperations } from "./MultisigPendingOperations";
@@ -45,11 +44,15 @@ import { SmallTab } from "../../SmallTab";
  * @param account - selected account in the drawer
  * @param delegation - delegation info if exists
  */
-export const AssetsPanel: React.FC<{
+export const AssetsPanel = ({
+  tokens,
+  nfts,
+  account,
+}: {
   tokens: Array<FA12TokenBalance | FA2TokenBalance>;
   nfts: Array<NFTBalance>;
   account: Account;
-}> = ({ tokens, nfts, account }) => {
+}) => {
   const getPendingOperations = useGetPendingMultisigOperations();
   const hasPendingMultisigOperations =
     account.type === "multisig" && getPendingOperations(account).length > 0;

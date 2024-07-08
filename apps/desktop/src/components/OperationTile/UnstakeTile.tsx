@@ -13,7 +13,7 @@ import { BakerIcon } from "../../assets/icons";
 import colors from "../../style/colors";
 import { AddressPill } from "../AddressPill/AddressPill";
 
-export const UnstakeTile: React.FC<{ operation: UnstakeOperation }> = memo(({ operation }) => {
+export const UnstakeTile = memo(({ operation }: { operation: UnstakeOperation }) => {
   const amount = prettyTezAmount(String(operation.amount));
 
   return (

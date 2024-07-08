@@ -7,9 +7,7 @@ import { OutgoingArrow } from "../../../../assets/icons";
 import colors from "../../../../style/colors";
 import { AddressPill } from "../../../AddressPill/AddressPill";
 
-export const MultisigDecodedOperation: React.FC<{
-  operation: Operation;
-}> = ({ operation }) => {
+export const MultisigDecodedOperation = ({ operation }: { operation: Operation }) => {
   switch (operation.type) {
     case "delegation":
       return (
@@ -51,9 +49,7 @@ export const MultisigDecodedOperation: React.FC<{
   }
 };
 
-const MultisigOperationAmount: React.FC<{
-  operation: Operation;
-}> = ({ operation }) => {
+const MultisigOperationAmount = ({ operation }: { operation: Operation }) => {
   const getToken = useGetToken();
 
   switch (operation.type) {

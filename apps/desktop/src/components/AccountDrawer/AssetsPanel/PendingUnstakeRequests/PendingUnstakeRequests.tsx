@@ -18,10 +18,10 @@ import colors from "../../../../style/colors";
  * @param account - account to display the pending unstake requests for
  */
 //TODO: test
-export const PendingUnstakeRequests: React.FC<{ account: ImplicitAccount } & FlexProps> = ({
+export const PendingUnstakeRequests = ({
   account,
   ...props
-}) => {
+}: { account: ImplicitAccount } & FlexProps) => {
   const pendingUnstakeRequests = useAccountPendingUnstakeRequests(account.address.pkh);
   const totalFinalizableAmount = useAccountTotalFinalizableUnstakeAmount(account.address.pkh);
 

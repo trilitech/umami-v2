@@ -8,9 +8,7 @@ import { AddressPill } from "../../components/AddressPill/AddressPill";
 import colors from "../../style/colors";
 import { type NFTWithOwner, getIPFSurl } from "../../utils/token/utils";
 
-export const NFTCard: React.FC<{
-  nft: NFTWithOwner;
-}> = ({ nft }) => {
+export const NFTCard = ({ nft }: { nft: NFTWithOwner }) => {
   const { selectedNFT, setSelectedNFT: select } = useContext(SelectedNFTContext);
   const url = getIPFSurl(thumbnailUri(nft));
   const fallbackUrl = getIPFSurl(nft.displayUri);

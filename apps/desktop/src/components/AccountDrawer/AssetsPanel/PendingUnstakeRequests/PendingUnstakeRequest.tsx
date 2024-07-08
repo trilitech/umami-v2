@@ -13,12 +13,14 @@ import { PrettyNumber } from "../../../PrettyNumber";
  * @param request - the unstake request to display (it should not be finalizable yet)
  */
 // TODO: test
-export const PendingUnstakeRequest: React.FC<
-  {
-    account: ImplicitAccount;
-    request: RawTzktUnstakeRequest;
-  } & FlexProps
-> = ({ request, account, ...props }) => {
+export const PendingUnstakeRequest = ({
+  request,
+  account,
+  ...props
+}: {
+  account: ImplicitAccount;
+  request: RawTzktUnstakeRequest;
+} & FlexProps) => {
   const firstFinalizableCycle = useGetFirstFinalizableCycle()(request.cycle);
   const { tzktExplorerUrl } = useSelectedNetwork();
 

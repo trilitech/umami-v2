@@ -1,15 +1,13 @@
 import { Box, Button, Checkbox, Link } from "@chakra-ui/react";
-import React from "react";
+import { useState } from "react";
 
 import { DocumentIcon } from "../../../assets/icons";
 import colors from "../../../style/colors";
 import { ModalContentWrapper } from "../ModalContentWrapper";
 import { type OnboardingStep } from "../OnboardingStep";
 
-export const Eula: React.FC<{
-  goToStep: (step: OnboardingStep) => void;
-}> = ({ goToStep }) => {
-  const [isChecked, setIsChecked] = React.useState(false);
+export const Eula = ({ goToStep }: { goToStep: (step: OnboardingStep) => void }) => {
+  const [isChecked, setIsChecked] = useState(false);
   return (
     <ModalContentWrapper icon={<DocumentIcon />} title="Accept to Continue">
       <>

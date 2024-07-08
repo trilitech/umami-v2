@@ -11,7 +11,6 @@ import {
 import { DynamicModalContext } from "@umami/components";
 import { assetsActions, useAppDispatch, useIsLoading, useLastTimeUpdated } from "@umami/state";
 import { differenceInMinutes, differenceInSeconds, formatDistance } from "date-fns";
-import type React from "react";
 import { useContext, useEffect, useState } from "react";
 
 import { BuyTezForm } from "./BuyTez/BuyTezForm";
@@ -91,7 +90,7 @@ const UpdateButton = () => {
   );
 };
 
-export const TopBar: React.FC<{ title: string; subtitle?: string }> = ({ title, subtitle }) => {
+export const TopBar = ({ title, subtitle }: { title: string; subtitle?: string }) => {
   const { openWith } = useContext(DynamicModalContext);
 
   return (

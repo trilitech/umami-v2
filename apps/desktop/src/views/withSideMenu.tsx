@@ -1,8 +1,9 @@
 import { Box, Flex } from "@chakra-ui/react";
+import { type ReactElement } from "react";
 
 import { SideNavbar } from "../components/SideNavbar";
 
-export const withSideMenu = (body: React.ReactElement) => (
+export const withSideMenu = (body: ReactElement) => (
   <Flex height="100vh">
     <SideNavbar />
     <Box

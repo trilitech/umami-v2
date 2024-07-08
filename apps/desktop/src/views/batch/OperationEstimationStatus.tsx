@@ -1,6 +1,7 @@
 import { Center, Flex, Text } from "@chakra-ui/react";
 import type { OperationContentsAndResult, OperationResultStatusEnum } from "@taquito/rpc";
 import { get } from "lodash";
+import { type ReactNode } from "react";
 
 import { CheckmarkIcon, ExclamationIcon, WarningIcon } from "../../assets/icons";
 import colors from "../../style/colors";
@@ -21,7 +22,7 @@ export const OperationEstimationStatus = ({
     return null;
   }
 
-  let icon: React.ReactNode;
+  let icon: ReactNode;
   let textColor: string;
   let description: string;
 

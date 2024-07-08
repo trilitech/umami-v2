@@ -103,8 +103,8 @@ const SIZES = {
  * @param account - The account to display the icon for.
  * @param size - The size of the icon.
  */
-export const AccountTileIcon: React.FC<{ account: Account; size: AddressTileIconSize }> = memo(
-  ({ account, size }) => {
+export const AccountTileIcon = memo(
+  ({ account, size }: { account: Account; size: AddressTileIconSize }) => {
     const sizeObj = SIZES[size];
     const defaults = sizeObj.defaults;
 

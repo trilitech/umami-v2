@@ -17,9 +17,7 @@ import colors from "../../style/colors";
 import { OwnedImplicitAccountsAutocomplete } from "../AddressAutocomplete";
 import { FormErrorMessage } from "../FormErrorMessage";
 
-export const BuyTezForm: React.FC<{
-  recipient?: RawPkh;
-}> = ({ recipient: defaultRecipient = "" }) => {
+export const BuyTezForm = ({ recipient: defaultRecipient = "" }: { recipient?: RawPkh }) => {
   const network = useSelectedNetwork();
   const isMainnet = network.name === "mainnet";
   const title = isMainnet ? "Buy Tez" : "Request Tez from faucet";
