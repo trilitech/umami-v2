@@ -16,7 +16,7 @@
   "scripts": {
     "build": "turbo build",
     "clean": "rimraf .turbo && turbo clean",
-    "test": "turbo test --concurrency 2",
+    "test": "turbo test",
     "lint": "turbo lint",
     "format": "turbo format",
     "ci": "turbo check-types lint:ci format:ci audit check-circular-deps",
