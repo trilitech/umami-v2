@@ -16,21 +16,10 @@ import {
 import {
   type FA12TokenBalance,
   type FA2TokenBalance,
+  getSmallestUnit,
   tokenDecimals,
   tokenSymbolSafe,
 } from "@umami/core";
-import repeat from "lodash/repeat";
-
-// TODO: move this to utils
-const getSmallestUnit = (decimals: number): string => {
-  if (decimals < 0) {
-    console.warn("Decimals cannot be negative");
-    decimals = 0;
-  }
-
-  const leadingZeroes = decimals === 0 ? "" : "0." + repeat("0", decimals - 1);
-  return `${leadingZeroes}1`;
-};
 
 type SendTokensFormProps = { token: FA12TokenBalance | FA2TokenBalance };
 
