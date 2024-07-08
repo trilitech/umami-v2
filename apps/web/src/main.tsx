@@ -1,3 +1,4 @@
+import { DynamicModalProvider } from "@umami/components";
 import { getErrorContext } from "@umami/core";
 import { accountsActions, errorsActions } from "@umami/state";
 import { encryptedMnemonic1 } from "@umami/test-utils";
@@ -8,7 +9,6 @@ import { BrowserRouter } from "react-router-dom";
 import { PersistGate } from "redux-persist/integration/react";
 
 import { App } from "./App";
-import { DynamicModalProvider } from "./providers/DynamicModalProvider";
 import { ReactQueryProvider } from "./providers/ReactQueryProvider";
 import { ReduxStore } from "./providers/ReduxStore";
 import { UmamiTheme } from "./providers/UmamiTheme";

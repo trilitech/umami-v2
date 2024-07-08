@@ -16,7 +16,7 @@ export const Main = () => {
       overflow="auto"
       height="full"
       padding={{
-        base: "12px",
+        base: "18px",
         lg: "40px",
       }}
       borderBottom={{

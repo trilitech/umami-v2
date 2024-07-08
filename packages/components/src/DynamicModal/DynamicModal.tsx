@@ -1,5 +1,12 @@
 import { Modal, ModalOverlay, type ThemingProps, useDisclosure } from "@chakra-ui/react";
-import { type ReactElement, createContext, useCallback, useState } from "react";
+import {
+  type PropsWithChildren,
+  type ReactElement,
+  createContext,
+  useCallback,
+  useContext,
+  useState,
+} from "react";
 import { RemoveScroll } from "react-remove-scroll";
 
 /**
@@ -18,6 +25,8 @@ export const DynamicModalContext = createContext<{
   onClose: /* istanbul ignore next */ () => {},
   isOpen: false,
 });
+
+export const useDynamicModalContext = () => useContext(DynamicModalContext);
 
 /**
  * It's easier to have just one global place where you can put a modal
@@ -78,4 +87,15 @@ export const useDynamicModal = () => {
       </Modal>
     ),
   };
+};
+
+export const DynamicModalProvider = ({ children }: PropsWithChildren) => {
+  const modal = useDynamicModal();
+
+  return (
+    <DynamicModalContext.Provider value={modal}>
+      {children}
+      {modal.content}
+    </DynamicModalContext.Provider>
+  );
 };

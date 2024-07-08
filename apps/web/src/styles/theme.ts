@@ -69,6 +69,7 @@ const theme = extendTheme({
       baseStyle: {
         element: {
           fontSize: "14px",
+          width: "fit-content",
         },
       },
       defaultProps: { variant: "filled" },
@@ -135,7 +136,31 @@ const theme = extendTheme({
         md: { height: "42px", width: "42px", padding: "0 12px" },
         lg: { height: "48px", minWidth: "48px", padding: "0 12px" },
       },
+      baseStyle: {
+        _disabled: {
+          bg: "gray.100",
+          color: "gray.300",
+          opacity: 1,
+        },
+        _hover: {
+          _disabled: {
+            bg: "gray.100",
+          },
+        },
+      },
       variants: {
+        inputElement: {
+          height: "28px",
+          padding: "5px 12px",
+          fontSize: "inherit",
+          background: "gray.900",
+          color: "white",
+          width: "auto",
+          minWidth: "fit-content",
+          _hover: {
+            bg: "gray.600",
+          },
+        },
         primary: {
           bg: light.blue,
           color: dark.grey.black,
@@ -144,10 +169,10 @@ const theme = extendTheme({
           },
         },
         secondary: {
-          bg: light.grey[900],
-          color: dark.grey.black,
+          bg: "gray.900",
+          color: "white",
           _hover: {
-            bg: light.grey[600],
+            bg: "gray.600",
           },
         },
         tertiary: {
@@ -194,6 +219,10 @@ const theme = extendTheme({
     },
     Modal: {
       baseStyle: {
+        closeButton: {
+          bg: "transparent",
+          color: "gray.400",
+        },
         dialog: {
           borderRadius: "30px",
           bg: "white",
@@ -233,6 +262,7 @@ const theme = extendTheme({
         },
       },
       ":root": {
+        "--chakra-colors-black": mode(dark.grey.white, light.grey.white)(props),
         "--chakra-colors-white": mode(light.grey.white, dark.grey.white)(props),
         "--chakra-colors-gray-50": mode(light.grey[50], dark.grey[50])(props),
         "--chakra-colors-gray-100": mode(light.grey[100], dark.grey[100])(props),

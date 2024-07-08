@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Flex,
   Icon,
   IconButton,
@@ -58,7 +57,7 @@ export const AccountBalance = () => {
           size="lg"
           variant="iconButtonOutline"
         />
-        <Button
+        <SendButton
           padding={{ base: "10px 24px", lg: "10px 40px" }}
           borderRadius="full"
           onClick={() =>
@@ -77,7 +76,7 @@ export const AccountBalance = () => {
           variant="primary"
         >
           Send {isOpen}
-        </Button>
+        </SendButton>
       </Flex>
     </Box>
   );

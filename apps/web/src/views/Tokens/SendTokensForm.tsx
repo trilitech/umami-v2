@@ -7,6 +7,7 @@ import {
   InputGroup,
   InputRightElement,
   ModalBody,
+  ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalHeader,
@@ -15,7 +16,6 @@ import {
 import {
   type FA12TokenBalance,
   type FA2TokenBalance,
-  formatTokenAmount,
   tokenDecimals,
   tokenSymbolSafe,
 } from "@umami/core";
@@ -36,12 +36,14 @@ type SendTokensFormProps = { token: FA12TokenBalance | FA2TokenBalance };
 
 export const SendTokensForm = ({ token }: SendTokensFormProps) => {
   const decimals = tokenDecimals(token);
-  const prettyBalance = formatTokenAmount(token.balance, decimals);
   const smallestUnit = getSmallestUnit(Number(decimals));
 
   return (
     <ModalContent>
-      <ModalHeader>Send</ModalHeader>
+      <ModalHeader>
+        Send
+        <ModalCloseButton />
+      </ModalHeader>
       <ModalBody>
         <Stack width="full">
           <FormControl isInvalid={false}>
@@ -59,10 +61,8 @@ export const SendTokensForm = ({ token }: SendTokensFormProps) => {
             <FormLabel>To</FormLabel>
             <InputGroup>
               <Input placeholder="Enter address or select from contacts" variant="filled" />
-              <InputRightElement paddingRight="12px" data-testid="token-symbol">
-                <Button width="auto" height="28px" padding="5px 12px" fontSize="inherit">
-                  Select
-                </Button>
+              <InputRightElement paddingRight="10px">
+                <Button variant="inputElement">Select</Button>
               </InputRightElement>
             </InputGroup>
 
