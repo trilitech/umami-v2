@@ -3,7 +3,7 @@ import { useDynamicModalContext } from "@umami/components";
 import { type FA12TokenBalance, type FA2TokenBalance, tokenPrettyAmount } from "@umami/core";
 import { formatPkh, parseContractPkh } from "@umami/tezos";
 
-import { SendTokensForm } from "./SendTokensForm";
+import { SendTokensFormPage } from "./SendTokensFormPage";
 import { TokenIcon } from "../../assets/icons";
 import { CopyButton } from "../../components/CopyButton/CopyButton";
 import { TokenIconWrapper } from "../../components/IconWrapper";
@@ -74,7 +74,7 @@ export const Token = ({ token }: TokenProps) => {
         justifySelf="end"
         gridArea="action"
         width="fit-content"
-        onClick={() => openWith(<SendTokensForm token={token} />)}
+        onClick={() => openWith(<SendTokensFormPage token={token} />)}
       />
     </Grid>
   );

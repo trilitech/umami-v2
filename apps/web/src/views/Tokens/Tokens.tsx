@@ -1,4 +1,4 @@
-import { Flex, Wrap } from "@chakra-ui/react";
+import { Flex, VStack } from "@chakra-ui/react";
 import { fullId } from "@umami/core";
 import { useAppSelector, useGetAccountAllTokens } from "@umami/state";
 
@@ -13,11 +13,11 @@ export const Tokens = () => {
   return (
     <Flex width="full">
       {availableTokens.length ? (
-        <Wrap flexDirection="column" width="full">
+        <VStack width="full">
           {availableTokens.map(token => (
             <Token key={fullId(token)} token={token} />
           ))}
-        </Wrap>
+        </VStack>
       ) : (
         <EmptyMessage subtitle="Tokens" title="Tokens" />
       )}

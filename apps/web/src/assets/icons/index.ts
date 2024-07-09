@@ -21,3 +21,4 @@ export { default as PlusIcon } from "./plus.svg";
 export { default as RedditSocialIcon } from "./reddit-social.svg";
 export { default as UnknownSocialIcon } from "./unknown-social.svg";
 export { default as XSocialIcon } from "./x-social.svg";
+export { default as VerifiedIcon } from "./verified.svg";

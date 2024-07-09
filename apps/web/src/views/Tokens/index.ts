@@ -1,3 +1,4 @@
 export { Tokens } from "./Tokens";
 export { Token } from "./Token";
-export { SendTokensForm } from "./SendTokensForm";
+export { SendTokensFormPage } from "./SendTokensFormPage";
+export { RecipientsPage } from "./RecipientsPage";

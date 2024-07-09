@@ -5,16 +5,46 @@ import {
   useBreakpointValue,
   useDisclosure,
 } from "@chakra-ui/react";
-import { MotionProps } from "framer-motion";
 import {
   type PropsWithChildren,
   type ReactElement,
   createContext,
-  useCallback,
   useContext,
   useState,
+  useEffect,
 } from "react";
 import { RemoveScroll } from "react-remove-scroll";
+
+const useModalHistory = <S,>(initialStep: S) => {
+  const [step, setStep] = useState<S>();
+  const [history, setHistory] = useState<S[]>([]);
+
+  useEffect(() => {
+    if (initialStep && !step) {
+      setStep(initialStep);
+      setHistory([initialStep]);
+    }
+  }, [initialStep]);
+
+  return {
+    reset: () => {
+      setStep(undefined);
+      setHistory([]);
+    },
+    goToStep: (step: S) => {
+      setStep(step);
+      setHistory([...history, step]);
+    },
+    currentStep: step,
+    goBack: () => {
+      history.pop();
+      const previous = history[history.length - 1];
+      setHistory(history);
+      setStep(previous);
+    },
+    history,
+  };
+};
 
 /**
  * You need to wrap the app into `DynamicModalProvider` and then
@@ -26,8 +56,10 @@ export const DynamicModalContext = createContext<{
     props?: ThemingProps & { onClose?: () => void | Promise<void> }
   ) => Promise<void>;
   onClose: () => void;
+  goBack: () => void;
   isOpen: boolean;
 }>({
+  goBack: /* istanbul ignore next */ () => {},
   openWith: /* istanbul ignore next */ _ => Promise.resolve(),
   onClose: /* istanbul ignore next */ () => {},
   isOpen: false,
@@ -50,7 +82,11 @@ export const useDynamicModalContext = () => useContext(DynamicModalContext);
 export const useDynamicModal = () => {
   const { isOpen, onClose: closeModal, onOpen } = useDisclosure();
   const [modalContent, setModalContent] = useState<ReactElement | null>(null);
-  const defaultModalProps = { size: "md", onClose: closeModal };
+  const { currentStep, goBack, goToStep, reset } = useModalHistory(modalContent);
+  const defaultModalProps = {
+    size: "md",
+    onClose: closeModal,
+  };
   const [modalProps, setModalProps] = useState<
     ThemingProps & { onClose: () => void | Promise<void> }
   >(defaultModalProps);
@@ -59,29 +95,29 @@ export const useDynamicModal = () => {
     lg: "scale",
   } as const);
 
-  const openWith = useCallback(
-    async (
-      content: ReactElement,
-      props: ThemingProps & { onClose?: () => void | Promise<void> } = {}
-    ) => {
-      const onClose = () => {
-        closeModal();
-        void props.onClose?.();
-        setModalProps(defaultModalProps);
-      };
+  const openWith = async (
+    content: ReactElement,
+    props: ThemingProps & { onClose?: () => void | Promise<void> } = {}
+  ) => {
+    const onClose = () => {
+      closeModal();
+      reset();
+      void props.onClose?.();
+      setModalProps(defaultModalProps);
+    };
 
-      setModalProps({ size: "md", ...props, onClose });
-      setModalContent(content);
-      onOpen();
-      return Promise.resolve();
-    },
-    [onOpen, closeModal]
-  );
+    setModalProps({ size: "md", ...props, onClose });
+    setModalContent(content);
+    goToStep(content);
+    onOpen();
+    return Promise.resolve();
+  };
 
   return {
     isOpen,
     onClose: modalProps.onClose,
     openWith,
+    goBack,
     content: (
       <Modal
         autoFocus={false}
@@ -93,7 +129,7 @@ export const useDynamicModal = () => {
         {...modalProps}
       >
         <ModalOverlay />
-        <RemoveScroll enabled={isOpen}>{modalContent}</RemoveScroll>
+        <RemoveScroll enabled={isOpen}>{currentStep}</RemoveScroll>
       </Modal>
     ),
   };
