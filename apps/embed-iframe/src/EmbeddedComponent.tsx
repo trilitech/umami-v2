@@ -3,13 +3,12 @@ import {
   type Network,
   type RequestMessage,
   type RequestType,
-  type TypeOfLogin,
   type UserData,
   toMatchingResponseType,
 } from "@trilitech-umami/umami-embed/types";
 import { useEffect, useState } from "react";
 
-import { type Permissions, getPermissionsForOrigin } from "./ClientsPermissions";
+import { getPermissionsForOrigin } from "./ClientsPermissions";
 import theme from "./imported/style/theme";
 import { useLoginModal } from "./loginModalHooks";
 import { useSignOperationModal } from "./signOperationModalHooks";
@@ -48,7 +47,7 @@ export function EmbeddedComponent() {
       console.log(`Received ${event.data} from ${event.origin}`);
       console.log(data);
 
-      if (validateClientPermissions(event.origin, data) === null) {
+      if (!validateClientPermissions(event.origin, data)) {
         return;
       }
 
@@ -73,10 +72,20 @@ export function EmbeddedComponent() {
     }
   };
 
-  const validateClientPermissions = (
-    origin: string,
-    request: RequestMessage
-  ): Permissions | null => {
+  const validateClientPermissions = (origin: string, request: RequestMessage): boolean => {
+    const network = request.type === "login_request" ? request.network : selectedNetwork;
+    if (network === null) {
+      sendResponse({
+        type: toMatchingResponseType(request.type),
+        error: "no_network_data",
+        errorMessage: "User's network data is not available",
+      });
+      return false;
+    }
+    if (network === "ghostnet") {
+      return true;
+    }
+
     const clientPermissions = getPermissionsForOrigin(origin);
     if (!clientPermissions) {
       console.error(`No permissions for origin (${origin})`);
@@ -85,7 +94,7 @@ export function EmbeddedComponent() {
         error: "no_permissions",
         errorMessage: "No permissions found for given origin",
       });
-      return null;
+      return false;
     }
     switch (request.type) {
       case "login_request":
@@ -96,9 +105,8 @@ export function EmbeddedComponent() {
             error: "no_permissions",
             errorMessage: "No permissions found for login actions",
           });
-          return null;
+          return false;
         }
-        // TODO: check if desired network is allowed
         break;
       case "operation_request":
         if (!clientPermissions.operations) {
@@ -107,12 +115,11 @@ export function EmbeddedComponent() {
             error: "no_permissions",
             errorMessage: "No permissions found for operation actions",
           });
-          return null;
+          return false;
         }
-        // TODO: check if desired operations are allowed
         break;
     }
-    return clientPermissions;
+    return true;
   };
 
   const validateUserSession = (requestType: RequestType): boolean => {
