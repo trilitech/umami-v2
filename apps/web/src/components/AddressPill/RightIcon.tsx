@@ -1,32 +1,24 @@
-import { type IconProps } from "@chakra-ui/react";
+import { Icon, type IconProps, ModalContent } from "@chakra-ui/react";
 import { type AddressKind, DynamicModalContext, KNOWN_ADDRESS_TYPES } from "@umami/components";
 import { useAddressExistsInContacts } from "@umami/state";
 import { memo, useContext } from "react";
 
-import { AddContactIcon, XMarkIcon } from "../../assets/icons";
-import { UpsertContactModal } from "../UpsertContactModal";
+import { AddContactIcon } from "../../assets/icons";
 
 export const RightIcon = memo(
-  ({
-    addressKind: { type, pkh },
-    onRemove,
-    ...rest
-  }: { addressKind: AddressKind; onRemove?: () => void } & IconProps) => {
+  ({ addressKind: { type, pkh }, ...rest }: { addressKind: AddressKind } & IconProps) => {
     const addressExistsInContacts = useAddressExistsInContacts();
     const { openWith } = useContext(DynamicModalContext);
-
-    if (onRemove) {
-      return <XMarkIcon cursor="pointer" onClick={onRemove} {...rest} />;
-    }
 
     if (KNOWN_ADDRESS_TYPES.includes(type) || addressExistsInContacts(pkh)) {
       return null;
     }
 
     return (
-      <AddContactIcon
+      <Icon
+        as={AddContactIcon}
         data-testid="add-contact-icon"
-        onClick={() => openWith(<UpsertContactModal contact={{ name: "", pkh }} />)}
+        onClick={() => openWith(<ModalContent>NOT IMPLEMENTED</ModalContent>)} // TODO: add
         {...rest}
       />
     );

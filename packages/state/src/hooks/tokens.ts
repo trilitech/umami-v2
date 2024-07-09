@@ -15,6 +15,7 @@ export const useGetToken = (): TokenLookup => {
 
 export const useGetTokenType = (network: Network) => {
   const tokens = useAppSelector(s => s.tokens[network.name]);
+
   return (contract: RawPkh): Token["type"] | undefined => {
     if (!(tokens && contract in tokens)) {
       return undefined;

@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Flex,
+  Icon,
   IconButton,
   ModalBody,
   ModalCloseButton,
@@ -42,7 +43,7 @@ export const AccountBalance = () => {
       >
         <IconButton
           aria-label="Deposit"
-          icon={<PlusIcon width="24px" height="24px" />}
+          icon={<Icon as={PlusIcon} width="24px" height="24px" />}
           isRound
           size="lg"
           variant="iconButtonSolid"

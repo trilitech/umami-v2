@@ -10,7 +10,6 @@ import { MAINNET, mockImplicitAddress, parseContractPkh, parseImplicitPkh } from
 
 import { AddressPill } from "./AddressPill";
 import { render, screen } from "../../mocks/testUtils";
-const { upsert } = contactsActions;
 
 const contact = mockImplicitContact(1);
 
@@ -22,7 +21,7 @@ beforeEach(() => {
 
 describe("<AddressPill />", () => {
   it("displays left icon", () => {
-    store.dispatch(upsert(contact));
+    store.dispatch(contactsActions.upsert(contact));
     render(<AddressPill address={parseImplicitPkh(contact.pkh)} />, { store });
     expect(screen.getByTestId("address-pill-left-icon")).toBeInTheDocument();
   });
@@ -33,7 +32,7 @@ describe("<AddressPill />", () => {
   });
 
   it("hides icon", () => {
-    store.dispatch(upsert(contact));
+    store.dispatch(contactsActions.upsert(contact));
     render(<AddressPill address={parseImplicitPkh(contact.pkh)} mode="no_icons" />, {
       store,
     });

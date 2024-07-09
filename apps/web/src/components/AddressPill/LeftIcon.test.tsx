@@ -1,7 +1,7 @@
 import { mockContractAddress } from "@umami/tezos";
 
 import { LeftIcon } from "./LeftIcon";
-import { render, screen } from "../../mocks/testUtils";
+import { render, screen } from "../../testUtils";
 
 describe("<LeftIcon />", () => {
   it.each(["multisig", "fa1.2", "fa2", "baker", "contact"] as const)(
@@ -17,7 +17,7 @@ describe("<LeftIcon />", () => {
         />
       );
 
-      expect(screen.getByTestId(`${type}-icon`)).toBeInTheDocument();
+      expect(screen.getByTestId(`${type}-icon`)).toBeVisible();
     }
   );
 
