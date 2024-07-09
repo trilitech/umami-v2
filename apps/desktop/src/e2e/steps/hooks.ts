@@ -82,7 +82,6 @@ Before(async function (this: CustomWorld) {
             localStorage: [
               { name: "persist:root", value: JSON.stringify(state) },
               { name: "persist:accounts", value: JSON.stringify(accounts) },
-              { name: "chakra-modal-motion-preset", value: "none" },
             ],
           },
         ],

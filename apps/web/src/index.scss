@@ -3,19 +3,17 @@ body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  padding: 20px 46px 0 !important;
   position: relative;
 
   & .layout {
+    padding: 20px 46px 0;
     height: calc(100vh - 20px);
   }
 
   @media (max-width: 768px) {
-    padding: 0 !important;
-
     & .layout {
       height: 100dvh;
-      padding-top: 54px;
+      padding: 54px 0 0;
 
       & .header {
         top: 0;

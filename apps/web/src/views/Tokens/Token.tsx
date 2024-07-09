@@ -8,7 +8,7 @@ import { TokenIcon } from "../../assets/icons";
 import { CopyButton } from "../../components/CopyButton/CopyButton";
 import { TokenIconWrapper } from "../../components/IconWrapper";
 import { SendButton } from "../../components/SendButton";
-import { TokenNameWithIcon } from "../../components/TokenNameWithIcon/TokenNameWithIcon";
+import { TokenNameWithIcon } from "../../components/TokenNameWithIcon";
 import { useColor } from "../../styles/useColor";
 
 type TokenProps = {

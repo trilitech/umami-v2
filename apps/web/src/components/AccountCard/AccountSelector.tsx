@@ -24,7 +24,7 @@ export const AccountSelector = () => {
       </SocialIconWrapper>
       <Flex flexDirection="column" gap="4px" margin="0 25px 0 10px">
         <Text size="md" variant="bold">
-          helloumami@email.com
+          {accounts[0].label}
         </Text>
         <Flex alignItems="center" gap="4px">
           <Text color={color("700")} size="sm">

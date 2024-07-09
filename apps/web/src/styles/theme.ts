@@ -224,12 +224,20 @@ const theme = extendTheme({
           color: "gray.400",
         },
         dialog: {
-          borderRadius: "30px",
+          borderTopRightRadius: "30px",
+          borderTopLeftRadius: "30px",
+          borderBottomRightRadius: { lg: "30px", base: 0 },
+          borderBottomLeftRadius: { lg: "30px", base: 0 },
           bg: "white",
-          padding: {
-            lg: "36px",
+          padding: "36px",
+          gap: "30px",
+          marginBottom: {
+            lg: "auto",
           },
-          gap: { lg: "30px" },
+          minWidth: {
+            base: "100%",
+            lg: "auto",
+          },
         },
         header: {
           textAlign: "center",

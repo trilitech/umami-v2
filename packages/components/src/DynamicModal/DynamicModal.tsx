@@ -1,4 +1,11 @@
-import { Modal, ModalOverlay, type ThemingProps, useDisclosure } from "@chakra-ui/react";
+import {
+  Modal,
+  ModalOverlay,
+  type ThemingProps,
+  useBreakpointValue,
+  useDisclosure,
+} from "@chakra-ui/react";
+import { MotionProps } from "framer-motion";
 import {
   type PropsWithChildren,
   type ReactElement,
@@ -10,8 +17,8 @@ import {
 import { RemoveScroll } from "react-remove-scroll";
 
 /**
- * You need to wrap the app into `DynamicModalContext.Provider` and then
- * use it in components as `useContext(DynamicModalContext)` to interact with the modal.
+ * You need to wrap the app into `DynamicModalProvider` and then
+ * use it in components as `useDynamicModalContext` to interact with the modal.
  */
 export const DynamicModalContext = createContext<{
   openWith: (
@@ -47,6 +54,10 @@ export const useDynamicModal = () => {
   const [modalProps, setModalProps] = useState<
     ThemingProps & { onClose: () => void | Promise<void> }
   >(defaultModalProps);
+  const motionPreset = useBreakpointValue({
+    base: "slideInBottom",
+    lg: "scale",
+  } as const);
 
   const openWith = useCallback(
     async (
@@ -78,8 +89,7 @@ export const useDynamicModal = () => {
         closeOnOverlayClick={false}
         isCentered
         isOpen={isOpen}
-        // this is used in e2e tests to decrease flakiness due to animations
-        motionPreset={(localStorage.getItem("chakra-modal-motion-preset") as any) || undefined}
+        motionPreset={motionPreset}
         {...modalProps}
       >
         <ModalOverlay />
