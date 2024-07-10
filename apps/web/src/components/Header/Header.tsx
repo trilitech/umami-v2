@@ -1,4 +1,4 @@
-import { Card, useBreakpointValue, useColorMode } from "@chakra-ui/react";
+import { Card, Icon, useBreakpointValue, useColorMode } from "@chakra-ui/react";
 import { mode } from "@chakra-ui/theme-tools";
 
 import { Actions } from "./Actions";
@@ -28,7 +28,7 @@ export const Header = () => {
         lg: "2px 4px 12px 0px rgba(45, 55, 72, 0.05)",
       }}
     >
-      {mode(<LogoLightIcon {...size} />, <LogoDarkIcon {...size} />)(colorMode)}
+      {mode(<Icon as={LogoLightIcon} {...size} />, <Icon as={LogoDarkIcon} {...size} />)(colorMode)}
       <Actions />
     </Card>
   );

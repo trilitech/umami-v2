@@ -9,122 +9,118 @@ import {
   PopoverContent,
   PopoverTrigger,
   Text,
-  useDisclosure,
-  useOutsideClick,
 } from "@chakra-ui/react";
-import { type Address, parsePkh } from "@umami/tezos";
+import { type AddressPillMode, AddressPillText, useAddressPill } from "@umami/components";
+import { type Address } from "@umami/tezos";
 import { type TzktAlias } from "@umami/tzkt";
-import { useRef, useState } from "react";
+import { memo } from "react";
 
-import { LeftIcon, RightIcon } from "./AddressPillIcon";
-import { type AddressPillMode } from "./AddressPillMode";
-import { AddressPillText } from "./AddressPillText";
-import { useAddressKind } from "./useAddressKind";
+import { LeftIcon } from "./LeftIcon";
+import { RightIcon } from "./RightIcon";
 import colors from "../../style/colors";
 
-export const AddressPill = ({
-  address: rawAddress,
-  mode = { type: "default" },
-  ...rest
-}: { address: Address | TzktAlias; mode?: AddressPillMode } & BoxProps) => {
-  const isAlias = !("pkh" in rawAddress && "type" in rawAddress);
-  const address = isAlias ? parsePkh(rawAddress.address) : rawAddress;
-  const addressKind = useAddressKind(address);
-  const showIcons = mode.type !== "no_icons";
+export const AddressPill = memo(
+  ({
+    address: rawAddress,
+    mode = "default",
+    onRemove,
+    ...props
+  }: {
+    address: Address | TzktAlias;
+    mode?: AddressPillMode;
+    onRemove?: () => void;
+  } & BoxProps) => {
+    const {
+      isPopoverOpen,
+      showIcons,
+      addressKind,
+      addressAlias,
+      onClick,
+      elementRef,
+      isMouseHover,
+      setIsMouseHover,
+    } = useAddressPill({ mode, rawAddress });
 
-  const { onOpen, onClose, isOpen } = useDisclosure();
-  const [mouseHover, setMouseHover] = useState(false);
-  const onClickAddress = async () => {
-    await navigator.clipboard.writeText(address.pkh);
-    onOpen();
-    setTimeout(onClose, 1000);
-  };
+    let bgColor, iconColor, textColor;
 
-  // Needed to handle styling after contact modal opens
-  const ref = useRef<HTMLDivElement>(null);
-  useOutsideClick({
-    ref,
-    handler: () => setMouseHover(false),
-  });
+    if (isPopoverOpen) {
+      bgColor = colors.green;
+      iconColor = colors.gray[300];
+      textColor = "white";
+    } else if (isMouseHover) {
+      bgColor = colors.gray[450];
+      iconColor = colors.gray[400];
+      textColor = colors.gray[200];
+    } else {
+      bgColor = colors.gray[500];
+      iconColor = colors.gray[450];
+      textColor = colors.gray[300];
+    }
 
-  let bgColor, iconColor, textColor;
-  if (isOpen) {
-    bgColor = colors.green;
-    iconColor = colors.gray[300];
-    textColor = "white";
-  } else if (mouseHover) {
-    bgColor = colors.gray[450];
-    iconColor = colors.gray[400];
-    textColor = colors.gray[200];
-  } else {
-    bgColor = colors.gray[500];
-    iconColor = colors.gray[450];
-    textColor = colors.gray[300];
+    return (
+      <Box maxWidth="max-content" data-testid="address-pill" {...props}>
+        <Flex
+          ref={elementRef}
+          alignItems="center"
+          background={bgColor}
+          borderRadius="full"
+          onMouseEnter={() => setIsMouseHover(true)}
+          onMouseLeave={() => setIsMouseHover(false)}
+          paddingX="4px"
+        >
+          {showIcons && (
+            <LeftIcon
+              marginLeft="4px"
+              stroke={iconColor}
+              addressKind={addressKind}
+              data-testid="address-pill-left-icon"
+            />
+          )}
+
+          <Popover autoFocus={false} isOpen={isPopoverOpen} onOpen={onClick}>
+            <PopoverTrigger>
+              <Button
+                height="24px"
+                _focus={{ boxShadow: "none" }}
+                onClick={e => e.stopPropagation()}
+                variant="unstyled"
+              >
+                <AddressPillText
+                  color={textColor}
+                  cursor="pointer"
+                  addressKind={addressKind}
+                  alias={addressAlias}
+                  data-testid="address-pill-text"
+                  marginX="4px"
+                  showPkh={!showIcons}
+                  size="sm"
+                />
+                <Box display="none" data-testid="address-pill-raw-address">
+                  {addressKind.pkh}
+                </Box>
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent maxWidth="max-content" background="white">
+              <PopoverArrow background="white !important" />
+              <PopoverBody>
+                <Text color="black" size="sm">
+                  Copied!
+                </Text>
+              </PopoverBody>
+            </PopoverContent>
+          </Popover>
+          {showIcons && (
+            <RightIcon
+              marginRight="4px"
+              stroke={colors.gray[300]}
+              cursor="pointer"
+              addressKind={addressKind}
+              data-testid="address-pill-right-icon"
+              onRemove={onRemove}
+            />
+          )}
+        </Flex>
+      </Box>
+    );
   }
-
-  return (
-    <Box maxWidth="max-content" data-testid="address-pill" {...rest}>
-      <Flex
-        ref={ref}
-        alignItems="center"
-        background={bgColor}
-        borderRadius="full"
-        onMouseEnter={() => setMouseHover(true)}
-        onMouseLeave={() => setMouseHover(false)}
-        paddingX="4px"
-      >
-        {showIcons && (
-          <LeftIcon
-            marginLeft="4px"
-            stroke={iconColor}
-            addressKind={addressKind}
-            data-testid="address-pill-left-icon"
-          />
-        )}
-
-        <Popover autoFocus={false} isOpen={isOpen} onOpen={onClickAddress}>
-          <PopoverTrigger>
-            <Button
-              height="24px"
-              _focus={{ boxShadow: "none" }}
-              onClick={e => e.stopPropagation()}
-              variant="unstyled"
-            >
-              <AddressPillText
-                color={textColor}
-                cursor="pointer"
-                addressKind={addressKind}
-                alias={isAlias && rawAddress.alias ? rawAddress.alias : undefined}
-                data-testid="address-pill-text"
-                marginX="4px"
-                showPkh={!showIcons}
-                size="sm"
-              />
-              <Box display="none" data-testid="address-pill-raw-address">
-                {address.pkh}
-              </Box>
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent maxWidth="max-content" background="white">
-            <PopoverArrow background="white !important" />
-            <PopoverBody>
-              <Text color="black" size="sm">
-                Copied!
-              </Text>
-            </PopoverBody>
-          </PopoverContent>
-        </Popover>
-        {showIcons && (
-          <RightIcon
-            marginRight="4px"
-            stroke={colors.gray[300]}
-            cursor="pointer"
-            addressKind={addressKind}
-            addressPillMode={mode}
-            data-testid="address-pill-right-icon"
-          />
-        )}
-      </Flex>
-    </Box>
-  );
-};
+);

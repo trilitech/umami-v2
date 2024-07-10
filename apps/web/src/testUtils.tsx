@@ -1,6 +1,6 @@
 import * as testLib from "@testing-library/react";
-import { act, PropsWithChildren, ReactNode } from "react";
-import { makeStore, UmamiStore } from "@umami/state";
+import { type UmamiStore, makeStore } from "@umami/state";
+import { type PropsWithChildren, type ReactNode, act } from "react";
 import { Provider } from "react-redux";
 
 const makeWrapper =
@@ -45,3 +45,4 @@ const customRender = <
 
 export { act, customRenderHook as renderHook, customRender as render };
 export const { fireEvent, screen, waitFor, within } = testLib;
+export { userEvent } from "@testing-library/user-event";

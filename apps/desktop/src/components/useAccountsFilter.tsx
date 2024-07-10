@@ -66,15 +66,12 @@ export const useAccountsFilter = () => {
               key={account.address.pkh}
               address={account.address}
               data-testid="account-pill"
-              mode={{
-                type: "removable",
-                onRemove: () => {
-                  // it's about to get empty
-                  setIsEmpty(selectedAccounts.length === 1);
-                  setSelectedAccounts(accounts =>
-                    accounts.filter(acc => acc.address.pkh !== account.address.pkh)
-                  );
-                },
+              onRemove={() => {
+                // it's about to get empty
+                setIsEmpty(selectedAccounts.length === 1);
+                setSelectedAccounts(accounts =>
+                  accounts.filter(acc => acc.address.pkh !== account.address.pkh)
+                );
               }}
             />
           ))}

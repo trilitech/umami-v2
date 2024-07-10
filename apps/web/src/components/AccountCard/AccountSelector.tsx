@@ -17,8 +17,8 @@ export const AccountSelector = () => {
       borderRadius="100px"
       _hover={{ background: color("100") }}
     >
-      <SocialIconWrapper>
-        <GoogleSocialIcon color={color("white")} />
+      <SocialIconWrapper color={color("white")}>
+        <GoogleSocialIcon />
       </SocialIconWrapper>
       <Flex flexDirection="column" gap="4px" margin="0 25px 0 10px">
         <Text size="md" variant="bold">
@@ -30,8 +30,9 @@ export const AccountSelector = () => {
           </Text>
           <IconButton
             width="fit-content"
+            color={color("400")}
             aria-label="Copy Address"
-            icon={<FileCopyIcon color={color("400")} />}
+            icon={<FileCopyIcon />}
             variant="empty"
           />
         </Flex>
@@ -39,8 +40,9 @@ export const AccountSelector = () => {
       <IconButton
         width="fit-content"
         marginLeft="auto"
+        color={color("500")}
         aria-label="Account Selector"
-        icon={<ChevronDownIcon color={color("500")} />}
+        icon={<ChevronDownIcon />}
         variant="empty"
       />
     </Flex>

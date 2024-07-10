@@ -10,7 +10,6 @@ import { MAINNET, mockImplicitAddress, parseContractPkh, parseImplicitPkh } from
 
 import { AddressPill } from "./AddressPill";
 import { render, screen } from "../../mocks/testUtils";
-const { upsert } = contactsActions;
 
 const contact = mockImplicitContact(1);
 
@@ -22,7 +21,7 @@ beforeEach(() => {
 
 describe("<AddressPill />", () => {
   it("displays left icon", () => {
-    store.dispatch(upsert(contact));
+    store.dispatch(contactsActions.upsert(contact));
     render(<AddressPill address={parseImplicitPkh(contact.pkh)} />, { store });
     expect(screen.getByTestId("address-pill-left-icon")).toBeInTheDocument();
   });
@@ -33,21 +32,15 @@ describe("<AddressPill />", () => {
   });
 
   it("hides icon", () => {
-    store.dispatch(upsert(contact));
-    render(<AddressPill address={parseImplicitPkh(contact.pkh)} mode={{ type: "no_icons" }} />, {
+    store.dispatch(contactsActions.upsert(contact));
+    render(<AddressPill address={parseImplicitPkh(contact.pkh)} mode="no_icons" />, {
       store,
     });
     expect(screen.queryByTestId("address-pill-left-icon")).not.toBeInTheDocument();
   });
 
   it("is removable", () => {
-    render(
-      <AddressPill
-        address={parseImplicitPkh(contact.pkh)}
-        mode={{ type: "removable", onRemove: () => {} }}
-      />,
-      { store }
-    );
+    render(<AddressPill address={parseImplicitPkh(contact.pkh)} onRemove={jest.fn()} />, { store });
     expect(screen.getByTestId("xmark-icon-path")).toBeInTheDocument();
   });
 
@@ -57,10 +50,7 @@ describe("<AddressPill />", () => {
     store.dispatch(networksActions.setCurrent(MAINNET));
     store.dispatch(tokensActions.addTokens({ network: MAINNET, tokens: [fa1.token] }));
     render(
-      <AddressPill
-        address={parseContractPkh(fa1.token.contract.address)}
-        mode={{ type: "removable", onRemove: () => {} }}
-      />,
+      <AddressPill address={parseContractPkh(fa1.token.contract.address)} onRemove={jest.fn()} />,
       { store }
     );
     expect(screen.getByTestId("address-pill-left-icon")).toBeInTheDocument();

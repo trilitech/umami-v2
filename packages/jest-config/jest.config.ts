@@ -25,7 +25,13 @@ const config: Config = {
   coverageDirectory: "coverage",
 
   // An array of regexp pattern strings used to skip coverage collection
-  coveragePathIgnorePatterns: ["/node_modules/", "/dist/", "testUtils.ts", "index.ts"],
+  coveragePathIgnorePatterns: [
+    "/node_modules/",
+    "/dist/",
+    "testUtils.ts",
+    "index.ts",
+    "/src/assets/icons/",
+  ],
 
   // Indicates which provider should be used to instrument code for coverage
   // coverageProvider: "babel",
@@ -93,7 +99,7 @@ const config: Config = {
 
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
   moduleNameMapper: {
-    "\\.(css|less|png|svg\\?react)$": "identity-obj-proxy"
+    "\\.(css|less|png)$": "identity-obj-proxy",
   },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
@@ -172,6 +178,7 @@ const config: Config = {
   // A map from regular expressions to paths to transformers
   transform: {
     "\\.[jt]sx?$": "babel-jest",
+    "\\.svg$": "jest-transformer-svg",
     // "^(?!.*\\.(js|jsx|mjs|cjs|ts|tsx|css|json)$)": "<rootDir>/config/jest/fileTransform.cjs",
   },
 

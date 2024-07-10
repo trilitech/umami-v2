@@ -1,9 +1,9 @@
 import { Image } from "@chakra-ui/react";
+import { type AddressKind } from "@umami/components";
 import { useGetOwnedAccountSafe } from "@umami/state";
 import { memo } from "react";
 
 import { type AddressTileIconSize } from "./AddressTileIconSize";
-import { type AddressKind } from "./types";
 import { ContactIcon, UnknownContactIcon } from "../../assets/icons";
 import colors from "../../style/colors";
 import { AccountTileIcon } from "../AccountTile/AccountTileIcon";
@@ -70,6 +70,8 @@ export const AddressTileIcon = memo(
       case "social":
       case "ledger":
       case "multisig":
+      case "fa1.2":
+      case "fa2":
         return null; // impossible state
     }
   }
