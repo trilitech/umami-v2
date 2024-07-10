@@ -6,7 +6,7 @@ import {
   originationFixture,
   tokenTransferFixture,
   transactionFixture,
-} from "../../components/OperationTile/testUtils";
+} from "@umami/core";
 
 test("filterDuplicatedTokenTransfers", () => {
   const operations: TzktCombinedOperation[] = [

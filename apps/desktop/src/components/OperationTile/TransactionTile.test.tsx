@@ -4,7 +4,7 @@ import { DefaultNetworks, TEZ, formatPkh, mockImplicitAddress } from "@umami/tez
 import { type TransactionOperation } from "@umami/tzkt";
 
 import { OperationTileContext } from "./OperationTileContext";
-import { transactionFixture } from "./testUtils";
+import { transactionFixture } from "@umami/core";
 import { TransactionTile } from "./TransactionTile";
 import { render, screen } from "../../mocks/testUtils";
 

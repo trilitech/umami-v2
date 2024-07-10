@@ -5,7 +5,7 @@ import { DefaultNetworks, TEZ, formatPkh, mockImplicitAddress } from "@umami/tez
 import { type TokenTransferOperation, type TransactionOperation } from "@umami/tzkt";
 
 import { OperationTileContext } from "./OperationTileContext";
-import { tokenTransferFixture, transactionFixture } from "./testUtils";
+import { tokenTransferFixture, transactionFixture } from "@umami/core";
 import { TokenTransferTile } from "./TokenTransferTile";
 import * as operationDestinationModule from "./useGetOperationDestination";
 import { render, screen } from "../../mocks/testUtils";

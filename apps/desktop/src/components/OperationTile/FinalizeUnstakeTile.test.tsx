@@ -5,7 +5,7 @@ import { type FinalizeUnstakeOperation } from "@umami/tzkt";
 
 import { FinalizeUnstakeTile } from "./FinalizeUnstakeTile";
 import { OperationTileContext } from "./OperationTileContext";
-import { finalizeUnstakeFixture } from "./testUtils";
+import { finalizeUnstakeFixture } from "@umami/core";
 import { render, screen } from "../../mocks/testUtils";
 
 const fixture = (context: any, operation: FinalizeUnstakeOperation) => (

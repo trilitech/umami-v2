@@ -5,7 +5,7 @@ import { type StakeOperation } from "@umami/tzkt";
 
 import { OperationTileContext } from "./OperationTileContext";
 import { StakeTile } from "./StakeTile";
-import { stakeFixture } from "./testUtils";
+import { stakeFixture } from "@umami/core";
 import { render, screen } from "../../mocks/testUtils";
 
 let store: UmamiStore;

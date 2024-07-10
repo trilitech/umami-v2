@@ -4,7 +4,7 @@ import { DefaultNetworks, TEZ, formatPkh } from "@umami/tezos";
 import { type UnstakeOperation } from "@umami/tzkt";
 
 import { OperationTileContext } from "./OperationTileContext";
-import { unstakeFixture } from "./testUtils";
+import { unstakeFixture } from "@umami/core";
 import { UnstakeTile } from "./UnstakeTile";
 import { render, screen } from "../../mocks/testUtils";
 

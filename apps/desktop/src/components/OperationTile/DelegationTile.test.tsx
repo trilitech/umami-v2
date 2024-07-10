@@ -5,7 +5,7 @@ import { type DelegationOperation } from "@umami/tzkt";
 
 import { DelegationTile } from "./DelegationTile";
 import { OperationTileContext } from "./OperationTileContext";
-import { delegationFixture } from "./testUtils";
+import { delegationFixture } from "@umami/core";
 import { render, screen } from "../../mocks/testUtils";
 
 const fixture = (context: any, operation: DelegationOperation) => (

@@ -7,7 +7,7 @@ import {
   originationFixture,
   tokenTransferFixture,
   transactionFixture,
-} from "./testUtils";
+} from "@umami/core";
 import { render, screen } from "../../mocks/testUtils";
 
 let store: UmamiStore;

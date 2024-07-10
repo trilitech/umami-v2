@@ -5,7 +5,7 @@ import { type OriginationOperation } from "@umami/tzkt";
 
 import { OperationTileContext } from "./OperationTileContext";
 import { OriginationTile } from "./OriginationTile";
-import { originationFixture } from "./testUtils";
+import { originationFixture } from "@umami/core";
 import { render, screen } from "../../mocks/testUtils";
 
 const fixture = (context: any, operation: OriginationOperation) => (

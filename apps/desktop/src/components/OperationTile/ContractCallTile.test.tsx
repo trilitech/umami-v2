@@ -5,7 +5,7 @@ import { type TransactionOperation } from "@umami/tzkt";
 
 import { ContractCallTile } from "./ContractCallTile";
 import { OperationTileContext } from "./OperationTileContext";
-import { contractCallFixture } from "./testUtils";
+import { contractCallFixture } from "@umami/core";
 import { render, screen } from "../../mocks/testUtils";
 
 const fixture = (context: any, operation: TransactionOperation) => (

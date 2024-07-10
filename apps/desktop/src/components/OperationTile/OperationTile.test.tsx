@@ -12,7 +12,7 @@ import {
   tokenTransferFixture,
   transactionFixture,
   unstakeFixture,
-} from "./testUtils";
+} from "@umami/core";
 import { render, screen } from "../../mocks/testUtils";
 
 const fixture = (operation: TzktCombinedOperation) => (
