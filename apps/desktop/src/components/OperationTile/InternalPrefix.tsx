@@ -1,7 +1,7 @@
 import { Heading } from "@chakra-ui/react";
+import { useGetOperationDestination } from "@umami/state";
 import { type TzktCombinedOperation } from "@umami/tzkt";
 
-import { useGetOperationDestination } from "./useGetOperationDestination";
 import colors from "../../style/colors";
 
 /**

@@ -1,10 +1,10 @@
 import { DynamicModalContext } from "@umami/components";
+import { sortedByLastUpdate } from "@umami/core";
 import { useGetAccountAllTokens, useGetAccountNFTs, useGetOwnedAccount } from "@umami/state";
 import { type RawPkh } from "@umami/tezos";
 import { useContext } from "react";
 
 import { AccountDrawerDisplay } from "./AccountDrawerDisplay";
-import { sortedByLastUpdate } from "../../utils/token/utils";
 import { ReceiveModal } from "../ReceiveModal";
 import { FormPage as SendTezForm } from "../SendFlow/Tez/FormPage";
 

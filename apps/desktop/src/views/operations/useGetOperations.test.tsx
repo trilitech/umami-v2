@@ -1,12 +1,12 @@
-import { type TzktCombinedOperation } from "@umami/tzkt";
-
-import { filterDuplicatedTokenTransfers } from "./useGetOperations";
 import {
   delegationFixture,
   originationFixture,
   tokenTransferFixture,
   transactionFixture,
 } from "@umami/core";
+import { type TzktCombinedOperation } from "@umami/tzkt";
+
+import { filterDuplicatedTokenTransfers } from "./useGetOperations";
 
 test("filterDuplicatedTokenTransfers", () => {
   const operations: TzktCombinedOperation[] = [

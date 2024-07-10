@@ -1,6 +1,6 @@
 import { fa1Token } from "@umami/test-utils";
 
-import { fromRawTokenBalance } from "./TokenBalance";
+import { fromRawTokenBalance, sortedByLastUpdate } from "./TokenBalance";
 
 describe("TokenBalance", () => {
   describe("fromRawTokenBalance", () => {
@@ -20,6 +20,46 @@ describe("TokenBalance", () => {
 
     it("returns null if token is invalid", () => {
       expect(fromRawTokenBalance({ token: {}, balance: "1" } as any)).toEqual(null);
+    });
+  });
+
+  describe("sortedByLastUpdate", () => {
+    it("sorts by lastLevel desc, id asc, owner asc", () => {
+      const nfts = [
+        { id: 5, lastLevel: 3, owner: "tz1", token: { tokenId: 1 } },
+        { id: 38, lastLevel: 1, owner: "tz3", token: { tokenId: 1 } },
+        { id: 22, lastLevel: 2, owner: "tz2", token: { tokenId: 1 } },
+        { id: 23, lastLevel: 2, owner: "tz2", token: { tokenId: 1 } },
+        { id: 23, lastLevel: 2, owner: "tz1", token: { tokenId: 1 } },
+        { id: 14, lastLevel: 4, owner: "tz1", token: { tokenId: 1 } },
+      ] as any;
+
+      expect(sortedByLastUpdate(nfts)).toEqual([
+        { id: 14, lastLevel: 4, owner: "tz1", token: { tokenId: 1 } },
+        { id: 5, lastLevel: 3, owner: "tz1", token: { tokenId: 1 } },
+        { id: 22, lastLevel: 2, owner: "tz2", token: { tokenId: 1 } },
+        { id: 23, lastLevel: 2, owner: "tz1", token: { tokenId: 1 } },
+        { id: 23, lastLevel: 2, owner: "tz2", token: { tokenId: 1 } },
+        { id: 38, lastLevel: 1, owner: "tz3", token: { tokenId: 1 } },
+      ]);
+    });
+
+    it("can sort without an owner", () => {
+      const nfts = [
+        { id: 5, lastLevel: 3, token: { tokenId: 1 } },
+        { id: 38, lastLevel: 1, token: { tokenId: 1 } },
+        { id: 22, lastLevel: 2, token: { tokenId: 1 } },
+        { id: 23, lastLevel: 2, token: { tokenId: 1 } },
+        { id: 14, lastLevel: 4, token: { tokenId: 1 } },
+      ] as any;
+
+      expect(sortedByLastUpdate(nfts)).toEqual([
+        { id: 14, lastLevel: 4, token: { tokenId: 1 } },
+        { id: 5, lastLevel: 3, token: { tokenId: 1 } },
+        { id: 22, lastLevel: 2, token: { tokenId: 1 } },
+        { id: 23, lastLevel: 2, token: { tokenId: 1 } },
+        { id: 38, lastLevel: 1, token: { tokenId: 1 } },
+      ]);
     });
   });
 });

@@ -1,10 +1,9 @@
-import { mockLedgerAccount } from "@umami/core";
+import { mockLedgerAccount, unstakeFixture } from "@umami/core";
 import { type UmamiStore, addTestAccount, makeStore, networksActions } from "@umami/state";
 import { DefaultNetworks, TEZ, formatPkh } from "@umami/tezos";
 import { type UnstakeOperation } from "@umami/tzkt";
 
 import { OperationTileContext } from "./OperationTileContext";
-import { unstakeFixture } from "@umami/core";
 import { UnstakeTile } from "./UnstakeTile";
 import { render, screen } from "../../mocks/testUtils";
 

@@ -333,3 +333,16 @@ export const makeFA2TransactionParameter = ({
     },
   ],
 });
+
+export type OperationDestination = "incoming" | "outgoing" | "unrelated";
+
+export const operationSign = (destination: OperationDestination) => {
+  switch (destination) {
+    case "incoming":
+      return "+";
+    case "outgoing":
+      return "-";
+    case "unrelated":
+      return "";
+  }
+};

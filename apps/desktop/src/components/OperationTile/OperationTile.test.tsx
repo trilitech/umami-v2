@@ -1,8 +1,3 @@
-import { type UmamiStore, assetsActions, makeStore } from "@umami/state";
-import { type TzktCombinedOperation } from "@umami/tzkt";
-
-import { OperationTile } from "./OperationTile";
-import { OperationTileContext } from "./OperationTileContext";
 import {
   contractCallFixture,
   delegationFixture,
@@ -13,6 +8,11 @@ import {
   transactionFixture,
   unstakeFixture,
 } from "@umami/core";
+import { type UmamiStore, assetsActions, makeStore } from "@umami/state";
+import { type TzktCombinedOperation } from "@umami/tzkt";
+
+import { OperationTile } from "./OperationTile";
+import { OperationTileContext } from "./OperationTileContext";
 import { render, screen } from "../../mocks/testUtils";
 
 const fixture = (operation: TzktCombinedOperation) => (

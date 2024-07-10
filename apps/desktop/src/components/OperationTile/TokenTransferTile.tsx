@@ -1,21 +1,24 @@
 import { AspectRatio, Box, Center, Flex, Image, Text, Tooltip } from "@chakra-ui/react";
-import { type Token, thumbnailUri, tokenNameSafe, tokenPrettyAmount } from "@umami/core";
+import {
+  type Token,
+  operationSign,
+  thumbnailUri,
+  tokenNameSafe,
+  tokenPrettyAmount,
+} from "@umami/core";
+import { useGetOperationDestination } from "@umami/state";
+import { getIPFSurl } from "@umami/tezos";
 import { type TokenTransferOperation, type TransactionOperation } from "@umami/tzkt";
 
 import { Fee } from "./Fee";
 import { InternalPrefix } from "./InternalPrefix";
+import { operationColor } from "./operationColor";
 import { OperationStatus } from "./OperationStatus";
 import { OperationTypeWrapper } from "./OperationTypeWrapper";
 import { Timestamp } from "./Timestamp";
 import { TransactionDirectionIcon } from "./TransactionDirectionIcon";
 import { TzktLink } from "./TzktLink";
-import {
-  operationColor,
-  operationSign,
-  useGetOperationDestination,
-} from "./useGetOperationDestination";
 import colors from "../../style/colors";
-import { getIPFSurl } from "../../utils/token/utils";
 import { AddressPill } from "../AddressPill/AddressPill";
 
 export const TokenTransferTile = ({

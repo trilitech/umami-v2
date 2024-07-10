@@ -1,10 +1,9 @@
-import { mockLedgerAccount } from "@umami/core";
+import { mockLedgerAccount, transactionFixture } from "@umami/core";
 import { type UmamiStore, addTestAccount, makeStore, networksActions } from "@umami/state";
 import { DefaultNetworks, TEZ, formatPkh, mockImplicitAddress } from "@umami/tezos";
 import { type TransactionOperation } from "@umami/tzkt";
 
 import { OperationTileContext } from "./OperationTileContext";
-import { transactionFixture } from "@umami/core";
 import { TransactionTile } from "./TransactionTile";
 import { render, screen } from "../../mocks/testUtils";
 

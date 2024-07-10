@@ -1,9 +1,6 @@
-import { useIsOwnedAddress } from "@umami/state";
 import { type RawPkh } from "@umami/tezos";
 
-import colors from "../../style/colors";
-
-export type OperationDestination = "incoming" | "outgoing" | "unrelated";
+import { useIsOwnedAddress } from "./getAccountData";
 
 /**
  * This hook is used to determine if an operation is outgoing, incoming, or unrelated.
@@ -31,26 +28,4 @@ export const useGetOperationDestination = (
   }
 
   return "incoming";
-};
-
-export const operationSign = (destination: OperationDestination) => {
-  switch (destination) {
-    case "incoming":
-      return "+";
-    case "outgoing":
-      return "-";
-    case "unrelated":
-      return "";
-  }
-};
-
-export const operationColor = (destination: OperationDestination) => {
-  switch (destination) {
-    case "incoming":
-      return colors.green;
-    case "outgoing":
-      return colors.orange;
-    case "unrelated":
-      return "white";
-  }
 };

@@ -1,11 +1,10 @@
-import { mockLedgerAccount } from "@umami/core";
+import { contractCallFixture, mockLedgerAccount } from "@umami/core";
 import { type UmamiStore, addTestAccount, makeStore, networksActions } from "@umami/state";
 import { DefaultNetworks, TEZ, formatPkh, mockContractAddress } from "@umami/tezos";
 import { type TransactionOperation } from "@umami/tzkt";
 
 import { ContractCallTile } from "./ContractCallTile";
 import { OperationTileContext } from "./OperationTileContext";
-import { contractCallFixture } from "@umami/core";
 import { render, screen } from "../../mocks/testUtils";
 
 const fixture = (context: any, operation: TransactionOperation) => (

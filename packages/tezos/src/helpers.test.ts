@@ -11,6 +11,7 @@ import {
   derivePublicKeyPair,
   deriveSecretKey,
   getFingerPrint,
+  getIPFSurl,
   getPublicKeyPairFromSk,
   isValidMichelson,
   makeSigner,
@@ -154,6 +155,16 @@ describe("helpers", () => {
     expect(await derivePublicKeyPair(mnemonic1, getDefaultDerivationPath(0), "secp256k1")).toEqual({
       pk: "sppk7aVaRDWwyLRP3iL79sNavXktYCK8x3i7ywhZC9LAFiqyb4DvJNA",
       pkh: "tz2V1jhdHEHk1WdJyFjEqRKd1HSDXDHRs8RH",
+    });
+  });
+
+  describe("getIPFSurl", () => {
+    it("returns nothing if no URI is provided", () => {
+      expect(getIPFSurl(undefined)).toBe(undefined);
+    });
+
+    it("converts an IPFS URI to an HTTP one", () => {
+      expect(getIPFSurl("ipfs://some/image/uri")).toBe("https://ipfs.io/ipfs/some/image/uri");
     });
   });
 });

@@ -1,11 +1,10 @@
-import { mockLedgerAccount } from "@umami/core";
+import { mockLedgerAccount, stakeFixture } from "@umami/core";
 import { type UmamiStore, addTestAccount, makeStore, networksActions } from "@umami/state";
 import { DefaultNetworks, TEZ, formatPkh } from "@umami/tezos";
 import { type StakeOperation } from "@umami/tzkt";
 
 import { OperationTileContext } from "./OperationTileContext";
 import { StakeTile } from "./StakeTile";
-import { stakeFixture } from "@umami/core";
 import { render, screen } from "../../mocks/testUtils";
 
 let store: UmamiStore;
