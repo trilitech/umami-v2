@@ -1,6 +1,6 @@
+/* istanbul ignore file */
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { type Account } from "@umami/core";
-import { useReactQueryErrorHandler, useRefetchTrigger } from "@umami/data-polling";
 import {
   type AppDispatch,
   assetsActions,
@@ -17,6 +17,8 @@ import {
 } from "@umami/tzkt";
 import { maxBy } from "lodash";
 import { useEffect } from "react";
+import { useRefetchTrigger } from "./useRefetchTrigger";
+import { useReactQueryErrorHandler } from "./useReactQueryErrorHandler";
 
 type QueryParams =
   | {

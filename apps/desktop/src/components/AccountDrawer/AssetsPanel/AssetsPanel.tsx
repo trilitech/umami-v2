@@ -31,10 +31,10 @@ import { PendingUnstakeRequests } from "./PendingUnstakeRequests";
 import { TokenList } from "./TokenList";
 import { ExternalLinkIcon } from "../../../assets/icons";
 import colors from "../../../style/colors";
-import { useGetOperations } from "../../../views/operations/useGetOperations";
 import { ExternalLink } from "../../ExternalLink";
 import { OperationTileContext } from "../../OperationTile";
 import { SmallTab } from "../../SmallTab";
+import { useGetOperations } from "@umami/data-polling";
 
 /**
  * Component that displays account assets in the account drawer

@@ -20,16 +20,10 @@ import { OperationTileContext } from "./OperationTileContext";
 import { TokenTransferTile } from "./TokenTransferTile";
 import { render, screen } from "../../testUtils";
 
-jest.mock("@umami/state", () => {
-  const original = jest.requireActual("@umami/state");
-
-  return {
-    ...jest.requireActual("@umami/state"),
-    useGetOperationDestination: jest.fn().mockImplementation(original.useGetOperationDestination),
-  };
-});
-
-console.log(useGetOperationDestination);
+jest.mock("@umami/state", () => ({
+  ...jest.requireActual("@umami/state"),
+  useGetOperationDestination: jest.fn(),
+}));
 
 const fixture = (
   context: any,
@@ -49,6 +43,7 @@ let store: UmamiStore;
 
 beforeEach(() => {
   store = makeStore();
+  jest.mocked(useGetOperationDestination).mockReturnValue("outgoing");
 });
 
 describe("<TokenTransferTile />", () => {
@@ -57,7 +52,8 @@ describe("<TokenTransferTile />", () => {
     { mode: "drawer", selectedAddress: mockLedgerAccount(1).address } as const,
   ])("in $mode mode", contextValue => {
     describe("sign", () => {
-      fit("shows '+' for incoming transactions", () => {
+      it("shows '+' for incoming transactions", () => {
+        jest.mocked(useGetOperationDestination).mockReturnValue("incoming");
         addTestAccount(store, mockLedgerAccount(1));
 
         render(fixture(contextValue, tokenTransferFixture()), { store });

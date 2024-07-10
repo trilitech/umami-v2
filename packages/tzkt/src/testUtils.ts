@@ -1,4 +1,4 @@
-import { type RawTzktTezTransfer } from "@umami/tzkt";
+import { type RawTzktTezTransfer } from "./types";
 
 export const mockTzktTezTransfer = (
   sender: string,

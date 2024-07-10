@@ -43,6 +43,7 @@ let store: UmamiStore;
 
 beforeEach(() => {
   store = makeStore();
+  jest.mocked(useGetOperationDestination).mockReturnValue("outgoing");
 });
 
 describe("<TokenTransferTile />", () => {
@@ -52,6 +53,7 @@ describe("<TokenTransferTile />", () => {
   ])("in $mode mode", contextValue => {
     describe("sign", () => {
       it("shows '+' for incoming transactions", () => {
+        jest.mocked(useGetOperationDestination).mockReturnValue("incoming");
         addTestAccount(store, mockLedgerAccount(1));
 
         render(fixture(contextValue, tokenTransferFixture()), { store });
