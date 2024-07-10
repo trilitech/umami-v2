@@ -151,7 +151,7 @@ export type TransactionOperation = CommonOperationFields & {
 
 export type OriginationOperation = CommonOperationFields & {
   type: "origination";
-  originatedContract: {
+  originatedContract?: {
     address: RawPkh;
     codeHash: number;
     typeHash: number;
