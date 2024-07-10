@@ -50,31 +50,21 @@ export const Activity = () => {
 
       {/* TODO: add NoOperations {operations.length === 0 && !isLoading && <NoOperations size="lg" />} */}
       {operations.length > 0 && (
-        <Box
-          overflowY="scroll"
-          marginBottom="20px"
-          background={color("gray.900")}
-          borderRadius="8px"
-          onScroll={onScroll}
-          paddingX="20px"
-        >
+        <Box background={color("white")} borderRadius="8px" onScroll={onScroll}>
           <OperationTileContext.Provider value={{ mode: "page" }}>
             {operations.map((operation, i) => {
+              const isFirst = i === 0;
               const isLast = i === operations.length - 1;
+
               return (
-                <Box
+                <OperationTile
                   key={operation.id}
-                  height="90px"
-                  marginBottom={isLast ? "10px" : 0}
-                  paddingY="20px"
-                >
-                  <OperationTile operation={operation} />
-                  {!isLast && (
-                    <Box>
-                      <Divider marginTop="20px" />
-                    </Box>
-                  )}
-                </Box>
+                  paddingTop={isFirst ? 0 : "24px"}
+                  paddingBottom={isLast ? 0 : "24px"}
+                  borderBottom={isLast ? "none" : "1px solid"}
+                  borderBottomColor={color("100")}
+                  operation={operation}
+                />
               );
             })}
           </OperationTileContext.Provider>

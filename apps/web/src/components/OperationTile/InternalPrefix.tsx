@@ -1,6 +1,7 @@
 import { Heading } from "@chakra-ui/react";
 import { useGetOperationDestination } from "@umami/state";
 import { type TzktCombinedOperation } from "@umami/tzkt";
+import { memo } from "react";
 
 import { useColor } from "../../styles/useColor";
 
@@ -11,7 +12,7 @@ import { useColor } from "../../styles/useColor";
  *
  * @param operation -
  */
-export const InternalPrefix = ({ operation }: { operation: TzktCombinedOperation }) => {
+export const InternalPrefix = memo(({ operation }: { operation: TzktCombinedOperation }) => {
   const color = useColor();
   let target;
   let sender;
@@ -44,8 +45,8 @@ export const InternalPrefix = ({ operation }: { operation: TzktCombinedOperation
   }
 
   return (
-    <Heading marginRight="4px" color={color("gray.450")} data-testid="internal-prefix" size="md">
+    <Heading marginRight="4px" color={color("900")} data-testid="internal-prefix" size="sm">
       Internal:
     </Heading>
   );
-};
+});

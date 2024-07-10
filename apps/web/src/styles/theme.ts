@@ -55,6 +55,14 @@ const theme = extendTheme({
         },
       },
     },
+    Heading: {
+      sizes: {
+        sm: {
+          fontSize: "16px",
+          lineHeight: "22px",
+        },
+      },
+    },
     Card: {
       baseStyle: {
         container: {
@@ -282,6 +290,7 @@ const theme = extendTheme({
         "--chakra-colors-gray-700": mode(light.grey[700], dark.grey[700])(props),
         "--chakra-colors-gray-800": mode(light.grey[800], dark.grey[800])(props),
         "--chakra-colors-gray-900": mode(light.grey[900], dark.grey[900])(props),
+        "--chakra-fontWeights-bold": 600,
       },
     }),
   },

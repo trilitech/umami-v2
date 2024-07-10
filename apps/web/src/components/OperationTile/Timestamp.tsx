@@ -1,20 +1,29 @@
 import { Text } from "@chakra-ui/react";
 import { differenceInDays, format, formatDistance } from "date-fns";
+import { memo } from "react";
 
 import { useColor } from "../../styles/useColor";
 
-export const Timestamp = ({ timestamp }: { timestamp: string | undefined }) => {
+export const Timestamp = memo(({ timestamp }: { timestamp: string | undefined }) => {
   const color = useColor();
+
   if (!timestamp) {
     return null;
   }
 
   return (
-    <Text color={color("gray.400")} data-testid="timestamp" size="sm">
+    <Text
+      paddingRight="10px"
+      color={color("600")}
+      borderRight="1px solid"
+      borderRightColor={color("100")}
+      data-testid="timestamp"
+      size="sm"
+    >
       {getDisplayTimestamp(timestamp)}
     </Text>
   );
-};
+});
 
 // Display the time difference in minutes if it’s less than an hour,
 // in hours if it’s less than a day,

@@ -1,4 +1,5 @@
 import { Box, Center, Divider, Flex, Image } from "@chakra-ui/react";
+import { useGetOperations } from "@umami/data-polling";
 import { type UIEvent, useRef } from "react";
 
 import { NoOperations } from "../../components/NoItems";
@@ -6,7 +7,6 @@ import { OperationTile, OperationTileContext } from "../../components/OperationT
 import { TopBar } from "../../components/TopBar";
 import { useAccountsFilter } from "../../components/useAccountsFilter";
 import colors from "../../style/colors";
-import { useGetOperations } from "@umami/data-polling";
 
 export const OperationsView = () => {
   const { accountsFilter, selectedAccounts } = useAccountsFilter();

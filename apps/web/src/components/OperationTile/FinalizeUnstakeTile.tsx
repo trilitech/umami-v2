@@ -1,28 +1,38 @@
-import { Box, Center, Flex, Heading, Icon, Text } from "@chakra-ui/react";
+import { Flex, type FlexProps, Heading, Icon, Text, Wrap, WrapItem } from "@chakra-ui/react";
 import { parsePkh, prettyTezAmount } from "@umami/tezos";
 import { type FinalizeUnstakeOperation } from "@umami/tzkt";
 import { memo } from "react";
 
 import { Fee } from "./Fee";
 import { InternalPrefix } from "./InternalPrefix";
-import { OperationStatus } from "./OperationStatus";
-import { OperationTypeWrapper } from "./OperationTypeWrapper";
-import { Timestamp } from "./Timestamp";
+import { RightBlock } from "./RightBlock";
 import { TzktLink } from "./TzktLink";
 import { DelegateIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
 import { AddressPill } from "../AddressPill/AddressPill";
 
 export const FinalizeUnstakeTile = memo(
-  ({ operation }: { operation: FinalizeUnstakeOperation }) => {
+  ({ operation, ...props }: { operation: FinalizeUnstakeOperation } & FlexProps) => {
     const color = useColor();
     const amount = prettyTezAmount(String(operation.amount));
 
     return (
-      <Flex flexDirection="column" width="100%" data-testid="operation-tile-finalize-unstake">
-        <Flex justifyContent="space-between" marginBottom="10px">
-          <Center>
-            <Icon as={DelegateIcon} marginRight="8px" />
+      <Flex
+        flexDirection="column"
+        gap="10px"
+        width="100%"
+        data-testid="operation-tile-finalize-unstake"
+        {...props}
+      >
+        <Wrap spacing="10px">
+          <WrapItem>
+            <Icon
+              as={DelegateIcon}
+              width="22px"
+              height="22px"
+              marginRight="8px"
+              color={color("400")}
+            />
             <InternalPrefix operation={operation} />
             <TzktLink
               marginRight="8px"
@@ -30,29 +40,35 @@ export const FinalizeUnstakeTile = memo(
               data-testid="title"
               hash={operation.hash}
             >
-              <Center gap="4px">
-                <Heading size="md">Finalize Unstake:</Heading>
-                <Text>{amount}</Text>
-              </Center>
+              <Heading color={color("900")} size="sm">
+                Finalize Unstake:
+              </Heading>
+              <Text>{amount}</Text>
             </TzktLink>
+          </WrapItem>
+
+          <WrapItem>
             <Fee operation={operation} />
-          </Center>
-          <Flex alignSelf="flex-end">
-            <Timestamp timestamp={operation.timestamp} />
-          </Flex>
-        </Flex>
-        <Box>
-          <Flex justifyContent="space-between">
+          </WrapItem>
+        </Wrap>
+
+        <Wrap justify="space-between" spacing="10px">
+          <WrapItem>
             <Flex gap="6px" data-testid="to">
-              <Text color={color("gray.450")}>To:</Text>
+              <Text color={color("600")}>To:</Text>
               <AddressPill address={parsePkh(operation.sender.address)} />
             </Flex>
-            <Center>
-              <OperationTypeWrapper>Finalize Unstake</OperationTypeWrapper>
-              <OperationStatus {...operation} />
-            </Center>
-          </Flex>
-        </Box>
+          </WrapItem>
+
+          <WrapItem alignItems="center">
+            <RightBlock
+              level={operation.level}
+              operationType="Finalize Unstake"
+              status={operation.status}
+              timestamp={operation.timestamp}
+            />
+          </WrapItem>
+        </Wrap>
       </Flex>
     );
   }

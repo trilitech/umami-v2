@@ -58,6 +58,13 @@ describe("<OriginationTile />", () => {
           );
           expect(screen.getByTestId("title")).toHaveTextContent("Contract Origination");
         });
+
+        it("shows a contract origination title if operation failed and there is no contract", () => {
+          render(fixture(contextValue, originationFixture({ originatedContract: undefined })), {
+            store,
+          });
+          expect(screen.getByTestId("title")).toHaveTextContent("Contract Origination");
+        });
       });
     });
 

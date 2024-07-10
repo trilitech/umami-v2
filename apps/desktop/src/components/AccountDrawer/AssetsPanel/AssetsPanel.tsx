@@ -17,6 +17,7 @@ import {
   type ImplicitAccount,
   type NFTBalance,
 } from "@umami/core";
+import { useGetOperations } from "@umami/data-polling";
 import {
   useGetAccountUnstakeRequests,
   useGetPendingMultisigOperations,
@@ -34,7 +35,6 @@ import colors from "../../../style/colors";
 import { ExternalLink } from "../../ExternalLink";
 import { OperationTileContext } from "../../OperationTile";
 import { SmallTab } from "../../SmallTab";
-import { useGetOperations } from "@umami/data-polling";
 
 /**
  * Component that displays account assets in the account drawer

@@ -14,7 +14,7 @@ export const OperationTypeWrapper = ({ children }: PropsWithChildren) => {
   }
 
   return (
-    <Text marginRight="4px" color={color("gray.300")} data-testid="operation-type" size="sm">
+    <Text color={color("600")} data-testid="operation-type" size="sm">
       {children}
     </Text>
   );

@@ -9,8 +9,8 @@ export const useOperationColor = (destination: OperationDestination) => {
     case "incoming":
       return color("green");
     case "outgoing":
-      return color("orange");
+      return color("red");
     case "unrelated":
-      return color("white");
+      return color("900");
   }
 };

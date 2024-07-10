@@ -6,6 +6,7 @@ import {
   mockNFTToken,
   rawAccountFixture,
 } from "@umami/core";
+import { useGetOperations } from "@umami/data-polling";
 import { type Multisig, multisigOperationFixture, multisigsFixture } from "@umami/multisig";
 import {
   type UmamiStore,
@@ -18,11 +19,9 @@ import {
 } from "@umami/state";
 import { hedgehoge, tzBtsc, uUSD } from "@umami/test-utils";
 import { GHOSTNET, MAINNET, formatPkh } from "@umami/tezos";
-import { type TzktCombinedOperation } from "@umami/tzkt";
+import { type TzktCombinedOperation, mockTzktTezTransfer } from "@umami/tzkt";
 
 import { act, render, screen, userEvent, waitFor, within } from "../../mocks/testUtils";
-import { mockTzktTezTransfer } from "@umami/tzkt";
-import { useGetOperations } from "@umami/data-polling";
 
 import { AccountCard } from ".";
 

@@ -5,11 +5,11 @@ import {
   type TzktCombinedOperation,
   getCombinedOperations,
   getRelatedTokenTransfers,
+  mockTzktTezTransfer,
 } from "@umami/tzkt";
 
 import { OperationsView } from "./OperationsView";
 import { act, render, screen, userEvent, waitFor } from "../../mocks/testUtils";
-import { mockTzktTezTransfer } from "@umami/tzkt";
 
 jest.mock("@umami/tzkt", () => ({
   ...jest.requireActual("@umami/tzkt"),
