@@ -112,7 +112,7 @@
     "madge": "^7.0.0",
     "prettier": "^3.3.2",
     "rimraf": "^6.0.0",
-    "storybook": "^8.1.11",
+    "storybook": "^8.2.1",
     "typescript": "^5.5.3",
     "vite": "^5.3.3",
     "vite-plugin-node-polyfills": "^0.22.0",
