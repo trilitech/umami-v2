@@ -1,6 +1,6 @@
 import { Flex, Text } from "@chakra-ui/react";
-import { type ImplicitAccount } from "@umami/core";
-import { formatPkh } from "@umami/tezos";
+import { useGetAccountBalance } from "@umami/state";
+import { formatPkh, prettyTezAmount } from "@umami/tezos";
 
 import { GoogleSocialIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
@@ -8,13 +8,14 @@ import { CopyButton } from "../CopyButton/CopyButton";
 import { SocialIconWrapper } from "../IconWrapper";
 
 type AccountSelectorProps = {
-  account: ImplicitAccount;
-  sideElement?: React.ReactNode;
+  account: { name: string; pkh: string };
+  showBalance?: boolean;
   highlighted?: boolean;
 };
 
-export const AccountSelector = ({ account, sideElement, highlighted }: AccountSelectorProps) => {
+export const AccountSelector = ({ account, showBalance, highlighted }: AccountSelectorProps) => {
   const color = useColor();
+  const balance = useGetAccountBalance()(account.pkh);
 
   return (
     <Flex
@@ -30,15 +31,19 @@ export const AccountSelector = ({ account, sideElement, highlighted }: AccountSe
         <GoogleSocialIcon />
       </SocialIconWrapper>
       <Flex flexDirection="column" gap="4px" margin="0 25px 0 10px">
-        <Text size="md" variant="bold">
-          {account.label}
+        <Text whiteSpace="nowrap" size="md" variant="bold">
+          {account.name}
         </Text>
         <Flex alignItems="center" gap="4px">
-          <Text size="sm">{formatPkh(account.address.pkh)}</Text>
-          <CopyButton value={account.address.pkh} />
+          <Text size="sm">{formatPkh(account.pkh)}</Text>
+          <CopyButton value={account.pkh} />
         </Flex>
       </Flex>
-      {sideElement}
+      {showBalance && balance ? (
+        <Text width="full" marginTop="auto" paddingBottom="2px" textAlign="end" size="sm">
+          {prettyTezAmount(balance)}
+        </Text>
+      ) : null}
     </Flex>
   );
 };

@@ -1,4 +1,4 @@
-import type { StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react";
 import { mockMultisigAccount } from "@umami/core";
 import {
   addTestAccount,
@@ -19,8 +19,6 @@ import { Provider } from "react-redux";
 
 import { AddressPill } from "./AddressPill";
 
-export default { component: AddressPill, title: "AddressPill" };
-
 type Story = StoryObj<typeof AddressPill>;
 
 const implicitAddress: Address = {
@@ -30,6 +28,16 @@ const implicitAddress: Address = {
 const multisigAddress: Address = mockMultisigAccount(0).address;
 
 const network = MAINNET;
+
+const meta: Meta<typeof AddressPill> = {
+  title: "AddressPill",
+  component: AddressPill,
+  parameters: {
+    backgrounds: { disable: true },
+  },
+};
+
+export default meta;
 
 export const OwnedAccount: Story = {
   args: {

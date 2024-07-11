@@ -12,3 +12,11 @@ declare namespace NodeJS {
     readonly PUBLIC_URL: string;
   }
 }
+
+declare module "*.svg" {
+  import * as React from "react";
+
+  const ReactComponent: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+
+  export default ReactComponent;
+}

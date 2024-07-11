@@ -85,9 +85,15 @@
     "test:watch": {
       "persistent": true,
       "cache": false,
-      "dependsOn": [
-        "^build"
-      ]
+      "dependsOn": ["^build"]
+    },
+    "storybook": {
+      "persistent": true,
+      "cache": false
+    },
+    "storybook:build": {
+      "outputs": ["storybook-static/**"],
+      "dependsOn": ["^build"]
     }
   }
 }
