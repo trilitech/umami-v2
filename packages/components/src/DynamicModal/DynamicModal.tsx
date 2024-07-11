@@ -1,4 +1,4 @@
-import { Modal, ModalOverlay, type ThemingProps, useDisclosure } from "@chakra-ui/react";
+import { type ThemingProps, useDisclosure } from "@chakra-ui/react";
 import {
   type PropsWithChildren,
   type ReactElement,
@@ -7,7 +7,9 @@ import {
   useEffect,
   useState,
 } from "react";
-import { RemoveScroll } from "react-remove-scroll";
+
+import { DynamicModalFormContextProvider } from "./FormContextProvider";
+import { ModalContent } from "./ModalContent";
 
 const useModalHistory = <S,>(initialStep: S) => {
   const [step, setStep] = useState<S>();
@@ -108,20 +110,7 @@ export const useDynamicModal = () => {
     onClose: modalProps.onClose,
     openWith,
     goBack,
-    content: (
-      <Modal
-        autoFocus={false}
-        blockScrollOnMount={false}
-        closeOnOverlayClick={false}
-        isCentered
-        isOpen={isOpen}
-        motionPreset="slideInBottom"
-        {...modalProps}
-      >
-        <ModalOverlay />
-        <RemoveScroll enabled={isOpen}>{currentStep}</RemoveScroll>
-      </Modal>
-    ),
+    content: <ModalContent currentStep={currentStep} isOpen={isOpen} modalProps={modalProps} />,
   };
 };
 
@@ -131,7 +120,7 @@ export const DynamicModalProvider = ({ children }: PropsWithChildren) => {
   return (
     <DynamicModalContext.Provider value={modal}>
       {children}
-      {modal.content}
+      <DynamicModalFormContextProvider>{modal.content}</DynamicModalFormContextProvider>
     </DynamicModalContext.Provider>
   );
 };

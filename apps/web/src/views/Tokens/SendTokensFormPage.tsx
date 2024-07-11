@@ -14,7 +14,7 @@ import {
   Stack,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import { useDynamicModalContext } from "@umami/components";
+import { useDynamicModalContext, useDynamicModalFormContext } from "@umami/components";
 import {
   type Account,
   type FA12TokenBalance,
@@ -29,6 +29,7 @@ import { type RawPkh } from "@umami/tezos";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { RecipientsPage } from "./RecipientsPage";
+import { CloseIcon } from "../../assets/icons";
 
 export type FormPageProps<T> = { sender?: Account; form?: T };
 
@@ -74,16 +75,16 @@ export const SendTokensFormPage = (
     base: "Enter address or select",
     ls: "Enter address or select from contacts",
   });
+  const { formState, setFormState } = useDynamicModalFormContext();
 
   const form = useForm<FormValues>({
     mode: "onBlur",
-    defaultValues: formDefaultValues(props),
+    defaultValues: formState.current ?? formDefaultValues(props),
   });
 
   const {
     register,
     handleSubmit,
-    setValue,
     formState: { errors, isValid },
   } = form;
 
@@ -96,14 +97,20 @@ export const SendTokensFormPage = (
 
   return (
     <FormProvider {...form}>
-      <ModalContent>
+      <ModalContent
+        minWidth={{
+          lg: "520px",
+        }}
+      >
         <ModalHeader>
           Send
-          <ModalCloseButton onClick={onClose} />
+          <ModalCloseButton width="24px" color="gray.400" onClick={onClose}>
+            <CloseIcon />
+          </ModalCloseButton>
         </ModalHeader>
-        <ModalBody>
-          <Stack width="full">
-            <form>
+        <form>
+          <ModalBody>
+            <Stack gap="24px" width="full">
               <FormControl isInvalid={!!errors.prettyAmount}>
                 <FormLabel>Amount</FormLabel>
                 <InputGroup>
@@ -138,14 +145,10 @@ export const SendTokensFormPage = (
                   />
                   <InputRightElement paddingRight="10px">
                     <Button
-                      onClick={() =>
-                        openWith(
-                          <RecipientsPage
-                            accounts={[...contacts, ...accounts]}
-                            onSelect={value => setValue("recipient", value)}
-                          />
-                        )
-                      }
+                      onClick={async () => {
+                        setFormState(form.getValues());
+                        await openWith(<RecipientsPage accounts={[...contacts, ...accounts]} />);
+                      }}
                       variant="inputElement"
                     >
                       Select
@@ -156,14 +159,14 @@ export const SendTokensFormPage = (
                   <FormErrorMessage>{errors.recipient.message}</FormErrorMessage>
                 )}
               </FormControl>
-            </form>
-          </Stack>
-        </ModalBody>
+            </Stack>
+          </ModalBody>
+        </form>
         <ModalFooter>
           <Button
             width="full"
             isDisabled={!isValid}
-            onClick={handleSubmit(() => console.log("submit"))}
+            onClick={handleSubmit(data => console.log("submit", data))}
             rounded="full"
             variant="primary"
           >

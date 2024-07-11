@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  IconButton,
   ModalBody,
   ModalCloseButton,
   ModalContent,
@@ -9,24 +10,38 @@ import {
   VStack,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import { useDynamicModalContext } from "@umami/components";
+import { useDynamicModalContext, useDynamicModalFormContext } from "@umami/components";
 
+import { ArrowLeftCircleIcon, CloseIcon } from "../../assets/icons";
 import { AccountSelector } from "../../components/AccountCard";
 
 type RecipientsPageProps = {
   accounts: { name: string; pkh: string }[];
-  onSelect: (pkh: string) => void;
 };
 
-export const RecipientsPage = ({ accounts, onSelect }: RecipientsPageProps) => {
+export const RecipientsPage = ({ accounts }: RecipientsPageProps) => {
   const showBalance = useBreakpointValue({ base: false, lg: true });
   const { goBack } = useDynamicModalContext();
+  const { setFormState } = useDynamicModalFormContext();
 
   return (
     <ModalContent>
       <ModalHeader>
+        <IconButton
+          position="absolute"
+          top="12px"
+          left="12px"
+          width="24px"
+          color="gray.400"
+          aria-label="Back"
+          icon={<ArrowLeftCircleIcon />}
+          onClick={goBack}
+          variant="empty"
+        />
         Select Recipient
-        <ModalCloseButton onClick={goBack} />
+        <ModalCloseButton width="24px" color="gray.400">
+          <CloseIcon />
+        </ModalCloseButton>
       </ModalHeader>
       <ModalBody>
         <VStack gap="0" overflowY="auto" width="full" height="288px">
@@ -36,8 +51,8 @@ export const RecipientsPage = ({ accounts, onSelect }: RecipientsPageProps) => {
               width="full"
               cursor="pointer"
               onClick={() => {
-                onSelect(account.pkh);
                 goBack();
+                setFormState({ recipient: account.pkh });
               }}
             >
               <AccountSelector account={account} showBalance={showBalance} />

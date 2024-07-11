@@ -22,3 +22,5 @@ export { default as RedditSocialIcon } from "./reddit-social.svg";
 export { default as UnknownSocialIcon } from "./unknown-social.svg";
 export { default as XSocialIcon } from "./x-social.svg";
 export { default as VerifiedIcon } from "./verified.svg";
+export { default as ArrowLeftCircleIcon } from "./arrow-left-circle.svg";
+export { default as CloseIcon } from "./close.svg";

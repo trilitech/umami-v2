@@ -238,6 +238,7 @@ const theme = extendTheme({
             base: "100%",
             lg: "auto",
           },
+          width: "100%",
         },
         header: {
           textAlign: "center",
