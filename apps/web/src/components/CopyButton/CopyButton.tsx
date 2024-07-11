@@ -12,7 +12,9 @@ type CopyButtonProps = {
 export const CopyButton = ({ value, text }: CopyButtonProps) => {
   const color = useColor();
 
-  const handleCopy = async () => {
+  const handleCopy = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+
     if (!value) {
       return;
     }

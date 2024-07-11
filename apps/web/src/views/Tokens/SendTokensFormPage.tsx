@@ -7,7 +7,6 @@ import {
   InputGroup,
   InputRightElement,
   ModalBody,
-  ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalHeader,
@@ -29,7 +28,7 @@ import { type RawPkh } from "@umami/tezos";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { RecipientsPage } from "./RecipientsPage";
-import { CloseIcon } from "../../assets/icons";
+import { ModalCloseButton } from "../../components/ModalCloseButton";
 
 export type FormPageProps<T> = { sender?: Account; form?: T };
 
@@ -70,7 +69,7 @@ export const SendTokensFormPage = (
   const decimals = tokenDecimals(props.token);
   const smallestUnit = getSmallestUnit(Number(decimals));
   const prettyBalance = formatTokenAmount(props.token.balance, decimals);
-  const { openWith, onClose } = useDynamicModalContext();
+  const { openWith } = useDynamicModalContext();
   const addressPlaceholderText = useBreakpointValue({
     base: "Enter address or select",
     ls: "Enter address or select from contacts",
@@ -104,9 +103,7 @@ export const SendTokensFormPage = (
       >
         <ModalHeader>
           Send
-          <ModalCloseButton width="24px" color="gray.400" onClick={onClose}>
-            <CloseIcon />
-          </ModalCloseButton>
+          <ModalCloseButton  />
         </ModalHeader>
         <form>
           <ModalBody>

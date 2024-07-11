@@ -1,9 +1,7 @@
 import {
   Box,
   Button,
-  IconButton,
   ModalBody,
-  ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalHeader,
@@ -12,8 +10,9 @@ import {
 } from "@chakra-ui/react";
 import { useDynamicModalContext, useDynamicModalFormContext } from "@umami/components";
 
-import { ArrowLeftCircleIcon, CloseIcon } from "../../assets/icons";
 import { AccountSelector } from "../../components/AccountCard";
+import { ModalBackButton } from "../../components/ModalBackButton";
+import { ModalCloseButton } from "../../components/ModalCloseButton";
 
 type RecipientsPageProps = {
   accounts: { name: string; pkh: string }[];
@@ -27,21 +26,9 @@ export const RecipientsPage = ({ accounts }: RecipientsPageProps) => {
   return (
     <ModalContent>
       <ModalHeader>
-        <IconButton
-          position="absolute"
-          top="12px"
-          left="12px"
-          width="24px"
-          color="gray.400"
-          aria-label="Back"
-          icon={<ArrowLeftCircleIcon />}
-          onClick={goBack}
-          variant="empty"
-        />
+        <ModalBackButton onGoBack={goBack} />
         Select Recipient
-        <ModalCloseButton width="24px" color="gray.400">
-          <CloseIcon />
-        </ModalCloseButton>
+        <ModalCloseButton />
       </ModalHeader>
       <ModalBody>
         <VStack gap="0" overflowY="auto" width="full" height="288px">
