@@ -1,3 +1,4 @@
+import { DynamicModalProvider } from "@umami/components";
 import { getErrorContext } from "@umami/core";
 import { accountsActions, errorsActions } from "@umami/state";
 import { encryptedMnemonic1 } from "@umami/test-utils";
@@ -58,7 +59,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           <ErrorBoundary fallback={<ErrorPage />} onError={logError}>
             <ReactQueryProvider>
               <BrowserRouter>
-                <App />
+                <DynamicModalProvider>
+                  <App />
+                </DynamicModalProvider>
               </BrowserRouter>
               {/* Uncomment to use react-query devtools */}
               {/* <ReactQueryDevtools initialIsOpen={true} /> */}

@@ -7,6 +7,7 @@ import {
   type RawTzktTokenMetadata,
 } from "@umami/tzkt";
 import BigNumber from "bignumber.js";
+import repeat from "lodash/repeat";
 
 export type TokenId = string;
 
@@ -184,6 +185,16 @@ export const metadataUri = (token: Token, network: Network) =>
 
 export const tokenUri = ({ contract, tokenId }: Token, network: Network) =>
   `${network.tzktExplorerUrl}/${contract}/tokens/${tokenId}`;
+
+export const getSmallestUnit = (decimals: number): string => {
+  if (decimals < 0) {
+    console.warn("Decimals cannot be negative");
+    decimals = 0;
+  }
+
+  const leadingZeroes = decimals === 0 ? "" : "0." + repeat("0", decimals - 1);
+  return `${leadingZeroes}1`;
+};
 
 const DEFAULT_FA1_NAME = "FA1.2 token";
 const DEFAULT_FA2_NAME = "FA2 token";

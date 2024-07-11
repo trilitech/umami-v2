@@ -1,19 +1,28 @@
-import { Flex, IconButton, Text } from "@chakra-ui/react";
-import { useAppSelector } from "@umami/state";
+import { Flex, Text } from "@chakra-ui/react";
+import { type ImplicitAccount } from "@umami/core";
+import { formatPkh } from "@umami/tezos";
 
-import { ChevronDownIcon, FileCopyIcon, GoogleSocialIcon } from "../../assets/icons";
+import { GoogleSocialIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
-import { SocialIconWrapper } from "../shared/SocialIconWrapper";
+import { CopyButton } from "../CopyButton/CopyButton";
+import { SocialIconWrapper } from "../IconWrapper";
 
-export const AccountSelector = () => {
+type AccountSelectorProps = {
+  account: ImplicitAccount;
+  sideElement?: React.ReactNode;
+  highlighted?: boolean;
+};
+
+export const AccountSelector = ({ account, sideElement, highlighted }: AccountSelectorProps) => {
   const color = useColor();
-  const accounts = useAppSelector(s => s.accounts.items);
 
   return (
     <Flex
       alignItems="center"
+      width="full"
       padding="12px 20px 12px 12px"
-      background={color("50")}
+      color={color("700")}
+      background={highlighted ? color("50") : "transparent"}
       borderRadius="100px"
       _hover={{ background: color("100") }}
     >
@@ -22,29 +31,14 @@ export const AccountSelector = () => {
       </SocialIconWrapper>
       <Flex flexDirection="column" gap="4px" margin="0 25px 0 10px">
         <Text size="md" variant="bold">
-          helloumami@email.com
+          {account.label}
         </Text>
         <Flex alignItems="center" gap="4px">
-          <Text color={color("700")} size="sm">
-            {accounts[0].label}
-          </Text>
-          <IconButton
-            width="fit-content"
-            color={color("400")}
-            aria-label="Copy Address"
-            icon={<FileCopyIcon />}
-            variant="empty"
-          />
+          <Text size="sm">{formatPkh(account.address.pkh)}</Text>
+          <CopyButton value={account.address.pkh} />
         </Flex>
       </Flex>
-      <IconButton
-        width="fit-content"
-        marginLeft="auto"
-        color={color("500")}
-        aria-label="Account Selector"
-        icon={<ChevronDownIcon />}
-        variant="empty"
-      />
+      {sideElement}
     </Flex>
   );
 };

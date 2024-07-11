@@ -11,6 +11,8 @@ export type AppDispatch = UmamiStore["dispatch"];
 export const makeStore = () =>
   configureStore({
     reducer,
+    devTools: process.env.NODE_ENV !== "production",
+
     middleware: getDefaultMiddleware =>
       getDefaultMiddleware({
         serializableCheck: {

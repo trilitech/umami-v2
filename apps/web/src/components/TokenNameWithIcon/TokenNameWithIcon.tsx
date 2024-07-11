@@ -3,18 +3,22 @@ import { type FA12TokenBalance, type FA2TokenBalance, tokenNameSafe } from "@uma
 import { verifiedTokens } from "@umami/tezos";
 
 import { VerifiedIcon } from "../../assets/icons";
+import { useColor } from "../../styles/useColor";
 
 export const TokenNameWithIcon = ({
   token,
   ...textProps
 }: { token: FA12TokenBalance | FA2TokenBalance } & TextProps) => {
+  const color = useColor();
+
   const isVerified = verifiedTokens.includes(token.contract);
+
   return (
     <Flex alignItems="center">
       <Text {...textProps} marginRight="4px">
         {tokenNameSafe(token)}
       </Text>
-      {isVerified && <VerifiedIcon />}
+      {isVerified && <VerifiedIcon color={color("white")} />}
     </Flex>
   );
 };

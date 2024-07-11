@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Flex,
   Icon,
   IconButton,
@@ -14,6 +13,7 @@ import { DynamicModalContext } from "@umami/components";
 import { useContext } from "react";
 
 import { ArrowDownLeftIcon, PlusIcon } from "../../assets/icons";
+import { SendButton } from "../SendButton";
 
 export const AccountBalance = () => {
   const { openWith, isOpen } = useContext(DynamicModalContext);
@@ -57,7 +57,7 @@ export const AccountBalance = () => {
           size="lg"
           variant="iconButtonOutline"
         />
-        <Button
+        <SendButton
           padding={{ base: "10px 24px", lg: "10px 40px" }}
           borderRadius="full"
           onClick={() =>
@@ -76,7 +76,7 @@ export const AccountBalance = () => {
           variant="primary"
         >
           Send {isOpen}
-        </Button>
+        </SendButton>
       </Flex>
     </Box>
   );
