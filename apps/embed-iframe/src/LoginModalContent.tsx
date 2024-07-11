@@ -1,6 +1,6 @@
 import { Box, Center, Flex, Heading, Spinner, Text, VStack } from "@chakra-ui/react";
 import { InMemorySigner } from "@taquito/signer";
-import type { UserData, TypeOfLogin } from "@trilitech-umami/umami-embed/types";
+import { type TypeOfLogin } from "@trilitech-umami/umami-embed/types";
 import * as Auth from "@umami/social-auth";
 import { useState } from "react";
 
@@ -10,17 +10,13 @@ import { getErrorContext } from "./imported/utils/getErrorContext";
 import { withTimeout } from "./imported/utils/withTimeout";
 import { LoginButtonComponent } from "./LoginButtonComponent";
 import { sendLoginErrorResponse, sendResponse } from "./utils";
+import { useEmbedApp } from "./EmbedAppContext";
 
 const LOGIN_TIMEOUT = 3 * 60 * 1000; // 3 minutes
 
-export const LoginModalContent = ({
-  closeModal,
-  onLoginCallback,
-}: {
-  closeModal: () => void;
-  onLoginCallback: (userData: UserData) => void;
-}) => {
+export const LoginModalContent = ({ closeModal }: { closeModal: () => void }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const { userDataRef } = useEmbedApp();
 
   const onLoginClick = async (loginType: TypeOfLogin) => {
     setIsLoading(true);
@@ -32,10 +28,9 @@ export const LoginModalContent = ({
       const signer = new InMemorySigner(secretKey);
       const { pk, pkh } = { pk: await signer.publicKey(), pkh: await signer.publicKeyHash() };
 
-      const userData = { pk, pkh, typeOfLogin: loginType, id: name };
-      onLoginCallback(userData);
+      userDataRef.current = { pk, pkh, typeOfLogin: loginType, id: name };
       sendResponse({
-        ...userData,
+        ...userDataRef.current,
         type: "login_response",
       });
     } catch (error) {

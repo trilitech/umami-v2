@@ -14,7 +14,6 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { OpKind, type WalletParamsWithKind } from "@taquito/taquito";
-import type { UserData, Network } from "@trilitech-umami/umami-embed/types";
 import * as Auth from "@umami/social-auth";
 import { useState } from "react";
 
@@ -27,33 +26,31 @@ import { getErrorContext } from "./imported/utils/getErrorContext";
 import { withTimeout } from "./imported/utils/withTimeout";
 import { sendOperationErrorResponse, sendResponse, toTezosNetwork } from "./utils";
 import { makeToolkit } from "@umami/tezos";
+import { useEmbedApp } from "./EmbedAppContext";
 
 const SIGN_TIMEOUT = 5 * 60 * 1000; // 5 minutes
 
 export const OperationModalContent = ({
-  userData,
-  network,
   operations,
   closeModal,
 }: {
-  userData: UserData;
-  network: Network;
   operations: PartialTezosOperation[];
   closeModal: () => void;
 }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const { userDataRef, networkRef } = useEmbedApp();
 
   const onClick = async () => {
     setIsLoading(true);
     try {
       const { secretKey } = await withTimeout(
-        async () => Auth.forIDP(userData.typeOfLogin, "embed").getCredentials(),
+        async () => Auth.forIDP(userDataRef.current!.typeOfLogin, "embed").getCredentials(),
         SIGN_TIMEOUT
       );
       const toolkit = await makeToolkit({
         type: "social",
         secretKey,
-        network: toTezosNetwork(network),
+        network: toTezosNetwork(networkRef.current!),
       });
 
       const { opHash } = await toolkit.wallet.batch(operations.map(toTaquitoOperation)).send();

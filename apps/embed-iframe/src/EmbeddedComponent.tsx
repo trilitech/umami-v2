@@ -1,12 +1,10 @@
 import { Box, ChakraProvider, ColorModeScript } from "@chakra-ui/react";
 import {
-  type Network,
   type RequestMessage,
   type RequestType,
-  type UserData,
   toMatchingResponseType,
 } from "@trilitech-umami/umami-embed/types";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { getPermissionsForOrigin } from "./ClientsPermissions";
 import theme from "./imported/style/theme";
@@ -14,15 +12,12 @@ import { useLoginModal } from "./loginModalHooks";
 import { useSignOperationModal } from "./signOperationModalHooks";
 import { sendResponse } from "./utils";
 import "./EmbeddedComponent.scss";
+import { useEmbedApp } from "./EmbedAppContext";
 
 export function EmbeddedComponent() {
-  const [selectedNetwork, setSelectedNetwork] = useState<Network | null>(null);
-  const [userData, setUserData] = useState<UserData | null>(null);
+  const { userDataRef, networkRef } = useEmbedApp();
 
-  const onLoginCallback = (userData: UserData) => setUserData(userData);
-
-  const { onOpen: openLoginModal, modalElement: loginModalElement } =
-    useLoginModal(onLoginCallback);
+  const { onOpen: openLoginModal, modalElement: loginModalElement } = useLoginModal();
   const { onOpen: openOperationModal, modalElement: operationModalElement } =
     useSignOperationModal();
 
@@ -38,7 +33,17 @@ export function EmbeddedComponent() {
     }
 
     sendResponse({ type: "init_complete" });
-  });
+
+    return () => {
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      if (window.removeEventListener) {
+        window.removeEventListener("message", handleRequest, false);
+      } else {
+        // fallback for older browsers (IE8 and below)
+        (window as any).detachEvent("onmessage", handleRequest);
+      }
+    };
+  }, []);
 
   const handleRequest = (event: any) => {
     try {
@@ -53,17 +58,17 @@ export function EmbeddedComponent() {
 
       switch (data.type) {
         case "login_request":
-          setSelectedNetwork(data.network);
+          networkRef.current = data.network;
           openLoginModal();
           break;
         case "logout_request":
-          setSelectedNetwork(null);
-          setUserData(null);
+          networkRef.current = null;
+          userDataRef.current = null;
           sendResponse({ type: "logout_response" });
           break;
         case "operation_request":
           if (validateUserSession(data.type)) {
-            openOperationModal(userData!, selectedNetwork!, data.operations);
+            openOperationModal(data.operations);
           }
           break;
       }
@@ -73,7 +78,7 @@ export function EmbeddedComponent() {
   };
 
   const validateClientPermissions = (origin: string, request: RequestMessage): boolean => {
-    const network = request.type === "login_request" ? request.network : selectedNetwork;
+    const network = request.type === "login_request" ? request.network : networkRef.current;
     if (network === null) {
       sendResponse({
         type: toMatchingResponseType(request.type),
@@ -123,14 +128,14 @@ export function EmbeddedComponent() {
   };
 
   const validateUserSession = (requestType: RequestType): boolean => {
-    if (userData === null) {
+    if (userDataRef.current === null) {
       sendResponse({
         type: toMatchingResponseType(requestType),
         error: "no_login_data",
         errorMessage: "User's login data is not available",
       });
       return false;
-    } else if (selectedNetwork === null) {
+    } else if (networkRef.current === null) {
       sendResponse({
         type: toMatchingResponseType(requestType),
         error: "no_network_data",
