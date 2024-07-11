@@ -1,17 +1,11 @@
-import {
-  Modal,
-  ModalOverlay,
-  type ThemingProps,
-  useBreakpointValue,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Modal, ModalOverlay, type ThemingProps, useDisclosure } from "@chakra-ui/react";
 import {
   type PropsWithChildren,
   type ReactElement,
   createContext,
   useContext,
-  useState,
   useEffect,
+  useState,
 } from "react";
 import { RemoveScroll } from "react-remove-scroll";
 
@@ -90,10 +84,6 @@ export const useDynamicModal = () => {
   const [modalProps, setModalProps] = useState<
     ThemingProps & { onClose: () => void | Promise<void> }
   >(defaultModalProps);
-  const motionPreset = useBreakpointValue({
-    base: "slideInBottom",
-    lg: "scale",
-  } as const);
 
   const openWith = async (
     content: ReactElement,
@@ -125,7 +115,7 @@ export const useDynamicModal = () => {
         closeOnOverlayClick={false}
         isCentered
         isOpen={isOpen}
-        motionPreset={motionPreset}
+        motionPreset="slideInBottom"
         {...modalProps}
       >
         <ModalOverlay />
