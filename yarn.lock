@@ -6069,7 +6069,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/types@npm:8.1.11, @storybook/types@npm:^8.1.11":
+"@storybook/types@npm:8.1.11":
   version: 8.1.11
   resolution: "@storybook/types@npm:8.1.11"
   dependencies:
@@ -6077,6 +6077,15 @@ __metadata:
     "@types/express": "npm:^4.7.0"
     file-system-cache: "npm:2.3.0"
   checksum: 10/80e2ba60cee54f4471025b9a986df78e12b6f6096769e6a2224549f2008235c2079965a71c9af05be26eafb8ddfaba8431ffcf4b8e39b229c08fb2d48670d851
+  languageName: node
+  linkType: hard
+
+"@storybook/types@npm:^8.2.2":
+  version: 8.2.2
+  resolution: "@storybook/types@npm:8.2.2"
+  peerDependencies:
+    storybook: ^8.2.2
+  checksum: 10/a42c066ad8284e00a36597dce251a3ed73becdbb2dd5c7d6dfc335308bbdfcf95ccf9fe05fff1e3a173b7213eebb1836537f6eed221e2acc026c77f929f8d9a6
   languageName: node
   linkType: hard
 
@@ -8395,7 +8404,7 @@ __metadata:
     "@storybook/react": "npm:^8.1.11"
     "@storybook/react-vite": "npm:^8.2.2"
     "@storybook/test": "npm:^8.2.2"
-    "@storybook/types": "npm:^8.1.11"
+    "@storybook/types": "npm:^8.2.2"
     "@svgr/core": "npm:^8.1.0"
     "@svgr/plugin-jsx": "npm:^8.1.0"
     "@svgr/plugin-svgo": "npm:^8.1.0"
