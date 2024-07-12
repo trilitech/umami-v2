@@ -14,7 +14,7 @@
     }
   },
   "devDependencies": {
-    "@babel/core": "^7.24.7",
+    "@babel/core": "^7.24.8",
     "@types/babel__core": "^7.20.5",
     "@types/eslint": "^8",
     "@umami/eslint-config": "workspace:^",
