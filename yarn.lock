@@ -5907,7 +5907,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/components@npm:8.1.11, @storybook/components@npm:^8.1.11":
+"@storybook/components@npm:8.1.11":
   version: 8.1.11
   resolution: "@storybook/components@npm:8.1.11"
   dependencies:
@@ -5925,6 +5925,15 @@ __metadata:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0-beta
     react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0-beta
   checksum: 10/ccc2fdfd291d99eb706210baacd731c6742520b4bee85fa3e38931cc212daf0ead2365837899a6c6c5c4fcdb40c783d66c858f42134096656b4166b826c8d1ed
+  languageName: node
+  linkType: hard
+
+"@storybook/components@npm:^8.2.2":
+  version: 8.2.2
+  resolution: "@storybook/components@npm:8.2.2"
+  peerDependencies:
+    storybook: ^8.2.2
+  checksum: 10/30ad011395e2b2d4f5ea3f7292336c816c444651a8ba422e8bcf1272e63ffa03a11d542a90023c80fbec94894fc35f6ad4c415d5149ce7c406a493d0df99e2e8
   languageName: node
   linkType: hard
 
@@ -8706,7 +8715,7 @@ __metadata:
     "@storybook/addon-onboarding": "npm:^8.2.2"
     "@storybook/addon-themes": "npm:^8.1.11"
     "@storybook/blocks": "npm:^8.1.11"
-    "@storybook/components": "npm:^8.1.11"
+    "@storybook/components": "npm:^8.2.2"
     "@storybook/manager-api": "npm:^8.2.2"
     "@storybook/preview-api": "npm:^8.2.2"
     "@storybook/react": "npm:^8.1.11"
