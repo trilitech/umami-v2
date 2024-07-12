@@ -6,7 +6,14 @@ type EmptyMessageProps = {
 };
 
 export const EmptyMessage = ({ title, subtitle }: EmptyMessageProps) => (
-  <Flex alignItems="center" justifyContent="center" flexDirection="column" gap="12px" width="full">
+  <Flex
+    alignItems="center"
+    justifyContent="center"
+    flexDirection="column"
+    gap="12px"
+    width="full"
+    data-testid="empty-state-message"
+  >
     <Text size={{ base: "xl", lg: "2xl" }} variant="bold">
       No {title} to show
     </Text>

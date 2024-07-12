@@ -31,13 +31,12 @@ export const Timestamp = memo(({ timestamp }: { timestamp: string | undefined })
 // Otherwise, it will display the date in the dd MMM yyyy format
 export const getDisplayTimestamp = (timestamp: string): string => {
   const currentDate = new Date();
-  const timestampDate = new Date(timestamp);
 
-  const dayDifference = differenceInDays(currentDate, timestampDate);
+  const dayDifference = differenceInDays(currentDate, timestamp);
 
   if (dayDifference < 2) {
-    return formatDistance(timestampDate, currentDate, { addSuffix: true });
+    return formatDistance(timestamp, currentDate, { addSuffix: true });
   } else {
-    return format(timestampDate, "dd MMM yyyy");
+    return format(timestamp, "dd MMM yyyy");
   }
 };

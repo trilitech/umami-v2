@@ -5,7 +5,7 @@ import { type UIEvent, useRef } from "react";
 
 import loadingWheel from "../../assets/loading-wheel.gif";
 import { EmptyMessage } from "../../components/EmptyMessage";
-import { OperationTile, OperationTileContext } from "../../components/OperationTile";
+import { OperationTile } from "../../components/OperationTile";
 import { useColor } from "../../styles/useColor";
 
 export const Activity = () => {
@@ -34,40 +34,32 @@ export const Activity = () => {
     }
   };
 
-  if (!operations.length && !isLoading) {
-    return (
-      <Flex height="full">
-        <EmptyMessage subtitle="Activity" title="Activity" />
-      </Flex>
-    );
-  }
-
   return (
     <Flex flexDirection="column" height="full">
       <Center display={isLoading && isFirstLoad ? "flex" : "none"} height="100%">
         <Image width="150px" height="75px" marginBottom="136px" src={loadingWheel} />
       </Center>
 
-      {/* TODO: add NoOperations {operations.length === 0 && !isLoading && <NoOperations size="lg" />} */}
+      {operations.length === 0 && !isLoading && (
+        <EmptyMessage subtitle="activity" title="Activity" />
+      )}
       {operations.length > 0 && (
         <Box background={color("white")} borderRadius="8px" onScroll={onScroll}>
-          <OperationTileContext.Provider value={{ mode: "page" }}>
-            {operations.map((operation, i) => {
-              const isFirst = i === 0;
-              const isLast = i === operations.length - 1;
+          {operations.map((operation, i) => {
+            const isFirst = i === 0;
+            const isLast = i === operations.length - 1;
 
-              return (
-                <OperationTile
-                  key={operation.id}
-                  paddingTop={isFirst ? 0 : "24px"}
-                  paddingBottom={isLast ? 0 : "24px"}
-                  borderBottom={isLast ? "none" : "1px solid"}
-                  borderBottomColor={color("100")}
-                  operation={operation}
-                />
-              );
-            })}
-          </OperationTileContext.Provider>
+            return (
+              <OperationTile
+                key={operation.id}
+                paddingTop={isFirst ? 0 : "24px"}
+                paddingBottom={isLast ? 0 : "24px"}
+                borderBottom={isLast ? "none" : "1px solid"}
+                borderBottomColor={color("100")}
+                operation={operation}
+              />
+            );
+          })}
           <Center flexDirection="column" display={isLoading && !isFirstLoad ? "flex" : "none"}>
             <Divider />
             <Image width="100px" height="50px" src="./static/media/loading-dots.gif" />

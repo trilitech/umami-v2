@@ -1,20 +1,16 @@
-import { useIsBlockFinalised } from "@umami/state";
-import { memo } from "react";
-
+import { type OperationStatus as OperationStatusType } from "./useOperationStatus";
 import { CheckmarkIcon, CrossedCircleIcon, HourglassIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
 
-export const OperationStatus = memo(({ level, status }: { level: number; status?: string }) => {
-  const isFinalised = useIsBlockFinalised(level);
+export const OperationStatus = ({ status }: { status: OperationStatusType }) => {
   const color = useColor();
 
-  // if we don't know the status we assume it's applied
-  if (status === undefined || status === "applied") {
-    if (isFinalised) {
+  switch (status) {
+    case "applied":
       return <CheckmarkIcon color={color("green")} data-testid="checkmark" />;
-    } else {
+    case "pending":
       return <HourglassIcon color={color("red")} data-testid="hourglass" />;
-    }
+    case "failed":
+      return <CrossedCircleIcon color={color("red")} data-testid="crossed-circle" />;
   }
-  return <CrossedCircleIcon color={color("red")} data-testid="crossed-circle" />;
-});
+};

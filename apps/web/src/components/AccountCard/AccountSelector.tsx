@@ -1,6 +1,7 @@
 import { Flex, Text } from "@chakra-ui/react";
 import { type ImplicitAccount } from "@umami/core";
 import { formatPkh } from "@umami/tezos";
+import { type ReactNode } from "react";
 
 import { GoogleSocialIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
@@ -9,7 +10,7 @@ import { SocialIconWrapper } from "../IconWrapper";
 
 type AccountSelectorProps = {
   account: ImplicitAccount;
-  sideElement?: React.ReactNode;
+  sideElement?: ReactNode;
   highlighted?: boolean;
 };
 

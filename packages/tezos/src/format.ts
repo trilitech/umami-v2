@@ -11,7 +11,7 @@ export const tezToMutez = (tez: string): BigNumber => format("tz", "mutez", tez)
 export const mutezToTez = (mutez: BigNumber | string | number) =>
   format("mutez", "tz", mutez) as BigNumber;
 
-const formatTezAmount = (mutez: BigNumber | string | number): string => {
+export const formatTezAmount = (mutez: BigNumber | string | number): string => {
   const tezAmount = BigNumber(mutezToTez(mutez)).toNumber();
   // make sure we always show 6 digits after the decimal point
   const formatter = new Intl.NumberFormat("en-US", {

@@ -9,6 +9,11 @@
       "import": "./dist/jest.config.js",
       "require": "./dist/jest.config.cjs",
       "types": "./dist/jest.config.d.(c)?ts"
+    },
+    "./fileMock": {
+      "import": "./dist/fileMock.js",
+      "require": "./dist/fileMock.cjs",
+      "types": "./dist/fileMock.d.(c)?ts"
     }
   },
   "scripts": {
@@ -22,7 +27,8 @@
   },
   "tsup": {
     "entry": [
-      "jest.config.ts"
+      "jest.config.ts",
+      "fileMock.ts"
     ],
     "clean": true,
     "format": [

@@ -9,7 +9,7 @@ import {
 } from "@umami/tzkt";
 
 import { Activity } from "./Activity";
-import { act, render, screen, userEvent, waitFor } from "../../testUtils";
+import { render, screen, waitFor } from "../../testUtils";
 
 jest.mock("@umami/tzkt", () => ({
   ...jest.requireActual("@umami/tzkt"),
@@ -35,29 +35,14 @@ describe("<Activity />", () => {
       jest.mocked(getRelatedTokenTransfers).mockResolvedValue([]);
     });
 
-    it("displays an empty state when no account filter applied", async () => {
+    it("displays an empty state ", async () => {
       render(<Activity />, { store });
 
       await waitFor(() => {
         expect(screen.getByTestId("empty-state-message")).toBeVisible();
       });
-      expect(screen.getByText("No operations to show")).toBeVisible();
-      expect(screen.getByText("Your operations history will appear here...")).toBeVisible();
-      expect(screen.queryByTestId("view-all-operations-button")).not.toBeInTheDocument();
-    });
-
-    it("displays an empty state when account filter applied", async () => {
-      const user = userEvent.setup();
-      render(<Activity />, { store });
-
-      // filter by one of the accounts
-      await act(() => user.click(screen.getByTestId("account-filter")));
-      await act(() => user.click(screen.getAllByTestId("address-tile")[0]));
-      expect(screen.getAllByTestId("account-pill")).toHaveLength(1);
-
-      await waitFor(() => expect(screen.getByTestId("empty-state-message")).toBeVisible());
-      expect(screen.getByText("No operations to show")).toBeVisible();
-      expect(screen.getByText("Your operations history will appear here...")).toBeVisible();
+      expect(screen.getByText("No Activity to show")).toBeVisible();
+      expect(screen.getByText("Your activity will appear here...")).toBeVisible();
       expect(screen.queryByTestId("view-all-operations-button")).not.toBeInTheDocument();
     });
   });
@@ -88,9 +73,11 @@ describe("<Activity />", () => {
     it("hides empty state component", async () => {
       render(<Activity />, { store });
 
-      await waitFor(() => {
-        expect(screen.queryByTestId("empty-state-message")).not.toBeInTheDocument();
-      });
+      await waitFor(() =>
+        expect(screen.queryByTestId("empty-state-message")).not.toBeInTheDocument()
+      );
+
+      await waitFor(() => expect(screen.getAllByTestId(/operation-tile-/).length).toEqual(2));
     });
   });
 });
