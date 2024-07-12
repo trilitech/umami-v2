@@ -6139,7 +6139,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/preview-api@npm:8.1.11, @storybook/preview-api@npm:^8.1.11":
+"@storybook/preview-api@npm:8.1.11":
   version: 8.1.11
   resolution: "@storybook/preview-api@npm:8.1.11"
   dependencies:
@@ -6158,6 +6158,15 @@ __metadata:
     ts-dedent: "npm:^2.0.0"
     util-deprecate: "npm:^1.0.2"
   checksum: 10/228fc11266d4e33e4da2964b301d3d6f6ab40b7488d8e5dfcf556f7f5eb5db9270ddc1e4794995e3e4c30acf5ff91344c28306e648cfea7a6b22ca930ebc5826
+  languageName: node
+  linkType: hard
+
+"@storybook/preview-api@npm:^8.2.2":
+  version: 8.2.2
+  resolution: "@storybook/preview-api@npm:8.2.2"
+  peerDependencies:
+    storybook: ^8.2.2
+  checksum: 10/ed7c5bbea9805c7b2f9c7d0c4ae714f2107140c6c8a99484b54b22c0a39158bcb20c916845be26cb98f8cac5c37260f57d2f2c98beb49b4286340ec451200bed
   languageName: node
   linkType: hard
 
@@ -8660,7 +8669,7 @@ __metadata:
     "@storybook/blocks": "npm:^8.1.11"
     "@storybook/components": "npm:^8.1.11"
     "@storybook/manager-api": "npm:^8.1.11"
-    "@storybook/preview-api": "npm:^8.1.11"
+    "@storybook/preview-api": "npm:^8.2.2"
     "@storybook/react": "npm:^8.1.11"
     "@storybook/react-vite": "npm:^8.2.2"
     "@storybook/test": "npm:^8.2.2"
