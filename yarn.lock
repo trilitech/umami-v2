@@ -7236,7 +7236,7 @@ __metadata:
     react-dom: "npm:^18.3.1"
     react-redux: "npm:^9.1.2"
     react-remove-scroll: "npm:^2.5.10"
-    rimraf: "npm:^6.0.0"
+    rimraf: "npm:^6.0.1"
     tsup: "npm:^8.1.0"
     typescript: "npm:^5.5.3"
   languageName: unknown
@@ -7269,7 +7269,7 @@ __metadata:
     lodash: "npm:^4.17.21"
     madge: "npm:^7.0.0"
     prettier: "npm:^3.3.2"
-    rimraf: "npm:^6.0.0"
+    rimraf: "npm:^6.0.1"
     tsup: "npm:^8.1.0"
     typescript: "npm:^5.5.3"
   languageName: unknown
@@ -7293,7 +7293,7 @@ __metadata:
     jest: "npm:^29.7.0"
     madge: "npm:^7.0.0"
     prettier: "npm:^3.3.2"
-    rimraf: "npm:^6.0.0"
+    rimraf: "npm:^6.0.1"
     tsup: "npm:^8.1.0"
     typescript: "npm:^5.5.3"
   languageName: unknown
@@ -7335,7 +7335,7 @@ __metadata:
     react: "npm:^18.3.1"
     react-dom: "npm:^18.3.1"
     react-redux: "npm:^9.1.2"
-    rimraf: "npm:^6.0.0"
+    rimraf: "npm:^6.0.1"
     tsup: "npm:^8.1.0"
     typescript: "npm:^5.5.3"
   languageName: unknown
@@ -7451,7 +7451,7 @@ __metadata:
     react-test-renderer: "npm:^18.3.1"
     redux: "npm:^5.0.1"
     redux-persist: "npm:^6.0.0"
-    rimraf: "npm:^6.0.0"
+    rimraf: "npm:^6.0.1"
     start-server-and-test: "npm:^2.0.4"
     ts-node: "npm:^10.9.2"
     typedoc: "npm:^0.26.4"
@@ -7503,7 +7503,7 @@ __metadata:
     react: "npm:^18.3.1"
     react-dom: "npm:^18.3.1"
     react-router-dom: "npm:^6.24.1"
-    rimraf: "npm:^6.0.0"
+    rimraf: "npm:^6.0.1"
     sass: "npm:^1.77.8"
     typescript: "npm:5.5.3"
     vite: "npm:^5.3.3"
@@ -7544,7 +7544,7 @@ __metadata:
   resolution: "@umami/jest-config@workspace:packages/jest-config"
   dependencies:
     jest: "npm:^29.7.0"
-    rimraf: "npm:^6.0.0"
+    rimraf: "npm:^6.0.1"
     tsup: "npm:^8.1.0"
     typescript: "npm:^5.5.3"
   languageName: unknown
@@ -7575,7 +7575,7 @@ __metadata:
     lodash: "npm:^4.17.21"
     madge: "npm:^7.0.0"
     prettier: "npm:^3.3.2"
-    rimraf: "npm:^6.0.0"
+    rimraf: "npm:^6.0.1"
     tsup: "npm:^8.1.0"
     typescript: "npm:^5.5.3"
     zod: "npm:^3.23.8"
@@ -7588,7 +7588,7 @@ __metadata:
   dependencies:
     depcheck: "npm:^1.4.7"
     madge: "npm:^7.0.0"
-    rimraf: "npm:^6.0.0"
+    rimraf: "npm:^6.0.1"
   languageName: unknown
   linkType: soft
 
@@ -7610,7 +7610,7 @@ __metadata:
     jest: "npm:^29.7.0"
     madge: "npm:^7.0.0"
     prettier: "npm:^3.3.2"
-    rimraf: "npm:^6.0.0"
+    rimraf: "npm:^6.0.1"
     tsup: "npm:^8.1.0"
     typescript: "npm:^5.5.3"
   languageName: unknown
@@ -7662,7 +7662,7 @@ __metadata:
     redux: "npm:^5.0.1"
     redux-persist: "npm:^6.0.0"
     redux-thunk: "npm:^3.1.0"
-    rimraf: "npm:^6.0.0"
+    rimraf: "npm:^6.0.1"
     tsup: "npm:^8.1.0"
     typescript: "npm:^5.5.3"
     zod: "npm:^3.23.8"
@@ -7686,7 +7686,7 @@ __metadata:
     lodash: "npm:^4.17.21"
     madge: "npm:^7.0.0"
     prettier: "npm:^3.3.2"
-    rimraf: "npm:^6.0.0"
+    rimraf: "npm:^6.0.1"
     tsup: "npm:^8.1.0"
     typescript: "npm:^5.5.3"
     zod: "npm:^3.23.8"
@@ -7719,7 +7719,7 @@ __metadata:
     jest: "npm:^29.7.0"
     madge: "npm:^7.0.0"
     prettier: "npm:^3.3.2"
-    rimraf: "npm:^6.0.0"
+    rimraf: "npm:^6.0.1"
     tsup: "npm:^8.1.0"
     typescript: "npm:^5.5.3"
   languageName: unknown
@@ -7755,7 +7755,7 @@ __metadata:
     madge: "npm:^7.0.0"
     prettier: "npm:^3.3.2"
     promise-retry: "npm:^2.0.1"
-    rimraf: "npm:^6.0.0"
+    rimraf: "npm:^6.0.1"
     tsup: "npm:^8.1.0"
     typescript: "npm:^5.5.3"
     zod: "npm:^3.23.8"
@@ -7852,7 +7852,7 @@ __metadata:
     react-test-renderer: "npm:^18.3.1"
     redux: "npm:^5.0.1"
     redux-persist: "npm:^6.0.0"
-    rimraf: "npm:^6.0.0"
+    rimraf: "npm:^6.0.1"
     storybook: "npm:^8.2.2"
     typescript: "npm:^5.5.3"
     vite: "npm:^5.3.3"
@@ -18491,14 +18491,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rimraf@npm:^6.0.0":
-  version: 6.0.0
-  resolution: "rimraf@npm:6.0.0"
+"rimraf@npm:^6.0.1":
+  version: 6.0.1
+  resolution: "rimraf@npm:6.0.1"
   dependencies:
     glob: "npm:^11.0.0"
+    package-json-from-dist: "npm:^1.0.0"
   bin:
     rimraf: dist/esm/bin.mjs
-  checksum: 10/8a2e161f89b4fb8d7f3cab9bdea5360e9ab2ddc13d8120508b56eb93ba0c6f4506b799598900db6558628194b09f89705d1b98a591d7f727508e427e247befea
+  checksum: 10/0eb7edf08aa39017496c99ba675552dda11a20811ba78f8232da2ba945308c91e9cd673f95998b1a8202bc7436d33390831d23ea38ae52751038d56373ad99e2
   languageName: node
   linkType: hard
 
@@ -20534,7 +20535,7 @@ __metadata:
   resolution: "umami@workspace:."
   dependencies:
     jest: "npm:^29.7.0"
-    rimraf: "npm:^6.0.0"
+    rimraf: "npm:^6.0.1"
     tsup: "npm:^8.1.0"
     turbo: "npm:^2.0.6"
   languageName: unknown
