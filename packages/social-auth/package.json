@@ -33,7 +33,7 @@
     "@toruslabs/customauth": "16.0.6"
   },
   "devDependencies": {
-    "@babel/core": "^7.24.7",
+    "@babel/core": "^7.24.8",
     "@types/babel__core": "^7.20.5",
     "@types/eslint": "^8.56.10",
     "@umami/eslint-config": "workspace:^",
