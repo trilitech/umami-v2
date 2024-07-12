@@ -5611,19 +5611,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/addon-links@npm:^8.1.11":
-  version: 8.1.11
-  resolution: "@storybook/addon-links@npm:8.1.11"
+"@storybook/addon-links@npm:^8.2.2":
+  version: 8.2.2
+  resolution: "@storybook/addon-links@npm:8.2.2"
   dependencies:
-    "@storybook/csf": "npm:^0.1.7"
+    "@storybook/csf": "npm:0.1.11"
     "@storybook/global": "npm:^5.0.0"
     ts-dedent: "npm:^2.0.0"
   peerDependencies:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0-beta
+    storybook: ^8.2.2
   peerDependenciesMeta:
     react:
       optional: true
-  checksum: 10/c428dcfeb0440dff3e58256660719059787cc1c1b0650f340d01d2a4f49a892f4de1533dda50ae648c07fd5bc8d179ff4818aed246a56aa4f9950e2359ebf3cd
+  checksum: 10/ec40eb21027db4c0e838f35b5ac6e56a52aa9680da9bf040cb083c6c8a4008b4ed3109738633539e26e84e713e3bc0d1d6623faae221f05a26b957b981ced3d0
   languageName: node
   linkType: hard
 
@@ -6029,21 +6030,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@storybook/csf@npm:0.1.11, @storybook/csf@npm:^0.1.7":
+  version: 0.1.11
+  resolution: "@storybook/csf@npm:0.1.11"
+  dependencies:
+    type-fest: "npm:^2.19.0"
+  checksum: 10/f6eeefe3b92ab206676587da9e22a775da026c055999681580d2ca23c98185736f965adc79039a0ae97ea625f0fbc7915cd4559e5db24229a4805784d0b78584
+  languageName: node
+  linkType: hard
+
 "@storybook/csf@npm:^0.0.1":
   version: 0.0.1
   resolution: "@storybook/csf@npm:0.0.1"
   dependencies:
     lodash: "npm:^4.17.15"
   checksum: 10/f6bb019bccd8abc14e45a85258158b7bd8cc525887ac8dc9151ed8c4908be3b5f5523da8a7a9b96ff11b13b6c1744e1a0e070560d63d836b950f595f9a5719d4
-  languageName: node
-  linkType: hard
-
-"@storybook/csf@npm:^0.1.7":
-  version: 0.1.11
-  resolution: "@storybook/csf@npm:0.1.11"
-  dependencies:
-    type-fest: "npm:^2.19.0"
-  checksum: 10/f6eeefe3b92ab206676587da9e22a775da026c055999681580d2ca23c98185736f965adc79039a0ae97ea625f0fbc7915cd4559e5db24229a4805784d0b78584
   languageName: node
   linkType: hard
 
@@ -8654,7 +8655,7 @@ __metadata:
     "@reduxjs/toolkit": "npm:^2.2.6"
     "@storybook/addon-essentials": "npm:^8.1.11"
     "@storybook/addon-interactions": "npm:^8.1.11"
-    "@storybook/addon-links": "npm:^8.1.11"
+    "@storybook/addon-links": "npm:^8.2.2"
     "@storybook/addon-onboarding": "npm:^8.1.11"
     "@storybook/addon-themes": "npm:^8.1.11"
     "@storybook/blocks": "npm:^8.1.11"
