@@ -1,4 +1,4 @@
-import type { StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react";
 import { mockMultisigAccount } from "@umami/core";
 import {
   addTestAccount,
@@ -18,8 +18,28 @@ import {
 import { Provider } from "react-redux";
 
 import { AddressPill } from "./AddressPill";
+import { dark, light } from "../../styles/colors";
 
-export default { component: AddressPill, title: "AddressPill" };
+const meta: Meta<typeof AddressPill> = {
+  component: AddressPill,
+  title: "AddressPill",
+  parameters: {
+    backgrounds: {
+      default: "light",
+      values: [
+        {
+          name: "light",
+          value: light.grey.white,
+        },
+        {
+          name: "dark",
+          value: dark.grey.white,
+        },
+      ],
+    },
+  },
+};
+export default meta;
 
 type Story = StoryObj<typeof AddressPill>;
 
@@ -36,18 +56,26 @@ export const OwnedAccount: Story = {
     address: implicitAddress,
     mode: "no_icons",
   },
-  decorators: story => <Provider store={makeStore()}>{story()}</Provider>,
+  decorators: Story => (
+    <Provider store={makeStore()}>
+      <Story />
+    </Provider>
+  ),
 };
 
 export const MultisigAccount: Story = {
   args: {
     address: multisigAddress,
   },
-  decorators: story => {
+  decorators: Story => {
     const store = makeStore();
 
     addTestAccount(store, mockMultisigAccount(0));
-    return <Provider store={store}>{story()}</Provider>;
+    return (
+      <Provider store={store}>
+        <Story />
+      </Provider>
+    );
   },
 };
 
@@ -55,7 +83,7 @@ export const FromContacts: Story = {
   args: {
     address: implicitAddress,
   },
-  decorators: story => {
+  decorators: Story => {
     const store = makeStore();
     store.dispatch(
       contactsActions.upsert({
@@ -64,7 +92,11 @@ export const FromContacts: Story = {
         pkh: implicitAddress.pkh,
       })
     );
-    return <Provider store={store}>{story()}</Provider>;
+    return (
+      <Provider store={store}>
+        <Story />
+      </Provider>
+    );
   },
 };
 
@@ -72,28 +104,40 @@ export const UnknownImplicit: Story = {
   args: {
     address: implicitAddress,
   },
-  decorators: story => <Provider store={makeStore()}>{story()}</Provider>,
+  decorators: Story => (
+    <Provider store={makeStore()}>
+      <Story />
+    </Provider>
+  ),
 };
 
 export const UnknownContract: Story = {
   args: {
     address: mockContractAddress(0),
   },
-  decorators: story => <Provider store={makeStore()}>{story()}</Provider>,
+  decorators: Story => (
+    <Provider store={makeStore()}>
+      <Story />
+    </Provider>
+  ),
 };
 
 export const Baker: Story = {
   args: {
     address: implicitAddress,
   },
-  decorators: story => {
+  decorators: Story => {
     const store = makeStore();
     store.dispatch(
       assetsActions.updateBakers([
         { address: implicitAddress.pkh, name: "Test Baker", stakingBalance: 0 },
       ])
     );
-    return <Provider store={store}>{story()}</Provider>;
+    return (
+      <Provider store={store}>
+        <Story />
+      </Provider>
+    );
   },
 };
 
@@ -101,12 +145,16 @@ export const UnknownFA2: Story = {
   args: {
     address: parsePkh("KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo"),
   },
-  decorators: story => {
+  decorators: Story => {
     const store = makeStore();
     const tokenBalance = uUSD(mockImplicitAddress(0));
     store.dispatch(tokensActions.addTokens({ network, tokens: [tokenBalance.token] }));
 
-    return <Provider store={store}>{story()}</Provider>;
+    return (
+      <Provider store={store}>
+        <Story />
+      </Provider>
+    );
   },
 };
 
@@ -114,7 +162,7 @@ export const FA2FromContacts: Story = {
   args: {
     address: parsePkh("KT1QTcAXeefhJ3iXLurRt81WRKdv7YqyYFmo"),
   },
-  decorators: story => {
+  decorators: Story => {
     const store = makeStore();
     const tokenBalance = uUSD(mockImplicitAddress(0));
     store.dispatch(tokensActions.addTokens({ network, tokens: [tokenBalance.token] }));
@@ -126,7 +174,11 @@ export const FA2FromContacts: Story = {
       })
     );
 
-    return <Provider store={store}>{story()}</Provider>;
+    return (
+      <Provider store={store}>
+        <Story />
+      </Provider>
+    );
   },
 };
 
@@ -134,12 +186,16 @@ export const UnknownFA12: Story = {
   args: {
     address: parsePkh("KT1G1cCRNBgQ48mVDjopHjEmTN5Sbtar8nn9"),
   },
-  decorators: story => {
+  decorators: Story => {
     const store = makeStore();
     const tokenBalance = hedgehoge(mockImplicitAddress(0));
     store.dispatch(tokensActions.addTokens({ network, tokens: [tokenBalance.token] }));
 
-    return <Provider store={store}>{story()}</Provider>;
+    return (
+      <Provider store={store}>
+        <Story />
+      </Provider>
+    );
   },
 };
 
@@ -147,7 +203,7 @@ export const FA12FromContacts: Story = {
   args: {
     address: parsePkh("KT1G1cCRNBgQ48mVDjopHjEmTN5Sbtar8nn9"),
   },
-  decorators: story => {
+  decorators: Story => {
     const store = makeStore();
     const tokenBalance = hedgehoge(mockImplicitAddress(0));
     store.dispatch(tokensActions.addTokens({ network, tokens: [tokenBalance.token] }));
@@ -159,6 +215,10 @@ export const FA12FromContacts: Story = {
       })
     );
 
-    return <Provider store={store}>{story()}</Provider>;
+    return (
+      <Provider store={store}>
+        <Story />
+      </Provider>
+    );
   },
 };
