@@ -1,6 +1,11 @@
 import { Flex, Grid, Text } from "@chakra-ui/react";
 import { useDynamicModalContext } from "@umami/components";
-import { type FA12TokenBalance, type FA2TokenBalance, tokenPrettyAmount } from "@umami/core";
+import {
+  type Account,
+  type FA12TokenBalance,
+  type FA2TokenBalance,
+  tokenPrettyAmount,
+} from "@umami/core";
 import { formatPkh, parseContractPkh } from "@umami/tezos";
 
 import { SendTokensFormPage } from "./SendTokensFormPage";
@@ -13,9 +18,10 @@ import { useColor } from "../../styles/useColor";
 
 type TokenProps = {
   token: FA12TokenBalance | FA2TokenBalance;
+  account: Account;
 };
 
-export const Token = ({ token }: TokenProps) => {
+export const Token = ({ token, account }: TokenProps) => {
   const color = useColor();
   const { openWith } = useDynamicModalContext();
   const address = parseContractPkh(token.contract).pkh;
@@ -74,7 +80,7 @@ export const Token = ({ token }: TokenProps) => {
         justifySelf="end"
         gridArea="action"
         width="fit-content"
-        onClick={() => openWith(<SendTokensFormPage token={token} />)}
+        onClick={() => openWith(<SendTokensFormPage sender={account} token={token} />)}
       />
     </Grid>
   );

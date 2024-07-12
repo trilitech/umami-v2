@@ -17,7 +17,11 @@ export const AccountCard = () => {
       borderRadius="40px"
     >
       <AccountSelector
-        account={{ name: accounts[0].label, pkh: accounts[0].address.pkh }}
+        account={{
+          name: accounts[0].label,
+          pkh: accounts[0].address.pkh,
+          address: accounts[0].address,
+        }}
         highlighted
       />
       <AccountBalance />

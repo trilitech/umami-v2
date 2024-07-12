@@ -26,7 +26,7 @@ export const RecipientsPage = ({ accounts }: RecipientsPageProps) => {
   return (
     <ModalContent>
       <ModalHeader>
-        <ModalBackButton onGoBack={goBack} />
+        <ModalBackButton onClick={goBack} />
         Select Recipient
         <ModalCloseButton />
       </ModalHeader>

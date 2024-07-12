@@ -3,10 +3,10 @@ import { type ButtonProps, IconButton } from "@chakra-ui/react";
 import { ArrowLeftCircleIcon } from "../../assets/icons";
 
 type ModalBackButtonProps = {
-  onGoBack: () => void;
+  onClick: () => void;
 } & ButtonProps;
 
-export const ModalBackButton = ({ onGoBack, ...props }: ModalBackButtonProps) => (
+export const ModalBackButton = ({ onClick, ...props }: ModalBackButtonProps) => (
   <IconButton
     position="absolute"
     top={{ base: "12px", lg: "18px" }}
@@ -15,7 +15,7 @@ export const ModalBackButton = ({ onGoBack, ...props }: ModalBackButtonProps) =>
     color="gray.400"
     aria-label="Back"
     icon={<ArrowLeftCircleIcon />}
-    onClick={onGoBack}
+    onClick={onClick}
     variant="empty"
     {...props}
   />

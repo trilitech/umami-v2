@@ -13,55 +13,41 @@ import {
   Stack,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import { useDynamicModalContext, useDynamicModalFormContext } from "@umami/components";
 import {
-  type Account,
+  type FormPagePropsWithSender,
+  FormSubmitButtons,
+  formDefaultValues,
+  makeValidateDecimals,
+  useAddToBatchFormAction,
+  useDynamicModalContext,
+  useDynamicModalFormContext,
+  useHandleOnSubmitFormActions,
+  useOpenSignPageFormAction,
+} from "@umami/components";
+import {
   type FA12TokenBalance,
   type FA2TokenBalance,
+  type FA2Transfer,
+  type TokenTransfer,
   formatTokenAmount,
+  getRealAmount,
   getSmallestUnit,
   tokenDecimals,
   tokenSymbolSafe,
 } from "@umami/core";
 import { useAllAccounts, useContactsForSelectedNetwork } from "@umami/state";
-import { type RawPkh } from "@umami/tezos";
+import { type RawPkh, parseContractPkh, parsePkh } from "@umami/tezos";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { RecipientsPage } from "./RecipientsPage";
+import { SignTokensPage } from "./SignTokensPage";
 import { ModalCloseButton } from "../../components/ModalCloseButton";
 
-export type FormPageProps<T> = { sender?: Account; form?: T };
-
-export const formDefaultValues = <T,>({ sender, form }: FormPageProps<T>) => {
-  if (form) {
-    return form;
-  } else if (sender) {
-    return { sender: sender.address.pkh };
-  } else {
-    return {};
-  }
-};
-
-export const makeValidateDecimals = (decimals: number) => (val: string) => {
-  if (val.includes(".")) {
-    const decimalPart = val.split(".")[1];
-    if (decimalPart.length > decimals) {
-      return `Please enter a value with up to ${decimals} decimal places`;
-    }
-  }
-  return true;
-};
-
-type SendTokensFormProps = { account: Account; token: FA12TokenBalance | FA2TokenBalance };
 type FormValues = {
   sender: RawPkh;
   recipient: RawPkh;
   prettyAmount: string;
 };
-
-type RequiredFields<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>;
-
-type FormPagePropsWithSender<T> = RequiredFields<FormPageProps<T>, "sender">;
 
 export const SendTokensFormPage = (
   props: FormPagePropsWithSender<FormValues> & { token: FA12TokenBalance | FA2TokenBalance }
@@ -75,6 +61,8 @@ export const SendTokensFormPage = (
     ls: "Enter address or select from contacts",
   });
   const { formState, setFormState } = useDynamicModalFormContext();
+
+  const { token } = props;
 
   const form = useForm<FormValues>({
     mode: "onBlur",
@@ -92,7 +80,23 @@ export const SendTokensFormPage = (
   const accounts = useAllAccounts().map(account => ({
     name: account.label,
     pkh: account.address.pkh,
+    address: account.address,
   }));
+
+  const openSignPage = useOpenSignPageFormAction({
+    SignPage: SignTokensPage,
+    signPageExtraData: { token },
+    FormPage: SendTokensFormPage,
+    defaultFormPageProps: props,
+    toOperation: toOperation(token),
+  });
+
+  const addToBatch = useAddToBatchFormAction(toOperation(token));
+
+  const {
+    onFormSubmitActionHandlers: [onSingleSubmit],
+    isLoading,
+  } = useHandleOnSubmitFormActions([openSignPage, addToBatch]);
 
   return (
     <FormProvider {...form}>
@@ -103,7 +107,7 @@ export const SendTokensFormPage = (
       >
         <ModalHeader>
           Send
-          <ModalCloseButton  />
+          <ModalCloseButton />
         </ModalHeader>
         <form>
           <ModalBody>
@@ -160,17 +164,32 @@ export const SendTokensFormPage = (
           </ModalBody>
         </form>
         <ModalFooter>
-          <Button
-            width="full"
-            isDisabled={!isValid}
-            onClick={handleSubmit(data => console.log("submit", data))}
-            rounded="full"
-            variant="primary"
-          >
-            Preview
-          </Button>
+          <FormSubmitButtons
+            isLoading={isLoading}
+            isValid={isValid}
+            onSingleSubmit={handleSubmit(onSingleSubmit)}
+          />
         </ModalFooter>
       </ModalContent>
     </FormProvider>
   );
 };
+
+const toOperation =
+  (token: FA12TokenBalance | FA2TokenBalance) =>
+  (formValues: FormValues): TokenTransfer => {
+    const fa2Operation: FA2Transfer = {
+      type: "fa2",
+      sender: parsePkh(formValues.sender),
+      recipient: parsePkh(formValues.recipient),
+      contract: parseContractPkh(token.contract),
+      tokenId: token.tokenId,
+      amount: getRealAmount(token, formValues.prettyAmount),
+    };
+
+    if (token.type === "fa2") {
+      return fa2Operation;
+    }
+
+    return { ...fa2Operation, type: "fa1.2", tokenId: "0" };
+  };

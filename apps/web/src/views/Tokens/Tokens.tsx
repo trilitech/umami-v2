@@ -15,7 +15,7 @@ export const Tokens = () => {
       {availableTokens.length ? (
         <VStack width="full">
           {availableTokens.map(token => (
-            <Token key={fullId(token)} token={token} />
+            <Token key={fullId(token)} account={account} token={token} />
           ))}
         </VStack>
       ) : (
