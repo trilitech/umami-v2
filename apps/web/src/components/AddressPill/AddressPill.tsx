@@ -19,7 +19,6 @@ import { LeftIcon } from "./LeftIcon";
 import { RightIcon } from "./RightIcon";
 import { useColor } from "../../styles/useColor";
 
-// TODO: update colors when design's finalized
 export const AddressPill = memo(
   ({
     address: rawAddress,
@@ -49,11 +48,11 @@ export const AddressPill = memo(
     /* istanbul ignore if */
     if (isPopoverOpen) {
       bgColor = color("green");
-      leftIconColor = color("white");
-      rightIconColor = color("white");
-      textColor = color("white");
+      leftIconColor = color("white", "black");
+      rightIconColor = color("white", "black");
+      textColor = color("white", "black");
     } else if (isMouseHover) {
-      bgColor = color("gray.450");
+      bgColor = color("gray.200", "gray.300");
       leftIconColor = color("gray.400");
       rightIconColor = color("gray.400");
       textColor = color("gray.700");
@@ -71,6 +70,7 @@ export const AddressPill = memo(
         width="fit-content"
         background={bgColor}
         borderRadius="full"
+        cursor="pointer"
         data-testid="address-pill"
         onMouseEnter={() => setIsMouseHover(true)}
         onMouseLeave={() => setIsMouseHover(false)}
@@ -83,7 +83,6 @@ export const AddressPill = memo(
               gap="4px"
               width="fit-content"
               _focus={{ boxShadow: "none" }}
-              cursor="pointer"
               data-testid="address-pill-copy-button"
               marginX="10px"
               onClick={e => e.stopPropagation()}
