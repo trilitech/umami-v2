@@ -27,18 +27,32 @@ export const StakeTile = ({ operation, ...props }: { operation: StakeOperation }
       operationType="Stake"
       status={status}
       timestamp={operation.timestamp}
-      title={
-        <TzktLink counter={operation.counter} data-testid="title" hash={operation.hash}>
-          <Flex gap="4px">
-            <Heading color={color("900")} size="sm">
-              Stake:
-            </Heading>
-            <Text lineHeight="22px">{amount}</Text>
-          </Flex>
-        </TzktLink>
-      }
+      title={<StakeTileTitle amount={amount} counter={operation.counter} hash={operation.hash} />}
       to={operation.baker}
       {...props}
     />
+  );
+};
+
+export const StakeTileTitle = ({
+  counter,
+  hash,
+  amount,
+}: {
+  counter: number;
+  hash: string;
+  amount: string;
+}) => {
+  const color = useColor();
+
+  return (
+    <TzktLink counter={counter} data-testid="title" hash={hash}>
+      <Flex gap="4px">
+        <Heading color={color("900")} size="sm">
+          Stake:
+        </Heading>
+        <Text lineHeight="22px">{amount}</Text>
+      </Flex>
+    </TzktLink>
   );
 };

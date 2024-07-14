@@ -121,14 +121,14 @@ export type TzktUnstakeRequest = {
   staker: TzktAlias;
 };
 
-export type OperationStatus = "applied" | "failed" | "backtracked" | "skipped";
+export type TzktOperationStatus = "applied" | "failed" | "backtracked" | "skipped";
 
 type CommonOperationFields = {
   id: number;
   level: number;
   hash: string;
   counter: number;
-  status: OperationStatus;
+  status: TzktOperationStatus;
   sender: TzktAlias;
   timestamp: string;
   bakerFee?: number;

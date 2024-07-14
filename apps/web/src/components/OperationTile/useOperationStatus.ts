@@ -1,5 +1,5 @@
 import { useIsBlockFinalised } from "@umami/state";
-import { type OperationStatus as TzktOperationStatus } from "@umami/tzkt";
+import { type TzktOperationStatus } from "@umami/tzkt";
 
 export type OperationStatus = "applied" | "pending" | "failed";
 

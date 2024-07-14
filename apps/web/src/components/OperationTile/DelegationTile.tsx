@@ -30,14 +30,33 @@ export const DelegationTile = ({
       status={status}
       timestamp={operation.timestamp}
       title={
-        <TzktLink counter={operation.counter} data-testid="title" hash={operation.hash}>
-          <Heading color={color("900")} size="sm">
-            {operationType}
-          </Heading>
-        </TzktLink>
+        <DelegationTileTitle
+          counter={operation.counter}
+          hash={operation.hash}
+          operationType={operationType}
+        />
       }
       to={operation.newDelegate}
       {...props}
     />
+  );
+};
+
+export const DelegationTileTitle = ({
+  counter,
+  hash,
+  operationType,
+}: {
+  counter: number;
+  hash: string;
+  operationType: string;
+}) => {
+  const color = useColor();
+  return (
+    <TzktLink counter={counter} data-testid="title" hash={hash}>
+      <Heading color={color("900")} size="sm">
+        {operationType}
+      </Heading>
+    </TzktLink>
   );
 };

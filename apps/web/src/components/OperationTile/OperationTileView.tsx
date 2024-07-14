@@ -13,7 +13,7 @@ import { AddressPill } from "../AddressPill";
 type Props = {
   icon: ReactNode;
   title: ReactNode;
-  fee: string | null;
+  fee: number | string | null;
   destination: OperationDestination;
   from?: TzktAlias | Address | null;
   to?: TzktAlias | Address | null;

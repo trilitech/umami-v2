@@ -1,6 +1,6 @@
 import { type FlexProps, Heading, Text } from "@chakra-ui/react";
 import { operationSign } from "@umami/core";
-import { useGetOperationDestination } from "@umami/state";
+import { type OperationDestination, useGetOperationDestination } from "@umami/state";
 import { TEZ, formatTezAmount } from "@umami/tezos";
 import { type TransactionOperation } from "@umami/tzkt";
 
@@ -19,9 +19,6 @@ export const TransactionTile = ({
     operation.sender.address,
     operation.target?.address
   );
-  const amount = formatTezAmount(operation.amount);
-  const titleColor = useOperationColor(destination);
-  const sign = operationSign(destination);
   const fee = useFee(operation);
 
   const status = useOperationStatus(operation.level, operation.status);
@@ -37,22 +34,42 @@ export const TransactionTile = ({
       status={status}
       timestamp={operation.timestamp}
       title={
-        <TzktLink
-          color={titleColor}
+        <TransactionTileTitle
+          amount={operation.amount}
           counter={operation.counter}
-          data-testid="title"
+          destination={destination}
           hash={operation.hash}
-        >
-          <Heading color={titleColor} size="sm">
-            {sign} {amount}{" "}
-            <Text display="inline" color={titleColor} fontWeight={400}>
-              {TEZ}
-            </Text>
-          </Heading>
-        </TzktLink>
+        />
       }
       to={operation.target}
       {...props}
     />
+  );
+};
+
+export const TransactionTileTitle = ({
+  amount: rawAmount,
+  destination,
+  counter,
+  hash,
+}: {
+  amount: number;
+  destination: OperationDestination;
+  counter: number;
+  hash: string;
+}) => {
+  const amount = formatTezAmount(rawAmount);
+  const titleColor = useOperationColor(destination);
+  const sign = operationSign(destination);
+
+  return (
+    <TzktLink color={titleColor} counter={counter} data-testid="title" hash={hash}>
+      <Heading color={titleColor} size="sm">
+        {sign} {amount}{" "}
+        <Text display="inline" color={titleColor} fontWeight={400}>
+          {TEZ}
+        </Text>
+      </Heading>
+    </TzktLink>
   );
 };

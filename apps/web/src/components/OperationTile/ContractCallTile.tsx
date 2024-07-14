@@ -29,14 +29,33 @@ export const ContractCallTile = ({
       status={status}
       timestamp={operation.timestamp}
       title={
-        <TzktLink counter={operation.counter} data-testid="title" hash={operation.hash}>
-          <Heading color={color("900")} size="sm">
-            Contract Call: {operation.parameter?.entrypoint}
-          </Heading>
-        </TzktLink>
+        <ContractCallTileTitle
+          counter={operation.counter}
+          entrypoint={operation.parameter?.entrypoint}
+          hash={operation.hash}
+        />
       }
       to={operation.target}
       {...props}
     />
+  );
+};
+
+export const ContractCallTileTitle = ({
+  counter,
+  hash,
+  entrypoint,
+}: {
+  counter: number;
+  hash: string;
+  entrypoint: string | undefined;
+}) => {
+  const color = useColor();
+  return (
+    <TzktLink counter={counter} data-testid="title" hash={hash}>
+      <Heading color={color("900")} size="sm">
+        Contract Call: {entrypoint}
+      </Heading>
+    </TzktLink>
   );
 };

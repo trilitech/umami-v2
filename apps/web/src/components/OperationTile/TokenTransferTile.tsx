@@ -6,7 +6,7 @@ import {
   tokenNameSafe,
   tokenPrettyAmount,
 } from "@umami/core";
-import { useGetOperationDestination } from "@umami/state";
+import { type OperationDestination, useGetOperationDestination } from "@umami/state";
 import { getIPFSurl } from "@umami/tezos";
 import { type TokenTransferOperation, type TransactionOperation } from "@umami/tzkt";
 
@@ -32,25 +32,68 @@ export const TokenTransferTile = ({
   tokenTransfer: TokenTransferOperation;
   token: Token;
 } & FlexProps) => {
-  const color = useColor();
   const fee = useFee(operation);
   const status = useOperationStatus(tokenTransfer.level, operation?.status);
-  const rawAmount = tokenTransfer.amount;
 
   const destination = useGetOperationDestination(
     operation?.sender.address || tokenTransfer.from?.address,
     operation?.target?.address || tokenTransfer.to?.address
   );
+
+  const rawAmount = tokenTransfer.amount;
+  const amount = tokenPrettyAmount(rawAmount, token, { showSymbol: true });
+
+  const title = (
+    <TokenTransferTileTitle
+      amount={amount}
+      destination={destination}
+      migrationId={tokenTransfer.migrationId}
+      originationId={tokenTransfer.originationId}
+      token={token}
+      transactionId={tokenTransfer.transactionId}
+    />
+  );
+
+  return (
+    <OperationTileView
+      data-testid="operation-tile-token-transfer"
+      destination={destination}
+      fee={fee}
+      from={tokenTransfer.from}
+      icon={<TransactionDirectionIcon marginRight="8px" destination={destination} />}
+      operationType="Token Transfer"
+      status={status}
+      timestamp={tokenTransfer.timestamp}
+      title={title}
+      to={tokenTransfer.to}
+      {...props}
+    />
+  );
+};
+
+export const TokenTransferTileTitle = ({
+  token,
+  amount,
+  destination,
+  transactionId,
+  originationId,
+  migrationId,
+}: {
+  token: Token;
+  amount: string;
+  destination: OperationDestination;
+  transactionId?: number;
+  originationId?: number;
+  migrationId?: number;
+}) => {
+  const color = useColor();
+  const titleColor = useOperationColor(destination);
   const isNFT = token.type === "nft";
 
-  const tokenAmount = tokenPrettyAmount(rawAmount, token, { showSymbol: true });
-
-  const titleColor = useOperationColor(destination);
   const underlineColor = isNFT ? color("black") : titleColor;
-
   const sign = operationSign(destination);
 
-  const title = isNFT ? (
+  return isNFT ? (
     <Tooltip
       padding="8px"
       background={color("white")}
@@ -69,13 +112,13 @@ export const TokenTransferTile = ({
         <TzktLink
           color={underlineColor}
           data-testid="title"
-          migrationId={tokenTransfer.migrationId}
-          originationId={tokenTransfer.originationId}
-          transactionId={tokenTransfer.transactionId}
+          migrationId={migrationId}
+          originationId={originationId}
+          transactionId={transactionId}
         >
           <Heading display="inline" color={titleColor} size="sm">
             {sign}
-            {tokenAmount}
+            {amount}
           </Heading>
           <Heading display="inline" size="sm">
             {" "}
@@ -88,30 +131,14 @@ export const TokenTransferTile = ({
     <TzktLink
       color={underlineColor}
       data-testid="title"
-      migrationId={tokenTransfer.migrationId}
-      originationId={tokenTransfer.originationId}
-      transactionId={tokenTransfer.transactionId}
+      migrationId={migrationId}
+      originationId={originationId}
+      transactionId={transactionId}
     >
       <Heading display="inline" color={titleColor} size="sm">
         {sign}
-        {tokenAmount}
+        {amount}
       </Heading>
     </TzktLink>
-  );
-
-  return (
-    <OperationTileView
-      data-testid="operation-tile-token-transfer"
-      destination={destination}
-      fee={fee}
-      from={tokenTransfer.from}
-      icon={<TransactionDirectionIcon marginRight="8px" destination={destination} />}
-      operationType="Token Transfer"
-      status={status}
-      timestamp={tokenTransfer.timestamp}
-      title={title}
-      to={tokenTransfer.to}
-      {...props}
-    />
   );
 };

@@ -32,18 +32,32 @@ export const UnstakeTile = ({
       operationType="Unstake"
       status={status}
       timestamp={operation.timestamp}
-      title={
-        <TzktLink counter={operation.counter} data-testid="title" hash={operation.hash}>
-          <Flex gap="4px">
-            <Heading color={color("900")} size="sm">
-              Unstake:
-            </Heading>
-            <Text lineHeight="22px">{amount}</Text>
-          </Flex>
-        </TzktLink>
-      }
+      title={<UnstakeTileTitle amount={amount} counter={operation.counter} hash={operation.hash} />}
       to={operation.sender}
       {...props}
     />
+  );
+};
+
+export const UnstakeTileTitle = ({
+  counter,
+  hash,
+  amount,
+}: {
+  counter: number;
+  hash: string;
+  amount: string;
+}) => {
+  const color = useColor();
+
+  return (
+    <TzktLink counter={counter} data-testid="title" hash={hash}>
+      <Flex gap="4px">
+        <Heading color={color("900")} size="sm">
+          Unstake:
+        </Heading>
+        <Text lineHeight="22px">{amount}</Text>
+      </Flex>
+    </TzktLink>
   );
 };

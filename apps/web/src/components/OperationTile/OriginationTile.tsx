@@ -36,13 +36,33 @@ export const OriginationTile = ({
       status={status}
       timestamp={operation.timestamp}
       title={
-        <TzktLink counter={operation.counter} data-testid="title" hash={operation.hash}>
-          <Heading color={color("900")} size="sm">
-            {contractTitle}
-          </Heading>
-        </TzktLink>
+        <OriginationTileTitle
+          counter={operation.counter}
+          hash={operation.hash}
+          operationType={contractTitle}
+        />
       }
       {...props}
     />
+  );
+};
+
+export const OriginationTileTitle = ({
+  counter,
+  hash,
+  operationType,
+}: {
+  counter: number;
+  hash: string;
+  operationType: string;
+}) => {
+  const color = useColor();
+
+  return (
+    <TzktLink counter={counter} data-testid="title" hash={hash}>
+      <Heading color={color("900")} size="sm">
+        {operationType}
+      </Heading>
+    </TzktLink>
   );
 };

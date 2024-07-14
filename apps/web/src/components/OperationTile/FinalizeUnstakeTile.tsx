@@ -1,4 +1,4 @@
-import { type FlexProps, Heading, Icon, Text } from "@chakra-ui/react";
+import { Flex, type FlexProps, Heading, Icon, Text } from "@chakra-ui/react";
 import { prettyTezAmount } from "@umami/tezos";
 import { type FinalizeUnstakeOperation } from "@umami/tzkt";
 
@@ -30,15 +30,37 @@ export const FinalizeUnstakeTile = ({
       status={status}
       timestamp={operation.timestamp}
       title={
-        <TzktLink counter={operation.counter} data-testid="title" hash={operation.hash}>
-          <Heading color={color("900")} size="sm">
-            Finalize Unstake:
-          </Heading>
-          <Text>{amount}</Text>
-        </TzktLink>
+        <FinalizeUnstakeTileTitle
+          amount={amount}
+          counter={operation.counter}
+          hash={operation.hash}
+        />
       }
       to={operation.sender}
       {...props}
     />
+  );
+};
+
+export const FinalizeUnstakeTileTitle = ({
+  counter,
+  hash,
+  amount,
+}: {
+  counter: number;
+  hash: string;
+  amount: string;
+}) => {
+  const color = useColor();
+
+  return (
+    <TzktLink counter={counter} data-testid="title" hash={hash}>
+      <Flex gap="4px">
+        <Heading color={color("900")} size="sm">
+          Finalize Unstake:
+        </Heading>
+        <Text lineHeight="22px">{amount}</Text>
+      </Flex>
+    </TzktLink>
   );
 };

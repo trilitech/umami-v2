@@ -44,6 +44,7 @@
     "@umami/components": "workspace:^",
     "@umami/core": "workspace:^",
     "@umami/data-polling": "workspace:^",
+    "@umami/multisig": "workspace:^",
     "@umami/state": "workspace:^",
     "@umami/tezos": "workspace:^",
     "@umami/tzkt": "workspace:^",
@@ -75,6 +76,7 @@
   "devDependencies": {
     "@chakra-ui/storybook-addon": "^5.1.0",
     "@chromatic-com/storybook": "^1.6.1",
+    "@emotion/is-prop-valid": "^1.2.2",
     "@storybook/addon-essentials": "^8.2.2",
     "@storybook/addon-interactions": "^8.2.2",
     "@storybook/addon-links": "^8.2.2",
@@ -110,6 +112,7 @@
     "jest": "^29.7.0",
     "jest-transformer-svg": "^2.0.2",
     "madge": "^7.0.0",
+    "node-fetch": "^3.3.2",
     "prettier": "^3.3.2",
     "rimraf": "^6.0.1",
     "storybook": "^8.2.2",
