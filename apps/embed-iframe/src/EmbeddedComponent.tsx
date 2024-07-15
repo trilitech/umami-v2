@@ -15,7 +15,7 @@ import "./EmbeddedComponent.scss";
 import { useEmbedApp } from "./EmbedAppContext";
 
 export function EmbeddedComponent() {
-  const { userDataRef, networkRef } = useEmbedApp();
+  const { getNetwork, getUserData, setNetwork, setUserData } = useEmbedApp();
 
   const { onOpen: openLoginModal, modalElement: loginModalElement } = useLoginModal();
   const { onOpen: openOperationModal, modalElement: operationModalElement } =
@@ -32,7 +32,11 @@ export function EmbeddedComponent() {
       (window as any).attachEvent("onmessage", handleRequest);
     }
 
-    sendResponse({ type: "init_complete" });
+    if (getUserData() !== null) {
+      sendResponse({ type: "init_complete", userData: getUserData()! });
+    } else {
+      sendResponse({ type: "init_complete" });
+    }
 
     return () => {
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -58,12 +62,20 @@ export function EmbeddedComponent() {
 
       switch (data.type) {
         case "login_request":
-          networkRef.current = data.network;
-          openLoginModal();
+          if (getUserData() !== null) {
+            sendResponse({
+              type: "login_response",
+              error: "user_already_logged_in",
+              errorMessage: "UserData is already available",
+            });
+          } else {
+            setNetwork(data.network);
+            openLoginModal();
+          }
           break;
         case "logout_request":
-          networkRef.current = null;
-          userDataRef.current = null;
+          setNetwork(null);
+          setUserData(null);
           sendResponse({ type: "logout_response" });
           break;
         case "operation_request":
@@ -78,7 +90,7 @@ export function EmbeddedComponent() {
   };
 
   const validateClientPermissions = (origin: string, request: RequestMessage): boolean => {
-    const network = request.type === "login_request" ? request.network : networkRef.current;
+    const network = request.type === "login_request" ? request.network : getNetwork();
     if (network === null) {
       sendResponse({
         type: toMatchingResponseType(request.type),
@@ -128,14 +140,14 @@ export function EmbeddedComponent() {
   };
 
   const validateUserSession = (requestType: RequestType): boolean => {
-    if (userDataRef.current === null) {
+    if (getUserData() === null) {
       sendResponse({
         type: toMatchingResponseType(requestType),
         error: "no_login_data",
         errorMessage: "User's login data is not available",
       });
       return false;
-    } else if (networkRef.current === null) {
+    } else if (getNetwork() === null) {
       sendResponse({
         type: toMatchingResponseType(requestType),
         error: "no_network_data",

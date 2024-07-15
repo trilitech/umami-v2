@@ -38,19 +38,19 @@ export const OperationModalContent = ({
   closeModal: () => void;
 }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const { userDataRef, networkRef } = useEmbedApp();
+  const { getNetwork, getUserData } = useEmbedApp();
 
   const onClick = async () => {
     setIsLoading(true);
     try {
       const { secretKey } = await withTimeout(
-        async () => Auth.forIDP(userDataRef.current!.typeOfLogin, "embed").getCredentials(),
+        async () => Auth.forIDP(getUserData()!.typeOfLogin, "embed").getCredentials(),
         SIGN_TIMEOUT
       );
       const toolkit = await makeToolkit({
         type: "social",
         secretKey,
-        network: toTezosNetwork(networkRef.current!),
+        network: toTezosNetwork(getNetwork()!),
       });
 
       const { opHash } = await toolkit.wallet.batch(operations.map(toTaquitoOperation)).send();

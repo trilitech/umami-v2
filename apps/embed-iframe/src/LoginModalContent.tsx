@@ -16,7 +16,7 @@ const LOGIN_TIMEOUT = 3 * 60 * 1000; // 3 minutes
 
 export const LoginModalContent = ({ closeModal }: { closeModal: () => void }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const { userDataRef } = useEmbedApp();
+  const { setUserData } = useEmbedApp();
 
   const onLoginClick = async (loginType: TypeOfLogin) => {
     setIsLoading(true);
@@ -28,9 +28,10 @@ export const LoginModalContent = ({ closeModal }: { closeModal: () => void }) =>
       const signer = new InMemorySigner(secretKey);
       const { pk, pkh } = { pk: await signer.publicKey(), pkh: await signer.publicKeyHash() };
 
-      userDataRef.current = { pk, pkh, typeOfLogin: loginType, id: name };
+      const userData = { pk, pkh, typeOfLogin: loginType, id: name };
+      setUserData(userData);
       sendResponse({
-        ...userDataRef.current,
+        ...userData,
         type: "login_response",
       });
     } catch (error) {
