@@ -1,3 +1,4 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import * as testLib from "@testing-library/react";
 import { type UmamiStore, makeStore } from "@umami/state";
 import { type PropsWithChildren, type ReactNode, act } from "react";
@@ -5,7 +6,11 @@ import { Provider } from "react-redux";
 
 const makeWrapper =
   (store: UmamiStore) =>
-  ({ children }: PropsWithChildren) => <Provider store={store}>{children}</Provider>;
+  ({ children }: PropsWithChildren) => (
+    <QueryClientProvider client={new QueryClient()}>
+      <Provider store={store}>{children}</Provider>
+    </QueryClientProvider>
+  );
 
 const customRenderHook = <
   Result,

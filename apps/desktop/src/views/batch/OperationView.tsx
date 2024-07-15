@@ -1,12 +1,11 @@
 import { AspectRatio, Flex, Heading, Image, Link, Tooltip } from "@chakra-ui/react";
 import { type Operation, thumbnailUri, tokenNameSafe, tokenUri } from "@umami/core";
 import { useGetToken, useSelectedNetwork } from "@umami/state";
-import { prettyTezAmount } from "@umami/tezos";
+import { getIPFSurl, prettyTezAmount } from "@umami/tezos";
 
 import { tokenTitle } from "./tokenTitle";
 import { BakerIcon, OutgoingArrow } from "../../assets/icons";
 import colors from "../../style/colors";
-import { getIPFSurl } from "../../utils/token/utils";
 
 export const OperationView = ({ operation }: { operation: Operation }) => {
   const getToken = useGetToken();

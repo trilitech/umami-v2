@@ -1,19 +1,17 @@
 import { Box, Center, Flex, Text } from "@chakra-ui/react";
+import { operationSign } from "@umami/core";
+import { useGetOperationDestination } from "@umami/state";
 import { parsePkh, prettyTezAmount } from "@umami/tezos";
 import { type TransactionOperation } from "@umami/tzkt";
 
 import { Fee } from "./Fee";
 import { InternalPrefix } from "./InternalPrefix";
+import { operationColor } from "./operationColor";
 import { OperationStatus } from "./OperationStatus";
 import { OperationTypeWrapper } from "./OperationTypeWrapper";
 import { Timestamp } from "./Timestamp";
 import { TransactionDirectionIcon } from "./TransactionDirectionIcon";
 import { TzktLink } from "./TzktLink";
-import {
-  operationColor,
-  operationSign,
-  useGetOperationDestination,
-} from "./useGetOperationDestination";
 import colors from "../../style/colors";
 import { AddressPill } from "../AddressPill/AddressPill";
 

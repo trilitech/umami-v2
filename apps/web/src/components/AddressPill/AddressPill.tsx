@@ -57,10 +57,10 @@ export const AddressPill = memo(
       rightIconColor = color("gray.400");
       textColor = color("gray.700");
     } else {
-      bgColor = color("gray.100");
-      leftIconColor = color("gray.400");
-      rightIconColor = color("gray.500");
-      textColor = color("gray.700");
+      bgColor = color("100");
+      leftIconColor = color("400");
+      rightIconColor = color("500");
+      textColor = color("700");
     }
 
     return (

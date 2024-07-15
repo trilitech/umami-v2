@@ -1,11 +1,10 @@
-import { mockLedgerAccount } from "@umami/core";
+import { mockLedgerAccount, originationFixture } from "@umami/core";
 import { type UmamiStore, addTestAccount, makeStore, networksActions } from "@umami/state";
 import { DefaultNetworks, TEZ, mockContractAddress } from "@umami/tezos";
 import { type OriginationOperation } from "@umami/tzkt";
 
 import { OperationTileContext } from "./OperationTileContext";
 import { OriginationTile } from "./OriginationTile";
-import { originationFixture } from "./testUtils";
 import { render, screen } from "../../mocks/testUtils";
 
 const fixture = (context: any, operation: OriginationOperation) => (

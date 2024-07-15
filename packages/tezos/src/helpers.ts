@@ -102,3 +102,6 @@ export const getLedgerPublicKeyPair = async (derivationPath?: string): Promise<P
   await transport.close();
   return { pk, pkh };
 };
+
+export const getIPFSurl = (ipfsPath?: string) =>
+  ipfsPath?.replace("ipfs://", "https://ipfs.io/ipfs/");

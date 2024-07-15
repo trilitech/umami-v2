@@ -9,14 +9,13 @@ import {
   type SimpleGridProps,
   Text,
 } from "@chakra-ui/react";
-import { type NFTBalance, fullId, thumbnailUri } from "@umami/core";
-import { type RawPkh } from "@umami/tezos";
+import { type NFTBalance, fullId, sortedByLastUpdate, thumbnailUri } from "@umami/core";
+import { type RawPkh, getIPFSurl } from "@umami/tezos";
 import { type FC } from "react";
 import { Link } from "react-router-dom";
 
 import { ViewAllLink } from "./ViewAllLink";
 import colors from "../../../style/colors";
-import { getIPFSurl, sortedByLastUpdate } from "../../../utils/token/utils";
 import { NoNFTs } from "../../NoItems";
 
 const MAX_NFTS_SIZE = 18;

@@ -1,13 +1,14 @@
-import { mockImplicitAccount, mockLedgerAccount } from "@umami/core";
-import { type UmamiStore, addTestAccount, makeStore } from "@umami/state";
-
-import { InternalPrefix } from "./InternalPrefix";
 import {
   delegationFixture,
+  mockImplicitAccount,
+  mockLedgerAccount,
   originationFixture,
   tokenTransferFixture,
   transactionFixture,
-} from "./testUtils";
+} from "@umami/core";
+import { type UmamiStore, addTestAccount, makeStore } from "@umami/state";
+
+import { InternalPrefix } from "./InternalPrefix";
 import { render, screen } from "../../mocks/testUtils";
 
 let store: UmamiStore;

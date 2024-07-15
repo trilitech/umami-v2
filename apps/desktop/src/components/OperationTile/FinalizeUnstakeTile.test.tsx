@@ -1,11 +1,10 @@
-import { mockLedgerAccount } from "@umami/core";
+import { finalizeUnstakeFixture, mockLedgerAccount } from "@umami/core";
 import { type UmamiStore, addTestAccount, makeStore, networksActions } from "@umami/state";
 import { DefaultNetworks, TEZ } from "@umami/tezos";
 import { type FinalizeUnstakeOperation } from "@umami/tzkt";
 
 import { FinalizeUnstakeTile } from "./FinalizeUnstakeTile";
 import { OperationTileContext } from "./OperationTileContext";
-import { finalizeUnstakeFixture } from "./testUtils";
 import { render, screen } from "../../mocks/testUtils";
 
 const fixture = (context: any, operation: FinalizeUnstakeOperation) => (

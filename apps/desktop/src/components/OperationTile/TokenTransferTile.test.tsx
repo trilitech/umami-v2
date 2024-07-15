@@ -1,14 +1,29 @@
-import { type Token, fromRawToken, mockLedgerAccount } from "@umami/core";
-import { type UmamiStore, addTestAccount, makeStore, networksActions } from "@umami/state";
+import {
+  type Token,
+  fromRawToken,
+  mockLedgerAccount,
+  tokenTransferFixture,
+  transactionFixture,
+} from "@umami/core";
+import {
+  type UmamiStore,
+  addTestAccount,
+  makeStore,
+  networksActions,
+  useGetOperationDestination,
+} from "@umami/state";
 import { ghostnetThezard } from "@umami/test-utils";
 import { DefaultNetworks, TEZ, formatPkh, mockImplicitAddress } from "@umami/tezos";
 import { type TokenTransferOperation, type TransactionOperation } from "@umami/tzkt";
 
 import { OperationTileContext } from "./OperationTileContext";
-import { tokenTransferFixture, transactionFixture } from "./testUtils";
 import { TokenTransferTile } from "./TokenTransferTile";
-import * as operationDestinationModule from "./useGetOperationDestination";
 import { render, screen } from "../../mocks/testUtils";
+
+jest.mock("@umami/state", () => ({
+  ...jest.requireActual("@umami/state"),
+  useGetOperationDestination: jest.fn(),
+}));
 
 const fixture = (
   context: any,
@@ -28,6 +43,7 @@ let store: UmamiStore;
 
 beforeEach(() => {
   store = makeStore();
+  jest.mocked(useGetOperationDestination).mockReturnValue("outgoing");
 });
 
 describe("<TokenTransferTile />", () => {
@@ -37,6 +53,7 @@ describe("<TokenTransferTile />", () => {
   ])("in $mode mode", contextValue => {
     describe("sign", () => {
       it("shows '+' for incoming transactions", () => {
+        jest.mocked(useGetOperationDestination).mockReturnValue("incoming");
         addTestAccount(store, mockLedgerAccount(1));
 
         render(fixture(contextValue, tokenTransferFixture()), { store });
@@ -253,9 +270,7 @@ describe("<TokenTransferTile />", () => {
       afterEach(() => jest.restoreAllMocks());
 
       it("renders internal prefix for internal operations", () => {
-        jest
-          .spyOn(operationDestinationModule, "useGetOperationDestination")
-          .mockReturnValue("unrelated");
+        jest.mocked(useGetOperationDestination).mockReturnValue("unrelated");
 
         render(fixture(contextValue, transfer), { store });
 
@@ -263,9 +278,7 @@ describe("<TokenTransferTile />", () => {
       });
 
       it("does not render internal prefix for normal operations", () => {
-        jest
-          .spyOn(operationDestinationModule, "useGetOperationDestination")
-          .mockReturnValue("incoming");
+        jest.mocked(useGetOperationDestination).mockReturnValue("incoming");
         render(fixture(contextValue, transfer), { store });
 
         expect(screen.queryByTestId("internal-prefix")).not.toBeInTheDocument();

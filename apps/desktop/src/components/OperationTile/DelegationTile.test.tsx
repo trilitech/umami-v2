@@ -1,11 +1,10 @@
-import { mockLedgerAccount } from "@umami/core";
+import { delegationFixture, mockLedgerAccount } from "@umami/core";
 import { type UmamiStore, addTestAccount, makeStore, networksActions } from "@umami/state";
 import { DefaultNetworks, TEZ, formatPkh, mockImplicitAddress } from "@umami/tezos";
 import { type DelegationOperation } from "@umami/tzkt";
 
 import { DelegationTile } from "./DelegationTile";
 import { OperationTileContext } from "./OperationTileContext";
-import { delegationFixture } from "./testUtils";
 import { render, screen } from "../../mocks/testUtils";
 
 const fixture = (context: any, operation: DelegationOperation) => (

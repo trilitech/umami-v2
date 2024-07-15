@@ -1,11 +1,10 @@
-import { mockNFT } from "@umami/core";
+import { type NFTWithOwner, mockNFT } from "@umami/core";
 import { mockImplicitAddress } from "@umami/tezos";
 import { type PropsWithChildren, useState } from "react";
 
 import { NFTCard } from "./NFTCard";
 import { SelectedNFTContext } from "./SelectedNFTContext";
 import { act, render, screen, userEvent } from "../../mocks/testUtils";
-import { type NFTWithOwner } from "../../utils/token/utils";
 
 const TestWrapper = ({ nft, children }: PropsWithChildren<{ nft?: NFTWithOwner }>) => {
   const [selectedNFT, setSelectedNFT] = useState<NFTWithOwner | undefined>(nft);

@@ -1,11 +1,11 @@
 import { Flex } from "@chakra-ui/react";
+import { type NFTWithOwner } from "@umami/core";
 import { parsePkh } from "@umami/tezos";
 
 import { NFTDrawerCard } from "./NFTDrawerCard";
 import { AddressPill } from "../../components/AddressPill/AddressPill";
 import { CloseDrawerButton } from "../../components/CloseDrawerButton";
 import colors from "../../style/colors";
-import { type NFTWithOwner } from "../../utils/token/utils";
 
 export const NFTDrawerBody = ({
   nft,

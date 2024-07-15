@@ -1,10 +1,9 @@
 import { mockDelegation } from "@umami/core";
 import { mockImplicitAddress } from "@umami/tezos";
-import { type TzktCombinedOperation } from "@umami/tzkt";
+import { type TzktCombinedOperation, mockTzktTezTransfer } from "@umami/tzkt";
 
 import { OperationListDisplay } from "./OperationListDisplay";
 import { render, screen, waitFor } from "../../../mocks/testUtils";
-import { mockTzktTezTransfer } from "../../../mocks/transfers";
 
 describe("<OperationListDisplay />", () => {
   const OWNER = mockImplicitAddress(0).pkh;

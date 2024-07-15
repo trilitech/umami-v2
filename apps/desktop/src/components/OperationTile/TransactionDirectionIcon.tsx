@@ -1,6 +1,6 @@
 import { type IconProps } from "@chakra-ui/react";
+import { type OperationDestination } from "@umami/core";
 
-import { type OperationDestination } from "./useGetOperationDestination";
 import { ContractIcon, IncomingArrow, OutgoingArrow } from "../../assets/icons";
 
 export const TransactionDirectionIcon = ({

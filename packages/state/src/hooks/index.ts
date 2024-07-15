@@ -11,6 +11,7 @@ export * from "./labels";
 export * from "./mnemonic";
 export * from "./multisig";
 export * from "./network";
+export * from "./operations";
 export * from "./protocolSettings";
 export * from "./removeAccountDependencies";
 export * from "./setAccountData";

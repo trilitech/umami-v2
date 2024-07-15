@@ -1,4 +1,5 @@
 import { Box, Drawer, DrawerBody, DrawerContent, DrawerOverlay, Flex } from "@chakra-ui/react";
+import { type NFTWithOwner } from "@umami/core";
 import { useAllNfts } from "@umami/state";
 import { every, pick, sumBy } from "lodash";
 import { useEffect, useState } from "react";
@@ -9,7 +10,6 @@ import { SelectedNFTContext } from "./SelectedNFTContext";
 import { NoNFTs } from "../../components/NoItems";
 import { TopBar } from "../../components/TopBar";
 import { useAccountsFilter } from "../../components/useAccountsFilter";
-import { type NFTWithOwner } from "../../utils/token/utils";
 
 export const NFTsView = () => {
   const nfts = useAllNfts();

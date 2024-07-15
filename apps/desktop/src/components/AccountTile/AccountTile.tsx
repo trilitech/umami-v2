@@ -9,15 +9,14 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useAddressKind } from "@umami/components";
-import { type Account, fullId, thumbnailUri } from "@umami/core";
+import { type Account, fullId, sortedByLastUpdate, thumbnailUri } from "@umami/core";
 import { useGetAccountBalance, useGetAccountDelegate, useGetAccountNFTs } from "@umami/state";
-import { formatPkh, prettyTezAmount } from "@umami/tezos";
+import { formatPkh, getIPFSurl, prettyTezAmount } from "@umami/tezos";
 import { type ReactNode, useContext } from "react";
 import { Link } from "react-router-dom";
 
 import { AccountTileIcon } from "./AccountTileIcon";
 import colors from "../../style/colors";
-import { getIPFSurl, sortedByLastUpdate } from "../../utils/token/utils";
 import { SelectedAccountContext } from "../../views/home/SelectedAccountContext";
 import { color as identiconColor } from "../Identicon";
 
