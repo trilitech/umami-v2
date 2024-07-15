@@ -5809,22 +5809,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/query-devtools@npm:5.50.1":
-  version: 5.50.1
-  resolution: "@tanstack/query-devtools@npm:5.50.1"
-  checksum: 10/56e4909e981650d25b149662587b4d7ae91201823572425c1c35830e578cd52c1361d93e15eba43d5a9f6d5000b42e22a6edced2e8b2484ebdcf96b5f98bd128
+"@tanstack/query-devtools@npm:5.51.1":
+  version: 5.51.1
+  resolution: "@tanstack/query-devtools@npm:5.51.1"
+  checksum: 10/660d7ed8072c296d281548db5ff06745750a28c7e1c3153d936733725cd1e8174255f923518e0267b72ce3712895315b11f93b92bede652992e0cc665078e2ef
   languageName: node
   linkType: hard
 
-"@tanstack/react-query-devtools@npm:^5.50.1":
-  version: 5.50.1
-  resolution: "@tanstack/react-query-devtools@npm:5.50.1"
+"@tanstack/react-query-devtools@npm:^5.51.1":
+  version: 5.51.1
+  resolution: "@tanstack/react-query-devtools@npm:5.51.1"
   dependencies:
-    "@tanstack/query-devtools": "npm:5.50.1"
+    "@tanstack/query-devtools": "npm:5.51.1"
   peerDependencies:
-    "@tanstack/react-query": ^5.50.1
+    "@tanstack/react-query": ^5.51.1
     react: ^18 || ^19
-  checksum: 10/395049e2186516d063029eeddf49f79b86eb6c66c1cf926d0e705e90907dfeee3933701eda009cb848e9c4c77a285280db30ab891485baf796892c43f6fea85b
+  checksum: 10/d04383c72e4faa8945ded06e25fb9c9bcef4468a7fc1e76289bccc41ddd5d548a33b1ff264b2470ebc0c4e2c3c753dec2274b227f0207c5300ff7b6ff4bb096d
   languageName: node
   linkType: hard
 
@@ -7448,7 +7448,7 @@ __metadata:
     "@ledgerhq/hw-transport-webusb": "npm:^6.29.0"
     "@reduxjs/toolkit": "npm:^2.2.6"
     "@tanstack/react-query": "npm:^5.51.1"
-    "@tanstack/react-query-devtools": "npm:^5.50.1"
+    "@tanstack/react-query-devtools": "npm:^5.51.1"
     "@taquito/ledger-signer": "npm:^20.0.1"
     "@taquito/michel-codec": "npm:^20.0.1"
     "@taquito/rpc": "npm:^20.0.1"
