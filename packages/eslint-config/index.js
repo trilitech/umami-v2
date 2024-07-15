@@ -130,32 +130,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ["src/e2e/**/*.ts"],
-      rules: {
-        "testing-library/prefer-screen-queries": "off",
-      },
-    },
-    {
-      files: ["react-app-env.d.ts", "jest.config.ts"],
-      rules: {
-        "import/no-unused-modules": "off",
-      },
-    },
-    {
-      files: ["MultisigActionButton.tsx"],
-      rules: {
-        "deprecation/deprecation": "off",
-      },
-    },
-    {
-      files: "src/e2e/**",
-      extends: "plugin:playwright/recommended",
-      rules: {
-        "playwright/no-standalone-expect": "off",
-      },
-    },
-    {
-      files: "vite.config.ts",
+      files: ["jest.config.ts", "vite.config.ts"],
       rules: {
         "import/no-unused-modules": "off",
       },

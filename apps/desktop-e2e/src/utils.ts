@@ -22,6 +22,7 @@ const startNode = () => {
     runDockerCommand("up --wait --wait-timeout 120");
   } catch (e) {
     runDockerCommand("logs", "inherit");
+    killNode();
     throw e;
   }
 };

@@ -30,7 +30,7 @@ jobs:
       - run: yarn install --immutable
 
       - name: Install Playwright browser
-        run: yarn workspace @umami/desktop playwright install chromium --with-deps
+        run: yarn workspace @umami/desktop-e2e playwright install chromium --with-deps
 
       - run: yarn test:e2e
 
@@ -39,12 +39,12 @@ jobs:
         if: always()
         with:
           access-token: ${{ secrets.GITHUB_TOKEN }}
-          path: "apps/dekstop/test-results/cucumber-report.json"
+          path: "apps/desktop-e2e/test-results/cucumber-report.json"
           show-global-summary-report: true
 
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: cucumber-report
-          path: apps/dekstop/test-results/cucumber-report.html
+          path: apps/desktop-e2e/test-results/cucumber-report.html
           retention-days: 10
