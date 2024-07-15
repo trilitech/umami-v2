@@ -7551,7 +7551,7 @@ __metadata:
     typedoc-plugin-missing-exports: "npm:^3.0.0"
     typescript: "npm:5.5.3"
     vite: "npm:^5.3.3"
-    vite-plugin-checker: "npm:^0.7.1"
+    vite-plugin-checker: "npm:^0.7.2"
     vite-plugin-node-polyfills: "npm:^0.22.0"
     zod: "npm:^3.23.8"
   languageName: unknown
@@ -21154,9 +21154,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-checker@npm:^0.7.1":
-  version: 0.7.1
-  resolution: "vite-plugin-checker@npm:0.7.1"
+"vite-plugin-checker@npm:^0.7.2":
+  version: 0.7.2
+  resolution: "vite-plugin-checker@npm:0.7.2"
   dependencies:
     "@babel/code-frame": "npm:^7.12.13"
     ansi-escapes: "npm:^4.3.0"
@@ -21173,6 +21173,7 @@ __metadata:
     vscode-languageserver-textdocument: "npm:^1.0.1"
     vscode-uri: "npm:^3.0.2"
   peerDependencies:
+    "@biomejs/biome": ">=1.7"
     eslint: ">=7"
     meow: ^9.0.0
     optionator: ^0.9.1
@@ -21183,6 +21184,8 @@ __metadata:
     vti: "*"
     vue-tsc: ">=2.0.0"
   peerDependenciesMeta:
+    "@biomejs/biome":
+      optional: true
     eslint:
       optional: true
     meow:
@@ -21199,7 +21202,7 @@ __metadata:
       optional: true
     vue-tsc:
       optional: true
-  checksum: 10/b4925d2c6ed94e69a15d372c6bf33b6ec29c7320fe9842562bffbc0050cb76f1d82c4901586b1b4fc422a6dd825c0fa97829eeac772796c3206132fa0c90c80f
+  checksum: 10/95ff8631896a3d3999e5a99e808e4e33289f63ff96b932a6b722a58879ebebfd0335cad8897e8279c47145636a03c10372b3b8e7b92eabe91779d163768994f8
   languageName: node
   linkType: hard
 
