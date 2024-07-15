@@ -79,7 +79,7 @@
     "@emotion/is-prop-valid": "^1.2.2",
     "@storybook/addon-essentials": "^8.2.2",
     "@storybook/addon-interactions": "^8.2.3",
-    "@storybook/addon-links": "^8.2.2",
+    "@storybook/addon-links": "^8.2.3",
     "@storybook/addon-onboarding": "^8.2.2",
     "@storybook/addon-themes": "^8.2.3",
     "@storybook/blocks": "^8.2.3",
