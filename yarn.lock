@@ -5459,6 +5459,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@storybook/react-dom-shim@npm:8.2.3":
+  version: 8.2.3
+  resolution: "@storybook/react-dom-shim@npm:8.2.3"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0-beta
+    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0-beta
+    storybook: ^8.2.3
+  checksum: 10/f0f3efdd71bdcf40147a6a0ee4aeadfb0d73dd67096b24cac1622441406bffc66adc58973f787db2f91b23dd04b8840a40a9b1c130a4f9f07cd26f88f1ae4e08
+  languageName: node
+  linkType: hard
+
 "@storybook/react-vite@npm:^8.2.2":
   version: 8.2.2
   resolution: "@storybook/react-vite@npm:8.2.2"
@@ -5481,7 +5492,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/react@npm:8.2.2, @storybook/react@npm:^8.2.2":
+"@storybook/react@npm:8.2.2":
   version: 8.2.2
   resolution: "@storybook/react@npm:8.2.2"
   dependencies:
@@ -5511,6 +5522,39 @@ __metadata:
     typescript:
       optional: true
   checksum: 10/520672d650e00d0c2a5da728bedf5ea5621648b9417a3e1a0c825f0868f859c246bb719cfbd2db48bb0dfdceb51fb958af369dff8f442a6976f3872af15b1d42
+  languageName: node
+  linkType: hard
+
+"@storybook/react@npm:^8.2.3":
+  version: 8.2.3
+  resolution: "@storybook/react@npm:8.2.3"
+  dependencies:
+    "@storybook/global": "npm:^5.0.0"
+    "@storybook/react-dom-shim": "npm:8.2.3"
+    "@types/escodegen": "npm:^0.0.6"
+    "@types/estree": "npm:^0.0.51"
+    "@types/node": "npm:^18.0.0"
+    acorn: "npm:^7.4.1"
+    acorn-jsx: "npm:^5.3.1"
+    acorn-walk: "npm:^7.2.0"
+    escodegen: "npm:^2.1.0"
+    html-tags: "npm:^3.1.0"
+    lodash: "npm:^4.17.21"
+    prop-types: "npm:^15.7.2"
+    react-element-to-jsx-string: "npm:^15.0.0"
+    semver: "npm:^7.3.7"
+    ts-dedent: "npm:^2.0.0"
+    type-fest: "npm:~2.19"
+    util-deprecate: "npm:^1.0.2"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0-beta
+    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0-beta
+    storybook: ^8.2.3
+    typescript: ">= 4.2.x"
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 10/01597b75383415716c1ddca09d14ed7756c39f517d2d93b13a60bb122d3b94924003a7e81803a53b5358938fb2a63e50be9998cc6c9784c50e1c82dd0613e010
   languageName: node
   linkType: hard
 
@@ -7837,7 +7881,7 @@ __metadata:
     "@storybook/components": "npm:^8.2.2"
     "@storybook/manager-api": "npm:^8.2.3"
     "@storybook/preview-api": "npm:^8.2.2"
-    "@storybook/react": "npm:^8.2.2"
+    "@storybook/react": "npm:^8.2.3"
     "@storybook/react-vite": "npm:^8.2.2"
     "@storybook/test": "npm:^8.2.3"
     "@storybook/types": "npm:^8.2.2"
