@@ -5147,20 +5147,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/addon-links@npm:^8.2.2":
-  version: 8.2.2
-  resolution: "@storybook/addon-links@npm:8.2.2"
+"@storybook/addon-links@npm:^8.2.3":
+  version: 8.2.3
+  resolution: "@storybook/addon-links@npm:8.2.3"
   dependencies:
     "@storybook/csf": "npm:0.1.11"
     "@storybook/global": "npm:^5.0.0"
     ts-dedent: "npm:^2.0.0"
   peerDependencies:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0-beta
-    storybook: ^8.2.2
+    storybook: ^8.2.3
   peerDependenciesMeta:
     react:
       optional: true
-  checksum: 10/ec40eb21027db4c0e838f35b5ac6e56a52aa9680da9bf040cb083c6c8a4008b4ed3109738633539e26e84e713e3bc0d1d6623faae221f05a26b957b981ced3d0
+  checksum: 10/c8181f2c9d2c00010288f62624b099078af5165ebb3475d36b972c9fa486bbe43eb201a6aa1b7b7a600762da7d05ae0b17c34e09c7b634b75d03e093ba1d9a99
   languageName: node
   linkType: hard
 
@@ -7830,7 +7830,7 @@ __metadata:
     "@reduxjs/toolkit": "npm:^2.2.6"
     "@storybook/addon-essentials": "npm:^8.2.2"
     "@storybook/addon-interactions": "npm:^8.2.3"
-    "@storybook/addon-links": "npm:^8.2.2"
+    "@storybook/addon-links": "npm:^8.2.3"
     "@storybook/addon-onboarding": "npm:^8.2.2"
     "@storybook/addon-themes": "npm:^8.2.3"
     "@storybook/blocks": "npm:^8.2.3"
