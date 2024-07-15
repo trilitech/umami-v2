@@ -1,6 +1,6 @@
 import { InMemorySigner } from "@taquito/signer";
 import { type RawPkh, derivePublicKeyPair, getFingerPrint, makeDerivationPath } from "@umami/tezos";
-import { times } from "lodash";
+import lodash from "lodash";
 
 export type AccountGroup = {
   type: "mnemonic" | "secret_key";
@@ -36,7 +36,7 @@ export class AccountGroupBuilder {
     if (this.accountGroup.type === "secret_key") {
       this.accountGroup.label = "Secret Key Accounts";
     }
-    this.accountGroup.accounts = times(accountsAmount, () => ({ name: "", pkh: "" }));
+    this.accountGroup.accounts = lodash.times(accountsAmount, () => ({ name: "", pkh: "" }));
   }
 
   setDerivationPathTemplate(derivationPathTemplate: string): void {

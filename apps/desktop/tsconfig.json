@@ -1,5 +1,11 @@
 {
   "extends": "@umami/typescript-config/tsconfig.json",
-  "include": ["src", "vite.config.ts", "jest.config.ts"],
-  "exclude": ["src/e2e"]
+  "include": ["src", "vite.config.ts", ".eslintrc.js", "jest.config.ts"],
+  "typedocOptions": {
+    "entryPoints": ["src"],
+    "entryPointStrategy": "expand",
+    "excludeNotDocumented": false,
+    "out": "docs",
+    "plugin": ["typedoc-plugin-missing-exports"]
+  }
 }

@@ -1,0 +1,41 @@
+{
+  "name": "@umami/desktop-e2e",
+  "packageManager": "yarn@4.3.1",
+  "scripts": {
+    "clean": "rimraf dist .turbo",
+    "check-circular-deps": "madge --extensions ts --circular src/*",
+    "check-types:watch": "yarn check-types --watch",
+    "check-types": "tsc",
+    "format:ci": "prettier --ignore-path ../../.gitignore --check .",
+    "format": "prettier --ignore-path ../../.gitignore --write .",
+    "lint:ci": "eslint src --ext .ts,.tsx --max-warnings=0",
+    "lint": "eslint src --ext .ts,.tsx --fix",
+    "test:e2e:focus": "start-server-and-test \"turbo preview --filter=@umami/desktop\" http://127.0.0.1:3000 'cucumber-js --tags=\"@focus\"'",
+    "test:e2e": "start-server-and-test \"turbo preview --filter=@umami/desktop\" http://127.0.0.1:3000 cucumber-js"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4",
+    "@types/node": "20.14.10",
+    "@umami/eslint-config": "workspace:^",
+    "depcheck": "^1.4.7",
+    "eslint": "^8.57.0",
+    "madge": "^7.0.0",
+    "prettier": "^3.3.3",
+    "rimraf": "^6.0.1"
+  },
+  "dependencies": {
+    "@cucumber/cucumber": "^10.8.0",
+    "@playwright/test": "^1.45.1",
+    "@taquito/signer": "^20.0.1",
+    "@umami/core": "workspace:^",
+    "@umami/state": "workspace:^",
+    "@umami/test-utils": "workspace:^",
+    "@umami/tezos": "workspace:^",
+    "@umami/typescript-config": "workspace:^",
+    "@umami/tzkt": "workspace:^",
+    "date-fns": "^3.6.0",
+    "lodash": "^4.17.21",
+    "start-server-and-test": "^2.0.4",
+    "typescript": "^5.5.3"
+  }
+}

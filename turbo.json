@@ -32,7 +32,6 @@
     "clean": {
       "cache": false
     },
-    "depcheck": {},
     "dev": {
       "persistent": true,
       "cache": false,
@@ -60,6 +59,13 @@
         "^build"
       ]
     },
+    "preview": {
+      "persistent": true,
+      "cache": false,
+      "dependsOn": [
+        "build"
+      ]
+    },
     "test": {
       "outputs": [
         "coverage/**"
@@ -80,6 +86,9 @@
         "TZKT_API_IMAGE",
         "OPEN_BROWSER",
         "PRINT_BROWSER_LOGS"
+      ],
+      "outputs": [
+        "test-results/**"
       ]
     },
     "test:watch": {
