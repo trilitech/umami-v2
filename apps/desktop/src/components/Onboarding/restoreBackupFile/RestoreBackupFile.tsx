@@ -7,11 +7,11 @@ import {
   Input,
   ModalBody,
 } from "@chakra-ui/react";
-import { useAsyncActionHandler } from "@umami/state";
+import { useAsyncActionHandler, useRestoreBackup } from "@umami/state";
 import { FormProvider, useForm } from "react-hook-form";
 
-import { reload, restoreV2BackupFile, useRestoreV1BackupFile } from "./utils";
 import { RotateIcon } from "../../../assets/icons";
+import { persistor } from "../../../utils/persistor";
 import { PasswordInput } from "../../PasswordInput";
 import { ModalContentWrapper } from "../ModalContentWrapper";
 
@@ -30,21 +30,13 @@ export const RestoreBackupFile = () => {
     formState: { errors, isValid },
   } = form;
   const { handleAsyncAction } = useAsyncActionHandler();
+  const restoreBackup = useRestoreBackup();
 
-  const restoreV1BackupFile = useRestoreV1BackupFile();
   const onSubmit = ({ password, file }: FormFields) =>
     handleAsyncAction(async () => {
       const fileContent = await file[0].text();
       const backup = JSON.parse(fileContent);
-      const isV1 = backup["recoveryPhrases"] && backup["derivationPaths"];
-      if (isV1) {
-        await restoreV1BackupFile(backup, password);
-      } else if (backup["persist:accounts"]) {
-        await restoreV2BackupFile(backup, password);
-        reload();
-      } else {
-        throw new Error("Invalid backup file.");
-      }
+      await restoreBackup(backup, password, persistor);
     });
 
   return (

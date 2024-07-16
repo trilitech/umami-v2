@@ -3,6 +3,7 @@ export { useAppDispatch } from "./useAppDispatch";
 export { useAppSelector } from "./useAppSelector";
 
 export * from "./assets";
+export * from "./backup";
 export * from "./batches";
 export * from "./beacon";
 export * from "./contacts";

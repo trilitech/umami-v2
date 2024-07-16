@@ -1,9 +1,9 @@
 import { ModalCloseButton, ModalContent, useToast } from "@chakra-ui/react";
+import { DEFAULT_ACCOUNT_LABEL } from "@umami/core";
 import { useAsyncActionHandler, useDeriveMnemonicAccount } from "@umami/state";
 import { useState } from "react";
 
 import { EnterPassword } from "../../components/Onboarding/masterPassword/password/EnterPassword";
-import { DEFAULT_ACCOUNT_LABEL } from "../../components/Onboarding/nameAccount/NameAccount";
 import { NameAccountDisplay } from "../../components/Onboarding/nameAccount/NameAccountDisplay";
 
 export const DeriveMnemonicAccountModal = ({
