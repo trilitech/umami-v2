@@ -63,6 +63,10 @@ export function EmbeddedComponent() {
       }
 
       switch (data.type) {
+        case "config_request":
+          setNetwork(data.config.network);
+          sendResponse({ type: "config_response" });
+          break;
         case "login_request":
           if (getUserData() !== null) {
             sendResponse({
@@ -71,12 +75,10 @@ export function EmbeddedComponent() {
               errorMessage: "UserData is already available",
             });
           } else {
-            setNetwork(data.network);
             openLoginModal();
           }
           break;
         case "logout_request":
-          setNetwork(null);
           setUserData(null);
           sendResponse({ type: "logout_response" });
           break;
@@ -92,16 +94,19 @@ export function EmbeddedComponent() {
   };
 
   const validateClientPermissions = (origin: string, request: RequestMessage): boolean => {
-    const network = request.type === "login_request" ? request.network : getNetwork();
-    if (network === null) {
+    if (request.type === "config_request") {
+      return true;
+    }
+
+    if (getNetwork() === null) {
       sendResponse({
         type: toMatchingResponseType(request.type),
         error: "no_network_data",
-        errorMessage: "User's network data is not available",
+        errorMessage: "Network data is not available. Try restarting the component.",
       });
       return false;
     }
-    if (network === "ghostnet") {
+    if (getNetwork() === "ghostnet") {
       return true;
     }
 
@@ -146,14 +151,14 @@ export function EmbeddedComponent() {
       sendResponse({
         type: toMatchingResponseType(requestType),
         error: "no_login_data",
-        errorMessage: "User's login data is not available",
+        errorMessage: "User's login data is not available. Please login first.",
       });
       return false;
     } else if (getNetwork() === null) {
       sendResponse({
         type: toMatchingResponseType(requestType),
         error: "no_network_data",
-        errorMessage: "User's network data is not available",
+        errorMessage: "Network data is not available. Try restarting the component.",
       });
       return false;
     }
