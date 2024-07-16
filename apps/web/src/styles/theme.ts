@@ -145,6 +145,7 @@ const theme = extendTheme({
         lg: { height: "48px", minWidth: "48px", padding: "0 12px" },
       },
       baseStyle: {
+        borderRadius: "full",
         _disabled: {
           bg: "gray.100",
           color: "gray.300",
