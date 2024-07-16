@@ -37,12 +37,7 @@ const config: Config = {
   // coverageProvider: "babel",
 
   // A list of reporter names that Jest uses when writing coverage reports
-  // coverageReporters: [
-  //   "json",
-  //   "text",
-  //   "lcov",
-  //   "clover"
-  // ],
+  coverageReporters: ["json-summary", "text", "lcov"],
 
   // An object that configures minimum threshold enforcement for coverage results
   coverageThreshold: {
@@ -119,7 +114,7 @@ const config: Config = {
   // projects: undefined,
 
   // Use this configuration option to add custom reporters to Jest
-  reporters: process.env.CI ? ["github-actions", "default"] : ["default", "summary"],
+  reporters: ["default", "summary"],
 
   // Automatically reset mock state before every test
   resetMocks: true,
