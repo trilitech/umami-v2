@@ -1,8 +1,7 @@
-import { mockToast } from "@umami/state";
+import { mockToast, useRestoreBackup } from "@umami/state";
 import { umamiBackup } from "@umami/test-utils";
 
 import { RestoreBackupFile } from "./RestoreBackupFile";
-import { reload, restoreV2BackupFile, useRestoreV1BackupFile } from "./utils";
 import {
   type UserEvent,
   act,
@@ -13,29 +12,12 @@ import {
   waitFor,
 } from "../../../mocks/testUtils";
 
-jest.mock("./utils");
-
-const mockReload = jest.mocked(reload);
-const mockedUseRestoreV1BackupFile = jest.mocked(useRestoreV1BackupFile);
-const mockRestoreV2BackupFile = jest.mocked(restoreV2BackupFile);
-
-const mockRestoreV1BackupFile = jest.fn();
-
-const emptyV2Backup = {
-  version: "2.0.0-beta1",
-  "persist:accounts": {
-    items: [],
-    seedPhrases: {},
-    secretKeys: {},
-  },
-  "persist:root": "{}",
-};
+jest.mock("@umami/state", () => ({
+  ...jest.requireActual("@umami/state"),
+  useRestoreBackup: jest.fn(),
+}));
 
 describe("<RestoreBackupFile />", () => {
-  beforeEach(() => {
-    mockedUseRestoreV1BackupFile.mockReturnValue(mockRestoreV1BackupFile);
-  });
-
   const setupBackupFile = (json: any) => {
     const str = JSON.stringify(json);
     const blob = new Blob([str]);
@@ -49,7 +31,7 @@ describe("<RestoreBackupFile />", () => {
 
     await act(() => user.upload(screen.getByLabelText("Upload File"), file));
     if (password) {
-      await act(async () => await user.type(screen.getByTestId("password-input"), "1234"));
+      await act(async () => await user.type(screen.getByTestId("password-input"), password));
     }
     await act(() => user.click(screen.getByRole("button", { name: "Import Wallet" })));
   };
@@ -65,7 +47,11 @@ describe("<RestoreBackupFile />", () => {
   });
 
   it("shows error for wrong backup file format", async () => {
+    jest
+      .mocked(useRestoreBackup)
+      .mockImplementation(() => jest.fn(() => Promise.reject("Invalid backup file.")));
     const user = userEvent.setup();
+
     render(<RestoreBackupFile />);
 
     await uploadBackupFile({ foo: "bar" }, user);
@@ -75,172 +61,17 @@ describe("<RestoreBackupFile />", () => {
       status: "error",
       isClosable: true,
     });
-    expect(mockReload).toHaveBeenCalledTimes(0);
-    expect(mockRestoreV1BackupFile).toHaveBeenCalledTimes(0);
-    expect(mockRestoreV2BackupFile).toHaveBeenCalledTimes(0);
   });
 
-  describe("for v1 backups", () => {
-    it("shows error if backup file doesn't have derivationPaths", async () => {
-      const user = userEvent.setup();
-      render(<RestoreBackupFile />);
+  it("calls useRestoreBackup hook", async () => {
+    const mockRestoreBackupFile = jest.fn();
+    jest.mocked(useRestoreBackup).mockImplementation(() => mockRestoreBackupFile);
+    const user = userEvent.setup();
 
-      await uploadBackupFile({ recoveryPhrases: [] }, user);
+    render(<RestoreBackupFile />);
 
-      expect(mockToast).toHaveBeenCalledWith({
-        description: "Invalid backup file.",
-        status: "error",
-        isClosable: true,
-      });
-      expect(mockReload).toHaveBeenCalledTimes(0);
-      expect(mockRestoreV1BackupFile).toHaveBeenCalledTimes(0);
-      expect(mockRestoreV2BackupFile).toHaveBeenCalledTimes(0);
-    });
+    await uploadBackupFile(umamiBackup, user, "password");
 
-    it("shows error if backup file doesn't have recoveryPhrases", async () => {
-      const user = userEvent.setup();
-      render(<RestoreBackupFile />);
-
-      await uploadBackupFile({ derivationPaths: [] }, user);
-
-      expect(mockToast).toHaveBeenCalledWith({
-        description: "Invalid backup file.",
-        status: "error",
-        isClosable: true,
-      });
-      expect(mockReload).toHaveBeenCalledTimes(0);
-      expect(mockRestoreV1BackupFile).toHaveBeenCalledTimes(0);
-      expect(mockRestoreV2BackupFile).toHaveBeenCalledTimes(0);
-    });
-
-    it("opens parser if derivationPaths & recoveryPhrases fields are present", async () => {
-      const user = userEvent.setup();
-      render(<RestoreBackupFile />);
-
-      await uploadBackupFile({ derivationPaths: [], recoveryPhrases: [] }, user);
-
-      expect(mockReload).toHaveBeenCalledTimes(0);
-      expect(mockRestoreV1BackupFile).toHaveBeenCalledTimes(1);
-      expect(mockRestoreV2BackupFile).toHaveBeenCalledTimes(0);
-    });
-
-    it("shows error from parser if thrown", async () => {
-      mockedUseRestoreV1BackupFile.mockReturnValue(_ =>
-        Promise.reject(new Error("Invalid password."))
-      );
-      const user = userEvent.setup();
-      render(<RestoreBackupFile />);
-
-      await uploadBackupFile(umamiBackup, user);
-
-      expect(mockToast).toHaveBeenCalledWith({
-        description: "Invalid password.",
-        status: "error",
-        isClosable: true,
-      });
-      expect(mockRestoreV2BackupFile).toHaveBeenCalledTimes(0);
-      expect(mockReload).toHaveBeenCalledTimes(0);
-    });
-  });
-
-  describe("for v2 backups", () => {
-    it("shows error if backup file doesn't have persist:accounts", async () => {
-      const user = userEvent.setup();
-      render(<RestoreBackupFile />);
-
-      await uploadBackupFile({ version: "2.0.0-beta1", "persist:root": "{}" }, user);
-
-      expect(mockToast).toHaveBeenCalledWith({
-        description: "Invalid backup file.",
-        status: "error",
-        isClosable: true,
-      });
-      expect(mockReload).toHaveBeenCalledTimes(0);
-      expect(mockRestoreV1BackupFile).toHaveBeenCalledTimes(0);
-      expect(mockRestoreV2BackupFile).toHaveBeenCalledTimes(0);
-    });
-
-    it("opens parser if persist:accounts field is present", async () => {
-      const user = userEvent.setup();
-      render(<RestoreBackupFile />);
-
-      await uploadBackupFile(
-        {
-          "persist:accounts": {
-            items: [],
-            seedPhrases: {},
-            secretKeys: {},
-          },
-        },
-        user
-      );
-
-      expect(mockReload).toHaveBeenCalledTimes(1);
-      expect(mockRestoreV1BackupFile).toHaveBeenCalledTimes(0);
-      expect(mockRestoreV2BackupFile).toHaveBeenCalledTimes(1);
-    });
-
-    it("shows error from parser if thrown", async () => {
-      mockRestoreV2BackupFile.mockImplementation(() => {
-        throw new Error("Invalid password.");
-      });
-      const user = userEvent.setup();
-      render(<RestoreBackupFile />);
-
-      await uploadBackupFile(emptyV2Backup, user);
-
-      expect(mockToast).toHaveBeenCalledWith({
-        description: "Invalid password.",
-        status: "error",
-        isClosable: true,
-      });
-      expect(mockRestoreV1BackupFile).toHaveBeenCalledTimes(0);
-      expect(mockReload).toHaveBeenCalledTimes(0);
-    });
-  });
-
-  describe.each([
-    {
-      backupType: "v1",
-      backupJson: umamiBackup,
-      expectedParser: mockRestoreV1BackupFile,
-      otherParser: mockRestoreV2BackupFile,
-    },
-    {
-      backupType: "v2",
-      backupJson: emptyV2Backup,
-      expectedParser: mockRestoreV2BackupFile,
-      otherParser: mockRestoreV1BackupFile,
-    },
-  ])("for $backupType backups", ({ backupJson, expectedParser, backupType, otherParser }) => {
-    it("opens parser without password when not provided", async () => {
-      const user = userEvent.setup();
-      render(<RestoreBackupFile />);
-
-      await uploadBackupFile(backupJson, user);
-
-      if (backupType === "v2") {
-        expect(mockReload).toHaveBeenCalledTimes(1);
-      }
-
-      expect(otherParser).toHaveBeenCalledTimes(0);
-      expect(expectedParser).toHaveBeenCalledTimes(1);
-      expect(expectedParser).toHaveBeenCalledWith(backupJson, "" /* empty password */);
-    });
-
-    it("opens parser with password when provided", async () => {
-      const user = userEvent.setup();
-      render(<RestoreBackupFile />);
-
-      await uploadBackupFile(backupJson, user, "1234");
-
-      if (backupType === "v2") {
-        expect(mockReload).toHaveBeenCalledTimes(1);
-      }
-
-      expect(otherParser).toHaveBeenCalledTimes(0);
-      expect(expectedParser).toHaveBeenCalledTimes(1);
-      expect(expectedParser).toHaveBeenCalledWith(backupJson, "1234");
-    });
+    expect(mockRestoreBackupFile).toHaveBeenCalledWith(umamiBackup, "password", expect.any(Object));
   });
 });

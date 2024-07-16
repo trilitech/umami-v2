@@ -1,15 +1,30 @@
+import { DEFAULT_ACCOUNT_LABEL } from "@umami/core";
 import { type EncryptedData, decrypt } from "@umami/crypto";
-import { useRestoreFromMnemonic } from "@umami/state";
+import { type Persistor } from "redux-persist";
 
-import packageInfo from "../../../../package.json";
-import { persistor } from "../../../utils/persistor";
-import { DEFAULT_ACCOUNT_LABEL } from "../nameAccount/NameAccount";
+import { useRestoreFromMnemonic } from "./setAccountData";
 
-// This method is wrapped in a function so that we can mock it in tests.
-export const reload = () => window.location.reload();
+const isV1Backup = (backup: any) => backup["recoveryPhrases"] && backup["derivationPaths"];
+
+const isV2Backup = (backup: any) => !!backup["persist:accounts"];
+
+export const useRestoreBackup = () => {
+  const restoreV1 = useRestoreV1BackupFile();
+
+  return async (backup: any, password: string, persistor: Persistor) => {
+    if (isV1Backup(backup)) {
+      return restoreV1(backup, password);
+    }
+    if (isV2Backup(backup)) {
+      return restoreV2BackupFile(backup, password, persistor);
+    }
+    throw new Error("Invalid backup file.");
+  };
+};
 
 export const useRestoreV1BackupFile = () => {
   const restoreFromMnemonic = useRestoreFromMnemonic();
+
   return async (
     backup: { recoveryPhrases: [EncryptedData]; derivationPaths: [string] },
     password: string
@@ -43,7 +58,8 @@ export const useRestoreV1BackupFile = () => {
 
 export const restoreV2BackupFile = async (
   backup: { "persist:accounts": string; "persist:root": string },
-  password: string
+  password: string,
+  persistor: Persistor
 ) => {
   const accountsInString: string = backup["persist:accounts"];
   if (!accountsInString) {
@@ -51,6 +67,7 @@ export const restoreV2BackupFile = async (
   }
 
   const accounts: { seedPhrases: string } = JSON.parse(accountsInString);
+
   const encryptedMnemonics: Record<string, EncryptedData> = JSON.parse(accounts.seedPhrases);
 
   try {
@@ -66,11 +83,12 @@ export const restoreV2BackupFile = async (
   localStorage.clear();
   localStorage.setItem("persist:accounts", accountsInString);
   localStorage.setItem("persist:root", backup["persist:root"]);
+
+  window.location.reload();
 };
 
 export const downloadBackupFile = () => {
   const storage = {
-    version: packageInfo.version,
     "persist:accounts": localStorage.getItem("persist:accounts"),
     "persist:root": localStorage.getItem("persist:root"),
   };

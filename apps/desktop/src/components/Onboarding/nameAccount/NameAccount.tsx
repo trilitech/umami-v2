@@ -1,9 +1,8 @@
+import { DEFAULT_ACCOUNT_LABEL } from "@umami/core";
 import { useGetNextAvailableAccountLabels } from "@umami/state";
 
 import { NameAccountDisplay } from "./NameAccountDisplay";
 import { type NameAccountStep, type OnboardingStep } from "../OnboardingStep";
-
-export const DEFAULT_ACCOUNT_LABEL = "Account";
 
 /**
  * This component is used to add a label to a newly created account.

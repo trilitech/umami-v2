@@ -53,3 +53,5 @@ export type ImplicitAccount = MnemonicAccount | SocialAccount | LedgerAccount | 
 export type Account = ImplicitAccount | MultisigAccount;
 
 export type AccountType = Account["type"];
+
+export const DEFAULT_ACCOUNT_LABEL = "Account";

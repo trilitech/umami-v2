@@ -1,8 +1,8 @@
 import { Box, Button, Center, Heading, Link, VStack } from "@chakra-ui/react";
+import { downloadBackupFile } from "@umami/state";
 
 import { useOffboardingModal } from "./Offboarding/useOffboardingModal";
 import { ModalContentWrapper } from "./Onboarding/ModalContentWrapper";
-import { downloadBackupFile } from "./Onboarding/restoreBackupFile/utils";
 import { NoticeIcon, ReloadIcon } from "../assets/icons";
 import BackgroundImage from "../assets/onboarding/background_image.png";
 import colors from "../style/colors";
