@@ -29,3 +29,10 @@ This is a monorepo which contains all the packages related to Umami.
 
 In most cases you'll use turborepo to build all the dependencies and run the app. All tasks are defined in the `turbo.json` file.
 Here's a [guide](https://turbo.build/repo/docs/crafting-your-repository/running-tasks) how to run tasks using turbo
+
+## Testing
+
+In order to run all tests in all projects it's enough to run `yarn test` or `turbo test` in the root directory. But, inside the packages
+you should use `turbo test`. It will bundle all the dependencies and only then will run the tests whilst `yarn test` will only attempt to run the tests.
+
+Coverage info will be provided in several formats, including HTML at `<package_name>/coverage/lcov-report`.

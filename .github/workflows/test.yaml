@@ -37,3 +37,19 @@ jobs:
       - run: yarn ci
 
       - run: yarn test --concurrency 1
+
+      - name: Post Jest Coverage Comment
+        uses: MishaKav/jest-coverage-comment@main
+        with:
+          multiple-files: |
+            apps/desktop, ./apps/desktop/coverage/coverage-summary.json
+            apps/web, ./apps/desktop/coverage/coverage-summary.json
+            packages/components, ./packages/components/coverage/coverage-summary.json
+            packages/core, ./packages/core/coverage/coverage-summary.json
+            packages/crypto, ./packages/crypto/coverage/coverage-summary.json
+            packages/data-polling, ./packages/data-polling/coverage/coverage-summary.json
+            packages/multisig, ./packages/multisig/coverage/coverage-summary.json
+            packages/social-auth, ./packages/social-auth/coverage/coverage-summary.json
+            packages/state, ./packages/state/coverage/coverage-summary.json
+            packages/tezos, ./packages/tezos/coverage/coverage-summary.json
+            packages/tzkt, ./packages/tzkt/coverage/coverage-summary.json
