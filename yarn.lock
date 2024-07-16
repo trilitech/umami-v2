@@ -5321,12 +5321,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/components@npm:^8.2.3":
-  version: 8.2.3
-  resolution: "@storybook/components@npm:8.2.3"
+"@storybook/components@npm:^8.2.4":
+  version: 8.2.4
+  resolution: "@storybook/components@npm:8.2.4"
   peerDependencies:
-    storybook: ^8.2.3
-  checksum: 10/47e1b2e20a750b36b5f9ec98d08998000aa7eccb5a576644cc9e67cb436621d71ea3c54545dffc0247e340c3be38dda2319a5890357a2e1b0a1298f7ca280b64
+    storybook: ^8.2.4
+  checksum: 10/d4a8d417b42b88d7ca0c904c002e9fefa235a7ac8514b327d93ee6af18f1b06b4cccfba5ad2b5ae2b1cc2c03aa3f752919c138ce18ac44ca87c4d4f41f181a4a
   languageName: node
   linkType: hard
 
@@ -7867,7 +7867,7 @@ __metadata:
     "@storybook/addon-onboarding": "npm:^8.2.3"
     "@storybook/addon-themes": "npm:^8.2.3"
     "@storybook/blocks": "npm:^8.2.3"
-    "@storybook/components": "npm:^8.2.3"
+    "@storybook/components": "npm:^8.2.4"
     "@storybook/manager-api": "npm:^8.2.3"
     "@storybook/preview-api": "npm:^8.2.3"
     "@storybook/react": "npm:^8.2.3"
