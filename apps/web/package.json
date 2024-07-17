@@ -89,7 +89,7 @@
     "@storybook/preview-api": "^8.2.4",
     "@storybook/react": "^8.2.3",
     "@storybook/react-vite": "^8.2.4",
-    "@storybook/test": "^8.2.3",
+    "@storybook/test": "^8.2.4",
     "@storybook/types": "^8.2.2",
     "@svgr/core": "^8.1.0",
     "@svgr/plugin-jsx": "^8.1.0",
