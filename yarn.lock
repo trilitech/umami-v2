@@ -5426,15 +5426,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/manager-api@npm:^8.2.3":
-  version: 8.2.3
-  resolution: "@storybook/manager-api@npm:8.2.3"
-  peerDependencies:
-    storybook: ^8.2.3
-  checksum: 10/f05cc3f88737690cebe0395cfc0ac55ad62139630133d4edab3acc5f22881878270347167691221d970036685f26224212ca6f2efa01eeb1522c3f4ae1d90aa1
-  languageName: node
-  linkType: hard
-
 "@storybook/manager-api@npm:^8.2.4":
   version: 8.2.4
   resolution: "@storybook/manager-api@npm:8.2.4"
@@ -7943,7 +7934,7 @@ __metadata:
     "@storybook/addon-themes": "npm:^8.2.4"
     "@storybook/blocks": "npm:^8.2.3"
     "@storybook/components": "npm:^8.2.4"
-    "@storybook/manager-api": "npm:^8.2.3"
+    "@storybook/manager-api": "npm:^8.2.4"
     "@storybook/preview-api": "npm:^8.2.4"
     "@storybook/react": "npm:^8.2.3"
     "@storybook/react-vite": "npm:^8.2.4"
