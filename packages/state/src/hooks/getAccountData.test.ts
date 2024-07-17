@@ -12,6 +12,7 @@ import {
 import { encryptedMnemonic1 } from "@umami/test-utils";
 
 import {
+  useCurrentAccount,
   useGetAccountsByFingerPrint,
   useGetAccountsByType,
   useGetBestSignerForAccount,
@@ -20,7 +21,7 @@ import {
 } from "./getAccountData";
 import { accountsActions, assetsActions, multisigsActions } from "../slices";
 import { type UmamiStore, makeStore } from "../store";
-import { addTestAccount, addTestAccounts, renderHook, waitFor } from "../testUtils";
+import { act, addTestAccount, addTestAccounts, renderHook, waitFor } from "../testUtils";
 
 let store: UmamiStore;
 beforeEach(() => {
@@ -209,6 +210,69 @@ describe("getAccountDataHooks", () => {
       await expect(result!("wrong password")).rejects.toThrow(
         "Error decrypting data: Invalid password"
       );
+    });
+  });
+
+  describe("useCurrentAccount", () => {
+    const account = mockMnemonicAccount(0);
+
+    it("returns undefined if current account is not set", () => {
+      const {
+        result: { current: currentAccount },
+      } = renderHook(() => useCurrentAccount(), { store });
+
+      expect(currentAccount).toBeUndefined();
+    });
+
+    it("returns undefined if current account does not exist", () => {
+      store.dispatch(accountsActions.setCurrent(account.address.pkh));
+      const {
+        result: { current: currentAccount },
+      } = renderHook(() => useCurrentAccount(), { store });
+
+      expect(currentAccount).toBeUndefined();
+    });
+
+    it("returns the current account if it exists", () => {
+      addTestAccount(store, account);
+      store.dispatch(accountsActions.setCurrent(account.address.pkh));
+
+      const {
+        result: { current: currentAccount },
+      } = renderHook(() => useCurrentAccount(), { store });
+
+      expect(currentAccount).toEqual(account);
+    });
+
+    it("sets the current account to the first available one if it went out of sync", async () => {
+      addTestAccount(store, account);
+      const anotherAccount = mockSocialAccount(1);
+      addTestAccount(store, anotherAccount);
+
+      store.dispatch(accountsActions.setCurrent(anotherAccount.address.pkh));
+
+      const { result } = renderHook(() => useCurrentAccount(), { store });
+
+      expect(result.current).toEqual(anotherAccount);
+
+      await act(() => store.dispatch(accountsActions.removeAccount(anotherAccount)));
+
+      expect(result.current).toEqual(account);
+    });
+
+    it("sets the current account undefined if last account was removed", async () => {
+      const account = mockSocialAccount(1);
+      addTestAccount(store, account);
+
+      store.dispatch(accountsActions.setCurrent(account.address.pkh));
+
+      const { result } = renderHook(() => useCurrentAccount(), { store });
+
+      expect(result.current).toEqual(account);
+
+      await act(() => store.dispatch(accountsActions.removeAccount(account)));
+
+      expect(result.current).toBeUndefined();
     });
   });
 });

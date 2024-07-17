@@ -46,15 +46,7 @@ const sizes = {
 
 const theme = extendTheme({
   components: {
-    Text: {
-      sizes,
-      variants: {
-        bold: {
-          fontWeight: "600",
-          color: "gray.900",
-        },
-      },
-    },
+    Text: { sizes },
     Heading: {
       sizes: {
         sm: {
@@ -231,6 +223,10 @@ const theme = extendTheme({
         closeButton: {
           bg: "transparent",
           color: "gray.400",
+          width: "14px",
+          height: "14px",
+          marginRight: "10px",
+          marginTop: "15px",
         },
         dialog: {
           borderTopRightRadius: "30px",
@@ -238,14 +234,20 @@ const theme = extendTheme({
           borderBottomRightRadius: { lg: "30px", base: 0 },
           borderBottomLeftRadius: { lg: "30px", base: 0 },
           bg: "white",
-          padding: "36px",
+          padding: {
+            base: "36px",
+            lg: "42px",
+          },
           gap: "30px",
           marginBottom: {
             lg: "auto",
           },
           minWidth: {
             base: "100%",
-            lg: "auto",
+            lg: "508px",
+          },
+          width: {
+            lg: "508px",
           },
         },
         header: {

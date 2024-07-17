@@ -1,14 +1,17 @@
 import { Card, IconButton } from "@chakra-ui/react";
-import { useAppSelector } from "@umami/state";
+import { useDynamicModalContext } from "@umami/components";
+import { useCurrentAccount } from "@umami/state";
 
 import { AccountBalance } from "./AccountBalance";
-import { AccountSelector } from "./AccountSelector";
 import { ChevronDownIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
+import { AccountSelectorModal } from "../AccountSelectorModal";
+import { AccountTile } from "../AccountTile";
 
 export const AccountCard = () => {
   const color = useColor();
-  const accounts = useAppSelector(s => s.accounts.items);
+  const currentAccount = useCurrentAccount()!;
+  const { openWith } = useDynamicModalContext();
 
   return (
     <Card
@@ -19,19 +22,21 @@ export const AccountCard = () => {
       padding="8px 8px 20px 8px"
       borderRadius="40px"
     >
-      <AccountSelector
-        account={accounts[0]}
-        highlighted
-        sideElement={
-          <IconButton
-            width="fit-content"
-            marginLeft="auto"
-            aria-label="Account Selector"
-            icon={<ChevronDownIcon color={color("500")} />}
-            variant="empty"
-          />
-        }
-      />
+      <AccountTile
+        background={color("50")}
+        account={currentAccount}
+        onClick={() => openWith(<AccountSelectorModal />)}
+      >
+        <IconButton
+          alignSelf="center"
+          width="fit-content"
+          marginLeft="auto"
+          aria-label="Account Selector"
+          icon={<ChevronDownIcon color={color("500")} />}
+          size="xs"
+          variant="empty"
+        />
+      </AccountTile>
       <AccountBalance />
     </Card>
   );

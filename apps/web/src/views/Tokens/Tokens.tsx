@@ -1,14 +1,13 @@
 import { Flex, VStack } from "@chakra-ui/react";
 import { fullId } from "@umami/core";
-import { useAppSelector, useGetAccountAllTokens } from "@umami/state";
+import { useCurrentAccount, useGetAccountAllTokens } from "@umami/state";
 
 import { Token } from "./Token";
 import { EmptyMessage } from "../../components/EmptyMessage";
 
 export const Tokens = () => {
-  const getTokens = useGetAccountAllTokens();
-  const account = useAppSelector(s => s.accounts.items)[0];
-  const availableTokens = [...getTokens(account.address.pkh)];
+  const currentAccount = useCurrentAccount()!;
+  const availableTokens = useGetAccountAllTokens()(currentAccount.address.pkh);
 
   return (
     <Flex width="full">
