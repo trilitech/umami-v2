@@ -5594,12 +5594,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/types@npm:^8.2.2":
-  version: 8.2.2
-  resolution: "@storybook/types@npm:8.2.2"
+"@storybook/types@npm:^8.2.4":
+  version: 8.2.4
+  resolution: "@storybook/types@npm:8.2.4"
   peerDependencies:
-    storybook: ^8.2.2
-  checksum: 10/a42c066ad8284e00a36597dce251a3ed73becdbb2dd5c7d6dfc335308bbdfcf95ccf9fe05fff1e3a173b7213eebb1836537f6eed221e2acc026c77f929f8d9a6
+    storybook: ^8.2.4
+  checksum: 10/d0dbd8fdb44248ae5f85089ccdbf631c9362679c493486470c636a2fe7c2f523a3799eb4bad97990d8459b4a19c894383a0c8217a4ec0f544e00b0f7d4341a29
   languageName: node
   linkType: hard
 
@@ -7948,7 +7948,7 @@ __metadata:
     "@storybook/react": "npm:^8.2.3"
     "@storybook/react-vite": "npm:^8.2.4"
     "@storybook/test": "npm:^8.2.4"
-    "@storybook/types": "npm:^8.2.2"
+    "@storybook/types": "npm:^8.2.4"
     "@svgr/core": "npm:^8.1.0"
     "@svgr/plugin-jsx": "npm:^8.1.0"
     "@svgr/plugin-svgo": "npm:^8.1.0"
