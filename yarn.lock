@@ -8286,7 +8286,7 @@ __metadata:
     react-redux: "npm:^9.1.2"
     react-remove-scroll: "npm:^2.5.10"
     react-responsive-carousel: "npm:^3.2.23"
-    react-router: "npm:^6.25.0"
+    react-router: "npm:^6.25.1"
     react-router-dom: "npm:^6.25.0"
     react-test-renderer: "npm:^18.3.1"
     redux: "npm:^5.0.1"
@@ -18476,7 +18476,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-router@npm:6.25.0, react-router@npm:^6.25.0":
+"react-router@npm:6.25.0":
   version: 6.25.0
   resolution: "react-router@npm:6.25.0"
   dependencies:
@@ -18484,6 +18484,17 @@ __metadata:
   peerDependencies:
     react: ">=16.8"
   checksum: 10/7885b90e3abb574b2843b3efefe481ed87c1dba2a17ad301dc0df5e6e93c08c56ccbafc24ee2fc43650e11c1d7d0304762e7c98d43f35e756af76f2587b95b80
+  languageName: node
+  linkType: hard
+
+"react-router@npm:^6.25.1":
+  version: 6.25.1
+  resolution: "react-router@npm:6.25.1"
+  dependencies:
+    "@remix-run/router": "npm:1.18.0"
+  peerDependencies:
+    react: ">=16.8"
+  checksum: 10/3bfb9754cff279cabcb247f13e66315d02333dae7e251fa8975d0e5cf68ee61793ad040594d2d490a5c995efc542739e7ef80462a69bd3209f64c69086fc7786
   languageName: node
   linkType: hard
 
