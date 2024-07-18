@@ -7573,9 +7573,9 @@ __metadata:
     cross-env: "npm:^7.0.3"
     date-fns: "npm:^3.6.0"
     depcheck: "npm:^1.4.7"
-    electron: "npm:31.2.0"
+    electron: "npm:31.2.1"
     electron-builder: "npm:^24.13.3"
-    electron-updater: "npm:^6.2.1"
+    electron-updater: "npm:6.3.0"
     electronmon: "npm:^2.0.3"
     eslint: "npm:^8.57.0"
     framer-motion: "npm:^11.3.2"
@@ -9590,6 +9590,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"builder-util-runtime@npm:9.2.5":
+  version: 9.2.5
+  resolution: "builder-util-runtime@npm:9.2.5"
+  dependencies:
+    debug: "npm:^4.3.4"
+    sax: "npm:^1.2.4"
+  checksum: 10/89c1e67c286ad5dd039abd56af91b3fa3d01eb62ce16c07e8d496a06eb0ed9ce015870d83dd919ffa387a32d47f9080923958672fc993154c8a184c6b1a78adc
+  languageName: node
+  linkType: hard
+
 "builder-util@npm:24.13.1":
   version: 24.13.1
   resolution: "builder-util@npm:24.13.1"
@@ -11369,11 +11379,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron-updater@npm:^6.2.1":
-  version: 6.2.1
-  resolution: "electron-updater@npm:6.2.1"
+"electron-updater@npm:6.3.0":
+  version: 6.3.0
+  resolution: "electron-updater@npm:6.3.0"
   dependencies:
-    builder-util-runtime: "npm:9.2.4"
+    builder-util-runtime: "npm:9.2.5"
     fs-extra: "npm:^10.1.0"
     js-yaml: "npm:^4.1.0"
     lazy-val: "npm:^1.0.5"
@@ -11381,20 +11391,20 @@ __metadata:
     lodash.isequal: "npm:^4.5.0"
     semver: "npm:^7.3.8"
     tiny-typed-emitter: "npm:^2.1.0"
-  checksum: 10/da4bf2517f5a60a904f52966c45256b5bf86bc11e2534133163565668db2746600fba6553c68d04ace1fe519dc8d3cd8a6e387dc6f7721058dd3977f94895709
+  checksum: 10/8e18c2098b1995ab82437274c0e9994ec0effae7760719c5460a70f91aea9d642ae3131a3644a0b8f0dfefdbe26d07c91eb74748ac4eb8e2316843d183aed631
   languageName: node
   linkType: hard
 
-"electron@npm:31.2.0":
-  version: 31.2.0
-  resolution: "electron@npm:31.2.0"
+"electron@npm:31.2.1":
+  version: 31.2.1
+  resolution: "electron@npm:31.2.1"
   dependencies:
     "@electron/get": "npm:^2.0.0"
     "@types/node": "npm:^20.9.0"
     extract-zip: "npm:^2.0.1"
   bin:
     electron: cli.js
-  checksum: 10/7d46c98e7338abe6eb26a1a0a6b65c0302cd4ed1720cfef7c60c6ba61979bf31e0cedbdd499059d2d15bc3720bfa80c49c229ea8b78780aa7a4ccfed1122f220
+  checksum: 10/ab2cfd86d89f8cdd682f6099b60e22aaa2c9f843b00237663bcee67df4ada6b22b29df769ab80a3da4617e8d31b29bdbcdcf5c77dd070e3b6928beaca6d317d8
   languageName: node
   linkType: hard
 
