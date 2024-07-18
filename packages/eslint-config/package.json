@@ -12,7 +12,7 @@
     "@typescript-eslint/eslint-plugin": "^7.16.0",
     "@typescript-eslint/parser": "^7.16.1",
     "@umami/typescript-config": "workspace:^",
-    "eslint": "^8.57.0",
+    "eslint": "^9.7.0",
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-chakra-ui": "^0.11.0",
     "eslint-plugin-deprecation": "^3.0.0",
@@ -25,7 +25,7 @@
     "eslint-plugin-react-redux": "^4.1.0",
     "eslint-plugin-testing-library": "^6.2.2",
     "eslint-plugin-tsdoc": "^0.3.0",
-    "eslint-plugin-unused-imports": "^3.2.0",
+    "eslint-plugin-unused-imports": "^4.0.0",
     "typescript": "^5.5.3"
   }
 }
