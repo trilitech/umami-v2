@@ -56,7 +56,7 @@
     "@emotion/styled": "^11.11.5",
     "@ledgerhq/hw-transport-webusb": "^6.29.0",
     "@reduxjs/toolkit": "^2.2.6",
-    "@tanstack/react-query": "^5.51.1",
+    "@tanstack/react-query": "^5.51.9",
     "@tanstack/react-query-devtools": "^5.51.1",
     "@taquito/ledger-signer": "^20.0.1",
     "@taquito/michel-codec": "^20.0.1",
