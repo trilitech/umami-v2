@@ -5,6 +5,16 @@ updates:
     open-pull-requests-limit: 20
     schedule:
       interval: "daily"
+    groups:
+      taquito:
+        patterns:
+          - "@taquito/*"
+      storybook:
+        patterns:
+          - "@storybook/*"
+      eslint:
+        patterns:
+          - "eslint*"
 
   - package-ecosystem: "github-actions"
     directory: "/"
