@@ -14,7 +14,10 @@ updates:
           - "@storybook/*"
       eslint:
         patterns:
-          - "eslint*"
+          - "eslint-*"
+      tanstack:
+        patterns:
+          - "@tanstack/*"
 
   - package-ecosystem: "github-actions"
     directory: "/"
