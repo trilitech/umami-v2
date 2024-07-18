@@ -1,10 +1,16 @@
 import { type Account, type ImplicitAccount } from "@umami/core";
 
 import { useRemovePeersByAccounts } from "./beacon";
-import { useImplicitAccounts } from "./getAccountData";
+import { useCurrentAccount, useImplicitAccounts } from "./getAccountData";
 import { useMultisigAccounts } from "./multisig";
 import { useAppDispatch } from "./useAppDispatch";
-import { assetsActions, batchesActions, beaconActions, multisigsActions } from "../slices";
+import {
+  accountsActions,
+  assetsActions,
+  batchesActions,
+  beaconActions,
+  multisigsActions,
+} from "../slices";
 
 /**
  * Hook for cleaning up data related to deleted accounts.
@@ -40,6 +46,8 @@ export const useRemoveDependenciesAndMultisigs = () => {
 const useRemoveAccountsDependencies = () => {
   const dispatch = useAppDispatch();
   const removePeersByAccounts = useRemovePeersByAccounts();
+  const currentAccount = useCurrentAccount();
+  const implicitAccounts = useImplicitAccounts();
 
   return (accounts: Account[]) => {
     const pkhs = accounts.map(account => account.address.pkh);
@@ -47,6 +55,14 @@ const useRemoveAccountsDependencies = () => {
     void removePeersByAccounts(pkhs);
     dispatch(beaconActions.removeConnections(pkhs));
     dispatch(assetsActions.removeAccountsData(pkhs));
+
+    if (!accounts.find(acc => acc.address.pkh === currentAccount?.address.pkh)) {
+      return;
+    }
+
+    const remainingAccount = implicitAccounts.find(account => !pkhs.includes(account.address.pkh));
+
+    dispatch(accountsActions.setCurrent(remainingAccount?.address.pkh));
   };
 };
 

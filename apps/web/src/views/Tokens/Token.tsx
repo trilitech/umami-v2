@@ -1,11 +1,11 @@
 import { Flex, Grid, Text } from "@chakra-ui/react";
 import { useDynamicModalContext } from "@umami/components";
 import { type FA12TokenBalance, type FA2TokenBalance, tokenPrettyAmount } from "@umami/core";
-import { formatPkh, parseContractPkh } from "@umami/tezos";
+import { parseContractPkh } from "@umami/tezos";
 
 import { SendTokensFormPage } from "./SendTokensFormPage";
 import { TokenIcon } from "../../assets/icons";
-import { CopyButton } from "../../components/CopyButton/CopyButton";
+import { CopyAddressButton } from "../../components/CopyAddressButton/CopyAddressButton";
 import { TokenIconWrapper } from "../../components/IconWrapper";
 import { SendButton } from "../../components/SendButton";
 import { TokenNameWithIcon } from "../../components/TokenNameWithIcon";
@@ -19,7 +19,6 @@ export const Token = ({ token }: TokenProps) => {
   const color = useColor();
   const { openWith } = useDynamicModalContext();
   const address = parseContractPkh(token.contract).pkh;
-  const formattedAddress = formatPkh(address);
 
   return (
     <Grid
@@ -50,21 +49,12 @@ export const Token = ({ token }: TokenProps) => {
           <TokenIcon width="48px" minWidth="48px" contract={token.contract} rounded="full" />
         </TokenIconWrapper>
         <Flex flexDirection="column" flex="1" gap="4px" maxWidth="304px" marginLeft="12px">
-          <TokenNameWithIcon size="md" token={token} variant="bold" />
-          <Flex>
-            <CopyButton
-              text={
-                <Text fontWeight="normal" size="sm">
-                  {formattedAddress}
-                </Text>
-              }
-              value={address}
-            />
-          </Flex>
+          <TokenNameWithIcon fontWeight="600" size="md" token={token} />
+          <CopyAddressButton address={address} />
         </Flex>
       </Flex>
       <Flex flex="1" alignSelf="center" gap="4px" gridArea="amount">
-        <Text size="md" variant="bold">
+        <Text fontWeight="600" size="md">
           {tokenPrettyAmount(token.balance, token, { showSymbol: false })}
         </Text>
         {/* TODO: implement USD price later */}

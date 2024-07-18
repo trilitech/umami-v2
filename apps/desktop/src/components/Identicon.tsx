@@ -1,8 +1,7 @@
 import { Box, type ChakraProps } from "@chakra-ui/react";
+import { ReactIdenticon } from "@umami/components";
 import { type Address, type RawPkh } from "@umami/tezos";
 import md5 from "md5";
-
-import { ReactIdenticon } from "./ReactIdenticon";
 
 export const color = (address: RawPkh) => `#${md5(address).slice(0, 6)}`;
 

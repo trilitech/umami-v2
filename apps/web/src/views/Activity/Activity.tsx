@@ -1,8 +1,9 @@
 import { Box, Center, Divider, Flex, Image } from "@chakra-ui/react";
 import { useGetOperations } from "@umami/data-polling";
-import { useImplicitAccounts } from "@umami/state";
+import { useCurrentAccount } from "@umami/state";
 import { type UIEvent, useRef } from "react";
 
+import loadingDots from "../../assets/loading-dots.gif";
 import loadingWheel from "../../assets/loading-wheel.gif";
 import { EmptyMessage } from "../../components/EmptyMessage";
 import { OperationTile } from "../../components/OperationTile";
@@ -10,7 +11,7 @@ import { useColor } from "../../styles/useColor";
 
 export const Activity = () => {
   const color = useColor();
-  const currentAccount = useImplicitAccounts()[0]; // TODO: add useCurrentAccount hook
+  const currentAccount = useCurrentAccount()!;
   const { operations, loadMore, hasMore, isLoading, isFirstLoad } = useGetOperations([
     currentAccount,
   ]);
@@ -62,7 +63,7 @@ export const Activity = () => {
           })}
           <Center flexDirection="column" display={isLoading && !isFirstLoad ? "flex" : "none"}>
             <Divider />
-            <Image width="100px" height="50px" src="./static/media/loading-dots.gif" />
+            <Image width="100px" height="50px" src={loadingDots} />
           </Center>
         </Box>
       )}

@@ -14,7 +14,7 @@ export const EmptyMessage = ({ title, subtitle }: EmptyMessageProps) => (
     width="full"
     data-testid="empty-state-message"
   >
-    <Text size={{ base: "xl", lg: "2xl" }} variant="bold">
+    <Text fontWeight="600" size={{ base: "xl", lg: "2xl" }}>
       No {title} to show
     </Text>
     <Text

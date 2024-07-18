@@ -128,6 +128,9 @@ export const accountsSlice = createSlice({
     ) => {
       state.secretKeys[pkh] = encryptedSecretKey;
     },
+    setCurrent: (state, { payload: address }: { payload: RawPkh | undefined }) => {
+      state.current = address;
+    },
   },
 });
 

@@ -7,4 +7,5 @@ export type AccountsState = {
   //TODO: Rename to encryptedMnemonics
   seedPhrases: Record<string, EncryptedData | undefined>;
   secretKeys: Record<RawPkh, EncryptedData | undefined>;
+  current?: RawPkh | undefined;
 };

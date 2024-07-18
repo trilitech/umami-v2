@@ -10,14 +10,16 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 import { useDynamicModalContext } from "@umami/components";
-import { useAppSelector } from "@umami/state";
+import { useAppSelector, useGetAccountBalance } from "@umami/state";
+import { prettyTezAmount } from "@umami/tezos";
 
-import { AccountSelector } from "../../components/AccountCard";
+import { AccountTile } from "../../components/AccountTile";
 
 export const RecipientsPage = () => {
   const accounts = useAppSelector(s => s.accounts.items);
   const showAmount = useBreakpointValue({ base: false, lg: true });
   const { goBack } = useDynamicModalContext();
+  const getBalance = useGetAccountBalance();
 
   return (
     <ModalContent>
@@ -27,19 +29,18 @@ export const RecipientsPage = () => {
       </ModalHeader>
       <ModalBody>
         <VStack overflowY="auto" width="full" height="288px">
-          {accounts.map(account => (
-            <AccountSelector
-              key={account.address.pkh}
-              account={account}
-              sideElement={
-                showAmount ? (
+          {accounts.map(account => {
+            const balance = getBalance(account.address.pkh);
+            return (
+              <AccountTile key={account.address.pkh} account={account}>
+                {showAmount && balance && (
                   <Text width="full" marginTop="auto" paddingBottom="2px" textAlign="end" size="sm">
-                    2882.675746 ꜩ
+                    {prettyTezAmount(balance)}
                   </Text>
-                ) : null
-              }
-            />
-          ))}
+                )}
+              </AccountTile>
+            );
+          })}
         </VStack>
       </ModalBody>
       <ModalFooter>

@@ -8,10 +8,13 @@ import {
 import { decrypt } from "@umami/crypto";
 import { type RawPkh, deriveSecretKey } from "@umami/tezos";
 import { maxBy } from "lodash";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
 import { useGetAccountBalance } from "./assets";
 import { useMultisigAccounts } from "./multisig";
 import { useAppSelector } from "./useAppSelector";
+import { accountsActions } from "../slices";
 
 export const useSeedPhrases = () => useAppSelector(s => s.accounts.seedPhrases);
 
@@ -171,14 +174,32 @@ export const useGetSecretKey = () => {
       }
 
       return decrypt(encryptedSecretKey, password);
-    } else {
-      const encryptedMnemonic = seedPhrases[account.seedFingerPrint];
-      if (!encryptedMnemonic) {
-        throw new Error(`Missing seedphrase for account ${account.address.pkh}`);
-      }
-
-      const mnemonic = await decrypt(encryptedMnemonic, password);
-      return deriveSecretKey(mnemonic, account.derivationPath, account.curve);
     }
+
+    const encryptedMnemonic = seedPhrases[account.seedFingerPrint];
+    if (!encryptedMnemonic) {
+      throw new Error(`Missing seedphrase for account ${account.address.pkh}`);
+    }
+
+    const mnemonic = await decrypt(encryptedMnemonic, password);
+    return deriveSecretKey(mnemonic, account.derivationPath, account.curve);
   };
+};
+
+export const useCurrentAccount = (): ImplicitAccount | undefined => {
+  const currentAccountAddress = useAppSelector(s => s.accounts.current);
+  const dispatch = useDispatch();
+  const accounts = useImplicitAccounts();
+
+  const currentAccount = accounts.find(account => account.address.pkh === currentAccountAddress);
+
+  // if the current account went out of sync with the accounts list -> set it to the first available one
+  // TODO: test this
+  useEffect(() => {
+    if (!currentAccount) {
+      dispatch(accountsActions.setCurrent(accounts[0]?.address.pkh));
+    }
+  }, [currentAccount, currentAccountAddress, dispatch, accounts]);
+
+  return currentAccount;
 };
