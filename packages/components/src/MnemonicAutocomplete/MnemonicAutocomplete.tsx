@@ -43,7 +43,6 @@ export const MnemonicAutocomplete = <T extends FieldValues, U extends Path<T>>({
   return (
     <>
       <Input
-        zIndex={0}
         autoComplete="off"
         data-testid="mnemonic-input"
         onFocus={() => setHidden(false)}
@@ -60,9 +59,10 @@ export const MnemonicAutocomplete = <T extends FieldValues, U extends Path<T>>({
         <UnorderedList data-testid="suggestions" variant="suggestions" {...listProps}>
           {matching.map(word => (
             <ListItem
+              zIndex={1}
               key={word}
               paddingTop="2px"
-              fontSize="14px"
+              fontSize="sm"
               fontWeight={600}
               data-testid="suggestion"
               onMouseDown={() => setValue(inputName, word as any)}

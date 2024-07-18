@@ -1,9 +1,9 @@
 import { Button, ListItem, OrderedList, VStack, useToast } from "@chakra-ui/react";
+import { withTimeout } from "@umami/core";
 import { useAsyncActionHandler, useRestoreLedger } from "@umami/state";
 import { getLedgerPublicKeyPair, makeDerivationPath } from "@umami/tezos";
 
 import { USBIcon } from "../../../assets/icons";
-import { withTimeout } from "../../../utils/withTimeout";
 import { ModalContentWrapper } from "../ModalContentWrapper";
 import { type RestoreLedgerStep } from "../OnboardingStep";
 

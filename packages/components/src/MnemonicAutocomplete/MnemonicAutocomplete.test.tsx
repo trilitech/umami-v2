@@ -2,7 +2,7 @@ import { FormControl, Text } from "@chakra-ui/react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { MnemonicAutocomplete } from "./MnemonicAutocomplete";
-import { fireEvent, render, screen, waitFor } from "../mocks/testUtils";
+import { fireEvent, render, screen, waitFor } from "../testUtils";
 
 type FormFields = { word: string };
 

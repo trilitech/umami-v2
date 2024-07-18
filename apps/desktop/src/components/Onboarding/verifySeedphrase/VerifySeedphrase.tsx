@@ -1,4 +1,5 @@
 import { Box, Button, FormControl, Text } from "@chakra-ui/react";
+import { MnemonicAutocomplete } from "@umami/components";
 import { selectRandomElements } from "@umami/core";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
@@ -6,7 +7,6 @@ import { FormProvider, useForm } from "react-hook-form";
 import { DoubleCheckmarkIcon } from "../../../assets/icons";
 import { IS_DEV } from "../../../env";
 import { FormErrorMessage } from "../../FormErrorMessage";
-import { MnemonicAutocomplete } from "../../MnemonicAutocomplete";
 import { ModalContentWrapper } from "../ModalContentWrapper";
 import { type OnboardingStep, type VerifySeedphraseStep } from "../OnboardingStep";
 

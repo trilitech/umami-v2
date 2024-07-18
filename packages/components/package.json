@@ -21,6 +21,7 @@
     "@types/babel__core": "^7.20.5",
     "@types/eslint": "^8",
     "@types/lodash": "^4",
+    "@types/md5": "^2.3.5",
     "@types/react": "18.3.3",
     "@types/react-dom": "18.3.0",
     "@umami/eslint-config": "workspace:^",
@@ -73,9 +74,12 @@
     "@umami/core": "workspace:^",
     "@umami/tezos": "workspace:^",
     "@umami/tzkt": "workspace:^",
+    "bip39": "^3.1.0",
     "framer-motion": "^11.3.7",
+    "md5": "^2.3.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-hook-form": "^7.52.1",
     "react-remove-scroll": "^2.5.10"
   }
 }

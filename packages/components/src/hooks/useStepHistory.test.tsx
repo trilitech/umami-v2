@@ -1,5 +1,5 @@
 import { useStepHistory } from "./useStepHistory";
-import { act, renderHook } from "../mocks/testUtils";
+import { act, renderHook } from "../testUtils";
 
 type TestStep = "step1" | "step2" | "step3";
 
