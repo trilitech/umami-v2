@@ -1,14 +1,16 @@
 import React, { createContext, ReactNode, useContext, useRef } from "react";
 
-import { Network, UserData } from "@trilitech-umami/umami-embed/types";
+import { Network, TypeOfLogin, UserData } from "@trilitech-umami/umami-embed/types";
 
 const USER_DATA_KEY = "umami-embed-user-data";
 
 interface EmbedAppContextState {
   getUserData: () => UserData | null;
   getNetwork: () => Network | null;
+  getLoginOptions: () => TypeOfLogin[];
   setUserData: (userData: UserData | null) => void;
   setNetwork: (network: Network) => void;
+  setLoginOptions: (loginOptions: TypeOfLogin[]) => void;
 }
 
 const EmbedAppContext = createContext<EmbedAppContextState | undefined>(undefined);
@@ -19,8 +21,11 @@ export const EmbedAppProvider: React.FC<{ children: ReactNode }> = ({ children }
   );
   const networkRef = useRef<Network | null>(null);
 
+  const loginOptionsRef = useRef<TypeOfLogin[]>(["google", "reddit", "twitter", "facebook"]);
+
   const getUserData = () => userDataRef.current;
   const getNetwork = () => networkRef.current;
+  const getLoginOptions = () => loginOptionsRef.current;
 
   const setUserData = (userData: UserData | null) => {
     if (userData !== null) {
@@ -32,9 +37,12 @@ export const EmbedAppProvider: React.FC<{ children: ReactNode }> = ({ children }
   };
 
   const setNetwork = (network: Network) => (networkRef.current = network);
+  const setLoginOptions = (loginOptions: TypeOfLogin[]) => (loginOptionsRef.current = loginOptions);
 
   return (
-    <EmbedAppContext.Provider value={{ getUserData, getNetwork, setUserData, setNetwork }}>
+    <EmbedAppContext.Provider
+      value={{ getUserData, getNetwork, getLoginOptions, setUserData, setNetwork, setLoginOptions }}
+    >
       {children}
     </EmbedAppContext.Provider>
   );

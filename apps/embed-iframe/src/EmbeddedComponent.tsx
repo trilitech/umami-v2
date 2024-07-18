@@ -3,6 +3,7 @@ import {
   type RequestMessage,
   type RequestType,
   toMatchingResponseType,
+  UmamiIframeConfig,
 } from "@trilitech-umami/umami-embed/types";
 import { useEffect } from "react";
 
@@ -15,7 +16,7 @@ import "./EmbeddedComponent.scss";
 import { useEmbedApp } from "./EmbedAppContext";
 
 export function EmbeddedComponent() {
-  const { getNetwork, getUserData, setNetwork, setUserData } = useEmbedApp();
+  const { getNetwork, getUserData, setNetwork, setUserData, setLoginOptions } = useEmbedApp();
 
   const { onOpen: openLoginModal, modalElement: loginModalElement } = useLoginModal();
   const { onOpen: openOperationModal, modalElement: operationModalElement } =
@@ -64,7 +65,7 @@ export function EmbeddedComponent() {
 
       switch (data.type) {
         case "config_request":
-          setNetwork(data.config.network);
+          applyConfig(data.config);
           sendResponse({ type: "config_response" });
           break;
         case "login_request":
@@ -91,6 +92,18 @@ export function EmbeddedComponent() {
     } catch {
       /* empty */
     }
+  };
+
+  const applyConfig = (config: UmamiIframeConfig) => {
+    setNetwork(config.network);
+    if (config.loginOptions) {
+      setLoginOptions(config.loginOptions);
+      if (getUserData() !== null && !config.loginOptions.includes(getUserData()!.typeOfLogin)) {
+        setUserData(null);
+      }
+    }
+    // TODO: handle theme
+    // TODO: handle logs level
   };
 
   const validateClientPermissions = (origin: string, request: RequestMessage): boolean => {
