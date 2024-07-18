@@ -16,7 +16,7 @@ services:
   tezos_node:
     container_name: "tezos-node-${CUCUMBER_WORKER_ID:-0}"
     restart: always
-    image: ghcr.io/tez-capital/tezbox:tezos-v20.1
+    image: ghcr.io/tez-capital/tezbox:tezos-v20.2
     environment:
       - USER=root
     volumes:
