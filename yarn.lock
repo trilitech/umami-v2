@@ -6624,10 +6624,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@trilitech-umami/umami-embed@npm:^0.0.4":
-  version: 0.0.4
-  resolution: "@trilitech-umami/umami-embed@npm:0.0.4"
-  checksum: 10/0b5e73ac393d347df3a6791cb03c13378f2775c8baba74b1a7cd21b8a0bb34446be38bc2edc003301b1a55e4016dd8bff00b64e53e07471833ff79ac2433634f
+"@trilitech-umami/umami-embed@npm:^0.0.10":
+  version: 0.0.10
+  resolution: "@trilitech-umami/umami-embed@npm:0.0.10"
+  checksum: 10/d80b3ba8e9e94ea980299056001b4b3f8bb2190b4f414f8d3ee4771355055e3f1729e5ae1a99a162d1c5bea40255cdfeee4869034478c4cf5a361cd9c18c8721
   languageName: node
   linkType: hard
 
@@ -7880,7 +7880,7 @@ __metadata:
     "@testing-library/react": "npm:14.3.1"
     "@testing-library/user-event": "npm:14.5.2"
     "@toruslabs/customauth": "npm:16.0.6"
-    "@trilitech-umami/umami-embed": "npm:^0.0.4"
+    "@trilitech-umami/umami-embed": "npm:^0.0.10"
     "@umami/eslint-config": "workspace:^"
     "@umami/social-auth": "workspace:^"
     "@umami/typescript-config": "workspace:^"
