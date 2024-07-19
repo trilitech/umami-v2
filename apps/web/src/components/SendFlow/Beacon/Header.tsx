@@ -34,7 +34,7 @@ export const Header = ({
         marginTop="16px"
         padding="15px"
         borderRadius="4px"
-        backgroundColor={color("800")}
+        backgroundColor={color("100")}
       >
         <AspectRatio width="30px" marginRight="12px" ratio={1}>
           <Image borderRadius="4px" src={message.appMetadata.icon} />

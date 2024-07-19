@@ -68,11 +68,11 @@ export const SignPayloadRequestModal = ({ request }: { request: SignPayloadReque
             maxHeight="300px"
             padding="15px"
             border="1px solid"
-            borderColor={color("500")}
+            borderColor={color("300")}
             borderRadius="4px"
-            backgroundColor={color("800")}
+            backgroundColor={color("100")}
           >
-            <Text color={color("450")} size="md">
+            <Text color={color("600")} size="md">
               {decodePayload(request.payload)}
             </Text>
           </Box>

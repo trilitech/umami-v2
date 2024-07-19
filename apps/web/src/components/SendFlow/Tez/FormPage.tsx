@@ -58,6 +58,7 @@ export const FormPage = ({
     mode: "onBlur",
     defaultValues: formDefaultValues(props),
   });
+
   const {
     formState: { isValid, errors },
     register,
@@ -93,7 +94,7 @@ export const FormPage = ({
               )}
             </FormControl>
 
-            <FormControl marginTop="24px" isInvalid={!!errors.sender}>
+            <FormControl isInvalid={!!errors.sender}>
               <OwnedAccountsAutocomplete
                 allowUnknown={false}
                 inputName="sender"
@@ -106,7 +107,7 @@ export const FormPage = ({
                 </FormErrorMessage>
               )}
             </FormControl>
-            <FormControl marginTop="24px" isInvalid={!!errors.recipient}>
+            <FormControl isInvalid={!!errors.recipient}>
               <KnownAccountsAutocomplete allowUnknown inputName="recipient" label="To" />
               {errors.recipient && (
                 <FormErrorMessage data-testid="recipient-error">

@@ -38,7 +38,7 @@ describe("SendFlow utils", () => {
   });
 
   describe("<FormSubmitButtons />", () => {
-    it("renders submit single and add to batch buttons", () => {
+    it("renders preview button", () => {
       const mockSingle = jest.fn();
       const mockAddToBatch = jest.fn();
       render(
@@ -51,8 +51,6 @@ describe("SendFlow utils", () => {
       );
 
       fireEvent.click(screen.getByText("Preview"));
-      expect(mockSingle).toHaveBeenCalled();
-      fireEvent.click(screen.getByText("Insert Into Batch"));
       expect(mockSingle).toHaveBeenCalled();
     });
 

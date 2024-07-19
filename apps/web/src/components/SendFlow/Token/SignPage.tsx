@@ -30,21 +30,14 @@ export const SignPage = (props: SignPageProps<{ token: FA12TokenBalance | FA2Tok
           <ModalBody>
             <TokenTile amount={amount} token={token} />
 
-            <Flex
-              alignItems="center"
-              justifyContent="end"
-              marginTop="12px"
-              marginBottom="24px"
-              paddingX="4px"
-            >
-              <Flex>
-                <SignPageFee fee={fee} />
-              </Flex>
+            <Flex justifyContent="end" marginTop="12px" paddingX="4px">
+              <SignPageFee fee={fee} />
             </Flex>
 
-            <FormLabel>From</FormLabel>
-            <AddressTile marginBottom="24px" address={operations.sender.address} />
-            <FormLabel>To</FormLabel>
+            <FormLabel width="full">From</FormLabel>
+            <AddressTile address={operations.sender.address} />
+
+            <FormLabel width="full">To</FormLabel>
             <AddressTile address={recipient} />
 
             <OperationSignerSelector

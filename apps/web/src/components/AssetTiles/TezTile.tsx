@@ -11,9 +11,10 @@ export const TezTile = ({ mutezAmount }: { mutezAmount: string | number | BigNum
   return (
     <Flex
       alignItems="center"
+      width="100%"
       height="60px"
       padding="15px"
-      background={color("800")}
+      background={color("200")}
       borderRadius="4px"
     >
       <Icon as={TezIcon} marginRight="12px" />

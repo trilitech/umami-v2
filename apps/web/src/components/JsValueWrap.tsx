@@ -11,7 +11,7 @@ export const JsValueWrap = ({
   const color = useColor();
 
   return (
-    <Card background={color("700")} borderRadius="5px" {...props}>
+    <Card background={color("200")} borderRadius="5px" {...props}>
       <CardBody>
         <pre
           style={{

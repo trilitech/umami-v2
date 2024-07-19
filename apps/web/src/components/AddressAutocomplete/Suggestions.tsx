@@ -28,9 +28,9 @@ export const Suggestions = ({
       maxHeight="300px"
       marginTop="8px"
       marginLeft={0}
-      background={color("700")}
+      background={color("300")}
       border="1px solid"
-      borderColor={color("500")}
+      borderColor={color("400")}
       borderRadius="8px"
       data-testid="suggestions-list"
       listStyleType="none"
@@ -50,10 +50,10 @@ export const Suggestions = ({
             <AddressTile
               height="40px"
               padding="10px 8px 10px 5px"
-              background={color("700")}
+              background={color("300")}
               borderRadius="4px"
               _hover={{
-                background: color("500"),
+                background: color("400"),
               }}
               cursor="pointer"
               address={parsePkh(contact.pkh)}

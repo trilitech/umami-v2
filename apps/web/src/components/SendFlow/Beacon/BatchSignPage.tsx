@@ -38,7 +38,7 @@ export const BatchSignPage = ({ operation, message }: BeaconSignPageProps) => {
 
           <ModalBody>
             <Accordion allowToggle>
-              <AccordionItem background={color("800")} border="none" borderRadius="8px">
+              <AccordionItem background={color("100")} border="none" borderRadius="8px">
                 <AccordionButton>
                   <Heading flex="1" textAlign="left" paddingY="6px" size="sm">
                     Operations

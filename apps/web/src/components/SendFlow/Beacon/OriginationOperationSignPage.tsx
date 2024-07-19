@@ -57,7 +57,7 @@ export const OriginationOperationSignPage = ({ operation, message }: BeaconSignP
               marginTop="16px"
               padding="15px"
               borderRadius="4px"
-              backgroundColor={color("800")}
+              backgroundColor={color("100")}
             >
               <AspectRatio width="60px" marginRight="12px" ratio={1}>
                 <Image borderRadius="4px" src={message.appMetadata.icon} />
@@ -70,7 +70,7 @@ export const OriginationOperationSignPage = ({ operation, message }: BeaconSignP
             </Flex>
 
             <Accordion marginTop="16px" allowToggle={true}>
-              <AccordionItem background={color("800")} border="none" borderRadius="8px">
+              <AccordionItem background={color("100")} border="none" borderRadius="8px">
                 <AccordionButton>
                   <Heading flex="1" textAlign="left" marginY="10px" size="md">
                     Code
@@ -83,7 +83,7 @@ export const OriginationOperationSignPage = ({ operation, message }: BeaconSignP
               </AccordionItem>
             </Accordion>
             <Accordion marginTop="16px" allowToggle={true}>
-              <AccordionItem background={color("800")} border="none" borderRadius="8px">
+              <AccordionItem background={color("100")} border="none" borderRadius="8px">
                 <AccordionButton>
                   <Heading flex="1" textAlign="left" marginY="10px" size="md">
                     Storage

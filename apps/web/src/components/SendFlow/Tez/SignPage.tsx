@@ -26,14 +26,18 @@ export const SignPage = (props: SignPageProps) => {
           <ModalBody>
             <TezTile mutezAmount={mutezAmount} />
 
-            <Flex alignItems="center" justifyContent="end" marginTop="12px">
+            <Flex justifyContent="end" width="full" marginTop="12px">
               <SignPageFee fee={fee} />
             </Flex>
 
-            <FormLabel marginTop="24px">From </FormLabel>
+            <FormLabel width="full" marginTop="24px">
+              From
+            </FormLabel>
             <AddressTile address={operations.sender.address} />
 
-            <FormLabel marginTop="24px">To </FormLabel>
+            <FormLabel width="full" marginTop="24px">
+              To
+            </FormLabel>
             <AddressTile address={recipient} />
 
             <OperationSignerSelector

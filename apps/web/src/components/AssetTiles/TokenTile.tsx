@@ -24,9 +24,9 @@ export const TokenTile = ({
     <Flex
       alignItems="center"
       justifyContent="start"
-      width="400px"
+      width="full"
       padding="15px"
-      background={color("800")}
+      background={color("100")}
       borderRadius="4px"
       data-testid="token-tile"
       {...flexProps}
@@ -35,7 +35,7 @@ export const TokenTile = ({
         <AspectRatio width="30px" height="30px" marginRight="12px" ratio={1}>
           <TokenIcon
             padding="6.25px"
-            background={color("500")}
+            background={color("200")}
             borderRadius="4px"
             contract={contract}
           />

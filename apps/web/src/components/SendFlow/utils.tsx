@@ -1,4 +1,4 @@
-import { Box, Button } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 import { type TezosToolkit } from "@taquito/taquito";
 import { DynamicModalContext } from "@umami/components";
 import {
@@ -63,36 +63,20 @@ export const FormSubmitButtons = ({
   onSingleSubmit: () => Promise<void>;
   onAddToBatch: () => Promise<void>;
   showPreview?: boolean;
-}) => (
-  <>
-    <Box width="100%">
-      {showPreview && (
-        <Button
-          width="100%"
-          marginBottom="16px"
-          isDisabled={!isValid}
-          isLoading={isLoading}
-          onClick={onSingleSubmit}
-          size="lg"
-          type="submit"
-        >
-          Preview
-        </Button>
-      )}
-      <Button
-        width="100%"
-        isDisabled={!isValid}
-        isLoading={isLoading}
-        onClick={onAddToBatch}
-        size="lg"
-        type="submit"
-        variant="tertiary"
-      >
-        Insert Into Batch
-      </Button>
-    </Box>
-  </>
-);
+}) =>
+  showPreview && (
+    <Button
+      width="100%"
+      marginBottom="16px"
+      isDisabled={!isValid}
+      isLoading={isLoading}
+      onClick={onSingleSubmit}
+      size="lg"
+      type="submit"
+    >
+      Preview
+    </Button>
+  );
 
 export const formDefaultValues = <T,>({ sender, form }: FormPageProps<T>) => {
   if (form) {

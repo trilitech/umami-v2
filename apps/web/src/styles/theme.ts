@@ -260,6 +260,8 @@ const theme = extendTheme({
           padding: 0,
           justifyContent: "center",
           display: "flex",
+          flexDirection: "column",
+          width: "full",
         },
         footer: {
           padding: 0,

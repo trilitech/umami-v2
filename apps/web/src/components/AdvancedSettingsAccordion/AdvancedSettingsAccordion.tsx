@@ -51,8 +51,8 @@ export const AdvancedSettingsAccordion = ({ index = 0 }: AdvancedSettingsAccordi
   };
 
   return (
-    <Accordion marginTop="16px" allowToggle>
-      <AccordionItem background={color("800")} border="none" borderRadius="8px">
+    <Accordion width="full" marginTop="16px" allowToggle>
+      <AccordionItem background={color("100")} border="none" borderRadius="8px">
         <AccordionButton>
           <Heading flex="1" textAlign="left" marginY="10px" size="md">
             Advanced

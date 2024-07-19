@@ -24,13 +24,19 @@ export const AddressTile = ({
   const color = useColor();
 
   return (
-    <Tooltip background={color("white")} hasArrow label={addressKind.label} placement="left">
+    <Tooltip
+      color={color("black")}
+      background={color("white")}
+      hasArrow
+      label={addressKind.label}
+      placement="left"
+    >
       <Flex
         alignItems="center"
         justifyContent="space-between"
         width="100%"
         padding="9px 10px"
-        background={color("800")}
+        background={color("100")}
         borderRadius="4px"
         data-testid="address-tile"
         {...flexProps}
@@ -49,7 +55,7 @@ export const AddressTile = ({
                   {addressKind.label}
                 </Heading>
               </Box>
-              <Text width="89px" marginLeft="10px" color={color("300")} size="xs">
+              <Text width="89px" marginLeft="10px" color={color("500")} size="xs">
                 {formatPkh(addressKind.pkh)}
               </Text>
             </>

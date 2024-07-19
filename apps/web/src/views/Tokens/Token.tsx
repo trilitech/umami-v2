@@ -1,13 +1,14 @@
 import { Flex, Grid, Text } from "@chakra-ui/react";
 import { useDynamicModalContext } from "@umami/components";
 import { type FA12TokenBalance, type FA2TokenBalance, tokenPrettyAmount } from "@umami/core";
+import { useCurrentAccount } from "@umami/state";
 import { parseContractPkh } from "@umami/tezos";
 
-import { SendTokensFormPage } from "./SendTokensFormPage";
 import { TokenIcon } from "../../assets/icons";
 import { CopyAddressButton } from "../../components/CopyAddressButton/CopyAddressButton";
 import { TokenIconWrapper } from "../../components/IconWrapper";
 import { SendButton } from "../../components/SendButton";
+import { FormPage as SendTokensFormPage } from "../../components/SendFlow/Token/FormPage";
 import { TokenNameWithIcon } from "../../components/TokenNameWithIcon";
 import { useColor } from "../../styles/useColor";
 
@@ -19,6 +20,7 @@ export const Token = ({ token }: TokenProps) => {
   const color = useColor();
   const { openWith } = useDynamicModalContext();
   const address = parseContractPkh(token.contract).pkh;
+  const currentAccount = useCurrentAccount()!;
 
   return (
     <Grid
@@ -64,7 +66,7 @@ export const Token = ({ token }: TokenProps) => {
         justifySelf="end"
         gridArea="action"
         width="fit-content"
-        onClick={() => openWith(<SendTokensFormPage token={token} />)}
+        onClick={() => openWith(<SendTokensFormPage sender={currentAccount} token={token} />)}
       />
     </Grid>
   );

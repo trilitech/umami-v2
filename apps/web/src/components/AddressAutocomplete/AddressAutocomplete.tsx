@@ -116,9 +116,9 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
       {state === "selected_tile" && (
         <Box
           height="48px"
-          background={color("800")}
+          background={color("100")}
           border="1px solid"
-          borderColor={color("500")}
+          borderColor={color("300")}
           borderRadius="4px"
           data-testid={`selected-address-tile-${currentRealValue}`}
           onClick={clearInput}
