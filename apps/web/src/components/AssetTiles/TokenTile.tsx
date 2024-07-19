@@ -7,14 +7,15 @@ import {
 } from "@umami/core";
 
 import { PrettyNumber } from "./PrettyNumber";
-import { TokenIcon } from "../assets/icons";
-import colors from "../style/colors";
+import { TokenIcon } from "../../assets/icons";
+import { useColor } from "../../styles/useColor";
 
 export const TokenTile = ({
   token,
   amount,
   ...flexProps
 }: { token: FA12TokenBalance | FA2TokenBalance; amount: string } & FlexProps) => {
+  const color = useColor();
   const { contract } = token;
 
   const prettyAmount = tokenPrettyAmount(amount, token);
@@ -25,7 +26,7 @@ export const TokenTile = ({
       justifyContent="start"
       width="400px"
       padding="15px"
-      background={colors.gray[800]}
+      background={color("800")}
       borderRadius="4px"
       data-testid="token-tile"
       {...flexProps}
@@ -34,7 +35,7 @@ export const TokenTile = ({
         <AspectRatio width="30px" height="30px" marginRight="12px" ratio={1}>
           <TokenIcon
             padding="6.25px"
-            background={colors.gray[500]}
+            background={color("500")}
             borderRadius="4px"
             contract={contract}
           />

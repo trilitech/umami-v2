@@ -1,26 +1,38 @@
-import { Flex, FormLabel, ModalBody, ModalContent, ModalFooter } from "@chakra-ui/react";
-import { type FA12TokenBalance, type FA2TokenBalance, type TokenTransfer } from "@umami/core";
+import {
+  Center,
+  Flex,
+  FormLabel,
+  Heading,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  Text,
+} from "@chakra-ui/react";
+import { type FA2Transfer, type NFTBalance } from "@umami/core";
 import { FormProvider } from "react-hook-form";
 
+import { useColor } from "../../../styles/useColor";
 import { AddressTile } from "../../AddressTile/AddressTile";
 import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";
-import { TokenTile } from "../../AssetTiles/TokenTile";
 import { OperationSignerSelector } from "../OperationSignerSelector";
+import { SendNFTRecapTile } from "../SendNFTRecapTile";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
 import { SignPageHeader, headerText } from "../SignPageHeader";
 import { type SignPageProps, useSignPageHelpers } from "../utils";
 
-export const SignPage = (props: SignPageProps<{ token: FA12TokenBalance | FA2TokenBalance }>) => {
+export const SignPage = (props: SignPageProps<{ nft: NFTBalance }>) => {
   const {
     mode,
     operations: initialOperations,
-    data: { token },
+    data: { nft },
   } = props;
+
   const { fee, operations, estimationFailed, isLoading, form, signer, reEstimate, onSign } =
     useSignPageHelpers(initialOperations, mode);
+  const color = useColor();
 
-  const { amount, recipient } = operations.operations[0] as TokenTransfer;
+  const { recipient } = operations.operations[0] as FA2Transfer;
 
   return (
     <FormProvider {...form}>
@@ -28,18 +40,32 @@ export const SignPage = (props: SignPageProps<{ token: FA12TokenBalance | FA2Tok
         <form>
           <SignPageHeader {...props} operationsType={operations.type} signer={operations.signer} />
           <ModalBody>
-            <TokenTile amount={amount} token={token} />
+            <Flex marginBottom="12px">
+              <SendNFTRecapTile nft={nft} />
+            </Flex>
 
-            <Flex
-              alignItems="center"
-              justifyContent="end"
-              marginTop="12px"
-              marginBottom="24px"
-              paddingX="4px"
-            >
-              <Flex>
-                <SignPageFee fee={fee} />
+            <Flex alignItems="center" justifyContent="space-between" marginY="12px" paddingX="4px">
+              <Flex alignItems="center">
+                <Heading marginRight="4px" color={color("450")} size="sm">
+                  Owned:
+                </Heading>
+                <Text color={color("400")} data-testid="nft-owned" size="sm">
+                  {nft.balance}
+                </Text>
               </Flex>
+
+              <SignPageFee fee={fee} />
+            </Flex>
+
+            <Flex alignItems="center" marginTop="12px" marginBottom="24px">
+              <Heading marginRight="12px" size="md">
+                Quantity:
+              </Heading>
+              <Center width="100px" height="48px" background={color("800")} borderRadius="4px">
+                <Text textAlign="center">
+                  {(operations.operations[0] as FA2Transfer).amount} out of {nft.balance}
+                </Text>
+              </Center>
             </Flex>
 
             <FormLabel>From</FormLabel>

@@ -6,7 +6,7 @@ import {
 } from "@umami/core";
 
 import { TokenTile } from "./TokenTile";
-import { render, screen } from "../mocks/testUtils";
+import { render, screen } from "../../mocks/testUtils";
 
 const mockAccount = mockImplicitAccount(0);
 const mockFAToken = mockFA2Token(0, mockAccount);
