@@ -7590,7 +7590,7 @@ __metadata:
     babel-jest: "npm:^29.7.0"
     depcheck: "npm:^1.4.7"
     eslint: "npm:^8.57.0"
-    framer-motion: "npm:^11.3.6"
+    framer-motion: "npm:^11.3.7"
     jest: "npm:^29.7.0"
     lodash: "npm:^4.17.21"
     madge: "npm:^7.0.0"
@@ -7690,7 +7690,7 @@ __metadata:
     date-fns: "npm:^3.6.0"
     depcheck: "npm:^1.4.7"
     eslint: "npm:^8.57.0"
-    framer-motion: "npm:^11.3.6"
+    framer-motion: "npm:^11.3.7"
     jest: "npm:^29.7.0"
     lodash: "npm:^4.17.21"
     madge: "npm:^7.0.0"
@@ -7807,7 +7807,7 @@ __metadata:
     electron-updater: "npm:6.3.0"
     electronmon: "npm:^2.0.3"
     eslint: "npm:^8.57.0"
-    framer-motion: "npm:^11.3.6"
+    framer-motion: "npm:^11.3.7"
     identity-obj-proxy: "npm:^3.0.0"
     immer: "npm:^10.1.1"
     jest: "npm:29.7.0"
@@ -7887,7 +7887,7 @@ __metadata:
     "@vitejs/plugin-react": "npm:^4.3.1"
     depcheck: "npm:^1.4.7"
     eslint: "npm:^8.57.0"
-    framer-motion: "npm:^11.3.6"
+    framer-motion: "npm:^11.3.7"
     madge: "npm:^7.0.0"
     prettier: "npm:^3.3.2"
     react: "npm:^18.3.1"
@@ -8040,7 +8040,7 @@ __metadata:
     bip39: "npm:^3.1.0"
     depcheck: "npm:^1.4.7"
     eslint: "npm:^8.57.0"
-    framer-motion: "npm:^11.3.6"
+    framer-motion: "npm:^11.3.7"
     immer: "npm:^10.1.1"
     jest: "npm:^29.7.0"
     lodash: "npm:^4.17.21"
@@ -8221,7 +8221,7 @@ __metadata:
     depcheck: "npm:^1.4.7"
     eslint: "npm:^8.57.0"
     eslint-plugin-storybook: "npm:^0.8.0"
-    framer-motion: "npm:^11.3.6"
+    framer-motion: "npm:^11.3.7"
     immer: "npm:^10.1.1"
     jest: "npm:^29.7.0"
     jest-transformer-svg: "npm:^2.0.2"
@@ -13201,9 +13201,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"framer-motion@npm:^11.3.6":
-  version: 11.3.6
-  resolution: "framer-motion@npm:11.3.6"
+"framer-motion@npm:^11.3.7":
+  version: 11.3.7
+  resolution: "framer-motion@npm:11.3.7"
   dependencies:
     tslib: "npm:^2.4.0"
   peerDependencies:
@@ -13217,7 +13217,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10/855334c66286fc050f11545f5e5d1e87dbff3023d8746aca9f8029a79a50fbf58aeff13f56960b93882c1201321b662ffbd744395c2b9d67aaebcc2b7cb6fe33
+  checksum: 10/f16d06255eaa655d001ba8cb49b1f60b2bbcd800b4e83bb27fbe8eef7bff8c9264115fc17b1ed3e9558b391549c59d02852a651d6a6ce904885d8060a7729116
   languageName: node
   linkType: hard
 
