@@ -5,18 +5,21 @@ import * as Auth from "@umami/social-auth";
 import { useState } from "react";
 
 import { TezosLogoIcon, UmamiLogoIcon } from "./assets/icons";
-import colors from "./imported/style/colors";
+
 import { getErrorContext } from "./imported/utils/getErrorContext";
 import { withTimeout } from "./imported/utils/withTimeout";
 import { LoginButtonComponent } from "./LoginButtonComponent";
 import { sendLoginErrorResponse, sendResponse } from "./utils";
 import { useEmbedApp } from "./EmbedAppContext";
+import { useColor } from "./imported/style/useColor";
 
 const LOGIN_TIMEOUT = 3 * 60 * 1000; // 3 minutes
 
 export const LoginModalContent = ({ closeModal }: { closeModal: () => void }) => {
   const [isLoading, setIsLoading] = useState(false);
   const { setUserData, getLoginOptions } = useEmbedApp();
+
+  const color = useColor();
 
   const onLoginClick = async (loginType: TypeOfLogin) => {
     setIsLoading(true);
@@ -77,7 +80,7 @@ export const LoginModalContent = ({ closeModal }: { closeModal: () => void }) =>
       </Box>
 
       <Center marginTop="30px">
-        <Text marginRight="10px" color={colors.grey[500]} fontSize="xs" lineHeight="14px">
+        <Text marginRight="10px" color={color("500")} fontSize="xs" lineHeight="14px">
           Powered by
         </Text>
         <TezosLogoIcon />

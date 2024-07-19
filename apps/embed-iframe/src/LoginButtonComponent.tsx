@@ -36,6 +36,7 @@ const LogoIconWithBackground = ({ loginType }: { loginType: TypeOfLogin }) => (
     borderRadius="50%"
     backgroundColor="white"
     margin="6px"
+    shadow="5px 5px 10px rgba(0, 0, 0, 0.1)"
   >
     <LogoIcon loginType={loginType} />
   </Flex>
