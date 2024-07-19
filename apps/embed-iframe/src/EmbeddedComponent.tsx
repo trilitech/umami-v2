@@ -3,6 +3,7 @@ import {
   type RequestMessage,
   type RequestType,
   toMatchingResponseType,
+  UmamiIframeConfig,
 } from "@trilitech-umami/umami-embed/types";
 import { useEffect } from "react";
 
@@ -15,7 +16,7 @@ import "./EmbeddedComponent.scss";
 import { useEmbedApp } from "./EmbedAppContext";
 
 export function EmbeddedComponent() {
-  const { getNetwork, getUserData, setNetwork, setUserData } = useEmbedApp();
+  const { getNetwork, getUserData, setNetwork, setUserData, setLoginOptions } = useEmbedApp();
 
   const { onOpen: openLoginModal, modalElement: loginModalElement } = useLoginModal();
   const { onOpen: openOperationModal, modalElement: operationModalElement } =
@@ -63,6 +64,10 @@ export function EmbeddedComponent() {
       }
 
       switch (data.type) {
+        case "config_request":
+          applyConfig(data.config);
+          sendResponse({ type: "config_response" });
+          break;
         case "login_request":
           if (getUserData() !== null) {
             sendResponse({
@@ -71,12 +76,10 @@ export function EmbeddedComponent() {
               errorMessage: "UserData is already available",
             });
           } else {
-            setNetwork(data.network);
             openLoginModal();
           }
           break;
         case "logout_request":
-          setNetwork(null);
           setUserData(null);
           sendResponse({ type: "logout_response" });
           break;
@@ -91,17 +94,32 @@ export function EmbeddedComponent() {
     }
   };
 
+  const applyConfig = (config: UmamiIframeConfig) => {
+    setNetwork(config.network);
+    if (config.loginOptions) {
+      setLoginOptions(config.loginOptions);
+      if (getUserData() !== null && !config.loginOptions.includes(getUserData()!.typeOfLogin)) {
+        setUserData(null);
+      }
+    }
+    // TODO: handle theme
+    // TODO: handle logs level
+  };
+
   const validateClientPermissions = (origin: string, request: RequestMessage): boolean => {
-    const network = request.type === "login_request" ? request.network : getNetwork();
-    if (network === null) {
+    if (request.type === "config_request") {
+      return true;
+    }
+
+    if (getNetwork() === null) {
       sendResponse({
         type: toMatchingResponseType(request.type),
         error: "no_network_data",
-        errorMessage: "User's network data is not available",
+        errorMessage: "Network data is not available. Try restarting the component.",
       });
       return false;
     }
-    if (network === "ghostnet") {
+    if (getNetwork() === "ghostnet") {
       return true;
     }
 
@@ -146,14 +164,14 @@ export function EmbeddedComponent() {
       sendResponse({
         type: toMatchingResponseType(requestType),
         error: "no_login_data",
-        errorMessage: "User's login data is not available",
+        errorMessage: "User's login data is not available. Please login first.",
       });
       return false;
     } else if (getNetwork() === null) {
       sendResponse({
         type: toMatchingResponseType(requestType),
         error: "no_network_data",
-        errorMessage: "User's network data is not available",
+        errorMessage: "Network data is not available. Try restarting the component.",
       });
       return false;
     }

@@ -16,7 +16,7 @@ const LOGIN_TIMEOUT = 3 * 60 * 1000; // 3 minutes
 
 export const LoginModalContent = ({ closeModal }: { closeModal: () => void }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const { setUserData } = useEmbedApp();
+  const { setUserData, getLoginOptions } = useEmbedApp();
 
   const onLoginClick = async (loginType: TypeOfLogin) => {
     setIsLoading(true);
@@ -52,10 +52,13 @@ export const LoginModalContent = ({ closeModal }: { closeModal: () => void }) =>
       </Heading>
       <Box position="relative" width="100%">
         <VStack width="100%" spacing="10px">
-          <LoginButtonComponent loginType="google" onClick={() => onLoginClick("google")} />
-          <LoginButtonComponent loginType="facebook" onClick={() => onLoginClick("facebook")} />
-          <LoginButtonComponent loginType="twitter" onClick={() => onLoginClick("twitter")} />
-          <LoginButtonComponent loginType="reddit" onClick={() => onLoginClick("reddit")} />
+          {getLoginOptions().map(loginType => (
+            <LoginButtonComponent
+              key={loginType}
+              loginType={loginType}
+              onClick={() => onLoginClick(loginType)}
+            />
+          ))}
         </VStack>
         {isLoading && (
           <Flex

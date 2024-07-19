@@ -1,15 +1,16 @@
 import React, { createContext, ReactNode, useContext, useRef } from "react";
 
-import { Network, UserData } from "@trilitech-umami/umami-embed/types";
+import { Network, TypeOfLogin, UserData } from "@trilitech-umami/umami-embed/types";
 
 const USER_DATA_KEY = "umami-embed-user-data";
-const NETWORK_KEY = "umami-embed-network";
 
 interface EmbedAppContextState {
   getUserData: () => UserData | null;
   getNetwork: () => Network | null;
+  getLoginOptions: () => TypeOfLogin[];
   setUserData: (userData: UserData | null) => void;
-  setNetwork: (network: Network | null) => void;
+  setNetwork: (network: Network) => void;
+  setLoginOptions: (loginOptions: TypeOfLogin[]) => void;
 }
 
 const EmbedAppContext = createContext<EmbedAppContextState | undefined>(undefined);
@@ -18,10 +19,13 @@ export const EmbedAppProvider: React.FC<{ children: ReactNode }> = ({ children }
   const userDataRef = useRef<UserData | null>(
     JSON.parse(localStorage.getItem(USER_DATA_KEY) || "null")
   );
-  const networkRef = useRef<Network | null>(localStorage.getItem(NETWORK_KEY) as Network | null);
+  const networkRef = useRef<Network | null>(null);
+
+  const loginOptionsRef = useRef<TypeOfLogin[]>(["google", "reddit", "twitter", "facebook"]);
 
   const getUserData = () => userDataRef.current;
   const getNetwork = () => networkRef.current;
+  const getLoginOptions = () => loginOptionsRef.current;
 
   const setUserData = (userData: UserData | null) => {
     if (userData !== null) {
@@ -32,17 +36,13 @@ export const EmbedAppProvider: React.FC<{ children: ReactNode }> = ({ children }
     userDataRef.current = userData;
   };
 
-  const setNetwork = (network: Network | null) => {
-    if (network !== null) {
-      localStorage.setItem(NETWORK_KEY, network);
-    } else {
-      localStorage.removeItem(NETWORK_KEY);
-    }
-    networkRef.current = network;
-  };
+  const setNetwork = (network: Network) => (networkRef.current = network);
+  const setLoginOptions = (loginOptions: TypeOfLogin[]) => (loginOptionsRef.current = loginOptions);
 
   return (
-    <EmbedAppContext.Provider value={{ getUserData, getNetwork, setUserData, setNetwork }}>
+    <EmbedAppContext.Provider
+      value={{ getUserData, getNetwork, getLoginOptions, setUserData, setNetwork, setLoginOptions }}
+    >
       {children}
     </EmbedAppContext.Provider>
   );
