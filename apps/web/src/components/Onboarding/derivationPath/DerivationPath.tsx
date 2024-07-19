@@ -1,0 +1,231 @@
+import {
+  Button,
+  Center,
+  FormControl,
+  FormErrorMessage,
+  Input,
+  Link,
+  Select,
+  Switch,
+  Text,
+  Tooltip,
+} from "@chakra-ui/react";
+import {
+  AVAILABLE_DERIVATION_PATH_TEMPLATES,
+  defaultDerivationPathTemplate,
+  deriveSecretKey,
+  getDefaultDerivationPath,
+} from "@umami/tezos";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+
+import { StubIcon as SlashIcon } from "../../../assets/icons";
+import { useColor } from "../../../styles/useColor";
+import { ModalContentWrapper } from "../ModalContentWrapper";
+import { type DerivationPathStep, type OnboardingStep } from "../OnboardingStep";
+
+/**
+ * Component represents the derivation path step in the onboarding flow
+ * It's used for ledger & mnemonic accounts
+ *
+ * @param goToStep - function to go to the next step.
+ * @param account - ledger/mnemonic account data collected in previous steps.
+ */
+export const DerivationPath = ({
+  goToStep,
+  account,
+}: {
+  goToStep: (step: OnboardingStep) => void;
+  account: DerivationPathStep["account"];
+}) => {
+  const color = useColor();
+  const [isCustomPath, setIsCustomPath] = useState(false);
+  const {
+    handleSubmit,
+    register,
+    setValue,
+    formState: { isValid, errors },
+    watch,
+  } = useForm({
+    mode: "onBlur",
+    defaultValues: {
+      derivationPathTemplate: defaultDerivationPathTemplate,
+      derivationPath: getDefaultDerivationPath(0),
+    },
+  });
+
+  const onSubmit = async ({
+    derivationPathTemplate,
+    derivationPath,
+  }: {
+    derivationPathTemplate: string;
+    derivationPath: string;
+  }) => {
+    switch (account.type) {
+      case "ledger": {
+        if (isCustomPath) {
+          return goToStep({
+            type: "restoreLedger",
+            account: {
+              ...account,
+              derivationPath: normalizeDerivationPath(derivationPath),
+            },
+          });
+        }
+
+        return goToStep({
+          type: "restoreLedger",
+          account: {
+            ...account,
+            derivationPathTemplate: normalizeDerivationPath(derivationPathTemplate),
+          },
+        });
+      }
+      case "mnemonic": {
+        if (isCustomPath) {
+          /**
+           * we cannot guess the derivation path pattern from a custom path
+           * so we simply convert a mnemonic account to a secret key one
+           * when a custom path is used
+           */
+          const secretKey = await deriveSecretKey(account.mnemonic, derivationPath, "ed25519");
+          return goToStep({
+            type: "masterPassword",
+            account: { type: "secret_key", secretKey, label: account.label },
+          });
+        }
+        return goToStep({
+          type: "masterPassword",
+          account: { ...account, derivationPathTemplate },
+        });
+      }
+    }
+  };
+
+  return (
+    <ModalContentWrapper
+      icon={<SlashIcon />}
+      subtitle="Choose a custom derivation path or select the default derivation path and use the default key."
+      title="Derivation Path"
+    >
+      <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
+        <Center width="100%" marginBottom="12px">
+          <Text fontWeight={isCustomPath ? 400 : 600} size="sm">
+            Default Path
+          </Text>
+          <Switch
+            data-testid="custom-path-switch"
+            marginX="10px"
+            onChange={() => setIsCustomPath(v => !v)}
+            variant="danger"
+          />
+          <Text fontWeight={isCustomPath ? 600 : 400} size="sm">
+            Custom Path
+          </Text>
+        </Center>
+        {isCustomPath && (
+          <>
+            <Center marginTop="16px" marginBottom="32px">
+              <Text align="center" width="340px" color={color("orange")} size="xs">
+                Please write down to your derivation path. You may not be able to restore your data
+                if you lose it.
+              </Text>
+            </Center>
+            <FormControl marginBottom="20px" isInvalid={!!errors.derivationPath}>
+              <Input
+                fontSize="sm"
+                textAlign="center"
+                data-testid="custom-path-input"
+                {...register("derivationPath", {
+                  validate: validateDerivationPath,
+                })}
+              />
+              {errors.derivationPath && (
+                <FormErrorMessage data-testid="error-message">
+                  {errors.derivationPath.message}
+                </FormErrorMessage>
+              )}
+            </FormControl>
+          </>
+        )}
+        {!isCustomPath && (
+          <FormControl marginTop="32px" marginBottom="20px">
+            <Select
+              data-testid="select-input"
+              onChange={event => setValue("derivationPathTemplate", event.target.value)}
+              value={watch("derivationPathTemplate")}
+            >
+              {AVAILABLE_DERIVATION_PATH_TEMPLATES.map(({ label, value }) => (
+                <option key={value} value={value}>
+                  {label}
+                </option>
+              ))}
+            </Select>
+          </FormControl>
+        )}
+        <Button width="100%" marginTop="12px" isDisabled={!isValid} size="lg" type="submit">
+          Continue
+        </Button>
+
+        <Link
+          display="block"
+          width="100%"
+          marginTop="32px"
+          textAlign="center"
+          href="https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki"
+          isExternal
+        >
+          <Tooltip
+            backgroundColor="white"
+            defaultIsOpen={false}
+            hasArrow
+            label="Derivation path is a set of directions that helps create different secret keys; it starts from a master key or seed."
+          >
+            <Text
+              color={color("blue")}
+              fontWeight={600}
+              textDecoration="underline"
+              _hover={{ textDecoration: "underline" }}
+              size="sm"
+            >
+              What's a Derivation Path?
+            </Text>
+          </Tooltip>
+        </Link>
+      </form>
+    </ModalContentWrapper>
+  );
+};
+
+export const normalizeDerivationPath = (path: string) =>
+  path.trim().toLowerCase().replace("m/", "");
+
+/**
+ * A valid derivation path should:
+ *  - start with 44'/1729'/
+ *  - contain only numbers, single quotes and slashes
+ *  - end with a number followed by a single quote
+ * Examples:
+ *  44'/1729'/0'/0'
+ *  44'/1729'/0'/0'/0'
+ *  44'/1729'/0'/123'
+ *  44'/1729'/0'
+ *
+ * Note: it doesn't take the `m/` prefix into account
+ *
+ * @param path - derivation path (not pattern)
+ * @returns error message or true if the path is valid
+ */
+export const validateDerivationPath = (path: string): string | true => {
+  const normalized = normalizeDerivationPath(path);
+  if (normalized.length === 0) {
+    return "Derivation path is required";
+  }
+  if (!normalized.startsWith("44'/1729'/")) {
+    return "Derivation path must start with `44'/1729'/`";
+  }
+  if (!normalized.match(new RegExp("^44'/1729'/([0-9]+'/)*([0-9]+')$"))) {
+    return "Invalid derivation path";
+  }
+  return true;
+};

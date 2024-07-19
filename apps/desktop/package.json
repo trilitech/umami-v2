@@ -19,7 +19,7 @@
     "check-circular-deps": "madge --circular src/index.tsx",
     "check-types:watch": "yarn check-types --watch",
     "check-types": "tsc",
-    "dev": "vite dev --host 127.0.0.1",
+    "dev": "vite dev --host 127.0.0.1 --open",
     "docs": "typedoc",
     "electron:package:linux": "electron-builder -l",
     "electron:package:mac:debug": "DEBUG=true yarn build --mode dev && sed -i='' 's@devTools: false@devTools: true@g' build/electron.js && yarn electron:package:mac -c electron-builder.dev.yml && rm -rf build",

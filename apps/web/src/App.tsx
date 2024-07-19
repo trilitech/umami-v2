@@ -1,16 +1,18 @@
-import { useDataPolling } from "@umami/data-polling";
 import { useCurrentAccount } from "@umami/state";
+import { useEffect } from "react";
 
+import { useOnboardingModal } from "./components/Onboarding/useOnboardingModal";
 import { Layout } from "./Layout";
 
 export const App = () => {
-  useDataPolling();
   const currentAccount = useCurrentAccount();
+  const { onOpen: openOnboardingModal, modalElement } = useOnboardingModal();
 
-  if (!currentAccount) {
-    // TODO: replace with onboarding
-    return "No account selected";
-  }
+  useEffect(() => {
+    if (!currentAccount) {
+      openOnboardingModal();
+    }
+  }, [currentAccount, openOnboardingModal]);
 
-  return <Layout />;
+  return currentAccount ? <Layout /> : modalElement;
 };

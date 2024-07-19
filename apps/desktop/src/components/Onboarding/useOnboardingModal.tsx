@@ -5,6 +5,7 @@ import {
   ModalOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useStepHistory } from "@umami/components";
 import { useImplicitAccounts } from "@umami/state";
 
 import { ConnectOptions } from "./connectOptions/ConnectOptions";
@@ -23,7 +24,6 @@ import { RestoreSecretKey } from "./restoreSecretKey/RestoreSecretKey";
 import { ShowSeedphrase } from "./showSeedphrase/ShowSeedphrase";
 import { VerifySeedphrase } from "./verifySeedphrase/VerifySeedphrase";
 import { ModalBackButton } from "../ModalBackButton";
-import { useStepHistory } from "../useStepHistory";
 
 export const useOnboardingModal = (onModalClose?: () => void) => {
   const { isOpen, onOpen, onClose } = useDisclosure();

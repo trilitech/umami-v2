@@ -21,11 +21,13 @@ import { useDispatch } from "react-redux";
 import { ThreeDotsIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
 import { AccountTile } from "../AccountTile";
+import { useOnboardingModal } from "../Onboarding/useOnboardingModal";
 
 export const AccountSelectorModal = () => {
   const accounts = useImplicitAccounts();
   const color = useColor();
   const getBalance = useGetAccountBalance();
+  const { onOpen: openOnboardingModal, modalElement } = useOnboardingModal();
 
   const dispatch = useDispatch();
   const { onClose } = useDynamicModalContext();
@@ -36,72 +38,75 @@ export const AccountSelectorModal = () => {
     .value();
 
   return (
-    <ModalContent>
-      <ModalHeader>
-        <ModalCloseButton />
-      </ModalHeader>
-      <ModalBody flexDirection="column" gap="18px">
-        <VStack
-          overflowY="auto"
-          width="100%"
-          maxHeight="400px"
-          divider={<Divider borderColor={color("100")} />}
-        >
-          {Object.entries(groupedAccounts).map(([type, accounts]) => (
-            <Flex key={type} flexDirection="column" width="100%">
-              <Center
-                justifyContent="space-between"
-                marginBottom="18px"
-                paddingRight="20px"
-                paddingLeft="12px"
-              >
-                <Heading color={color("900")} size="sm">
-                  {capitalize(type)}
-                </Heading>
-                <IconButton
-                  color={color("500")}
-                  background="transparent"
-                  aria-label="actions"
-                  icon={<ThreeDotsIcon />}
-                  size="xs"
-                />
-              </Center>
-              {accounts.map(account => {
-                const address = account.address.pkh;
-                const balance = getBalance(address);
-                const onClick = () => {
-                  dispatch(accountsActions.setCurrent(address));
-                  onClose();
-                };
+    <>
+      {modalElement}
+      <ModalContent>
+        <ModalHeader>
+          <ModalCloseButton />
+        </ModalHeader>
+        <ModalBody flexDirection="column" gap="18px">
+          <VStack
+            overflowY="auto"
+            width="100%"
+            maxHeight="400px"
+            divider={<Divider borderColor={color("100")} />}
+          >
+            {Object.entries(groupedAccounts).map(([type, accounts]) => (
+              <Flex key={type} flexDirection="column" width="100%">
+                <Center
+                  justifyContent="space-between"
+                  marginBottom="18px"
+                  paddingRight="20px"
+                  paddingLeft="12px"
+                >
+                  <Heading color={color("900")} size="sm">
+                    {capitalize(type)}
+                  </Heading>
+                  <IconButton
+                    color={color("500")}
+                    background="transparent"
+                    aria-label="actions"
+                    icon={<ThreeDotsIcon />}
+                    size="xs"
+                  />
+                </Center>
+                {accounts.map(account => {
+                  const address = account.address.pkh;
+                  const balance = getBalance(address);
+                  const onClick = () => {
+                    dispatch(accountsActions.setCurrent(address));
+                    onClose();
+                  };
 
-                return (
-                  <AccountTile key={address} account={account} onClick={onClick}>
-                    <Flex justifyContent="center" flexDirection="column" gap="2px">
-                      <IconButton
-                        alignSelf="flex-end"
-                        color={color("500")}
-                        background="transparent"
-                        aria-label="Account actions"
-                        icon={<ThreeDotsIcon />}
-                        onClick={event => event.stopPropagation()}
-                        size="xs"
-                      />
+                  return (
+                    <AccountTile key={address} account={account} onClick={onClick}>
+                      <Flex justifyContent="center" flexDirection="column" gap="2px">
+                        <IconButton
+                          alignSelf="flex-end"
+                          color={color("500")}
+                          background="transparent"
+                          aria-label="Account actions"
+                          icon={<ThreeDotsIcon />}
+                          onClick={event => event.stopPropagation()}
+                          size="xs"
+                        />
 
-                      <Text color={color("700")} size="sm">
-                        {balance ? prettyTezAmount(balance) : "\u00A0"}
-                      </Text>
-                    </Flex>
-                  </AccountTile>
-                );
-              })}
-            </Flex>
-          ))}
-        </VStack>
+                        <Text color={color("700")} size="sm">
+                          {balance ? prettyTezAmount(balance) : "\u00A0"}
+                        </Text>
+                      </Flex>
+                    </AccountTile>
+                  );
+                })}
+              </Flex>
+            ))}
+          </VStack>
 
-        <Button width="full" size="lg" variant="primary">
-          Add Account
-        </Button>
-      </ModalBody>
-    </ModalContent>
+          <Button width="full" onClick={openOnboardingModal} size="lg" variant="primary">
+            Add Account
+          </Button>
+        </ModalBody>
+      </ModalContent>
+    </>
   );
 };
