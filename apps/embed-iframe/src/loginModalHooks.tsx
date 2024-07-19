@@ -1,10 +1,9 @@
 import { Center, Modal, ModalCloseButton, ModalContent, useDisclosure } from "@chakra-ui/react";
-import { type TypeOfLogin } from "@trilitech-umami/umami-embed/types";
 
 import { LoginModalContent } from "./LoginModalContent";
 import { sendLoginErrorResponse } from "./utils";
 
-export const useLoginModal = (onLoginCallback: (loginType: TypeOfLogin) => void) => {
+export const useLoginModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const onModalCLose = () => {
@@ -25,7 +24,7 @@ export const useLoginModal = (onLoginCallback: (loginType: TypeOfLogin) => void)
         >
           <ModalContent>
             <ModalCloseButton onClick={onModalCLose} />
-            <LoginModalContent closeModal={onClose} onLoginCallback={onLoginCallback} />
+            <LoginModalContent closeModal={onClose} />
           </ModalContent>
         </Modal>
       </Center>

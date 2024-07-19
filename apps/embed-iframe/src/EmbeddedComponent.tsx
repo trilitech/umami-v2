@@ -1,25 +1,23 @@
 import { Box, ChakraProvider, ColorModeScript } from "@chakra-ui/react";
 import {
   type RequestMessage,
-  type TypeOfLogin,
+  type RequestType,
   toMatchingResponseType,
 } from "@trilitech-umami/umami-embed/types";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
-import { type Permissions, getPermissionsForOrigin } from "./ClientsPermissions";
+import { getPermissionsForOrigin } from "./ClientsPermissions";
 import theme from "./imported/style/theme";
 import { useLoginModal } from "./loginModalHooks";
 import { useSignOperationModal } from "./signOperationModalHooks";
 import { sendResponse } from "./utils";
 import "./EmbeddedComponent.scss";
+import { useEmbedApp } from "./EmbedAppContext";
 
 export function EmbeddedComponent() {
-  const [selectedLoginType, setSelectedLoginType] = useState<TypeOfLogin | null>(null);
+  const { getNetwork, getUserData, setNetwork, setUserData } = useEmbedApp();
 
-  const onLoginCallback = (loginType: TypeOfLogin) => setSelectedLoginType(loginType);
-
-  const { onOpen: openLoginModal, modalElement: loginModalElement } =
-    useLoginModal(onLoginCallback);
+  const { onOpen: openLoginModal, modalElement: loginModalElement } = useLoginModal();
   const { onOpen: openOperationModal, modalElement: operationModalElement } =
     useSignOperationModal();
 
@@ -29,13 +27,29 @@ export function EmbeddedComponent() {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (window.addEventListener) {
       window.addEventListener("message", handleRequest, false);
-    } else {
+    } else if ((window as any).attachEvent) {
       // fallback for older browsers (IE8 and below)
       (window as any).attachEvent("onmessage", handleRequest);
+    } else {
+      throw new Error("Umami-embed does not support this browser");
     }
 
-    sendResponse({ type: "init_complete" });
-  });
+    if (getUserData() !== null) {
+      sendResponse({ type: "init_complete", userData: getUserData()! });
+    } else {
+      sendResponse({ type: "init_complete" });
+    }
+
+    return () => {
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      if (window.removeEventListener) {
+        window.removeEventListener("message", handleRequest, false);
+      } else if ((window as any).detachEvent) {
+        // fallback for older browsers (IE8 and below)
+        (window as any).detachEvent("onmessage", handleRequest);
+      }
+    };
+  }, []);
 
   const handleRequest = (event: any) => {
     try {
@@ -44,29 +58,31 @@ export function EmbeddedComponent() {
       console.log(`Received ${event.data} from ${event.origin}`);
       console.log(data);
 
-      const clientPermissions = checkPermissions(event.origin, data);
-      if (!clientPermissions) {
+      if (!validateClientPermissions(event.origin, data)) {
         return;
       }
 
       switch (data.type) {
         case "login_request":
-          // TODO: save selected network
-          openLoginModal();
+          if (getUserData() !== null) {
+            sendResponse({
+              type: "login_response",
+              error: "user_already_logged_in",
+              errorMessage: "UserData is already available",
+            });
+          } else {
+            setNetwork(data.network);
+            openLoginModal();
+          }
           break;
         case "logout_request":
-          setSelectedLoginType(null);
+          setNetwork(null);
+          setUserData(null);
           sendResponse({ type: "logout_response" });
           break;
         case "operation_request":
-          if (selectedLoginType === null) {
-            sendResponse({
-              type: toMatchingResponseType(data.type),
-              error: "no_login_data",
-              errorMessage: "User's login data is not available",
-            });
-          } else {
-            openOperationModal(selectedLoginType!, data.operations);
+          if (validateUserSession(data.type)) {
+            openOperationModal(data.operations);
           }
           break;
       }
@@ -75,7 +91,20 @@ export function EmbeddedComponent() {
     }
   };
 
-  const checkPermissions = (origin: string, request: RequestMessage): Permissions | null => {
+  const validateClientPermissions = (origin: string, request: RequestMessage): boolean => {
+    const network = request.type === "login_request" ? request.network : getNetwork();
+    if (network === null) {
+      sendResponse({
+        type: toMatchingResponseType(request.type),
+        error: "no_network_data",
+        errorMessage: "User's network data is not available",
+      });
+      return false;
+    }
+    if (network === "ghostnet") {
+      return true;
+    }
+
     const clientPermissions = getPermissionsForOrigin(origin);
     if (!clientPermissions) {
       console.error(`No permissions for origin (${origin})`);
@@ -84,7 +113,7 @@ export function EmbeddedComponent() {
         error: "no_permissions",
         errorMessage: "No permissions found for given origin",
       });
-      return null;
+      return false;
     }
     switch (request.type) {
       case "login_request":
@@ -95,9 +124,8 @@ export function EmbeddedComponent() {
             error: "no_permissions",
             errorMessage: "No permissions found for login actions",
           });
-          return null;
+          return false;
         }
-        // TODO: check if desired network is allowed
         break;
       case "operation_request":
         if (!clientPermissions.operations) {
@@ -106,12 +134,30 @@ export function EmbeddedComponent() {
             error: "no_permissions",
             errorMessage: "No permissions found for operation actions",
           });
-          return null;
+          return false;
         }
-        // TODO: check if desired operations are allowed
         break;
     }
-    return clientPermissions;
+    return true;
+  };
+
+  const validateUserSession = (requestType: RequestType): boolean => {
+    if (getUserData() === null) {
+      sendResponse({
+        type: toMatchingResponseType(requestType),
+        error: "no_login_data",
+        errorMessage: "User's login data is not available",
+      });
+      return false;
+    } else if (getNetwork() === null) {
+      sendResponse({
+        type: toMatchingResponseType(requestType),
+        error: "no_network_data",
+        errorMessage: "User's network data is not available",
+      });
+      return false;
+    }
+    return true;
   };
 
   return (

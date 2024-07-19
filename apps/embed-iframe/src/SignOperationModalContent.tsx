@@ -13,9 +13,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { InMemorySigner } from "@taquito/signer";
-import { OpKind, TezosToolkit, type WalletParamsWithKind } from "@taquito/taquito";
-import { type TypeOfLogin } from "@trilitech-umami/umami-embed/types";
+import { OpKind, type WalletParamsWithKind } from "@taquito/taquito";
 import * as Auth from "@umami/social-auth";
 import { useState } from "react";
 
@@ -26,35 +24,34 @@ import { JsValueWrap } from "./imported/JsValueWrap";
 import colors from "./imported/style/colors";
 import { getErrorContext } from "./imported/utils/getErrorContext";
 import { withTimeout } from "./imported/utils/withTimeout";
-import { sendOperationErrorResponse, sendResponse } from "./utils";
+import { sendOperationErrorResponse, sendResponse, toTezosNetwork } from "./utils";
+import { makeToolkit } from "@umami/tezos";
+import { useEmbedApp } from "./EmbedAppContext";
 
 const SIGN_TIMEOUT = 5 * 60 * 1000; // 5 minutes
 
 export const OperationModalContent = ({
   operations,
   closeModal,
-  loginType,
 }: {
   operations: PartialTezosOperation[];
   closeModal: () => void;
-  loginType: TypeOfLogin;
 }) => {
   const [isLoading, setIsLoading] = useState(false);
-
-  console.log(operations);
+  const { getNetwork, getUserData } = useEmbedApp();
 
   const onClick = async () => {
     setIsLoading(true);
     try {
       const { secretKey } = await withTimeout(
-        async () => Auth.forIDP(loginType, "embed").getCredentials(),
+        async () => Auth.forIDP(getUserData()!.typeOfLogin, "embed").getCredentials(),
         SIGN_TIMEOUT
       );
-      const toolkit = new TezosToolkit("https://ghostnet.ecadinfra.com");
-      const signer = new InMemorySigner(secretKey);
-      toolkit.setSignerProvider(signer);
-
-      console.log("sending request");
+      const toolkit = await makeToolkit({
+        type: "social",
+        secretKey,
+        network: toTezosNetwork(getNetwork()!),
+      });
 
       const { opHash } = await toolkit.wallet.batch(operations.map(toTaquitoOperation)).send();
 

@@ -10,17 +10,13 @@ import { getErrorContext } from "./imported/utils/getErrorContext";
 import { withTimeout } from "./imported/utils/withTimeout";
 import { LoginButtonComponent } from "./LoginButtonComponent";
 import { sendLoginErrorResponse, sendResponse } from "./utils";
+import { useEmbedApp } from "./EmbedAppContext";
 
 const LOGIN_TIMEOUT = 3 * 60 * 1000; // 3 minutes
 
-export const LoginModalContent = ({
-  closeModal,
-  onLoginCallback,
-}: {
-  closeModal: () => void;
-  onLoginCallback: (loginType: TypeOfLogin) => void;
-}) => {
+export const LoginModalContent = ({ closeModal }: { closeModal: () => void }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const { setUserData } = useEmbedApp();
 
   const onLoginClick = async (loginType: TypeOfLogin) => {
     setIsLoading(true);
@@ -29,16 +25,14 @@ export const LoginModalContent = ({
         async () => Auth.forIDP(loginType, "embed").getCredentials(),
         LOGIN_TIMEOUT
       );
-
       const signer = new InMemorySigner(secretKey);
       const { pk, pkh } = { pk: await signer.publicKey(), pkh: await signer.publicKeyHash() };
 
-      onLoginCallback(loginType);
+      const userData = { pk, pkh, typeOfLogin: loginType, id: name };
+      setUserData(userData);
       sendResponse({
+        ...userData,
         type: "login_response",
-        pk,
-        pkh,
-        userData: { typeOfLogin: "google", id: name },
       });
     } catch (error) {
       sendLoginErrorResponse(getErrorContext(error).description);
