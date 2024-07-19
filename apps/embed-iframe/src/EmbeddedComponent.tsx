@@ -27,9 +27,11 @@ export function EmbeddedComponent() {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (window.addEventListener) {
       window.addEventListener("message", handleRequest, false);
-    } else {
+    } else if ((window as any).attachEvent) {
       // fallback for older browsers (IE8 and below)
       (window as any).attachEvent("onmessage", handleRequest);
+    } else {
+      throw new Error("Umami-embed does not support this browser");
     }
 
     if (getUserData() !== null) {
@@ -42,7 +44,7 @@ export function EmbeddedComponent() {
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (window.removeEventListener) {
         window.removeEventListener("message", handleRequest, false);
-      } else {
+      } else if ((window as any).detachEvent) {
         // fallback for older browsers (IE8 and below)
         (window as any).detachEvent("onmessage", handleRequest);
       }
