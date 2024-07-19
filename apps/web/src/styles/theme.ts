@@ -233,7 +233,7 @@ const theme = extendTheme({
           borderTopLeftRadius: "30px",
           borderBottomRightRadius: { lg: "30px", base: 0 },
           borderBottomLeftRadius: { lg: "30px", base: 0 },
-          bg: "white",
+          background: "white",
           padding: {
             base: "36px",
             lg: "42px",
