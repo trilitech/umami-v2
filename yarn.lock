@@ -7604,7 +7604,7 @@ __metadata:
     react-redux: "npm:^9.1.2"
     react-remove-scroll: "npm:^2.5.10"
     rimraf: "npm:^6.0.1"
-    tsup: "npm:^8.1.2"
+    tsup: "npm:^8.2.0"
     typescript: "npm:^5.5.3"
   languageName: unknown
   linkType: soft
@@ -7637,7 +7637,7 @@ __metadata:
     madge: "npm:^7.0.0"
     prettier: "npm:^3.3.2"
     rimraf: "npm:^6.0.1"
-    tsup: "npm:^8.1.2"
+    tsup: "npm:^8.2.0"
     typescript: "npm:^5.5.3"
   languageName: unknown
   linkType: soft
@@ -7661,7 +7661,7 @@ __metadata:
     madge: "npm:^7.0.0"
     prettier: "npm:^3.3.2"
     rimraf: "npm:^6.0.1"
-    tsup: "npm:^8.1.2"
+    tsup: "npm:^8.2.0"
     typescript: "npm:^5.5.3"
   languageName: unknown
   linkType: soft
@@ -7703,7 +7703,7 @@ __metadata:
     react-dom: "npm:^18.3.1"
     react-redux: "npm:^9.1.2"
     rimraf: "npm:^6.0.1"
-    tsup: "npm:^8.1.2"
+    tsup: "npm:^8.2.0"
     typescript: "npm:^5.5.3"
   languageName: unknown
   linkType: soft
@@ -7940,7 +7940,7 @@ __metadata:
   dependencies:
     jest: "npm:^29.7.0"
     rimraf: "npm:^6.0.1"
-    tsup: "npm:^8.1.2"
+    tsup: "npm:^8.2.0"
     typescript: "npm:^5.5.3"
   languageName: unknown
   linkType: soft
@@ -7971,7 +7971,7 @@ __metadata:
     madge: "npm:^7.0.0"
     prettier: "npm:^3.3.2"
     rimraf: "npm:^6.0.1"
-    tsup: "npm:^8.1.2"
+    tsup: "npm:^8.2.0"
     typescript: "npm:^5.5.3"
     zod: "npm:^3.23.8"
   languageName: unknown
@@ -8006,7 +8006,7 @@ __metadata:
     madge: "npm:^7.0.0"
     prettier: "npm:^3.3.2"
     rimraf: "npm:^6.0.1"
-    tsup: "npm:^8.1.2"
+    tsup: "npm:^8.2.0"
     typescript: "npm:^5.5.3"
   languageName: unknown
   linkType: soft
@@ -8058,7 +8058,7 @@ __metadata:
     redux-persist: "npm:^6.0.0"
     redux-thunk: "npm:^3.1.0"
     rimraf: "npm:^6.0.1"
-    tsup: "npm:^8.1.2"
+    tsup: "npm:^8.2.0"
     typescript: "npm:^5.5.3"
     zod: "npm:^3.23.8"
   languageName: unknown
@@ -8082,7 +8082,7 @@ __metadata:
     madge: "npm:^7.0.0"
     prettier: "npm:^3.3.2"
     rimraf: "npm:^6.0.1"
-    tsup: "npm:^8.1.2"
+    tsup: "npm:^8.2.0"
     typescript: "npm:^5.5.3"
     zod: "npm:^3.23.8"
   languageName: unknown
@@ -8115,7 +8115,7 @@ __metadata:
     madge: "npm:^7.0.0"
     prettier: "npm:^3.3.2"
     rimraf: "npm:^6.0.1"
-    tsup: "npm:^8.1.2"
+    tsup: "npm:^8.2.0"
     typescript: "npm:^5.5.3"
   languageName: unknown
   linkType: soft
@@ -8151,7 +8151,7 @@ __metadata:
     prettier: "npm:^3.3.2"
     promise-retry: "npm:^2.0.1"
     rimraf: "npm:^6.0.1"
-    tsup: "npm:^8.1.2"
+    tsup: "npm:^8.2.0"
     typescript: "npm:^5.5.3"
     zod: "npm:^3.23.8"
   languageName: unknown
@@ -12752,7 +12752,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"execa@npm:5.1.1, execa@npm:^5.0.0":
+"execa@npm:5.1.1, execa@npm:^5.0.0, execa@npm:^5.1.1":
   version: 5.1.1
   resolution: "execa@npm:5.1.1"
   dependencies:
@@ -13672,7 +13672,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globby@npm:^11.0.3, globby@npm:^11.1.0":
+"globby@npm:^11.1.0":
   version: 11.1.0
   resolution: "globby@npm:11.1.0"
   dependencies:
@@ -20764,9 +20764,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tsup@npm:^8.1.2":
-  version: 8.1.2
-  resolution: "tsup@npm:8.1.2"
+"tsup@npm:^8.2.0":
+  version: 8.2.0
+  resolution: "tsup@npm:8.2.0"
   dependencies:
     bundle-require: "npm:^5.0.0"
     cac: "npm:^6.7.14"
@@ -20774,8 +20774,8 @@ __metadata:
     consola: "npm:^3.2.3"
     debug: "npm:^4.3.5"
     esbuild: "npm:^0.23.0"
-    execa: "npm:^5.0.0"
-    globby: "npm:^11.0.3"
+    execa: "npm:^5.1.1"
+    globby: "npm:^11.1.0"
     joycon: "npm:^3.1.1"
     postcss-load-config: "npm:^6.0.1"
     resolve-from: "npm:^5.0.0"
@@ -20800,7 +20800,7 @@ __metadata:
   bin:
     tsup: dist/cli-default.js
     tsup-node: dist/cli-node.js
-  checksum: 10/0ccd4aebc754ebe7328f6a43590a84582b0536424a185902a2fde814659802bcdb51e1eaaa29f4f13eadf2bc85630d805972a48aa3e06908360754065c044726
+  checksum: 10/34fe9459deb301a693e8dd9faea6db29ee900295db16de9bc650d7596eff0ef56a5381fbcf2e12b4cc487c37315b99b21ab79f1cfe4ab11bcf249a07035ba6fb
   languageName: node
   linkType: hard
 
@@ -21136,7 +21136,7 @@ __metadata:
   dependencies:
     jest: "npm:^29.7.0"
     rimraf: "npm:^6.0.1"
-    tsup: "npm:^8.1.2"
+    tsup: "npm:^8.2.0"
     turbo: "npm:^2.0.7"
   languageName: unknown
   linkType: soft
