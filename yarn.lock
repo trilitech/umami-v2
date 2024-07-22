@@ -8261,6 +8261,7 @@ __metadata:
     depcheck: "npm:^1.4.7"
     eslint: "npm:^8.57.0"
     eslint-plugin-storybook: "npm:^0.8.0"
+    focus-visible: "npm:^5.2.0"
     framer-motion: "npm:^11.3.19"
     immer: "npm:^10.1.1"
     jest: "npm:^29.7.0"
@@ -13190,6 +13191,13 @@ __metadata:
   dependencies:
     tslib: "npm:^2.0.3"
   checksum: 10/1078c9d1f5515c47961a27d22b3b09c2a4eaf42a405f9be621d5ec5f426086a65f5937bff8a104e93d4bd84a7d8364e2f3ec07be876dae259df207384bbfb5de
+  languageName: node
+  linkType: hard
+
+"focus-visible@npm:^5.2.0":
+  version: 5.2.0
+  resolution: "focus-visible@npm:5.2.0"
+  checksum: 10/11f686d68dbd4a0efb6714f037a4611411ffb8db4369784fcd6ba7f6cc386a42a5fa08211f6feb14ad3660719b451d0621f95058ea49963a59cf204ced38c4bc
   languageName: node
   linkType: hard
 

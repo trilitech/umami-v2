@@ -31,11 +31,9 @@ export const Navbar = () => (
     }}
   >
     <Tabs defaultIndex={-1} isFitted variant="solid-rounded">
-      <TabList justifyContent="space-between">
+      <TabList gap="1px">
         {tabs.map(tab => (
-          <AnimatePresence key={tab.to}>
-            <Tab label={tab.label} to={tab.to} />
-          </AnimatePresence>
+          <Tab key={tab.to} label={tab.label} to={tab.to} />
         ))}
       </TabList>
     </Tabs>
