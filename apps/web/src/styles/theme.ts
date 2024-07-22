@@ -106,9 +106,18 @@ const theme = extendTheme({
     Tabs: {
       baseStyle: {
         tab: {
+          color: "gray.500",
           _selected: {
+            _hover: {
+              bg: "gray.200",
+              color: "gray.900",
+            },
             bg: "gray.200",
             color: "gray.900",
+          },
+          _hover: {
+            bg: "gray.100",
+            color: "gray.600",
           },
         },
       },
