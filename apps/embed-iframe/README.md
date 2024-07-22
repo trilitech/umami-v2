@@ -1,23 +1,25 @@
-# Umami Embed Web
+# Umami Embed iFrame
 
-UI for embeddable instance of Umami Wallet.
+This repository contains the UI for the Umami Embed component, provided to the component through an iFrame.
 
-Umami Embed enables the integration of the Umami Wallet instance directly into a webpage or web app.
-It allows users to engage with decentralized applications (dApps) directly, eliminating the requirement for a separate wallet application.
+Umami-Embed is a component designed to integrate an instance of Umami Wallet into a webpage (or web app) via an iFrame. It securely encapsulates user details and offers an API for the host application to interact with the Tezos blockchain.
 
-The UI can only be accessed through [Umami Embed Component](https://github.com/trilitech/umami-embed).\
-For more information and integration instructions, please visit the component repository.
+Unlike beacon functionality, Umami-Embed allows users to engage with decentralized applications (dApps) directly, eliminating the requirement for a separate wallet application.
+
+The UI can only be accessed through the [Umami Embed Component](https://github.com/trilitech/umami-embed). For more information and integration instructions, please visit the component repository or [npm: @trilitech-umami/umami-embed](https://www.npmjs.com/package/@trilitech-umami/umami-embed).
 
 ## Supported Features
 
-### Social login
+The Umami Embed component allows users to create or connect to their Tezos Wallet accounts via social authentication.
 
-Allows users to either create or connect to their Tezos Wallet account via social authentication.
+Once the user is logged in:
 
-### Reviewing and approving/ declining operations initiated from the embed component
+- Various operations can be sent through the component for user approval.
+- A payload can be sent to the user for signing.
 
-Allows users to review incoming operation requests initiated by the parent dApp.\
-Users can then choose to approve or decline these requests, giving them direct control over their transactional decisions and actions.
+Public user data is stored in local storage to prevent the need for unnecessary re-logins. Logging out removes the stored data.
+
+For any operation, users can choose to approve or decline the request, which gives them direct control over their transactional decisions and actions.
 
 ## Available Scripts
 
@@ -30,8 +32,7 @@ It correctly bundles React in production mode and optimizes the build for the be
 
 ### `yarn dev`
 
-Runs the app in the development mode at [http://localhost:5173/](http://localhost:5173/).
-Use [http://localhost:5173/embed](http://localhost:5173/embed) in local run of Umami Embed Component.
+Runs the app in development mode at [http://localhost:5173/](http://localhost:5173/).
 
 The page will automatically reload if you make edits. You will also see any lint errors displayed in the console.
 
@@ -41,4 +42,4 @@ This command allows you to locally preview the production build.
 
 ### `yarn format` & `yarn lint`
 
-These commands apply formatting rules to the codebase using Prettier.
+These commands apply formatting rules to the codebase.
