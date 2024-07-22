@@ -95,6 +95,13 @@ export function EmbeddedComponent() {
   const applyConfig = (config: UmamiIframeConfig) => {
     setNetwork(config.network);
     if (config.loginOptions) {
+      if (config.loginOptions.length === 0) {
+        sendResponse({
+          type: "config_response",
+          error: "empty_login_options",
+          errorMessage: "Login options must include at least one login type value.",
+        });
+      }
       setLoginOptions(config.loginOptions);
       if (getUserData() !== null && !config.loginOptions.includes(getUserData()!.typeOfLogin)) {
         setUserData(null);
