@@ -1,27 +1,23 @@
-import { Card } from "@chakra-ui/react";
+import { Box, Card } from "@chakra-ui/react";
 import { Navigate, Route, Routes } from "react-router";
 
-import { useColor } from "../../styles/useColor";
 import { Activity } from "../../views/Activity";
 import { Earn } from "../../views/Earn";
 import { NFTs } from "../../views/NFTs";
 import { Tokens } from "../../views/Tokens";
 
-export const Main = () => {
-  const color = useColor();
-
-  return (
+export const Main = () => (
+  <Box
+    overflowY="auto"
+    height={{ lg: "calc(100% + 29px)" }}
+    marginTop={{ lg: "-75px" }}
+    paddingTop={{ lg: "75px" }}
+    borderRadius="30px"
+  >
     <Card
-      className="main"
-      overflow="auto"
-      height="full"
       padding={{
         base: "18px",
         lg: "40px",
-      }}
-      borderBottom={{
-        base: "none",
-        lg: `36px solid ${color("white")}`,
       }}
       borderRadius="30px"
     >
@@ -33,5 +29,5 @@ export const Main = () => {
         <Route element={<Navigate to="/activity" />} path="/*" />
       </Routes>
     </Card>
-  );
-};
+  </Box>
+);

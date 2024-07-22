@@ -30,7 +30,6 @@ export const Layout = () => {
       </GridItem>
       <GridItem
         gridArea="main"
-        marginBottom={{ lg: "46px" }}
         paddingX={{
           base: "12px",
           lg: "0",
@@ -47,12 +46,7 @@ export const Layout = () => {
       >
         <Sidebar />
       </GridItem>
-      <GridItem
-        position="relative"
-        gridArea="footer"
-        marginTop={{ base: "30px" }}
-        marginBottom={{ base: "30px", lg: "46px" }}
-      >
+      <GridItem gridArea="footer" marginBottom={{ base: "30px", lg: "46px" }}>
         <Footer />
       </GridItem>
     </Grid>

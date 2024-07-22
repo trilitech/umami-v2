@@ -23,7 +23,9 @@ const tabs = [
 
 export const Navbar = () => (
   <Card
+    zIndex={1}
     padding={{ base: "6px 12px", lg: "10px" }}
+    opacity={0.95}
     borderRadius={{ base: 0, lg: "100px" }}
     boxShadow={{
       base: "-2px -4px 10px 0px rgba(45, 55, 72, 0.06)",
