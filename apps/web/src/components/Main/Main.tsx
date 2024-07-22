@@ -1,5 +1,5 @@
 import { Card } from "@chakra-ui/react";
-import { Route, Routes } from "react-router";
+import { Navigate, Route, Routes } from "react-router";
 
 import { useColor } from "../../styles/useColor";
 import { Activity } from "../../views/Activity";
@@ -26,11 +26,11 @@ export const Main = () => {
       borderRadius="30px"
     >
       <Routes>
-        <Route element={<Activity />} path="/" />
         <Route element={<Activity />} path="/activity" />
         <Route element={<NFTs />} path="/nfts" />
         <Route element={<Tokens />} path="/tokens" />
         <Route element={<Earn />} path="/earn" />
+        <Route element={<Navigate to="/activity" />} path="/*" />
       </Routes>
     </Card>
   );
