@@ -1,10 +1,12 @@
-import { Center, Modal, ModalCloseButton, ModalContent, useDisclosure } from "@chakra-ui/react";
+import { Center, Modal, ModalCloseButton, ModalContent } from "@chakra-ui/react";
 
 import { LoginModalContent } from "./LoginModalContent";
 import { sendLoginErrorResponse } from "./utils";
 
+import { useLoginModalContext } from "./LoginModalContext";
+
 export const useLoginModal = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose, isLoading } = useLoginModalContext();
 
   const onModalCLose = () => {
     sendLoginErrorResponse("User closed the modal");
@@ -19,12 +21,11 @@ export const useLoginModal = () => {
           closeOnOverlayClick={false}
           isCentered
           isOpen={isOpen}
-          // which one to use here?
           onClose={onClose}
         >
           <ModalContent>
-            <ModalCloseButton onClick={onModalCLose} />
-            <LoginModalContent closeModal={onClose} />
+            {!isLoading && <ModalCloseButton onClick={onModalCLose} />}
+            <LoginModalContent />
           </ModalContent>
         </Modal>
       </Center>
