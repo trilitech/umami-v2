@@ -1,6 +1,7 @@
 import { useCurrentAccount } from "@umami/state";
 import { useEffect } from "react";
 
+import { BeaconProvider } from "./components/beacon";
 import { useOnboardingModal } from "./components/Onboarding/useOnboardingModal";
 import { Layout } from "./Layout";
 
@@ -14,5 +15,11 @@ export const App = () => {
     }
   }, [currentAccount, openOnboardingModal]);
 
-  return currentAccount ? <Layout /> : modalElement;
+  return currentAccount ? (
+    <BeaconProvider>
+      <Layout />
+    </BeaconProvider>
+  ) : (
+    modalElement
+  );
 };

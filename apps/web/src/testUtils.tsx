@@ -6,6 +6,7 @@ import { DynamicModalContext, useDynamicModal } from "@umami/components";
 import { type UmamiStore, makeStore } from "@umami/state";
 import { type PropsWithChildren, type ReactNode, act } from "react";
 import { Provider } from "react-redux";
+import { BrowserRouter } from "react-router-dom";
 
 // can be used to spyOn the openWith and onClose methods
 export const dynamicModalContextMock = {
@@ -30,18 +31,20 @@ const makeWrapper =
     });
 
     return (
-      <QueryClientProvider client={new QueryClient()}>
-        <Provider store={store}>
-          <DynamicModalContext.Provider value={dynamicModal}>
-            {/* Crutch for desktop views to be testable */}
-            {/* TODO: remove it when those views are rebuilt for the web */}
-            <Modal isOpen={true} onClose={jest.fn()}>
-              {children}
-              {dynamicModal.content}
-            </Modal>
-          </DynamicModalContext.Provider>
-        </Provider>
-      </QueryClientProvider>
+      <BrowserRouter>
+        <QueryClientProvider client={new QueryClient()}>
+          <Provider store={store}>
+            <DynamicModalContext.Provider value={dynamicModal}>
+              {/* Crutch for desktop views to be testable */}
+              {/* TODO: remove it when those views are rebuilt for the web */}
+              <Modal isOpen={true} onClose={jest.fn()}>
+                {children}
+                {dynamicModal.content}
+              </Modal>
+            </DynamicModalContext.Provider>
+          </Provider>
+        </QueryClientProvider>
+      </BrowserRouter>
     );
   };
 

@@ -4,4 +4,5 @@ export default {
   ...config,
   setupFilesAfterEnv: ["<rootDir>/src/setupTests.ts"],
   rootDir: "./",
+  bail: false, // TODO: remove
 };

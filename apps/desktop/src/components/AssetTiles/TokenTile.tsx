@@ -6,9 +6,9 @@ import {
   tokenSymbolSafe,
 } from "@umami/core";
 
-import { PrettyNumber } from "./PrettyNumber";
-import { TokenIcon } from "../assets/icons";
-import colors from "../style/colors";
+import { TokenIcon } from "../../assets/icons";
+import colors from "../../style/colors";
+import { PrettyNumber } from "../PrettyNumber";
 
 export const TokenTile = ({
   token,

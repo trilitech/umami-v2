@@ -82,3 +82,13 @@ jest.mock("redux-persist", () => ({
   ...jest.requireActual("redux-persist"),
   persistReducer: jest.fn().mockImplementation((_config, reducers) => reducers),
 }));
+
+// TODO: fix act warnings
+const originalError = console.error;
+jest.spyOn(console, "error").mockImplementation((...args) => {
+  // suppress act warnings temporarily
+  if (args[0].includes("Warning: An update to %s inside a test was not wrapped in act")) {
+    return;
+  }
+  originalError(...args);
+});

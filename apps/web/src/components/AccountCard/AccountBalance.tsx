@@ -1,18 +1,6 @@
-import {
-  Box,
-  Flex,
-  Icon,
-  IconButton,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalHeader,
-  Text,
-} from "@chakra-ui/react";
-import { DynamicModalContext } from "@umami/components";
+import { Box, Flex, Icon, IconButton, Text } from "@chakra-ui/react";
 import { useCurrentAccount, useGetAccountBalance, useGetDollarBalance } from "@umami/state";
 import { prettyTezAmount } from "@umami/tezos";
-import { useContext } from "react";
 
 import { ArrowDownLeftIcon, PlusIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
@@ -20,7 +8,6 @@ import { SendButton } from "../SendButton";
 
 export const AccountBalance = () => {
   const color = useColor();
-  const { openWith, isOpen } = useContext(DynamicModalContext);
   const currentAccount = useCurrentAccount()!;
   const balance = useGetAccountBalance()(currentAccount.address.pkh);
   const usdBalance = useGetDollarBalance()(currentAccount.address.pkh);
@@ -62,30 +49,13 @@ export const AccountBalance = () => {
           marginRight="12px"
           marginLeft="auto"
           borderRadius="full"
-          aria-label="Send"
+          aria-label="receive"
           icon={<ArrowDownLeftIcon />}
           size="lg"
           variant="iconButtonOutline"
         />
-        <SendButton
-          padding={{ base: "10px 24px", lg: "10px 40px" }}
-          borderRadius="full"
-          onClick={() =>
-            openWith(
-              <ModalContent>
-                <ModalHeader>
-                  <ModalCloseButton />
-                </ModalHeader>
-                <ModalBody>
-                  <Text>Not supported yet :(</Text>
-                </ModalBody>
-              </ModalContent>
-            )
-          }
-          size="lg"
-          variant="primary"
-        >
-          Send {isOpen}
+        <SendButton padding={{ base: "10px 24px", lg: "10px 40px" }} size="lg" variant="primary">
+          Send
         </SendButton>
       </Flex>
     </Box>

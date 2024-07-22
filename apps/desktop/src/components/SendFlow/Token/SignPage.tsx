@@ -4,7 +4,7 @@ import { FormProvider } from "react-hook-form";
 
 import { AddressTile } from "../../AddressTile/AddressTile";
 import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";
-import { TokenTile } from "../../TokenTile";
+import { TokenTile } from "../../AssetTiles/TokenTile";
 import { OperationSignerSelector } from "../OperationSignerSelector";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
