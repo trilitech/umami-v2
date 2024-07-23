@@ -1,5 +1,5 @@
 import { Box, Center, Flex, Heading, IconButton, Text } from "@chakra-ui/react";
-import { DynamicModalContext } from "@umami/components";
+import { DynamicDisclosureContext } from "@umami/components";
 import {
   type Account,
   type FA12TokenBalance,
@@ -70,7 +70,7 @@ export const AccountDrawerDisplay = ({
   account,
 }: Props) => {
   const isMultisig = account.type === "multisig";
-  const { openWith } = useContext(DynamicModalContext);
+  const { openWith } = useContext(DynamicDisclosureContext);
   const pkh = account.address.pkh;
   const balance = useGetAccountBalance()(pkh);
   const dollarBalance = useGetDollarBalance()(pkh);

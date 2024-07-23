@@ -9,7 +9,7 @@ import {
   ModalHeader,
   useToast,
 } from "@chakra-ui/react";
-import { DynamicModalContext } from "@umami/components";
+import { DynamicDisclosureContext } from "@umami/components";
 import { changeMnemonicPassword, useAppDispatch, useAsyncActionHandler } from "@umami/state";
 import { useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
@@ -25,7 +25,7 @@ type ChangePasswordFormValues = {
 };
 
 export const ChangePasswordForm = () => {
-  const { onClose } = useContext(DynamicModalContext);
+  const { onClose } = useContext(DynamicDisclosureContext);
   const form = useForm<ChangePasswordFormValues>({ mode: "onBlur" });
   const toast = useToast();
   const dispatch = useAppDispatch();

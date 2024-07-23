@@ -9,7 +9,7 @@ import {
   VStack,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import { useDynamicModalContext } from "@umami/components";
+import { useDynamicDisclosureContext } from "@umami/components";
 import { useAppSelector, useGetAccountBalance } from "@umami/state";
 import { prettyTezAmount } from "@umami/tezos";
 
@@ -18,7 +18,7 @@ import { AccountTile } from "../../components/AccountTile";
 export const RecipientsPage = () => {
   const accounts = useAppSelector(s => s.accounts.items);
   const showAmount = useBreakpointValue({ base: false, lg: true });
-  const { goBack } = useDynamicModalContext();
+  const { goBack } = useDynamicDisclosureContext();
   const getBalance = useGetAccountBalance();
 
   return (

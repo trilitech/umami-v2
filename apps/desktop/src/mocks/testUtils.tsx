@@ -1,5 +1,5 @@
 import * as testLib from "@testing-library/react";
-import { DynamicModalContext, useDynamicModal } from "@umami/components";
+import { DynamicDisclosureContext, useDynamicDisclosure } from "@umami/components";
 import { type UmamiStore, makeStore } from "@umami/state";
 import { type PropsWithChildren, type ReactNode, act } from "react";
 import { Provider } from "react-redux";
@@ -9,7 +9,7 @@ import { ReactQueryProvider } from "../providers/ReactQueryProvider";
 import { UmamiTheme } from "../providers/UmamiTheme";
 
 // can be used to spyOn the openWith and onClose methods
-export const dynamicModalContextMock = {
+export const dynamicDisclosureContextMock = {
   onClose: jest.fn(),
   openWith: jest.fn(),
 };
@@ -17,16 +17,16 @@ export const dynamicModalContextMock = {
 const makeWrapper =
   (store: UmamiStore) =>
   ({ children }: PropsWithChildren) => {
-    const dynamicModal = useDynamicModal();
+    const dynamicModal = useDynamicDisclosure();
 
     const openWith = dynamicModal.openWith;
     const onClose = dynamicModal.onClose;
     jest.spyOn(dynamicModal, "openWith").mockImplementation(async (...args) => {
-      dynamicModalContextMock.openWith(...args);
+      dynamicDisclosureContextMock.openWith(...args);
       return openWith(...args);
     });
     jest.spyOn(dynamicModal, "onClose").mockImplementation((...args) => {
-      dynamicModalContextMock.onClose(...args);
+      dynamicDisclosureContextMock.onClose(...args);
       return onClose(...args);
     });
 
@@ -35,10 +35,10 @@ const makeWrapper =
         <ReactQueryProvider>
           <UmamiTheme>
             <Provider store={store}>
-              <DynamicModalContext.Provider value={dynamicModal}>
+              <DynamicDisclosureContext.Provider value={dynamicModal}>
                 {children}
                 {dynamicModal.content}
-              </DynamicModalContext.Provider>
+              </DynamicDisclosureContext.Provider>
             </Provider>
           </UmamiTheme>
         </ReactQueryProvider>

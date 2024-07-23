@@ -14,7 +14,7 @@ import {
   Stack,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import { useDynamicModalContext } from "@umami/components";
+import { useDynamicDisclosureContext } from "@umami/components";
 import {
   type FA12TokenBalance,
   type FA2TokenBalance,
@@ -30,7 +30,7 @@ type SendTokensFormProps = { token: FA12TokenBalance | FA2TokenBalance };
 export const SendTokensFormPage = ({ token }: SendTokensFormProps) => {
   const decimals = tokenDecimals(token);
   const smallestUnit = getSmallestUnit(Number(decimals));
-  const { openWith, onClose } = useDynamicModalContext();
+  const { openWith, onClose } = useDynamicDisclosureContext();
   const addressPlaceholderText = useBreakpointValue({
     base: "Enter address or select",
     ls: "Enter address or select from contacts",

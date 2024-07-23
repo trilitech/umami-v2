@@ -13,7 +13,7 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import { DynamicModalContext } from "@umami/components";
+import { DynamicDisclosureContext } from "@umami/components";
 import { type Operation, makeAccountOperations } from "@umami/core";
 import {
   estimateAndUpdateBatch,
@@ -46,7 +46,7 @@ export const CSVFileUploadForm = () => {
   const dispatch = useAppDispatch();
   const getAccount = useGetOwnedAccount();
   const getSigner = useGetBestSignerForAccount();
-  const { onClose } = useContext(DynamicModalContext);
+  const { onClose } = useContext(DynamicDisclosureContext);
   const { isLoading, handleAsyncAction } = useAsyncActionHandler();
 
   const form = useForm<FormFields>({

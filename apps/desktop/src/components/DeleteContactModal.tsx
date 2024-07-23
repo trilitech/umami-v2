@@ -10,7 +10,7 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
-import { DynamicModalContext } from "@umami/components";
+import { DynamicDisclosureContext } from "@umami/components";
 import { type Contact } from "@umami/core";
 import { contactsActions, useAppDispatch } from "@umami/state";
 import { type FC, useContext } from "react";
@@ -28,7 +28,7 @@ export const DeleteContactModal: FC<{
   contact: Contact;
 }> = ({ contact }) => {
   const dispatch = useAppDispatch();
-  const { onClose } = useContext(DynamicModalContext);
+  const { onClose } = useContext(DynamicDisclosureContext);
   const onDeleteContact = () => {
     dispatch(contactsActions.remove(contact.pkh));
     onClose();

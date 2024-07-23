@@ -12,7 +12,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { useDynamicModalContext } from "@umami/components";
+import { useDynamicDisclosureContext } from "@umami/components";
 import { accountsActions, useGetAccountBalance, useImplicitAccounts } from "@umami/state";
 import { prettyTezAmount } from "@umami/tezos";
 import { capitalize, chain, sortBy } from "lodash";
@@ -30,7 +30,7 @@ export const AccountSelectorModal = () => {
   const { onOpen: openOnboardingModal, modalElement } = useOnboardingModal();
 
   const dispatch = useDispatch();
-  const { onClose } = useDynamicModalContext();
+  const { onClose } = useDynamicDisclosureContext();
 
   const groupedAccounts = chain(accounts)
     .groupBy(acc => acc.type)

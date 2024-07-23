@@ -1,4 +1,4 @@
-import { DynamicModalProvider } from "@umami/components";
+import { DynamicDisclosureProvider } from "@umami/components";
 import { getErrorContext } from "@umami/core";
 import { errorsActions } from "@umami/state";
 import { StrictMode } from "react";
@@ -31,9 +31,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           <ErrorBoundary fallback={<ErrorPage />} onError={logError}>
             <ReactQueryProvider>
               <BrowserRouter>
-                <DynamicModalProvider>
+                <DynamicDisclosureProvider>
                   <App />
-                </DynamicModalProvider>
+                </DynamicDisclosureProvider>
               </BrowserRouter>
               {/* Uncomment to use react-query devtools */}
               {/* <ReactQueryDevtools initialIsOpen={true} /> */}

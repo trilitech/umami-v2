@@ -9,7 +9,7 @@ import { GHOSTNET, makeToolkit, prettyTezAmount } from "@umami/tezos";
 import { OriginationOperationSignPage } from "./OriginationOperationSignPage";
 import {
   act,
-  dynamicModalContextMock,
+  dynamicDisclosureContextMock,
   render,
   screen,
   userEvent,
@@ -86,6 +86,8 @@ describe("<OriginationOperationSignPage />", () => {
         transactionHash: "ophash",
       })
     );
-    expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(<SuccessStep hash="ophash" />);
+    expect(dynamicDisclosureContextMock.openWith).toHaveBeenCalledWith(
+      <SuccessStep hash="ophash" />
+    );
   });
 });

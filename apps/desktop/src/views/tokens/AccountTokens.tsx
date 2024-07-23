@@ -10,7 +10,7 @@ import {
   Text,
   Tr,
 } from "@chakra-ui/react";
-import { DynamicModalContext } from "@umami/components";
+import { DynamicDisclosureContext } from "@umami/components";
 import {
   type Account,
   type FA12TokenBalance,
@@ -74,7 +74,7 @@ export const AccountTokens = ({
   account: Account;
   tokens: (FA12TokenBalance | FA2TokenBalance)[];
 }) => {
-  const { openWith } = useContext(DynamicModalContext);
+  const { openWith } = useContext(DynamicDisclosureContext);
 
   return (
     <Card

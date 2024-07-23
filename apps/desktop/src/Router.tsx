@@ -1,5 +1,5 @@
 /* istanbul ignore file */
-import { DynamicModalContext, useDynamicModal } from "@umami/components";
+import { DynamicDisclosureContext, useDynamicDisclosure } from "@umami/components";
 import { useDataPolling } from "@umami/data-polling";
 import { WalletClient, useImplicitAccounts, useResetConnections } from "@umami/state";
 import { noop } from "lodash";
@@ -32,11 +32,11 @@ export const Router = () => {
 
 const LoggedInRouterWithPolling = () => {
   useDataPolling();
-  const dynamicModal = useDynamicModal();
+  const dynamicModal = useDynamicDisclosure();
 
   return (
     <HashRouter>
-      <DynamicModalContext.Provider value={dynamicModal}>
+      <DynamicDisclosureContext.Provider value={dynamicModal}>
         <BeaconProvider>
           <AnnouncementBanner />
           <Routes>
@@ -53,7 +53,7 @@ const LoggedInRouterWithPolling = () => {
           </Routes>
           {dynamicModal.content}
         </BeaconProvider>
-      </DynamicModalContext.Provider>
+      </DynamicDisclosureContext.Provider>
     </HashRouter>
   );
 };

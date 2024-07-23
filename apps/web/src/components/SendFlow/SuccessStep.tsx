@@ -9,7 +9,7 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
-import { DynamicModalContext } from "@umami/components";
+import { DynamicDisclosureContext } from "@umami/components";
 import { useSelectedNetwork } from "@umami/state";
 import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -19,7 +19,7 @@ import { StubIcon as WindowLinkIcon } from "../../assets/icons";
 export const SuccessStep = ({ hash }: { hash: string }) => {
   const network = useSelectedNetwork();
   const tzktUrl = `${network.tzktExplorerUrl}/${hash}`;
-  const { onClose } = useContext(DynamicModalContext);
+  const { onClose } = useContext(DynamicDisclosureContext);
   const navigate = useNavigate();
 
   return (

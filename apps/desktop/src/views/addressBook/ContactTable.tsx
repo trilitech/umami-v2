@@ -1,5 +1,5 @@
 import { Box, Flex, Table, TableContainer, Tbody, Td, Text, Tr } from "@chakra-ui/react";
-import { DynamicModalContext } from "@umami/components";
+import { DynamicDisclosureContext } from "@umami/components";
 import { type Contact } from "@umami/core";
 import { useContext } from "react";
 
@@ -12,7 +12,7 @@ import { UpsertContactModal } from "../../components/UpsertContactModal";
 import colors from "../../style/colors";
 
 export const ContactTable = ({ contacts }: { contacts: Contact[] }) => {
-  const { openWith } = useContext(DynamicModalContext);
+  const { openWith } = useContext(DynamicDisclosureContext);
   return (
     <Box overflow="auto" background={colors.gray[900]} borderRadius="8px" paddingX="30px">
       <TableContainer overflowX="unset" overflowY="unset">
