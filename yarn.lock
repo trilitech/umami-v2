@@ -6121,14 +6121,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/eslint-plugin-query@npm:^5.51.10":
-  version: 5.51.10
-  resolution: "@tanstack/eslint-plugin-query@npm:5.51.10"
+"@tanstack/eslint-plugin-query@npm:^5.51.12":
+  version: 5.51.12
+  resolution: "@tanstack/eslint-plugin-query@npm:5.51.12"
   dependencies:
     "@typescript-eslint/utils": "npm:8.0.0-alpha.30"
   peerDependencies:
     eslint: ^8 || ^9
-  checksum: 10/a6258ce8dbb9bfd853460a8b0bc8ef6b165052f105ef69c1562ba162ac966f1ba50d4eb00fa679fe807bcc87e32bbb14d988c535351b39d24e19583ae7066adf
+  checksum: 10/2e3b992e780f8d51a24cfea31a87332356c8154c2747c11eabc707dc73799f8d397b65bc8da2457c311fac7aecdd504bf7cc8aa4eef30d95e4e6aaef68992b4c
   languageName: node
   linkType: hard
 
@@ -6146,26 +6146,26 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/react-query-devtools@npm:^5.51.9":
-  version: 5.51.9
-  resolution: "@tanstack/react-query-devtools@npm:5.51.9"
+"@tanstack/react-query-devtools@npm:^5.51.11":
+  version: 5.51.11
+  resolution: "@tanstack/react-query-devtools@npm:5.51.11"
   dependencies:
     "@tanstack/query-devtools": "npm:5.51.9"
   peerDependencies:
-    "@tanstack/react-query": ^5.51.9
+    "@tanstack/react-query": ^5.51.11
     react: ^18 || ^19
-  checksum: 10/918271c84af53a4d95d93ce650b74960257c16bad1aca66f7a9c1f1ded6709819b579f6b344f33e8490e4a7b6f1d9573bc2aedc4a86c06083982ab20530fd901
+  checksum: 10/2a868370db70ef37ce9185c8d1d01f837ffb15bb3c304ef3eab9261e7de07c67e8a5b09264ffbbd2c650bd33a790f80c3d0be67d528d66cab31718d31081b2d7
   languageName: node
   linkType: hard
 
-"@tanstack/react-query@npm:^5.51.9":
-  version: 5.51.9
-  resolution: "@tanstack/react-query@npm:5.51.9"
+"@tanstack/react-query@npm:^5.51.11":
+  version: 5.51.11
+  resolution: "@tanstack/react-query@npm:5.51.11"
   dependencies:
     "@tanstack/query-core": "npm:5.51.9"
   peerDependencies:
     react: ^18.0.0
-  checksum: 10/5cedfc612b3355e421536fea42a375692646b46a0c08ce3c4988dbaf7342358cbe7fc886ff4bad11962dbff33a6582ae7f5b9444d270c048f8672346fd4b1c5d
+  checksum: 10/e840eb5f90fb6ec1693f98be651c5fa55a2885930015a2bf1f8699def596293eac79df8b3335e31b87af0a189d40597d35986379c930faf3496fc5061861d988
   languageName: node
   linkType: hard
 
@@ -7705,7 +7705,7 @@ __metadata:
     "@chakra-ui/react": "npm:^2.8.2"
     "@emotion/react": "npm:^11.12.0"
     "@emotion/styled": "npm:^11.12.0"
-    "@tanstack/react-query": "npm:^5.51.9"
+    "@tanstack/react-query": "npm:^5.51.11"
     "@testing-library/dom": "npm:^10.3.2"
     "@testing-library/react": "npm:^16.0.0"
     "@types/babel__core": "npm:^7.20.5"
@@ -7790,8 +7790,8 @@ __metadata:
     "@emotion/styled": "npm:^11.12.0"
     "@ledgerhq/hw-transport-webusb": "npm:^6.29.1"
     "@reduxjs/toolkit": "npm:^2.2.6"
-    "@tanstack/react-query": "npm:^5.51.9"
-    "@tanstack/react-query-devtools": "npm:^5.51.9"
+    "@tanstack/react-query": "npm:^5.51.11"
+    "@tanstack/react-query-devtools": "npm:^5.51.11"
     "@taquito/ledger-signer": "npm:^20.0.1"
     "@taquito/michel-codec": "npm:^20.0.1"
     "@taquito/rpc": "npm:^20.0.1"
@@ -7943,7 +7943,7 @@ __metadata:
   resolution: "@umami/eslint-config@workspace:packages/eslint-config"
   dependencies:
     "@stylistic/eslint-plugin": "npm:^2.3.0"
-    "@tanstack/eslint-plugin-query": "npm:^5.51.10"
+    "@tanstack/eslint-plugin-query": "npm:^5.51.12"
     "@typescript-eslint/eslint-plugin": "npm:^7.16.1"
     "@typescript-eslint/parser": "npm:^7.16.1"
     "@umami/typescript-config": "workspace:^"
@@ -8221,7 +8221,7 @@ __metadata:
     "@svgr/core": "npm:^8.1.0"
     "@svgr/plugin-jsx": "npm:^8.1.0"
     "@svgr/plugin-svgo": "npm:^8.1.0"
-    "@tanstack/react-query": "npm:^5.51.9"
+    "@tanstack/react-query": "npm:^5.51.11"
     "@taquito/beacon-wallet": "npm:^20.0.1"
     "@taquito/ledger-signer": "npm:^20.0.1"
     "@taquito/michel-codec": "npm:^20.0.1"
