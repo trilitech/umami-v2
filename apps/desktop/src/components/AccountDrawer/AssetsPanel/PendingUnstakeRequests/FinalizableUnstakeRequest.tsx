@@ -1,5 +1,5 @@
 import { Box, Button, Center, Flex, type FlexProps, Text } from "@chakra-ui/react";
-import { DynamicModalContext } from "@umami/components";
+import { DynamicDisclosureContext } from "@umami/components";
 import { type ImplicitAccount, estimate, makeAccountOperations } from "@umami/core";
 import {
   useAccountTotalFinalizableUnstakeAmount,
@@ -27,7 +27,7 @@ export const FinalizableUnstakeRequest = ({
 }: {
   account: ImplicitAccount;
 } & FlexProps) => {
-  const { openWith } = useContext(DynamicModalContext);
+  const { openWith } = useContext(DynamicDisclosureContext);
   const { handleAsyncAction, isLoading } = useAsyncActionHandler();
   const network = useSelectedNetwork();
   const totalFinalizableAmount = useAccountTotalFinalizableUnstakeAmount(account.address.pkh);

@@ -1,5 +1,5 @@
 import { Button, type ButtonProps } from "@chakra-ui/react";
-import { DynamicModalContext } from "@umami/components";
+import { DynamicDisclosureContext } from "@umami/components";
 import { type Account } from "@umami/core";
 import { useContext } from "react";
 
@@ -13,7 +13,7 @@ import { FolderInfoIcon } from "../../../assets/icons";
  * @returns null if the account's derivation path is unknown, a button to open the modal otherwise
  */
 export const DerivationInfoButton = ({ account, ...props }: { account: Account } & ButtonProps) => {
-  const { openWith } = useContext(DynamicModalContext);
+  const { openWith } = useContext(DynamicDisclosureContext);
 
   switch (account.type) {
     // for those we cannot know the derivation path

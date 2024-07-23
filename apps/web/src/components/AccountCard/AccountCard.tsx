@@ -1,5 +1,5 @@
 import { Card, IconButton } from "@chakra-ui/react";
-import { useDynamicModalContext } from "@umami/components";
+import { useDynamicDisclosureContext } from "@umami/components";
 import { useCurrentAccount } from "@umami/state";
 
 import { AccountBalance } from "./AccountBalance";
@@ -11,7 +11,7 @@ import { AccountTile } from "../AccountTile";
 export const AccountCard = () => {
   const color = useColor();
   const currentAccount = useCurrentAccount()!;
-  const { openWith } = useDynamicModalContext();
+  const { openWith } = useDynamicDisclosureContext();
 
   return (
     <Card

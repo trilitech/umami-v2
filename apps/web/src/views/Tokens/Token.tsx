@@ -1,5 +1,5 @@
 import { Flex, Grid, Text } from "@chakra-ui/react";
-import { useDynamicModalContext } from "@umami/components";
+import { useDynamicDisclosureContext } from "@umami/components";
 import { type FA12TokenBalance, type FA2TokenBalance, tokenPrettyAmount } from "@umami/core";
 import { useCurrentAccount } from "@umami/state";
 import { parseContractPkh } from "@umami/tezos";
@@ -18,7 +18,7 @@ type TokenProps = {
 
 export const Token = ({ token }: TokenProps) => {
   const color = useColor();
-  const { openWith } = useDynamicModalContext();
+  const { openWith } = useDynamicDisclosureContext();
   const address = parseContractPkh(token.contract).pkh;
   const currentAccount = useCurrentAccount()!;
 

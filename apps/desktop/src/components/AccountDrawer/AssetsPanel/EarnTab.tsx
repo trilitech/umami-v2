@@ -1,5 +1,5 @@
 import { Box, Button, Center, Flex, type FlexProps, Heading, Text } from "@chakra-ui/react";
-import { DynamicModalContext } from "@umami/components";
+import { DynamicDisclosureContext } from "@umami/components";
 import { type Account, type ImplicitAccount } from "@umami/core";
 import {
   useGetAccountDelegate,
@@ -49,7 +49,7 @@ const RoundStatusDot = ({ background }: { background: string }) => (
 );
 
 export const EarnTab = ({ account }: { account: Account }) => {
-  const { openWith } = useContext(DynamicModalContext);
+  const { openWith } = useContext(DynamicDisclosureContext);
   const network = useSelectedNetwork();
   const pkh = account.address.pkh;
   const delegate = useGetAccountDelegate()(pkh);

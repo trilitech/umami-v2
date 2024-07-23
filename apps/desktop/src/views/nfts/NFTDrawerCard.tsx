@@ -12,7 +12,7 @@ import {
   Image,
   Text,
 } from "@chakra-ui/react";
-import { DynamicModalContext } from "@umami/components";
+import { DynamicDisclosureContext } from "@umami/components";
 import { type NFTWithOwner, artifactUri, mimeType, tokenName } from "@umami/core";
 import { useGetOwnedAccount } from "@umami/state";
 import { getIPFSurl } from "@umami/tezos";
@@ -30,7 +30,7 @@ export const NFTDrawerCard = ({ nft }: { nft: NFTWithOwner }) => {
   const url = getIPFSurl(artifactUri(nft));
   const fallbackUrl = getIPFSurl(nft.displayUri);
   const getAccount = useGetOwnedAccount();
-  const { openWith } = useContext(DynamicModalContext);
+  const { openWith } = useContext(DynamicDisclosureContext);
   const isVideo = mimeType(nft)?.startsWith("video/");
 
   const name = tokenName(nft);

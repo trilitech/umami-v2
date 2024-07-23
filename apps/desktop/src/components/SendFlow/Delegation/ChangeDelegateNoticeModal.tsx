@@ -8,7 +8,7 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
-import { DynamicModalContext } from "@umami/components";
+import { DynamicDisclosureContext } from "@umami/components";
 import { type Account } from "@umami/core";
 import { type TzktAlias } from "@umami/tzkt";
 import { useContext } from "react";
@@ -24,7 +24,7 @@ export const ChangeDelegateNoticeModal = ({
   account: Account;
   delegate: TzktAlias;
 }) => {
-  const { openWith } = useContext(DynamicModalContext);
+  const { openWith } = useContext(DynamicDisclosureContext);
 
   return (
     <ModalContent>

@@ -1,4 +1,4 @@
-import { DynamicModalContext } from "@umami/components";
+import { DynamicDisclosureContext } from "@umami/components";
 import { type Account } from "@umami/core";
 import { useImplicitAccounts, useRemoveAccount } from "@umami/state";
 import { useContext } from "react";
@@ -9,7 +9,7 @@ import { ConfirmationModal } from "../ConfirmationModal";
 import { RenameRemoveMenu } from "../RenameRemoveMenu";
 
 export const RenameRemoveMenuSwitch = ({ account }: { account: Account }) => {
-  const { openWith, onClose: closeModal } = useContext(DynamicModalContext);
+  const { openWith, onClose: closeModal } = useContext(DynamicDisclosureContext);
   const navigate = useNavigate();
   const isLastImplicitAccount = useImplicitAccounts().length === 1;
   const removeAccount = useRemoveAccount();

@@ -9,7 +9,7 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
-import { DynamicModalContext } from "@umami/components";
+import { DynamicDisclosureContext } from "@umami/components";
 import { type Account } from "@umami/core";
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
@@ -19,7 +19,7 @@ import { WarningIcon } from "../../../assets/icons";
 import colors from "../../../style/colors";
 
 export const NoticeModal = ({ account }: { account: Account }) => {
-  const { openWith } = useContext(DynamicModalContext);
+  const { openWith } = useContext(DynamicDisclosureContext);
   const { setValue, watch } = useForm<{ consent: boolean }>({
     mode: "onBlur",
     defaultValues: { consent: false },

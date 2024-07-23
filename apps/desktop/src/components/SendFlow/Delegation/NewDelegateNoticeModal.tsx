@@ -8,7 +8,7 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
-import { DynamicModalContext } from "@umami/components";
+import { DynamicDisclosureContext } from "@umami/components";
 import { type Account } from "@umami/core";
 import { useContext } from "react";
 
@@ -18,7 +18,7 @@ import colors from "../../../style/colors";
 import { NoticeSteps } from "../NoticeSteps";
 
 export const NewDelegateNoticeModal = ({ account }: { account: Account }) => {
-  const { openWith } = useContext(DynamicModalContext);
+  const { openWith } = useContext(DynamicDisclosureContext);
 
   return (
     <ModalContent>

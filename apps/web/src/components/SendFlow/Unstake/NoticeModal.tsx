@@ -8,7 +8,7 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
-import { DynamicModalContext } from "@umami/components";
+import { DynamicDisclosureContext } from "@umami/components";
 import { type Account } from "@umami/core";
 import { useGetAccountStakedBalance } from "@umami/state";
 import { useContext } from "react";
@@ -20,7 +20,7 @@ import { NoticeSteps } from "../NoticeSteps";
 // TODO: test
 export const NoticeModal = ({ account }: { account: Account }) => {
   const color = useColor();
-  const { openWith } = useContext(DynamicModalContext);
+  const { openWith } = useContext(DynamicDisclosureContext);
   const stakedBalance = useGetAccountStakedBalance(account.address.pkh);
 
   return (
