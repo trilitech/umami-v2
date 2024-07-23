@@ -29,6 +29,11 @@ export { default as TwitterIcon } from "./twitter.svg";
 export { default as USBIcon } from "./usb.svg";
 export { default as VerifiedIcon } from "./verified.svg";
 export { default as LogoutIcon } from "./logout.svg";
+export { default as EditIcon } from "./edit.svg";
+export { default as TrashIcon } from "./trash.svg";
+export { default as ExternalLinkIcon } from "./external-link.svg";
+export { default as SearchIcon } from "./search.svg";
+export { default as CloseIcon } from "./close.svg";
 export { TokenIcon } from "./TokenIcon";
 
 import CrossIcon from "./cross.svg";

@@ -227,6 +227,22 @@ const theme = extendTheme({
         },
       },
     },
+    Popover: {
+      baseStyle: {
+        popper: {
+          zIndex: 9999,
+        },
+        content: {
+          borderRadius: "30px",
+          border: "1.5px solid",
+          borderColor: "gray.100",
+          bg: "white",
+        },
+        body: {
+          padding: "12px",
+        },
+      },
+    },
     Drawer: {
       baseStyle: {
         dialog: {
@@ -260,6 +276,8 @@ const theme = extendTheme({
           borderBottomRightRadius: { lg: "30px", base: 0 },
           borderBottomLeftRadius: { lg: "30px", base: 0 },
           background: "white",
+          border: "1.5px solid",
+          borderColor: "gray.100",
           padding: {
             base: "36px",
             lg: "42px",
