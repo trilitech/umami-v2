@@ -21,11 +21,11 @@ type AccountInfoModalProps = {
 };
 
 export const AccountInfoModal = ({ account }: AccountInfoModalProps) => {
-  const { onClose } = useDynamicDisclosureContext();
+  const { goBack } = useDynamicDisclosureContext();
 
   const handleCopyAddress = async (event: MouseEvent<HTMLButtonElement>) => {
     await navigator.clipboard.writeText(account.address.pkh);
-    onClose();
+    goBack();
   };
 
   return (

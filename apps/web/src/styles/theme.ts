@@ -178,6 +178,13 @@ const theme = extendTheme({
             bg: light.blueDark,
           },
         },
+        alert: {
+          bg: light.red,
+          color: dark.grey.black,
+          _hover: {
+            bg: light.redDark,
+          },
+        },
         secondary: {
           bg: "gray.900",
           color: "white",

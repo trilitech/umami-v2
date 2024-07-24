@@ -34,6 +34,7 @@ export { default as TrashIcon } from "./trash.svg";
 export { default as ExternalLinkIcon } from "./external-link.svg";
 export { default as SearchIcon } from "./search.svg";
 export { default as CloseIcon } from "./close.svg";
+export { default as AlertIcon } from "./alert.svg";
 export { TokenIcon } from "./TokenIcon";
 
 import CrossIcon from "./cross.svg";

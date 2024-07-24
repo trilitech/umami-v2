@@ -9,10 +9,16 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useDynamicDisclosureContext } from "@umami/components";
-import { type Account } from "@umami/core";
+import {
+  type Account,
+  type LedgerAccount,
+  type SecretKeyAccount,
+  type SocialAccount,
+} from "@umami/core";
 import { type MouseEvent, type ReactElement } from "react";
 
 import { AccountInfoModal } from "./AccountInfoModal";
+import { RemoveAccountModal } from "./RemoveAccountModal";
 import { RenameAccountPage } from "./RenameAccountModal";
 import {
   EditIcon,
@@ -29,6 +35,7 @@ const accountSelectorPopoverOptions = [
     action: (account: Account, openWith: (content: ReactElement) => Promise<void>) => {
       void openWith(<AccountInfoModal account={account} />);
     },
+    isEnabled: () => true,
   },
   {
     icon: <EditIcon />,
@@ -36,14 +43,17 @@ const accountSelectorPopoverOptions = [
     action: (account: Account, openWith: (content: ReactElement) => Promise<void>) => {
       void openWith(<RenameAccountPage account={account} />);
     },
+    isEnabled: () => true,
   },
   {
     icon: <TrashIcon />,
     text: "Remove",
-    action: (account: Account) => {
-      // Handle remove action
-      console.log("Remove account", account.address);
+    action: (account: Account, openWith: (content: ReactElement) => Promise<void>) => {
+      void openWith(
+        <RemoveAccountModal account={account as SocialAccount | LedgerAccount | SecretKeyAccount} />
+      );
     },
+    isEnabled: (account: Account) => account.type !== "mnemonic" && account.type !== "multisig",
   },
   {
     icon: <ExternalLinkIcon />,
@@ -51,6 +61,7 @@ const accountSelectorPopoverOptions = [
     action: (account: Account) => {
       window.open(`https://tzkt.io/${account.address.pkh}`, "_blank");
     },
+    isEnabled: () => true,
   },
 ];
 
@@ -85,25 +96,28 @@ export const AccountSelectorPopover = ({ account }: AccountSelectorPopoverProps)
       <Portal>
         <PopoverContent maxWidth="204px">
           <PopoverBody color="gray.400">
-            {accountSelectorPopoverOptions.map(({ icon, text, action }, index) => (
-              <Flex
-                key={`${text}-${index}`}
-                alignItems="center"
-                gap="10px"
-                padding="12px 16px"
-                _hover={{
-                  background: "gray.100",
-                }}
-                cursor="pointer"
-                onClick={e => handleAction(e, action)}
-                rounded="full"
-              >
-                {icon}
-                <Text color="gray.900" fontWeight="600">
-                  {text}
-                </Text>
-              </Flex>
-            ))}
+            {accountSelectorPopoverOptions.map(
+              ({ icon, text, action, isEnabled }, index) =>
+                isEnabled(account) && (
+                  <Flex
+                    key={`${text}-${index}`}
+                    alignItems="center"
+                    gap="10px"
+                    padding="12px 16px"
+                    _hover={{
+                      background: "gray.100",
+                    }}
+                    cursor="pointer"
+                    onClick={e => handleAction(e, action)}
+                    rounded="full"
+                  >
+                    {icon}
+                    <Text color="gray.900" fontWeight="600">
+                      {text}
+                    </Text>
+                  </Flex>
+                )
+            )}
           </PopoverBody>
         </PopoverContent>
       </Portal>

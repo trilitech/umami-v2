@@ -21,6 +21,7 @@ import {
 } from "@chakra-ui/react";
 import { useSelectNetwork, useSelectedNetwork } from "@umami/state";
 import { useRef } from "react";
+import { useNavigate } from "react-router";
 
 import { LogoutIcon } from "../../assets/icons";
 import { persistor } from "../../utils/persistor";
@@ -28,6 +29,7 @@ import { persistor } from "../../utils/persistor";
 export const Menu = () => {
   const selectNetwork = useSelectNetwork();
   const currentNetwork = useSelectedNetwork();
+  const navigate = useNavigate();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef(null);
@@ -35,7 +37,7 @@ export const Menu = () => {
   const handleLogout = () => {
     persistor.pause();
     localStorage.removeItem("persist:accounts");
-    window.location.replace("/");
+    navigate("/");
   };
 
   return (
