@@ -8691,6 +8691,7 @@ __metadata:
     react-dom: "npm:^18.2.0"
     react-error-boundary: "npm:^4.0.13"
     react-hook-form: "npm:^7.52.1"
+    react-qrcode-logo: "npm:^3.0.0"
     react-redux: "npm:^9.1.2"
     react-remove-scroll: "npm:^2.5.10"
     react-responsive-carousel: "npm:^3.2.23"

@@ -12,7 +12,8 @@ import { useDynamicDisclosureContext } from "@umami/components";
 import { type Account } from "@umami/core";
 import { type MouseEvent, type ReactElement } from "react";
 
-import { RenameAccountPage } from "./RenameAccountPage";
+import { AccountInfoModal } from "./AccountInfoModal";
+import { RenameAccountPage } from "./RenameAccountModal";
 import {
   EditIcon,
   ExternalLinkIcon,
@@ -25,9 +26,8 @@ const accountSelectorPopoverOptions = [
   {
     icon: <SearchIcon />,
     text: "Account Info",
-    action: (account: Account) => {
-      // Handle account info action
-      console.log("Account Info for", account.address);
+    action: (account: Account, openWith: (content: ReactElement) => Promise<void>) => {
+      void openWith(<AccountInfoModal account={account} />);
     },
   },
   {

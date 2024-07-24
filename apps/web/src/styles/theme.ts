@@ -233,6 +233,7 @@ const theme = extendTheme({
           zIndex: 9999,
         },
         content: {
+          boxShadow: "0px 0px 10px 0px rgba(45, 55, 72, 0.10)",
           borderRadius: "30px",
           border: "1.5px solid",
           borderColor: "gray.100",
