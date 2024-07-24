@@ -25,19 +25,32 @@ const accountSelectorPopoverOptions = [
   {
     icon: <SearchIcon />,
     text: "Account Info",
+    action: (account: Account) => {
+      // Handle account info action
+      console.log("Account Info for", account.address);
+    },
   },
   {
     icon: <EditIcon />,
     text: "Rename",
-    action: (account: Account) => <RenameAccountPage account={account} />,
+    action: (account: Account, openWith: (content: ReactElement) => Promise<void>) => {
+      void openWith(<RenameAccountPage account={account} />);
+    },
   },
   {
     icon: <TrashIcon />,
     text: "Remove",
+    action: (account: Account) => {
+      // Handle remove action
+      console.log("Remove account", account.address);
+    },
   },
   {
     icon: <ExternalLinkIcon />,
     text: "View in TzKT",
+    action: (account: Account) => {
+      window.open(`https://tzkt.io/${account.address.pkh}`, "_blank");
+    },
   },
 ];
 
@@ -48,15 +61,12 @@ type AccountSelectorPopoverProps = {
 export const AccountSelectorPopover = ({ account }: AccountSelectorPopoverProps) => {
   const { openWith } = useDynamicDisclosureContext();
 
-  const handleAction = async (
+  const handleAction = (
     event: MouseEvent<HTMLDivElement>,
-    action?: (props: any) => ReactElement
+    action: (account: Account, openWith: (content: ReactElement) => Promise<void>) => void
   ) => {
     event.stopPropagation();
-
-    if (action) {
-      await openWith(action(account));
-    }
+    action(account, openWith);
   };
 
   return (
