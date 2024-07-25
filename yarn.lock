@@ -7882,7 +7882,7 @@ __metadata:
     typedoc: "npm:^0.26.4"
     typedoc-plugin-missing-exports: "npm:^3.0.0"
     typescript: "npm:5.5.3"
-    vite: "npm:^5.3.4"
+    vite: "npm:^5.3.5"
     vite-plugin-checker: "npm:^0.7.2"
     vite-plugin-node-polyfills: "npm:^0.22.0"
     zod: "npm:^3.23.8"
@@ -7932,7 +7932,7 @@ __metadata:
     rimraf: "npm:^6.0.1"
     sass: "npm:^1.77.8"
     typescript: "npm:5.5.3"
-    vite: "npm:^5.3.4"
+    vite: "npm:^5.3.5"
     vite-plugin-node-polyfills: "npm:^0.22.0"
     vite-plugin-svgr: "npm:^4.2.0"
   languageName: unknown
@@ -8285,7 +8285,7 @@ __metadata:
     rimraf: "npm:^6.0.1"
     storybook: "npm:^8.2.4"
     typescript: "npm:^5.5.3"
-    vite: "npm:^5.3.4"
+    vite: "npm:^5.3.5"
     vite-plugin-node-polyfills: "npm:^0.22.0"
     vite-plugin-svgr: "npm:^4.2.0"
     zod: "npm:^3.23.8"
@@ -21723,9 +21723,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^5.3.4":
-  version: 5.3.4
-  resolution: "vite@npm:5.3.4"
+"vite@npm:^5.3.5":
+  version: 5.3.5
+  resolution: "vite@npm:5.3.5"
   dependencies:
     esbuild: "npm:^0.21.3"
     fsevents: "npm:~2.3.3"
@@ -21759,7 +21759,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 10/9eadb261be1f5f6335a67cb44a8803febd8b190202909385fd2ae7849991095ee13c5af914da53da48a421ee0901a8fedbb7519dc7d1b8ade3ea6e42bd9b2b39
+  checksum: 10/5672dde4a969349d9cf90a9e43029c8489dfff60fb04d6a10717d6224553cf12283a8cace633fa80b006df6037f72d08a459a38bf8ea66cb19075d60fe159482
   languageName: node
   linkType: hard
 
