@@ -64,7 +64,7 @@
     "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.12.0",
     "@emotion/styled": "^11.12.0",
-    "@tanstack/react-query": "^5.51.9",
+    "@tanstack/react-query": "^5.51.11",
     "@umami/core": "workspace:^",
     "@umami/multisig": "workspace:^",
     "@umami/state": "workspace:^",
