@@ -55,7 +55,6 @@ export function EmbeddedComponent() {
       const data: RequestMessage = JSON.parse(event.data);
 
       console.log(`Received ${event.data} from ${event.origin}`);
-      console.log(data);
 
       if (!validateClientPermissions(event.origin, data)) {
         return;
