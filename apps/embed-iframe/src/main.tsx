@@ -3,9 +3,9 @@ import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 
 import { EmbeddedComponent } from "./EmbeddedComponent";
-import "./index.css";
 import theme from "./imported/style/theme";
 import { EmbedAppProvider } from "./EmbedAppContext";
+import "./main.scss";
 
 const rootElement = document.getElementById("root");
 ReactDOM.createRoot(rootElement!).render(

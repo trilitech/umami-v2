@@ -1,4 +1,4 @@
-import { Box, ChakraProvider, ColorModeScript } from "@chakra-ui/react";
+import { Box, useColorMode } from "@chakra-ui/react";
 import {
   type RequestMessage,
   type RequestType,
@@ -8,7 +8,6 @@ import {
 import { useEffect } from "react";
 
 import { getPermissionsForOrigin } from "./ClientsPermissions";
-import theme from "./imported/style/theme";
 import { useLoginModal } from "./loginModalHooks";
 import { useSignOperationModal } from "./signOperationModalHooks";
 import { sendResponse } from "./utils";
@@ -17,14 +16,13 @@ import { useEmbedApp } from "./EmbedAppContext";
 
 export function EmbeddedComponent() {
   const { getNetwork, getUserData, setNetwork, setUserData, setLoginOptions } = useEmbedApp();
+  const { setColorMode } = useColorMode();
 
   const { onOpen: openLoginModal, modalElement: loginModalElement } = useLoginModal();
   const { onOpen: openOperationModal, modalElement: operationModalElement } =
     useSignOperationModal();
 
   useEffect(() => {
-    document.body.style.background = "none";
-
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (window.addEventListener) {
       window.addEventListener("message", handleRequest, false);
@@ -102,6 +100,7 @@ export function EmbeddedComponent() {
         setUserData(null);
       }
     }
+    setColorMode(config.theme ?? "light");
     // TODO: handle theme
     // TODO: handle logs level
   };
@@ -179,12 +178,9 @@ export function EmbeddedComponent() {
   };
 
   return (
-    <ChakraProvider theme={theme}>
-      <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-      <Box className="embedded-component">
-        {loginModalElement}
-        {operationModalElement}
-      </Box>
-    </ChakraProvider>
+    <Box className="embedded-component">
+      {loginModalElement}
+      {operationModalElement}
+    </Box>
   );
 }
