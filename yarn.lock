@@ -7879,7 +7879,7 @@ __metadata:
     redux-persist: "npm:^6.0.0"
     rimraf: "npm:^6.0.1"
     ts-node: "npm:^10.9.2"
-    typedoc: "npm:^0.26.4"
+    typedoc: "npm:^0.26.5"
     typedoc-plugin-missing-exports: "npm:^3.0.0"
     typescript: "npm:5.5.3"
     vite: "npm:^5.3.5"
@@ -21082,9 +21082,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typedoc@npm:^0.26.4":
-  version: 0.26.4
-  resolution: "typedoc@npm:0.26.4"
+"typedoc@npm:^0.26.5":
+  version: 0.26.5
+  resolution: "typedoc@npm:0.26.5"
   dependencies:
     lunr: "npm:^2.3.9"
     markdown-it: "npm:^14.1.0"
@@ -21095,7 +21095,7 @@ __metadata:
     typescript: 4.6.x || 4.7.x || 4.8.x || 4.9.x || 5.0.x || 5.1.x || 5.2.x || 5.3.x || 5.4.x || 5.5.x
   bin:
     typedoc: bin/typedoc
-  checksum: 10/c25cce210c0ac0ac5328c11cc036344a6495bb49ed2191e580d1287edca2269ffe5e69dca5a75198174830e2d3c3bb560d70a6d22a24c0df293a069dd7d26318
+  checksum: 10/9965479c87d8cb97742ae2622e3c6640e1204bca4b5652c66b82e0f768184443a2b800eae1090c92130ef321e29afc948510d4d65a4a2073c4fd6101d737ba0d
   languageName: node
   linkType: hard
 
