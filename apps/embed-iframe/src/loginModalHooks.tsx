@@ -1,12 +1,24 @@
-import { Center, Modal, ModalCloseButton, ModalContent } from "@chakra-ui/react";
+import {
+  Center,
+  Flex,
+  Modal,
+  ModalCloseButton,
+  ModalContent,
+  useColorMode,
+} from "@chakra-ui/react";
 
 import { LoginModalContent } from "./LoginModalContent";
 import { sendLoginErrorResponse } from "./utils";
+import { TezosSpinner } from "./assets/icons/TezosSpinner";
+
+import { mode } from "@chakra-ui/theme-tools";
 
 import { useLoginModalContext } from "./LoginModalContext";
 
 export const useLoginModal = () => {
   const { isOpen, onOpen, onClose, isLoading } = useLoginModalContext();
+
+  const colorMode = useColorMode();
 
   const onModalCLose = () => {
     sendLoginErrorResponse("User closed the modal");
@@ -24,8 +36,26 @@ export const useLoginModal = () => {
           onClose={onClose}
         >
           <ModalContent>
-            {!isLoading && <ModalCloseButton onClick={onModalCLose} />}
+            <ModalCloseButton onClick={onModalCLose} />
             <LoginModalContent />
+            {isLoading && (
+              <Flex
+                position="absolute"
+                top="0"
+                right="0"
+                bottom="0"
+                left="0"
+                alignItems="center"
+                justifyContent="center"
+                borderRadius="30px"
+                backgroundColor={mode(
+                  "rgba(255, 255, 255, 0.85)", // light
+                  "rgba(16, 18, 27, 0.85)" // dark
+                )(colorMode)}
+              >
+                <TezosSpinner />
+              </Flex>
+            )}
           </ModalContent>
         </Modal>
       </Center>
