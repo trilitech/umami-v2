@@ -9,7 +9,7 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { DynamicModalContext } from "@umami/components";
+import { DynamicDisclosureContext } from "@umami/components";
 import {
   networksActions,
   useAppDispatch,
@@ -26,7 +26,7 @@ import { PopoverMenu } from "../../../components/PopoverMenu";
 import colors from "../../../style/colors";
 
 export const NetworkSettingsDrawerBody = () => {
-  const { openWith } = useContext(DynamicModalContext);
+  const { openWith } = useContext(DynamicDisclosureContext);
   const network = useSelectedNetwork();
   const selectNetwork = useSelectNetwork();
   const availableNetworks = useAvailableNetworks();

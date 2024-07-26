@@ -9,7 +9,7 @@ import {
   ModalContent,
   ModalFooter,
 } from "@chakra-ui/react";
-import { DynamicModalContext } from "@umami/components";
+import { DynamicDisclosureContext } from "@umami/components";
 import { type Account } from "@umami/core";
 import { renameAccount, useAppDispatch, useValidateName } from "@umami/state";
 import { type FC, useContext } from "react";
@@ -21,7 +21,7 @@ export const RenameAccountModal: FC<{
   account: Account;
 }> = ({ account }) => {
   const dispatch = useAppDispatch();
-  const { onClose } = useContext(DynamicModalContext);
+  const { onClose } = useContext(DynamicDisclosureContext);
 
   const onSubmitNewName = ({ name }: { name: string }) => {
     dispatch(renameAccount(account, name));

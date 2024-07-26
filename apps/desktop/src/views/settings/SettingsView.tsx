@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
-import { DynamicModalContext } from "@umami/components";
+import { DynamicDisclosureContext } from "@umami/components";
 import { downloadBackupFile } from "@umami/state";
 import { type PropsWithChildren, useContext } from "react";
 
@@ -57,7 +57,7 @@ const BackupSection = () => (
 
 const AdvancedSection = () => {
   const { modalElement: OffboardingModal, onOpen: onOpenOffboardingModal } = useOffboardingModal();
-  const { openWith } = useContext(DynamicModalContext);
+  const { openWith } = useContext(DynamicDisclosureContext);
 
   return (
     <SectionContainer title="Advanced Settings">

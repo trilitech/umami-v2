@@ -2,14 +2,14 @@ import { Modal } from "@chakra-ui/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import * as testLib from "@testing-library/react";
 import { type UserEvent } from "@testing-library/user-event";
-import { DynamicModalContext, useDynamicModal } from "@umami/components";
+import { DynamicDisclosureContext, useDynamicDisclosure } from "@umami/components";
 import { type UmamiStore, makeStore } from "@umami/state";
 import { type PropsWithChildren, type ReactNode, act } from "react";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 
 // can be used to spyOn the openWith and onClose methods
-export const dynamicModalContextMock = {
+export const dynamicDisclosureContextMock = {
   onClose: jest.fn(),
   openWith: jest.fn(),
 };
@@ -17,16 +17,16 @@ export const dynamicModalContextMock = {
 const makeWrapper =
   (store: UmamiStore) =>
   ({ children }: PropsWithChildren) => {
-    const dynamicModal = useDynamicModal();
+    const dynamicModal = useDynamicDisclosure();
 
     const openWith = dynamicModal.openWith;
     const onClose = dynamicModal.onClose;
     jest.spyOn(dynamicModal, "openWith").mockImplementation(async (...args) => {
-      dynamicModalContextMock.openWith(...args);
+      dynamicDisclosureContextMock.openWith(...args);
       return openWith(...args);
     });
     jest.spyOn(dynamicModal, "onClose").mockImplementation((...args) => {
-      dynamicModalContextMock.onClose(...args);
+      dynamicDisclosureContextMock.onClose(...args);
       return onClose(...args);
     });
 
@@ -34,14 +34,14 @@ const makeWrapper =
       <BrowserRouter>
         <QueryClientProvider client={new QueryClient()}>
           <Provider store={store}>
-            <DynamicModalContext.Provider value={dynamicModal}>
+            <DynamicDisclosureContext.Provider value={dynamicModal}>
               {/* Crutch for desktop views to be testable */}
               {/* TODO: remove it when those views are rebuilt for the web */}
               <Modal isOpen={true} onClose={jest.fn()}>
                 {children}
                 {dynamicModal.content}
               </Modal>
-            </DynamicModalContext.Provider>
+            </DynamicDisclosureContext.Provider>
           </Provider>
         </QueryClientProvider>
       </BrowserRouter>

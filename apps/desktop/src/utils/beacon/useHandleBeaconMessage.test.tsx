@@ -27,7 +27,13 @@ import {
 } from "./useHandleBeaconMessage";
 import { BatchSignPage } from "../../components/SendFlow/Beacon/BatchSignPage";
 import { BeaconSignPage } from "../../components/SendFlow/Beacon/BeaconSignPage";
-import { act, dynamicModalContextMock, renderHook, screen, waitFor } from "../../mocks/testUtils";
+import {
+  act,
+  dynamicDisclosureContextMock,
+  renderHook,
+  screen,
+  waitFor,
+} from "../../mocks/testUtils";
 
 jest.mock("@umami/core", () => ({
   ...jest.requireActual("@umami/core"),
@@ -169,7 +175,7 @@ describe("<useHandleBeaconMessage />", () => {
         isClosable: true,
       })
     );
-    expect(dynamicModalContextMock.openWith).not.toHaveBeenCalled();
+    expect(dynamicDisclosureContextMock.openWith).not.toHaveBeenCalled();
   });
 
   describe("operation request", () => {
@@ -194,7 +200,7 @@ describe("<useHandleBeaconMessage />", () => {
           isClosable: true,
         })
       );
-      expect(dynamicModalContextMock.openWith).not.toHaveBeenCalled();
+      expect(dynamicDisclosureContextMock.openWith).not.toHaveBeenCalled();
     });
 
     it("doesn't open a modal on an unknown operation type", async () => {
@@ -219,7 +225,7 @@ describe("<useHandleBeaconMessage />", () => {
           isClosable: true,
         })
       );
-      expect(dynamicModalContextMock.openWith).not.toHaveBeenCalled();
+      expect(dynamicDisclosureContextMock.openWith).not.toHaveBeenCalled();
     });
 
     it("doesn't open a modal when account is not owned", async () => {
@@ -258,7 +264,7 @@ describe("<useHandleBeaconMessage />", () => {
         id: "mockMessageId",
         type: "error",
       });
-      expect(dynamicModalContextMock.openWith).not.toHaveBeenCalled();
+      expect(dynamicDisclosureContextMock.openWith).not.toHaveBeenCalled();
     });
 
     it("doesn't open a modal on an error while estimating the fee", async () => {
@@ -293,7 +299,7 @@ describe("<useHandleBeaconMessage />", () => {
           isClosable: true,
         })
       );
-      expect(dynamicModalContextMock.openWith).not.toHaveBeenCalled();
+      expect(dynamicDisclosureContextMock.openWith).not.toHaveBeenCalled();
     });
 
     it("doesn't open a modal when the network is unknown", async () => {
@@ -327,7 +333,7 @@ describe("<useHandleBeaconMessage />", () => {
         id: "mockMessageId",
         type: "error",
       });
-      expect(dynamicModalContextMock.openWith).not.toHaveBeenCalled();
+      expect(dynamicDisclosureContextMock.openWith).not.toHaveBeenCalled();
     });
 
     describe("single operation", () => {
@@ -362,7 +368,7 @@ describe("<useHandleBeaconMessage />", () => {
         act(() => handleMessage(message));
 
         await waitFor(() =>
-          expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
+          expect(dynamicDisclosureContextMock.openWith).toHaveBeenCalledWith(
             <BeaconSignPage
               message={message}
               operation={{
@@ -408,7 +414,7 @@ describe("<useHandleBeaconMessage />", () => {
 
         act(() => handleMessage(message));
 
-        await waitFor(() => expect(dynamicModalContextMock.openWith).toHaveBeenCalledTimes(1));
+        await waitFor(() => expect(dynamicDisclosureContextMock.openWith).toHaveBeenCalledTimes(1));
 
         act(() => screen.getByRole("button", { name: "Close" }).click());
 
@@ -458,7 +464,7 @@ describe("<useHandleBeaconMessage />", () => {
         act(() => handleMessage(message));
 
         await waitFor(() =>
-          expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
+          expect(dynamicDisclosureContextMock.openWith).toHaveBeenCalledWith(
             <BatchSignPage
               message={message}
               operation={{
@@ -506,7 +512,7 @@ describe("<useHandleBeaconMessage />", () => {
 
       act(() => handleMessage(message));
 
-      await waitFor(() => expect(dynamicModalContextMock.openWith).toHaveBeenCalledTimes(1));
+      await waitFor(() => expect(dynamicDisclosureContextMock.openWith).toHaveBeenCalledTimes(1));
 
       act(() => screen.getByRole("button", { name: "Close" }).click());
 

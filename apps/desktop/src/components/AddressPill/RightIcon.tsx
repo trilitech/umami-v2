@@ -1,5 +1,5 @@
 import { type IconProps } from "@chakra-ui/react";
-import { type AddressKind, DynamicModalContext, KNOWN_ADDRESS_TYPES } from "@umami/components";
+import { type AddressKind, DynamicDisclosureContext, KNOWN_ADDRESS_TYPES } from "@umami/components";
 import { useAddressExistsInContacts } from "@umami/state";
 import { memo, useContext } from "react";
 
@@ -13,7 +13,7 @@ export const RightIcon = memo(
     ...rest
   }: { addressKind: AddressKind; onRemove?: () => void } & IconProps) => {
     const addressExistsInContacts = useAddressExistsInContacts();
-    const { openWith } = useContext(DynamicModalContext);
+    const { openWith } = useContext(DynamicDisclosureContext);
 
     if (onRemove) {
       return <XMarkIcon cursor="pointer" onClick={onRemove} {...rest} />;

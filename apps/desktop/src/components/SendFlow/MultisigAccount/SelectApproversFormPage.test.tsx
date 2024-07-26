@@ -16,7 +16,7 @@ import { SelectApproversFormPage } from "./SelectApproversFormPage";
 import { SignTransactionFormPage } from "./SignTransactionFormPage";
 import {
   act,
-  dynamicModalContextMock,
+  dynamicDisclosureContextMock,
   fireEvent,
   render,
   screen,
@@ -313,7 +313,7 @@ describe("SelectApproversFormPage", () => {
       await waitFor(() => expect(reviewButton).toBeEnabled());
       await act(() => user.click(reviewButton));
 
-      expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
+      expect(dynamicDisclosureContextMock.openWith).toHaveBeenCalledWith(
         <SignTransactionFormPage
           data={{
             sender: sender.address.pkh,
@@ -373,7 +373,7 @@ describe("SelectApproversFormPage", () => {
       jest.mocked(estimate).mockResolvedValueOnce(operations);
 
       await waitFor(() =>
-        expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
+        expect(dynamicDisclosureContextMock.openWith).toHaveBeenCalledWith(
           <SignTransactionFormPage
             data={{
               sender: SENDER.address.pkh,

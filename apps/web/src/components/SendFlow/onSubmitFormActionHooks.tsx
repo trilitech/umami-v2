@@ -1,5 +1,5 @@
 import { useToast } from "@chakra-ui/react";
-import { DynamicModalContext } from "@umami/components";
+import { DynamicDisclosureContext } from "@umami/components";
 import { type Operation, estimate } from "@umami/core";
 import {
   estimateAndUpdateBatch,
@@ -52,7 +52,7 @@ export const useOpenSignPageFormAction = <
   defaultFormPageProps,
   toOperation,
 }: UseOpenSignPageArgs<SignPageData, FormValues, FormProps>): OnSubmitFormAction<FormValues> => {
-  const { openWith } = useContext(DynamicModalContext);
+  const { openWith } = useContext(DynamicDisclosureContext);
   const makeFormOperations = useMakeFormOperations(toOperation);
   const network = useSelectedNetwork();
 
@@ -81,7 +81,7 @@ export const useOpenSignPageFormAction = <
 export const useAddToBatchFormAction = <FormValues extends BaseFormValues>(
   toOperation: (formValues: FormValues) => Operation
 ): OnSubmitFormAction<FormValues> => {
-  const { onClose } = useContext(DynamicModalContext);
+  const { onClose } = useContext(DynamicDisclosureContext);
   const network = useSelectedNetwork();
   const makeFormOperations = useMakeFormOperations(toOperation);
   const dispatch = useAppDispatch();

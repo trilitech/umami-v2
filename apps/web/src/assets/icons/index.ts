@@ -28,6 +28,7 @@ export { default as ThreeDotsIcon } from "./three-dots.svg";
 export { default as TwitterIcon } from "./twitter.svg";
 export { default as USBIcon } from "./usb.svg";
 export { default as VerifiedIcon } from "./verified.svg";
+export { default as LogoutIcon } from "./logout.svg";
 export { TokenIcon } from "./TokenIcon";
 
 import CrossIcon from "./cross.svg";

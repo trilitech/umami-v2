@@ -1,11 +1,11 @@
 import { Button, type ButtonProps } from "@chakra-ui/react";
-import { useDynamicModalContext } from "@umami/components";
+import { useDynamicDisclosureContext } from "@umami/components";
 import { useCurrentAccount } from "@umami/state";
 
 import { FormPage as SendTezFormPage } from "../SendFlow/Tez/FormPage";
 
 export const SendButton = (props: ButtonProps) => {
-  const { openWith } = useDynamicModalContext();
+  const { openWith } = useDynamicDisclosureContext();
   const currentAccount = useCurrentAccount()!;
 
   return (

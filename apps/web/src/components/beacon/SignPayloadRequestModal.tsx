@@ -15,7 +15,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { type TezosToolkit } from "@taquito/taquito";
-import { DynamicModalContext } from "@umami/components";
+import { DynamicDisclosureContext } from "@umami/components";
 import { WalletClient, useGetImplicitAccount } from "@umami/state";
 import { useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
@@ -25,7 +25,7 @@ import { SignButton } from "../../components/SendFlow/SignButton";
 import { useColor } from "../../styles/useColor";
 
 export const SignPayloadRequestModal = ({ request }: { request: SignPayloadRequestOutput }) => {
-  const { onClose } = useContext(DynamicModalContext);
+  const { onClose } = useContext(DynamicDisclosureContext);
   const getAccount = useGetImplicitAccount();
   const signerAccount = getAccount(request.sourceAddress);
   const toast = useToast();

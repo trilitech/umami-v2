@@ -21,12 +21,13 @@ import { GoogleLogoIcon } from "./assets/icons/GoogleLogo";
 import { TezosLogoIcon } from "./assets/icons/TezosLogo";
 import { UmamiLogoIcon } from "./assets/icons/UmamiLogo";
 import { JsValueWrap } from "./imported/JsValueWrap";
-import colors from "./imported/style/colors";
+
 import { getErrorContext } from "./imported/utils/getErrorContext";
 import { withTimeout } from "./imported/utils/withTimeout";
 import { sendOperationErrorResponse, sendResponse, toTezosNetwork } from "./utils";
 import { makeToolkit } from "@umami/tezos";
 import { useEmbedApp } from "./EmbedAppContext";
+import { useColor } from "./imported/style/useColor";
 
 const SIGN_TIMEOUT = 5 * 60 * 1000; // 5 minutes
 
@@ -39,6 +40,8 @@ export const OperationModalContent = ({
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const { getNetwork, getUserData } = useEmbedApp();
+
+  const color = useColor();
 
   const onClick = async () => {
     setIsLoading(true);
@@ -73,7 +76,7 @@ export const OperationModalContent = ({
       </Box>
 
       <Accordion allowToggle={true}>
-        <AccordionItem background={colors.grey[100]} border="none" borderRadius="8px">
+        <AccordionItem background={color("100")} border="none" borderRadius="8px">
           <AccordionButton>
             <Box flex="1" textAlign="left">
               JSON
@@ -89,14 +92,14 @@ export const OperationModalContent = ({
       <Button width="100%" isLoading={isLoading} onClick={onClick} size="lg">
         <Flex alignItems="center" justifyContent="flex-start" flex={1}>
           <GoogleLogoIcon position="absolute" />
-          <Heading margin="auto" textColor={colors.grey[900]} fontSize="14px" lineHeight="18px">
+          <Heading margin="auto" textColor={color("900")} fontSize="14px" lineHeight="18px">
             Sign with Google
           </Heading>
         </Flex>
       </Button>
 
       <Center marginTop="30px">
-        <Text marginRight="10px" color={colors.grey[500]} fontSize="xs" lineHeight="14px">
+        <Text marginRight="10px" color={color("500")} fontSize="xs" lineHeight="14px">
           Powered by
         </Text>
         <TezosLogoIcon />

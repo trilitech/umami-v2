@@ -6,7 +6,7 @@ import {
   type PartialTezosOperation,
   TezosOperationType,
 } from "@airgap/beacon-wallet";
-import { DynamicModalContext } from "@umami/components";
+import { DynamicDisclosureContext } from "@umami/components";
 import {
   type ContractOrigination,
   type ImplicitAccount,
@@ -36,7 +36,7 @@ import { BeaconSignPage } from "../../components/SendFlow/Beacon/BeaconSignPage"
  * estimate the fee and open the BeaconSignPage only if it succeeds
  */
 export const useHandleBeaconMessage = () => {
-  const { openWith } = useContext(DynamicModalContext);
+  const { openWith } = useContext(DynamicDisclosureContext);
   const { handleAsyncAction } = useAsyncActionHandler();
   const getAccount = useGetOwnedAccountSafe();
   const findNetwork = useFindNetwork();

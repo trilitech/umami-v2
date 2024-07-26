@@ -1,4 +1,4 @@
-import { DynamicModalContext, useAddressKind } from "@umami/components";
+import { DynamicDisclosureContext, useAddressKind } from "@umami/components";
 import {
   type ImplicitAccount,
   type MultisigAccount,
@@ -31,7 +31,7 @@ export const MultisigSignerTile = ({
   const addressKind = useAddressKind(signerAddress);
   const getImplicitAccount = useGetImplicitAccountSafe();
   const { isLoading, handleAsyncAction } = useAsyncActionHandler();
-  const { openWith } = useContext(DynamicModalContext);
+  const { openWith } = useContext(DynamicDisclosureContext);
   const network = useSelectedNetwork();
 
   const signer = getImplicitAccount(signerAddress.pkh);

@@ -1,14 +1,14 @@
-import { useDynamicModal } from "./DynamicModal";
+import { useDynamicDisclosure } from "./DynamicDisclosure";
 import { act, render, renderHook, screen } from "../testUtils";
 
-describe("useDynamicModal", () => {
+describe("useDynamicDisclosure", () => {
   it("is closed by default", () => {
-    const view = renderHook(() => useDynamicModal());
+    const view = renderHook(() => useDynamicDisclosure());
     expect(view.result.current.isOpen).toBe(false);
   });
 
   it("opens a modal with the provided content", async () => {
-    const view = renderHook(() => useDynamicModal());
+    const view = renderHook(() => useDynamicDisclosure());
     await act(() => view.result.current.openWith(<div>test data</div>));
     expect(view.result.current.isOpen).toBe(true);
     render(view.result.current.content);
@@ -16,7 +16,7 @@ describe("useDynamicModal", () => {
   });
 
   it("replaces the current content with the new one", async () => {
-    const view = renderHook(() => useDynamicModal());
+    const view = renderHook(() => useDynamicDisclosure());
     await act(() => view.result.current.openWith(<div>test data</div>));
     await act(() => view.result.current.openWith(<div>test2 data</div>));
     expect(view.result.current.isOpen).toBe(true);
@@ -26,7 +26,7 @@ describe("useDynamicModal", () => {
   });
 
   it("closes the modal", async () => {
-    const view = renderHook(() => useDynamicModal());
+    const view = renderHook(() => useDynamicDisclosure());
     await act(() => view.result.current.openWith(<div>test data</div>));
     act(() => view.result.current.onClose());
     expect(view.result.current.isOpen).toBe(false);
@@ -36,7 +36,7 @@ describe("useDynamicModal", () => {
 
   it("calls the onClose callback when the modal is closed", async () => {
     const onClose = jest.fn();
-    const view = renderHook(() => useDynamicModal());
+    const view = renderHook(() => useDynamicDisclosure());
     await act(() => view.result.current.openWith(<div>test data</div>, { onClose }));
     act(() => view.result.current.onClose());
     expect(onClose).toHaveBeenCalled();

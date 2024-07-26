@@ -218,6 +218,23 @@ const theme = extendTheme({
         },
       },
     },
+    Drawer: {
+      baseStyle: {
+        dialog: {
+          width: "100%",
+          minWidth: {
+            base: "100%",
+            lg: "506px",
+          },
+        },
+        body: {
+          paddingX: {
+            base: "24px",
+            lg: "40px",
+          },
+        },
+      },
+    },
     Modal: {
       baseStyle: {
         closeButton: {

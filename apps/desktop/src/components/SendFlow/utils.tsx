@@ -1,6 +1,6 @@
 import { Box, Button } from "@chakra-ui/react";
 import { type TezosToolkit } from "@taquito/taquito";
-import { DynamicModalContext } from "@umami/components";
+import { DynamicDisclosureContext } from "@umami/components";
 import {
   type Account,
   type AccountOperations,
@@ -116,7 +116,7 @@ export const useSignPageHelpers = (
   const network = useSelectedNetwork();
   const clearBatch = useClearBatch();
   const { isLoading, handleAsyncAction, handleAsyncActionUnsafe } = useAsyncActionHandler();
-  const { openWith } = useContext(DynamicModalContext);
+  const { openWith } = useContext(DynamicDisclosureContext);
 
   const form = useForm<{
     sender: string;

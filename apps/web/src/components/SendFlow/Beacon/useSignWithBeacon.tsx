@@ -4,7 +4,7 @@ import {
   type OperationResponseInput,
 } from "@airgap/beacon-wallet";
 import { type TezosToolkit } from "@taquito/taquito";
-import { DynamicModalContext } from "@umami/components";
+import { DynamicDisclosureContext } from "@umami/components";
 import { type EstimatedAccountOperations, executeOperations, totalFee } from "@umami/core";
 import { WalletClient, useAsyncActionHandler, useFindNetwork } from "@umami/state";
 import { useContext } from "react";
@@ -17,7 +17,7 @@ export const useSignWithBeacon = (
   message: OperationRequestOutput
 ) => {
   const { isLoading: isSigning, handleAsyncAction } = useAsyncActionHandler();
-  const { openWith } = useContext(DynamicModalContext);
+  const { openWith } = useContext(DynamicDisclosureContext);
   const findNetwork = useFindNetwork();
 
   const form = useForm({ defaultValues: { executeParams: operation.estimates } });
