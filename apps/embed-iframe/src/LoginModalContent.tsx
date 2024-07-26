@@ -13,6 +13,7 @@ import { sendLoginErrorResponse, sendResponse } from "./utils";
 import { useEmbedApp } from "./EmbedAppContext";
 import { useColor } from "./imported/style/useColor";
 import { useLoginModalContext } from "./LoginModalContext";
+import { TezosSpinner } from "./assets/icons/TezosSpinner";
 
 const LOGIN_TIMEOUT = 3 * 60 * 1000; // 3 minutes
 
@@ -79,9 +80,9 @@ export const LoginModalContent = () => {
             left="0"
             alignItems="center"
             justifyContent="center"
-            backgroundColor="rgba(255, 255, 255, 0.8)" // Semi-transparent background
+            backgroundColor="rgba(16, 18, 27, 0.85)" // Semi-transparent background
           >
-            <Spinner size="xl" />
+            <TezosSpinner />
           </Flex>
         )}
       </Box>

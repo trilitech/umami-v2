@@ -31,7 +31,7 @@ const dark = {
   greenDark: "#25855A",
   grey: {
     black: "#FFFFFF",
-    white: "#1A202C",
+    white: "#10121B",
     900: "#F7FAFC",
     800: "#EDF2F7",
     700: "#E2E8F0",
