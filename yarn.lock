@@ -6150,51 +6150,51 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/eslint-plugin-query@npm:^5.51.10":
-  version: 5.51.10
-  resolution: "@tanstack/eslint-plugin-query@npm:5.51.10"
+"@tanstack/eslint-plugin-query@npm:^5.51.15":
+  version: 5.51.15
+  resolution: "@tanstack/eslint-plugin-query@npm:5.51.15"
   dependencies:
     "@typescript-eslint/utils": "npm:8.0.0-alpha.30"
   peerDependencies:
     eslint: ^8 || ^9
-  checksum: 10/a6258ce8dbb9bfd853460a8b0bc8ef6b165052f105ef69c1562ba162ac966f1ba50d4eb00fa679fe807bcc87e32bbb14d988c535351b39d24e19583ae7066adf
+  checksum: 10/bc15879904e39020cb4184039bf0b53c539f86d601520c2aa93a0d913e509ded566ba26aed4e88f7a25b23ffcab81cc92122b6af41d5ab01b07023e75379e47f
   languageName: node
   linkType: hard
 
-"@tanstack/query-core@npm:5.51.9":
-  version: 5.51.9
-  resolution: "@tanstack/query-core@npm:5.51.9"
-  checksum: 10/263f64a2e9448cc412fa9f29b0b77af1a5eeb66ecba6965548d4be97b7e99cca0dd194992b686426745030240764846d9d7e39e43d3ed64b97afb47f3a9661d7
+"@tanstack/query-core@npm:5.51.15":
+  version: 5.51.15
+  resolution: "@tanstack/query-core@npm:5.51.15"
+  checksum: 10/66d319e29891a1bcb8c3800ad69e11941d8aff64687dd3e042e1f6ccc73917d47bdab4dc04d3d7536211a5ff9f4e7e9b0b47d4f438f44db0d0a7d4d91a1ccc02
   languageName: node
   linkType: hard
 
-"@tanstack/query-devtools@npm:5.51.9":
-  version: 5.51.9
-  resolution: "@tanstack/query-devtools@npm:5.51.9"
-  checksum: 10/ffc19f1a9b16edbb99dc8ef4fb00f6cbc6ac39d0fbdb7976d5b849005d8f1eb80081449bfe379fd1eb8a0aa1a0357b014b822a8f32a9d57644fbb14fb039d8fd
+"@tanstack/query-devtools@npm:5.51.15":
+  version: 5.51.15
+  resolution: "@tanstack/query-devtools@npm:5.51.15"
+  checksum: 10/0df6ff8237f4cf4ec288cfdac2d83bae1b79d96ef705dc9d2edcbf8f1f85699f65007f2b18ff329788ae10e348daaa3c28a00de34f219c3377cfa0c03393aed8
   languageName: node
   linkType: hard
 
-"@tanstack/react-query-devtools@npm:^5.51.9":
-  version: 5.51.9
-  resolution: "@tanstack/react-query-devtools@npm:5.51.9"
+"@tanstack/react-query-devtools@npm:^5.51.15":
+  version: 5.51.15
+  resolution: "@tanstack/react-query-devtools@npm:5.51.15"
   dependencies:
-    "@tanstack/query-devtools": "npm:5.51.9"
+    "@tanstack/query-devtools": "npm:5.51.15"
   peerDependencies:
-    "@tanstack/react-query": ^5.51.9
+    "@tanstack/react-query": ^5.51.15
     react: ^18 || ^19
-  checksum: 10/918271c84af53a4d95d93ce650b74960257c16bad1aca66f7a9c1f1ded6709819b579f6b344f33e8490e4a7b6f1d9573bc2aedc4a86c06083982ab20530fd901
+  checksum: 10/ae38a21455529d7365e534e4216828092571b967799911125d23f11880c9166c8788144b82192336480afc33142459cf4dce7b492e123a92078dc8e41d964251
   languageName: node
   linkType: hard
 
-"@tanstack/react-query@npm:^5.51.9":
-  version: 5.51.9
-  resolution: "@tanstack/react-query@npm:5.51.9"
+"@tanstack/react-query@npm:^5.51.15":
+  version: 5.51.15
+  resolution: "@tanstack/react-query@npm:5.51.15"
   dependencies:
-    "@tanstack/query-core": "npm:5.51.9"
+    "@tanstack/query-core": "npm:5.51.15"
   peerDependencies:
     react: ^18.0.0
-  checksum: 10/5cedfc612b3355e421536fea42a375692646b46a0c08ce3c4988dbaf7342358cbe7fc886ff4bad11962dbff33a6582ae7f5b9444d270c048f8672346fd4b1c5d
+  checksum: 10/637a79951d35f9bc28eb6667f4d7936436e80b2e51377cce3dafe83a21ba65575272036e980f6bf755b5b4b4cde2e35cddb9c0d14c5ed9a83a15b68372fced72
   languageName: node
   linkType: hard
 
@@ -7734,7 +7734,7 @@ __metadata:
     "@chakra-ui/react": "npm:^2.8.2"
     "@emotion/react": "npm:^11.13.0"
     "@emotion/styled": "npm:^11.12.0"
-    "@tanstack/react-query": "npm:^5.51.9"
+    "@tanstack/react-query": "npm:^5.51.15"
     "@testing-library/dom": "npm:^10.4.0"
     "@testing-library/react": "npm:^16.0.0"
     "@types/babel__core": "npm:^7.20.5"
@@ -7819,8 +7819,8 @@ __metadata:
     "@emotion/styled": "npm:^11.12.0"
     "@ledgerhq/hw-transport-webusb": "npm:^6.29.1"
     "@reduxjs/toolkit": "npm:^2.2.6"
-    "@tanstack/react-query": "npm:^5.51.9"
-    "@tanstack/react-query-devtools": "npm:^5.51.9"
+    "@tanstack/react-query": "npm:^5.51.15"
+    "@tanstack/react-query-devtools": "npm:^5.51.15"
     "@taquito/ledger-signer": "npm:^20.0.1"
     "@taquito/michel-codec": "npm:^20.0.1"
     "@taquito/rpc": "npm:^20.0.1"
@@ -7972,7 +7972,7 @@ __metadata:
   resolution: "@umami/eslint-config@workspace:packages/eslint-config"
   dependencies:
     "@stylistic/eslint-plugin": "npm:^2.3.0"
-    "@tanstack/eslint-plugin-query": "npm:^5.51.10"
+    "@tanstack/eslint-plugin-query": "npm:^5.51.15"
     "@typescript-eslint/eslint-plugin": "npm:^7.17.0"
     "@typescript-eslint/parser": "npm:^7.17.0"
     "@umami/typescript-config": "workspace:^"
@@ -8250,7 +8250,7 @@ __metadata:
     "@svgr/core": "npm:^8.1.0"
     "@svgr/plugin-jsx": "npm:^8.1.0"
     "@svgr/plugin-svgo": "npm:^8.1.0"
-    "@tanstack/react-query": "npm:^5.51.9"
+    "@tanstack/react-query": "npm:^5.51.15"
     "@taquito/beacon-wallet": "npm:^20.0.1"
     "@taquito/ledger-signer": "npm:^20.0.1"
     "@taquito/michel-codec": "npm:^20.0.1"
