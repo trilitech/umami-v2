@@ -32,7 +32,8 @@
     "typescript": "^5.5.4"
   },
   "scripts": {
-    "build": "tsup-node",
+    "build": "tsup-node --dts",
+    "build:quick": "tsup-node",
     "clean": "rimraf build dist .turbo",
     "check-circular-deps": "madge --circular src/index.ts",
     "check-types:watch": "yarn check-types --watch",
@@ -53,8 +54,7 @@
     "format": [
       "cjs",
       "esm"
-    ],
-    "dts": true
+    ]
   },
   "dependencies": {
     "@taquito/utils": "^20.0.1"

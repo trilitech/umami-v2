@@ -14,7 +14,8 @@
   },
   "type": "module",
   "scripts": {
-    "build": "tsup-node",
+    "build": "tsup-node --dts",
+    "build:quick": "tsup-node",
     "clean": "rimraf build dist .turbo",
     "check-circular-deps": "madge --circular src/index.ts",
     "check-types:watch": "yarn check-types --watch",
