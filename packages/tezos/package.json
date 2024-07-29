@@ -57,7 +57,7 @@
     "dts": true
   },
   "dependencies": {
-    "@ledgerhq/hw-transport-webusb": "^6.29.1",
+    "@ledgerhq/hw-transport-webusb": "^6.29.2",
     "@taquito/ledger-signer": "^20.0.1",
     "@taquito/michel-codec": "^20.0.1",
     "@taquito/rpc": "^20.0.1",

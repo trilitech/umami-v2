@@ -54,7 +54,7 @@
     "@emotion/is-prop-valid": "^1.3.0",
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.12.0",
-    "@ledgerhq/hw-transport-webusb": "^6.29.1",
+    "@ledgerhq/hw-transport-webusb": "^6.29.2",
     "@reduxjs/toolkit": "^2.2.6",
     "@tanstack/react-query": "^5.51.15",
     "@tanstack/react-query-devtools": "^5.51.15",
