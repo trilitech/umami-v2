@@ -4,20 +4,20 @@ import { Tab } from "../Tab";
 
 const tabs = [
   {
-    label: "Activity",
-    to: "/activity",
+    label: "Tokens",
+    to: "/tokens",
   },
   {
     label: "NFTs",
     to: "/nfts",
   },
   {
-    label: "Tokens",
-    to: "/tokens",
-  },
-  {
     label: "Earn",
     to: "/earn",
+  },
+  {
+    label: "Activity",
+    to: "/activity",
   },
 ];
 

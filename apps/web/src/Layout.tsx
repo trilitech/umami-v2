@@ -12,7 +12,6 @@ export const Layout = () => {
 
   return (
     <Grid
-      className="layout"
       justifyContent="center"
       gridGap={{ lg: "20px", base: "12px" }}
       gridTemplateRows={{ base: "auto auto 1fr auto", lg: "auto auto 1fr auto" }}
@@ -21,11 +20,26 @@ export const Layout = () => {
         base: '"header" "sidebar" "main" "footer" "nav"',
         lg: `"header header" "sidebar nav" "sidebar main" "footer main"`,
       }}
+      height={{ lg: "100vh", base: "100dvh" }}
+      padding={{ lg: "20px 46px 0", base: "54px 0 0" }}
     >
-      <GridItem className="header" gridArea="header">
+      <GridItem
+        position={{ base: "fixed", lg: "static" }}
+        zIndex={{ base: 2 }}
+        top={{ base: 0 }}
+        left={{ base: 0 }}
+        gridArea="header"
+        width={{ base: "100%" }}
+        borderRadius={{ base: 0 }}
+      >
         <Header />
       </GridItem>
-      <GridItem className="navbar" gridArea="nav">
+      <GridItem
+        position={{ base: "sticky" }}
+        zIndex={{ base: 2 }}
+        bottom={{ base: 0 }}
+        gridArea="nav"
+      >
         <Navbar />
       </GridItem>
       <GridItem
@@ -46,7 +60,11 @@ export const Layout = () => {
       >
         <Sidebar />
       </GridItem>
-      <GridItem gridArea="footer" marginBottom={{ base: "30px", lg: "46px" }}>
+      <GridItem
+        gridArea="footer"
+        marginTop={{ base: "20px" }}
+        marginBottom={{ base: "20px", lg: "46px" }}
+      >
         <Footer />
       </GridItem>
     </Grid>
