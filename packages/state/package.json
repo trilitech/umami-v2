@@ -67,7 +67,7 @@
     "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
-    "@reduxjs/toolkit": "^2.2.6",
+    "@reduxjs/toolkit": "^2.2.7",
     "@taquito/signer": "^20.0.1",
     "@taquito/utils": "^20.0.1",
     "@umami/core": "workspace:^",
