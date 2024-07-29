@@ -6,14 +6,19 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
+  Popover,
+  PopoverArrow,
+  PopoverBody,
+  PopoverContent,
+  PopoverTrigger,
   Text,
   VStack,
+  useDisclosure,
 } from "@chakra-ui/react";
-import { useDynamicDisclosureContext } from "@umami/components";
 import { type Account } from "@umami/core";
-import { type MouseEvent } from "react";
 import { QRCode } from "react-qrcode-logo";
 
+import { useColor } from "../../styles/useColor";
 import { ModalCloseButton } from "../ModalCloseButton";
 
 type AccountInfoModalProps = {
@@ -21,19 +26,17 @@ type AccountInfoModalProps = {
 };
 
 export const AccountInfoModal = ({ account }: AccountInfoModalProps) => {
-  const { goBack } = useDynamicDisclosureContext();
+  const color = useColor();
+  const { onOpen, isOpen } = useDisclosure();
 
-  const handleCopyAddress = async (event: MouseEvent<HTMLButtonElement>) => {
-    await navigator.clipboard.writeText(account.address.pkh);
-    goBack();
-  };
+  const handleCopyAddress = () => navigator.clipboard.writeText(account.address.pkh);
 
   return (
     <ModalContent>
       <ModalHeader>
         <VStack gap="12px">
           <Heading size="md">Account Info</Heading>
-          <Text maxWidth="340px" color="gray.700" fontWeight="400" size="md">
+          <Text maxWidth="340px" color={color("700")} size="md">
             You can receive tez or other digital assets by scanning or sharing this QR code
           </Text>
         </VStack>
@@ -44,26 +47,38 @@ export const AccountInfoModal = ({ account }: AccountInfoModalProps) => {
           <Box
             padding="30px"
             background="white"
-            borderWidth={1.5}
-            borderColor="gray.100"
+            borderWidth="1.5px"
+            borderColor={color("100")}
             borderRadius="30px"
           >
             <QRCode size={180} value={account.address.pkh} />
           </Box>
           <Box>
-            <Heading color="gray.900" textAlign="center" size="sm">
+            <Heading color={color("900")} textAlign="center" size="sm">
               {account.label}
             </Heading>
-            <Text color="gray.700" fontWeight="400" size="md">
+            <Text color={color("700")} size="md">
               {account.address.pkh}
             </Text>
           </Box>
         </VStack>
       </ModalBody>
       <ModalFooter>
-        <Button width="full" onClick={handleCopyAddress} size="lg" variant="primary">
-          Copy Wallet Address
-        </Button>
+        <Popover isOpen={isOpen} onOpen={onOpen}>
+          <PopoverTrigger>
+            <Button width="full" onClick={handleCopyAddress} size="lg" variant="primary">
+              Copy Wallet Address
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent maxWidth="max-content" background="white">
+            <PopoverArrow background="white !important" />
+            <PopoverBody>
+              <Text color={color("black")} size="sm">
+                Copied!
+              </Text>
+            </PopoverBody>
+          </PopoverContent>
+        </Popover>
       </ModalFooter>
     </ModalContent>
   );

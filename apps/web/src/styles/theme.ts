@@ -159,6 +159,18 @@ const theme = extendTheme({
         },
       },
       variants: {
+        dropdownOption: {
+          display: "flex",
+          justifyContent: "flex-start",
+          width: "full",
+          alignItems: "center",
+          gap: "10px",
+          padding: "12px 16px",
+          _hover: {
+            background: "gray.100",
+          },
+          rounded: "full",
+        },
         inputElement: {
           height: "28px",
           padding: "5px 12px",
@@ -239,15 +251,19 @@ const theme = extendTheme({
         popper: {
           zIndex: 9999,
         },
-        content: {
-          boxShadow: "0px 0px 10px 0px rgba(45, 55, 72, 0.10)",
-          borderRadius: "30px",
-          border: "1.5px solid",
-          borderColor: "gray.100",
-          bg: "white",
-        },
-        body: {
-          padding: "12px",
+      },
+      variants: {
+        dropdown: {
+          content: {
+            boxShadow: "0px 0px 10px 0px rgba(45, 55, 72, 0.10)",
+            borderRadius: "30px",
+            border: "1.5px solid",
+            borderColor: "gray.100",
+            bg: "white",
+          },
+          body: {
+            padding: "12px",
+          },
         },
       },
     },

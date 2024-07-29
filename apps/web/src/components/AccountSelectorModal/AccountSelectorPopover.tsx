@@ -1,5 +1,6 @@
 import {
-  Flex,
+  Box,
+  Button,
   IconButton,
   Popover,
   PopoverBody,
@@ -15,7 +16,7 @@ import {
   type SecretKeyAccount,
   type SocialAccount,
 } from "@umami/core";
-import { type MouseEvent, type ReactElement } from "react";
+import { useSelectedNetwork } from "@umami/state";
 
 import { AccountInfoModal } from "./AccountInfoModal";
 import { RemoveAccountModal } from "./RemoveAccountModal";
@@ -27,43 +28,7 @@ import {
   ThreeDotsIcon,
   TrashIcon,
 } from "../../assets/icons";
-
-const accountSelectorPopoverOptions = [
-  {
-    icon: <SearchIcon />,
-    text: "Account Info",
-    action: (account: Account, openWith: (content: ReactElement) => Promise<void>) => {
-      void openWith(<AccountInfoModal account={account} />);
-    },
-    isEnabled: () => true,
-  },
-  {
-    icon: <EditIcon />,
-    text: "Rename",
-    action: (account: Account, openWith: (content: ReactElement) => Promise<void>) => {
-      void openWith(<RenameAccountPage account={account} />);
-    },
-    isEnabled: () => true,
-  },
-  {
-    icon: <TrashIcon />,
-    text: "Remove",
-    action: (account: Account, openWith: (content: ReactElement) => Promise<void>) => {
-      void openWith(
-        <RemoveAccountModal account={account as SocialAccount | LedgerAccount | SecretKeyAccount} />
-      );
-    },
-    isEnabled: (account: Account) => account.type !== "mnemonic" && account.type !== "multisig",
-  },
-  {
-    icon: <ExternalLinkIcon />,
-    text: "View in TzKT",
-    action: (account: Account) => {
-      window.open(`https://tzkt.io/${account.address.pkh}`, "_blank");
-    },
-    isEnabled: () => true,
-  },
-];
+import { useColor } from "../../styles/useColor";
 
 type AccountSelectorPopoverProps = {
   account: Account;
@@ -71,21 +36,15 @@ type AccountSelectorPopoverProps = {
 
 export const AccountSelectorPopover = ({ account }: AccountSelectorPopoverProps) => {
   const { openWith } = useDynamicDisclosureContext();
-
-  const handleAction = (
-    event: MouseEvent<HTMLDivElement>,
-    action: (account: Account, openWith: (content: ReactElement) => Promise<void>) => void
-  ) => {
-    event.stopPropagation();
-    action(account, openWith);
-  };
+  const color = useColor();
+  const network = useSelectedNetwork();
 
   return (
-    <Popover>
+    <Popover variant="dropdown">
       <PopoverTrigger>
         <IconButton
           alignSelf="flex-end"
-          color="gray.500"
+          color={color("500")}
           background="transparent"
           aria-label="Account actions"
           icon={<ThreeDotsIcon />}
@@ -95,29 +54,65 @@ export const AccountSelectorPopover = ({ account }: AccountSelectorPopoverProps)
       </PopoverTrigger>
       <Portal>
         <PopoverContent maxWidth="204px">
-          <PopoverBody color="gray.400">
-            {accountSelectorPopoverOptions.map(
-              ({ icon, text, action, isEnabled }, index) =>
-                isEnabled(account) && (
-                  <Flex
-                    key={`${text}-${index}`}
-                    alignItems="center"
-                    gap="10px"
-                    padding="12px 16px"
-                    _hover={{
-                      background: "gray.100",
-                    }}
-                    cursor="pointer"
-                    onClick={e => handleAction(e, action)}
-                    rounded="full"
-                  >
-                    {icon}
-                    <Text color="gray.900" fontWeight="600">
-                      {text}
-                    </Text>
-                  </Flex>
-                )
-            )}
+          <PopoverBody color={color("400")}>
+            <Box>
+              <Button
+                onClick={async e => {
+                  e.stopPropagation();
+                  await openWith(<AccountInfoModal account={account} />);
+                }}
+                variant="dropdownOption"
+              >
+                <SearchIcon />
+                <Text color={color("900")} fontWeight="600">
+                  Account Info
+                </Text>
+              </Button>
+              <Button
+                onClick={async e => {
+                  e.stopPropagation();
+                  await openWith(<RenameAccountPage account={account} />);
+                }}
+                variant="dropdownOption"
+              >
+                <EditIcon />
+                <Text color={color("900")} fontWeight="600">
+                  Rename
+                </Text>
+              </Button>
+              {account.type !== "mnemonic" && account.type !== "multisig" && (
+                <Button
+                  onClick={async e => {
+                    e.stopPropagation();
+                    await openWith(
+                      <RemoveAccountModal
+                        account={account as SocialAccount | LedgerAccount | SecretKeyAccount}
+                      />
+                    );
+                  }}
+                  variant="dropdownOption"
+                >
+                  <TrashIcon />
+                  <Text color={color("900")} fontWeight="600">
+                    Remove
+                  </Text>
+                </Button>
+              )}
+              <Button
+                onClick={e => {
+                  e.stopPropagation();
+
+                  const url = `${network.tzktExplorerUrl}/${account.address.pkh}`;
+                  window.open(url, "_blank");
+                }}
+                variant="dropdownOption"
+              >
+                <ExternalLinkIcon />
+                <Text color={color("900")} fontWeight="600">
+                  View in TzKT
+                </Text>
+              </Button>
+            </Box>
           </PopoverBody>
         </PopoverContent>
       </Portal>

@@ -38,8 +38,8 @@ export const RemoveAccountModal = ({ account }: RemoveAccountModalProps) => {
   };
 
   let description =
-    "Are you sure you want to remove this account?  You will need to manually import it again.";
-  let buttonLabel = "Remove Account";
+    "Are you sure you want to hide this account? You will need to manually import it again.";
+  let buttonLabel = "Remove";
 
   if (isLastImplicitAccount) {
     description =
