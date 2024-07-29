@@ -62,7 +62,7 @@ export const OperationTileView = ({
         )}
       </Wrap>
 
-      <Wrap justify="space-between" spacing="10px">
+      <Wrap justify="space-between" spacingX="10px" spacingY="20px">
         <WrapItem>
           <Wrap spacing="10px">
             {to && (
