@@ -20,6 +20,7 @@ export const AccountTile = ({
       borderRadius="full"
       _hover={{ background: color("100") }}
       cursor={props.onClick ? "pointer" : undefined}
+      data-testid="account-tile"
       paddingY="12px"
       {...props}
     >

@@ -241,19 +241,6 @@ const theme = extendTheme({
             _hover: { bg: dark.grey[300] },
           },
         },
-        iconButtonOutline: {
-          border: "2px solid",
-          borderColor: light.blue,
-          color: light.blue,
-          _hover: {
-            borderColor: "transparent",
-            bg: light.blueDark,
-            color: dark.grey.black,
-          },
-          _dark: {
-            color: dark.grey.black,
-          },
-        },
         empty: {
           bg: "transparent",
           minWidth: "auto",

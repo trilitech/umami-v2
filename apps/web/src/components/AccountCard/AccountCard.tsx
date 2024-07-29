@@ -3,7 +3,7 @@ import { useDynamicDisclosureContext } from "@umami/components";
 import { useCurrentAccount } from "@umami/state";
 
 import { AccountBalance } from "./AccountBalance";
-import { ChevronDownIcon } from "../../assets/icons";
+import { SelectorIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
 import { AccountSelectorModal } from "../AccountSelectorModal";
 import { AccountTile } from "../AccountTile";
@@ -32,7 +32,7 @@ export const AccountCard = () => {
           width="fit-content"
           marginLeft="auto"
           aria-label="Account Selector"
-          icon={<ChevronDownIcon color={color("500")} />}
+          icon={<SelectorIcon color={color("400")} />}
           size="xs"
           variant="empty"
         />

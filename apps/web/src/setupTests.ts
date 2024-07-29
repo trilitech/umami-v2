@@ -18,6 +18,10 @@ Object.defineProperties(global, {
   TextEncoder: { value: TextEncoder, writable: true },
 });
 
+jest.mock("./utils/persistor", () => ({
+  pause: jest.fn(),
+}));
+
 beforeEach(() => setupJestCanvasMock());
 
 // TODO: fix act warnings

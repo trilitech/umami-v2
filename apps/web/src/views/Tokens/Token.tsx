@@ -1,4 +1,4 @@
-import { Flex, Grid, Text } from "@chakra-ui/react";
+import { Button, Flex, Grid, Text } from "@chakra-ui/react";
 import { useDynamicDisclosureContext } from "@umami/components";
 import { type FA12TokenBalance, type FA2TokenBalance, tokenPrettyAmount } from "@umami/core";
 import { useCurrentAccount } from "@umami/state";
@@ -7,7 +7,6 @@ import { parseContractPkh } from "@umami/tezos";
 import { TokenIcon } from "../../assets/icons";
 import { CopyAddressButton } from "../../components/CopyAddressButton/CopyAddressButton";
 import { TokenIconWrapper } from "../../components/IconWrapper";
-import { SendButton } from "../../components/SendButton";
 import { FormPage as SendTokensFormPage } from "../../components/SendFlow/Token/FormPage";
 import { TokenNameWithIcon } from "../../components/TokenNameWithIcon";
 import { useColor } from "../../styles/useColor";
@@ -62,12 +61,18 @@ export const Token = ({ token }: TokenProps) => {
         {/* TODO: implement USD price later */}
         {/* <Text size="sm">{token.price}</Text> */}
       </Flex>
-      <SendButton
+
+      <Button
         justifySelf="end"
         gridArea="action"
         width="fit-content"
+        padding="10px 24px"
         onClick={() => openWith(<SendTokensFormPage sender={currentAccount} token={token} />)}
-      />
+        size="lg"
+        variant="primary"
+      >
+        Send
+      </Button>
     </Grid>
   );
 };
