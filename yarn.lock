@@ -4456,15 +4456,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ledgerhq/devices@npm:^8.4.1":
-  version: 8.4.1
-  resolution: "@ledgerhq/devices@npm:8.4.1"
+"@ledgerhq/devices@npm:^8.4.2":
+  version: 8.4.2
+  resolution: "@ledgerhq/devices@npm:8.4.2"
   dependencies:
     "@ledgerhq/errors": "npm:^6.18.0"
     "@ledgerhq/logs": "npm:^6.12.0"
     rxjs: "npm:^7.8.1"
     semver: "npm:^7.3.5"
-  checksum: 10/7f8a87294bf7b069dbfbb97ff3cb9b39017ef7f3461cd7b1b0c15e2e82b52c5efc89342cff6301bf8f7ce6ab9b5d120b95c9d5169b0bd7c7263f54302e87c158
+  checksum: 10/067879661f9d61bc4dd1b212e946ec42bb0cc010139cbfa9c2720d209cedbb5fad0fff997cbde61b50e8a098a9a6e134c7e46657011b296f7cd0f67b588d6d2c
   languageName: node
   linkType: hard
 
@@ -4482,15 +4482,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ledgerhq/hw-transport-webusb@npm:^6.29.1":
-  version: 6.29.1
-  resolution: "@ledgerhq/hw-transport-webusb@npm:6.29.1"
+"@ledgerhq/hw-transport-webusb@npm:^6.29.2":
+  version: 6.29.2
+  resolution: "@ledgerhq/hw-transport-webusb@npm:6.29.2"
   dependencies:
-    "@ledgerhq/devices": "npm:^8.4.1"
+    "@ledgerhq/devices": "npm:^8.4.2"
     "@ledgerhq/errors": "npm:^6.18.0"
-    "@ledgerhq/hw-transport": "npm:^6.31.1"
+    "@ledgerhq/hw-transport": "npm:^6.31.2"
     "@ledgerhq/logs": "npm:^6.12.0"
-  checksum: 10/b9abd4e79dbc4d2ee5289176e41af6c8e68f41af79a3f711cde1c472ccfc7bd03d84055e68c4cd90c080b9f9ca8922714a2aaaf3537c9662d740009904318bb2
+  checksum: 10/e6548cfa5618b8ae2430b3b6daa504e87b76ba6ec02476a30d1239d68f4347341c43d7673eb279ca114bdec0b9a8fe5541da464be1105cc9282e1d7fc333bf65
   languageName: node
   linkType: hard
 
@@ -4506,15 +4506,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ledgerhq/hw-transport@npm:^6.31.1":
-  version: 6.31.1
-  resolution: "@ledgerhq/hw-transport@npm:6.31.1"
+"@ledgerhq/hw-transport@npm:^6.31.2":
+  version: 6.31.2
+  resolution: "@ledgerhq/hw-transport@npm:6.31.2"
   dependencies:
-    "@ledgerhq/devices": "npm:^8.4.1"
+    "@ledgerhq/devices": "npm:^8.4.2"
     "@ledgerhq/errors": "npm:^6.18.0"
     "@ledgerhq/logs": "npm:^6.12.0"
     events: "npm:^3.3.0"
-  checksum: 10/79e28a6b00d8ffb558306d352fc1d7efe84b44e24bbd765e0fa5d01bd4f4880fb1b09666bcf9c2f77c6b692b92b27348d1c28f21e461677bc031ae4945d81a8e
+  checksum: 10/b712b0c5a409d8bca254daa16b2867110132d44382dfb758e4ab0d710656d85c6b3fd9e42565ec9959db9a7f57b430d04d9db5556fb64727d7dc0a8e7a92d165
   languageName: node
   linkType: hard
 
@@ -7800,7 +7800,7 @@ __metadata:
     "@emotion/is-prop-valid": "npm:^1.3.0"
     "@emotion/react": "npm:^11.13.0"
     "@emotion/styled": "npm:^11.12.0"
-    "@ledgerhq/hw-transport-webusb": "npm:^6.29.1"
+    "@ledgerhq/hw-transport-webusb": "npm:^6.29.2"
     "@reduxjs/toolkit": "npm:^2.2.6"
     "@tanstack/react-query": "npm:^5.51.15"
     "@tanstack/react-query-devtools": "npm:^5.51.15"
@@ -8136,7 +8136,7 @@ __metadata:
   resolution: "@umami/tezos@workspace:packages/tezos"
   dependencies:
     "@babel/core": "npm:^7.24.9"
-    "@ledgerhq/hw-transport-webusb": "npm:^6.29.1"
+    "@ledgerhq/hw-transport-webusb": "npm:^6.29.2"
     "@taquito/ledger-signer": "npm:^20.0.1"
     "@taquito/michel-codec": "npm:^20.0.1"
     "@taquito/rpc": "npm:^20.0.1"
