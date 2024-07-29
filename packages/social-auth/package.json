@@ -28,7 +28,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@babel/runtime": "^7.24.8",
+    "@babel/runtime": "^7.25.0",
     "@taquito/utils": "^20.0.1",
     "@toruslabs/customauth": "16.0.6"
   },
