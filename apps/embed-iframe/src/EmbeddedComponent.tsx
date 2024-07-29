@@ -9,7 +9,7 @@ import { useEffect } from "react";
 
 import { getPermissionsForOrigin } from "./ClientsPermissions";
 import { useLoginModal } from "./loginModalHooks";
-import { useSignOperationModal } from "./signOperationModalHooks";
+import { useOperationModal } from "./operationModalHooks";
 import { sendResponse } from "./utils";
 import "./EmbeddedComponent.scss";
 import { useEmbedApp } from "./EmbedAppContext";
@@ -20,8 +20,7 @@ export function EmbeddedComponent() {
   const { setColorMode } = useColorMode();
 
   const { onOpen: openLoginModal, modalElement: loginModalElement } = useLoginModal();
-  const { onOpen: openOperationModal, modalElement: operationModalElement } =
-    useSignOperationModal();
+  const { onOpen: openOperationModal, modalElement: operationModalElement } = useOperationModal();
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition

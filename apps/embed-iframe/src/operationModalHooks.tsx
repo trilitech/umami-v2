@@ -2,10 +2,10 @@ import type { PartialTezosOperation } from "@airgap/beacon-types";
 import { Center, Modal, ModalCloseButton, ModalContent, useDisclosure } from "@chakra-ui/react";
 import { useState } from "react";
 
-import { OperationModalContent } from "./SignOperationModalContent";
+import { OperationModalContent } from "./OperationModalContent";
 import { sendOperationErrorResponse } from "./utils";
 
-export const useSignOperationModal = () => {
+export const useOperationModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [operations, setOperations] = useState<PartialTezosOperation[]>([]);
 
