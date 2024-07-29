@@ -36,6 +36,6 @@
     "date-fns": "^3.6.0",
     "lodash": "^4.17.21",
     "start-server-and-test": "^2.0.4",
-    "typescript": "^5.5.3"
+    "typescript": "^5.5.4"
   }
 }

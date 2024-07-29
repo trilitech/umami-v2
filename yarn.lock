@@ -7636,7 +7636,7 @@ __metadata:
     react-remove-scroll: "npm:^2.5.10"
     rimraf: "npm:^6.0.1"
     tsup: "npm:^8.2.2"
-    typescript: "npm:^5.5.3"
+    typescript: "npm:^5.5.4"
   languageName: unknown
   linkType: soft
 
@@ -7669,7 +7669,7 @@ __metadata:
     prettier: "npm:^3.3.2"
     rimraf: "npm:^6.0.1"
     tsup: "npm:^8.2.2"
-    typescript: "npm:^5.5.3"
+    typescript: "npm:^5.5.4"
   languageName: unknown
   linkType: soft
 
@@ -7693,7 +7693,7 @@ __metadata:
     prettier: "npm:^3.3.2"
     rimraf: "npm:^6.0.1"
     tsup: "npm:^8.2.2"
-    typescript: "npm:^5.5.3"
+    typescript: "npm:^5.5.4"
   languageName: unknown
   linkType: soft
 
@@ -7735,7 +7735,7 @@ __metadata:
     react-redux: "npm:^9.1.2"
     rimraf: "npm:^6.0.1"
     tsup: "npm:^8.2.2"
-    typescript: "npm:^5.5.3"
+    typescript: "npm:^5.5.4"
   languageName: unknown
   linkType: soft
 
@@ -7763,7 +7763,7 @@ __metadata:
     prettier: "npm:^3.3.3"
     rimraf: "npm:^6.0.1"
     start-server-and-test: "npm:^2.0.4"
-    typescript: "npm:^5.5.3"
+    typescript: "npm:^5.5.4"
   languageName: unknown
   linkType: soft
 
@@ -7881,7 +7881,7 @@ __metadata:
     ts-node: "npm:^10.9.2"
     typedoc: "npm:^0.26.5"
     typedoc-plugin-missing-exports: "npm:^3.0.0"
-    typescript: "npm:5.5.3"
+    typescript: "npm:5.5.4"
     vite: "npm:^5.3.5"
     vite-plugin-checker: "npm:^0.7.2"
     vite-plugin-node-polyfills: "npm:^0.22.0"
@@ -7931,7 +7931,7 @@ __metadata:
     react-router-dom: "npm:^6.25.1"
     rimraf: "npm:^6.0.1"
     sass: "npm:^1.77.8"
-    typescript: "npm:5.5.3"
+    typescript: "npm:5.5.4"
     vite: "npm:^5.3.5"
     vite-plugin-node-polyfills: "npm:^0.22.0"
     vite-plugin-svgr: "npm:^4.2.0"
@@ -7961,7 +7961,7 @@ __metadata:
     eslint-plugin-testing-library: "npm:^6.2.2"
     eslint-plugin-tsdoc: "npm:^0.3.0"
     eslint-plugin-unused-imports: "npm:^3.2.0"
-    typescript: "npm:^5.5.3"
+    typescript: "npm:^5.5.4"
   languageName: unknown
   linkType: soft
 
@@ -7972,7 +7972,7 @@ __metadata:
     jest: "npm:^29.7.0"
     rimraf: "npm:^6.0.1"
     tsup: "npm:^8.2.2"
-    typescript: "npm:^5.5.3"
+    typescript: "npm:^5.5.4"
   languageName: unknown
   linkType: soft
 
@@ -8003,7 +8003,7 @@ __metadata:
     prettier: "npm:^3.3.2"
     rimraf: "npm:^6.0.1"
     tsup: "npm:^8.2.2"
-    typescript: "npm:^5.5.3"
+    typescript: "npm:^5.5.4"
     zod: "npm:^3.23.8"
   languageName: unknown
   linkType: soft
@@ -8038,7 +8038,7 @@ __metadata:
     prettier: "npm:^3.3.2"
     rimraf: "npm:^6.0.1"
     tsup: "npm:^8.2.2"
-    typescript: "npm:^5.5.3"
+    typescript: "npm:^5.5.4"
   languageName: unknown
   linkType: soft
 
@@ -8090,7 +8090,7 @@ __metadata:
     redux-thunk: "npm:^3.1.0"
     rimraf: "npm:^6.0.1"
     tsup: "npm:^8.2.2"
-    typescript: "npm:^5.5.3"
+    typescript: "npm:^5.5.4"
     zod: "npm:^3.23.8"
   languageName: unknown
   linkType: soft
@@ -8114,7 +8114,7 @@ __metadata:
     prettier: "npm:^3.3.2"
     rimraf: "npm:^6.0.1"
     tsup: "npm:^8.2.2"
-    typescript: "npm:^5.5.3"
+    typescript: "npm:^5.5.4"
     zod: "npm:^3.23.8"
   languageName: unknown
   linkType: soft
@@ -8147,7 +8147,7 @@ __metadata:
     prettier: "npm:^3.3.2"
     rimraf: "npm:^6.0.1"
     tsup: "npm:^8.2.2"
-    typescript: "npm:^5.5.3"
+    typescript: "npm:^5.5.4"
   languageName: unknown
   linkType: soft
 
@@ -8183,7 +8183,7 @@ __metadata:
     promise-retry: "npm:^2.0.1"
     rimraf: "npm:^6.0.1"
     tsup: "npm:^8.2.2"
-    typescript: "npm:^5.5.3"
+    typescript: "npm:^5.5.4"
     zod: "npm:^3.23.8"
   languageName: unknown
   linkType: soft
@@ -8284,7 +8284,7 @@ __metadata:
     redux-persist: "npm:^6.0.0"
     rimraf: "npm:^6.0.1"
     storybook: "npm:^8.2.4"
-    typescript: "npm:^5.5.3"
+    typescript: "npm:^5.5.4"
     vite: "npm:^5.3.5"
     vite-plugin-node-polyfills: "npm:^0.22.0"
     vite-plugin-svgr: "npm:^4.2.0"
@@ -21099,13 +21099,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:5.5.3, typescript@npm:^5.0.4, typescript@npm:^5.3.3, typescript@npm:^5.4.4, typescript@npm:^5.5.3":
-  version: 5.5.3
-  resolution: "typescript@npm:5.5.3"
+"typescript@npm:5.5.4, typescript@npm:^5.5.4":
+  version: 5.5.4
+  resolution: "typescript@npm:5.5.4"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10/11a867312419ed497929aafd2f1d28b2cd41810a5eb6c6e9e169559112e9ea073d681c121a29102e67cd4478d0a4ae37a306a5800f3717f59c4337e6a9bd5e8d
+  checksum: 10/1689ccafef894825481fc3d856b4834ba3cc185a9c2878f3c76a9a1ef81af04194849840f3c69e7961e2312771471bb3b460ca92561e1d87599b26c37d0ffb6f
   languageName: node
   linkType: hard
 
@@ -21119,13 +21119,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A5.5.3#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.0.4#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.3.3#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.4.4#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.5.3#optional!builtin<compat/typescript>":
+"typescript@npm:^5.0.4, typescript@npm:^5.3.3, typescript@npm:^5.4.4":
   version: 5.5.3
-  resolution: "typescript@patch:typescript@npm%3A5.5.3#optional!builtin<compat/typescript>::version=5.5.3&hash=379a07"
+  resolution: "typescript@npm:5.5.3"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10/7cf7acb78a80f749b82842f2ffe01e90e7b3e709a6f4268588e0b7599c41dca1059be217f47778fe1a380bfaf60933021ef20d002c426d4d7745e1b36c11467b
+  checksum: 10/11a867312419ed497929aafd2f1d28b2cd41810a5eb6c6e9e169559112e9ea073d681c121a29102e67cd4478d0a4ae37a306a5800f3717f59c4337e6a9bd5e8d
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@npm%3A5.5.4#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.5.4#optional!builtin<compat/typescript>":
+  version: 5.5.4
+  resolution: "typescript@patch:typescript@npm%3A5.5.4#optional!builtin<compat/typescript>::version=5.5.4&hash=379a07"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10/746fdd0865c5ce4f15e494c57ede03a9e12ede59cfdb40da3a281807853fe63b00ef1c912d7222143499aa82f18b8b472baa1830df8804746d09b55f6cf5b1cc
   languageName: node
   linkType: hard
 
@@ -21136,6 +21146,16 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 10/5659316360b5cc2d6f5931b346401fa534107b68b60179cf14970e27978f0936c1d5c46f4b5b8175f8cba0430f522b3ce355b4b724c0ea36ce6c0347fab25afd
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@npm%3A^5.0.4#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.3.3#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.4.4#optional!builtin<compat/typescript>":
+  version: 5.5.3
+  resolution: "typescript@patch:typescript@npm%3A5.5.3#optional!builtin<compat/typescript>::version=5.5.3&hash=379a07"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10/7cf7acb78a80f749b82842f2ffe01e90e7b3e709a6f4268588e0b7599c41dca1059be217f47778fe1a380bfaf60933021ef20d002c426d4d7745e1b36c11467b
   languageName: node
   linkType: hard
 
