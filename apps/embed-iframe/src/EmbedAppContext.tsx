@@ -1,4 +1,4 @@
-import React, { createContext, ReactNode, useContext, useRef } from "react";
+import { createContext, PropsWithChildren, useContext, useRef } from "react";
 
 import { Network, TypeOfLogin, UserData } from "@trilitech-umami/umami-embed/types";
 
@@ -15,7 +15,7 @@ interface EmbedAppContextState {
 
 const EmbedAppContext = createContext<EmbedAppContextState | undefined>(undefined);
 
-export const EmbedAppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const EmbedAppProvider = ({ children }: PropsWithChildren) => {
   const userDataRef = useRef<UserData | null>(
     JSON.parse(localStorage.getItem(USER_DATA_KEY) || "null")
   );

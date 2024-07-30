@@ -1,5 +1,5 @@
 import { useDisclosure } from "@chakra-ui/react";
-import React, { createContext, ReactNode, useContext, useState } from "react";
+import { createContext, PropsWithChildren, useContext, useState } from "react";
 
 interface LoginModalContextState {
   isOpen: boolean;
@@ -11,7 +11,7 @@ interface LoginModalContextState {
 
 const LoginModalContext = createContext<LoginModalContextState | undefined>(undefined);
 
-export const LoginModalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const LoginModalProvider = ({ children }: PropsWithChildren) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isLoading, setIsLoading] = useState(false);
 
