@@ -10,3 +10,4 @@ export * from "./Operation";
 export * from "./testUtils";
 export * from "./Token";
 export * from "./TokenBalance";
+export * from "./beaconUtils";
