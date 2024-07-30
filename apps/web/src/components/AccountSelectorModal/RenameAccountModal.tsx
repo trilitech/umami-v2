@@ -17,7 +17,7 @@ import { renameAccount, useAppDispatch, useValidateName } from "@umami/state";
 import { useForm } from "react-hook-form";
 
 import { EditIcon } from "../../assets/icons";
-import { light } from "../../styles/colors";
+import { useColor } from "../../styles/useColor";
 import { ModalCloseButton } from "../ModalCloseButton";
 
 type RenameAccountPageProps = {
@@ -26,6 +26,7 @@ type RenameAccountPageProps = {
 
 export const RenameAccountPage = ({ account }: RenameAccountPageProps) => {
   const dispatch = useAppDispatch();
+  const color = useColor();
   const { goBack } = useDynamicDisclosureContext();
 
   const onSubmitNewName = ({ name }: { name: string }) => {
@@ -54,7 +55,7 @@ export const RenameAccountPage = ({ account }: RenameAccountPageProps) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <ModalHeader>
           <VStack gap="18px">
-            <EditIcon width="22px" color={light.blue} />
+            <EditIcon width="22px" color={color("blue")} />
             <Heading size="md">Edit name</Heading>
           </VStack>
         </ModalHeader>

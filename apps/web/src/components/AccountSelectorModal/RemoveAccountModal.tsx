@@ -10,7 +10,6 @@ import {
 import { useDynamicDisclosureContext } from "@umami/components";
 import { type LedgerAccount, type SecretKeyAccount, type SocialAccount } from "@umami/core";
 import { useImplicitAccounts, useRemoveAccount } from "@umami/state";
-import { useNavigate } from "react-router";
 
 import { AlertIcon } from "../../assets/icons";
 import { ModalCloseButton } from "../ModalCloseButton";
@@ -22,7 +21,6 @@ type RemoveAccountModalProps = {
 export const RemoveAccountModal = ({ account }: RemoveAccountModalProps) => {
   const { goBack, onClose } = useDynamicDisclosureContext();
   const removeAccount = useRemoveAccount();
-  const navigate = useNavigate();
 
   const isLastImplicitAccount = useImplicitAccounts().length === 1;
 
@@ -31,7 +29,7 @@ export const RemoveAccountModal = ({ account }: RemoveAccountModalProps) => {
 
     if (isLastImplicitAccount) {
       onClose();
-      navigate("/");
+      window.location.replace("/");
     } else {
       goBack();
     }

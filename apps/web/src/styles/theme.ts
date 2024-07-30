@@ -139,6 +139,21 @@ const theme = extendTheme({
       baseStyle: (props: StyleFunctionProps) => ({
         color: mode(light.grey[600], dark.grey[600])(props),
       }),
+      variants: {
+        dropdownOption: {
+          display: "flex",
+          justifyContent: "flex-start",
+          width: "full",
+          alignItems: "center",
+          gap: "10px",
+          padding: "12px 16px",
+          _hover: {
+            background: "gray.100",
+            textDecoration: "none",
+          },
+          rounded: "full",
+        },
+      },
     },
     Button: {
       sizes: {

@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   IconButton,
+  Link,
   Popover,
   PopoverBody,
   PopoverContent,
@@ -57,9 +58,9 @@ export const AccountSelectorPopover = ({ account }: AccountSelectorPopoverProps)
           <PopoverBody color={color("400")}>
             <Box>
               <Button
-                onClick={async e => {
+                onClick={e => {
                   e.stopPropagation();
-                  await openWith(<AccountInfoModal account={account} />);
+                  return openWith(<AccountInfoModal account={account} />);
                 }}
                 variant="dropdownOption"
               >
@@ -69,9 +70,9 @@ export const AccountSelectorPopover = ({ account }: AccountSelectorPopoverProps)
                 </Text>
               </Button>
               <Button
-                onClick={async e => {
+                onClick={e => {
                   e.stopPropagation();
-                  await openWith(<RenameAccountPage account={account} />);
+                  return openWith(<RenameAccountPage account={account} />);
                 }}
                 variant="dropdownOption"
               >
@@ -82,9 +83,9 @@ export const AccountSelectorPopover = ({ account }: AccountSelectorPopoverProps)
               </Button>
               {account.type !== "mnemonic" && account.type !== "multisig" && (
                 <Button
-                  onClick={async e => {
+                  onClick={e => {
                     e.stopPropagation();
-                    await openWith(
+                    return openWith(
                       <RemoveAccountModal
                         account={account as SocialAccount | LedgerAccount | SecretKeyAccount}
                       />
@@ -98,20 +99,18 @@ export const AccountSelectorPopover = ({ account }: AccountSelectorPopoverProps)
                   </Text>
                 </Button>
               )}
-              <Button
-                onClick={e => {
-                  e.stopPropagation();
-
-                  const url = `${network.tzktExplorerUrl}/${account.address.pkh}`;
-                  window.open(url, "_blank");
-                }}
+              <Link
+                color={color("400")}
+                href={`${network.tzktExplorerUrl}/${account.address.pkh}`}
+                isExternal
+                onClick={e => e.stopPropagation()}
                 variant="dropdownOption"
               >
                 <ExternalLinkIcon />
                 <Text color={color("900")} fontWeight="600">
                   View in TzKT
                 </Text>
-              </Button>
+              </Link>
             </Box>
           </PopoverBody>
         </PopoverContent>
