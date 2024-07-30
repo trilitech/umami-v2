@@ -22,11 +22,11 @@ export const Main = () => (
       borderRadius="30px"
     >
       <Routes>
-        <Route element={<Activity />} path="/activity" />
-        <Route element={<NFTs />} path="/nfts" />
         <Route element={<Tokens />} path="/tokens" />
+        <Route element={<NFTs />} path="/nfts" />
         <Route element={<Earn />} path="/earn" />
-        <Route element={<Navigate to="/activity" />} path="/*" />
+        <Route element={<Activity />} path="/activity" />
+        <Route element={<Navigate to="/tokens" />} path="/*" />
       </Routes>
     </Card>
   </Box>
