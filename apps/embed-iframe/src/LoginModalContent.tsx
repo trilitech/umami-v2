@@ -2,7 +2,7 @@ import { Box, Center, Flex, Heading, Spinner, Text, VStack } from "@chakra-ui/re
 import { InMemorySigner } from "@taquito/signer";
 import { type TypeOfLogin } from "@trilitech-umami/umami-embed/types";
 import * as Auth from "@umami/social-auth";
-import { useState } from "react";
+import { useEffect } from "react";
 
 import { TezosLogoIcon, UmamiLogoIcon } from "./assets/icons";
 
@@ -12,14 +12,21 @@ import { LoginButtonComponent } from "./LoginButtonComponent";
 import { sendLoginErrorResponse, sendResponse } from "./utils";
 import { useEmbedApp } from "./EmbedAppContext";
 import { useColor } from "./imported/style/useColor";
+import { useLoginModalContext } from "./LoginModalContext";
 
 const LOGIN_TIMEOUT = 3 * 60 * 1000; // 3 minutes
 
-export const LoginModalContent = ({ closeModal }: { closeModal: () => void }) => {
-  const [isLoading, setIsLoading] = useState(false);
+export const LoginModalContent = () => {
+  const { isOpen, onClose, isLoading, setIsLoading } = useLoginModalContext();
   const { setUserData, getLoginOptions } = useEmbedApp();
 
   const color = useColor();
+
+  useEffect(() => {
+    if (isOpen && !isLoading && getLoginOptions().length === 1) {
+      onLoginClick(getLoginOptions()[0]);
+    }
+  }, [isOpen]);
 
   const onLoginClick = async (loginType: TypeOfLogin) => {
     setIsLoading(true);
@@ -41,7 +48,7 @@ export const LoginModalContent = ({ closeModal }: { closeModal: () => void }) =>
       sendLoginErrorResponse(getErrorContext(error).description);
     } finally {
       setIsLoading(false);
-      closeModal();
+      onClose();
     }
   };
 
