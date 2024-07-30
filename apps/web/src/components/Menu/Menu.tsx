@@ -19,15 +19,19 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useDynamicModalContext } from "@umami/components";
 import { useSelectNetwork, useSelectedNetwork } from "@umami/state";
 import { useRef } from "react";
 
 import { LogoutIcon } from "../../assets/icons";
 import { persistor } from "../../utils/persistor";
+import { AccountSelectorModal } from "../AccountSelectorModal";
 
 export const Menu = () => {
   const selectNetwork = useSelectNetwork();
   const currentNetwork = useSelectedNetwork();
+
+  const { openWith } = useDynamicModalContext();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef(null);
@@ -71,6 +75,7 @@ export const Menu = () => {
               </Text>
             </Flex>
           </Box>
+          <button onClick={() => openWith(<AccountSelectorModal />)}>test modal</button>
         </DrawerBody>
       </DrawerContent>
       <AlertDialog

@@ -11,7 +11,7 @@ import {
   ModalHeader,
   VStack,
 } from "@chakra-ui/react";
-import { useDynamicDisclosureContext } from "@umami/components";
+import { useDynamicModalContext } from "@umami/components";
 import { type Account } from "@umami/core";
 import { renameAccount, useAppDispatch, useValidateName } from "@umami/state";
 import { useForm } from "react-hook-form";
@@ -27,7 +27,7 @@ type RenameAccountPageProps = {
 export const RenameAccountPage = ({ account }: RenameAccountPageProps) => {
   const dispatch = useAppDispatch();
   const color = useColor();
-  const { goBack } = useDynamicDisclosureContext();
+  const { goBack } = useDynamicModalContext();
 
   const onSubmitNewName = ({ name }: { name: string }) => {
     dispatch(renameAccount(account, name));

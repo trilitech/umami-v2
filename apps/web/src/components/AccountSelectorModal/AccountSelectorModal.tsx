@@ -12,7 +12,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { useDynamicDisclosureContext } from "@umami/components";
+import { useDynamicModalContext } from "@umami/components";
 import { accountsActions, useGetAccountBalance, useImplicitAccounts } from "@umami/state";
 import { prettyTezAmount } from "@umami/tezos";
 import { capitalize, chain, sortBy } from "lodash";
@@ -22,6 +22,7 @@ import { AccountSelectorPopover } from "./AccountSelectorPopover";
 import { ThreeDotsIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
 import { AccountTile } from "../AccountTile";
+import { ImportBackupModal } from "../Header/ImportBackupModal";
 import { useOnboardingModal } from "../Onboarding/useOnboardingModal";
 
 export const AccountSelectorModal = () => {
@@ -29,7 +30,7 @@ export const AccountSelectorModal = () => {
   const color = useColor();
   const getBalance = useGetAccountBalance();
   const { onOpen: openOnboardingModal, modalElement } = useOnboardingModal();
-  const { onClose } = useDynamicDisclosureContext();
+  const { onClose, openWith } = useDynamicModalContext();
 
   const dispatch = useDispatch();
 
@@ -52,6 +53,7 @@ export const AccountSelectorModal = () => {
             maxHeight="400px"
             divider={<Divider borderColor={color("100")} />}
           >
+            <button onClick={() => openWith(<ImportBackupModal />)}>test</button>
             {Object.entries(groupedAccounts).map(([type, accounts]) => (
               <Flex key={type} flexDirection="column" width="100%">
                 <Center

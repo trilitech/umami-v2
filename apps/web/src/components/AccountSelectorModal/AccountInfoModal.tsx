@@ -36,7 +36,7 @@ export const AccountInfoModal = ({ account }: AccountInfoModalProps) => {
       <ModalHeader>
         <VStack gap="12px">
           <Heading size="md">Account Info</Heading>
-          <Text maxWidth="340px" color={color("700")} size="md">
+          <Text maxWidth="340px" color={color("700")} fontWeight="400" size="md">
             You can receive tez or other digital assets by scanning or sharing this QR code
           </Text>
         </VStack>

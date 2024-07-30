@@ -9,10 +9,12 @@ import {
   ModalContent,
   ModalHeader,
 } from "@chakra-ui/react";
+import { useDynamicModalContext } from "@umami/components";
 import { useAsyncActionHandler, useRestoreBackup } from "@umami/state";
 import { useForm } from "react-hook-form";
 
 import { persistor } from "../../utils/persistor";
+import { ModalBackButton } from "../Onboarding/ModalBackButton";
 
 type FormFields = {
   password: string;
@@ -23,6 +25,7 @@ export const ImportBackupModal = () => {
   const { handleSubmit, register } = useForm<FormFields>({ mode: "onBlur" });
   const { handleAsyncAction } = useAsyncActionHandler();
   const restoreBackup = useRestoreBackup();
+  const { goBack } = useDynamicModalContext();
 
   const onSubmit = ({ file, password }: FormFields) =>
     handleAsyncAction(async () => {
@@ -34,6 +37,7 @@ export const ImportBackupModal = () => {
   return (
     <ModalContent>
       <ModalHeader>
+        <ModalBackButton aria-label="Go back" onClick={goBack} />
         <ModalCloseButton />
         Import Backup
       </ModalHeader>

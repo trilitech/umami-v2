@@ -7,7 +7,7 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
-import { useDynamicDisclosureContext } from "@umami/components";
+import { useDynamicModalContext } from "@umami/components";
 import { type LedgerAccount, type SecretKeyAccount, type SocialAccount } from "@umami/core";
 import { useImplicitAccounts, useRemoveAccount } from "@umami/state";
 
@@ -19,7 +19,7 @@ type RemoveAccountModalProps = {
 };
 
 export const RemoveAccountModal = ({ account }: RemoveAccountModalProps) => {
-  const { goBack, onClose } = useDynamicDisclosureContext();
+  const { goBack, onClose } = useDynamicModalContext();
   const removeAccount = useRemoveAccount();
 
   const isLastImplicitAccount = useImplicitAccounts().length === 1;

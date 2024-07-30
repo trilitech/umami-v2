@@ -1,5 +1,5 @@
 import { Button, Flex, IconButton } from "@chakra-ui/react";
-import { useDynamicDisclosureContext } from "@umami/components";
+import { useDynamicDrawerContext } from "@umami/components";
 import { useAddPeer } from "@umami/state";
 
 import { ImportBackupModal } from "./ImportBackupModal";
@@ -8,7 +8,7 @@ import { ColorSchemeModeToggle } from "../ColorSchemeModeToggle/ColorSchemeModeT
 import { Menu } from "../Menu";
 
 export const Actions = () => {
-  const { openWith } = useDynamicDisclosureContext();
+  const { openWith } = useDynamicDrawerContext();
   const addPeer = useAddPeer();
 
   return (
@@ -24,7 +24,7 @@ export const Actions = () => {
         aria-label="Open menu"
         icon={<MenuIcon />}
         isRound
-        onClick={() => openWith(<Menu />, { mode: "drawer" })}
+        onClick={() => openWith(<Menu />)}
         size={{
           base: "md",
           lg: "lg",

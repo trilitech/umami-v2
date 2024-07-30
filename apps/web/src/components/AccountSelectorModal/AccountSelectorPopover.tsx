@@ -10,7 +10,7 @@ import {
   Portal,
   Text,
 } from "@chakra-ui/react";
-import { useDynamicDisclosureContext } from "@umami/components";
+import { useDynamicModalContext } from "@umami/components";
 import {
   type Account,
   type LedgerAccount,
@@ -36,7 +36,7 @@ type AccountSelectorPopoverProps = {
 };
 
 export const AccountSelectorPopover = ({ account }: AccountSelectorPopoverProps) => {
-  const { openWith } = useDynamicDisclosureContext();
+  const { openWith } = useDynamicModalContext();
   const color = useColor();
   const network = useSelectedNetwork();
 

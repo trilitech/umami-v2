@@ -4,7 +4,7 @@ import {
   Modal,
   ModalOverlay,
   type ThemingProps,
-  useDisclosure,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import {
   type PropsWithChildren,
@@ -12,68 +12,44 @@ import {
   createContext,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from "react";
 import { RemoveScroll } from "react-remove-scroll";
-
-const useDisclosureHistory = <S,>(initialStep: S) => {
-  const [step, setStep] = useState<S>();
-  const [history, setHistory] = useState<S[]>([]);
-
-  useEffect(() => {
-    if (initialStep && !step) {
-      setStep(initialStep);
-      setHistory([initialStep]);
-    }
-  }, [initialStep]);
-
-  return {
-    reset: () => {
-      setStep(undefined);
-      setHistory([]);
-    },
-    goToStep: (step: S) => {
-      setStep(step);
-      setHistory([...history, step]);
-    },
-    currentStep: step,
-    goBack: () => {
-      history.pop();
-      const previous = history[history.length - 1];
-      setHistory(history);
-      setStep(previous);
-    },
-    history,
-  };
-};
 
 interface DynamicDisclosureContextType {
   openWith: (
     content: ReactElement,
     props?: ThemingProps & {
       onClose?: () => void | Promise<void>;
-      mode?: DynamicDisclosureMode;
     }
   ) => Promise<void>;
   onClose: () => void;
-  goBack: () => void;
   isOpen: boolean;
+  goBack: () => void;
 }
+
+const defaultContextValue = {
+  openWith: async () => {},
+  onClose: () => {},
+  goBack: () => {},
+  isOpen: false,
+};
+
+export const DynamicDisclosureContext =
+  createContext<DynamicDisclosureContextType>(defaultContextValue);
 
 /**
  * You need to wrap the app into `DynamicDisclosureProvider` and then
- * use it in components as `useDynamicDisclosureContext` to interact with the modal.
+ * use it in components as `useDynamicModalContext` to interact with the modal.
  */
-export const DynamicDisclosureContext = createContext<DynamicDisclosureContextType>({
-  goBack: /* istanbul ignore next */ () => {},
-  openWith: /* istanbul ignore next */ _ => Promise.resolve(),
-  onClose: /* istanbul ignore next */ () => {},
-  isOpen: false,
-});
+const DynamicModalContext = createContext<DynamicDisclosureContextType>(defaultContextValue);
+const DynamicDrawerContext = createContext<DynamicDisclosureContextType>(defaultContextValue);
 
-export const useDynamicDisclosureContext = () => useContext(DynamicDisclosureContext);
+export const useDynamicModalContext = () => useContext(DynamicModalContext);
+export const useDynamicDrawerContext = () => useContext(DynamicDrawerContext);
 
-type DynamicDisclosureMode = "modal" | "drawer";
+const TRANSITION_DURATION = 300;
 
 /**
  * It's easier to have just one global place where you can put a modal
@@ -87,83 +63,134 @@ type DynamicDisclosureMode = "modal" | "drawer";
  * use the `openWith` provided by the `DynamicDisclosureContext` in components.
  *
  */
-export const useDynamicDisclosure = () => {
-  const { isOpen, onClose: closeDisclosure, onOpen } = useDisclosure();
-  const [disclosureContent, setDisclosureContent] = useState<ReactElement | null>(null);
-  const { currentStep, goBack, goToStep, reset } = useDisclosureHistory(disclosureContent);
-  const [mode, setMode] = useState<DynamicDisclosureMode>("modal");
-  const defaultProps = {
-    size: "md",
-    onClose: closeDisclosure,
-  };
-  const [disclosureProps, setDisclosureProps] = useState<
-    ThemingProps & { onClose: () => void | Promise<void> }
-  >(defaultProps);
+const useDynamicDisclosure = () => {
+  const stackRef = useRef<
+    Array<{
+      content: ReactElement;
+      props: ThemingProps & { onClose: () => void | Promise<void> };
+    }>
+  >([]);
+  const [currentIndex, setCurrentIndex] = useState(-1);
+  const [currentItem, setCurrentItem] = useState<{
+    content: ReactElement;
+    props: ThemingProps & { onClose: () => void | Promise<void> };
+  }>();
 
   const openWith = async (
     content: ReactElement,
     props: ThemingProps & {
       onClose?: () => void | Promise<void>;
-      mode?: DynamicDisclosureMode;
     } = {}
   ) => {
     const onClose = () => {
-      closeDisclosure();
-      reset();
+      setCurrentIndex(() => {
+        const newIndex = -1;
+        stackRef.current = [];
+
+        return newIndex;
+      });
+
       void props.onClose?.();
-      setDisclosureProps(defaultProps);
     };
 
-    setMode(props.mode || "modal");
-    setDisclosureProps({ size: "md", ...props, onClose });
-    setDisclosureContent(content);
-    goToStep(content);
-    onOpen();
+    const newItem = {
+      content,
+      props: { size: "md", ...props, onClose },
+    };
+
+    stackRef.current.push(newItem);
+    setCurrentIndex(prev => prev + 1);
     return Promise.resolve();
   };
 
-  const renderContent = () => {
-    if (mode === "modal") {
-      return (
-        <Modal
-          autoFocus={false}
-          blockScrollOnMount={false}
-          closeOnOverlayClick={false}
-          isCentered
-          isOpen={isOpen}
-          motionPreset="slideInBottom"
-          {...disclosureProps}
-        >
-          <ModalOverlay />
-          <RemoveScroll enabled={isOpen}>{currentStep}</RemoveScroll>
-        </Modal>
-      );
+  const goBack = () => {
+    setCurrentIndex(prevIndex => prevIndex - 1);
+  };
+
+  useEffect(() => {
+    if (currentIndex >= 0) {
+      setCurrentItem(stackRef.current[currentIndex]);
     } else {
-      return (
-        <Drawer isOpen={isOpen} placement="right" {...disclosureProps}>
-          <DrawerOverlay />
-          <RemoveScroll enabled={isOpen}>{currentStep}</RemoveScroll>
-        </Drawer>
-      );
+      setTimeout(() => {
+        setCurrentItem(undefined);
+      }, TRANSITION_DURATION);
     }
+  }, [currentIndex]);
+
+  return {
+    isOpen: currentIndex >= 0,
+    onClose: currentIndex >= 0 ? stackRef.current[currentIndex].props.onClose : () => {},
+    openWith,
+    goBack,
+    currentItem,
+    currentIndex,
+  };
+};
+
+const useDynamicModal = () => {
+  const disclosure = useDynamicDisclosure();
+  const motionPreset = useBreakpointValue({ base: "slideInBottom", lg: "scale" }) as any;
+
+  const renderContent = () => {
+    if (!disclosure.currentItem) return null;
+
+    const { content, props } = disclosure.currentItem;
+
+    return (
+      <Modal
+        autoFocus={false}
+        blockScrollOnMount={false}
+        closeOnOverlayClick={false}
+        isCentered
+        isOpen={disclosure.isOpen}
+        motionPreset={motionPreset}
+        {...props}
+      >
+        <ModalOverlay />
+        <RemoveScroll enabled={disclosure.isOpen}>{content}</RemoveScroll>
+      </Modal>
+    );
   };
 
   return {
-    isOpen,
-    onClose: disclosureProps.onClose,
-    openWith,
-    goBack,
+    ...disclosure,
+    content: renderContent(),
+  };
+};
+
+const useDynamicDrawer = () => {
+  const disclosure = useDynamicDisclosure();
+
+  const renderContent = () => {
+    if (!disclosure.currentItem) return null;
+
+    const { content, props } = disclosure.currentItem;
+
+    return (
+      <Drawer isOpen={disclosure.isOpen} placement="right" {...props}>
+        <DrawerOverlay />
+        {content}
+      </Drawer>
+    );
+  };
+
+  return {
+    ...disclosure,
     content: renderContent(),
   };
 };
 
 export const DynamicDisclosureProvider = ({ children }: PropsWithChildren) => {
-  const disclosure = useDynamicDisclosure();
+  const modalDisclosure = useDynamicModal();
+  const drawerDisclosure = useDynamicDrawer();
 
   return (
-    <DynamicDisclosureContext.Provider value={disclosure}>
-      {children}
-      {disclosure.content}
-    </DynamicDisclosureContext.Provider>
+    <DynamicModalContext.Provider value={modalDisclosure}>
+      <DynamicDrawerContext.Provider value={drawerDisclosure}>
+        {children}
+        {modalDisclosure.content}
+        {drawerDisclosure.content}
+      </DynamicDrawerContext.Provider>
+    </DynamicModalContext.Provider>
   );
 };
