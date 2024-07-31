@@ -154,6 +154,6 @@
   },
   "packageManager": "yarn@4.3.1",
   "dependencies": {
-    "electron-updater": "6.3.1"
+    "electron-updater": "6.3.2"
   }
 }
