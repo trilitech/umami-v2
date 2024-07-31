@@ -4,7 +4,13 @@ interface Permissions {
   operations: boolean;
 }
 
-const clientPermissions: Record<string, Permissions> = {};
+const clientPermissions: Record<string, Permissions> = {
+  kanvas: {
+    origins: ["https://kanvas-poa.vercel.app"],
+    login: true,
+    operations: false,
+  },
+};
 
 export const getPermissionsForOrigin = (origin: string): Permissions | null => {
   for (const key in clientPermissions) {
