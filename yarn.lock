@@ -6572,40 +6572,40 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/query-core@npm:5.51.15":
-  version: 5.51.15
-  resolution: "@tanstack/query-core@npm:5.51.15"
-  checksum: 10/66d319e29891a1bcb8c3800ad69e11941d8aff64687dd3e042e1f6ccc73917d47bdab4dc04d3d7536211a5ff9f4e7e9b0b47d4f438f44db0d0a7d4d91a1ccc02
+"@tanstack/query-core@npm:5.51.16":
+  version: 5.51.16
+  resolution: "@tanstack/query-core@npm:5.51.16"
+  checksum: 10/7b5f48839d41e083fb0a00cd92a2710e4850b3e1c9daa74073b11319b4fa8a3ef335fb8da3dbc711144c7aa982597b34745bd5851b40eab17deadd56681ed798
   languageName: node
   linkType: hard
 
-"@tanstack/query-devtools@npm:5.51.15":
-  version: 5.51.15
-  resolution: "@tanstack/query-devtools@npm:5.51.15"
-  checksum: 10/0df6ff8237f4cf4ec288cfdac2d83bae1b79d96ef705dc9d2edcbf8f1f85699f65007f2b18ff329788ae10e348daaa3c28a00de34f219c3377cfa0c03393aed8
+"@tanstack/query-devtools@npm:5.51.16":
+  version: 5.51.16
+  resolution: "@tanstack/query-devtools@npm:5.51.16"
+  checksum: 10/b0e8c1f86890a515d4ddbab4743387aecd882271f7be2cbc36f69d05ba42b803ae2e9bbfd53a03450ca4827c94f6b5d7d6fa5e013bfabe6ee0aa9a7b34a223d3
   languageName: node
   linkType: hard
 
-"@tanstack/react-query-devtools@npm:^5.51.15":
-  version: 5.51.15
-  resolution: "@tanstack/react-query-devtools@npm:5.51.15"
+"@tanstack/react-query-devtools@npm:^5.51.16":
+  version: 5.51.16
+  resolution: "@tanstack/react-query-devtools@npm:5.51.16"
   dependencies:
-    "@tanstack/query-devtools": "npm:5.51.15"
+    "@tanstack/query-devtools": "npm:5.51.16"
   peerDependencies:
-    "@tanstack/react-query": ^5.51.15
+    "@tanstack/react-query": ^5.51.16
     react: ^18 || ^19
-  checksum: 10/ae38a21455529d7365e534e4216828092571b967799911125d23f11880c9166c8788144b82192336480afc33142459cf4dce7b492e123a92078dc8e41d964251
+  checksum: 10/c2a4ceecd77fa4ad8e6bc43b014310762237646319e85259acd82a49c18a6fc525b8733a79078b8c384b4dd571f9b9c2e2193441d775053994828db791097bf3
   languageName: node
   linkType: hard
 
-"@tanstack/react-query@npm:^5.51.15":
-  version: 5.51.15
-  resolution: "@tanstack/react-query@npm:5.51.15"
+"@tanstack/react-query@npm:^5.51.16":
+  version: 5.51.16
+  resolution: "@tanstack/react-query@npm:5.51.16"
   dependencies:
-    "@tanstack/query-core": "npm:5.51.15"
+    "@tanstack/query-core": "npm:5.51.16"
   peerDependencies:
     react: ^18.0.0
-  checksum: 10/637a79951d35f9bc28eb6667f4d7936436e80b2e51377cce3dafe83a21ba65575272036e980f6bf755b5b4b4cde2e35cddb9c0d14c5ed9a83a15b68372fced72
+  checksum: 10/84261a5c66c4311b06618af78d1534a84d908d5bc32c04f36f39dad977365090c244e8c5e3578f38118431e7a77970fae2ba6af75e1f03e8a22a48458f8d518d
   languageName: node
   linkType: hard
 
@@ -8121,7 +8121,7 @@ __metadata:
     "@chakra-ui/react": "npm:^2.8.2"
     "@emotion/react": "npm:^11.13.0"
     "@emotion/styled": "npm:^11.13.0"
-    "@tanstack/react-query": "npm:^5.51.15"
+    "@tanstack/react-query": "npm:^5.51.16"
     "@testing-library/dom": "npm:^10.4.0"
     "@testing-library/react": "npm:^16.0.0"
     "@types/babel__core": "npm:^7.20.5"
@@ -8206,8 +8206,8 @@ __metadata:
     "@emotion/styled": "npm:^11.13.0"
     "@ledgerhq/hw-transport-webusb": "npm:^6.29.2"
     "@reduxjs/toolkit": "npm:^2.2.7"
-    "@tanstack/react-query": "npm:^5.51.15"
-    "@tanstack/react-query-devtools": "npm:^5.51.15"
+    "@tanstack/react-query": "npm:^5.51.16"
+    "@tanstack/react-query-devtools": "npm:^5.51.16"
     "@taquito/ledger-signer": "npm:^20.0.1"
     "@taquito/michel-codec": "npm:^20.0.1"
     "@taquito/rpc": "npm:^20.0.1"
@@ -8637,7 +8637,7 @@ __metadata:
     "@svgr/core": "npm:^8.1.0"
     "@svgr/plugin-jsx": "npm:^8.1.0"
     "@svgr/plugin-svgo": "npm:^8.1.0"
-    "@tanstack/react-query": "npm:^5.51.15"
+    "@tanstack/react-query": "npm:^5.51.16"
     "@taquito/beacon-wallet": "npm:^20.0.1"
     "@taquito/ledger-signer": "npm:^20.0.1"
     "@taquito/michel-codec": "npm:^20.0.1"
