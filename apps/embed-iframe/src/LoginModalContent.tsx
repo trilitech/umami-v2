@@ -1,7 +1,8 @@
-import { Box, Center, Flex, Heading, Spinner, Text, VStack } from "@chakra-ui/react";
+import { Box, Center, Heading, Text, VStack } from "@chakra-ui/react";
 import { InMemorySigner } from "@taquito/signer";
 import { type TypeOfLogin } from "@trilitech-umami/umami-embed/types";
 import * as Auth from "@umami/social-auth";
+
 import { useEffect } from "react";
 
 import { TezosLogoIcon, UmamiLogoIcon } from "./assets/icons";
@@ -12,6 +13,7 @@ import { LoginButtonComponent } from "./LoginButtonComponent";
 import { sendLoginErrorResponse, sendResponse } from "./utils";
 import { useEmbedApp } from "./EmbedAppContext";
 import { useColor } from "./imported/style/useColor";
+
 import { useLoginModalContext } from "./LoginModalContext";
 
 const LOGIN_TIMEOUT = 3 * 60 * 1000; // 3 minutes
@@ -70,20 +72,6 @@ export const LoginModalContent = () => {
             />
           ))}
         </VStack>
-        {isLoading && (
-          <Flex
-            position="absolute"
-            top="0"
-            right="0"
-            bottom="0"
-            left="0"
-            alignItems="center"
-            justifyContent="center"
-            backgroundColor="rgba(255, 255, 255, 0.8)" // Semi-transparent background
-          >
-            <Spinner size="xl" />
-          </Flex>
-        )}
       </Box>
 
       <Center marginTop="30px">
