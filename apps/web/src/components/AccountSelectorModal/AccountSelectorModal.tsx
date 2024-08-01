@@ -22,7 +22,6 @@ import { AccountSelectorPopover } from "./AccountSelectorPopover";
 import { ThreeDotsIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
 import { AccountTile } from "../AccountTile";
-import { ImportBackupModal } from "../Header/ImportBackupModal";
 import { useOnboardingModal } from "../Onboarding/useOnboardingModal";
 
 export const AccountSelectorModal = () => {
@@ -30,7 +29,7 @@ export const AccountSelectorModal = () => {
   const color = useColor();
   const getBalance = useGetAccountBalance();
   const { onOpen: openOnboardingModal, modalElement } = useOnboardingModal();
-  const { onClose, openWith } = useDynamicModalContext();
+  const { onClose } = useDynamicModalContext();
 
   const dispatch = useDispatch();
 
@@ -53,7 +52,6 @@ export const AccountSelectorModal = () => {
             maxHeight="400px"
             divider={<Divider borderColor={color("100")} />}
           >
-            <button onClick={() => openWith(<ImportBackupModal />)}>test</button>
             {Object.entries(groupedAccounts).map(([type, accounts]) => (
               <Flex key={type} flexDirection="column" width="100%">
                 <Center

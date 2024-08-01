@@ -1,7 +1,6 @@
-import { DynamicDisclosureContext } from "@umami/components";
+import { useDynamicModalContext } from "@umami/components";
 import { type Account } from "@umami/core";
 import { useImplicitAccounts, useRemoveAccount } from "@umami/state";
-import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { RenameAccountModal } from "./RenameAccountModal";
@@ -9,7 +8,7 @@ import { ConfirmationModal } from "../ConfirmationModal";
 import { RenameRemoveMenu } from "../RenameRemoveMenu";
 
 export const RenameRemoveMenuSwitch = ({ account }: { account: Account }) => {
-  const { openWith, onClose: closeModal } = useContext(DynamicDisclosureContext);
+  const { openWith, onClose: closeModal } = useDynamicModalContext();
   const navigate = useNavigate();
   const isLastImplicitAccount = useImplicitAccounts().length === 1;
   const removeAccount = useRemoveAccount();

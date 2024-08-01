@@ -9,8 +9,7 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
-import { DynamicDisclosureContext } from "@umami/components";
-import { useContext } from "react";
+import { useDynamicModalContext } from "@umami/components";
 
 import { WarningIcon } from "../assets/icons";
 import colors from "../style/colors";
@@ -26,7 +25,7 @@ export const ConfirmationModal = ({
   description?: string;
   onSubmit: () => void;
 }) => {
-  const { onClose } = useContext(DynamicDisclosureContext);
+  const { onClose } = useDynamicModalContext();
   const onClick = () => {
     onSubmit();
     onClose();

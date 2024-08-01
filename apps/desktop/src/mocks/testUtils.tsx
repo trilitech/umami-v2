@@ -1,5 +1,5 @@
 import * as testLib from "@testing-library/react";
-import { DynamicDisclosureContext, useDynamicDisclosure } from "@umami/components";
+import { DynamicModalContext, useDynamicModal } from "@umami/components";
 import { type UmamiStore, makeStore } from "@umami/state";
 import { type PropsWithChildren, type ReactNode, act } from "react";
 import { Provider } from "react-redux";
@@ -12,12 +12,13 @@ import { UmamiTheme } from "../providers/UmamiTheme";
 export const dynamicDisclosureContextMock = {
   onClose: jest.fn(),
   openWith: jest.fn(),
+  goBack: jest.fn(),
 };
 
 const makeWrapper =
   (store: UmamiStore) =>
   ({ children }: PropsWithChildren) => {
-    const dynamicModal = useDynamicDisclosure();
+    const dynamicModal = useDynamicModal();
 
     const openWith = dynamicModal.openWith;
     const onClose = dynamicModal.onClose;
@@ -35,10 +36,10 @@ const makeWrapper =
         <ReactQueryProvider>
           <UmamiTheme>
             <Provider store={store}>
-              <DynamicDisclosureContext.Provider value={dynamicModal}>
+              <DynamicModalContext.Provider value={dynamicModal}>
                 {children}
                 {dynamicModal.content}
-              </DynamicDisclosureContext.Provider>
+              </DynamicModalContext.Provider>
             </Provider>
           </UmamiTheme>
         </ReactQueryProvider>

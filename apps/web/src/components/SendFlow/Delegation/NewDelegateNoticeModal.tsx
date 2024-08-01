@@ -8,9 +8,8 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
-import { DynamicDisclosureContext } from "@umami/components";
+import { useDynamicModalContext } from "@umami/components";
 import { type Account } from "@umami/core";
-import { useContext } from "react";
 
 import { FormPage } from "./FormPage";
 import { StubIcon as NoticeIcon } from "../../../assets/icons";
@@ -18,7 +17,7 @@ import { useColor } from "../../../styles/useColor";
 import { NoticeSteps } from "../NoticeSteps";
 
 export const NewDelegateNoticeModal = ({ account }: { account: Account }) => {
-  const { openWith } = useContext(DynamicDisclosureContext);
+  const { openWith } = useDynamicModalContext();
   const color = useColor();
 
   return (

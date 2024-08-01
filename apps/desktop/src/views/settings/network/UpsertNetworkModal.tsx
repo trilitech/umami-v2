@@ -9,10 +9,9 @@ import {
   ModalFooter,
   ModalHeader,
 } from "@chakra-ui/react";
-import { DynamicDisclosureContext } from "@umami/components";
+import { useDynamicModalContext } from "@umami/components";
 import { networksActions, useAvailableNetworks } from "@umami/state";
 import { type Network } from "@umami/tezos";
-import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 
@@ -23,7 +22,7 @@ const removeTrailingSlashes = (url: string) => url.replace(/\/+$/g, "");
 export const UpsertNetworkModal = ({ network }: { network?: Network }) => {
   const mode = network ? "edit" : "create";
 
-  const { onClose } = useContext(DynamicDisclosureContext);
+  const { onClose } = useDynamicModalContext();
   const dispatch = useDispatch();
   const availableNetworks = useAvailableNetworks();
 

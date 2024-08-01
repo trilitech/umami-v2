@@ -8,10 +8,9 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
-import { DynamicDisclosureContext } from "@umami/components";
+import { useDynamicModalContext } from "@umami/components";
 import { type Account } from "@umami/core";
 import { useGetAccountStakedBalance } from "@umami/state";
-import { useContext } from "react";
 
 import { FormPage } from "./FormPage";
 import { WarningIcon } from "../../../assets/icons";
@@ -19,7 +18,7 @@ import colors from "../../../style/colors";
 import { NoticeSteps } from "../NoticeSteps";
 // TODO: test
 export const NoticeModal = ({ account }: { account: Account }) => {
-  const { openWith } = useContext(DynamicDisclosureContext);
+  const { openWith } = useDynamicModalContext();
   const stakedBalance = useGetAccountStakedBalance(account.address.pkh);
 
   return (

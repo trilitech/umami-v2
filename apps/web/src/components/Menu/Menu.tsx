@@ -23,9 +23,9 @@ import { useDynamicModalContext } from "@umami/components";
 import { useSelectNetwork, useSelectedNetwork } from "@umami/state";
 import { useRef } from "react";
 
+import { ImportBackupModal } from "./ImportBackupModal";
 import { LogoutIcon } from "../../assets/icons";
 import { persistor } from "../../utils/persistor";
-import { AccountSelectorModal } from "../AccountSelectorModal";
 
 export const Menu = () => {
   const selectNetwork = useSelectNetwork();
@@ -75,7 +75,9 @@ export const Menu = () => {
               </Text>
             </Flex>
           </Box>
-          <button onClick={() => openWith(<AccountSelectorModal />)}>test modal</button>
+          <Button onClick={() => openWith(<ImportBackupModal />)} size="sm" variant="primary">
+            Import Backup
+          </Button>
         </DrawerBody>
       </DrawerContent>
       <AlertDialog

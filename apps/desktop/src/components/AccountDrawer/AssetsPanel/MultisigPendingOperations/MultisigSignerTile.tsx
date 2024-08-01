@@ -1,4 +1,4 @@
-import { DynamicDisclosureContext, useAddressKind } from "@umami/components";
+import { useAddressKind, useDynamicModalContext } from "@umami/components";
 import {
   type ImplicitAccount,
   type MultisigAccount,
@@ -9,7 +9,6 @@ import {
 import { type MultisigOperation, parseRawMichelson } from "@umami/multisig";
 import { useAsyncActionHandler, useGetImplicitAccountSafe, useSelectedNetwork } from "@umami/state";
 import { type ImplicitAddress } from "@umami/tezos";
-import { useContext } from "react";
 
 import { MultisigActionButton, type MultisigSignerState } from "./MultisigActionButton";
 import colors from "../../../../style/colors";
@@ -31,7 +30,7 @@ export const MultisigSignerTile = ({
   const addressKind = useAddressKind(signerAddress);
   const getImplicitAccount = useGetImplicitAccountSafe();
   const { isLoading, handleAsyncAction } = useAsyncActionHandler();
-  const { openWith } = useContext(DynamicDisclosureContext);
+  const { openWith } = useDynamicModalContext();
   const network = useSelectedNetwork();
 
   const signer = getImplicitAccount(signerAddress.pkh);

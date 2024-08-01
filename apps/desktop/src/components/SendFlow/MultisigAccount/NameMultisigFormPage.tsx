@@ -8,13 +8,12 @@ import {
   ModalContent,
   ModalFooter,
 } from "@chakra-ui/react";
-import { DynamicDisclosureContext } from "@umami/components";
+import { useDynamicModalContext } from "@umami/components";
 import {
   useGetMostFundedImplicitAccount,
   useImplicitAccounts,
   useValidateName,
 } from "@umami/state";
-import { useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { SelectApproversFormPage } from "./SelectApproversFormPage";
@@ -39,7 +38,7 @@ export const NameMultisigFormPage = ({ name }: { name?: string }) => {
   const implicitAccounts = useImplicitAccounts();
   const getMostFundedImplicitAccount = useGetMostFundedImplicitAccount();
 
-  const { openWith } = useContext(DynamicDisclosureContext);
+  const { openWith } = useDynamicModalContext();
   const openSelectApproversFormPage = ({ name }: FormValues) =>
     openWith(
       <SelectApproversFormPage

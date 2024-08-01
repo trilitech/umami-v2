@@ -10,7 +10,7 @@ import {
   ModalFooter,
   ModalHeader,
 } from "@chakra-ui/react";
-import { DynamicDisclosureContext } from "@umami/components";
+import { useDynamicModalContext } from "@umami/components";
 import { type Contact } from "@umami/core";
 import { getNetworksForContracts } from "@umami/multisig";
 import {
@@ -22,7 +22,7 @@ import {
   useValidateNewContactPkh,
 } from "@umami/state";
 import { isValidContractPkh } from "@umami/tezos";
-import { type FC, useContext, useEffect, useRef } from "react";
+import { type FC, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 
 import { FormErrorMessage } from "./FormErrorMessage";
@@ -39,7 +39,7 @@ export const UpsertContactModal: FC<{
 }> = ({ contact }) => {
   const { handleAsyncAction } = useAsyncActionHandler();
   const dispatch = useAppDispatch();
-  const { isOpen, onClose } = useContext(DynamicDisclosureContext);
+  const { isOpen, onClose } = useDynamicModalContext();
   const availableNetworks = useAvailableNetworks();
 
   // When editing existing contact, its name & pkh are known and provided to the modal.

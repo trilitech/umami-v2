@@ -23,7 +23,7 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
-import { DynamicDisclosureContext } from "@umami/components";
+import { useDynamicModalContext } from "@umami/components";
 import {
   WalletClient,
   useAddConnection,
@@ -31,7 +31,6 @@ import {
   useGetImplicitAccount,
 } from "@umami/state";
 import { capitalize } from "lodash";
-import { useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { OwnedImplicitAccountsAutocomplete } from "../../components/AddressAutocomplete";
@@ -42,7 +41,7 @@ export const PermissionRequestModal = ({ request }: { request: PermissionRequest
   const color = useColor();
   const addConnectionToBeaconSlice = useAddConnection();
   const getAccount = useGetImplicitAccount();
-  const { onClose } = useContext(DynamicDisclosureContext);
+  const { onClose } = useDynamicModalContext();
   const { handleAsyncAction } = useAsyncActionHandler();
   const form = useForm<{ address: string }>({
     mode: "onBlur",

@@ -1,8 +1,7 @@
-import { DynamicDisclosureContext } from "@umami/components";
+import { useDynamicModalContext } from "@umami/components";
 import { sortedByLastUpdate } from "@umami/core";
 import { useGetAccountAllTokens, useGetAccountNFTs, useGetOwnedAccount } from "@umami/state";
 import { type RawPkh } from "@umami/tezos";
-import { useContext } from "react";
 
 import { AccountDrawerDisplay } from "./AccountDrawerDisplay";
 import { ReceiveModal } from "../ReceiveModal";
@@ -15,7 +14,7 @@ export const AccountCard = ({ accountPkh }: { accountPkh: RawPkh }) => {
   const getTokens = useGetAccountAllTokens();
   const getNFTs = useGetAccountNFTs();
 
-  const { openWith } = useContext(DynamicDisclosureContext);
+  const { openWith } = useDynamicModalContext();
 
   const account = getOwnedAccount(accountPkh);
 

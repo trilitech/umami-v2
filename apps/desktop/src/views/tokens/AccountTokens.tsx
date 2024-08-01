@@ -10,7 +10,7 @@ import {
   Text,
   Tr,
 } from "@chakra-ui/react";
-import { DynamicDisclosureContext } from "@umami/components";
+import { useDynamicModalContext } from "@umami/components";
 import {
   type Account,
   type FA12TokenBalance,
@@ -19,7 +19,6 @@ import {
   tokenPrettyAmount,
 } from "@umami/core";
 import { formatPkh, parseContractPkh } from "@umami/tezos";
-import { useContext } from "react";
 
 import { TokenNameWithIcon } from "./TokenNameWithIcon";
 import { TokenIcon } from "../../assets/icons";
@@ -74,7 +73,7 @@ export const AccountTokens = ({
   account: Account;
   tokens: (FA12TokenBalance | FA2TokenBalance)[];
 }) => {
-  const { openWith } = useContext(DynamicDisclosureContext);
+  const { openWith } = useDynamicModalContext();
 
   return (
     <Card

@@ -8,10 +8,10 @@ import {
   Text,
   useMediaQuery,
 } from "@chakra-ui/react";
-import { DynamicDisclosureContext } from "@umami/components";
+import { useDynamicModalContext } from "@umami/components";
 import { assetsActions, useAppDispatch, useIsLoading, useLastTimeUpdated } from "@umami/state";
 import { differenceInMinutes, differenceInSeconds, formatDistance } from "date-fns";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { BuyTezForm } from "./BuyTez/BuyTezForm";
 import { FormPage as SendTezForm } from "./SendFlow/Tez/FormPage";
@@ -91,7 +91,7 @@ const UpdateButton = () => {
 };
 
 export const TopBar = ({ title, subtitle }: { title: string; subtitle?: string }) => {
-  const { openWith } = useContext(DynamicDisclosureContext);
+  const { openWith } = useDynamicModalContext();
 
   return (
     <Box>
