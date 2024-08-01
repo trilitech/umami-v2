@@ -139,6 +139,21 @@ const theme = extendTheme({
       baseStyle: (props: StyleFunctionProps) => ({
         color: mode(light.grey[600], dark.grey[600])(props),
       }),
+      variants: {
+        dropdownOption: {
+          display: "flex",
+          justifyContent: "flex-start",
+          width: "full",
+          alignItems: "center",
+          gap: "10px",
+          padding: "12px 16px",
+          _hover: {
+            background: "gray.100",
+            textDecoration: "none",
+          },
+          rounded: "full",
+        },
+      },
     },
     Button: {
       sizes: {
@@ -159,6 +174,18 @@ const theme = extendTheme({
         },
       },
       variants: {
+        dropdownOption: {
+          display: "flex",
+          justifyContent: "flex-start",
+          width: "full",
+          alignItems: "center",
+          gap: "10px",
+          padding: "12px 16px",
+          _hover: {
+            background: "gray.100",
+          },
+          rounded: "full",
+        },
         inputElement: {
           height: "28px",
           padding: "5px 12px",
@@ -176,6 +203,13 @@ const theme = extendTheme({
           color: dark.grey.black,
           _hover: {
             bg: light.blueDark,
+          },
+        },
+        alert: {
+          bg: light.red,
+          color: dark.grey.black,
+          _hover: {
+            bg: light.redDark,
           },
         },
         secondary: {
@@ -227,6 +261,27 @@ const theme = extendTheme({
         },
       },
     },
+    Popover: {
+      baseStyle: {
+        popper: {
+          zIndex: 9999,
+        },
+      },
+      variants: {
+        dropdown: {
+          content: {
+            boxShadow: "0px 0px 10px 0px rgba(45, 55, 72, 0.10)",
+            borderRadius: "30px",
+            border: "1.5px solid",
+            borderColor: "gray.100",
+            bg: "white",
+          },
+          body: {
+            padding: "12px",
+          },
+        },
+      },
+    },
     Drawer: {
       baseStyle: {
         dialog: {
@@ -260,6 +315,8 @@ const theme = extendTheme({
           borderBottomRightRadius: { lg: "30px", base: 0 },
           borderBottomLeftRadius: { lg: "30px", base: 0 },
           background: "white",
+          border: "1.5px solid",
+          borderColor: "gray.100",
           padding: {
             base: "36px",
             lg: "42px",

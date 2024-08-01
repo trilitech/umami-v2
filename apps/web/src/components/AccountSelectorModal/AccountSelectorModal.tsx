@@ -18,6 +18,7 @@ import { prettyTezAmount } from "@umami/tezos";
 import { capitalize, chain, sortBy } from "lodash";
 import { useDispatch } from "react-redux";
 
+import { AccountSelectorPopover } from "./AccountSelectorPopover";
 import { ThreeDotsIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
 import { AccountTile } from "../AccountTile";
@@ -28,9 +29,9 @@ export const AccountSelectorModal = () => {
   const color = useColor();
   const getBalance = useGetAccountBalance();
   const { onOpen: openOnboardingModal, modalElement } = useOnboardingModal();
+  const { onClose } = useDynamicDisclosureContext();
 
   const dispatch = useDispatch();
-  const { onClose } = useDynamicDisclosureContext();
 
   const groupedAccounts = chain(accounts)
     .groupBy(acc => acc.type)
@@ -81,16 +82,7 @@ export const AccountSelectorModal = () => {
                   return (
                     <AccountTile key={address} account={account} onClick={onClick}>
                       <Flex justifyContent="center" flexDirection="column" gap="2px">
-                        <IconButton
-                          alignSelf="flex-end"
-                          color={color("500")}
-                          background="transparent"
-                          aria-label="Account actions"
-                          icon={<ThreeDotsIcon />}
-                          onClick={event => event.stopPropagation()}
-                          size="xs"
-                        />
-
+                        <AccountSelectorPopover account={account} />
                         <Text color={color("700")} size="sm">
                           {balance ? prettyTezAmount(balance) : "\u00A0"}
                         </Text>

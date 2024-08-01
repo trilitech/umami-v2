@@ -12,6 +12,7 @@ import { BrowserRouter } from "react-router-dom";
 export const dynamicDisclosureContextMock = {
   onClose: jest.fn(),
   openWith: jest.fn(),
+  goBack: jest.fn(),
 };
 
 const makeWrapper =
@@ -21,6 +22,7 @@ const makeWrapper =
 
     const openWith = dynamicModal.openWith;
     const onClose = dynamicModal.onClose;
+    const goBack = dynamicModal.goBack;
     jest.spyOn(dynamicModal, "openWith").mockImplementation(async (...args) => {
       dynamicDisclosureContextMock.openWith(...args);
       return openWith(...args);
@@ -28,6 +30,10 @@ const makeWrapper =
     jest.spyOn(dynamicModal, "onClose").mockImplementation((...args) => {
       dynamicDisclosureContextMock.onClose(...args);
       return onClose(...args);
+    });
+    jest.spyOn(dynamicModal, "goBack").mockImplementation(() => {
+      dynamicDisclosureContextMock.goBack();
+      return goBack();
     });
 
     return (
