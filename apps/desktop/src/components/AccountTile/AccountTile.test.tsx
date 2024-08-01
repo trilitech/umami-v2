@@ -129,10 +129,7 @@ describe("<AccountTile />", () => {
       });
 
       it("renders NFTs if there are any", () => {
-        const balances = [
-          mockNFTRaw(0, account.address.pkh, 1),
-          mockNFTRaw(1, account.address.pkh, 1),
-        ];
+        const balances = [mockNFTRaw(0, account.address.pkh), mockNFTRaw(1, account.address.pkh)];
         store.dispatch(assetsActions.updateTokenBalance(balances));
         store.dispatch(
           tokensActions.addTokens({ network: MAINNET, tokens: balances.map(b => b.token) })
@@ -147,7 +144,7 @@ describe("<AccountTile />", () => {
         const balances = [];
 
         for (let i = 0; i < 7; i++) {
-          const nextTokenBalance = mockNFTRaw(0, account.address.pkh, 1);
+          const nextTokenBalance = mockNFTRaw(0, account.address.pkh);
           nextTokenBalance.token.tokenId = String(i);
           balances.push(nextTokenBalance);
         }
@@ -169,9 +166,9 @@ describe("<AccountTile />", () => {
 
       it("renders NFTs sorted by lastLevel desc", () => {
         const balances: RawTzktTokenBalance[] = [
-          { ...mockNFTRaw(0, account.address.pkh, 1), lastLevel: 1 }, // TOKEN 2
-          { ...mockNFTRaw(0, account.address.pkh, 1), lastLevel: 2 }, // TOKEN 1
-          { ...mockNFTRaw(0, account.address.pkh, 1), lastLevel: 3 }, // TOKEN 0
+          mockNFTRaw(0, account.address.pkh, { lastLevel: 1 }), // TOKEN 2
+          mockNFTRaw(0, account.address.pkh, { lastLevel: 2 }), // TOKEN 1
+          mockNFTRaw(0, account.address.pkh, { lastLevel: 3 }), // TOKEN 0
         ];
 
         for (let i = 0; i < balances.length; i++) {
