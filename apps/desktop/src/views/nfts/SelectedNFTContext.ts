@@ -6,5 +6,5 @@ export const SelectedNFTContext = createContext<{
   setSelectedNFT: (nft: NFTWithOwner) => void;
 }>({
   selectedNFT: undefined,
-  setSelectedNFT: (nft: NFTWithOwner) => {},
+  setSelectedNFT: _ => {},
 });

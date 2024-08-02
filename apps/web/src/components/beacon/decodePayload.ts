@@ -52,7 +52,7 @@ export const decodePayload = (payload: SignPayloadRequestOutput["payload"]): str
     const string = new TextDecoder("utf-8").decode(hex2buf(getPayloadHexBytes(payload)));
 
     return string || payload;
-  } catch (e) {
+  } catch (_) {
     return payload;
   }
 };

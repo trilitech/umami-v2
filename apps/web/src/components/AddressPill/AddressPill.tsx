@@ -23,12 +23,10 @@ export const AddressPill = memo(
   ({
     address: rawAddress,
     mode = "default",
-    onRemove,
     ...props
   }: {
     address: Address | TzktAlias;
     mode?: AddressPillMode;
-    onRemove?: () => void;
   } & FlexProps) => {
     const color = useColor();
 

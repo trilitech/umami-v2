@@ -15,5 +15,5 @@ const meta: Meta<typeof ColorSchemeModeToggle> = {
 export default meta;
 
 export const Default: StoryObj<typeof ColorSchemeModeToggle> = {
-  render: args => <ColorSchemeModeToggle />,
+  render: _ => <ColorSchemeModeToggle />,
 };

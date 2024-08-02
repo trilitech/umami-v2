@@ -21,6 +21,6 @@ describe("useCollapseMenu", () => {
 
     act(() => view.current.toggle());
 
-    () => expect(view.current.isCollapsed).toBe(false);
+    expect(view.current.isCollapsed).toBe(false);
   });
 });

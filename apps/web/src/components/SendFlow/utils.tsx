@@ -55,13 +55,11 @@ export const FormSubmitButtons = ({
   isLoading,
   isValid,
   onSingleSubmit,
-  onAddToBatch,
   showPreview = true,
 }: {
   isLoading: boolean;
   isValid: boolean;
   onSingleSubmit: () => Promise<void>;
-  onAddToBatch: () => Promise<void>;
   showPreview?: boolean;
 }) =>
   showPreview && (

@@ -31,7 +31,7 @@ export const killNode = () => {
   runDockerCommand("kill");
   try {
     runDockerCommand("down");
-  } catch (e) {
+  } catch (_) {
     /* empty */
   }
 };

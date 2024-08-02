@@ -168,7 +168,7 @@ describe("AccountsFilter", () => {
 
         // remove first added account
         await act(() => user.click(screen.getAllByTestId("address-pill-right-icon")[0]));
-        () => expect(screen.getAllByTestId("account-pill")).toHaveLength(1);
+        expect(screen.getAllByTestId("account-pill")).toHaveLength(1);
 
         const { result: routerHook } = renderHook(() => useSearchParams());
         const [searchParams, _] = routerHook.current;

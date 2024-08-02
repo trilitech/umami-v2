@@ -33,32 +33,27 @@ module.exports = {
         extensions: [".js", ".jsx", ".ts", ".tsx"],
       },
     },
-    react: {
-      version: "detect",
-    },
+    react: { version: "detect" },
   },
   rules: {
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-empty-function": ["warn", { allow: ["arrowFunctions"] }],
     "@typescript-eslint/switch-exhaustiveness-check": "warn",
-
-    "react/jsx-curly-brace-presence": ["warn", "never"],
-    curly: ["warn", "all"],
-
-    "jest/no-focused-tests": "warn",
-    "jest/no-identical-title": "warn",
-    "jest/valid-expect": "warn",
-
     "@typescript-eslint/await-thenable": "warn",
     "@typescript-eslint/no-unnecessary-condition": "warn",
-    "unused-imports/no-unused-imports": "warn",
     "@typescript-eslint/ban-ts-comment": ["warn", { "ts-ignore": "allow-with-description" }],
     "@typescript-eslint/no-unused-vars": [
       "warn",
-      { argsIgnorePattern: ".*", varsIgnorePattern: "^_" },
+      { argsIgnorePattern: "^_", varsIgnorePattern: "^_", caughtErrorsIgnorePattern: "^_" },
     ],
     "@typescript-eslint/triple-slash-reference": "off",
+    "@typescript-eslint/require-await": "warn",
+    "@typescript-eslint/no-floating-promises": "warn",
+    "@typescript-eslint/no-misused-promises": ["warn", { checksVoidReturn: { attributes: false } }],
+    "@typescript-eslint/no-unused-expressions": ["warn", { allowShortCircuit: true, allowTernary: true, enforceForJSX: true }],
+    "@typescript-eslint/consistent-type-imports": ["error", { fixStyle: "inline-type-imports" }],
 
+    "react/jsx-curly-brace-presence": ["warn", "never"],
     "react/jsx-key": [
       "warn",
       {
@@ -68,27 +63,21 @@ module.exports = {
       },
     ],
 
+    "jest/no-focused-tests": "warn",
+    "jest/no-identical-title": "warn",
+    "jest/valid-expect": "warn",
+
     "chakra-ui/props-order": ["warn", { applyToAllComponents: true }],
     "chakra-ui/props-shorthand": ["warn", { noShorthand: true, applyToAllComponents: true }],
     "chakra-ui/require-specific-component": "warn",
 
-    "sort-imports": [
-      "warn",
-      {
-        ignoreCase: false,
-        ignoreDeclarationSort: true, // don"t want to sort import lines, use eslint-plugin-import instead
-        ignoreMemberSort: false,
-        memberSyntaxSortOrder: ["none", "all", "multiple", "single"],
-        allowSeparatedGroups: true,
-      },
-    ],
+    "unused-imports/no-unused-imports": "warn",
+
     "import/no-unused-modules": ["warn", { unusedExports: true }],
     "import/no-unresolved": "off",
     "import/no-cycle": "warn",
     "import/no-self-import": "warn",
-
     "import/no-duplicates": ["warn", { "prefer-inline": true }],
-    "no-duplicate-imports": "warn",
     "import/order": [
       "warn",
       {
@@ -107,17 +96,17 @@ module.exports = {
         },
       },
     ],
+
     "@stylistic/quotes": ["warn", "double", { avoidEscape: true }],
+
     "deprecation/deprecation": "warn",
-    "prefer-const": "warn",
-    "@typescript-eslint/require-await": "warn",
-    "@typescript-eslint/no-floating-promises": "warn",
-    "@typescript-eslint/no-misused-promises": ["warn", { checksVoidReturn: { attributes: false } }],
-    "tsdoc/syntax": "warn",
-    "arrow-body-style": ["warn", "as-needed"],
+
     "react-redux/useSelector-prefer-selectors": "off",
-    eqeqeq: ["warn", "always"],
-    "@typescript-eslint/consistent-type-imports": ["error", { fixStyle: "inline-type-imports" }],
+
+    "prefer-const": "warn",
+    "arrow-body-style": ["warn", "as-needed"],
+    "curly": ["warn", "all"],
+    "eqeqeq": ["warn", "always"],
     "no-restricted-imports": [
       "warn", {
         "paths": [{
@@ -126,7 +115,20 @@ module.exports = {
           "message": "use `import { <...> } from 'react'` instead"
         }]
       }
-    ]
+    ],
+    "no-duplicate-imports": "warn",
+    "sort-imports": [
+      "warn",
+      {
+        ignoreCase: false,
+        ignoreDeclarationSort: true, // don"t want to sort import lines, use eslint-plugin-import instead
+        ignoreMemberSort: false,
+        memberSyntaxSortOrder: ["none", "all", "multiple", "single"],
+        allowSeparatedGroups: true,
+      },
+    ],
+
+    "tsdoc/syntax": "warn",
   },
   overrides: [
     {

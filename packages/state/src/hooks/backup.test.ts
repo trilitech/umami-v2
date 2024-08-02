@@ -59,7 +59,7 @@ describe("<RestoreBackupFile />", () => {
       } = renderHook(() => useRestoreBackup(), { store });
 
       await expect(() => restoreBackup(v1Backup, "password", {} as any)).rejects.toThrow(
-        "Invalid password."
+        "Error decrypting data: Invalid password"
       );
     });
   });
@@ -87,7 +87,7 @@ describe("<RestoreBackupFile />", () => {
       } = renderHook(() => useRestoreBackup(), { store });
 
       await expect(() => restoreBackup(v2Backup, "password", {} as any)).rejects.toThrow(
-        "Invalid password."
+        "Error decrypting data: Invalid password"
       );
     });
 

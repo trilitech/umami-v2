@@ -37,12 +37,8 @@ export const useRestoreV1BackupFile = () => {
 
     const mnemonics = [];
 
-    try {
-      for (const encryptedMnemonic of encrypted) {
-        mnemonics.push(await decrypt(encryptedMnemonic, password, "V1"));
-      }
-    } catch (e) {
-      throw new Error("Invalid password.");
+    for (const encryptedMnemonic of encrypted) {
+      mnemonics.push(await decrypt(encryptedMnemonic, password, "V1"));
     }
 
     for (const [i, mnemonic] of mnemonics.entries()) {
@@ -70,12 +66,8 @@ export const restoreV2BackupFile = async (
 
   const encryptedMnemonics: Record<string, EncryptedData> = JSON.parse(accounts.seedPhrases);
 
-  try {
-    for (const encrypted of Object.values(encryptedMnemonics)) {
-      await decrypt(encrypted, password, "V2");
-    }
-  } catch (e) {
-    throw new Error("Invalid password.");
+  for (const encrypted of Object.values(encryptedMnemonics)) {
+    await decrypt(encrypted, password, "V2");
   }
 
   persistor.pause();

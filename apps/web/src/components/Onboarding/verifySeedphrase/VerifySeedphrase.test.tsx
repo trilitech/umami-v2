@@ -3,9 +3,8 @@ import { mnemonic1 } from "@umami/test-utils";
 
 import { VerifySeedphrase } from "./VerifySeedphrase";
 import { act, fireEvent, render, screen, userEvent, waitFor } from "../../../testUtils";
-import { type OnboardingStep } from "../OnboardingStep";
 
-const goToStepMock = jest.fn((step: OnboardingStep) => {});
+const goToStepMock = jest.fn();
 
 jest.mock("@umami/core", () => ({
   ...jest.requireActual("@umami/core"),
