@@ -5,7 +5,7 @@ import { getIPFSurl } from "@umami/tezos";
 import { SearchIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
 
-export const NFTCard = ({ nft }: { nft: NFTBalance }) => {
+export const NFTCard = ({ nft, onClick }: { nft: NFTBalance; onClick?: () => void }) => {
   const color = useColor();
   const url = getIPFSurl(thumbnailUri(nft));
   const fallbackUrl = getIPFSurl(nft.displayUri);
@@ -20,6 +20,7 @@ export const NFTCard = ({ nft }: { nft: NFTBalance }) => {
       cursor="pointer"
       data-group
       data-testid="nft-card"
+      onClick={onClick}
     >
       <CardBody padding="0" background={color("50")} borderRadius="6px">
         <Center position="relative" width="full" height="full" borderRadius="6px">

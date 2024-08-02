@@ -39,6 +39,7 @@ export { default as RedditIcon } from "./reddit.svg";
 export { default as SearchIcon } from "./search.svg";
 export { default as SelectorIcon } from "./selector.svg";
 export { default as SettingsIcon } from "./settings.svg";
+export { default as TagIcon } from "./tag.svg";
 export { default as ThreeDotsIcon } from "./three-dots.svg";
 export { default as TrashIcon } from "./trash.svg";
 export { default as TwitterIcon } from "./twitter.svg";

@@ -1,15 +1,32 @@
-import { Flex, Heading, Icon, SimpleGrid } from "@chakra-ui/react";
-import { fullId, sortedByLastUpdate } from "@umami/core";
+import {
+  Button,
+  Drawer,
+  DrawerBody,
+  DrawerContent,
+  DrawerHeader,
+  DrawerOverlay,
+  Flex,
+  Heading,
+  Icon,
+  SimpleGrid,
+  Text,
+  useDisclosure,
+} from "@chakra-ui/react";
+import { type NFTBalance, fullId, sortedByLastUpdate } from "@umami/core";
 import { useCurrentAccount, useGetAccountNFTs } from "@umami/state";
 import BigNumber from "bignumber.js";
+import { useState } from "react";
 
 import { NFTCard } from "./NFTCard";
-import { FilterIcon } from "../../assets/icons";
+import { NFTDrawerCard } from "./NFTDrawerCard/NFTDrawerCard";
+import { CloseIcon, FilterIcon } from "../../assets/icons";
 import { EmptyMessage } from "../../components/EmptyMessage";
 import { useColor } from "../../styles/useColor";
 
 export const NFTs = () => {
   const color = useColor();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [currentNFT, setCurrentNFT] = useState<NFTBalance | null>(null);
   const account = useCurrentAccount()!;
   const nfts = sortedByLastUpdate(useGetAccountNFTs()(account.address.pkh));
   const totalCount = nfts.reduce((acc, nft) => acc.plus(nft.balance), BigNumber(0)).toNumber();
@@ -24,12 +41,12 @@ export const NFTs = () => {
       {nfts.length ? (
         <>
           <Flex justifyContent="space-between">
-            <Flex alignItems="center" gap="4px">
+            <Button size="sm" variant="auxiliary">
               <Icon as={FilterIcon} color={color("400")} />
-              <Heading color={color("600")} size="sm">
+              <Text color={color("600")} fontWeight="600" size="sm">
                 Filter By
-              </Heading>
-            </Flex>
+              </Text>
+            </Button>
             <Heading color={color("600")} data-testid="total-count" size="sm">
               {totalCount}
             </Heading>
@@ -40,13 +57,34 @@ export const NFTs = () => {
             spacingY={{ base: "18px", lg: "30px" }}
           >
             {nfts.map(nft => (
-              <NFTCard key={fullId(nft)} nft={nft} />
+              <NFTCard
+                key={fullId(nft)}
+                nft={nft}
+                onClick={() => {
+                  setCurrentNFT(nft);
+                  onOpen();
+                }}
+              />
             ))}
           </SimpleGrid>
         </>
       ) : (
         <EmptyMessage subtitle="NFTs" title="NFT" />
       )}
+      <Drawer isOpen={isOpen && !!currentNFT} onClose={onClose}>
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerHeader justifyContent="flex-end" display="flex">
+            <Button onClick={onClose} size="sm" variant="auxiliary">
+              <Text color={color("600")} fontWeight="600" size="sm">
+                Close
+              </Text>
+              <Icon as={CloseIcon} width="18px" height="18px" color={color("400")} />
+            </Button>
+          </DrawerHeader>
+          <DrawerBody>{currentNFT && <NFTDrawerCard nft={currentNFT} />}</DrawerBody>
+        </DrawerContent>
+      </Drawer>
     </Flex>
   );
 };

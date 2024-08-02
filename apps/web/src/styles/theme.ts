@@ -46,6 +46,25 @@ const sizes = {
 
 const theme = extendTheme({
   components: {
+    Accordion: {
+      baseStyle: {
+        panel: {
+          padding: "10px 0",
+        },
+        button: {
+          paddingY: "16px",
+
+          _hover: {
+            background: "gray.100",
+          },
+        },
+      },
+    },
+    AccordionItem: {
+      baseStyle: {
+        borderColor: "gray.100",
+      },
+    },
     Text: { sizes },
     Heading: {
       sizes: {
@@ -173,7 +192,8 @@ const theme = extendTheme({
     },
     Button: {
       sizes: {
-        md: { height: "42px", width: "42px", padding: "0 12px" },
+        sm: { height: "30px", minWidth: "30px", padding: "6px" },
+        md: { height: "42px", minWidth: "42px", padding: "0 12px" },
         lg: { height: "48px", minWidth: "48px", padding: "0 12px" },
       },
       baseStyle: {
@@ -247,6 +267,13 @@ const theme = extendTheme({
             color: dark.grey.black,
           },
         },
+        auxiliary: {
+          background: "none",
+          borderRadius: "6px",
+          alignItems: "center",
+          gap: "4px",
+          _hover: { background: "gray.100" },
+        },
         iconButtonSolid: {
           bg: light.grey[100],
           color: light.grey[900],
@@ -288,6 +315,7 @@ const theme = extendTheme({
     Drawer: {
       baseStyle: {
         dialog: {
+          background: "white",
           width: "100%",
           background: "white",
           minWidth: {
@@ -295,11 +323,13 @@ const theme = extendTheme({
             lg: "506px",
           },
         },
+        header: {
+          padding: { base: "12px", lg: "20px" },
+        },
         body: {
-          paddingX: {
-            base: "24px",
-            lg: "40px",
-          },
+          paddingTop: 0,
+          paddingBottom: "20px",
+          paddingX: { base: "12px", lg: "30px" },
         },
       },
     },
