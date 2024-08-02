@@ -17,7 +17,8 @@
     }
   },
   "scripts": {
-    "build": "tsup"
+    "build": "tsup",
+    "build:quick": "tsup"
   },
   "devDependencies": {
     "jest": "^29.7.0",

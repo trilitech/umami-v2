@@ -15,6 +15,7 @@
   ],
   "scripts": {
     "build": "turbo build",
+    "build:watch": "turbo watch build:quick --filter=./packages/\\*",
     "clean": "rimraf .turbo && turbo clean",
     "test": "turbo test",
     "lint": "turbo lint",

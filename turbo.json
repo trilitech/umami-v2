@@ -2,6 +2,14 @@
   "$schema": "https://turbo.build/schema.json",
   "tasks": {
     "audit": {},
+    "build:quick": {
+      "outputs": [
+        "dist/**"
+      ],
+      "dependsOn": [
+        "^build:quick"
+      ]
+    },
     "build": {
       "outputs": [
         "dist/**",
@@ -26,7 +34,7 @@
       "persistent": true,
       "cache": false,
       "dependsOn": [
-        "^build"
+        "^check-types"
       ]
     },
     "clean": {
@@ -36,7 +44,7 @@
       "persistent": true,
       "cache": false,
       "dependsOn": [
-        "^build"
+        "^build:quick"
       ]
     },
     "format": {
@@ -74,7 +82,7 @@
         "CI"
       ],
       "dependsOn": [
-        "^build"
+        "^build:quick"
       ]
     },
     "test:e2e": {
