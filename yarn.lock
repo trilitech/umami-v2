@@ -21290,58 +21290,58 @@ __metadata:
   languageName: node
   linkType: hard
 
-"turbo-darwin-64@npm:2.0.10":
-  version: 2.0.10
-  resolution: "turbo-darwin-64@npm:2.0.10"
+"turbo-darwin-64@npm:2.0.11":
+  version: 2.0.11
+  resolution: "turbo-darwin-64@npm:2.0.11"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"turbo-darwin-arm64@npm:2.0.10":
-  version: 2.0.10
-  resolution: "turbo-darwin-arm64@npm:2.0.10"
+"turbo-darwin-arm64@npm:2.0.11":
+  version: 2.0.11
+  resolution: "turbo-darwin-arm64@npm:2.0.11"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"turbo-linux-64@npm:2.0.10":
-  version: 2.0.10
-  resolution: "turbo-linux-64@npm:2.0.10"
+"turbo-linux-64@npm:2.0.11":
+  version: 2.0.11
+  resolution: "turbo-linux-64@npm:2.0.11"
   conditions: os=linux & cpu=x64
   languageName: node
   linkType: hard
 
-"turbo-linux-arm64@npm:2.0.10":
-  version: 2.0.10
-  resolution: "turbo-linux-arm64@npm:2.0.10"
+"turbo-linux-arm64@npm:2.0.11":
+  version: 2.0.11
+  resolution: "turbo-linux-arm64@npm:2.0.11"
   conditions: os=linux & cpu=arm64
   languageName: node
   linkType: hard
 
-"turbo-windows-64@npm:2.0.10":
-  version: 2.0.10
-  resolution: "turbo-windows-64@npm:2.0.10"
+"turbo-windows-64@npm:2.0.11":
+  version: 2.0.11
+  resolution: "turbo-windows-64@npm:2.0.11"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
-"turbo-windows-arm64@npm:2.0.10":
-  version: 2.0.10
-  resolution: "turbo-windows-arm64@npm:2.0.10"
+"turbo-windows-arm64@npm:2.0.11":
+  version: 2.0.11
+  resolution: "turbo-windows-arm64@npm:2.0.11"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"turbo@npm:^2.0.10":
-  version: 2.0.10
-  resolution: "turbo@npm:2.0.10"
+"turbo@npm:^2.0.11":
+  version: 2.0.11
+  resolution: "turbo@npm:2.0.11"
   dependencies:
-    turbo-darwin-64: "npm:2.0.10"
-    turbo-darwin-arm64: "npm:2.0.10"
-    turbo-linux-64: "npm:2.0.10"
-    turbo-linux-arm64: "npm:2.0.10"
-    turbo-windows-64: "npm:2.0.10"
-    turbo-windows-arm64: "npm:2.0.10"
+    turbo-darwin-64: "npm:2.0.11"
+    turbo-darwin-arm64: "npm:2.0.11"
+    turbo-linux-64: "npm:2.0.11"
+    turbo-linux-arm64: "npm:2.0.11"
+    turbo-windows-64: "npm:2.0.11"
+    turbo-windows-arm64: "npm:2.0.11"
   dependenciesMeta:
     turbo-darwin-64:
       optional: true
@@ -21357,7 +21357,7 @@ __metadata:
       optional: true
   bin:
     turbo: bin/turbo
-  checksum: 10/d13bdc48385072273ca1231e6752d7b5e8b57840da27e969704c2e652b30ecb7bba2a567aa985e71e07f18cfb206b03c819772338232ff4189d0fe756f027791
+  checksum: 10/c00a0f5c33388055f1e4586738415e6ddb7689ace1fec1cc97766c058c62498b2a4d64b553c22768e5d7e53be9b40c5b663b4bcc388ee75f6e130445b5512fbc
   languageName: node
   linkType: hard
 
@@ -21625,7 +21625,7 @@ __metadata:
     jest: "npm:^29.7.0"
     rimraf: "npm:^6.0.1"
     tsup: "npm:^8.2.3"
-    turbo: "npm:^2.0.10"
+    turbo: "npm:^2.0.11"
   languageName: unknown
   linkType: soft
 
