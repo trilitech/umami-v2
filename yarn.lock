@@ -7061,10 +7061,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@trilitech-umami/umami-embed@npm:^0.1.1":
-  version: 0.1.1
-  resolution: "@trilitech-umami/umami-embed@npm:0.1.1"
-  checksum: 10/c9c827eca995b3ccc9146156d5667a3b0479d0d9c0be271bd99cc2be397b79b732270b0214e3600fdc355d2b55b2f0c8a78aca68983c6d7c5e816221dcc3d3e8
+"@trilitech-umami/umami-embed@npm:^0.2.3":
+  version: 0.2.3
+  resolution: "@trilitech-umami/umami-embed@npm:0.2.3"
+  checksum: 10/abff810aaa691bdebe5f5e654720e65fe00f856358f6cda124725e903110300ca0ab98a03f8425f1bcd037e660dcc92454df356536c9bc34f1b1b07a856e7821
   languageName: node
   linkType: hard
 
@@ -8377,7 +8377,7 @@ __metadata:
     "@testing-library/react": "npm:14.3.1"
     "@testing-library/user-event": "npm:14.5.2"
     "@toruslabs/customauth": "npm:16.0.6"
-    "@trilitech-umami/umami-embed": "npm:^0.1.1"
+    "@trilitech-umami/umami-embed": "npm:^0.2.3"
     "@umami/eslint-config": "workspace:^"
     "@umami/social-auth": "workspace:^"
     "@umami/tezos": "workspace:^"
