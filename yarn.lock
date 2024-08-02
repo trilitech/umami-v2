@@ -5243,13 +5243,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@remix-run/router@npm:1.18.0":
-  version: 1.18.0
-  resolution: "@remix-run/router@npm:1.18.0"
-  checksum: 10/f878cf246b94368f431a51363f1d33dc35ad11cb910d930476d988825b024a152de87a7f74f0891c3e7182228f892c7f64f94409aae27084c320338dee82caa1
-  languageName: node
-  linkType: hard
-
 "@remix-run/router@npm:1.19.0":
   version: 1.19.0
   resolution: "@remix-run/router@npm:1.19.0"
@@ -8748,7 +8741,7 @@ __metadata:
     react-redux: "npm:^9.1.2"
     react-remove-scroll: "npm:^2.5.10"
     react-responsive-carousel: "npm:^3.2.23"
-    react-router: "npm:^6.25.1"
+    react-router: "npm:^6.26.0"
     react-router-dom: "npm:^6.26.0"
     react-test-renderer: "npm:^18.3.1"
     redux: "npm:^5.0.1"
@@ -18967,7 +18960,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-router@npm:6.26.0":
+"react-router@npm:6.26.0, react-router@npm:^6.26.0":
   version: 6.26.0
   resolution: "react-router@npm:6.26.0"
   dependencies:
@@ -18975,17 +18968,6 @@ __metadata:
   peerDependencies:
     react: ">=16.8"
   checksum: 10/d0c79a0f95a88730c0d2bfd098da9d6bdd4d7f08d4e1ddd152b5d013d3c01064afdd6fed57d4d3fa50c42c412e6d00e9217b2abd6cdbf4aaf810b7c33e728400
-  languageName: node
-  linkType: hard
-
-"react-router@npm:^6.25.1":
-  version: 6.25.1
-  resolution: "react-router@npm:6.25.1"
-  dependencies:
-    "@remix-run/router": "npm:1.18.0"
-  peerDependencies:
-    react: ">=16.8"
-  checksum: 10/3bfb9754cff279cabcb247f13e66315d02333dae7e251fa8975d0e5cf68ee61793ad040594d2d490a5c995efc542739e7ef80462a69bd3209f64c69086fc7786
   languageName: node
   linkType: hard
 
