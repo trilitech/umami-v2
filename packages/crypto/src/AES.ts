@@ -53,7 +53,7 @@ export const decrypt = async (
       hex2Bytes(encrypted)
     );
     return Buffer.from(decrypted).toString("utf-8");
-  } catch (error: any) {
+  } catch (_) {
     throw new Error("Error decrypting data: Invalid password");
   }
 };

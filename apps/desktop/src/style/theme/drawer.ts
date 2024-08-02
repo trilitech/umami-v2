@@ -5,7 +5,7 @@ import colors from "../colors";
 
 const { definePartsStyle, defineMultiStyleConfig } = createMultiStyleConfigHelpers(parts.keys);
 
-const baseStyle = definePartsStyle(props => ({
+const baseStyle = definePartsStyle(_ => ({
   body: {
     padding: "18px 30px 30px 30px",
     borderLeft: `1px solid ${colors.gray[800]}`,

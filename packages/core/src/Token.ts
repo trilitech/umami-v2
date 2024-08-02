@@ -134,7 +134,7 @@ export const formatTokenAmount = (amount: string, decimals = DEFAULT_TOKEN_DECIM
       maximumFractionDigits: Number(decimals),
     });
     return formatter.format(realAmount.toNumber());
-  } catch (e) {
+  } catch (_) {
     console.warn(`Can't format token amount with decimals = ${decimals}`);
     // there are tokens with decimals > 1000 which is not supported by Intl.NumberFormat
     return formatTokenAmount(amount, "0");

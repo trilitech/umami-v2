@@ -40,15 +40,7 @@ describe("SendFlow utils", () => {
   describe("<FormSubmitButtons />", () => {
     it("renders preview button", () => {
       const mockSingle = jest.fn();
-      const mockAddToBatch = jest.fn();
-      render(
-        <FormSubmitButtons
-          isLoading={false}
-          isValid={true}
-          onAddToBatch={mockAddToBatch}
-          onSingleSubmit={mockSingle}
-        />
-      );
+      render(<FormSubmitButtons isLoading={false} isValid={true} onSingleSubmit={mockSingle} />);
 
       fireEvent.click(screen.getByText("Preview"));
       expect(mockSingle).toHaveBeenCalled();
@@ -56,12 +48,7 @@ describe("SendFlow utils", () => {
 
     it("shows preview button by default", () => {
       render(
-        <FormSubmitButtons
-          isLoading={false}
-          isValid={true}
-          onAddToBatch={async () => {}}
-          onSingleSubmit={async () => {}}
-        />
+        <FormSubmitButtons isLoading={false} isValid={true} onSingleSubmit={async () => {}} />
       );
 
       expect(screen.getByText("Preview")).toBeInTheDocument();
@@ -72,7 +59,6 @@ describe("SendFlow utils", () => {
         <FormSubmitButtons
           isLoading={false}
           isValid={true}
-          onAddToBatch={async () => {}}
           onSingleSubmit={async () => {}}
           showPreview={false}
         />

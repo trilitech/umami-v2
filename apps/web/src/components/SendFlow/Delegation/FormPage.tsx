@@ -40,7 +40,7 @@ export const FormPage = (props: FormPageProps<FormValues>) => {
   const addToBatch = useAddToBatchFormAction(toOperation);
 
   const {
-    onFormSubmitActionHandlers: [onSingleSubmit, onBatchSubmit],
+    onFormSubmitActionHandlers: [onSingleSubmit],
     isLoading,
   } = useHandleOnSubmitFormActions([openSignPage, addToBatch]);
 
@@ -89,7 +89,6 @@ export const FormPage = (props: FormPageProps<FormValues>) => {
             <FormSubmitButtons
               isLoading={isLoading}
               isValid={isValid}
-              onAddToBatch={handleSubmit(onBatchSubmit)}
               onSingleSubmit={handleSubmit(onSingleSubmit)}
             />
           </ModalFooter>

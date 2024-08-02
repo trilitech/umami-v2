@@ -1,5 +1,4 @@
 import { Box, Center, Flex, type FlexProps, Heading, Link, Text } from "@chakra-ui/react";
-import { type ImplicitAccount } from "@umami/core";
 import { useGetFirstFinalizableCycle, useSelectedNetwork } from "@umami/state";
 import { prettyTezAmount } from "@umami/tezos";
 import { type RawTzktUnstakeRequest } from "@umami/tzkt";
@@ -15,10 +14,8 @@ import { PrettyNumber } from "../../../PrettyNumber";
 // TODO: test
 export const PendingUnstakeRequest = ({
   request,
-  account,
   ...props
 }: {
-  account: ImplicitAccount;
   request: RawTzktUnstakeRequest;
 } & FlexProps) => {
   const firstFinalizableCycle = useGetFirstFinalizableCycle()(request.cycle);

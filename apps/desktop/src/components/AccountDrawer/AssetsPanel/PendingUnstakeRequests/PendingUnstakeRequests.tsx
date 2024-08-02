@@ -51,7 +51,7 @@ export const PendingUnstakeRequests = ({
       <Flex flexDirection="column" gap="10px">
         <FinalizableUnstakeRequest account={account} />
         {pendingUnstakeRequests.map(request => (
-          <PendingUnstakeRequest key={request.cycle} account={account} request={request} />
+          <PendingUnstakeRequest key={request.cycle} request={request} />
         ))}
       </Flex>
     </Flex>

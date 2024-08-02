@@ -10,7 +10,6 @@ export const CopyableAddress = ({
   pkh,
   formatAddress = true,
   copyable = true,
-  iconColor = colors.gray[600],
   ...rest
 }: {
   pkh: string;
@@ -21,7 +20,6 @@ export const CopyableAddress = ({
   <CopyableText
     copyValue={copyable ? pkh : undefined}
     displayText={formatAddress ? formatPkh(pkh) : pkh}
-    iconColor={iconColor}
     toastMessage="Address copied to clipboard"
     {...rest}
   />
@@ -31,13 +29,11 @@ const CopyableText = ({
   displayText,
   copyValue,
   toastMessage,
-  iconColor,
   ...rest
 }: {
   displayText: string;
   copyValue?: string;
   toastMessage?: string;
-  iconColor?: string;
 } & FlexProps) => {
   const toast = useToast();
   const onClickCopyIcon = async () => {
