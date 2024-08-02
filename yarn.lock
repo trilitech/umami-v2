@@ -8246,7 +8246,7 @@ __metadata:
     "@umami/typescript-config": "workspace:^"
     "@umami/tzkt": "workspace:^"
     "@vitejs/plugin-react": "npm:^4.3.1"
-    axios: "npm:^1.7.2"
+    axios: "npm:^1.7.3"
     babel-jest: "npm:^29.7.0"
     bignumber.js: "npm:^9.1.2"
     bip39: "npm:^3.1.0"
@@ -8409,7 +8409,7 @@ __metadata:
     "@umami/tezos": "workspace:^"
     "@umami/typescript-config": "workspace:^"
     "@umami/tzkt": "workspace:^"
-    axios: "npm:^1.7.2"
+    axios: "npm:^1.7.3"
     babel-jest: "npm:^29.7.0"
     depcheck: "npm:^1.4.7"
     eslint: "npm:^8.57.0"
@@ -8553,7 +8553,7 @@ __metadata:
     "@umami/jest-config": "workspace:^"
     "@umami/test-utils": "workspace:^"
     "@umami/typescript-config": "workspace:^"
-    axios: "npm:^1.7.2"
+    axios: "npm:^1.7.3"
     babel-jest: "npm:^29.7.0"
     bignumber.js: "npm:^9.1.2"
     depcheck: "npm:^1.4.7"
@@ -8588,7 +8588,7 @@ __metadata:
     "@umami/jest-config": "workspace:^"
     "@umami/tezos": "workspace:^"
     "@umami/typescript-config": "workspace:^"
-    axios: "npm:^1.7.2"
+    axios: "npm:^1.7.3"
     babel-jest: "npm:^29.7.0"
     depcheck: "npm:^1.4.7"
     eslint: "npm:^8.57.0"
@@ -9737,7 +9737,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.6.1, axios@npm:^1.6.2, axios@npm:^1.7.2":
+"axios@npm:^1.6.1, axios@npm:^1.6.2":
   version: 1.7.2
   resolution: "axios@npm:1.7.2"
   dependencies:
@@ -9745,6 +9745,17 @@ __metadata:
     form-data: "npm:^4.0.0"
     proxy-from-env: "npm:^1.1.0"
   checksum: 10/6ae80dda9736bb4762ce717f1a26ff997d94672d3a5799ad9941c24d4fb019c1dff45be8272f08d1975d7950bac281f3ba24aff5ecd49ef5a04d872ec428782f
+  languageName: node
+  linkType: hard
+
+"axios@npm:^1.7.3":
+  version: 1.7.3
+  resolution: "axios@npm:1.7.3"
+  dependencies:
+    follow-redirects: "npm:^1.15.6"
+    form-data: "npm:^4.0.0"
+    proxy-from-env: "npm:^1.1.0"
+  checksum: 10/7f92af205705a8fb4a9d35666b663729507657f252a1d39d83582590119941872d49078017cf992e32f47aa3b7317f5439f77be772a173dac2ae0fedd38f43ae
   languageName: node
   linkType: hard
 
