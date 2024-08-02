@@ -61,7 +61,7 @@ export const AccountSelectorModal = () => {
                   paddingLeft="12px"
                 >
                   <Heading color={color("900")} size="sm">
-                    {capitalize(type)}
+                    {type.split("_").map(capitalize).join(" ")}
                   </Heading>
                   <IconButton
                     color={color("500")}

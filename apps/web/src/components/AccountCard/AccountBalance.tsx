@@ -1,19 +1,23 @@
-import { Box, Flex, Icon, IconButton, Text } from "@chakra-ui/react";
+import { Box, Flex, Link, Text } from "@chakra-ui/react";
 import { useCurrentAccount, useGetAccountBalance, useGetDollarBalance } from "@umami/state";
 import { prettyTezAmount } from "@umami/tezos";
 
-import { ArrowDownLeftIcon, PlusIcon } from "../../assets/icons";
+import { SendTezButton } from "./SendTezButton";
+import { ArrowDownLeftIcon, WalletIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
-import { SendButton } from "../SendButton";
+import { IconButtonWithText } from "../IconButtonWithText";
 
 export const AccountBalance = () => {
   const color = useColor();
   const currentAccount = useCurrentAccount()!;
-  const balance = useGetAccountBalance()(currentAccount.address.pkh);
-  const usdBalance = useGetDollarBalance()(currentAccount.address.pkh);
+  const address = currentAccount.address.pkh;
+  const balance = useGetAccountBalance()(address);
+  const usdBalance = useGetDollarBalance()(address);
+
+  const buyTezUrl = `https://widget.wert.io/default/widget/?commodity=XTZ&address=${address}&network=tezos&commodity_id=xtz.simple.tezos`;
 
   return (
-    <Box paddingX="12px">
+    <Box data-testid="account-balance" paddingX="12px">
       <Flex flexDirection="column" gap="4px">
         <Text
           display={{
@@ -26,37 +30,29 @@ export const AccountBalance = () => {
         >
           Tez Balance
         </Text>
-        <Text color={color("900")} fontWeight="600" size="2xl">
-          {balance && prettyTezAmount(balance)}
-        </Text>
-        <Text color={color("700")} size="sm">
-          {usdBalance && `${usdBalance}$`}
-        </Text>
+        {balance !== undefined && (
+          <Text color={color("900")} fontWeight="600" data-testid="tez-balance" size="2xl">
+            {prettyTezAmount(balance)}
+          </Text>
+        )}
+        {usdBalance !== undefined && (
+          <Text color={color("700")} data-testid="usd-balance" size="sm">
+            {`$${usdBalance}`}
+          </Text>
+        )}
       </Flex>
       <Flex
         alignItems="center"
         justifyContent="space-between"
         marginTop={{ base: "20px", lg: "40px" }}
       >
-        <IconButton
-          aria-label="Deposit"
-          icon={<Icon as={PlusIcon} width="24px" height="24px" />}
-          isRound
-          size="lg"
-          variant="iconButtonSolid"
-        />
-        <IconButton
-          marginRight="12px"
-          marginLeft="auto"
-          borderRadius="full"
-          aria-label="receive"
-          icon={<ArrowDownLeftIcon />}
-          size="lg"
-          variant="iconButtonOutline"
-        />
-        <SendButton padding={{ base: "10px 24px", lg: "10px 40px" }} size="lg" variant="primary">
-          Send
-        </SendButton>
+        <Link href={buyTezUrl} isExternal>
+          <IconButtonWithText icon={WalletIcon} label="Buy" variant="secondary" />
+        </Link>
+        <Flex gap="24px">
+          <IconButtonWithText icon={ArrowDownLeftIcon} label="Receive" variant="secondary" />
+          <SendTezButton />
+        </Flex>
       </Flex>
     </Box>
   );
