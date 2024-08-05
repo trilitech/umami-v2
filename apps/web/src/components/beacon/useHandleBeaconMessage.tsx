@@ -6,7 +6,7 @@ import {
   type PartialTezosOperation,
   TezosOperationType,
 } from "@airgap/beacon-wallet";
-import { DynamicDisclosureContext } from "@umami/components";
+import { useDynamicModalContext } from "@umami/components";
 import {
   type ContractOrigination,
   type ImplicitAccount,
@@ -22,7 +22,6 @@ import {
   useRemovePeerBySenderId,
 } from "@umami/state";
 import { type Network, isValidImplicitPkh, parseImplicitPkh, parsePkh } from "@umami/tezos";
-import { useContext } from "react";
 
 import { PermissionRequestModal } from "./PermissionRequestModal";
 import { SignPayloadRequestModal } from "./SignPayloadRequestModal";
@@ -36,7 +35,7 @@ import { BeaconSignPage } from "../../components/SendFlow/Beacon/BeaconSignPage"
  * estimate the fee and open the BeaconSignPage only if it succeeds
  */
 export const useHandleBeaconMessage = () => {
-  const { openWith } = useContext(DynamicDisclosureContext);
+  const { openWith } = useDynamicModalContext();
   const { handleAsyncAction } = useAsyncActionHandler();
   const getAccount = useGetOwnedAccountSafe();
   const findNetwork = useFindNetwork();

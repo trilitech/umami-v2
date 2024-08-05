@@ -1,6 +1,6 @@
 import { ModalContent, ModalFooter } from "@chakra-ui/react";
 import { type TezosToolkit } from "@taquito/taquito";
-import { DynamicDisclosureContext } from "@umami/components";
+import { useDynamicModalContext } from "@umami/components";
 import {
   type ApproveOrExecute,
   type EstimatedAccountOperations,
@@ -9,7 +9,6 @@ import {
 } from "@umami/core";
 import { useAsyncActionHandler } from "@umami/state";
 import { capitalize } from "lodash";
-import { useContext } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";
@@ -31,7 +30,7 @@ export const SignPage = ({
   transactionCount: number;
 }) => {
   const { handleAsyncAction } = useAsyncActionHandler();
-  const { openWith } = useContext(DynamicDisclosureContext);
+  const { openWith } = useDynamicModalContext();
   const form = useForm({
     defaultValues: { executeParams: operation.estimates },
   });

@@ -1,6 +1,6 @@
 import { Button } from "@chakra-ui/react";
 import { type TezosToolkit } from "@taquito/taquito";
-import { DynamicDisclosureContext } from "@umami/components";
+import { useDynamicModalContext } from "@umami/components";
 import {
   type Account,
   type AccountOperations,
@@ -21,7 +21,7 @@ import {
 } from "@umami/state";
 import { type ExecuteParams, type RawPkh } from "@umami/tezos";
 import { repeat } from "lodash";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { SuccessStep } from "./SuccessStep";
@@ -98,7 +98,7 @@ export const useSignPageHelpers = (
   const network = useSelectedNetwork();
   const clearBatch = useClearBatch();
   const { isLoading, handleAsyncAction, handleAsyncActionUnsafe } = useAsyncActionHandler();
-  const { openWith } = useContext(DynamicDisclosureContext);
+  const { openWith } = useDynamicModalContext();
 
   const form = useForm<{
     sender: string;

@@ -2,7 +2,7 @@ import { Modal } from "@chakra-ui/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import * as testLib from "@testing-library/react";
 import { type UserEvent } from "@testing-library/user-event";
-import { DynamicDisclosureContext, useDynamicDisclosure } from "@umami/components";
+import { DynamicModalContext, useDynamicModal } from "@umami/components";
 import { type UmamiStore, makeStore } from "@umami/state";
 import { type PropsWithChildren, type ReactNode, act } from "react";
 import { Provider } from "react-redux";
@@ -18,7 +18,7 @@ export const dynamicDisclosureContextMock = {
 const makeWrapper =
   (store: UmamiStore) =>
   ({ children }: PropsWithChildren) => {
-    const dynamicModal = useDynamicDisclosure();
+    const dynamicModal = useDynamicModal();
 
     const openWith = dynamicModal.openWith;
     const onClose = dynamicModal.onClose;
@@ -40,14 +40,14 @@ const makeWrapper =
       <BrowserRouter>
         <QueryClientProvider client={new QueryClient()}>
           <Provider store={store}>
-            <DynamicDisclosureContext.Provider value={dynamicModal}>
+            <DynamicModalContext.Provider value={dynamicModal}>
               {/* Crutch for desktop views to be testable */}
               {/* TODO: remove it when those views are rebuilt for the web */}
               <Modal isOpen={true} onClose={jest.fn()}>
                 {children}
                 {dynamicModal.content}
               </Modal>
-            </DynamicDisclosureContext.Provider>
+            </DynamicModalContext.Provider>
           </Provider>
         </QueryClientProvider>
       </BrowserRouter>

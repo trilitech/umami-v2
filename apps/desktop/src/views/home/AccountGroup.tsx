@@ -1,8 +1,7 @@
 import { Box, Center, Heading } from "@chakra-ui/react";
-import { DynamicDisclosureContext } from "@umami/components";
+import { useDynamicModalContext } from "@umami/components";
 import { type Account } from "@umami/core";
 import { useImplicitAccounts, useRemoveMnemonic, useRemoveNonMnemonic } from "@umami/state";
-import { useContext } from "react";
 
 import { AccountGroupPopover } from "./AccountGroupPopover";
 import { DeriveMnemonicAccountModal } from "./DeriveMnemonicAccountModal";
@@ -20,7 +19,7 @@ export const AccountGroup = ({
   const first = accounts[0];
   const isMultisig = first.type === "multisig";
   const isMnemonic = first.type === "mnemonic";
-  const { openWith, onClose } = useContext(DynamicDisclosureContext);
+  const { openWith, onClose } = useDynamicModalContext();
   const removeMnemonic = useRemoveMnemonic();
   const removeNonMnemonic = useRemoveNonMnemonic();
   const isLastImplicitAccounts = useImplicitAccounts().length === accounts.length;

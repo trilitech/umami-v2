@@ -1,5 +1,5 @@
 import { Box, Center, Flex, Heading, IconButton, Text } from "@chakra-ui/react";
-import { DynamicDisclosureContext } from "@umami/components";
+import { useDynamicModalContext } from "@umami/components";
 import {
   type Account,
   type FA12TokenBalance,
@@ -7,7 +7,7 @@ import {
   type NFTBalance,
 } from "@umami/core";
 import { useGetAccountBalance, useGetDollarBalance } from "@umami/state";
-import { type ReactElement, useContext } from "react";
+import { type ReactElement } from "react";
 
 import { AssetsPanel } from "./AssetsPanel/AssetsPanel";
 import { MultisigApprovers } from "./MultisigApprovers";
@@ -70,7 +70,7 @@ export const AccountDrawerDisplay = ({
   account,
 }: Props) => {
   const isMultisig = account.type === "multisig";
-  const { openWith } = useContext(DynamicDisclosureContext);
+  const { openWith } = useDynamicModalContext();
   const pkh = account.address.pkh;
   const balance = useGetAccountBalance()(pkh);
   const dollarBalance = useGetDollarBalance()(pkh);

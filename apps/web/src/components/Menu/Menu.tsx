@@ -19,15 +19,19 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useDynamicModalContext } from "@umami/components";
 import { useSelectNetwork, useSelectedNetwork } from "@umami/state";
 import { useRef } from "react";
 
+import { ImportBackupModal } from "./ImportBackupModal";
 import { LogoutIcon } from "../../assets/icons";
 import { persistor } from "../../utils/persistor";
 
 export const Menu = () => {
   const selectNetwork = useSelectNetwork();
   const currentNetwork = useSelectedNetwork();
+
+  const { openWith } = useDynamicModalContext();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef(null);
@@ -71,6 +75,9 @@ export const Menu = () => {
               </Text>
             </Flex>
           </Box>
+          <Button onClick={() => openWith(<ImportBackupModal />)} size="sm" variant="primary">
+            Import Backup
+          </Button>
         </DrawerBody>
       </DrawerContent>
       <AlertDialog

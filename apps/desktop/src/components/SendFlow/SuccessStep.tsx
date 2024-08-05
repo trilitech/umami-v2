@@ -9,9 +9,8 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
-import { DynamicDisclosureContext } from "@umami/components";
+import { useDynamicModalContext } from "@umami/components";
 import { useSelectedNetwork } from "@umami/state";
-import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { WindowLinkIcon } from "../../assets/icons/WindowLink";
@@ -19,7 +18,7 @@ import { WindowLinkIcon } from "../../assets/icons/WindowLink";
 export const SuccessStep = ({ hash }: { hash: string }) => {
   const network = useSelectedNetwork();
   const tzktUrl = `${network.tzktExplorerUrl}/${hash}`;
-  const { onClose } = useContext(DynamicDisclosureContext);
+  const { onClose } = useDynamicModalContext();
   const navigate = useNavigate();
 
   return (

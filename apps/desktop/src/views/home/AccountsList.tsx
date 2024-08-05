@@ -1,8 +1,7 @@
 import { Box, Button, Text } from "@chakra-ui/react";
-import { DynamicDisclosureContext } from "@umami/components";
+import { useDynamicModalContext } from "@umami/components";
 import { useAllAccounts } from "@umami/state";
 import { compact, groupBy } from "lodash";
-import { useContext } from "react";
 
 import { AccountGroup } from "./AccountGroup";
 import { getAccountGroupLabel } from "./getAccountGroupLabel";
@@ -14,7 +13,7 @@ import colors from "../../style/colors";
 export const AccountsList = () => {
   const accounts = useAllAccounts();
   const accountsByKind = groupBy(accounts, getAccountGroupLabel);
-  const { openWith } = useContext(DynamicDisclosureContext);
+  const { openWith } = useDynamicModalContext();
 
   const accountTiles = Object.entries(accountsByKind).map(([accountGroupLabel, accountsByType]) => (
     <AccountGroup

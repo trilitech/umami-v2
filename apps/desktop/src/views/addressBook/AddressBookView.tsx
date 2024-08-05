@@ -1,7 +1,6 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
-import { DynamicDisclosureContext } from "@umami/components";
+import { useDynamicModalContext } from "@umami/components";
 import { useSortedContacts } from "@umami/state";
-import { useContext } from "react";
 
 import { ContactTable } from "./ContactTable";
 import { AddContactIcon } from "../../assets/icons";
@@ -10,7 +9,7 @@ import { TopBar } from "../../components/TopBar";
 import { UpsertContactModal } from "../../components/UpsertContactModal";
 
 const AddContact = () => {
-  const { openWith } = useContext(DynamicDisclosureContext);
+  const { openWith } = useDynamicModalContext();
   return (
     <Button
       alignItems="center"

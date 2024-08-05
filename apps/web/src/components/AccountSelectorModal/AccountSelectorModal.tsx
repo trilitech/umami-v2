@@ -12,7 +12,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { useDynamicDisclosureContext } from "@umami/components";
+import { useDynamicModalContext } from "@umami/components";
 import { accountsActions, useGetAccountBalance, useImplicitAccounts } from "@umami/state";
 import { prettyTezAmount } from "@umami/tezos";
 import { capitalize, chain, sortBy } from "lodash";
@@ -29,7 +29,7 @@ export const AccountSelectorModal = () => {
   const color = useColor();
   const getBalance = useGetAccountBalance();
   const { onOpen: openOnboardingModal, modalElement } = useOnboardingModal();
-  const { onClose } = useDynamicDisclosureContext();
+  const { onClose } = useDynamicModalContext();
 
   const dispatch = useDispatch();
 

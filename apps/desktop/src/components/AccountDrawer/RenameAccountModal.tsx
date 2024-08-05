@@ -9,10 +9,10 @@ import {
   ModalContent,
   ModalFooter,
 } from "@chakra-ui/react";
-import { DynamicDisclosureContext } from "@umami/components";
+import { useDynamicModalContext } from "@umami/components";
 import { type Account } from "@umami/core";
 import { renameAccount, useAppDispatch, useValidateName } from "@umami/state";
-import { type FC, useContext } from "react";
+import { type FC } from "react";
 import { useForm } from "react-hook-form";
 
 import { FormPageHeader } from "../SendFlow/FormPageHeader";
@@ -21,7 +21,7 @@ export const RenameAccountModal: FC<{
   account: Account;
 }> = ({ account }) => {
   const dispatch = useAppDispatch();
-  const { onClose } = useContext(DynamicDisclosureContext);
+  const { onClose } = useDynamicModalContext();
 
   const onSubmitNewName = ({ name }: { name: string }) => {
     dispatch(renameAccount(account, name));

@@ -1,5 +1,5 @@
 import { Box, Button, Center, Flex, type FlexProps, Heading, Text } from "@chakra-ui/react";
-import { DynamicDisclosureContext } from "@umami/components";
+import { useDynamicModalContext } from "@umami/components";
 import { type Account, type ImplicitAccount } from "@umami/core";
 import {
   useGetAccountDelegate,
@@ -7,7 +7,7 @@ import {
   useSelectedNetwork,
 } from "@umami/state";
 import { prettyTezAmount } from "@umami/tezos";
-import { type ReactNode, useContext } from "react";
+import { type ReactNode } from "react";
 
 import { PendingUnstakeRequests } from "./PendingUnstakeRequests/PendingUnstakeRequests";
 import { ExternalLinkIcon, PenIcon, XMarkIcon } from "../../../assets/icons";
@@ -49,7 +49,7 @@ const RoundStatusDot = ({ background }: { background: string }) => (
 );
 
 export const EarnTab = ({ account }: { account: Account }) => {
-  const { openWith } = useContext(DynamicDisclosureContext);
+  const { openWith } = useDynamicModalContext();
   const network = useSelectedNetwork();
   const pkh = account.address.pkh;
   const delegate = useGetAccountDelegate()(pkh);

@@ -2,7 +2,7 @@ import { Box, Button, Divider, Flex, IconButton, Text } from "@chakra-ui/react";
 import { nanoid } from "@reduxjs/toolkit";
 import type { OperationContentsAndResult } from "@taquito/rpc";
 import { TezosOperationError } from "@taquito/taquito";
-import { DynamicDisclosureContext } from "@umami/components";
+import { useDynamicModalContext } from "@umami/components";
 import { type Account, type AccountOperations, type Operation, estimate } from "@umami/core";
 import {
   useAsyncActionHandler,
@@ -12,7 +12,7 @@ import {
 } from "@umami/state";
 import { TEZ } from "@umami/tezos";
 import pluralize from "pluralize";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { AccountSmallTile } from "./AccountSmallTile";
 import { OperationEstimationStatus } from "./OperationEstimationStatus";
@@ -35,7 +35,7 @@ const RightHeader = ({
   isLoading: boolean;
 }) => {
   const { type: operationsType, sender, operations } = accountOperations;
-  const { openWith } = useContext(DynamicDisclosureContext);
+  const { openWith } = useDynamicModalContext();
 
   return (
     <Box alignItems="center" justifyContent="space-between" data-testid="right-header">
@@ -102,7 +102,7 @@ export const BatchView = ({ operations: accountOperations }: { operations: Accou
   const showFooter = operations.length > 9;
 
   const removeItem = useRemoveBatchItem();
-  const { openWith } = useContext(DynamicDisclosureContext);
+  const { openWith } = useDynamicModalContext();
   const network = useSelectedNetwork();
   const [operationsEstimationResults, setOperationsEstimationResults] = useState<
     OperationContentsAndResult[]

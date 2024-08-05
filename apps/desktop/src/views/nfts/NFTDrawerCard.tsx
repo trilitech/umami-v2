@@ -12,11 +12,10 @@ import {
   Image,
   Text,
 } from "@chakra-ui/react";
-import { DynamicDisclosureContext } from "@umami/components";
+import { useDynamicModalContext } from "@umami/components";
 import { type NFTWithOwner, artifactUri, mimeType, tokenName } from "@umami/core";
 import { useGetOwnedAccount } from "@umami/state";
 import { getIPFSurl } from "@umami/tezos";
-import { useContext } from "react";
 import ReactPlayer from "react-player";
 
 import { AttributesAccordionItem } from "./drawer/AttributesAccordionItem";
@@ -30,7 +29,7 @@ export const NFTDrawerCard = ({ nft }: { nft: NFTWithOwner }) => {
   const url = getIPFSurl(artifactUri(nft));
   const fallbackUrl = getIPFSurl(nft.displayUri);
   const getAccount = useGetOwnedAccount();
-  const { openWith } = useContext(DynamicDisclosureContext);
+  const { openWith } = useDynamicModalContext();
   const isVideo = mimeType(nft)?.startsWith("video/");
 
   const name = tokenName(nft);

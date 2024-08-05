@@ -10,10 +10,10 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
-import { DynamicDisclosureContext } from "@umami/components";
+import { useDynamicModalContext } from "@umami/components";
 import { type Contact } from "@umami/core";
 import { contactsActions, useAppDispatch } from "@umami/state";
-import { type FC, useContext } from "react";
+import { type FC } from "react";
 
 import { CopyableAddress } from "./CopyableText";
 import colors from "../style/colors";
@@ -28,7 +28,7 @@ export const DeleteContactModal: FC<{
   contact: Contact;
 }> = ({ contact }) => {
   const dispatch = useAppDispatch();
-  const { onClose } = useContext(DynamicDisclosureContext);
+  const { onClose } = useDynamicModalContext();
   const onDeleteContact = () => {
     dispatch(contactsActions.remove(contact.pkh));
     onClose();
