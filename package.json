@@ -29,7 +29,7 @@
   "devDependencies": {
     "jest": "^29.7.0",
     "rimraf": "^6.0.1",
-    "tsup": "^8.2.3",
+    "tsup": "^8.2.4",
     "turbo": "^2.0.11"
   },
   "resolutions": {
