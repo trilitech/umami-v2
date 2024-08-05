@@ -32,7 +32,7 @@
     "@testing-library/jest-dom": "6.4.8",
     "@testing-library/react": "14.3.1",
     "@testing-library/user-event": "14.5.2",
-    "@toruslabs/customauth": "16.0.6",
+    "@toruslabs/customauth": "20.0.1",
     "@trilitech-umami/umami-embed": "^0.1.1",
     "@umami/social-auth": "workspace:^",
     "@umami/tezos": "workspace:^",
