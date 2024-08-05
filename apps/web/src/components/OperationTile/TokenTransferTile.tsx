@@ -102,7 +102,7 @@ export const TokenTransferTileTitle = ({
       borderRadius="8px"
       data-testid="nft-tooltip"
       label={
-        <AspectRatio width="170px" height="170px" ratio={1}>
+        <AspectRatio width="170px" ratio={1}>
           <Image src={getIPFSurl(thumbnailUri(token))} />
         </AspectRatio>
       }

@@ -9,7 +9,6 @@ import { AddressTile } from "../../AddressTile/AddressTile";
 import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
-import { headerText } from "../SignPageHeader";
 
 export const DelegationSignPage = ({ operation, message }: BeaconSignPageProps) => {
   const { recipient } = operation.operations[0] as Delegation;
@@ -20,7 +19,7 @@ export const DelegationSignPage = ({ operation, message }: BeaconSignPageProps) 
     <FormProvider {...form}>
       <ModalContent>
         <form>
-          <Header message={message} mode="single" operation={operation} />
+          <Header message={message} />
           <ModalBody>
             <FormLabel>From</FormLabel>
             <AddressTile address={operation.signer.address} />
@@ -48,7 +47,6 @@ export const DelegationSignPage = ({ operation, message }: BeaconSignPageProps) 
               network={network}
               onSubmit={onSign}
               signer={operation.signer}
-              text={headerText(operation.type, "single")}
             />
           </ModalFooter>
         </form>

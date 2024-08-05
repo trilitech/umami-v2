@@ -1,4 +1,3 @@
-import { Modal } from "@chakra-ui/react";
 import {
   estimate,
   makeAccountOperations,
@@ -9,7 +8,7 @@ import {
 import { type UmamiStore, addTestAccount, makeStore, mockToast } from "@umami/state";
 import { executeParams } from "@umami/test-utils";
 
-import { FormPage, type FormValues } from "./FormPage";
+import { FormPage } from "./FormPage";
 import { SignPage } from "./SignPage";
 import {
   act,
@@ -20,13 +19,6 @@ import {
   userEvent,
   waitFor,
 } from "../../../testUtils";
-import { type FormPageProps } from "../utils";
-
-const fixture = (props: FormPageProps<FormValues> = {}) => (
-  <Modal isOpen={true} onClose={() => {}}>
-    <FormPage {...props} />
-  </Modal>
-);
 
 jest.mock("@umami/core", () => ({
   ...jest.requireActual("@umami/core"),
@@ -42,7 +34,7 @@ beforeEach(() => {
 describe("<Form />", () => {
   describe("default values", () => {
     it("renders an empty form by default", () => {
-      render(fixture(), { store });
+      render(<FormPage />, { store });
 
       expect(screen.getByLabelText("From")).toHaveValue("");
       expect(screen.getByLabelText("From")).toBeEnabled();
@@ -51,7 +43,7 @@ describe("<Form />", () => {
     });
 
     it("renders a form with a prefilled sender", () => {
-      render(fixture({ sender: mockImplicitAccount(0) }), { store });
+      render(<FormPage sender={mockImplicitAccount(0)} />, { store });
 
       expect(screen.getByTestId("real-address-input-sender")).toHaveValue(
         mockImplicitAccount(0).address.pkh
@@ -60,13 +52,13 @@ describe("<Form />", () => {
 
     it("renders a form with default form values", async () => {
       render(
-        fixture({
-          form: {
+        <FormPage
+          form={{
             sender: mockImplicitAccount(0).address.pkh,
             prettyAmount: "1",
             recipient: mockImplicitAccount(1).address.pkh,
-          },
-        }),
+          }}
+        />,
         { store }
       );
 
@@ -83,14 +75,14 @@ describe("<Form />", () => {
 
     it("renders a form with default form values but disabled sender if it's provided", async () => {
       render(
-        fixture({
-          form: {
+        <FormPage
+          form={{
             sender: mockImplicitAccount(0).address.pkh,
             prettyAmount: "1",
             recipient: mockImplicitAccount(1).address.pkh,
-          },
-          sender: mockImplicitAccount(0),
-        }),
+          }}
+          sender={mockImplicitAccount(0)}
+        />,
         { store }
       );
 
@@ -107,13 +99,13 @@ describe("<Form />", () => {
 
     it("renders a form with prefilled recipient", async () => {
       render(
-        fixture({
-          form: {
+        <FormPage
+          form={{
             sender: "",
             prettyAmount: "",
             recipient: mockImplicitAccount(1).address.pkh,
-          },
-        }),
+          }}
+        />,
         { store }
       );
 
@@ -129,7 +121,7 @@ describe("<Form />", () => {
   describe("validations", () => {
     describe("From", () => {
       it("is required", async () => {
-        render(fixture(), { store });
+        render(<FormPage />, { store });
 
         fireEvent.blur(screen.getByLabelText("From"));
         await waitFor(() =>
@@ -139,7 +131,7 @@ describe("<Form />", () => {
 
       it("allows only owned accounts", async () => {
         addTestAccount(store, mockMnemonicAccount(0));
-        render(fixture(), { store });
+        render(<FormPage />, { store });
 
         fireEvent.change(screen.getByLabelText("From"), {
           target: { value: mockImplicitAccount(1).address.pkh },
@@ -157,7 +149,7 @@ describe("<Form />", () => {
 
       it("allows owned multisig accounts", async () => {
         addTestAccount(store, mockMultisigAccount(0));
-        render(fixture(), { store });
+        render(<FormPage />, { store });
 
         fireEvent.change(screen.getByLabelText("From"), {
           target: { value: mockMultisigAccount(1).address.pkh },
@@ -176,7 +168,7 @@ describe("<Form />", () => {
 
     describe("To", () => {
       it("is required", async () => {
-        render(fixture(), { store });
+        render(<FormPage />, { store });
 
         fireEvent.blur(screen.getByLabelText("To"));
         await waitFor(() =>
@@ -187,7 +179,7 @@ describe("<Form />", () => {
       });
 
       it("allows only valid addresses", async () => {
-        render(fixture(), { store });
+        render(<FormPage />, { store });
 
         fireEvent.change(screen.getByLabelText("To"), {
           target: { value: "invalid" },
@@ -210,7 +202,7 @@ describe("<Form />", () => {
 
     describe("Amount", () => {
       it("is required", async () => {
-        render(fixture(), { store });
+        render(<FormPage />, { store });
 
         fireEvent.blur(screen.getByLabelText("Amount"));
         await waitFor(() =>
@@ -229,13 +221,13 @@ describe("<Form />", () => {
     it("shows a toast if estimation fails", async () => {
       const user = userEvent.setup();
       render(
-        fixture({
-          form: {
+        <FormPage
+          form={{
             sender: mockImplicitAccount(0).address.pkh,
             recipient: mockImplicitAccount(1).address.pkh,
             prettyAmount: "1",
-          },
-        }),
+          }}
+        />,
         { store }
       );
       const submitButton = screen.getByText("Preview");
@@ -258,13 +250,13 @@ describe("<Form />", () => {
       async sender => {
         const user = userEvent.setup();
         render(
-          fixture({
-            form: {
+          <FormPage
+            form={{
               sender: sender.address.pkh,
               recipient: mockImplicitAccount(1).address.pkh,
               prettyAmount: "1",
-            },
-          }),
+            }}
+          />,
           { store }
         );
         const submitButton = screen.getByText("Preview");

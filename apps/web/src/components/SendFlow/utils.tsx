@@ -1,4 +1,4 @@
-import { Button } from "@chakra-ui/react";
+import { Button, type ButtonProps } from "@chakra-ui/react";
 import { type TezosToolkit } from "@taquito/taquito";
 import { useDynamicModalContext } from "@umami/components";
 import {
@@ -22,7 +22,7 @@ import {
 import { type ExecuteParams, type RawPkh } from "@umami/tezos";
 import { repeat } from "lodash";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useFormContext } from "react-hook-form";
 
 import { SuccessStep } from "./SuccessStep";
 
@@ -51,30 +51,17 @@ export type SignPageProps<T = undefined> = {
   data: T;
 };
 
-export const FormSubmitButtons = ({
-  isLoading,
-  isValid,
-  onSingleSubmit,
-  showPreview = true,
-}: {
-  isLoading: boolean;
-  isValid: boolean;
-  onSingleSubmit: () => Promise<void>;
-  showPreview?: boolean;
-}) =>
-  showPreview && (
-    <Button
-      width="100%"
-      marginBottom="16px"
-      isDisabled={!isValid}
-      isLoading={isLoading}
-      onClick={onSingleSubmit}
-      size="lg"
-      type="submit"
-    >
-      Preview
+export const FormSubmitButton = ({ title = "Preview", ...props }: ButtonProps) => {
+  const {
+    formState: { isValid },
+  } = useFormContext();
+
+  return (
+    <Button width="full" isDisabled={!isValid} size="lg" type="submit" variant="primary" {...props}>
+      {title}
     </Button>
   );
+};
 
 export const formDefaultValues = <T,>({ sender, form }: FormPageProps<T>) => {
   if (form) {

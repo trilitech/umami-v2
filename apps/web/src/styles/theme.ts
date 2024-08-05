@@ -53,16 +53,21 @@ const theme = extendTheme({
         },
         button: {
           paddingY: "16px",
-
+          borderBottomWidth: 0,
           _hover: {
             background: "gray.100",
           },
         },
-      },
-    },
-    AccordionItem: {
-      baseStyle: {
-        borderColor: "gray.100",
+        container: {
+          _last: {
+            borderBottomWidth: 0,
+          },
+        },
+        icon: {
+          width: "24px",
+          height: "24px",
+          color: "gray.500",
+        },
       },
     },
     Text: { sizes },
@@ -317,7 +322,6 @@ const theme = extendTheme({
         dialog: {
           background: "white",
           width: "100%",
-          background: "white",
           minWidth: {
             base: "100%",
             lg: "506px",
@@ -371,6 +375,7 @@ const theme = extendTheme({
           textAlign: "center",
           padding: 0,
           color: "gray.900",
+          marginBottom: "30px",
         },
         body: {
           padding: 0,
@@ -382,6 +387,7 @@ const theme = extendTheme({
         footer: {
           padding: 0,
           justifyContent: "center",
+          marginTop: "30px",
         },
       },
     },

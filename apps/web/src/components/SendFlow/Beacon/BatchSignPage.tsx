@@ -22,7 +22,6 @@ import { AddressTile } from "../../AddressTile/AddressTile";
 import { JsValueWrap } from "../../JsValueWrap";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
-import { headerText } from "../SignPageHeader";
 
 export const BatchSignPage = ({ operation, message }: BeaconSignPageProps) => {
   const { isSigning, onSign, network, fee, form } = useSignWithBeacon(operation, message);
@@ -34,7 +33,7 @@ export const BatchSignPage = ({ operation, message }: BeaconSignPageProps) => {
     <FormProvider {...form}>
       <ModalContent>
         <form>
-          <Header message={message} mode="batch" operation={operation} />
+          <Header message={message} />
 
           <ModalBody>
             <Accordion allowToggle>
@@ -71,13 +70,7 @@ export const BatchSignPage = ({ operation, message }: BeaconSignPageProps) => {
           </ModalBody>
 
           <ModalFooter>
-            <SignButton
-              isLoading={isSigning}
-              network={network}
-              onSubmit={onSign}
-              signer={signer}
-              text={headerText(operation.type, "batch")}
-            />
+            <SignButton isLoading={isSigning} network={network} onSubmit={onSign} signer={signer} />
           </ModalFooter>
         </form>
       </ModalContent>

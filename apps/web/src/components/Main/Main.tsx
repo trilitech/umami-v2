@@ -1,4 +1,4 @@
-import { Box, Card } from "@chakra-ui/react";
+import { Box, Card, CardBody } from "@chakra-ui/react";
 import { Navigate, Route, Routes } from "react-router";
 
 import { Activity } from "../../views/Activity";
@@ -14,20 +14,21 @@ export const Main = () => (
     paddingTop={{ lg: "75px" }}
     borderRadius="30px"
   >
-    <Card
-      padding={{
-        base: "18px",
-        lg: "40px",
-      }}
-      borderRadius="30px"
-    >
-      <Routes>
-        <Route element={<Tokens />} path="/tokens" />
-        <Route element={<NFTs />} path="/nfts" />
-        <Route element={<Earn />} path="/earn" />
-        <Route element={<Activity />} path="/activity" />
-        <Route element={<Navigate to="/tokens" />} path="/*" />
-      </Routes>
+    <Card minHeight="full" borderRadius="30px">
+      <CardBody
+        padding={{
+          base: "18px",
+          lg: "40px",
+        }}
+      >
+        <Routes>
+          <Route element={<Tokens />} path="/tokens" />
+          <Route element={<NFTs />} path="/nfts" />
+          <Route element={<Earn />} path="/earn" />
+          <Route element={<Activity />} path="/activity" />
+          <Route element={<Navigate to="/tokens" />} path="/*" />
+        </Routes>
+      </CardBody>
     </Card>
   </Box>
 );

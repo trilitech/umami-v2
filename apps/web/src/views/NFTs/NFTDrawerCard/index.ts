@@ -1,1 +1,1 @@
-export * as NFTDrawer from "./NFTDrawerCard";
+export * from "./NFTDrawerCard";

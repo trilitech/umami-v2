@@ -2,6 +2,7 @@ import { Box, Card, CardBody, Center, Heading, Icon, Image } from "@chakra-ui/re
 import { type NFTBalance, thumbnailUri } from "@umami/core";
 import { getIPFSurl } from "@umami/tezos";
 
+import { NFTBalancePill } from "./NFTBalancePill";
 import { SearchIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
 
@@ -42,20 +43,7 @@ export const NFTCard = ({ nft, onClick }: { nft: NFTBalance; onClick?: () => voi
             fallbackSrc={fallbackUrl}
             src={url}
           />
-          {Number(nft.balance) > 1 && (
-            <Center
-              position="absolute"
-              bottom="12px"
-              left="12px"
-              padding="4px 12px"
-              color={color("900")}
-              background={color("300")}
-              borderRadius="full"
-              data-testid="nft-balance"
-            >
-              <Heading size="sm">{nft.balance}</Heading>
-            </Center>
-          )}
+          <NFTBalancePill nft={nft} />
         </Center>
       </CardBody>
 

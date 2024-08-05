@@ -8,12 +8,10 @@ export const SignPageFee = ({ fee }: { fee: string | number }) => {
 
   return (
     <Flex alignItems="center">
-      <Heading marginRight="4px" color={color("450")} size="sm">
+      <Heading marginRight="4px" color={color("700")} size="md">
         Fee:
       </Heading>
-      <Text color={color("400")} data-testid="fee" size="sm">
-        {prettyTezAmount(fee)}
-      </Text>
+      <Text data-testid="fee">{prettyTezAmount(fee)}</Text>
     </Flex>
   );
 };

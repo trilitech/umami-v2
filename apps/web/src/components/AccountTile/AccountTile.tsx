@@ -1,8 +1,9 @@
-import { Circle, Flex, type FlexProps, Heading } from "@chakra-ui/react";
+import { Flex, type FlexProps, Heading } from "@chakra-ui/react";
 import { type ImplicitAccount } from "@umami/core";
 import { type PropsWithChildren } from "react";
 
 import { AccountTileIcon } from "./AccountTileIcon";
+import { AccountTileWrapper } from "./AccountTileWrapper";
 import { useColor } from "../../styles/useColor";
 import { CopyAddressButton } from "../CopyAddressButton";
 
@@ -17,6 +18,7 @@ export const AccountTile = ({
   return (
     <Flex
       gap="10px"
+      paddingLeft="12px"
       borderRadius="full"
       _hover={{ background: color("100") }}
       cursor={props.onClick ? "pointer" : undefined}
@@ -24,15 +26,9 @@ export const AccountTile = ({
       paddingY="12px"
       {...props}
     >
-      <Circle
-        marginLeft="12px"
-        color={color("white")}
-        background={color("white", "black")}
-        filter="drop-shadow(0px 0px 12px rgba(45, 55, 72, 0.08))"
-        size="48px"
-      >
+      <AccountTileWrapper>
         <AccountTileIcon account={account} />
-      </Circle>
+      </AccountTileWrapper>
 
       <Flex justifyContent="space-between" width="100%" marginRight="20px">
         <Flex justifyContent="center" flexDirection="column" gap="2px">

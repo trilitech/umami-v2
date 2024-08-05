@@ -1,10 +1,12 @@
 import {
   Box,
   Button,
+  Divider,
   FormControl,
   FormErrorMessage,
   FormLabel,
   Input,
+  VStack,
   useToast,
 } from "@chakra-ui/react";
 import { type TezosToolkit } from "@taquito/taquito";
@@ -26,7 +28,7 @@ export const SignButton = ({
   onSubmit,
   isLoading: externalIsLoading,
   isDisabled,
-  text,
+  text = "Confirm Transaction",
   network: preferredNetwork,
 }: {
   onSubmit: (tezosToolkit: TezosToolkit) => Promise<BatchWalletOperation | void>;
@@ -106,53 +108,60 @@ export const SignButton = ({
     case "secret_key":
     case "mnemonic":
       return (
-        <Box width="100%">
+        <Box width="full">
           <FormProvider {...form}>
-            <FormControl isInvalid={!!errors.password} marginY="16px">
-              <FormLabel>Password</FormLabel>
-              <Input
-                data-testid="password"
-                type="password"
-                {...form.register("password", { minLength: 8, required: "Password is required" })}
-              />
-              {errors.password && <FormErrorMessage>{errors.password.message}</FormErrorMessage>}
-            </FormControl>
-            <Button
-              width="100%"
-              marginTop="8px"
-              isDisabled={isButtonDisabled}
-              isLoading={isLoading}
-              onClick={handleSubmit(signer.type === "mnemonic" ? onMnemonicSign : onSecretKeySign)}
-              size="lg"
-              type="submit"
-            >
-              {text || "Submit Transaction"}
-            </Button>
+            <VStack alignItems="start" spacing="30px">
+              <Divider />
+              <FormControl isInvalid={!!errors.password}>
+                <FormLabel>Password</FormLabel>
+                <Input
+                  data-testid="password"
+                  type="password"
+                  {...form.register("password", { minLength: 8, required: "Password is required" })}
+                />
+                {errors.password && <FormErrorMessage>{errors.password.message}</FormErrorMessage>}
+              </FormControl>
+              <Button
+                width="full"
+                isDisabled={isButtonDisabled}
+                isLoading={isLoading}
+                onClick={handleSubmit(
+                  signer.type === "mnemonic" ? onMnemonicSign : onSecretKeySign
+                )}
+                size="lg"
+                type="submit"
+                variant="primary"
+              >
+                {text}
+              </Button>
+            </VStack>
           </FormProvider>
         </Box>
       );
     case "social":
       return (
         <Button
-          width="100%"
+          width="full"
           isDisabled={isDisabled}
           isLoading={isLoading}
           onClick={onSocialSign}
           size="lg"
+          variant="primary"
         >
-          {text || "Sign with social"}
+          {text}
         </Button>
       );
     case "ledger":
       return (
         <Button
-          width="100%"
+          width="full"
           isDisabled={isDisabled}
           isLoading={isLoading}
           onClick={onLedgerSign}
           size="lg"
+          variant="primary"
         >
-          {text || "Sign with Ledger"}
+          {text}
         </Button>
       );
   }

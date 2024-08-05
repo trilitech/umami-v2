@@ -26,7 +26,7 @@ import {
 } from "../onSubmitFormActionHooks";
 import {
   type FormPageProps,
-  FormSubmitButtons,
+  FormSubmitButton,
   formDefaultValues,
   getSmallestUnit,
   makeValidateDecimals,
@@ -59,7 +59,7 @@ export const FormPage = (props: FormPageProps<FormValues>) => {
     defaultValues: formDefaultValues(props),
   });
   const {
-    formState: { isValid, errors },
+    formState: { errors },
     register,
     handleSubmit,
   } = form;
@@ -67,7 +67,7 @@ export const FormPage = (props: FormPageProps<FormValues>) => {
   return (
     <FormProvider {...form}>
       <ModalContent>
-        <form>
+        <form onSubmit={handleSubmit(onSingleSubmit)}>
           <ModalHeader marginBottom="32px">
             <Center>
               <Heading>Select amount</Heading>
@@ -101,11 +101,7 @@ export const FormPage = (props: FormPageProps<FormValues>) => {
             </FormControl>
           </ModalBody>
           <ModalFooter>
-            <FormSubmitButtons
-              isLoading={isLoading}
-              isValid={isValid}
-              onSingleSubmit={handleSubmit(onSingleSubmit)}
-            />
+            <FormSubmitButton isLoading={isLoading} />
           </ModalFooter>
         </form>
       </ModalContent>

@@ -1,34 +1,22 @@
-import { Button, type ButtonProps, Text } from "@chakra-ui/react";
+import { type ButtonProps, Text } from "@chakra-ui/react";
 import { type RawPkh, formatPkh } from "@umami/tezos";
 import { memo } from "react";
 
 import { FileCopyIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
+import { CopyButton } from "../CopyButton/CopyButton";
 
-// TODO: add a popover "copied"
 export const CopyAddressButton = memo(
-  ({ address, ...props }: { address: RawPkh } & ButtonProps) => {
+  ({ address, isLong = false, ...props }: { address: RawPkh; isLong?: boolean } & ButtonProps) => {
     const color = useColor();
 
     return (
-      <Button
-        gap="4px"
-        width="fit-content"
-        padding="0"
-        fontWeight="400"
-        aria-label="Copy Address"
-        onClick={event => {
-          event.stopPropagation();
-          return navigator.clipboard.writeText(address);
-        }}
-        variant="empty"
-        {...props}
-      >
-        <Text display="inline" size="sm">
-          {formatPkh(address)}
+      <CopyButton aria-label="Copy Address" {...props} value={address}>
+        <Text color={color("700")} size="sm">
+          {isLong ? address : formatPkh(address)}
         </Text>
         <FileCopyIcon color={color("400")} />
-      </Button>
+      </CopyButton>
     );
   }
 );

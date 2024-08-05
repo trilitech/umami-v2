@@ -1,17 +1,15 @@
-import { Modal } from "@chakra-ui/react";
+import { estimate, makeAccountOperations, mockImplicitAccount, mockNFT } from "@umami/core";
 import {
-  type NFTBalance,
-  estimate,
-  makeAccountOperations,
-  mockImplicitAccount,
-  mockMnemonicAccount,
-  mockNFT,
-} from "@umami/core";
-import { type UmamiStore, addTestAccount, makeStore, mockToast } from "@umami/state";
+  type UmamiStore,
+  accountsActions,
+  addTestAccount,
+  makeStore,
+  mockToast,
+} from "@umami/state";
 import { executeParams } from "@umami/test-utils";
 import { parseContractPkh } from "@umami/tezos";
 
-import { FormPage, type FormValues } from "./FormPage";
+import { FormPage } from "./FormPage";
 import { SignPage } from "./SignPage";
 import {
   act,
@@ -22,101 +20,63 @@ import {
   userEvent,
   waitFor,
 } from "../../../testUtils";
-import { type FormPagePropsWithSender } from "../utils";
 
 jest.mock("@umami/core", () => ({
   ...jest.requireActual("@umami/core"),
   estimate: jest.fn(),
 }));
 
-const fixture = (props: FormPagePropsWithSender<FormValues>, nft: NFTBalance = mockNFT(1, "1")) => (
-  <Modal isOpen={true} onClose={() => {}}>
-    <FormPage {...props} nft={nft} />
-  </Modal>
-);
+const sender = mockImplicitAccount(0);
+const nft = mockNFT(1, "1");
 
 let store: UmamiStore;
 
 beforeEach(() => {
   store = makeStore();
+  addTestAccount(store, sender);
+  store.dispatch(accountsActions.setCurrent(sender.address.pkh));
 });
 
 describe("<FormPage />", () => {
-  describe("default values", () => {
-    it("renders a form with a prefilled sender", () => {
-      render(fixture({ sender: mockImplicitAccount(1) }), { store });
+  it("renders a form with default form values", async () => {
+    render(
+      <FormPage
+        form={{
+          sender: mockImplicitAccount(0).address.pkh,
+          quantity: 1,
+          recipient: mockImplicitAccount(1).address.pkh,
+        }}
+        nft={nft}
+      />,
+      { store }
+    );
 
-      expect(screen.getByTestId("address-tile")).toHaveTextContent(
-        mockImplicitAccount(1).address.pkh
-      );
-    });
-
-    it("renders a form with default form values", async () => {
-      render(
-        fixture({
-          sender: mockImplicitAccount(0),
-          form: {
-            sender: mockImplicitAccount(0).address.pkh,
-            quantity: 1,
-            recipient: mockImplicitAccount(1).address.pkh,
-          },
-        }),
-        { store }
-      );
-
-      await waitFor(() => {
-        expect(screen.getByTestId("real-address-input-sender")).toHaveValue(
-          mockImplicitAccount(0).address.pkh
-        );
-      });
+    await waitFor(() =>
       expect(screen.getByTestId("real-address-input-recipient")).toHaveValue(
         mockImplicitAccount(1).address.pkh
-      );
-      expect(screen.getByTestId("quantity-input")).toHaveValue(1);
-    });
+      )
+    );
+    expect(screen.getByTestId("quantity-input")).toHaveValue(1);
   });
 
   describe("nft", () => {
     it("displays the correct name", () => {
-      render(
-        fixture(
-          {
-            sender: mockImplicitAccount(0),
-          },
-          mockNFT(1, "10")
-        ),
-        { store }
-      );
+      render(<FormPage nft={nft} />, { store });
 
-      expect(screen.getByTestId("nft-owned")).toHaveTextContent("10");
-      expect(screen.getByTestId("nft-name")).toHaveTextContent(mockNFT(1).metadata.name as string);
+      expect(screen.getByTestId("nft-name")).toHaveTextContent(nft.metadata.name as string);
     });
 
     it("renders the correct balance", () => {
-      render(
-        fixture(
-          {
-            sender: mockImplicitAccount(0),
-          },
-          mockNFT(1, "10")
-        ),
-        { store }
-      );
+      render(<FormPage nft={mockNFT(1, "10")} />, { store });
 
       expect(screen.getByTestId("nft-owned")).toHaveTextContent("10");
-      expect(screen.getByTestId("out-of-nft")).toHaveTextContent("10");
     });
   });
 
   describe("validation", () => {
     describe("To", () => {
       it("is required", async () => {
-        render(
-          fixture({
-            sender: mockImplicitAccount(0),
-          }),
-          { store }
-        );
+        render(<FormPage nft={nft} />, { store });
 
         fireEvent.blur(screen.getByLabelText("To"));
         await waitFor(() => {
@@ -127,12 +87,7 @@ describe("<FormPage />", () => {
       });
 
       it("allows only valid addresses", async () => {
-        render(
-          fixture({
-            sender: mockImplicitAccount(0),
-          }),
-          { store }
-        );
+        render(<FormPage nft={nft} />, { store });
 
         fireEvent.change(screen.getByLabelText("To"), {
           target: { value: "invalid" },
@@ -155,12 +110,7 @@ describe("<FormPage />", () => {
 
     describe("quantity", () => {
       it("doesn't allow values < 1", async () => {
-        render(
-          fixture({
-            sender: mockImplicitAccount(0),
-          }),
-          { store }
-        );
+        render(<FormPage nft={nft} />, { store });
         fireEvent.change(screen.getByTestId("quantity-input"), {
           target: { value: "0" },
         });
@@ -171,15 +121,7 @@ describe("<FormPage />", () => {
       });
 
       it("doesn't allow values above the nft balance", async () => {
-        render(
-          fixture(
-            {
-              sender: mockImplicitAccount(0),
-            },
-            mockNFT(1, "5")
-          ),
-          { store }
-        );
+        render(<FormPage nft={mockNFT(1, "5")} />, { store });
         fireEvent.change(screen.getByTestId("quantity-input"), {
           target: { value: "7" },
         });
@@ -193,17 +135,16 @@ describe("<FormPage />", () => {
     describe("single transaction", () => {
       it("opens a sign page if estimation succeeds", async () => {
         const user = userEvent.setup();
-        addTestAccount(store, mockMnemonicAccount(0));
-        const sender = mockImplicitAccount(0);
+
         render(
-          fixture({
-            sender,
-            form: {
+          <FormPage
+            form={{
               sender: sender.address.pkh,
               recipient: mockImplicitAccount(1).address.pkh,
               quantity: 1,
-            },
-          }),
+            }}
+            nft={nft}
+          />,
           { store }
         );
         const submitButton = screen.getByText("Preview");

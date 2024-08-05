@@ -4,28 +4,33 @@ import {
   FormErrorMessage,
   FormLabel,
   Heading,
+  Icon,
   Input,
   InputGroup,
+  InputRightElement,
   ModalBody,
   ModalContent,
   ModalFooter,
   Text,
+  VStack,
 } from "@chakra-ui/react";
 import { type FA2Transfer, type NFTBalance } from "@umami/core";
+import { useCurrentAccount } from "@umami/state";
 import { type RawPkh, parseContractPkh, parsePkh } from "@umami/tezos";
 import { FormProvider, useForm } from "react-hook-form";
 
+import { NFTTile } from "./NFTTile";
 import { SignPage } from "./SignPage";
+import { ChevronDownIcon } from "../../../assets/icons";
 import { useColor } from "../../../styles/useColor";
-import { KnownAccountsAutocomplete, OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
+import { KnownAccountsAutocomplete } from "../../AddressAutocomplete";
 import { FormPageHeader } from "../FormPageHeader";
 import {
   useAddToBatchFormAction,
   useHandleOnSubmitFormActions,
   useOpenSignPageFormAction,
 } from "../onSubmitFormActionHooks";
-import { SendNFTRecapTile } from "../SendNFTRecapTile";
-import { type FormPagePropsWithSender, FormSubmitButtons, formDefaultValues } from "../utils";
+import { type FormPageProps, FormSubmitButton, formDefaultValues } from "../utils";
 
 export type FormValues = {
   quantity: number;
@@ -33,14 +38,15 @@ export type FormValues = {
   recipient: RawPkh;
 };
 
-export const FormPage = (props: FormPagePropsWithSender<FormValues> & { nft: NFTBalance }) => {
+export const FormPage = (props: FormPageProps<FormValues> & { nft: NFTBalance }) => {
   const { nft } = props;
+  const sender = useCurrentAccount()!;
   const color = useColor();
   const openSignPage = useOpenSignPageFormAction({
     SignPage,
     signPageExtraData: { nft },
     FormPage,
-    defaultFormPageProps: props,
+    defaultFormPageProps: { ...props, sender },
     toOperation: toOperation(nft),
   });
 
@@ -53,10 +59,10 @@ export const FormPage = (props: FormPagePropsWithSender<FormValues> & { nft: NFT
 
   const form = useForm<FormValues>({
     mode: "onBlur",
-    defaultValues: { quantity: 1, ...formDefaultValues(props) },
+    defaultValues: { quantity: 1, ...formDefaultValues({ ...props, sender }) },
   });
   const {
-    formState: { isValid, errors },
+    formState: { errors },
     register,
     handleSubmit,
   } = form;
@@ -64,88 +70,81 @@ export const FormPage = (props: FormPagePropsWithSender<FormValues> & { nft: NFT
   return (
     <FormProvider {...form}>
       <ModalContent>
-        <form>
+        <form onSubmit={handleSubmit(onSingleSubmit)}>
           <FormPageHeader />
+
           <ModalBody>
-            <Flex marginBottom="12px">
-              <SendNFTRecapTile nft={props.nft} />
-            </Flex>
-            <Flex alignItems="center">
-              <Heading marginRight="4px" color={color("450")} size="sm">
-                Owned:
-              </Heading>
-              <Text color={color("400")} data-testid="nft-owned" size="sm">
-                {nft.balance}
-              </Text>
-            </Flex>
+            <VStack spacing="24px">
+              <NFTTile nft={props.nft} />
 
-            <FormControl marginTop="24px" isInvalid={!!errors.quantity}>
-              <FormLabel>
-                <Flex alignItems="center">
-                  <Heading marginRight="8px" size="md">
-                    Quantity:
-                  </Heading>
-                  <Flex alignItems="center">
-                    <InputGroup width="75px">
-                      <Input
-                        width="60px"
-                        color="white"
-                        data-testid="quantity-input"
-                        step={1}
-                        type="number"
-                        {...register("quantity", {
-                          required: "Quantity is required",
-                          max: {
-                            value: nft.balance,
-                            message: `Max quantity is ${nft.balance}`,
-                          },
-                          min: {
-                            value: 1,
-                            message: "Min quantity is 1",
-                          },
-                        })}
-                      />
-                    </InputGroup>
-                    <Text data-testid="out-of-nft">out of {nft.balance}</Text>
+              <FormControl isInvalid={!!errors.quantity}>
+                <FormLabel>
+                  <Flex justifyContent="space-between">
+                    <Heading marginRight="8px" size="md">
+                      Quantity
+                    </Heading>
+
+                    <Flex>
+                      <Heading marginRight="4px" color={color("700")} size="md">
+                        Owned:
+                      </Heading>
+                      <Text color={color("700")} data-testid="nft-owned" size="md">
+                        {nft.balance}
+                      </Text>
+                    </Flex>
                   </Flex>
-                </Flex>
-              </FormLabel>
-              {errors.quantity && (
-                <FormErrorMessage data-testid="quantity-error">
-                  {errors.quantity.message}
-                </FormErrorMessage>
-              )}
-            </FormControl>
+                </FormLabel>
 
-            <FormControl marginTop="24px" isInvalid={!!errors.sender}>
-              <OwnedAccountsAutocomplete
-                allowUnknown={false}
-                inputName="sender"
-                isDisabled
-                label="From"
-              />
-              {errors.sender && (
-                <FormErrorMessage data-testid="from-error">
-                  {errors.sender.message}
-                </FormErrorMessage>
-              )}
-            </FormControl>
+                <InputGroup>
+                  <Input
+                    data-testid="quantity-input"
+                    step={1}
+                    type="number"
+                    {...register("quantity", {
+                      required: "Quantity is required",
+                      max: {
+                        value: nft.balance,
+                        message: `Max quantity is ${nft.balance}`,
+                      },
+                      min: {
+                        value: 1,
+                        message: "Min quantity is 1",
+                      },
+                    })}
+                  />
 
-            <FormControl marginTop="24px" isInvalid={!!errors.recipient}>
-              <KnownAccountsAutocomplete allowUnknown inputName="recipient" label="To" />
-              {errors.recipient && (
-                <FormErrorMessage data-testid="recipient-error">
-                  {errors.recipient.message}
-                </FormErrorMessage>
-              )}
-            </FormControl>
+                  <InputRightElement
+                    marginRight="10px"
+                    color={color("400")}
+                    fontSize="sm"
+                    _hover={{ color: color("500") }}
+                    cursor="pointer"
+                    onClick={e => e.stopPropagation()}
+                  >
+                    <Icon as={ChevronDownIcon} width="24px" height="24px" />
+                  </InputRightElement>
+                </InputGroup>
+
+                {errors.quantity && (
+                  <FormErrorMessage data-testid="quantity-error">
+                    {errors.quantity.message}
+                  </FormErrorMessage>
+                )}
+              </FormControl>
+
+              <FormControl isInvalid={!!errors.recipient}>
+                <KnownAccountsAutocomplete allowUnknown inputName="recipient" label="To" />
+                {errors.recipient && (
+                  <FormErrorMessage data-testid="recipient-error">
+                    {errors.recipient.message}
+                  </FormErrorMessage>
+                )}
+              </FormControl>
+            </VStack>
           </ModalBody>
+
           <ModalFooter>
-            <FormSubmitButtons
-              isLoading={isLoading}
-              isValid={isValid}
-              onSingleSubmit={handleSubmit(onSingleSubmit)}
-            />
+            <FormSubmitButton isLoading={isLoading} />
           </ModalFooter>
         </form>
       </ModalContent>

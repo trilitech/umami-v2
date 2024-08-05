@@ -1,13 +1,14 @@
 import { mockImplicitAccount } from "@umami/core";
 import { type RawPkh, mockImplicitAddress } from "@umami/tezos";
+import { FormProvider, useForm } from "react-hook-form";
 
 import {
-  FormSubmitButtons,
+  FormSubmitButton,
   formDefaultValues,
   getSmallestUnit,
   makeValidateDecimals,
 } from "./utils";
-import { fireEvent, render, screen } from "../../testUtils";
+import { act, render, screen, userEvent, waitFor } from "../../testUtils";
 
 describe("SendFlow utils", () => {
   describe("formDefaultValues", () => {
@@ -38,33 +39,27 @@ describe("SendFlow utils", () => {
   });
 
   describe("<FormSubmitButtons />", () => {
-    it("renders preview button", () => {
+    const TestComponent = ({ onSubmit }: { onSubmit: () => void }) => {
+      const form = useForm();
+
+      return (
+        <FormProvider {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <FormSubmitButton isLoading={false} />
+          </form>
+        </FormProvider>
+      );
+    };
+
+    it("renders preview button", async () => {
       const mockSingle = jest.fn();
-      render(<FormSubmitButtons isLoading={false} isValid={true} onSingleSubmit={mockSingle} />);
+      const user = userEvent.setup();
 
-      fireEvent.click(screen.getByText("Preview"));
+      render(<TestComponent onSubmit={mockSingle} />);
+
+      await waitFor(() => expect(screen.getByText("Preview")).toBeEnabled());
+      await act(() => user.click(screen.getByText("Preview")));
       expect(mockSingle).toHaveBeenCalled();
-    });
-
-    it("shows preview button by default", () => {
-      render(
-        <FormSubmitButtons isLoading={false} isValid={true} onSingleSubmit={async () => {}} />
-      );
-
-      expect(screen.getByText("Preview")).toBeInTheDocument();
-    });
-
-    it("hides preview button", () => {
-      render(
-        <FormSubmitButtons
-          isLoading={false}
-          isValid={true}
-          onSingleSubmit={async () => {}}
-          showPreview={false}
-        />
-      );
-
-      expect(screen.queryByText("Preview")).not.toBeInTheDocument();
     });
   });
 

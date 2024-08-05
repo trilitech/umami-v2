@@ -17,7 +17,6 @@ import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";
 import { TezTile } from "../../AssetTiles/TezTile";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
-import { headerText } from "../SignPageHeader";
 import { type SignPageProps, useSignPageHelpers } from "../utils";
 
 // TODO: test
@@ -53,12 +52,7 @@ export const SignPage = (props: SignPageProps<{ finalizableAmount: BigNumber }>)
             <AdvancedSettingsAccordion />
           </ModalBody>
           <ModalFooter>
-            <SignButton
-              isLoading={isLoading}
-              onSubmit={onSign}
-              signer={signer}
-              text={headerText(operations.type, mode)}
-            />
+            <SignButton isLoading={isLoading} onSubmit={onSign} signer={signer} />
           </ModalFooter>
         </form>
       </ModalContent>

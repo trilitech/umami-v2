@@ -5,7 +5,7 @@ import { useGetOwnedAccountSafe } from "@umami/state";
 import { memo } from "react";
 
 import { type AddressTileIconSize } from "./AddressTileIconSize";
-import { AddContactIcon, ContactIcon } from "../../assets/icons";
+import { ContactIcon, UnknownIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
 import { AccountTileIcon } from "../AccountTile/AccountTileIcon";
 
@@ -24,9 +24,8 @@ export const AddressTileIcon = memo(
     const color = useColor();
 
     const baseIconProps = {
-      stroke: color("400"),
       borderRadius: "4px",
-      background: color("500"),
+      color: color("500"),
     };
 
     if (account) {
@@ -59,7 +58,7 @@ export const AddressTileIcon = memo(
       case "unknown":
         return (
           <Icon
-            as={AddContactIcon}
+            as={UnknownIcon}
             width={sizeInPx}
             height={sizeInPx}
             padding={padding}

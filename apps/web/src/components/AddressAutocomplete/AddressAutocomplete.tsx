@@ -39,7 +39,6 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
   keepValid,
   style,
   size,
-  hideBalance = false,
 }: BaseProps<T, U> & { contacts: Contact[] }) => {
   const {
     register,
@@ -181,9 +180,7 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
         type="hidden"
       />
 
-      {!hideSuggestions && (
-        <Suggestions contacts={suggestions} hideBalance={hideBalance} onChange={handleChange} />
-      )}
+      {!hideSuggestions && <Suggestions contacts={suggestions} onChange={handleChange} />}
     </Box>
   );
 };
@@ -228,7 +225,7 @@ export const BakersAutocomplete = <T extends FieldValues, U extends Path<T>>(
     pkh: baker.address,
   }));
 
-  return <AddressAutocomplete {...props} contacts={bakers} hideBalance />;
+  return <AddressAutocomplete {...props} contacts={bakers} />;
 };
 
 export const AvailableSignersAutocomplete = <T extends FieldValues, U extends Path<T>>(

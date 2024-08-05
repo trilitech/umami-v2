@@ -32,7 +32,7 @@ import {
 } from "../onSubmitFormActionHooks";
 import {
   type FormPagePropsWithSender,
-  FormSubmitButtons,
+  FormSubmitButton,
   formDefaultValues,
   getSmallestUnit,
   makeValidateDecimals,
@@ -68,7 +68,7 @@ export const FormPage = (
     defaultValues: formDefaultValues(props),
   });
   const {
-    formState: { isValid, errors },
+    formState: { errors },
     register,
     handleSubmit,
   } = form;
@@ -80,7 +80,7 @@ export const FormPage = (
   return (
     <FormProvider {...form}>
       <ModalContent>
-        <form>
+        <form onSubmit={handleSubmit(onSingleSubmit)}>
           <FormPageHeader />
           <ModalBody>
             <FormControl isInvalid={!!errors.prettyAmount}>
@@ -135,11 +135,7 @@ export const FormPage = (
             </FormControl>
           </ModalBody>
           <ModalFooter>
-            <FormSubmitButtons
-              isLoading={isLoading}
-              isValid={isValid}
-              onSingleSubmit={handleSubmit(onSingleSubmit)}
-            />
+            <FormSubmitButton isLoading={isLoading} />
           </ModalFooter>
         </form>
       </ModalContent>

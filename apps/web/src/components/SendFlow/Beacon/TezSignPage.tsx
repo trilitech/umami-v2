@@ -10,7 +10,6 @@ import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";
 import { TezTile } from "../../AssetTiles/TezTile";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
-import { headerText } from "../SignPageHeader";
 
 export const TezSignPage = ({ operation, message }: BeaconSignPageProps) => {
   const { amount: mutezAmount, recipient } = operation.operations[0] as TezTransfer;
@@ -21,7 +20,7 @@ export const TezSignPage = ({ operation, message }: BeaconSignPageProps) => {
     <FormProvider {...form}>
       <ModalContent>
         <form>
-          <Header message={message} mode="single" operation={operation} />
+          <Header message={message} />
           <ModalBody>
             <TezTile mutezAmount={mutezAmount} />
 
@@ -43,7 +42,6 @@ export const TezSignPage = ({ operation, message }: BeaconSignPageProps) => {
               network={network}
               onSubmit={onSign}
               signer={operation.signer}
-              text={headerText(operation.type, "single")}
             />
           </ModalFooter>
         </form>

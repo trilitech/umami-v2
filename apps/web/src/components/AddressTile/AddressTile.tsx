@@ -1,9 +1,12 @@
-import { Box, Flex, type FlexProps, Heading, Text, Tooltip } from "@chakra-ui/react";
+import { Flex, type FlexProps, Heading, Text } from "@chakra-ui/react";
 import { useAddressKind } from "@umami/components";
-import { type Address, formatPkh } from "@umami/tezos";
+import { useGetAccountBalance } from "@umami/state";
+import { type Address, prettyTezAmount } from "@umami/tezos";
 
 import { AddressTileIcon } from "./AddressTileIcon";
 import { useColor } from "../../styles/useColor";
+import { AccountTileWrapper } from "../AccountTile/AccountTileWrapper";
+import { CopyAddressButton } from "../CopyAddressButton";
 
 /**
  * Tile component for displaying account (owned / unknown) / contact / baker.
@@ -15,53 +18,41 @@ import { useColor } from "../../styles/useColor";
  * @param flexProps - Defines component style.
  * @param hideBalance - If true, balance will not be displayed.
  */
-export const AddressTile = ({
-  address,
-  hideBalance = false,
-  ...flexProps
-}: { address: Address; hideBalance?: boolean } & FlexProps) => {
+export const AddressTile = ({ address, ...flexProps }: { address: Address } & FlexProps) => {
   const addressKind = useAddressKind(address);
   const color = useColor();
 
-  return (
-    <Tooltip
-      color={color("black")}
-      background={color("white")}
-      hasArrow
-      label={addressKind.label}
-      placement="left"
-    >
-      <Flex
-        alignItems="center"
-        justifyContent="space-between"
-        width="100%"
-        padding="9px 10px"
-        background={color("100")}
-        borderRadius="4px"
-        data-testid="address-tile"
-        {...flexProps}
-      >
-        <Flex alignItems="center" width={hideBalance ? "100%" : "calc(100% - 95px)"}>
-          <AddressTileIcon addressKind={addressKind} size="sm" />
+  const balance = useGetAccountBalance()(address.pkh);
 
-          {addressKind.type === "unknown" ? (
-            <Text marginLeft="10px" color={color("300")} size="sm">
-              {address.pkh}
-            </Text>
-          ) : (
-            <>
-              <Box overflow="hidden" width="100%" marginLeft="10px" whiteSpace="nowrap">
-                <Heading overflow="hidden" textOverflow="ellipsis" size="sm">
-                  {addressKind.label}
-                </Heading>
-              </Box>
-              <Text width="89px" marginLeft="10px" color={color("500")} size="xs">
-                {formatPkh(addressKind.pkh)}
-              </Text>
-            </>
-          )}
+  return (
+    <Flex
+      alignItems="center"
+      justifyContent="space-between"
+      width="100%"
+      padding="12px 16px"
+      background={color("50")}
+      borderRadius="4px"
+      data-testid="address-tile"
+      {...flexProps}
+    >
+      <Flex gap="16px" width="full">
+        <AccountTileWrapper>
+          <AddressTileIcon addressKind={addressKind} size="sm" />
+        </AccountTileWrapper>
+
+        <Flex justifyContent="center" flexDirection="column" width="full">
+          <Heading size="md">{addressKind.label}</Heading>
+
+          <Flex justifyContent="space-between">
+            <CopyAddressButton
+              color={color("700")}
+              address={address.pkh}
+              isLong={addressKind.type === "unknown"}
+            />
+            <Text size="sm">{balance !== undefined && prettyTezAmount(balance)}</Text>
+          </Flex>
         </Flex>
       </Flex>
-    </Tooltip>
+    </Flex>
   );
 };

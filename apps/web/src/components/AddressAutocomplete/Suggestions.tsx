@@ -7,11 +7,9 @@ import { AddressTile } from "../AddressTile/AddressTile";
 
 export const Suggestions = ({
   contacts,
-  hideBalance,
   onChange,
 }: {
   contacts: Contact[];
-  hideBalance: boolean;
   onChange: (name: string) => void;
 }) => {
   const color = useColor();
@@ -57,7 +55,6 @@ export const Suggestions = ({
               }}
               cursor="pointer"
               address={parsePkh(contact.pkh)}
-              hideBalance={hideBalance}
             />
           </ListItem>
         </Box>

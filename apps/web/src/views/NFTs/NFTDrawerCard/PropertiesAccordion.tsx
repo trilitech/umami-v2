@@ -20,7 +20,6 @@ import { type PropsWithChildren } from "react";
 
 import { AddressPill } from "../../../components/AddressPill/AddressPill";
 import { useColor } from "../../../styles/useColor";
-// import { TruncatedTextWithTooltip } from "../../../components/TruncatedTextWithTooltip";
 
 const CreatorElement = ({ nft }: { nft: NFTBalance }) => {
   if (!nft.metadata.creators || nft.metadata.creators.length === 0) {
@@ -62,7 +61,7 @@ export const PropertiesAccordion = ({ nft, ...props }: { nft: NFTBalance } & Acc
 
   return (
     <Accordion allowToggle {...props}>
-      <AccordionItem>
+      <AccordionItem data-testid="properties-section">
         <AccordionButton>
           <Heading flex="1" color={color("900")} textAlign="left" size="lg">
             Properties
@@ -105,7 +104,7 @@ export const PropertiesAccordion = ({ nft, ...props }: { nft: NFTBalance } & Acc
             <CreatorElement nft={nft} />
           </Row>
 
-          <Row borderBottom="1px dashed" borderBottomColor={color("100")} label="License">
+          <Row paddingBottom="0" label="License">
             {nft.metadata.rights || "-"}
           </Row>
         </AccordionPanel>

@@ -8,7 +8,6 @@ import { AddressTile } from "../../AddressTile/AddressTile";
 import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
-import { headerText } from "../SignPageHeader";
 
 export const UndelegationSignPage = ({ operation, message }: BeaconSignPageProps) => {
   const { isSigning, onSign, network, form, fee } = useSignWithBeacon(operation, message);
@@ -17,7 +16,7 @@ export const UndelegationSignPage = ({ operation, message }: BeaconSignPageProps
     <FormProvider {...form}>
       <ModalContent>
         <form>
-          <Header message={message} mode="single" operation={operation} />
+          <Header message={message} />
           <ModalBody>
             <FormLabel>From</FormLabel>
             <AddressTile address={operation.signer.address} />
@@ -34,7 +33,6 @@ export const UndelegationSignPage = ({ operation, message }: BeaconSignPageProps
               network={network}
               onSubmit={onSign}
               signer={operation.signer}
-              text={headerText(operation.type, "single")}
             />
           </ModalFooter>
         </form>
