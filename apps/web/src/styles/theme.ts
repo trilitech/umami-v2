@@ -285,6 +285,7 @@ const theme = extendTheme({
       baseStyle: {
         dialog: {
           width: "100%",
+          background: "white",
           minWidth: {
             base: "100%",
             lg: "506px",

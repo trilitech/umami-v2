@@ -1,116 +1,80 @@
-import {
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogCloseButton,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogOverlay,
-  Box,
-  Button,
-  DrawerBody,
-  DrawerCloseButton,
-  DrawerContent,
-  Flex,
-  Heading,
-  Radio,
-  RadioGroup,
-  Stack,
-  Text,
-  useDisclosure,
-} from "@chakra-ui/react";
-import { useDynamicModalContext } from "@umami/components";
-import { useSelectNetwork, useSelectedNetwork } from "@umami/state";
-import { useRef } from "react";
+import { Switch } from "@chakra-ui/react";
+import { useColorMode } from "@chakra-ui/system";
+import { useDynamicDrawerContext, useDynamicModalContext } from "@umami/components";
+import { useMemo } from "react";
 
-import { ImportBackupModal } from "./ImportBackupModal";
-import { LogoutIcon } from "../../assets/icons";
-import { persistor } from "../../utils/persistor";
+import { AddressBookMenu } from "./AddressBookMenu";
+import { AdvancedMenu } from "./AdvancedMenu";
+import { AppsMenu } from "./AppsMenu";
+import { GenericMenu } from "./GenericMenu";
+import { LogoutModal } from "./LogoutModal";
+import { type MenuItems } from "./types";
+import {
+  BookIcon,
+  CodeSandboxIcon,
+  DownloadIcon,
+  LogoutIcon,
+  MoonIcon,
+  SettingsIcon,
+  UserPlusIcon,
+} from "../../assets/icons";
 
 export const Menu = () => {
-  const selectNetwork = useSelectNetwork();
-  const currentNetwork = useSelectedNetwork();
+  const { openWith: openModal } = useDynamicModalContext();
+  const { openWith: openDrawer } = useDynamicDrawerContext();
+  const { colorMode, toggleColorMode } = useColorMode();
 
-  const { openWith } = useDynamicModalContext();
-
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const cancelRef = useRef(null);
-
-  const handleLogout = () => {
-    persistor.pause();
-    localStorage.removeItem("persist:accounts");
-    window.location.replace("/");
-  };
-
-  return (
-    <>
-      <DrawerContent>
-        <DrawerCloseButton />
-        <DrawerBody paddingTop="40px">
-          <Box>
-            <RadioGroup onChange={selectNetwork} value={currentNetwork.name}>
-              <Heading>Network</Heading>
-              <Stack direction="column">
-                <Radio value="mainnet">Mainnet</Radio>
-                <Radio value="ghostnet">Ghostnet</Radio>
-              </Stack>
-            </RadioGroup>
-          </Box>
-          <Box>
-            <Flex
-              alignItems="center"
-              gap="10px"
-              padding="20px"
-              color="gray.400"
-              _hover={{
-                bg: "gray.100",
-              }}
-              cursor="pointer"
-              onClick={onOpen}
-              rounded="full"
-            >
-              <LogoutIcon />
-              <Text color="gray.900" fontWeight="600" size="lg">
-                Logout
-              </Text>
-            </Flex>
-          </Box>
-          <Button onClick={() => openWith(<ImportBackupModal />)} size="sm" variant="primary">
-            Import Backup
-          </Button>
-        </DrawerBody>
-      </DrawerContent>
-      <AlertDialog
-        isCentered
-        isOpen={isOpen}
-        leastDestructiveRef={cancelRef}
-        motionPreset="slideInBottom"
-        onClose={onClose}
-      >
-        <AlertDialogOverlay />
-        <AlertDialogContent>
-          <AlertDialogHeader>Logout</AlertDialogHeader>
-          <AlertDialogCloseButton />
-          <AlertDialogBody>
-            Before logging out, make sure your mnemonic phrase is securely saved. Losing this phrase
-            could result in permanent loss of access to your data.
-          </AlertDialogBody>
-          <AlertDialogFooter justifyContent="flex-end">
-            <Button ref={cancelRef} onClick={onClose} size="lg">
-              Cancel
-            </Button>
-            <Button
-              marginLeft={3}
-              colorScheme="red"
-              onClick={handleLogout}
-              size="lg"
-              variant="primary"
-            >
-              Logout
-            </Button>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-    </>
+  const menuItems = useMemo(
+    () =>
+      [
+        [
+          {
+            label: "Advanced",
+            icon: <SettingsIcon />,
+            onClick: () => openDrawer(<AdvancedMenu />),
+            hasArrow: true,
+          },
+          {
+            label: "Address Book",
+            icon: <BookIcon />,
+            onClick: () => openDrawer(<AddressBookMenu />),
+            hasArrow: true,
+          },
+          {
+            label: "Add Account",
+            icon: <UserPlusIcon />,
+            onClick: () => {},
+          },
+          {
+            label: "Save Backup",
+            icon: <DownloadIcon />,
+            onClick: () => {},
+          },
+          {
+            label: "Apps",
+            icon: <CodeSandboxIcon />,
+            onClick: () => openDrawer(<AppsMenu />),
+            hasArrow: true,
+          },
+        ],
+        [
+          {
+            label: "Dark Mode",
+            icon: <MoonIcon />,
+            onClick: toggleColorMode,
+            rightElement: <Switch isChecked={colorMode === "dark"} onChange={toggleColorMode} />,
+          },
+        ],
+        [
+          {
+            label: "Logout",
+            icon: <LogoutIcon />,
+            onClick: () => openModal(<LogoutModal />),
+          },
+        ],
+      ] as MenuItems,
+    [openModal, openDrawer, colorMode, toggleColorMode]
   );
+
+  return <GenericMenu menuItems={menuItems} />;
 };

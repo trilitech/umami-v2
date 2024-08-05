@@ -19,6 +19,10 @@ interface DynamicDisclosureContextType {
   onClose: () => void;
   isOpen: boolean;
   goBack: () => void;
+  stack: Array<{
+    content: ReactElement;
+    props: ThemingProps & { onClose: () => void | Promise<void> };
+  }>;
 }
 
 const defaultContextValue = {
@@ -26,6 +30,7 @@ const defaultContextValue = {
   onClose: () => {},
   goBack: () => {},
   isOpen: false,
+  stack: [],
 };
 
 /**
@@ -81,7 +86,10 @@ export const useDynamicDisclosure = () => {
     return Promise.resolve();
   };
 
-  const goBack = () => setCurrentIndex(current => current - 1);
+  const goBack = () => {
+    setCurrentIndex(current => current - 1);
+    stackRef.current.pop();
+  };
 
   const currentItem = stackRef.current[currentIndex] || null;
 
@@ -92,6 +100,7 @@ export const useDynamicDisclosure = () => {
     goBack,
     content: currentItem?.content,
     props: currentItem?.props || {},
+    stack: stackRef.current,
   };
 };
 
