@@ -7706,7 +7706,7 @@ __metadata:
     eslint-plugin-chakra-ui: "npm:^0.11.0"
     eslint-plugin-deprecation: "npm:^3.0.0"
     eslint-plugin-import: "npm:^2.29.1"
-    eslint-plugin-jest: "npm:^28.6.0"
+    eslint-plugin-jest: "npm:^28.7.0"
     eslint-plugin-jest-dom: "npm:^5.4.0"
     eslint-plugin-playwright: "npm:^1.6.2"
     eslint-plugin-react: "npm:^7.35.0"
@@ -12179,13 +12179,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-jest@npm:^28.6.0":
-  version: 28.6.0
-  resolution: "eslint-plugin-jest@npm:28.6.0"
+"eslint-plugin-jest@npm:^28.7.0":
+  version: 28.7.0
+  resolution: "eslint-plugin-jest@npm:28.7.0"
   dependencies:
-    "@typescript-eslint/utils": "npm:^6.0.0 || ^7.0.0"
+    "@typescript-eslint/utils": "npm:^6.0.0 || ^7.0.0 || ^8.0.0"
   peerDependencies:
-    "@typescript-eslint/eslint-plugin": ^6.0.0 || ^7.0.0
+    "@typescript-eslint/eslint-plugin": ^6.0.0 || ^7.0.0 || ^8.0.0
     eslint: ^7.0.0 || ^8.0.0 || ^9.0.0
     jest: "*"
   peerDependenciesMeta:
@@ -12193,7 +12193,7 @@ __metadata:
       optional: true
     jest:
       optional: true
-  checksum: 10/32232dbf54d3be0853a6f702504a9af82e9fd503ce5644c97e1cec0f17f3262d56e418dc41763ba6ed079aec401c4ce066c6c32e618403b7b5235c3e0952bdb0
+  checksum: 10/7122c4523d91f4365d601ddfe9a0f8f5761c0ce68e24dc1580e8da2e102477f31aac5c66c9c5821f4f9885d6380e84609e1bc036209eb568e3f389a847e2cb68
   languageName: node
   linkType: hard
 
