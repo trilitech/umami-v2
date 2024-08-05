@@ -224,45 +224,61 @@ export const mockFA2Token = (
   name = "Klondike2"
 ): FA2TokenBalance =>
   fromRawTokenBalance(
-    mockFA2TokenRaw(index, account.address.pkh, balance, decimals, symbol, name)
+    mockFA2TokenRaw(index, account.address.pkh, { balance, decimals, symbol, name })
   ) as FA2TokenBalance;
 
 export const mockFA12Token = (index: number, account: Account, balance = 1): FA12TokenBalance =>
   fromRawTokenBalance(mockFA1TokenRaw(index, account.address.pkh, balance)) as FA12TokenBalance;
 
+type TokenParams = Partial<{
+  balance: number;
+  decimals: number;
+  symbol: string;
+  name: string;
+  lastLevel: number;
+}>;
+
 export const mockFA2TokenRaw = (
   index: number,
   owner: RawPkh,
-  balance = 1,
-  decimals = 4,
-  symbol = "KL2",
-  name = "Klondike2"
-): RawTzktTokenBalance => ({
-  id: 10898270846977,
-  account: {
-    address: owner,
-  },
-  token: {
-    id: 10898194300929,
-    contract: {
-      address: mockContractAddress(index).pkh,
+  tokenParams?: TokenParams
+): RawTzktTokenBalance => {
+  const { balance, decimals, symbol, name, lastLevel } = {
+    balance: 1,
+    decimals: 4,
+    symbol: "KL2",
+    name: "Klondike2",
+    lastLevel: 2247548,
+    ...tokenParams,
+  };
+
+  return {
+    id: 10898270846977,
+    account: {
+      address: owner,
     },
-    tokenId: String(index),
-    standard: "fa2",
-    totalSupply: "13000000000",
-    metadata: {
-      name,
-      symbol,
-      decimals: String(decimals),
+    token: {
+      id: 10898194300929,
+      contract: {
+        address: mockContractAddress(index).pkh,
+      },
+      tokenId: String(index),
+      standard: "fa2",
+      totalSupply: "13000000000",
+      metadata: {
+        name,
+        symbol,
+        decimals: String(decimals),
+      },
     },
-  },
-  balance: String(balance),
-  transfersCount: 27,
-  firstLevel: 288245,
-  firstTime: "2022-03-24T15:36:50Z",
-  lastLevel: 2247548,
-  lastTime: "2023-03-31T11:19:01Z",
-});
+    balance: String(balance),
+    transfersCount: 27,
+    firstLevel: 288245,
+    firstTime: "2022-03-24T15:36:50Z",
+    lastLevel,
+    lastTime: "2023-03-31T11:19:01Z",
+  };
+};
 
 export const mockFA1TokenRaw = (
   index: number,
@@ -293,11 +309,9 @@ export const mockFA1TokenRaw = (
 export const mockNFTRaw = (
   index: number,
   owner: RawPkh,
-  balance = 1,
-  symbol = "KL2",
-  name = "Klondike2"
+  args?: TokenParams
 ): RawTzktTokenBalance => {
-  const tokenBalance = mockFA2TokenRaw(index, owner, balance, 0, symbol, name);
+  const tokenBalance = mockFA2TokenRaw(index, owner, { ...args, decimals: 0 });
   tokenBalance.token.metadata.displayUri = mockDisplayURI(index);
   return tokenBalance;
 };

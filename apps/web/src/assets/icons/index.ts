@@ -17,6 +17,7 @@ export { default as FA12Icon } from "./fa12.svg";
 export { default as FA2Icon } from "./fa2.svg";
 export { default as FacebookIcon } from "./facebook.svg";
 export { default as FileCopyIcon } from "./file-copy.svg";
+export { default as FilterIcon } from "./filter.svg";
 export { default as GoogleIcon } from "./google.svg";
 export { default as HourglassIcon } from "./hourglass.svg";
 export { default as IncomingArrowIcon } from "./incoming-arrow.svg";

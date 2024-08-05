@@ -50,8 +50,20 @@ const theme = extendTheme({
     Heading: {
       sizes: {
         sm: {
+          fontSize: "14px",
+          lineHeight: "18px",
+        },
+        md: {
           fontSize: "16px",
           lineHeight: "22px",
+        },
+        lg: {
+          fontSize: "18px",
+          lineHeight: "24px",
+        },
+        xl: {
+          fontSize: "20px",
+          lineHeight: "26px",
         },
       },
     },
