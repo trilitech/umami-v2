@@ -7,20 +7,18 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { useDynamicDrawerContext } from "@umami/components";
 
 import { useColor } from "../../styles/useColor";
+import { DrawerBackButton } from "../BackButton";
 import { EmptyMessage } from "../EmptyMessage";
 import { ModalCloseButton } from "../ModalCloseButton";
-import { ModalBackButton } from "../Onboarding/ModalBackButton";
 
 export const AppsMenu = () => {
-  const { goBack } = useDynamicDrawerContext();
   const color = useColor();
 
   return (
     <DrawerContent>
-      <ModalBackButton onClick={goBack} />
+      <DrawerBackButton />
       <ModalCloseButton />
       <DrawerBody paddingTop="90px">
         <Heading color={color("900")} fontSize="24px">

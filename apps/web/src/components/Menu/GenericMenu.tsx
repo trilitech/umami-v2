@@ -1,11 +1,10 @@
 import { Box, Divider, DrawerBody, DrawerContent, Heading, VStack } from "@chakra-ui/react";
-import { useDynamicDrawerContext } from "@umami/components";
 
 import { MenuItem } from "./MenuItem";
 import { type MenuItems } from "./types";
 import { useColor } from "../../styles/useColor";
+import { DrawerBackButton } from "../BackButton";
 import { ModalCloseButton } from "../ModalCloseButton";
-import { ModalBackButton } from "../Onboarding/ModalBackButton";
 
 type GenericMenuProps = {
   title?: string;
@@ -14,11 +13,10 @@ type GenericMenuProps = {
 
 export const GenericMenu = ({ title, menuItems }: GenericMenuProps) => {
   const color = useColor();
-  const { stack, goBack } = useDynamicDrawerContext();
 
   return (
     <DrawerContent>
-      {stack.length > 1 && <ModalBackButton onClick={goBack} />}
+      <DrawerBackButton />
       <ModalCloseButton />
       <DrawerBody paddingTop="90px">
         {title && (

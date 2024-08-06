@@ -1,11 +1,25 @@
-import { Button, Divider, DrawerBody, DrawerContent, Heading, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Divider,
+  DrawerBody,
+  DrawerContent,
+  Heading,
+  Radio,
+  RadioGroup,
+  Stack,
+  VStack,
+} from "@chakra-ui/react";
+import { useSelectNetwork, useSelectedNetwork } from "@umami/state";
 
 import { useColor } from "../../styles/useColor";
 import { DrawerBackButton } from "../BackButton";
-import { EmptyMessage } from "../EmptyMessage";
 import { ModalCloseButton } from "../ModalCloseButton";
 
-export const AddressBookMenu = () => {
+export const NetworkMenu = () => {
+  const selectNetwork = useSelectNetwork();
+  const currentNetwork = useSelectedNetwork();
+
   const color = useColor();
 
   return (
@@ -14,7 +28,7 @@ export const AddressBookMenu = () => {
       <ModalCloseButton />
       <DrawerBody paddingTop="90px">
         <Heading color={color("900")} fontSize="24px">
-          Address Book
+          Network
         </Heading>
         <VStack
           alignItems="flex-start"
@@ -23,9 +37,16 @@ export const AddressBookMenu = () => {
           divider={<Divider color={color("100")} />}
         >
           <Button width="auto" padding="0 24px" variant="secondary">
-            Add Contact
+            Add New
           </Button>
-          <EmptyMessage alignItems="flex-start" subtitle="contacts" title="Contacts" />
+          <Box>
+            <RadioGroup onChange={selectNetwork} value={currentNetwork.name}>
+              <Stack direction="column">
+                <Radio value="mainnet">Mainnet</Radio>
+                <Radio value="ghostnet">Ghostnet</Radio>
+              </Stack>
+            </RadioGroup>
+          </Box>
         </VStack>
       </DrawerBody>
     </DrawerContent>

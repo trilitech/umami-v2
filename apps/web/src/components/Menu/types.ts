@@ -1,8 +1,10 @@
+import { type ReactElement } from "react";
+
 export type TMenuItem = {
   label: string;
-  icon: React.ReactNode;
-  onClick: (value?: any) => Promise<void> | void;
-  rightElement?: React.ReactNode;
+  icon: ReactElement;
+  onClick: () => Promise<void> | void;
+  rightElement?: ReactElement;
   hasArrow?: boolean;
 };
 
