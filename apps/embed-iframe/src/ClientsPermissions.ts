@@ -18,7 +18,6 @@ const clientPermissions: Record<string, Permissions> = {
 export const getPermissionsForOrigin = (origin: string): Permissions | null => {
   for (const key in clientPermissions) {
     const permissions = clientPermissions[key];
-    console.log(key, permissions);
     if (permissions.origins.includes(origin)) {
       return permissions;
     }

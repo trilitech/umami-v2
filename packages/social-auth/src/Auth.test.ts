@@ -1,6 +1,5 @@
 import { type TorusAggregateLoginResponse, type TorusLoginResponse } from "@toruslabs/customauth";
 
-import { type Auth } from "./Auth";
 import { EmailAuth } from "./EmailAuth";
 import { FacebookAuth } from "./FacebookAuth";
 import { GoogleAuth } from "./GoogleAuth";
@@ -20,46 +19,56 @@ describe("Auth", () => {
       oAuthKey: rawSecretKey,
       email: "some email",
       name: "some name",
+      profileImage: "some image url",
+      verifierId: "some id",
       resultKey: secretKey,
-      resultName: "some email",
+      resultId: "some id",
     },
     {
       finalKey: rawSecretKey,
       oAuthKey: rawSecretKey,
       email: undefined,
       name: "some name",
+      profileImage: "some image url",
+      verifierId: undefined,
       resultKey: secretKey,
-      resultName: "some name",
+      resultId: "some name",
     },
     {
       finalKey: rawSecretKey,
       oAuthKey: rawSecretKey,
       email: undefined,
       name: undefined,
+      profileImage: "some image url",
+      verifierId: "some id",
       resultKey: secretKey,
-      resultName: (p: Auth) => p.idpName,
+      resultId: "some id",
     },
     {
       finalKey: rawSecretKey,
       oAuthKey: rawSecretKey + "some extra",
       email: undefined,
       name: undefined,
+      profileImage: "some image url",
+      verifierId: "some id",
       resultKey: secretKey,
-      resultName: (p: Auth) => p.idpName,
+      resultId: "some id",
     },
     {
       finalKey: undefined,
       oAuthKey: rawSecretKey,
       email: "some email",
       name: "some name",
+      profileImage: "some image url",
+      verifierId: undefined,
       resultKey: secretKey,
-      resultName: "some email",
+      resultId: "some name",
     },
   ];
 
   describe.each(testCases)(
     "for $finalKey, $oAuthKey, $email, $name",
-    ({ finalKey, oAuthKey, email, name, resultKey, resultName }) => {
+    ({ finalKey, oAuthKey, email, name, profileImage, verifierId, resultKey, resultId }) => {
       describe.each(redirectSurfaces)("for %s surface", redirectSurface => {
         it.each([GoogleAuth, EmailAuth, RedditAuth])(
           "handles aggregated login for %p",
@@ -69,13 +78,16 @@ describe("Auth", () => {
               Promise.resolve({
                 finalKeyData: { privKey: finalKey },
                 oAuthKeyData: { privKey: oAuthKey },
-                userInfo: [{ email, name }],
+                userInfo: [{ email, name, profileImage, verifierId }],
               } as TorusAggregateLoginResponse)
             );
 
             await expect(provider.getCredentials()).resolves.toEqual({
               secretKey: resultKey,
-              name: typeof resultName === "function" ? resultName(provider) : resultName,
+              id: resultId,
+              email,
+              name,
+              imageUrl: profileImage,
             });
           }
         );
@@ -86,13 +98,16 @@ describe("Auth", () => {
             Promise.resolve({
               finalKeyData: { privKey: finalKey },
               oAuthKeyData: { privKey: oAuthKey },
-              userInfo: { email, name },
+              userInfo: { email, name, profileImage, verifierId },
             } as TorusLoginResponse)
           );
 
           await expect(provider.getCredentials()).resolves.toEqual({
             secretKey: resultKey,
-            name: typeof resultName === "function" ? resultName(provider) : resultName,
+            id: resultId,
+            email,
+            name,
+            imageUrl: profileImage,
           });
         });
       });

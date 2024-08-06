@@ -32,8 +32,6 @@ export const useColor = () => {
         ? dark.grey[_dark as GreyScale] || dark[_dark as Color] || _dark
         : dark.grey[_light as GreyScale] || dark[_light as Color] || _light;
 
-      console.log(lightValue, darkValue, colorMode);
-
       return mode(lightValue, darkValue)(colorMode);
     },
     [colorMode]

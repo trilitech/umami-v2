@@ -46,7 +46,10 @@ export abstract class Auth {
 
   async getCredentials(): Promise<{
     secretKey: string;
-    name: string;
+    id: string;
+    name?: string;
+    email?: string;
+    imageUrl?: string;
   }> {
     const loginResult = await this.login();
     const privateKey = loginResult.finalKeyData.privKey || loginResult.oAuthKeyData.privKey;
@@ -56,8 +59,12 @@ export abstract class Auth {
       ? loginResult.userInfo[0]
       : loginResult.userInfo;
 
-    const accountName = userInfo.email || userInfo.name || this.idpName;
-
-    return { secretKey, name: accountName };
+    return {
+      secretKey,
+      id: userInfo.verifierId || userInfo.name,
+      name: userInfo.name,
+      email: userInfo.email,
+      imageUrl: userInfo.profileImage,
+    };
   }
 }

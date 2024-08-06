@@ -33,14 +33,14 @@ export const LoginModalContent = () => {
   const onLoginClick = async (loginType: TypeOfLogin) => {
     setIsLoading(true);
     try {
-      const { secretKey, name } = await withTimeout(
+      const { secretKey, id, name, email, imageUrl } = await withTimeout(
         async () => Auth.forIDP(loginType, "embed").getCredentials(),
         LOGIN_TIMEOUT
       );
       const signer = new InMemorySigner(secretKey);
       const { pk, pkh } = { pk: await signer.publicKey(), pkh: await signer.publicKeyHash() };
 
-      const userData = { pk, pkh, typeOfLogin: loginType, id: name };
+      const userData = { pk, pkh, typeOfLogin: loginType, id, name, emailAddress: email, imageUrl };
       setUserData(userData);
       sendResponse({
         ...userData,
