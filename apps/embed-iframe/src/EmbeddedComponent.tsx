@@ -4,7 +4,7 @@ import {
   type RequestType,
   toMatchingResponseType,
   UmamiIframeConfig,
-} from "@trilitech-umami/umami-embed/types";
+} from "@trilitech-umami/umami-embed";
 import { useEffect } from "react";
 
 import { getPermissionsForOrigin } from "./ClientsPermissions";

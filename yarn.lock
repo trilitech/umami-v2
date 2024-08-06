@@ -81,7 +81,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@airgap/beacon-types@npm:4.2.2, @airgap/beacon-types@npm:^4.2.2":
+"@airgap/beacon-types@npm:4.2.2, @airgap/beacon-types@npm:^4.2.1, @airgap/beacon-types@npm:^4.2.2":
   version: 4.2.2
   resolution: "@airgap/beacon-types@npm:4.2.2"
   dependencies:
@@ -6392,10 +6392,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@trilitech-umami/umami-embed@npm:^0.1.1":
-  version: 0.1.1
-  resolution: "@trilitech-umami/umami-embed@npm:0.1.1"
-  checksum: 10/c9c827eca995b3ccc9146156d5667a3b0479d0d9c0be271bd99cc2be397b79b732270b0214e3600fdc355d2b55b2f0c8a78aca68983c6d7c5e816221dcc3d3e8
+"@trilitech-umami/umami-embed@npm:^0.2.5":
+  version: 0.2.5
+  resolution: "@trilitech-umami/umami-embed@npm:0.2.5"
+  dependencies:
+    "@airgap/beacon-types": "npm:^4.2.1"
+    async-mutex: "npm:^0.5.0"
+  checksum: 10/3eb08854d6864976da69a98b02b5957656ee8ee1834353fb3b81f63103cce3f7f0d8ef2f6a2d283b2d93f85de7df0b4cfbef7f1d17414b1d999bfc8ae441c31f
   languageName: node
   linkType: hard
 
@@ -7669,7 +7672,7 @@ __metadata:
     "@testing-library/react": "npm:14.3.1"
     "@testing-library/user-event": "npm:14.5.2"
     "@toruslabs/customauth": "npm:16.0.6"
-    "@trilitech-umami/umami-embed": "npm:^0.1.1"
+    "@trilitech-umami/umami-embed": "npm:^0.2.5"
     "@umami/eslint-config": "workspace:^"
     "@umami/social-auth": "workspace:^"
     "@umami/tezos": "workspace:^"
@@ -9024,6 +9027,15 @@ __metadata:
   version: 2.0.1
   resolution: "async-exit-hook@npm:2.0.1"
   checksum: 10/fffabbe5ef194ec8283efed48eaf8f4b7982d547de6d4cf7aadf83c8690f0f7929ad01b7cb5de99935ea8f3deb2c21fd009892d8215a43b5a2dcc55c04d42c9f
+  languageName: node
+  linkType: hard
+
+"async-mutex@npm:^0.5.0":
+  version: 0.5.0
+  resolution: "async-mutex@npm:0.5.0"
+  dependencies:
+    tslib: "npm:^2.4.0"
+  checksum: 10/4c6bfce1cc9cd43f723c4d96403ac5f4757f885c953b839cde6956ec8817ff39623b82d67614de10c7933e21626925882fb9bac367db7d15d7cb4f84228722c9
   languageName: node
   linkType: hard
 

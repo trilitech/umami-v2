@@ -1,6 +1,6 @@
 import { createContext, PropsWithChildren, useContext, useRef } from "react";
 
-import { Network, TypeOfLogin, UserData } from "@trilitech-umami/umami-embed/types";
+import { Network, TypeOfLogin, UserData } from "@trilitech-umami/umami-embed";
 
 const USER_DATA_KEY = "umami-embed-user-data";
 

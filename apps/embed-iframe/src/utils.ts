@@ -1,4 +1,4 @@
-import type { Network, ResponseMessage } from "@trilitech-umami/umami-embed/types";
+import type { Network, ResponseMessage } from "@trilitech-umami/umami-embed";
 import { GHOSTNET, MAINNET } from "@umami/tezos";
 
 export const sendResponse = (response: ResponseMessage) =>
