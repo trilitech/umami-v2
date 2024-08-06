@@ -12,7 +12,7 @@ export const WalletClient =
         appUrl: "https://umamiwallet.com/",
       });
 
-export const resetWalletConnection = (persistor: Persistor) =>
+export const logout = (persistor: Persistor) =>
   WalletClient.destroy()
     .catch(() => {})
     .finally(() => {

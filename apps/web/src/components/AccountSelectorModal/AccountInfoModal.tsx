@@ -19,7 +19,7 @@ import { type Account } from "@umami/core";
 import { QRCode } from "react-qrcode-logo";
 
 import { useColor } from "../../styles/useColor";
-import { ModalCloseButton } from "../ModalCloseButton";
+import { CloseButton } from "../CloseButton";
 
 type AccountInfoModalProps = {
   account: Account;
@@ -40,7 +40,7 @@ export const AccountInfoModal = ({ account }: AccountInfoModalProps) => {
             You can receive tez or other digital assets by scanning or sharing this QR code
           </Text>
         </VStack>
-        <ModalCloseButton />
+        <CloseButton />
       </ModalHeader>
       <ModalBody>
         <VStack gap="30px">

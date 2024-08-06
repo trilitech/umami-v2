@@ -4,7 +4,7 @@ import { MenuItem } from "./MenuItem";
 import { type MenuItems } from "./types";
 import { useColor } from "../../styles/useColor";
 import { DrawerBackButton } from "../BackButton";
-import { ModalCloseButton } from "../ModalCloseButton";
+import { CloseButton } from "../CloseButton";
 
 type GenericMenuProps = {
   title?: string;
@@ -17,10 +17,10 @@ export const GenericMenu = ({ title, menuItems }: GenericMenuProps) => {
   return (
     <DrawerContent>
       <DrawerBackButton />
-      <ModalCloseButton />
+      <CloseButton />
       <DrawerBody paddingTop="90px">
         {title && (
-          <Heading marginBottom="40px" color={color("900")} fontSize="24px">
+          <Heading marginBottom="40px" color={color("900")} size="2xl">
             {title}
           </Heading>
         )}

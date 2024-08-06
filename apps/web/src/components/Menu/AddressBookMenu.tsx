@@ -2,8 +2,8 @@ import { Button, Divider, DrawerBody, DrawerContent, Heading, VStack } from "@ch
 
 import { useColor } from "../../styles/useColor";
 import { DrawerBackButton } from "../BackButton";
+import { CloseButton } from "../CloseButton";
 import { EmptyMessage } from "../EmptyMessage";
-import { ModalCloseButton } from "../ModalCloseButton";
 
 export const AddressBookMenu = () => {
   const color = useColor();
@@ -11,9 +11,9 @@ export const AddressBookMenu = () => {
   return (
     <DrawerContent>
       <DrawerBackButton />
-      <ModalCloseButton />
+      <CloseButton />
       <DrawerBody paddingTop="90px">
-        <Heading color={color("900")} fontSize="24px">
+        <Heading color={color("900")} size="2xl">
           Address Book
         </Heading>
         <VStack

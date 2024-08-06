@@ -65,6 +65,10 @@ const theme = extendTheme({
           fontSize: "20px",
           lineHeight: "26px",
         },
+        "2xl": {
+          fontSize: "24px",
+          lineHeight: "32px",
+        },
       },
     },
     Card: {

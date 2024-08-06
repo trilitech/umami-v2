@@ -18,7 +18,7 @@ import { useForm } from "react-hook-form";
 
 import { EditIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
-import { ModalCloseButton } from "../ModalCloseButton";
+import { CloseButton } from "../CloseButton";
 
 type RenameAccountPageProps = {
   account: Account;
@@ -59,7 +59,7 @@ export const RenameAccountPage = ({ account }: RenameAccountPageProps) => {
             <Heading size="md">Edit name</Heading>
           </VStack>
         </ModalHeader>
-        <ModalCloseButton />
+        <CloseButton />
         <ModalBody>
           <FormControl isInvalid={!!errors.name} marginY="30px">
             <FormLabel size="lg">Account name</FormLabel>

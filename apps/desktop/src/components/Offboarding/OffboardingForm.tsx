@@ -12,7 +12,7 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
-import { resetWalletConnection } from "@umami/state";
+import { logout } from "@umami/state";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { WarningIcon } from "../../assets/icons";
@@ -37,7 +37,7 @@ export const OffboardingForm = () => {
     if (!getValues("check") || getValues("confirmationCode") !== CONFIRMATION_CODE) {
       return;
     }
-    return resetWalletConnection(persistor);
+    return logout(persistor);
   };
 
   return (

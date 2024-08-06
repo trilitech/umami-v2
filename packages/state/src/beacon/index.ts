@@ -1,2 +1,2 @@
 export { parsePeerInfo } from "./PeerInfo";
-export { WalletClient, resetWalletConnection } from "./WalletClient";
+export { WalletClient, logout } from "./WalletClient";

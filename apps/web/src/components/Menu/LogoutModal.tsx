@@ -7,11 +7,11 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { resetWalletConnection } from "@umami/state";
+import { logout } from "@umami/state";
 
 import { useColor } from "../../styles/useColor";
 import { persistor } from "../../utils/persistor";
-import { ModalCloseButton } from "../ModalCloseButton";
+import { CloseButton } from "../CloseButton";
 
 export const LogoutModal = () => {
   const color = useColor();
@@ -26,15 +26,10 @@ export const LogoutModal = () => {
             could result in permanent loss of access to your data.
           </Text>
         </VStack>
-        <ModalCloseButton />
+        <CloseButton />
       </ModalHeader>
       <ModalFooter>
-        <Button
-          width="full"
-          onClick={() => resetWalletConnection(persistor)}
-          size="lg"
-          variant="alert"
-        >
+        <Button width="full" onClick={() => logout(persistor)} size="lg" variant="alert">
           Logout
         </Button>
       </ModalFooter>

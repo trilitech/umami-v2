@@ -12,7 +12,7 @@ import { type LedgerAccount, type SecretKeyAccount, type SocialAccount } from "@
 import { useImplicitAccounts, useRemoveAccount } from "@umami/state";
 
 import { AlertIcon } from "../../assets/icons";
-import { ModalCloseButton } from "../ModalCloseButton";
+import { CloseButton } from "../CloseButton";
 
 type RemoveAccountModalProps = {
   account: SocialAccount | LedgerAccount | SecretKeyAccount;
@@ -59,7 +59,7 @@ export const RemoveAccountModal = ({ account }: RemoveAccountModalProps) => {
             {description}
           </Text>
         </Flex>
-        <ModalCloseButton />
+        <CloseButton />
       </ModalHeader>
       <ModalFooter>
         <Button width="full" onClick={handleRemoveAccount} size="lg" variant="alert">

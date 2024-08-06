@@ -22,6 +22,8 @@ export const Menu = () => {
   const { openWith: openDrawer } = useDynamicDrawerContext();
   const { colorMode, toggleColorMode } = useColorMode();
 
+  const colorModeSwitchLabel = colorMode === "light" ? "Light mode" : "Dark mode";
+
   const menuItems = [
     [
       {
@@ -55,7 +57,7 @@ export const Menu = () => {
     ],
     [
       {
-        label: "Dark Mode",
+        label: colorModeSwitchLabel,
         icon: <MoonIcon />,
         onClick: toggleColorMode,
         rightElement: <Switch isChecked={colorMode === "dark"} onChange={toggleColorMode} />,
