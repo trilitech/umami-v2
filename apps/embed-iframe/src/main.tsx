@@ -7,6 +7,7 @@ import theme from "./imported/style/theme";
 import { EmbedAppProvider } from "./EmbedAppContext";
 import "./main.scss";
 import { LoginModalProvider } from "./LoginModalContext";
+import { OperationModalProvider } from "./OperationModalContext";
 
 import { Analytics } from "@vercel/analytics/react";
 
@@ -16,9 +17,11 @@ ReactDOM.createRoot(rootElement!).render(
     <ChakraProvider theme={theme}>
       <EmbedAppProvider>
         <LoginModalProvider>
-          <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-          <EmbeddedComponent />
-          <Analytics />
+          <OperationModalProvider>
+            <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+            <EmbeddedComponent />
+            <Analytics />
+          </OperationModalProvider>
         </LoginModalProvider>
       </EmbedAppProvider>
     </ChakraProvider>

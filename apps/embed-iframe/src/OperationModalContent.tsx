@@ -1,4 +1,3 @@
-import { type PartialTezosOperation, TezosOperationType } from "@airgap/beacon-types";
 import {
   Accordion,
   AccordionButton,
@@ -13,7 +12,6 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import * as Auth from "@umami/social-auth";
-import { useEffect, useState } from "react";
 
 import { TezosLogoIcon } from "./assets/icons/TezosLogo";
 import { UmamiLogoIcon } from "./assets/icons/UmamiLogo";
@@ -21,56 +19,24 @@ import { JsValueWrap } from "./imported/JsValueWrap";
 
 import { getErrorContext } from "./imported/utils/getErrorContext";
 import { withTimeout } from "./imported/utils/withTimeout";
-import { sendOperationErrorResponse, sendResponse, toSocialAccount, toTezosNetwork } from "./utils";
+import { sendOperationErrorResponse, sendResponse, toTezosNetwork } from "./utils";
 import { makeToolkit, prettyTezAmount } from "@umami/tezos";
 import { useEmbedApp } from "./EmbedAppContext";
 import { useColor } from "./imported/style/useColor";
 import {
-  estimate,
-  EstimatedAccountOperations,
   executeOperations,
-  toAccountOperations,
   totalFee,
 } from "@umami/core";
 import { LoginButtonComponent } from "./LoginButtonComponent";
+import { useOperationModalContext } from "./OperationModalContext";
 
 const SIGN_TIMEOUT = 5 * 60 * 1000; // 5 minutes
 
-export const OperationModalContent = ({
-  operations,
-  closeModal,
-}: {
-  operations: PartialTezosOperation[];
-  closeModal: () => void;
-}) => {
-  const [isLoading, setIsLoading] = useState(true);
+export const OperationModalContent = () => {
+  const { onClose, isLoading, setIsLoading, estimatedOperations } = useOperationModalContext();
   const { getNetwork, getUserData } = useEmbedApp();
-  const [estimatedOperations, setEstimatedOperations] = useState<EstimatedAccountOperations | null>(
-    null
-  );
 
   const color = useColor();
-
-  useEffect(() => {
-    const fetchEstimatedOperations = async () => {
-      try {
-        const accountOperations = toAccountOperations(operations, toSocialAccount(getUserData()!));
-        const estimatedOperations = await estimate(
-          accountOperations,
-          toTezosNetwork(getNetwork()!)
-        );
-        setEstimatedOperations(estimatedOperations);
-      } catch (error) {
-        // TODO: display error to the user instead?
-        sendOperationErrorResponse(getErrorContext(error).description);
-        closeModal();
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchEstimatedOperations();
-  }, [operations, getUserData, getNetwork, closeModal]);
 
   const onClick = async () => {
     setIsLoading(true);
@@ -94,7 +60,7 @@ export const OperationModalContent = ({
       sendOperationErrorResponse(getErrorContext(error).description);
     } finally {
       setIsLoading(false);
-      closeModal();
+      onClose();
     }
   };
 
@@ -126,7 +92,7 @@ export const OperationModalContent = ({
             <AccordionIcon />
           </AccordionButton>
           <AccordionPanel>
-            <JsValueWrap overflowY="auto" maxHeight="200px" value={operations} />
+            <JsValueWrap overflowY="auto" maxHeight="200px" value={estimatedOperations!.operations} />
           </AccordionPanel>
         </AccordionItem>
       </Accordion>
@@ -137,7 +103,7 @@ export const OperationModalContent = ({
             Count:
           </Text>
           <Text color={color("900")} data-testid="transaction-length" size="sm">
-            {operations.length}
+            {estimatedOperations!.operations.length}
           </Text>
         </Flex>
 
