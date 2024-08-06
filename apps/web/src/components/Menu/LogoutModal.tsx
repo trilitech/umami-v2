@@ -7,6 +7,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
+import { resetWalletConnection } from "@umami/state";
 
 import { useColor } from "../../styles/useColor";
 import { persistor } from "../../utils/persistor";
@@ -14,11 +15,6 @@ import { ModalCloseButton } from "../ModalCloseButton";
 
 export const LogoutModal = () => {
   const color = useColor();
-  const handleLogout = () => {
-    persistor.pause();
-    localStorage.removeItem("persist:accounts");
-    window.location.replace("/");
-  };
 
   return (
     <ModalContent>
@@ -33,7 +29,12 @@ export const LogoutModal = () => {
         <ModalCloseButton />
       </ModalHeader>
       <ModalFooter>
-        <Button width="full" onClick={handleLogout} size="lg" variant="alert">
+        <Button
+          width="full"
+          onClick={() => resetWalletConnection(persistor)}
+          size="lg"
+          variant="alert"
+        >
           Logout
         </Button>
       </ModalFooter>
