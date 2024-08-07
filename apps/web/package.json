@@ -120,7 +120,7 @@
     "rimraf": "^6.0.1",
     "storybook": "^8.2.8",
     "typescript": "^5.5.4",
-    "vite": "^5.3.5",
+    "vite": "^5.4.0",
     "vite-plugin-node-polyfills": "^0.22.0",
     "vite-plugin-svgr": "^4.2.0"
   },
