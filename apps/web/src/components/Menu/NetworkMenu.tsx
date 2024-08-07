@@ -14,7 +14,7 @@ import { useSelectNetwork, useSelectedNetwork } from "@umami/state";
 
 import { useColor } from "../../styles/useColor";
 import { DrawerBackButton } from "../BackButton";
-import { CloseButton } from "../CloseButton";
+import { DrawerCloseButton } from "../CloseButton";
 
 export const NetworkMenu = () => {
   const selectNetwork = useSelectNetwork();
@@ -25,7 +25,7 @@ export const NetworkMenu = () => {
   return (
     <DrawerContent>
       <DrawerBackButton />
-      <CloseButton />
+      <DrawerCloseButton />
       <DrawerBody paddingTop="90px">
         <Heading color={color("900")} size="2xl">
           Network

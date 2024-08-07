@@ -340,7 +340,6 @@ const theme = extendTheme({
         header: {
           textAlign: "center",
           padding: 0,
-          fontWeight: "600",
           color: "gray.900",
         },
         body: {

@@ -2,7 +2,7 @@ import { Button, Divider, DrawerBody, DrawerContent, Heading, VStack } from "@ch
 
 import { useColor } from "../../styles/useColor";
 import { DrawerBackButton } from "../BackButton";
-import { CloseButton } from "../CloseButton";
+import { DrawerCloseButton } from "../CloseButton";
 import { EmptyMessage } from "../EmptyMessage";
 
 export const AddressBookMenu = () => {
@@ -11,7 +11,7 @@ export const AddressBookMenu = () => {
   return (
     <DrawerContent>
       <DrawerBackButton />
-      <CloseButton />
+      <DrawerCloseButton />
       <DrawerBody paddingTop="90px">
         <Heading color={color("900")} size="2xl">
           Address Book

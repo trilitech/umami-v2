@@ -10,7 +10,7 @@ import {
 
 import { useColor } from "../../styles/useColor";
 import { DrawerBackButton } from "../BackButton";
-import { CloseButton } from "../CloseButton";
+import { DrawerCloseButton } from "../CloseButton";
 import { EmptyMessage } from "../EmptyMessage";
 
 export const AppsMenu = () => {
@@ -19,7 +19,7 @@ export const AppsMenu = () => {
   return (
     <DrawerContent>
       <DrawerBackButton />
-      <CloseButton />
+      <DrawerCloseButton />
       <DrawerBody paddingTop="90px">
         <Heading color={color("900")} size="2xl">
           Apps

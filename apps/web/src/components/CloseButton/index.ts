@@ -1,1 +1,2 @@
-export { CloseButton } from "./CloseButton";
+export { DrawerCloseButton } from "./DrawerCloseButton";
+export { ModalCloseButton } from "./ModalCloseButton";
