@@ -23,9 +23,12 @@ export const EmbedAppProvider = ({ children }: PropsWithChildren) => {
 
   const loginOptionsRef = useRef<TypeOfLogin[]>(["google", "reddit", "twitter", "facebook"]);
 
+  const dAppOrigin = useRef<string>("");
+
   const getUserData = () => userDataRef.current;
   const getNetwork = () => networkRef.current;
   const getLoginOptions = () => loginOptionsRef.current;
+  const getDAppOrigin = () => dAppOrigin.current;
 
   const setUserData = (userData: UserData | null) => {
     if (userData !== null) {
@@ -38,10 +41,20 @@ export const EmbedAppProvider = ({ children }: PropsWithChildren) => {
 
   const setNetwork = (network: Network) => (networkRef.current = network);
   const setLoginOptions = (loginOptions: TypeOfLogin[]) => (loginOptionsRef.current = loginOptions);
+  const setDAppOrigin = (origin: string) => (dAppOrigin.current = origin);
 
   return (
     <EmbedAppContext.Provider
-      value={{ getUserData, getNetwork, getLoginOptions, setUserData, setNetwork, setLoginOptions }}
+      value={{
+        getUserData,
+        getNetwork,
+        getLoginOptions,
+        setUserData,
+        setNetwork,
+        setLoginOptions,
+        getDAppOrigin,
+        setDAppOrigin,
+      }}
     >
       {children}
     </EmbedAppContext.Provider>
