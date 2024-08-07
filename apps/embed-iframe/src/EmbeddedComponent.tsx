@@ -15,7 +15,8 @@ import "./EmbeddedComponent.scss";
 import { useEmbedApp } from "./EmbedAppContext";
 
 export function EmbeddedComponent() {
-  const { getNetwork, getUserData, setNetwork, setUserData, setLoginOptions } = useEmbedApp();
+  const { getNetwork, getUserData, setNetwork, setUserData, setLoginOptions, setDAppOrigin } =
+    useEmbedApp();
   const { setColorMode } = useColorMode();
 
   const { onOpen: openLoginModal, modalElement: loginModalElement } = useLoginModal();
@@ -59,6 +60,7 @@ export function EmbeddedComponent() {
       if (!validateClientPermissions(event.origin, data)) {
         return;
       }
+      setDAppOrigin(event.origin);
 
       switch (data.type) {
         case "config_request":
