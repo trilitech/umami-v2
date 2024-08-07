@@ -48,7 +48,7 @@ describe("NFTsView", () => {
           mockNFTToken(1, mockImplicitAccount(1).address.pkh),
           mockNFTToken(2, mockImplicitAccount(1).address.pkh),
           mockNFTToken(1, mockImplicitAccount(2).address.pkh),
-          mockNFTToken(2, mockImplicitAccount(2).address.pkh, 2),
+          mockNFTToken(2, mockImplicitAccount(2).address.pkh, { balance: "2" }),
         ])
       );
       store.dispatch(
@@ -58,7 +58,7 @@ describe("NFTsView", () => {
             mockNFTToken(1, mockImplicitAddress(1).pkh).token,
             mockNFTToken(2, mockImplicitAddress(1).pkh).token,
             mockNFTToken(1, mockImplicitAddress(2).pkh).token,
-            mockNFTToken(2, mockImplicitAddress(2).pkh, 2).token,
+            mockNFTToken(2, mockImplicitAddress(2).pkh, { balance: "2" }).token,
           ],
         })
       );

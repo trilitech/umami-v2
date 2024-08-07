@@ -1,4 +1,4 @@
-import { mockNFT } from "@umami/core";
+import { mockNFTBalance } from "@umami/core";
 
 import { NFTDrawerCard } from "./NFTDrawerCard";
 import { FormPage } from "../../../components/SendFlow/NFT/FormPage";
@@ -7,7 +7,7 @@ import { act, dynamicDisclosureContextMock, render, screen, userEvent } from "..
 describe("<NFTDrawerCard />", () => {
   describe("image", () => {
     it("renders an image", () => {
-      const nft = mockNFT(0);
+      const nft = mockNFTBalance(0);
 
       render(<NFTDrawerCard nft={nft} />);
 
@@ -16,7 +16,7 @@ describe("<NFTDrawerCard />", () => {
     });
 
     it("renders a video", () => {
-      const nft = mockNFT(0);
+      const nft = mockNFTBalance(0);
       nft.metadata.formats = [{ uri: nft.metadata.displayUri, mimeType: "video/mp4" }];
 
       render(<NFTDrawerCard nft={nft} />);
@@ -28,7 +28,7 @@ describe("<NFTDrawerCard />", () => {
 
   describe("amount pill", () => {
     it("is hidden when amount is 1", () => {
-      const nft = mockNFT(0);
+      const nft = mockNFTBalance(0);
 
       render(<NFTDrawerCard nft={nft} />);
 
@@ -36,7 +36,7 @@ describe("<NFTDrawerCard />", () => {
     });
 
     it("is visible when amount is greater than 1", () => {
-      const nft = mockNFT(0, "2");
+      const nft = mockNFTBalance(0, { balance: "2" });
 
       render(<NFTDrawerCard nft={nft} />);
 
@@ -45,7 +45,7 @@ describe("<NFTDrawerCard />", () => {
   });
 
   it("renders tags section", () => {
-    const nft = mockNFT(0);
+    const nft = mockNFTBalance(0);
     nft.metadata.tags = ["tag1", "tag2"];
 
     render(<NFTDrawerCard nft={nft} />);
@@ -54,7 +54,7 @@ describe("<NFTDrawerCard />", () => {
   });
 
   it("renders name", () => {
-    const nft = mockNFT(0);
+    const nft = mockNFTBalance(0);
     nft.metadata.name = "Test NFT";
     render(<NFTDrawerCard nft={nft} />);
 
@@ -62,7 +62,7 @@ describe("<NFTDrawerCard />", () => {
   });
 
   it("renders description", () => {
-    const nft = mockNFT(0);
+    const nft = mockNFTBalance(0);
     nft.metadata.description = "Test description";
     render(<NFTDrawerCard nft={nft} />);
 
@@ -70,7 +70,7 @@ describe("<NFTDrawerCard />", () => {
   });
 
   it("renders attributes accordion", () => {
-    const nft = mockNFT(0);
+    const nft = mockNFTBalance(0);
     nft.metadata.attributes = [{ name: "attr1", value: "value1" }];
 
     render(<NFTDrawerCard nft={nft} />);
@@ -79,7 +79,7 @@ describe("<NFTDrawerCard />", () => {
   });
 
   it("renders properties accordion", () => {
-    const nft = mockNFT(0);
+    const nft = mockNFTBalance(0);
 
     render(<NFTDrawerCard nft={nft} />);
 
@@ -88,7 +88,7 @@ describe("<NFTDrawerCard />", () => {
 
   it('renders "Send NFT" button', async () => {
     const user = userEvent.setup();
-    const nft = mockNFT(0);
+    const nft = mockNFTBalance(0);
 
     render(<NFTDrawerCard nft={nft} />);
 
@@ -101,7 +101,7 @@ describe("<NFTDrawerCard />", () => {
   });
 
   it("renders JSON metadata", () => {
-    const nft = mockNFT(0);
+    const nft = mockNFTBalance(0);
 
     render(<NFTDrawerCard nft={nft} />);
 

@@ -1,3 +1,4 @@
+import { within } from "@testing-library/react";
 import { mockImplicitAccount, mockNFTRaw } from "@umami/core";
 import {
   type UmamiStore,
@@ -7,10 +8,10 @@ import {
   makeStore,
   tokensActions,
 } from "@umami/state";
-import { MAINNET, mockImplicitAddress } from "@umami/tezos";
+import { MAINNET, mockContractAddress, mockImplicitAddress } from "@umami/tezos";
 
 import { NFTs } from "./NFTs";
-import { render, screen } from "../../testUtils";
+import { act, render, screen, userEvent } from "../../testUtils";
 
 let store: UmamiStore;
 const account = mockImplicitAccount(0);
@@ -59,5 +60,43 @@ describe("<NFTs />", () => {
     render(<NFTs />, { store });
 
     expect(screen.getAllByTestId("nft-card")).toHaveLength(2);
+  });
+
+  describe("filtering", () => {
+    const nft1 = mockNFTRaw(0, account.address.pkh, { balance: 1 });
+    nft1.token.contract.address = mockContractAddress(0).pkh;
+    nft1.token.metadata.name = "NFT 1";
+    const nft2 = mockNFTRaw(1, account.address.pkh, { balance: 5 });
+    nft2.token.contract.address = mockContractAddress(1).pkh;
+    nft1.token.metadata.name = "NFT 2";
+
+    const nftBalances = [nft1, nft2];
+
+    beforeEach(() => {
+      store.dispatch(assetsActions.updateTokenBalance(nftBalances));
+      store.dispatch(
+        tokensActions.addTokens({ network: MAINNET, tokens: nftBalances.map(b => b.token) })
+      );
+    });
+
+    it("displays all NFTs by default", () => {
+      render(<NFTs />, { store });
+
+      expect(screen.getAllByTestId("nft-card")).toHaveLength(2);
+    });
+
+    it("renders only filtered NFTs", async () => {
+      const user = userEvent.setup();
+      render(<NFTs />, { store });
+
+      await act(() => user.click(screen.getByTestId("nft-filter-trigger")));
+
+      await act(() =>
+        user.click(within(screen.getByTestId("nft-filter")).getByText(mockContractAddress(0).pkh))
+      );
+
+      expect(screen.getAllByTestId("nft-card")).toHaveLength(1);
+      expect(screen.getByText("NFT 2")).toBeVisible();
+    });
   });
 });

@@ -1,4 +1,4 @@
-import { type NFTWithOwner, mockNFT } from "@umami/core";
+import { type NFTBalanceWithOwner, mockNFTBalance } from "@umami/core";
 import { mockImplicitAddress } from "@umami/tezos";
 import { type PropsWithChildren, useState } from "react";
 
@@ -6,8 +6,8 @@ import { NFTCard } from "./NFTCard";
 import { SelectedNFTContext } from "./SelectedNFTContext";
 import { act, render, screen, userEvent } from "../../mocks/testUtils";
 
-const TestWrapper = ({ nft, children }: PropsWithChildren<{ nft?: NFTWithOwner }>) => {
-  const [selectedNFT, setSelectedNFT] = useState<NFTWithOwner | undefined>(nft);
+const TestWrapper = ({ nft, children }: PropsWithChildren<{ nft?: NFTBalanceWithOwner }>) => {
+  const [selectedNFT, setSelectedNFT] = useState<NFTBalanceWithOwner | undefined>(nft);
 
   return (
     <SelectedNFTContext.Provider value={{ selectedNFT, setSelectedNFT }}>
@@ -18,7 +18,7 @@ const TestWrapper = ({ nft, children }: PropsWithChildren<{ nft?: NFTWithOwner }
 
 describe("NFTCard", () => {
   it("displays the nft image correctly", () => {
-    const nft = { ...mockNFT(0), owner: mockImplicitAddress(0).pkh };
+    const nft = { ...mockNFTBalance(0), owner: mockImplicitAddress(0).pkh };
     render(<NFTCard nft={nft} />);
 
     expect(screen.getByTestId("nft-image")).toHaveAttribute(
@@ -29,7 +29,7 @@ describe("NFTCard", () => {
 
   describe("highlighting", () => {
     it("doesn't highlight the NFT if it's not selected", () => {
-      const nft = { ...mockNFT(0), owner: mockImplicitAddress(0).pkh };
+      const nft = { ...mockNFTBalance(0), owner: mockImplicitAddress(0).pkh };
       render(
         <TestWrapper>
           <NFTCard nft={nft} />
@@ -41,7 +41,7 @@ describe("NFTCard", () => {
     });
 
     it("doesn't highlight the NFT if its owner doesn't match", () => {
-      const nft = { ...mockNFT(0), owner: mockImplicitAddress(0).pkh };
+      const nft = { ...mockNFTBalance(0), owner: mockImplicitAddress(0).pkh };
       render(
         <TestWrapper nft={{ ...nft, owner: mockImplicitAddress(1).pkh }}>
           <NFTCard nft={nft} />
@@ -53,7 +53,7 @@ describe("NFTCard", () => {
     });
 
     it("highlights the NFT if it's selected", () => {
-      const nft = { ...mockNFT(0), owner: mockImplicitAddress(0).pkh };
+      const nft = { ...mockNFTBalance(0), owner: mockImplicitAddress(0).pkh };
       render(
         <TestWrapper nft={nft}>
           <NFTCard nft={nft} />
@@ -66,7 +66,7 @@ describe("NFTCard", () => {
 
     it("highlights the NFT on click", async () => {
       const user = userEvent.setup();
-      const nft = { ...mockNFT(0), owner: mockImplicitAddress(0).pkh };
+      const nft = { ...mockNFTBalance(0), owner: mockImplicitAddress(0).pkh };
 
       render(
         <TestWrapper>

@@ -1,9 +1,9 @@
-import { type NFTWithOwner } from "@umami/core";
+import { type NFTBalanceWithOwner } from "@umami/core";
 import { createContext } from "react";
 
 export const SelectedNFTContext = createContext<{
-  selectedNFT: NFTWithOwner | undefined;
-  setSelectedNFT: (nft: NFTWithOwner) => void;
+  selectedNFT: NFTBalanceWithOwner | undefined;
+  setSelectedNFT: (nft: NFTBalanceWithOwner) => void;
 }>({
   selectedNFT: undefined,
   setSelectedNFT: _ => {},

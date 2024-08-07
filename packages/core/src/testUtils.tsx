@@ -183,9 +183,10 @@ export const mockMultisigAccount = (
 export const mockNFTToken = (
   index: number,
   ownerPkh: string,
-  balance = 1
+  options?: Partial<RawTzktTokenBalance>
 ): RawTzktTokenBalance => ({
   id: index,
+  balance: "1",
   account: {
     address: ownerPkh,
   },
@@ -212,7 +213,7 @@ export const mockNFTToken = (
       displayUri: `ipfs://zb2rhXWQ9X95yxQwusNjftDSWVQYbGjFFFFBjJKQZ8uCrNcvV${index}`,
     },
   },
-  balance: String(balance),
+  ...options,
 });
 
 export const mockFA2Token = (
@@ -319,12 +320,12 @@ export const mockNFTRaw = (
 const mockDisplayURI = (index: number) =>
   `ipfs://zdj7Wk92xWxpzGqT6sE4cx7umUyWaX2Ck8MrSEmPAR31sNWG${index}`;
 
-export const mockNFT = (index: number, balance = "1"): NFTBalance => {
+export const mockNFTBalance = (index: number, options?: Partial<NFTBalance>): NFTBalance => {
   const displayUri = mockDisplayURI(index);
   return {
     id: 1,
     type: "nft",
-    balance,
+    balance: "1",
     displayUri,
     contract: mockContractAddress(index).pkh,
     tokenId: "mockId" + index,
@@ -334,6 +335,7 @@ export const mockNFT = (index: number, balance = "1"): NFTBalance => {
       name: "Tezzardz #" + index,
       symbol: "FKR" + index,
     },
+    ...options,
   };
 };
 

@@ -4,7 +4,7 @@ import {
   mockImplicitAccount,
   mockMnemonicAccount,
   mockMultisigAccount,
-  mockNFT,
+  mockNFTBalance,
 } from "@umami/core";
 import { type UmamiStore, addTestAccount, makeStore } from "@umami/state";
 import { executeParams } from "@umami/test-utils";
@@ -23,8 +23,8 @@ const operation = {
       amount: "1",
       sender: account.address,
       recipient: mockImplicitAccount(1).address,
-      contract: parseContractPkh(mockNFT(1).contract),
-      tokenId: mockNFT(1).tokenId,
+      contract: parseContractPkh(mockNFTBalance(1).contract),
+      tokenId: mockNFTBalance(1).tokenId,
     },
   ]),
   estimates: [executeParams({ fee: 1234567 })],

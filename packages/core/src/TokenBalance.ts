@@ -10,7 +10,7 @@ export type FA2TokenBalance = FA2Token & Balance;
 export type NFTBalance = NFT & Balance;
 export type TokenBalanceWithToken = FA12TokenBalance | FA2TokenBalance | NFTBalance;
 export type TokenBalance = Pick<TokenBalanceWithToken, "contract" | "tokenId" | "balance">;
-export type NFTWithOwner = NFTBalance & { owner: RawPkh };
+export type NFTBalanceWithOwner = NFTBalance & { owner: RawPkh };
 
 export const fromRawTokenBalance = (raw: RawTzktTokenBalance): TokenBalanceWithToken | null => {
   const token = fromRawToken(raw.token);

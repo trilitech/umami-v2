@@ -1,12 +1,12 @@
 import { Accordion } from "@chakra-ui/react";
-import { mockNFT } from "@umami/core";
+import { mockNFTBalance } from "@umami/core";
 
 import { AttributesAccordion } from "./AttributesAccordion";
 import { render, screen } from "../../../testUtils";
 
 describe("<AttributesAccordion />", () => {
   it("shows nothing if there are no attributes", () => {
-    const nft = mockNFT(0);
+    const nft = mockNFTBalance(0);
     render(
       <Accordion>
         <AttributesAccordion nft={nft} style={{}} />
@@ -17,7 +17,7 @@ describe("<AttributesAccordion />", () => {
   });
 
   it("renders all tags", () => {
-    const nft = mockNFT(0);
+    const nft = mockNFTBalance(0);
     nft.metadata.attributes = [
       { name: "attr1", value: "value 1" },
       { name: "attr2", value: "value 2" },

@@ -6,18 +6,20 @@ import {
   artifactUri,
   formatTokenAmount,
   fromRawToken,
+  fullId,
   getRealAmount,
   metadataUri,
   mimeType,
   royalties,
   thumbnailUri,
+  tokenContractName,
   tokenDecimals,
   tokenNameSafe,
   tokenSymbolSafe,
 } from "./Token";
 import { hedgehoge, tzBtsc, uUSD, fa1Token, fa2Token, nft } from "@umami/test-utils";
 import { GHOSTNET, MAINNET, mockImplicitAddress } from "@umami/tezos";
-import { mockNFT } from ".";
+import { mockNFTBalance } from ".";
 
 beforeEach(() => {
   jest.spyOn(console, "warn").mockImplementation();
@@ -63,6 +65,7 @@ describe("fromRaw", () => {
       expect(result).toEqual({
         type: "fa2",
         contract: "KT1GVhG7dQNjPAt4FNBNmc9P9zpiQex4Mxob",
+
         tokenId: "3",
         metadata: { decimals: "5" },
       });
@@ -96,6 +99,7 @@ describe("fromRaw", () => {
     const expected = {
       type: "fa1.2",
       contract: "KT1PWx2mnDueood7fEmfbBDKx1D9BAnnXitn",
+      contractAlias: "tzBTC",
       tokenId: "0",
       metadata: {
         decimals: "8",
@@ -112,6 +116,7 @@ describe("fromRaw", () => {
     const expected = {
       type: "fa1.2",
       contract: "KT1G1cCRNBgQ48mVDjopHjEmTN5Sbtar8nn9",
+      contractAlias: "Hedgehoge",
       tokenId: "0",
       metadata: {
         decimals: "6",
@@ -139,6 +144,22 @@ describe("fromRaw", () => {
     };
 
     expect(result).toEqual(expected);
+  });
+});
+
+test("fullId", () => {
+  expect(fullId(mockNFTBalance(0))).toEqual("KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG:mockId0");
+});
+
+describe("tokenContractName", () => {
+  it("returns contract alias", () => {
+    const nft = mockNFTBalance(0);
+    nft.contractAlias = "some NFT";
+    expect(tokenContractName(nft)).toEqual("some NFT");
+  });
+
+  it("returns contract address if alias is absent", () => {
+    expect(tokenContractName(mockNFTBalance(0))).toEqual("KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG");
   });
 });
 
@@ -174,7 +195,7 @@ describe("tokenNameSafe", () => {
   });
 
   test("get tokenName for NFT", () => {
-    const nft = mockNFT(0);
+    const nft = mockNFTBalance(0);
 
     expect(tokenNameSafe(nft)).toEqual("Tezzardz #0");
 
@@ -215,7 +236,7 @@ describe("tokenSymbolSafe", () => {
   });
 
   test("get token symbol for NFT", () => {
-    const nft = mockNFT(0);
+    const nft = mockNFTBalance(0);
     expect(tokenSymbolSafe(nft)).toEqual("FKR0");
 
     nft.metadata = {};
@@ -225,14 +246,14 @@ describe("tokenSymbolSafe", () => {
 
 describe("royalties", () => {
   it("returns an empty array when royalties are absent", () => {
-    const nft = mockNFT(0);
+    const nft = mockNFTBalance(0);
 
     delete nft.metadata.royalties;
     expect(royalties(nft)).toEqual([]);
   });
 
   it("returns an empty array when shares are absent", () => {
-    const nft = mockNFT(0);
+    const nft = mockNFTBalance(0);
 
     nft.metadata.royalties = {
       decimals: "1",
@@ -242,7 +263,7 @@ describe("royalties", () => {
   });
 
   it("returns sorted shares as percentages", () => {
-    const nft = mockNFT(0);
+    const nft = mockNFTBalance(0);
 
     nft.metadata.royalties = {
       decimals: "4",
@@ -262,14 +283,14 @@ describe("royalties", () => {
 
 describe("mimeType", () => {
   it("returns undefined if formats are absent", () => {
-    const nft = mockNFT(0);
+    const nft = mockNFTBalance(0);
     delete nft.metadata.formats;
 
     expect(mimeType(nft)).toBeUndefined();
   });
 
   it("returns the mime type of the artifact", () => {
-    const nft = mockNFT(0);
+    const nft = mockNFTBalance(0);
     nft.metadata.artifactUri = nft.displayUri + "salt";
     nft.metadata.formats = [
       {
@@ -291,14 +312,14 @@ describe("mimeType", () => {
 
 describe("artifactUri", () => {
   it("returns artifactUri", () => {
-    const nft = mockNFT(0);
+    const nft = mockNFTBalance(0);
     nft.metadata.artifactUri = nft.displayUri + "salt";
 
     expect(artifactUri(nft)).toEqual(nft.metadata.artifactUri);
   });
 
   it("returns displayUri when artifactUri is absent", () => {
-    const nft = mockNFT(0);
+    const nft = mockNFTBalance(0);
     delete nft.metadata.artifactUri;
 
     expect(artifactUri(nft)).toEqual(nft.displayUri);
@@ -307,14 +328,14 @@ describe("artifactUri", () => {
 
 describe("thumbnailUri", () => {
   it("returns thumbnailUri", () => {
-    const nft = mockNFT(0);
+    const nft = mockNFTBalance(0);
     nft.metadata.thumbnailUri = nft.displayUri + "salt";
 
     expect(thumbnailUri(nft)).toEqual(nft.metadata.thumbnailUri);
   });
 
   it("returns displayUri when thumbnailUri is absent", () => {
-    const nft = mockNFT(0);
+    const nft = mockNFTBalance(0);
     delete nft.metadata.thumbnailUri;
 
     expect(thumbnailUri(nft)).toEqual(nft.displayUri);
@@ -323,7 +344,7 @@ describe("thumbnailUri", () => {
 
 describe("metadataUri", () => {
   it("returns a tzkt link", () => {
-    const nft = mockNFT(0);
+    const nft = mockNFTBalance(0);
 
     expect(metadataUri(nft, MAINNET)).toEqual(
       "https://tzkt.io/KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG/tokens/mockId0/metadata"
