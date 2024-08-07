@@ -139,7 +139,7 @@ const theme = extendTheme({
         fontWeight: "600",
         color: "gray.900",
         marginBottom: "12px",
-        size: "md",
+        fontSize: "18px",
       },
       sizes,
     },

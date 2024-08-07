@@ -15,6 +15,8 @@ export { default as CrossedCircleIcon } from "./crossed-circle.svg";
 export { default as DelegateIcon } from "./delegate-s.svg";
 export { default as DownloadIcon } from "./download.svg";
 export { default as EditIcon } from "./edit.svg";
+export { default as EyeIcon } from "./eye.svg";
+export { default as EyeOffIcon } from "./eye-off.svg";
 export { default as EnvelopeIcon } from "./envelope.svg";
 export { default as ExternalLinkIcon } from "./external-link.svg";
 export { default as FA12Icon } from "./fa12.svg";
