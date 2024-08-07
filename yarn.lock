@@ -5443,14 +5443,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/codemod@npm:8.2.7":
-  version: 8.2.7
-  resolution: "@storybook/codemod@npm:8.2.7"
+"@storybook/codemod@npm:8.2.8":
+  version: 8.2.8
+  resolution: "@storybook/codemod@npm:8.2.8"
   dependencies:
     "@babel/core": "npm:^7.24.4"
     "@babel/preset-env": "npm:^7.24.4"
     "@babel/types": "npm:^7.24.0"
-    "@storybook/core": "npm:8.2.7"
+    "@storybook/core": "npm:8.2.8"
     "@storybook/csf": "npm:0.1.11"
     "@types/cross-spawn": "npm:^6.0.2"
     cross-spawn: "npm:^7.0.3"
@@ -5460,7 +5460,7 @@ __metadata:
     prettier: "npm:^3.1.1"
     recast: "npm:^0.23.5"
     tiny-invariant: "npm:^1.3.1"
-  checksum: 10/f127df35e71502d4282d2df076708fb279ed4df2f57cbc234ccd205c4b25189df5be88caa1b1ec3b2bd050d3191f6ff81337fccfca1cf55a81b7a6cf5b5b9b23
+  checksum: 10/2eb4d35e1226364b2dc03a86c5eb588bc7cfb7cd8d316068ed960ff8285de7598ce96d3270b58037525ed525c26b2dbc8f82a03fe1b1696ca9037cbb4af15226
   languageName: node
   linkType: hard
 
@@ -5473,9 +5473,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/core@npm:8.2.7":
-  version: 8.2.7
-  resolution: "@storybook/core@npm:8.2.7"
+"@storybook/core@npm:8.2.8":
+  version: 8.2.8
+  resolution: "@storybook/core@npm:8.2.8"
   dependencies:
     "@storybook/csf": "npm:0.1.11"
     "@types/express": "npm:^4.17.21"
@@ -5488,7 +5488,7 @@ __metadata:
     recast: "npm:^0.23.5"
     util: "npm:^0.12.4"
     ws: "npm:^8.2.3"
-  checksum: 10/f70677bc1d08a0a6165e33ed2fdbecf6259a38a74fe8c23e57cfabc701d27b25a62e509bd4985989a9c1ffa15a89b305539fb2a0af5ca63f798ba69c18da6e9b
+  checksum: 10/baebc94d56169419e0223df8942aa5c4ee36f67e141d3cdd47add95ff39ef3676b7924eeaf518da81b2bce663421f10820cb8071c36df7e330bb2531fb47d58c
   languageName: node
   linkType: hard
 
@@ -8039,7 +8039,7 @@ __metadata:
     redux: "npm:^5.0.1"
     redux-persist: "npm:^6.0.0"
     rimraf: "npm:^6.0.1"
-    storybook: "npm:^8.2.7"
+    storybook: "npm:^8.2.8"
     typescript: "npm:^5.5.4"
     vite: "npm:^5.3.5"
     vite-plugin-node-polyfills: "npm:^0.22.0"
@@ -19625,14 +19625,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"storybook@npm:^8.2.7":
-  version: 8.2.7
-  resolution: "storybook@npm:8.2.7"
+"storybook@npm:^8.2.8":
+  version: 8.2.8
+  resolution: "storybook@npm:8.2.8"
   dependencies:
     "@babel/core": "npm:^7.24.4"
     "@babel/types": "npm:^7.24.0"
-    "@storybook/codemod": "npm:8.2.7"
-    "@storybook/core": "npm:8.2.7"
+    "@storybook/codemod": "npm:8.2.8"
+    "@storybook/core": "npm:8.2.8"
     "@types/semver": "npm:^7.3.4"
     "@yarnpkg/fslib": "npm:2.10.3"
     "@yarnpkg/libzip": "npm:2.3.0"
@@ -19661,7 +19661,7 @@ __metadata:
     getstorybook: ./bin/index.cjs
     sb: ./bin/index.cjs
     storybook: ./bin/index.cjs
-  checksum: 10/8385c3f46eb6591b065c0c28050d9b9a5fbdfd2c23c81a098246fb8025c96c7d31f41a49db76f495c5323ac5414128abb3d5f4d64c15ae449cb6bcbbbb3302b9
+  checksum: 10/f00d98cb89792a1e66087f5f72752daea83983afe97a8ba5691f43629ede4b3e96d276eb49398d3167136beb05d92b18873191b5798b639ba20986bcd2cdd852
   languageName: node
   linkType: hard
 
