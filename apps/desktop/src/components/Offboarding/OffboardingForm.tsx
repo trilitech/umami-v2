@@ -12,8 +12,7 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
-import { WalletClient } from "@umami/state";
-import { noop } from "lodash";
+import { logout } from "@umami/state";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { WarningIcon } from "../../assets/icons";
@@ -22,15 +21,6 @@ import { persistor } from "../../utils/persistor";
 import { FormErrorMessage } from "../FormErrorMessage";
 
 const CONFIRMATION_CODE = "wasabi";
-
-const reset = () =>
-  WalletClient.destroy()
-    .catch(noop)
-    .finally(() => {
-      persistor.pause();
-      localStorage.clear();
-      window.location.reload();
-    });
 
 export const OffboardingForm = () => {
   const form = useForm<{ check: boolean; confirmationCode: string }>({
@@ -47,7 +37,7 @@ export const OffboardingForm = () => {
     if (!getValues("check") || getValues("confirmationCode") !== CONFIRMATION_CODE) {
       return;
     }
-    return reset();
+    return logout(persistor);
   };
 
   return (

@@ -65,6 +65,10 @@ const theme = extendTheme({
           fontSize: "20px",
           lineHeight: "26px",
         },
+        "2xl": {
+          fontSize: "24px",
+          lineHeight: "32px",
+        },
       },
     },
     Card: {
@@ -285,6 +289,7 @@ const theme = extendTheme({
       baseStyle: {
         dialog: {
           width: "100%",
+          background: "white",
           minWidth: {
             base: "100%",
             lg: "506px",
@@ -335,7 +340,6 @@ const theme = extendTheme({
         header: {
           textAlign: "center",
           padding: 0,
-          fontWeight: "600",
           color: "gray.900",
         },
         body: {

@@ -3,7 +3,7 @@ import { Flex, Switch, useColorMode } from "@chakra-ui/react";
 export const ColorSchemeModeToggle = () => {
   const { colorMode, toggleColorMode } = useColorMode();
 
-  const switchText = colorMode === "dark" ? "Light mode" : "Dark mode";
+  const switchText = colorMode === "light" ? "Light mode" : "Dark mode";
 
   return (
     <Flex
