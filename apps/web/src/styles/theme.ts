@@ -212,6 +212,7 @@ const theme = extendTheme({
           _disabled: {
             bg: "gray.100",
           },
+          textDecoration: "none",
         },
       },
       variants: {

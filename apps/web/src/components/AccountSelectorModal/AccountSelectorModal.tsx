@@ -50,7 +50,7 @@ export const AccountSelectorModal = () => {
             overflowY="auto"
             width="100%"
             maxHeight="400px"
-            divider={<Divider borderColor={color("100")} />}
+            divider={<Divider />}
           >
             {Object.entries(groupedAccounts).map(([type, accounts]) => (
               <Flex key={type} flexDirection="column" width="100%">
