@@ -17,11 +17,13 @@ import {
   SettingsIcon,
   UserPlusIcon,
 } from "../../assets/icons";
+import { useOnboardingModal } from "../Onboarding/useOnboardingModal";
 
 export const Menu = () => {
   const { openWith: openModal } = useDynamicModalContext();
   const { openWith: openDrawer } = useDynamicDrawerContext();
   const { colorMode, toggleColorMode } = useColorMode();
+  const { onOpen: openOnboardingModal, modalElement } = useOnboardingModal();
 
   const colorModeSwitchLabel = colorMode === "light" ? "Light mode" : "Dark mode";
 
@@ -42,7 +44,7 @@ export const Menu = () => {
       {
         label: "Add Account",
         icon: <UserPlusIcon />,
-        onClick: () => {},
+        onClick: openOnboardingModal,
       },
       {
         label: "Save Backup",
@@ -73,5 +75,10 @@ export const Menu = () => {
     ],
   ];
 
-  return <GenericMenu menuItems={menuItems} />;
+  return (
+    <>
+      <GenericMenu menuItems={menuItems} />
+      {modalElement}
+    </>
+  );
 };

@@ -53,7 +53,8 @@ export const ChangePasswordMenu = () => {
               alignItems="flex-start"
               gap="30px"
               marginTop="40px"
-              divider={<Divider color={color("100")} />}
+              divider={<Divider />}
+              spacing="0"
             >
               <PasswordInput
                 data-testid="current-password"

@@ -24,7 +24,7 @@ export const GenericMenu = ({ title, menuItems }: GenericMenuProps) => {
             {title}
           </Heading>
         )}
-        <VStack gap={{ base: "18px", lg: "24px" }} divider={<Divider borderColor={color("100")} />}>
+        <VStack gap={{ base: "18px", lg: "24px" }} divider={<Divider />} spacing="0">
           {menuItems.map((items, index) => (
             <Box key={index} width="full">
               {items.map(item => (
