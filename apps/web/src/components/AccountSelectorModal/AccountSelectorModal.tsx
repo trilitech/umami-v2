@@ -46,12 +46,7 @@ export const AccountSelectorModal = () => {
           <ModalCloseButton />
         </ModalHeader>
         <ModalBody flexDirection="column" gap="18px">
-          <VStack
-            overflowY="auto"
-            width="100%"
-            maxHeight="400px"
-            divider={<Divider />}
-          >
+          <VStack overflowY="auto" width="100%" maxHeight="400px" divider={<Divider />}>
             {Object.entries(groupedAccounts).map(([type, accounts]) => (
               <Flex key={type} flexDirection="column" width="100%">
                 <Center

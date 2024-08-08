@@ -360,7 +360,6 @@ const theme = extendTheme({
             base: "36px",
             lg: "42px",
           },
-          gap: "30px",
           marginBottom: {
             lg: "auto",
           },

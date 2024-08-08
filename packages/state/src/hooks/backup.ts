@@ -85,7 +85,7 @@ export const downloadBackupFile = () => {
     "persist:root": localStorage.getItem("persist:root"),
   };
 
-  const downloadedDate = new Date().toISOString().slice(0, 10)
+  const downloadedDate = new Date().toISOString().slice(0, 10);
 
   const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(JSON.stringify(storage))}`;
   const link = document.createElement("a");
