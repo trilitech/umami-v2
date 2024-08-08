@@ -7636,7 +7636,7 @@ __metadata:
     typedoc: "npm:^0.26.5"
     typedoc-plugin-missing-exports: "npm:^3.0.0"
     typescript: "npm:5.5.4"
-    vite: "npm:^5.3.5"
+    vite: "npm:^5.4.0"
     vite-plugin-checker: "npm:^0.7.2"
     vite-plugin-node-polyfills: "npm:^0.22.0"
     zod: "npm:^3.23.8"
@@ -7686,7 +7686,7 @@ __metadata:
     rimraf: "npm:^6.0.1"
     sass: "npm:^1.77.8"
     typescript: "npm:5.5.4"
-    vite: "npm:^5.3.5"
+    vite: "npm:^5.4.0"
     vite-plugin-node-polyfills: "npm:^0.22.0"
     vite-plugin-svgr: "npm:^4.2.0"
   languageName: unknown
@@ -8041,7 +8041,7 @@ __metadata:
     rimraf: "npm:^6.0.1"
     storybook: "npm:^8.2.8"
     typescript: "npm:^5.5.4"
-    vite: "npm:^5.3.5"
+    vite: "npm:^5.4.0"
     vite-plugin-node-polyfills: "npm:^0.22.0"
     vite-plugin-svgr: "npm:^4.2.0"
     zod: "npm:^3.23.8"
@@ -17505,7 +17505,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.4.39, postcss@npm:^8.4.40":
+"postcss@npm:^8.4.40":
   version: 8.4.40
   resolution: "postcss@npm:8.4.40"
   dependencies:
@@ -21399,19 +21399,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^5.3.5":
-  version: 5.3.5
-  resolution: "vite@npm:5.3.5"
+"vite@npm:^5.4.0":
+  version: 5.4.0
+  resolution: "vite@npm:5.4.0"
   dependencies:
     esbuild: "npm:^0.21.3"
     fsevents: "npm:~2.3.3"
-    postcss: "npm:^8.4.39"
+    postcss: "npm:^8.4.40"
     rollup: "npm:^4.13.0"
   peerDependencies:
     "@types/node": ^18.0.0 || >=20.0.0
     less: "*"
     lightningcss: ^1.21.0
     sass: "*"
+    sass-embedded: "*"
     stylus: "*"
     sugarss: "*"
     terser: ^5.4.0
@@ -21427,6 +21428,8 @@ __metadata:
       optional: true
     sass:
       optional: true
+    sass-embedded:
+      optional: true
     stylus:
       optional: true
     sugarss:
@@ -21435,7 +21438,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 10/5672dde4a969349d9cf90a9e43029c8489dfff60fb04d6a10717d6224553cf12283a8cace633fa80b006df6037f72d08a459a38bf8ea66cb19075d60fe159482
+  checksum: 10/5a98b1d30cc8c0263551f417a360102d40b78b9170e9e58a99c1a394ab700c7e604d3c52dafda323c11356a76eba865800d3d8588b33a8febdeaddd5a8981410
   languageName: node
   linkType: hard
 
