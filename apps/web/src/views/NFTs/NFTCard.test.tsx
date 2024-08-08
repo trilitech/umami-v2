@@ -1,18 +1,18 @@
-import { mockNFT } from "@umami/core";
+import { mockNFTBalance } from "@umami/core";
 
 import { NFTCard } from "./NFTCard";
 import { render, screen } from "../../testUtils";
 
 describe("<NFTCard />", () => {
   it("renders the NFT name", () => {
-    const nft = mockNFT(0);
+    const nft = mockNFTBalance(0);
     render(<NFTCard nft={nft} />);
 
     expect(screen.getByTestId("name")).toHaveTextContent(nft.metadata.name!);
   });
 
   it("renders the NFT image", () => {
-    const nft = mockNFT(0);
+    const nft = mockNFTBalance(0);
     render(<NFTCard nft={nft} />);
 
     const image = screen.getByRole("img");
@@ -25,7 +25,7 @@ describe("<NFTCard />", () => {
 
   describe("nft balance", () => {
     it("is hidden when the balance is 1", () => {
-      const nft = mockNFT(0, "1");
+      const nft = mockNFTBalance(0, { balance: "1" });
 
       render(<NFTCard nft={nft} />);
 
@@ -33,7 +33,7 @@ describe("<NFTCard />", () => {
     });
 
     it("renders the nft balance when it's > 1", () => {
-      const nft = mockNFT(0, "10");
+      const nft = mockNFTBalance(0, { balance: "10" });
 
       render(<NFTCard nft={nft} />);
 

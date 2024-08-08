@@ -5,7 +5,7 @@ import {
   makeAccountOperations,
   mockImplicitAccount,
   mockMnemonicAccount,
-  mockNFT,
+  mockNFTBalance,
 } from "@umami/core";
 import { type UmamiStore, addTestAccount, makeStore, mockToast } from "@umami/state";
 import { executeParams } from "@umami/test-utils";
@@ -29,7 +29,10 @@ jest.mock("@umami/core", () => ({
   estimate: jest.fn(),
 }));
 
-const fixture = (props: FormPagePropsWithSender<FormValues>, nft: NFTBalance = mockNFT(1, "1")) => (
+const fixture = (
+  props: FormPagePropsWithSender<FormValues>,
+  nft: NFTBalance = mockNFTBalance(1, { balance: "1" })
+) => (
   <Modal isOpen={true} onClose={() => {}}>
     <FormPage {...props} nft={nft} />
   </Modal>
@@ -83,13 +86,15 @@ describe("<FormPage />", () => {
           {
             sender: mockImplicitAccount(0),
           },
-          mockNFT(1, "10")
+          mockNFTBalance(1, { balance: "10" })
         ),
         { store }
       );
 
       expect(screen.getByTestId("nft-owned")).toHaveTextContent("10");
-      expect(screen.getByTestId("nft-name")).toHaveTextContent(mockNFT(1).metadata.name as string);
+      expect(screen.getByTestId("nft-name")).toHaveTextContent(
+        mockNFTBalance(1).metadata.name as string
+      );
     });
 
     it("renders the correct balance", () => {
@@ -98,7 +103,7 @@ describe("<FormPage />", () => {
           {
             sender: mockImplicitAccount(0),
           },
-          mockNFT(1, "10")
+          mockNFTBalance(1, { balance: "10" })
         ),
         { store }
       );
@@ -176,7 +181,7 @@ describe("<FormPage />", () => {
             {
               sender: mockImplicitAccount(0),
             },
-            mockNFT(1, "5")
+            mockNFTBalance(1, { balance: "5" })
           ),
           { store }
         );
@@ -218,8 +223,8 @@ describe("<FormPage />", () => {
               amount: "1",
               sender: sender.address,
               recipient: mockImplicitAccount(1).address,
-              contract: parseContractPkh(mockNFT(1).contract),
-              tokenId: mockNFT(1).tokenId,
+              contract: parseContractPkh(mockNFTBalance(1).contract),
+              tokenId: mockNFTBalance(1).tokenId,
             },
           ]),
           estimates: [executeParams()],
@@ -231,7 +236,7 @@ describe("<FormPage />", () => {
 
         expect(dynamicDisclosureContextMock.openWith).toHaveBeenCalledWith(
           <SignPage
-            data={{ nft: mockNFT(1) }}
+            data={{ nft: mockNFTBalance(1) }}
             goBack={expect.any(Function)}
             mode="single"
             operations={operations}

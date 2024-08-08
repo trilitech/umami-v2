@@ -1,4 +1,4 @@
-import { estimate, makeAccountOperations, mockImplicitAccount, mockNFT } from "@umami/core";
+import { estimate, makeAccountOperations, mockImplicitAccount, mockNFTBalance } from "@umami/core";
 import {
   type UmamiStore,
   accountsActions,
@@ -27,7 +27,7 @@ jest.mock("@umami/core", () => ({
 }));
 
 const sender = mockImplicitAccount(0);
-const nft = mockNFT(1, "1");
+const nft = mockNFTBalance(1, { balance: "1" });
 
 let store: UmamiStore;
 
@@ -67,7 +67,7 @@ describe("<FormPage />", () => {
     });
 
     it("renders the correct balance", () => {
-      render(<FormPage nft={mockNFT(1, "10")} />, { store });
+      render(<FormPage nft={mockNFTBalance(1, { balance: "10" })} />, { store });
 
       expect(screen.getByTestId("nft-owned")).toHaveTextContent("10");
     });
@@ -121,7 +121,7 @@ describe("<FormPage />", () => {
       });
 
       it("doesn't allow values above the nft balance", async () => {
-        render(<FormPage nft={mockNFT(1, "5")} />, { store });
+        render(<FormPage nft={mockNFTBalance(1, { balance: "5" })} />, { store });
         fireEvent.change(screen.getByTestId("quantity-input"), {
           target: { value: "7" },
         });
@@ -159,8 +159,8 @@ describe("<FormPage />", () => {
               amount: "1",
               sender: sender.address,
               recipient: mockImplicitAccount(1).address,
-              contract: parseContractPkh(mockNFT(1).contract),
-              tokenId: mockNFT(1).tokenId,
+              contract: parseContractPkh(mockNFTBalance(1).contract),
+              tokenId: mockNFTBalance(1).tokenId,
             },
           ]),
           estimates: [executeParams()],
@@ -172,7 +172,7 @@ describe("<FormPage />", () => {
 
         expect(dynamicDisclosureContextMock.openWith).toHaveBeenCalledWith(
           <SignPage
-            data={{ nft: mockNFT(1) }}
+            data={{ nft: mockNFTBalance(1) }}
             goBack={expect.any(Function)}
             mode="single"
             operations={operations}

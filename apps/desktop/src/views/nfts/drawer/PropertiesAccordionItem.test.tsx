@@ -1,5 +1,5 @@
 import { Accordion } from "@chakra-ui/react";
-import { type NFTBalance, mockNFT } from "@umami/core";
+import { type NFTBalance, mockNFTBalance } from "@umami/core";
 import { mockImplicitAddress } from "@umami/tezos";
 
 import { PropertiesAccordionItem } from "./PropertiesAccordionItem";
@@ -14,7 +14,7 @@ const fixture = (nft: NFTBalance) => (
 describe("PropertiesAccordionItem", () => {
   describe("royalties", () => {
     it("shows nothing if royalties are undefined", () => {
-      const nft = mockNFT(0);
+      const nft = mockNFTBalance(0);
       delete nft.metadata.royalties;
 
       render(fixture(nft));
@@ -23,7 +23,7 @@ describe("PropertiesAccordionItem", () => {
     });
 
     it("shows nothing if there are no royalties", () => {
-      const nft = mockNFT(0);
+      const nft = mockNFTBalance(0);
       nft.metadata.royalties = {
         decimals: "3",
         shares: {},
@@ -35,7 +35,7 @@ describe("PropertiesAccordionItem", () => {
     });
 
     it("shows the number of royalties when more than 1 and total value", () => {
-      const nft = mockNFT(0);
+      const nft = mockNFTBalance(0);
       nft.metadata.royalties = {
         decimals: "4",
         shares: {
@@ -52,7 +52,7 @@ describe("PropertiesAccordionItem", () => {
 
   describe("MIME type", () => {
     it("shows nothing when mime type is unavailable", () => {
-      const nft = mockNFT(0);
+      const nft = mockNFTBalance(0);
       nft.metadata.formats = [];
 
       render(fixture(nft));
@@ -61,7 +61,7 @@ describe("PropertiesAccordionItem", () => {
     });
 
     it("renders when there is an available format", () => {
-      const nft = mockNFT(0);
+      const nft = mockNFTBalance(0);
       nft.metadata.formats = [
         {
           uri: nft.displayUri,
@@ -77,7 +77,7 @@ describe("PropertiesAccordionItem", () => {
 
   describe("creatorElement", () => {
     it("shows nothing if creators field is absent", () => {
-      const nft = mockNFT(0);
+      const nft = mockNFTBalance(0);
       delete nft.metadata.creators;
 
       render(fixture(nft));
@@ -87,7 +87,7 @@ describe("PropertiesAccordionItem", () => {
     });
 
     it("shows nothing if creators field is empty", () => {
-      const nft = mockNFT(0);
+      const nft = mockNFTBalance(0);
       nft.metadata.creators = [];
 
       render(fixture(nft));
@@ -96,7 +96,7 @@ describe("PropertiesAccordionItem", () => {
     });
 
     it("shows the first creator in the list", () => {
-      const nft = mockNFT(0);
+      const nft = mockNFTBalance(0);
       nft.metadata.creators = ["Creator123", "Creator321"];
 
       render(fixture(nft));
@@ -105,7 +105,7 @@ describe("PropertiesAccordionItem", () => {
     });
 
     it("shows creator's address if it's a valid address", () => {
-      const nft = mockNFT(0);
+      const nft = mockNFTBalance(0);
       nft.metadata.creators = [mockImplicitAddress(0).pkh];
 
       render(fixture(nft));
@@ -116,7 +116,7 @@ describe("PropertiesAccordionItem", () => {
 
   describe("editions", () => {
     it("renders totalSupply", () => {
-      const nft = { ...mockNFT(0), totalSupply: "155555" };
+      const nft = mockNFTBalance(0, { totalSupply: "155555" });
       render(fixture(nft));
 
       expect(screen.getByTestId("nft-editions")).toHaveTextContent("Editions:");
@@ -124,7 +124,7 @@ describe("PropertiesAccordionItem", () => {
     });
 
     it("renders a ? when totalSupply is absent", () => {
-      const nft = mockNFT(0);
+      const nft = mockNFTBalance(0);
       nft.totalSupply = undefined;
       render(fixture(nft));
 

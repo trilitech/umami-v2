@@ -1,5 +1,5 @@
 import { Flex } from "@chakra-ui/react";
-import { type NFTWithOwner } from "@umami/core";
+import { type NFTBalanceWithOwner } from "@umami/core";
 import { parsePkh } from "@umami/tezos";
 
 import { NFTDrawerCard } from "./NFTDrawerCard";
@@ -11,7 +11,7 @@ export const NFTDrawerBody = ({
   nft,
   onCloseDrawer,
 }: {
-  nft: NFTWithOwner;
+  nft: NFTBalanceWithOwner;
   onCloseDrawer: () => void;
 }) => (
   <>

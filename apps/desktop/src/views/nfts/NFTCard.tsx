@@ -1,5 +1,5 @@
 import { Box, Card, CardBody, Center, Heading, Image, Text } from "@chakra-ui/react";
-import { type NFTWithOwner, fullId, thumbnailUri } from "@umami/core";
+import { type NFTBalanceWithOwner, fullId, thumbnailUri } from "@umami/core";
 import { getIPFSurl, parsePkh } from "@umami/tezos";
 import { useContext } from "react";
 
@@ -7,7 +7,7 @@ import { SelectedNFTContext } from "./SelectedNFTContext";
 import { AddressPill } from "../../components/AddressPill/AddressPill";
 import colors from "../../style/colors";
 
-export const NFTCard = ({ nft }: { nft: NFTWithOwner }) => {
+export const NFTCard = ({ nft }: { nft: NFTBalanceWithOwner }) => {
   const { selectedNFT, setSelectedNFT: select } = useContext(SelectedNFTContext);
   const url = getIPFSurl(thumbnailUri(nft));
   const fallbackUrl = getIPFSurl(nft.displayUri);

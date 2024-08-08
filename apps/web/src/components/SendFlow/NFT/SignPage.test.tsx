@@ -4,7 +4,7 @@ import {
   makeAccountOperations,
   mockImplicitAccount,
   mockMnemonicAccount,
-  mockNFT,
+  mockNFTBalance,
 } from "@umami/core";
 import { type UmamiStore, addTestAccount, makeStore } from "@umami/state";
 import { executeParams } from "@umami/test-utils";
@@ -36,8 +36,8 @@ describe("<SignPage />", () => {
         amount: "1",
         sender: sender.address,
         recipient: mockImplicitAccount(1).address,
-        contract: parseContractPkh(mockNFT(1).contract),
-        tokenId: mockNFT(1).tokenId,
+        contract: parseContractPkh(mockNFTBalance(1).contract),
+        tokenId: mockNFTBalance(1).tokenId,
       },
     ]),
     estimates: [executeParams({ fee: 1234567 })],
@@ -48,7 +48,7 @@ describe("<SignPage />", () => {
       const props: SignPageProps<{ nft: NFTBalance }> = {
         operations,
         mode: "single",
-        data: { nft: mockNFT(1) },
+        data: { nft: mockNFTBalance(1) },
       };
       render(fixture(props), { store });
 
@@ -61,12 +61,14 @@ describe("<SignPage />", () => {
       const props: SignPageProps<{ nft: NFTBalance }> = {
         operations,
         mode: "single",
-        data: { nft: mockNFT(1) },
+        data: { nft: mockNFTBalance(1) },
       };
       render(fixture(props), { store });
 
       await waitFor(() =>
-        expect(screen.getByTestId("nft-name")).toHaveTextContent(mockNFT(1).metadata.name as string)
+        expect(screen.getByTestId("nft-name")).toHaveTextContent(
+          mockNFTBalance(1).metadata.name as string
+        )
       );
     });
 
@@ -74,11 +76,11 @@ describe("<SignPage />", () => {
       const props: SignPageProps<{ nft: NFTBalance }> = {
         operations,
         mode: "single",
-        data: { nft: mockNFT(1) },
+        data: { nft: mockNFTBalance(1) },
       };
       render(fixture(props), { store });
       await waitFor(() =>
-        expect(screen.getByTestId("nft-owned")).toHaveTextContent(mockNFT(1).balance)
+        expect(screen.getByTestId("nft-owned")).toHaveTextContent(mockNFTBalance(1).balance)
       );
     });
   });

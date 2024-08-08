@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const AddressSchema = z.object({ address: z.string() });
+export const AddressSchema = z.object({ address: z.string(), alias: z.string().optional() });
 
 export const FA12TokenSchema = z.object({
   standard: z.string().regex(/^fa1\.2$/i),

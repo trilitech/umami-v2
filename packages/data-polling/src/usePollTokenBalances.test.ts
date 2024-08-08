@@ -16,8 +16,8 @@ describe("usePollTokenBalances", () => {
       .mocked(getTokenBalances)
       .mockResolvedValue([
         mockNFTToken(0, mockImplicitAddress(0).pkh),
-        mockNFTToken(1, mockImplicitAddress(0).pkh, 5),
-        { ...mockNFTToken(0, mockImplicitAddress(1).pkh), lastLevel: 5 },
+        mockNFTToken(1, mockImplicitAddress(0).pkh, { balance: "5" }),
+        mockNFTToken(0, mockImplicitAddress(1).pkh, { lastLevel: 5 }),
       ]);
 
     renderHook(() => usePollTokenBalances(), { store });

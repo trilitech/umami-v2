@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import { type TezosToolkit } from "@taquito/taquito";
 import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
 

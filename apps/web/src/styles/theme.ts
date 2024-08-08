@@ -391,6 +391,26 @@ const theme = extendTheme({
         },
       },
     },
+    Checkbox: {
+      baseStyle: {
+        label: {
+          whiteSpace: "nowrap",
+          textOverflow: "ellipsis",
+          overflowX: "hidden",
+          display: "inline-block",
+          width: "100%",
+        },
+        control: {
+          width: "15px",
+          height: "15px",
+          borderColor: "gray.300",
+          _checked: {
+            backgroundColor: "blue",
+            border: "1px solid rgb(49, 130, 206)",
+          },
+        },
+      },
+    },
   },
   config,
   styles: {

@@ -14,6 +14,7 @@ export type TokenId = string;
 export type FA12Token = {
   type: "fa1.2";
   contract: string;
+  contractAlias?: string;
   tokenId: "0"; // TzKT uses "0" as the tokenId for FA1.2 tokens
   metadata?: RawTzktTokenMetadata;
 };
@@ -21,6 +22,7 @@ export type FA12Token = {
 export type FA2Token = {
   type: "fa2";
   contract: string;
+  contractAlias?: string;
   tokenId: string;
   metadata?: RawTzktTokenMetadata;
 };
@@ -29,6 +31,7 @@ export type NFT = {
   id: number; // TODO: replace with contract + tokenId
   type: "nft";
   contract: string;
+  contractAlias?: string;
   tokenId: string;
   metadata: RawTzktTokenMetadata;
   displayUri: string;
@@ -46,6 +49,7 @@ export const fromRawToken = (rawToken: RawTzktTokenInfo): Token | null => {
         type: "fa1.2",
         metadata: metadata,
         contract: fa1result.data.contract.address,
+        contractAlias: fa1result.data.contract.alias,
         tokenId: "0",
       };
     }
@@ -62,6 +66,7 @@ export const fromRawToken = (rawToken: RawTzktTokenInfo): Token | null => {
       type: "nft",
       id: nftResult.data.id,
       contract: nftResult.data.contract.address,
+      contractAlias: nftResult.data.contract.alias,
       tokenId: nftResult.data.tokenId,
       displayUri: nftResult.data.metadata.displayUri,
       totalSupply: nftResult.data.totalSupply,
@@ -74,6 +79,7 @@ export const fromRawToken = (rawToken: RawTzktTokenInfo): Token | null => {
       type: "fa2",
       metadata,
       contract: fa2result.data.contract.address,
+      contractAlias: fa2result.data.contract.alias,
       tokenId: fa2result.data.tokenId,
     };
   }
@@ -195,6 +201,8 @@ export const getSmallestUnit = (decimals: number): string => {
   const leadingZeroes = decimals === 0 ? "" : "0." + repeat("0", decimals - 1);
   return `${leadingZeroes}1`;
 };
+
+export const tokenContractName = (token: Token): string => token.contractAlias || token.contract;
 
 const DEFAULT_FA1_NAME = "FA1.2 token";
 const DEFAULT_FA2_NAME = "FA2 token";
