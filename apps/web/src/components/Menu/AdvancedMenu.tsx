@@ -1,5 +1,6 @@
 import { useDynamicDrawerContext } from "@umami/components";
 
+import { ChangePasswordMenu } from "./ChangePasswordMenu";
 import { GenericMenu } from "./GenericMenu";
 import { NetworkMenu } from "./NetworkMenu";
 import { AlertCircleIcon, LockIcon, RadioIcon } from "../../assets/icons";
@@ -12,7 +13,7 @@ export const AdvancedMenu = () => {
       {
         label: "Change Password",
         icon: <LockIcon />,
-        onClick: () => {},
+        onClick: () => openWith(<ChangePasswordMenu />),
         hasArrow: true,
       },
       {
