@@ -1,6 +1,7 @@
 import { Switch } from "@chakra-ui/react";
 import { useColorMode } from "@chakra-ui/system";
 import { useDynamicDrawerContext, useDynamicModalContext } from "@umami/components";
+import { downloadBackupFile } from "@umami/state";
 
 import { AddressBookMenu } from "./AddressBookMenu";
 import { AdvancedMenu } from "./AdvancedMenu";
@@ -46,7 +47,7 @@ export const Menu = () => {
       {
         label: "Save Backup",
         icon: <DownloadIcon />,
-        onClick: () => {},
+        onClick: downloadBackupFile,
       },
       {
         label: "Apps",
