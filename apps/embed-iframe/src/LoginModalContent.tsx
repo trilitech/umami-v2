@@ -15,12 +15,13 @@ import { useEmbedApp } from "./EmbedAppContext";
 import { useColor } from "./imported/style/useColor";
 
 import { useLoginModalContext } from "./LoginModalContext";
+import { trackSocialLoginButtonClick, trackSuccessfulConnection } from "./analytics";
 
 const LOGIN_TIMEOUT = 3 * 60 * 1000; // 3 minutes
 
 export const LoginModalContent = () => {
   const { isOpen, onClose, isLoading, setIsLoading } = useLoginModalContext();
-  const { setUserData, getLoginOptions } = useEmbedApp();
+  const { setUserData, getNetwork, getLoginOptions, getDAppOrigin } = useEmbedApp();
 
   const color = useColor();
 
@@ -32,6 +33,7 @@ export const LoginModalContent = () => {
 
   const onLoginClick = async (loginType: TypeOfLogin) => {
     setIsLoading(true);
+    trackSocialLoginButtonClick(getNetwork()!, loginType, getDAppOrigin());
     try {
       const { secretKey, id, name, email, imageUrl } = await withTimeout(
         async () => Auth.forIDP(loginType, "embed").getCredentials(),
@@ -42,6 +44,7 @@ export const LoginModalContent = () => {
 
       const userData = { pk, pkh, typeOfLogin: loginType, id, name, emailAddress: email, imageUrl };
       setUserData(userData);
+      trackSuccessfulConnection(getNetwork()!, loginType, getDAppOrigin());
       sendResponse({
         ...userData,
         type: "login_response",

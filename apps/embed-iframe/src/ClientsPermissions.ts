@@ -24,3 +24,13 @@ export const getPermissionsForOrigin = (origin: string): Permissions | null => {
   }
   return null;
 };
+
+export const getKeyForOrigin = (origin: string): string | null => {
+  for (const key in clientPermissions) {
+    const permissions = clientPermissions[key];
+    if (permissions.origins.includes(origin)) {
+      return key;
+    }
+  }
+  return null;
+};

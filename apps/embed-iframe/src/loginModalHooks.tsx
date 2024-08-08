@@ -14,9 +14,12 @@ import { TezosSpinner } from "./assets/icons/TezosSpinner";
 import { mode } from "@chakra-ui/theme-tools";
 
 import { useLoginModalContext } from "./LoginModalContext";
+import { trackSocialLoginModalOpen } from "./analytics";
+import { useEmbedApp } from "./EmbedAppContext";
 
 export const useLoginModal = () => {
   const { isOpen, onOpen, onClose, isLoading } = useLoginModalContext();
+  const { getNetwork, getLoginOptions, getDAppOrigin } = useEmbedApp();
 
   const colorMode = useColorMode();
 
@@ -60,6 +63,9 @@ export const useLoginModal = () => {
         </Modal>
       </Center>
     ),
-    onOpen,
+    onOpen: () => {
+      trackSocialLoginModalOpen(getNetwork()!, getLoginOptions(), getDAppOrigin());
+      onOpen();
+    },
   };
 };
