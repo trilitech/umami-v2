@@ -85,10 +85,12 @@ export const downloadBackupFile = () => {
     "persist:root": localStorage.getItem("persist:root"),
   };
 
+  const downloadedDate = new Date().toISOString().slice(0, 10)
+
   const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(JSON.stringify(storage))}`;
   const link = document.createElement("a");
   link.href = jsonString;
-  link.download = "UmamiV2Backup.json";
+  link.download = `UmamiV2Backup_${downloadedDate}.json`;
 
   link.click();
 };
