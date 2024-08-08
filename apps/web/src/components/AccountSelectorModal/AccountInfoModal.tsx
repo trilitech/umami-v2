@@ -1,25 +1,19 @@
 import {
   Box,
-  Button,
   Heading,
   ModalBody,
   ModalContent,
   ModalFooter,
   ModalHeader,
-  Popover,
-  PopoverArrow,
-  PopoverBody,
-  PopoverContent,
-  PopoverTrigger,
   Text,
   VStack,
-  useDisclosure,
 } from "@chakra-ui/react";
 import { type Account } from "@umami/core";
 import { QRCode } from "react-qrcode-logo";
 
 import { useColor } from "../../styles/useColor";
 import { ModalCloseButton } from "../CloseButton";
+import { CopyButton } from "../CopyButton/CopyButton";
 
 type AccountInfoModalProps = {
   account: Account;
@@ -27,9 +21,6 @@ type AccountInfoModalProps = {
 
 export const AccountInfoModal = ({ account }: AccountInfoModalProps) => {
   const color = useColor();
-  const { onOpen, isOpen } = useDisclosure();
-
-  const handleCopyAddress = () => navigator.clipboard.writeText(account.address.pkh);
 
   return (
     <ModalContent>
@@ -64,21 +55,9 @@ export const AccountInfoModal = ({ account }: AccountInfoModalProps) => {
         </VStack>
       </ModalBody>
       <ModalFooter>
-        <Popover isOpen={isOpen} onOpen={onOpen}>
-          <PopoverTrigger>
-            <Button width="full" onClick={handleCopyAddress} size="lg" variant="primary">
-              Copy Wallet Address
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent maxWidth="max-content" background="white">
-            <PopoverArrow background="white !important" />
-            <PopoverBody>
-              <Text color={color("black")} size="sm">
-                Copied!
-              </Text>
-            </PopoverBody>
-          </PopoverContent>
-        </Popover>
+        <CopyButton width="full" size="lg" value={account.address.pkh} variant="primary">
+          Copy Wallet Address
+        </CopyButton>
       </ModalFooter>
     </ModalContent>
   );

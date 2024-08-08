@@ -1,24 +1,22 @@
 import {
-  Center,
+  Divider,
   Flex,
-  FormLabel,
   Heading,
   ModalBody,
   ModalContent,
   ModalFooter,
   Text,
+  VStack,
 } from "@chakra-ui/react";
 import { type FA2Transfer, type NFTBalance } from "@umami/core";
 import { FormProvider } from "react-hook-form";
 
+import { NFTTile } from "./NFTTile";
 import { useColor } from "../../../styles/useColor";
 import { AddressTile } from "../../AddressTile/AddressTile";
-import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";
-import { OperationSignerSelector } from "../OperationSignerSelector";
-import { SendNFTRecapTile } from "../SendNFTRecapTile";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
-import { SignPageHeader, headerText } from "../SignPageHeader";
+import { SignPageHeader } from "../SignPageHeader";
 import { type SignPageProps, useSignPageHelpers } from "../utils";
 
 export const SignPage = (props: SignPageProps<{ nft: NFTBalance }>) => {
@@ -28,67 +26,58 @@ export const SignPage = (props: SignPageProps<{ nft: NFTBalance }>) => {
     data: { nft },
   } = props;
 
-  const { fee, operations, estimationFailed, isLoading, form, signer, reEstimate, onSign } =
-    useSignPageHelpers(initialOperations, mode);
+  const { fee, operations, estimationFailed, isLoading, form, signer, onSign } = useSignPageHelpers(
+    initialOperations,
+    mode
+  );
   const color = useColor();
 
-  const { recipient } = operations.operations[0] as FA2Transfer;
+  const { recipient, amount } = operations.operations[0] as FA2Transfer;
 
   return (
     <FormProvider {...form}>
       <ModalContent>
         <form>
-          <SignPageHeader {...props} operationsType={operations.type} signer={operations.signer} />
+          <SignPageHeader {...props} />
           <ModalBody>
-            <Flex marginBottom="12px">
-              <SendNFTRecapTile nft={nft} />
-            </Flex>
+            <VStack alignItems="start" spacing="12px">
+              <NFTTile nft={nft} />
 
-            <Flex alignItems="center" justifyContent="space-between" marginY="12px" paddingX="4px">
-              <Flex alignItems="center">
-                <Heading marginRight="4px" color={color("450")} size="sm">
-                  Owned:
-                </Heading>
-                <Text color={color("400")} data-testid="nft-owned" size="sm">
-                  {nft.balance}
-                </Text>
+              <Flex justifyContent="space-between" width="full" color={color("700")}>
+                <Flex alignItems="center" gap="4px">
+                  <Heading size="md">Quantity:</Heading>
+
+                  <Flex alignItems="center">
+                    <Text data-testid="nft-amount">{amount}</Text>
+                    <Text color={color("400")}>/</Text>
+                    <Text data-testid="nft-owned">{nft.balance}</Text>
+                  </Flex>
+                </Flex>
+
+                <SignPageFee fee={fee} />
               </Flex>
 
-              <SignPageFee fee={fee} />
-            </Flex>
+              <Divider marginY="12px" />
 
-            <Flex alignItems="center" marginTop="12px" marginBottom="24px">
-              <Heading marginRight="12px" size="md">
-                Quantity:
+              <Heading color={color("900")} size="md">
+                From
               </Heading>
-              <Center width="100px" height="48px" background={color("800")} borderRadius="4px">
-                <Text textAlign="center">
-                  {(operations.operations[0] as FA2Transfer).amount} out of {nft.balance}
-                </Text>
-              </Center>
-            </Flex>
+              <AddressTile address={operations.sender.address} />
 
-            <FormLabel>From</FormLabel>
-            <AddressTile marginBottom="24px" address={operations.sender.address} />
-            <FormLabel>To</FormLabel>
-            <AddressTile address={recipient} />
-
-            <OperationSignerSelector
-              isLoading={isLoading}
-              operationType={operations.type}
-              reEstimate={reEstimate}
-              sender={operations.sender}
-            />
-
-            <AdvancedSettingsAccordion />
+              <Heading color={color("900")} size="md">
+                To
+              </Heading>
+              <AddressTile address={recipient} />
+            </VStack>
           </ModalBody>
+
           <ModalFooter>
             <SignButton
               isDisabled={estimationFailed}
               isLoading={isLoading}
               onSubmit={onSign}
               signer={signer}
-              text={headerText(operations.type, mode)}
+              text="Confirm"
             />
           </ModalFooter>
         </form>

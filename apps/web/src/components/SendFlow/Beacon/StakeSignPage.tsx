@@ -9,7 +9,6 @@ import { AddressTile } from "../../AddressTile/AddressTile";
 import { TezTile } from "../../AssetTiles/TezTile";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
-import { headerText } from "../SignPageHeader";
 
 export const StakeSignPage = ({ operation, message }: BeaconSignPageProps) => {
   const { amount: mutezAmount } = operation.operations[0] as Stake;
@@ -20,7 +19,7 @@ export const StakeSignPage = ({ operation, message }: BeaconSignPageProps) => {
     <FormProvider {...form}>
       <ModalContent>
         <form>
-          <Header message={message} mode="single" operation={operation} />
+          <Header message={message} />
           <ModalBody>
             <Flex alignItems="center" justifyContent="end" marginTop="12px">
               <SignPageFee fee={fee} />
@@ -38,7 +37,6 @@ export const StakeSignPage = ({ operation, message }: BeaconSignPageProps) => {
               network={network}
               onSubmit={onSign}
               signer={operation.signer}
-              text={headerText(operation.type, "single")}
             />
           </ModalFooter>
         </form>

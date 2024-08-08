@@ -12,7 +12,7 @@ import {
   useHandleOnSubmitFormActions,
   useOpenSignPageFormAction,
 } from "../onSubmitFormActionHooks";
-import { type FormPagePropsWithSender, FormSubmitButtons, formDefaultValues } from "../utils";
+import { type FormPagePropsWithSender, FormSubmitButton, formDefaultValues } from "../utils";
 
 export type FormValues = {
   sender: RawPkh;
@@ -49,7 +49,7 @@ export const FormPage = (props: FormPagePropsWithSender<FormValues>) => {
   return (
     <FormProvider {...form}>
       <ModalContent>
-        <form data-testid="undelegate-form">
+        <form data-testid="undelegate-form" onSubmit={handleSubmit(onSingleSubmit)}>
           <FormPageHeader
             subTitle="Select preview to end delegation or insert this transaction into a Batch."
             title="End Delegation"
@@ -68,11 +68,7 @@ export const FormPage = (props: FormPagePropsWithSender<FormValues>) => {
             {baker && <AddressTile address={parsePkh(baker)} />}
           </ModalBody>
           <ModalFooter>
-            <FormSubmitButtons
-              isLoading={isLoading}
-              isValid
-              onSingleSubmit={handleSubmit(onSingleSubmit)}
-            />
+            <FormSubmitButton isLoading={isLoading} />
           </ModalFooter>
         </form>
       </ModalContent>

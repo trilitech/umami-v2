@@ -1,25 +1,15 @@
 import { type OperationRequestOutput } from "@airgap/beacon-wallet";
 import { AspectRatio, Flex, Heading, Image, Text } from "@chakra-ui/react";
-import { type AccountOperations } from "@umami/core";
 import { capitalize } from "lodash";
 
 import { useColor } from "../../../styles/useColor";
 import { SignPageHeader } from "../SignPageHeader";
-import { type SignPageMode } from "../utils";
 
-export const Header = ({
-  operation,
-  message,
-  mode,
-}: {
-  operation: AccountOperations;
-  message: OperationRequestOutput;
-  mode: SignPageMode;
-}) => {
+export const Header = ({ message }: { message: OperationRequestOutput }) => {
   const color = useColor();
 
   return (
-    <SignPageHeader mode={mode} operationsType={operation.type} signer={operation.signer}>
+    <SignPageHeader>
       <Flex alignItems="center" justifyContent="center" marginTop="10px">
         <Heading marginRight="4px" color={color("450")} size="sm">
           Network:

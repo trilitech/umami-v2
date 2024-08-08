@@ -45,7 +45,7 @@ export const Activity = () => {
         <EmptyMessage subtitle="activity" title="Activity" />
       )}
       {operations.length > 0 && (
-        <Box background={color("white")} borderRadius="8px" onScroll={onScroll}>
+        <Box borderRadius="8px" onScroll={onScroll}>
           {operations.map((operation, i) => {
             const isFirst = i === 0;
             const isLast = i === operations.length - 1;

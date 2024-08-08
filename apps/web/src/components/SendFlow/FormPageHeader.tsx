@@ -1,31 +1,16 @@
-import { Heading, ModalCloseButton, ModalHeader, Text, chakra } from "@chakra-ui/react";
+import { Heading, ModalHeader } from "@chakra-ui/react";
 
-import { useColor } from "../../styles/useColor";
-
-export const HeaderWrapper = chakra(ModalHeader, {
-  baseStyle: {
-    padding: 0,
-    paddingBottom: "32px",
-    textAlign: "center",
-  },
-});
+import { ModalCloseButton } from "../CloseButton";
 
 export const FormPageHeader = ({
   title = "Send",
-  subTitle = "Send one or insert into batch",
+  subTitle: _subTitle,
 }: {
   title?: string;
   subTitle?: string;
-}) => {
-  const color = useColor();
-
-  return (
-    <HeaderWrapper>
-      <Heading size="2xl">{title}</Heading>
-      <Text marginTop="10px" color={color("400")} textAlign="center" size="sm">
-        {subTitle}
-      </Text>
-      <ModalCloseButton />
-    </HeaderWrapper>
-  );
-};
+}) => (
+  <ModalHeader>
+    <Heading size="xl">{title}</Heading>
+    <ModalCloseButton />
+  </ModalHeader>
+);

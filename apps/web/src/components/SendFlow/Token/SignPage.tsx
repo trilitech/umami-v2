@@ -5,10 +5,9 @@ import { FormProvider } from "react-hook-form";
 import { AddressTile } from "../../AddressTile/AddressTile";
 import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";
 import { TokenTile } from "../../AssetTiles";
-import { OperationSignerSelector } from "../OperationSignerSelector";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
-import { SignPageHeader, headerText } from "../SignPageHeader";
+import { SignPageHeader } from "../SignPageHeader";
 import { type SignPageProps, useSignPageHelpers } from "../utils";
 
 export const SignPage = (props: SignPageProps<{ token: FA12TokenBalance | FA2TokenBalance }>) => {
@@ -17,8 +16,10 @@ export const SignPage = (props: SignPageProps<{ token: FA12TokenBalance | FA2Tok
     operations: initialOperations,
     data: { token },
   } = props;
-  const { fee, operations, estimationFailed, isLoading, form, signer, reEstimate, onSign } =
-    useSignPageHelpers(initialOperations, mode);
+  const { fee, operations, estimationFailed, isLoading, form, signer, onSign } = useSignPageHelpers(
+    initialOperations,
+    mode
+  );
 
   const { amount, recipient } = operations.operations[0] as TokenTransfer;
 
@@ -26,7 +27,7 @@ export const SignPage = (props: SignPageProps<{ token: FA12TokenBalance | FA2Tok
     <FormProvider {...form}>
       <ModalContent>
         <form>
-          <SignPageHeader {...props} operationsType={operations.type} signer={operations.signer} />
+          <SignPageHeader {...props} />
           <ModalBody>
             <TokenTile amount={amount} token={token} />
 
@@ -40,13 +41,6 @@ export const SignPage = (props: SignPageProps<{ token: FA12TokenBalance | FA2Tok
             <FormLabel width="full">To</FormLabel>
             <AddressTile address={recipient} />
 
-            <OperationSignerSelector
-              isLoading={isLoading}
-              operationType={operations.type}
-              reEstimate={reEstimate}
-              sender={operations.sender}
-            />
-
             <AdvancedSettingsAccordion />
           </ModalBody>
           <ModalFooter>
@@ -55,7 +49,6 @@ export const SignPage = (props: SignPageProps<{ token: FA12TokenBalance | FA2Tok
               isLoading={isLoading}
               onSubmit={onSign}
               signer={signer}
-              text={headerText(operations.type, mode)}
             />
           </ModalFooter>
         </form>

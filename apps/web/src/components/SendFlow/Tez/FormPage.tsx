@@ -23,7 +23,7 @@ import {
 } from "../onSubmitFormActionHooks";
 import {
   type FormPageProps,
-  FormSubmitButtons,
+  FormSubmitButton,
   formDefaultValues,
   getSmallestUnit,
   makeValidateDecimals,
@@ -35,10 +35,7 @@ export type FormValues = {
   prettyAmount: string;
 };
 
-export const FormPage = ({
-  showPreview = true,
-  ...props
-}: FormPageProps<FormValues> & { showPreview?: boolean }) => {
+export const FormPage = ({ ...props }: FormPageProps<FormValues>) => {
   const openSignPage = useOpenSignPageFormAction({
     SignPage,
     signPageExtraData: undefined,
@@ -60,7 +57,7 @@ export const FormPage = ({
   });
 
   const {
-    formState: { isValid, errors },
+    formState: { errors },
     register,
     handleSubmit,
   } = form;
@@ -68,7 +65,7 @@ export const FormPage = ({
   return (
     <FormProvider {...form}>
       <ModalContent>
-        <form>
+        <form onSubmit={handleSubmit(onSingleSubmit)}>
           <FormPageHeader />
           <ModalBody>
             <FormControl isInvalid={!!errors.prettyAmount}>
@@ -117,12 +114,7 @@ export const FormPage = ({
             </FormControl>
           </ModalBody>
           <ModalFooter>
-            <FormSubmitButtons
-              isLoading={isLoading}
-              isValid={isValid}
-              onSingleSubmit={handleSubmit(onSingleSubmit)}
-              showPreview={showPreview}
-            />
+            <FormSubmitButton isLoading={isLoading} />
           </ModalFooter>
         </form>
       </ModalContent>

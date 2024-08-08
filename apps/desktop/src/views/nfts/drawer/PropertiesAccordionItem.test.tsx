@@ -81,7 +81,7 @@ describe("PropertiesAccordionItem", () => {
       delete nft.metadata.creators;
 
       render(fixture(nft));
-      // act(() => store.dispatch(networksActions.setCurrent("mainnet")));
+
       expect(screen.getByTestId("nft-creator")).toHaveTextContent("Creator:");
       expect(screen.queryByTestId("nft-creator-value")).toHaveTextContent("-");
     });
@@ -116,8 +116,7 @@ describe("PropertiesAccordionItem", () => {
 
   describe("editions", () => {
     it("renders totalSupply", () => {
-      const nft = mockNFT(0);
-      nft.totalSupply = "155555";
+      const nft = { ...mockNFT(0), totalSupply: "155555" };
       render(fixture(nft));
 
       expect(screen.getByTestId("nft-editions")).toHaveTextContent("Editions:");

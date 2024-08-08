@@ -5,6 +5,7 @@ import {
   ModalCloseButton,
   ModalContent,
   ModalFooter,
+  ModalHeader,
   Text,
 } from "@chakra-ui/react";
 import { type Delegation } from "@umami/core";
@@ -13,13 +14,12 @@ import { FormProvider, useForm } from "react-hook-form";
 
 import { SignPage } from "./SignPage";
 import { BakersAutocomplete, OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
-import { HeaderWrapper } from "../FormPageHeader";
 import {
   useAddToBatchFormAction,
   useHandleOnSubmitFormActions,
   useOpenSignPageFormAction,
 } from "../onSubmitFormActionHooks";
-import { type FormPageProps, FormSubmitButtons, formDefaultValues } from "../utils";
+import { type FormPageProps, FormSubmitButton, formDefaultValues } from "../utils";
 
 export type FormValues = {
   sender: RawPkh;
@@ -50,20 +50,20 @@ export const FormPage = (props: FormPageProps<FormValues>) => {
   });
 
   const {
-    formState: { isValid, errors },
+    formState: { errors },
     handleSubmit,
   } = form;
 
   return (
     <FormProvider {...form}>
       <ModalContent>
-        <form data-testid="delegate-form">
-          <HeaderWrapper>
+        <form data-testid="delegate-form" onSubmit={handleSubmit(onSingleSubmit)}>
+          <ModalHeader>
             <Text fontWeight="600" size="2xl">
               {baker ? "Change Baker" : "Delegate"}
             </Text>
             <ModalCloseButton />
-          </HeaderWrapper>
+          </ModalHeader>
 
           <ModalBody>
             <FormControl isInvalid={!!errors.sender}>
@@ -86,11 +86,7 @@ export const FormPage = (props: FormPageProps<FormValues>) => {
             </FormControl>
           </ModalBody>
           <ModalFooter>
-            <FormSubmitButtons
-              isLoading={isLoading}
-              isValid={isValid}
-              onSingleSubmit={handleSubmit(onSingleSubmit)}
-            />
+            <FormSubmitButton isLoading={isLoading} />
           </ModalFooter>
         </form>
       </ModalContent>

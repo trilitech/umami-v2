@@ -7,7 +7,7 @@ import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";
 import { TezTile } from "../../AssetTiles/TezTile";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
-import { SignPageHeader, headerText } from "../SignPageHeader";
+import { SignPageHeader } from "../SignPageHeader";
 import { type SignPageProps, useSignPageHelpers } from "../utils";
 // TODO: test
 export const SignPage = (props: SignPageProps<{ stakedBalance: number }>) => {
@@ -23,7 +23,7 @@ export const SignPage = (props: SignPageProps<{ stakedBalance: number }>) => {
     <FormProvider {...form}>
       <ModalContent>
         <form>
-          <SignPageHeader {...props} operationsType={operations.type} signer={operations.signer} />
+          <SignPageHeader {...props} />
           <ModalBody>
             <FormLabel marginTop="24px">From</FormLabel>
             <AddressTile address={operations.sender.address} />
@@ -41,12 +41,7 @@ export const SignPage = (props: SignPageProps<{ stakedBalance: number }>) => {
             <AdvancedSettingsAccordion />
           </ModalBody>
           <ModalFooter>
-            <SignButton
-              isLoading={isLoading}
-              onSubmit={onSign}
-              signer={signer}
-              text={headerText(operations.type, mode)}
-            />
+            <SignButton isLoading={isLoading} onSubmit={onSign} signer={signer} />
           </ModalFooter>
         </form>
       </ModalContent>

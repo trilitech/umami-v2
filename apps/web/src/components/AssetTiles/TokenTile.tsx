@@ -20,6 +20,7 @@ export const TokenTile = ({
 
   const prettyAmount = tokenPrettyAmount(amount, token);
   const symbol = tokenSymbolSafe(token);
+
   return (
     <Flex
       alignItems="center"
@@ -32,7 +33,7 @@ export const TokenTile = ({
       {...flexProps}
     >
       <Flex alignItems="center">
-        <AspectRatio width="30px" height="30px" marginRight="12px" ratio={1}>
+        <AspectRatio width="30px" marginRight="12px" ratio={1}>
           <TokenIcon
             padding="6.25px"
             background={color("200")}

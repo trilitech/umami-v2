@@ -1,4 +1,3 @@
-import { Modal } from "@chakra-ui/react";
 import {
   estimate,
   makeAccountOperations,
@@ -28,11 +27,7 @@ import {
 } from "../../../testUtils";
 import { type FormPagePropsWithSender } from "../utils";
 
-const fixture = (props: FormPagePropsWithSender<FormValues>) => (
-  <Modal isOpen={true} onClose={() => {}}>
-    <FormPage {...props} />
-  </Modal>
-);
+const fixture = (props: FormPagePropsWithSender<FormValues>) => <FormPage {...props} />;
 
 let store: UmamiStore;
 

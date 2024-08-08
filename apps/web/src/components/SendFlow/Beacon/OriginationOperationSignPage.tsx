@@ -26,7 +26,6 @@ import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";
 import { JsValueWrap } from "../../JsValueWrap";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
-import { headerText } from "../SignPageHeader";
 
 export const OriginationOperationSignPage = ({ operation, message }: BeaconSignPageProps) => {
   const { isSigning, onSign, network, form, fee } = useSignWithBeacon(operation, message);
@@ -104,7 +103,6 @@ export const OriginationOperationSignPage = ({ operation, message }: BeaconSignP
               network={network}
               onSubmit={onSign}
               signer={operation.signer}
-              text={headerText(operation.type, "single")}
             />
           </ModalFooter>
         </form>
