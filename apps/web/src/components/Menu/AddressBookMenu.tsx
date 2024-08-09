@@ -1,33 +1,14 @@
-import { Button, Divider, DrawerBody, DrawerContent, Heading, VStack } from "@chakra-ui/react";
+import { Button, Divider } from "@chakra-ui/react";
 
-import { useColor } from "../../styles/useColor";
-import { DrawerBackButton } from "../BackButton";
-import { DrawerCloseButton } from "../CloseButton";
+import { DrawerContentWrapper } from "./DrawerContentWrapper";
 import { EmptyMessage } from "../EmptyMessage";
 
-export const AddressBookMenu = () => {
-  const color = useColor();
-
-  return (
-    <DrawerContent>
-      <DrawerBackButton />
-      <DrawerCloseButton />
-      <DrawerBody paddingTop="90px">
-        <Heading color={color("900")} size="2xl">
-          Address Book
-        </Heading>
-        <VStack
-          alignItems="flex-start"
-          gap="40px"
-          marginTop="18px"
-          divider={<Divider color={color("100")} />}
-        >
-          <Button width="auto" padding="0 24px" variant="secondary">
-            Add Contact
-          </Button>
-          <EmptyMessage alignItems="flex-start" subtitle="contacts" title="Contacts" />
-        </VStack>
-      </DrawerBody>
-    </DrawerContent>
-  );
-};
+export const AddressBookMenu = () => (
+  <DrawerContentWrapper title="Address book">
+    <Button width="fit-content" marginTop="18px" padding="0 24px" variant="secondary">
+      Add Contact
+    </Button>
+    <Divider marginTop={{ base: "36px", lg: "40px" }} />
+    <EmptyMessage alignItems="flex-start" marginTop="40px" subtitle="Contacts" title="Contacts" />
+  </DrawerContentWrapper>
+);
