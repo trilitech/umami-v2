@@ -7714,7 +7714,7 @@ __metadata:
     eslint-plugin-react-redux: "npm:^4.1.0"
     eslint-plugin-testing-library: "npm:^6.2.2"
     eslint-plugin-tsdoc: "npm:^0.3.0"
-    eslint-plugin-unused-imports: "npm:^4.1.2"
+    eslint-plugin-unused-imports: "npm:^3.2.0"
     typescript: "npm:^5.5.4"
   languageName: unknown
   linkType: soft
@@ -12298,16 +12298,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-unused-imports@npm:^4.1.2":
-  version: 4.1.2
-  resolution: "eslint-plugin-unused-imports@npm:4.1.2"
+"eslint-plugin-unused-imports@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "eslint-plugin-unused-imports@npm:3.2.0"
+  dependencies:
+    eslint-rule-composer: "npm:^0.3.0"
   peerDependencies:
-    "@typescript-eslint/eslint-plugin": ^8.0.0-0 || ^7.0.0 || ^6.0.0 || ^5.0.0
-    eslint: ^9.0.0 || ^8.0.0
+    "@typescript-eslint/eslint-plugin": 6 - 7
+    eslint: 8
   peerDependenciesMeta:
     "@typescript-eslint/eslint-plugin":
       optional: true
-  checksum: 10/94ffce6b2fb2edd226fd41709a96bca634a012fe2730b370e8038f17ce3bee1bcbf461835aca4094a11dff2187d1cd823f38113a36606adca63da1f91fab405e
+  checksum: 10/05ce3ae4278245caeb25af28aa6832ecd59d664633f31b1dd498798d27cb7f959e2af1b8feeef789a87755541f47b222156c29420f1777d4c5f022e842171ed7
   languageName: node
   linkType: hard
 
