@@ -1,6 +1,7 @@
 import {
   Box,
   Heading,
+  Icon,
   ModalBody,
   ModalContent,
   ModalFooter,
@@ -11,6 +12,7 @@ import {
 import { type Account } from "@umami/core";
 import { QRCode } from "react-qrcode-logo";
 
+import { CopyIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
 import { ModalCloseButton } from "../CloseButton";
 import { CopyButton } from "../CopyButton/CopyButton";
@@ -45,18 +47,25 @@ export const AccountInfoModal = ({ account }: AccountInfoModalProps) => {
             <QRCode size={180} value={account.address.pkh} />
           </Box>
           <Box>
-            <Heading color={color("900")} textAlign="center" size="sm">
+            <Heading color={color("900")} textAlign="center" size="md">
               {account.label}
             </Heading>
-            <Text color={color("700")} size="md">
+            <Text color={color("700")} size="sm">
               {account.address.pkh}
             </Text>
           </Box>
         </VStack>
       </ModalBody>
       <ModalFooter>
-        <CopyButton width="full" size="lg" value={account.address.pkh} variant="primary">
-          Copy Wallet Address
+        <CopyButton
+          width="full"
+          fontWeight="600"
+          size="lg"
+          value={account.address.pkh}
+          variant="primary"
+        >
+          <Icon as={CopyIcon} />
+          <Text>Copy Wallet Address</Text>
         </CopyButton>
       </ModalFooter>
     </ModalContent>

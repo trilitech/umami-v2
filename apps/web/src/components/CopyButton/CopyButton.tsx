@@ -35,12 +35,9 @@ export const CopyButton = ({
           gap="4px"
           display="flex"
           width="fit-content"
-          height="fit-content"
-          padding="0"
           fontWeight="400"
           data-testid="copy-button"
           onClick={onClick}
-          variant="unstyled"
           {...props}
         >
           {children}

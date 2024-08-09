@@ -4,6 +4,7 @@ export { default as ArrowDownLeftIcon } from "./arrow-down-left.svg";
 export { default as ArrowLeftCircleIcon } from "./arrow-left-circle.svg";
 export { default as ArrowUpRightIcon } from "./arrow-up-right.svg";
 export { default as BookIcon } from "./book.svg";
+export { default as CopyIcon } from "./copy.svg";
 export { default as CheckmarkIcon } from "./checkmark.svg";
 export { default as ChevronDownIcon } from "./chevron-down.svg";
 export { default as ChevronRightIcon } from "./chevron-right.svg";
