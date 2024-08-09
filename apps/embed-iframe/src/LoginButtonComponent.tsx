@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
-import { type TypeOfLogin } from "@trilitech-umami/umami-embed/types";
+import { type TypeOfLogin } from "@trilitech-umami/umami-embed";
 
 import { FacebookLogoIcon, GoogleLogoIcon, RedditLogoIcon, TwitterLogoIcon } from "./assets/icons";
 

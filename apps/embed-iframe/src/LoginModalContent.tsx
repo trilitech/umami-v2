@@ -1,6 +1,6 @@
 import { Box, Center, Heading, Text, VStack } from "@chakra-ui/react";
 import { InMemorySigner } from "@taquito/signer";
-import { type TypeOfLogin } from "@trilitech-umami/umami-embed/types";
+import { type TypeOfLogin } from "@trilitech-umami/umami-embed";
 import * as Auth from "@umami/social-auth";
 
 import { useEffect } from "react";
