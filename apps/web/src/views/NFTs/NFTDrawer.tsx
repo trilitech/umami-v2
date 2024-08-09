@@ -9,7 +9,7 @@ export const NFTDrawer = ({ nft }: { nft: NFTBalance }) => (
     <DrawerHeader justifyContent="flex-end" display="flex">
       <DrawerCloseButton />
     </DrawerHeader>
-    <DrawerBody>
+    <DrawerBody paddingTop="30px">
       <NFTDrawerCard nft={nft} />
     </DrawerBody>
   </DrawerContent>
