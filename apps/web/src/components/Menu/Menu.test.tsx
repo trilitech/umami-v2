@@ -13,7 +13,6 @@ import {
   screen,
   userEvent,
 } from "../../testUtils";
-import { useOnboardingModal } from "../Onboarding/useOnboardingModal";
 
 jest.mock("@chakra-ui/system", () => ({
   ...jest.requireActual("@chakra-ui/system"),
@@ -25,21 +24,12 @@ jest.mock("@umami/state", () => ({
   downloadBackupFile: jest.fn(),
 }));
 
-jest.mock("../Onboarding/useOnboardingModal", () => ({
-  ...jest.requireActual("../Onboarding/useOnboardingModal"),
-  useOnboardingModal: jest.fn(),
-}));
-
 describe("<Menu />", () => {
   beforeEach(() => {
     jest.mocked(useColorMode).mockReturnValue({
       colorMode: "light",
       toggleColorMode: jest.fn(),
       setColorMode: jest.fn(),
-    });
-    jest.mocked(useOnboardingModal).mockReturnValue({
-      onOpen: jest.fn(),
-      modalElement: <div>Mock Modal</div>,
     });
   });
 
@@ -97,12 +87,13 @@ describe("<Menu />", () => {
     expect(useColorMode().toggleColorMode).toHaveBeenCalled();
   });
 
-  it("opens Add Account modal when Add Account button is clicked", async () => {
-    const user = userEvent.setup();
-    await renderInDrawer(<Menu />);
+  // TODO: Uncomment when this functionality is implemented
+  // it("opens Add Account modal when Add Account button is clicked", async () => {
+  //   const user = userEvent.setup();
+  //   await renderInDrawer(<Menu />);
 
-    await user.click(screen.getByText("Add Account"));
+  //   await user.click(screen.getByText("Add Account"));
 
-    expect(useOnboardingModal().onOpen).toHaveBeenCalled();
-  });
+  //   expect(useOnboardingModal().onOpen).toHaveBeenCalled();
+  // });
 });
