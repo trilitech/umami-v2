@@ -16,7 +16,7 @@ import { FormPage, type FormValues } from "./FormPage";
 import { SignPage } from "./SignPage";
 import {
   act,
-  dynamicDisclosureContextMock,
+  dynamicModalContextMock,
   fireEvent,
   render,
   screen,
@@ -246,7 +246,7 @@ describe("<FormPage />", () => {
 
         await act(() => user.click(submitButton));
 
-        expect(dynamicDisclosureContextMock.openWith).toHaveBeenCalledWith(
+        expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
           <SignPage
             data={{ token: mockFA2Token(0, mockAccount, 2, 0) }}
             goBack={expect.any(Function)}

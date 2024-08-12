@@ -2,7 +2,7 @@ import { AdvancedMenu } from "./AdvancedMenu";
 import { ChangePasswordMenu } from "./ChangePasswordMenu";
 import { ErrorLogsMenu } from "./ErrorLogsMenu";
 import { NetworkMenu } from "./NetworkMenu";
-import { dynamicDisclosureContextMock, renderInDrawer, screen, userEvent } from "../../testUtils";
+import { dynamicDrawerContextMock, renderInDrawer, screen, userEvent } from "../../testUtils";
 
 describe("<AdvancedMenu />", () => {
   it("renders advanced menu items correctly", async () => {
@@ -17,8 +17,8 @@ describe("<AdvancedMenu />", () => {
     ["Change Password", ChangePasswordMenu],
     ["Network", NetworkMenu],
     ["Error Logs", ErrorLogsMenu],
-  ])("opens %s menu", async (label, Component) => {
-    const { openWith } = dynamicDisclosureContextMock;
+  ])("opens %label menu", async (label, Component) => {
+    const { openWith } = dynamicDrawerContextMock;
 
     await renderInDrawer(<AdvancedMenu />);
 

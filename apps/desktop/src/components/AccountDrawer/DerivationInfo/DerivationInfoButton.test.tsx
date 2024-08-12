@@ -8,13 +8,7 @@ import {
 
 import { DerivationInfoButton } from "./DerivationInfoButton";
 import { InfoModal } from "./InfoModal";
-import {
-  act,
-  dynamicDisclosureContextMock,
-  render,
-  screen,
-  userEvent,
-} from "../../../mocks/testUtils";
+import { act, dynamicModalContextMock, render, screen, userEvent } from "../../../mocks/testUtils";
 
 describe("<DerivationInfoButton />", () => {
   describe.each([mockSocialAccount(0), mockSecretKeyAccount(0), mockMultisigAccount(0)])(
@@ -41,7 +35,7 @@ describe("<DerivationInfoButton />", () => {
 
       await act(() => user.click(screen.getByTestId("derivation-info-button")));
 
-      expect(dynamicDisclosureContextMock.openWith).toHaveBeenCalledWith(
+      expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
         <InfoModal account={account} />
       );
     });

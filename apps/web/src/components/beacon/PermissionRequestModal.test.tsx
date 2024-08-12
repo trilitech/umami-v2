@@ -9,7 +9,7 @@ import { mockMnemonicAccount } from "@umami/core";
 import { type UmamiStore, WalletClient, addTestAccounts, makeStore } from "@umami/state";
 
 import { PermissionRequestModal } from "./PermissionRequestModal";
-import { act, render, screen, userEvent } from "../../testUtils";
+import { act, renderInModal, screen, userEvent } from "../../testUtils";
 
 const SENDER_ID = "mockSenderId";
 const DAPP_NAME = "mockDappName";
@@ -35,7 +35,7 @@ beforeEach(() => {
 
 describe("<PermissionRequestModal />", () => {
   it("requires the account", async () => {
-    render(<PermissionRequestModal request={request} />, { store });
+    await renderInModal(<PermissionRequestModal request={request} />, store);
     const grantButton = screen.getByRole("button", { name: "Allow" });
 
     expect(grantButton).toBeDisabled();
@@ -50,7 +50,7 @@ describe("<PermissionRequestModal />", () => {
 
     jest.spyOn(WalletClient, "respond");
 
-    render(<PermissionRequestModal request={request} />, { store });
+    await renderInModal(<PermissionRequestModal request={request} />, store);
 
     // select account
     const account = mockMnemonicAccount(1);
@@ -75,7 +75,7 @@ describe("<PermissionRequestModal />", () => {
   it("saves new connection to beaconSlice", async () => {
     const user = userEvent.setup();
 
-    render(<PermissionRequestModal request={request} />, { store });
+    await renderInModal(<PermissionRequestModal request={request} />, store);
 
     // select account
     const account = mockMnemonicAccount(1);

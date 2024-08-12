@@ -13,7 +13,7 @@ import { FormPage, type FormValues } from "./FormPage";
 import { SignPage } from "./SignPage";
 import {
   act,
-  dynamicDisclosureContextMock,
+  dynamicModalContextMock,
   fireEvent,
   render,
   screen,
@@ -284,7 +284,7 @@ describe("<Form />", () => {
         jest.mocked(estimate).mockResolvedValueOnce(operations);
         await act(() => user.click(submitButton));
 
-        expect(dynamicDisclosureContextMock.openWith).toHaveBeenCalledWith(
+        expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
           <SignPage
             data={undefined}
             goBack={expect.any(Function)}

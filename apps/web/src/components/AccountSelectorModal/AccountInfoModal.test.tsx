@@ -1,13 +1,13 @@
 import { mockImplicitAccount } from "@umami/core";
 
 import { AccountInfoModal } from "./AccountInfoModal";
-import { act, render, screen, userEvent, waitFor } from "../../testUtils";
+import { act, renderInModal, screen, userEvent, waitFor } from "../../testUtils";
 
 const mockAccount = mockImplicitAccount(0);
 
 describe("<AccountInfoModal />", () => {
   it("renders correctly with initial values", async () => {
-    render(<AccountInfoModal account={mockAccount} />);
+    await renderInModal(<AccountInfoModal account={mockAccount} />);
 
     await waitFor(() => expect(screen.getByText("Account Info")).toBeVisible());
     expect(
@@ -22,7 +22,7 @@ describe("<AccountInfoModal />", () => {
   it("displays 'Copied!' message in popover when button is clicked", async () => {
     const user = userEvent.setup();
 
-    render(<AccountInfoModal account={mockAccount} />);
+    await renderInModal(<AccountInfoModal account={mockAccount} />);
 
     await act(() => user.click(screen.getByRole("button", { name: "Copy Wallet Address" })));
 

@@ -9,7 +9,7 @@ import { ReactQueryProvider } from "../providers/ReactQueryProvider";
 import { UmamiTheme } from "../providers/UmamiTheme";
 
 // can be used to spyOn the openWith and onClose methods
-export const dynamicDisclosureContextMock = {
+export const dynamicModalContextMock = {
   onClose: jest.fn(),
   openWith: jest.fn(),
   goBack: jest.fn(),
@@ -23,11 +23,11 @@ const makeWrapper =
     const openWith = dynamicModal.openWith;
     const onClose = dynamicModal.onClose;
     jest.spyOn(dynamicModal, "openWith").mockImplementation(async (...args) => {
-      dynamicDisclosureContextMock.openWith(...args);
+      dynamicModalContextMock.openWith(...args);
       return openWith(...args);
     });
     jest.spyOn(dynamicModal, "onClose").mockImplementation((...args) => {
-      dynamicDisclosureContextMock.onClose(...args);
+      dynamicModalContextMock.onClose(...args);
       return onClose(...args);
     });
 

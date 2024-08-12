@@ -6,7 +6,13 @@ import { AdvancedMenu } from "./AdvancedMenu";
 import { AppsMenu } from "./AppsMenu";
 import { LogoutModal } from "./LogoutModal";
 import { Menu } from "./Menu";
-import { dynamicDisclosureContextMock, renderInDrawer, screen, userEvent } from "../../testUtils";
+import {
+  dynamicDrawerContextMock,
+  dynamicModalContextMock,
+  renderInDrawer,
+  screen,
+  userEvent,
+} from "../../testUtils";
 import { useOnboardingModal } from "../Onboarding/useOnboardingModal";
 
 jest.mock("@chakra-ui/system", () => ({
@@ -53,15 +59,24 @@ describe("<Menu />", () => {
     ["Advanced", AdvancedMenu],
     ["Address Book", AddressBookMenu],
     ["Apps", AppsMenu],
-    ["Logout", LogoutModal],
-  ])("opens nested menu drawers correctly", async (label, Component) => {
+  ])("opens %label menu correctly", async (label, Component) => {
     const user = userEvent.setup();
-    const { openWith } = dynamicDisclosureContextMock;
+    const { openWith } = dynamicDrawerContextMock;
 
     await renderInDrawer(<Menu />);
 
     await user.click(screen.getByText(label));
     expect(openWith).toHaveBeenCalledWith(<Component />);
+  });
+
+  it("opens Logout menu correctly", async () => {
+    const user = userEvent.setup();
+    const { openWith } = dynamicModalContextMock;
+
+    await renderInDrawer(<Menu />);
+
+    await user.click(screen.getByText("Logout"));
+    expect(openWith).toHaveBeenCalledWith(<LogoutModal />);
   });
 
   it("calls downloadBackupFile function when Save Backup is clicked", async () => {

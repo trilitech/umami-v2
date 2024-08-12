@@ -6,7 +6,7 @@ import {
   type UserEvent,
   act,
   fireEvent,
-  render,
+  renderInModal,
   screen,
   userEvent,
   waitFor,
@@ -39,7 +39,7 @@ describe("<RestoreBackupFile />", () => {
   };
 
   it("requires a backup file", async () => {
-    render(<RestoreBackupFile />);
+    await renderInModal(<RestoreBackupFile />);
 
     fireEvent.blur(screen.getByLabelText("Upload File"));
 
@@ -54,7 +54,7 @@ describe("<RestoreBackupFile />", () => {
       .mockImplementation(() => jest.fn(() => Promise.reject("Invalid backup file.")));
     const user = userEvent.setup();
 
-    render(<RestoreBackupFile />);
+    await renderInModal(<RestoreBackupFile />);
 
     await uploadBackupFile({ foo: "bar" }, user);
 
@@ -70,7 +70,7 @@ describe("<RestoreBackupFile />", () => {
     jest.mocked(useRestoreBackup).mockImplementation(() => mockRestoreBackupFile);
     const user = userEvent.setup();
 
-    render(<RestoreBackupFile />);
+    await renderInModal(<RestoreBackupFile />);
 
     await uploadBackupFile(umamiBackup, user, "password");
 

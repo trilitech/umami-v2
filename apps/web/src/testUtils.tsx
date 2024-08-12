@@ -14,10 +14,14 @@ import { type PropsWithChildren, type ReactElement, type ReactNode, act } from "
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 
-import { UmamiTheme } from "./providers/UmamiTheme";
-
 // can be used to spyOn the openWith and onClose methods
-export const dynamicDisclosureContextMock = {
+export const dynamicModalContextMock = {
+  onClose: jest.fn(),
+  openWith: jest.fn(),
+  goBack: jest.fn(),
+};
+
+export const dynamicDrawerContextMock = {
   onClose: jest.fn(),
   openWith: jest.fn(),
   goBack: jest.fn(),
@@ -33,15 +37,15 @@ const makeWrapper =
     const modalOnClose = dynamicModal.onClose;
     const modalGoBack = dynamicModal.goBack;
     jest.spyOn(dynamicModal, "openWith").mockImplementation(async (...args) => {
-      dynamicDisclosureContextMock.openWith(...args);
+      dynamicModalContextMock.openWith(...args);
       return modalOpenWith(...args);
     });
     jest.spyOn(dynamicModal, "onClose").mockImplementation((...args) => {
-      dynamicDisclosureContextMock.onClose(...args);
+      dynamicModalContextMock.onClose(...args);
       return modalOnClose(...args);
     });
     jest.spyOn(dynamicModal, "goBack").mockImplementation(() => {
-      dynamicDisclosureContextMock.goBack();
+      dynamicModalContextMock.goBack();
       return modalGoBack();
     });
 
@@ -49,36 +53,32 @@ const makeWrapper =
     const drawerOnClose = dynamicDrawer.onClose;
     const drawerGoBack = dynamicDrawer.goBack;
     jest.spyOn(dynamicDrawer, "openWith").mockImplementation(async (...args) => {
-      dynamicDisclosureContextMock.openWith(...args);
+      dynamicDrawerContextMock.openWith(...args);
       return drawerOpenWith(...args);
     });
     jest.spyOn(dynamicDrawer, "onClose").mockImplementation((...args) => {
-      dynamicDisclosureContextMock.onClose(...args);
+      dynamicDrawerContextMock.onClose(...args);
       return drawerOnClose(...args);
     });
     jest.spyOn(dynamicDrawer, "goBack").mockImplementation(() => {
-      dynamicDisclosureContextMock.goBack();
+      dynamicDrawerContextMock.goBack();
       return drawerGoBack();
     });
 
     return (
-      <UmamiTheme>
-        <BrowserRouter>
-          <QueryClientProvider client={new QueryClient()}>
-            <Provider store={store}>
-              <DynamicModalContext.Provider value={dynamicModal}>
-                <DynamicDrawerContext.Provider value={dynamicDrawer}>
-                  {/* Crutch for desktop views to be testable */}
-                  {/* TODO: remove it when those views are rebuilt for the web */}
-                  {children}
-                  {dynamicModal.content}
-                  {dynamicDrawer.content}
-                </DynamicDrawerContext.Provider>
-              </DynamicModalContext.Provider>
-            </Provider>
-          </QueryClientProvider>
-        </BrowserRouter>
-      </UmamiTheme>
+      <BrowserRouter>
+        <QueryClientProvider client={new QueryClient()}>
+          <Provider store={store}>
+            <DynamicModalContext.Provider value={dynamicModal}>
+              <DynamicDrawerContext.Provider value={dynamicDrawer}>
+                {children}
+                {dynamicModal.content}
+                {dynamicDrawer.content}
+              </DynamicDrawerContext.Provider>
+            </DynamicModalContext.Provider>
+          </Provider>
+        </QueryClientProvider>
+      </BrowserRouter>
     );
   };
 

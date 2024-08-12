@@ -19,8 +19,8 @@ import { FormPage, type FormValues } from "./FormPage";
 import { SignPage } from "./SignPage";
 import {
   act,
-  dynamicDisclosureContextMock,
-  render,
+  dynamicModalContextMock,
+  renderInModal,
   screen,
   userEvent,
   waitFor,
@@ -42,15 +42,15 @@ jest.mock("@umami/core", () => ({
 
 describe("<Form />", () => {
   describe("default values", () => {
-    it("renders a form with a prefilled sender", () => {
-      render(fixture({ sender: mockImplicitAccount(0) }), { store });
+    it("renders a form with a prefilled sender", async () => {
+      await renderInModal(fixture({ sender: mockImplicitAccount(0) }), store);
 
       expect(screen.getAllByTestId("address-tile")[0]).toHaveTextContent(
         mockImplicitAccount(0).address.pkh
       );
     });
 
-    it("shows address tile for baker", () => {
+    it("shows address tile for baker", async () => {
       const sender = mockImplicitAccount(0);
       const baker = mockImplicitAccount(1);
       store.dispatch(
@@ -59,7 +59,7 @@ describe("<Form />", () => {
         ])
       );
 
-      render(
+      await renderInModal(
         fixture({
           sender: sender,
           form: {
@@ -67,7 +67,7 @@ describe("<Form />", () => {
             baker: baker.address.pkh,
           },
         }),
-        { store }
+        store
       );
 
       expect(screen.getAllByTestId("address-tile")[1]).toHaveTextContent("baker1");
@@ -81,7 +81,7 @@ describe("<Form />", () => {
 
     it("shows a toast if estimation fails", async () => {
       const user = userEvent.setup();
-      render(
+      await renderInModal(
         fixture({
           sender: mockImplicitAccount(0),
           form: {
@@ -89,7 +89,7 @@ describe("<Form />", () => {
             baker: mockImplicitAccount(1).address.pkh,
           },
         }),
-        { store }
+        store
       );
 
       const estimateMock = jest.mocked(estimate);
@@ -110,7 +110,7 @@ describe("<Form />", () => {
     it("opens a sign page if estimation succeeds", async () => {
       const user = userEvent.setup();
       const sender = mockImplicitAccount(0);
-      render(
+      await renderInModal(
         fixture({
           sender: sender,
           form: {
@@ -118,7 +118,7 @@ describe("<Form />", () => {
             baker: mockImplicitAddress(2).pkh,
           },
         }),
-        { store }
+        store
       );
       const submitButton = screen.getByText("Preview");
       await waitFor(() => expect(submitButton).toBeEnabled());
@@ -137,7 +137,7 @@ describe("<Form />", () => {
 
       await act(() => user.click(submitButton));
 
-      expect(dynamicDisclosureContextMock.openWith).toHaveBeenCalledWith(
+      expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
         <SignPage
           data={undefined}
           goBack={expect.any(Function)}
