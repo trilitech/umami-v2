@@ -7596,7 +7596,7 @@ __metadata:
     depcheck: "npm:^1.4.7"
     electron: "npm:31.3.1"
     electron-builder: "npm:^24.13.3"
-    electron-updater: "npm:6.3.2"
+    electron-updater: "npm:6.3.3"
     electronmon: "npm:^2.0.3"
     eslint: "npm:^8.57.0"
     framer-motion: "npm:^11.3.24"
@@ -11427,9 +11427,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron-updater@npm:6.3.2":
-  version: 6.3.2
-  resolution: "electron-updater@npm:6.3.2"
+"electron-updater@npm:6.3.3":
+  version: 6.3.3
+  resolution: "electron-updater@npm:6.3.3"
   dependencies:
     builder-util-runtime: "npm:9.2.5"
     fs-extra: "npm:^10.1.0"
@@ -11439,7 +11439,7 @@ __metadata:
     lodash.isequal: "npm:^4.5.0"
     semver: "npm:^7.3.8"
     tiny-typed-emitter: "npm:^2.1.0"
-  checksum: 10/c285c925f73da33d795822f482b0c5e98e59a070d4bf14856952fdb7a4c144b43760d825c88c7e144144ee5596186f41504c28014bf76d279385176d2bc231b0
+  checksum: 10/8209e007d06345658bc1544ab97b308caf8a4a2c3551bb8007ae057c389400a55aad97cdb8036e38c4edd56417f9d33e4b28b74712fe2aad677f79cd6535bdbf
   languageName: node
   linkType: hard
 
