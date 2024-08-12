@@ -17,7 +17,12 @@ import {
   SettingsIcon,
   UserPlusIcon,
 } from "../../assets/icons";
-import { useOnboardingModal } from "../Onboarding/useOnboardingModal";
+
+// TODO: Make this work
+export const useOnboardingModal = () => ({
+  onOpen: () => {},
+  modalElement: <></>,
+});
 
 export const Menu = () => {
   const { openWith: openModal } = useDynamicModalContext();
