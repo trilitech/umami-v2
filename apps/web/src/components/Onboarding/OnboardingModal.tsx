@@ -11,7 +11,6 @@ import { useImplicitAccounts } from "@umami/state";
 import { ConnectOptions } from "./connectOptions/ConnectOptions";
 import { ConnectOrCreate } from "./connectOrCreate/ConnectOrCreate";
 import { DerivationPath } from "./derivationPath/DerivationPath";
-import { Eula } from "./eula/Eula";
 import { FakeAccount } from "./FakeAccount";
 import { MasterPassword } from "./masterPassword/MasterPassword";
 import { ModalBackButton } from "./ModalBackButton";
@@ -26,12 +25,10 @@ import { ShowSeedphrase } from "./showSeedphrase/ShowSeedphrase";
 import { VerifySeedphrase } from "./verifySeedphrase/VerifySeedphrase";
 
 // TODO: rebuild it for the web.
-export const useOnboardingModal = (onModalClose?: () => void) => {
+export const OnboardingModal = (onModalClose?: () => void) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const hasAccounts = useImplicitAccounts().length !== 0;
-  const history = useStepHistory<OnboardingStep>({
-    type: hasAccounts ? "connectOrCreate" : "eula",
-  });
+  const history = useStepHistory<OnboardingStep>({ type: "connectOrCreate" });
   const { currentStep, goToStep } = history;
 
   const closeModal = () => {
@@ -42,8 +39,6 @@ export const useOnboardingModal = (onModalClose?: () => void) => {
 
   const getStepPage = () => {
     switch (currentStep.type) {
-      case "eula":
-        return <Eula goToStep={goToStep} />;
       case "connectOrCreate":
         return <ConnectOrCreate closeModal={closeModal} goToStep={goToStep} />;
       case "connectOptions":

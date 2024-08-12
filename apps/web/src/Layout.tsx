@@ -22,6 +22,7 @@ export const Layout = () => {
       }}
       height={{ lg: "100vh", base: "100dvh" }}
       padding={{ lg: "20px 46px 0", base: "54px 0 0" }}
+      data-testid="signed-in-layout"
     >
       <GridItem
         position={{ base: "fixed", lg: "static" }}
