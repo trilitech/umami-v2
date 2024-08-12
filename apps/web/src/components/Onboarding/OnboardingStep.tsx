@@ -1,5 +1,4 @@
 export type OnboardingStep =
-  | EulaStep
   | ConnectOrCreateStep
   | NoticeStep
   | ConnectOptionsStep
@@ -14,7 +13,6 @@ export type OnboardingStep =
   | MasterPasswordStep
   | FakeAccountStep;
 
-type EulaStep = { type: "eula" };
 type ConnectOrCreateStep = { type: "connectOrCreate" };
 type NoticeStep = { type: "notice" };
 type ConnectOptionsStep = { type: "connectOptions" };
