@@ -5,14 +5,14 @@ import { FormProvider, useForm } from "react-hook-form";
 import { DrawerContentWrapper } from "./DrawerContentWrapper";
 import { PasswordInput } from "../PasswordInput";
 
-type ChangePasswordFormValues = {
+type ChangePasswordMenuValues = {
   currentPassword: string;
   newPassword: string;
   newPasswordConfirmation: string;
 };
 
 export const ChangePasswordMenu = () => {
-  const form = useForm<ChangePasswordFormValues>({ mode: "onBlur" });
+  const form = useForm<ChangePasswordMenuValues>({ mode: "onBlur" });
   const toast = useToast();
   const dispatch = useAppDispatch();
   const { handleAsyncAction, isLoading } = useAsyncActionHandler();
@@ -22,7 +22,7 @@ export const ChangePasswordMenu = () => {
     getValues,
   } = form;
 
-  const onSubmit = ({ currentPassword, newPassword }: ChangePasswordFormValues) =>
+  const onSubmit = ({ currentPassword, newPassword }: ChangePasswordMenuValues) =>
     handleAsyncAction(async () => {
       await dispatch(changeMnemonicPassword({ currentPassword, newPassword })).unwrap();
       toast({ description: "Password updated", status: "success" });

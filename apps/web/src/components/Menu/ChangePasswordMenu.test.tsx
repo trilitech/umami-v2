@@ -1,14 +1,7 @@
-import { Drawer } from "@chakra-ui/react";
 import { changeMnemonicPassword } from "@umami/state";
 
 import { ChangePasswordMenu } from "./ChangePasswordMenu";
-import { fireEvent, render, screen, userEvent, waitFor } from "../../testUtils";
-
-const fixture = () => (
-  <Drawer isOpen={true} onClose={() => {}}>
-    <ChangePasswordMenu />
-  </Drawer>
-);
+import { fireEvent, renderInDrawer, screen, userEvent, waitFor } from "../../testUtils";
 
 jest.mock("@umami/state", () => ({
   ...jest.requireActual("@umami/state"),
@@ -18,13 +11,13 @@ jest.mock("@umami/state", () => ({
 
 describe("<ChangePasswordMenu />", () => {
   describe("currentPassword", () => {
-    it("is empty by default", () => {
-      render(fixture());
+    it("is empty by default", async () => {
+      await renderInDrawer(<ChangePasswordMenu />);
       expect(screen.getByLabelText("Current Password")).toHaveValue("");
     });
 
     it("is required", async () => {
-      render(fixture());
+      await renderInDrawer(<ChangePasswordMenu />);
 
       fireEvent.blur(screen.getByLabelText("Current Password"));
 
@@ -36,14 +29,14 @@ describe("<ChangePasswordMenu />", () => {
     });
   });
   describe("newPassword", () => {
-    it("is empty by default", () => {
-      render(fixture());
+    it("is empty by default", async () => {
+      await renderInDrawer(<ChangePasswordMenu />);
 
       expect(screen.getByTestId("new-password")).toHaveValue("");
     });
 
     it("is required", async () => {
-      render(fixture());
+      await renderInDrawer(<ChangePasswordMenu />);
 
       fireEvent.blur(screen.getByTestId("new-password"));
 
@@ -56,7 +49,7 @@ describe("<ChangePasswordMenu />", () => {
 
     it("requires 8 characters", async () => {
       const user = userEvent.setup();
-      render(fixture());
+      await renderInDrawer(<ChangePasswordMenu />);
 
       const newPasswordInput = screen.getByTestId("new-password");
       await user.type(newPasswordInput, "myPass");
@@ -70,14 +63,14 @@ describe("<ChangePasswordMenu />", () => {
     });
   });
   describe("newPasswordConfirmation", () => {
-    it("is empty by default", () => {
-      render(fixture());
+    it("is empty by default", async () => {
+      await renderInDrawer(<ChangePasswordMenu />);
 
       expect(screen.getByTestId("new-password-confirmation")).toHaveValue("");
     });
 
     it("is required", async () => {
-      render(fixture());
+      await renderInDrawer(<ChangePasswordMenu />);
 
       fireEvent.blur(screen.getByTestId("new-password-confirmation"));
 
@@ -90,7 +83,7 @@ describe("<ChangePasswordMenu />", () => {
 
     it("requires same password", async () => {
       const user = userEvent.setup();
-      render(fixture());
+      await renderInDrawer(<ChangePasswordMenu />);
       const newPasswordInput = screen.getByTestId("new-password");
       const newPasswordConfirmationInput = screen.getByTestId("new-password-confirmation");
 
@@ -110,7 +103,7 @@ describe("<ChangePasswordMenu />", () => {
     it("is enabled with valid form", async () => {
       const user = userEvent.setup();
 
-      render(fixture());
+      await renderInDrawer(<ChangePasswordMenu />);
       const currentPasswordInput = screen.getByTestId("current-password");
       const newPasswordInput = screen.getByTestId("new-password");
       const newPasswordConfirmationInput = screen.getByTestId("new-password-confirmation");
@@ -125,7 +118,7 @@ describe("<ChangePasswordMenu />", () => {
     it("submits the new password", async () => {
       const user = userEvent.setup();
 
-      render(fixture());
+      await renderInDrawer(<ChangePasswordMenu />);
       const currentPasswordInput = screen.getByTestId("current-password");
       const newPasswordInput = screen.getByTestId("new-password");
       const newPasswordConfirmationInput = screen.getByTestId("new-password-confirmation");
