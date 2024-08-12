@@ -4,7 +4,7 @@ import { type StyleFunctionProps, mode } from "@chakra-ui/theme-tools";
 import { dark, light } from "./colors";
 
 const config = {
-  initialColorMode: "light",
+  initialColorMode: "dark",
   useSystemColorMode: false,
 };
 
@@ -92,6 +92,10 @@ const theme = extendTheme({
         "2xl": {
           fontSize: "24px",
           lineHeight: "32px",
+        },
+        "3xl": {
+          fontSize: "30px",
+          lineHeight: "36px",
         },
       },
     },

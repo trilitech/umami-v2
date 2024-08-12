@@ -22,13 +22,13 @@ import { ThreeDotsIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
 import { AccountTile } from "../AccountTile";
 import { ModalCloseButton } from "../CloseButton";
-import { useOnboardingModal } from "../Onboarding/useOnboardingModal";
 
 export const AccountSelectorModal = () => {
   const accounts = useImplicitAccounts();
   const color = useColor();
   const getBalance = useGetAccountBalance();
-  const { onOpen: openOnboardingModal, modalElement } = useOnboardingModal();
+  // TODO: add ConnectOptions onboarding modal
+  const { onOpen: openOnboardingModal, modalElement } = { modalElement: null, onOpen: () => {} };
   const { onClose } = useDynamicModalContext();
 
   const dispatch = useDispatch();
