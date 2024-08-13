@@ -24,7 +24,7 @@
     "rimraf": "^6.0.1"
   },
   "dependencies": {
-    "@cucumber/cucumber": "^10.8.0",
+    "@cucumber/cucumber": "^10.9.0",
     "@playwright/test": "^1.46.0",
     "@taquito/signer": "^20.0.1",
     "@umami/core": "workspace:^",
