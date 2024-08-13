@@ -1,44 +1,17 @@
-import {
-  Button,
-  Divider,
-  DrawerBody,
-  DrawerContent,
-  Heading,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
+import { Button, Divider, Text } from "@chakra-ui/react";
 
-import { useColor } from "../../styles/useColor";
-import { DrawerBackButton } from "../BackButton";
-import { DrawerCloseButton } from "../CloseButton";
+import { DrawerContentWrapper } from "./DrawerContentWrapper";
 import { EmptyMessage } from "../EmptyMessage";
 
-export const AppsMenu = () => {
-  const color = useColor();
-
-  return (
-    <DrawerContent>
-      <DrawerBackButton />
-      <DrawerCloseButton />
-      <DrawerBody paddingTop="90px">
-        <Heading color={color("900")} size="2xl">
-          Apps
-        </Heading>
-        <Text marginTop="12px" size="lg">
-          Connect with Pairing Request
-        </Text>
-        <VStack
-          alignItems="flex-start"
-          gap="40px"
-          marginTop="18px"
-          divider={<Divider color={color("100")} />}
-        >
-          <Button width="auto" padding="0 24px" variant="secondary">
-            Connect
-          </Button>
-          <EmptyMessage alignItems="flex-start" subtitle="Apps" title="Apps" />
-        </VStack>
-      </DrawerBody>
-    </DrawerContent>
-  );
-};
+export const AppsMenu = () => (
+  <DrawerContentWrapper title="Apps">
+    <Text marginTop="12px" size="lg">
+      Connect with Pairing Request
+    </Text>
+    <Button width="fit-content" marginTop="18px" padding="0 24px" variant="secondary">
+      Connect
+    </Button>
+    <Divider marginTop={{ base: "36px", lg: "40px" }} />
+    <EmptyMessage alignItems="flex-start" marginTop="40px" subtitle="Apps" title="Apps" />
+  </DrawerContentWrapper>
+);

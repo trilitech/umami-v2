@@ -14,14 +14,7 @@ import { AccountInfoModal } from "./AccountInfoModal";
 import { AccountSelectorPopover } from "./AccountSelectorPopover";
 import { RemoveAccountModal } from "./RemoveAccountModal";
 import { RenameAccountPage } from "./RenameAccountModal";
-import {
-  act,
-  dynamicDisclosureContextMock,
-  render,
-  screen,
-  userEvent,
-  waitFor,
-} from "../../testUtils";
+import { act, dynamicModalContextMock, render, screen, userEvent, waitFor } from "../../testUtils";
 
 jest.mock("@umami/state", () => ({
   ...jest.requireActual("@umami/state"),
@@ -63,7 +56,7 @@ describe("AccountSelectorPopover", () => {
   });
 
   it("opens AccountInfoModal when 'Account Info' button is clicked", async () => {
-    const { openWith } = dynamicDisclosureContextMock;
+    const { openWith } = dynamicModalContextMock;
     const user = userEvent.setup();
 
     render(<AccountSelectorPopover account={mockAccount} />);
@@ -77,7 +70,7 @@ describe("AccountSelectorPopover", () => {
   });
 
   it("opens RenameAccountPage when 'Rename' button is clicked", async () => {
-    const { openWith } = dynamicDisclosureContextMock;
+    const { openWith } = dynamicModalContextMock;
     const user = userEvent.setup();
 
     render(<AccountSelectorPopover account={mockAccount} />);
@@ -91,7 +84,7 @@ describe("AccountSelectorPopover", () => {
   });
 
   it("opens RemoveAccountModal when 'Remove' button is clicked", async () => {
-    const { openWith } = dynamicDisclosureContextMock;
+    const { openWith } = dynamicModalContextMock;
     const user = userEvent.setup();
 
     render(<AccountSelectorPopover account={mockAccount} />);

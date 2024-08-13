@@ -10,8 +10,8 @@ import {
 import { RemoveAccountModal } from "./RemoveAccountModal";
 import {
   act,
-  dynamicDisclosureContextMock,
-  render,
+  dynamicModalContextMock,
+  renderInModal,
   screen,
   userEvent,
   waitFor,
@@ -39,7 +39,7 @@ describe("<RemoveAccountModal />", () => {
 
   it("renders with default description and button label", async () => {
     addTestAccounts(store, accounts);
-    render(<RemoveAccountModal account={accounts[0]} />, { store });
+    await renderInModal(<RemoveAccountModal account={accounts[0]} />, store);
 
     await waitFor(() => expect(screen.getByText("Remove Account")).toBeVisible());
     expect(
@@ -53,7 +53,7 @@ describe("<RemoveAccountModal />", () => {
   it("renders with off-board description and button label when it's the last implicit account", async () => {
     addTestAccount(store, accounts[0]);
 
-    render(<RemoveAccountModal account={accounts[0]} />, { store });
+    await renderInModal(<RemoveAccountModal account={accounts[0]} />, store);
 
     await waitFor(() => expect(screen.getByText("Remove Account")).toBeVisible());
     expect(
@@ -66,10 +66,10 @@ describe("<RemoveAccountModal />", () => {
 
   it("handles account removal and navigates correctly when only one account", async () => {
     addTestAccount(store, accounts[0]);
-    const { onClose } = dynamicDisclosureContextMock;
+    const { onClose } = dynamicModalContextMock;
     const user = userEvent.setup();
 
-    render(<RemoveAccountModal account={accounts[0]} />, { store });
+    await renderInModal(<RemoveAccountModal account={accounts[0]} />, store);
 
     await act(() => user.click(screen.getByText("Remove & Off-board")));
 
@@ -81,9 +81,9 @@ describe("<RemoveAccountModal />", () => {
     addTestAccounts(store, accounts);
 
     const user = userEvent.setup();
-    const { goBack } = dynamicDisclosureContextMock;
+    const { goBack } = dynamicModalContextMock;
 
-    render(<RemoveAccountModal account={accounts[0]} />, { store });
+    await renderInModal(<RemoveAccountModal account={accounts[0]} />, store);
 
     await act(() => user.click(screen.getByText("Remove")));
 

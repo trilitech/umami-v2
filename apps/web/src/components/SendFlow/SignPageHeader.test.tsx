@@ -6,12 +6,12 @@ import {
 } from "@umami/core";
 
 import { SignPageHeader, subTitle } from "./SignPageHeader";
-import { render, screen } from "../../testUtils";
+import { renderInModal, screen } from "../../testUtils";
 
 describe("<SignPageHeader />", () => {
   describe("goBack", () => {
-    it("is hidden if goBack is not provided", () => {
-      render(<SignPageHeader />);
+    it("is hidden if goBack is not provided", async () => {
+      await renderInModal(<SignPageHeader />);
       expect(screen.queryByTestId("go-back-button")).not.toBeInTheDocument();
     });
   });

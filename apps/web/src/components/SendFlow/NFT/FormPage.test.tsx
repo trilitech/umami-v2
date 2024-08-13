@@ -13,9 +13,9 @@ import { FormPage } from "./FormPage";
 import { SignPage } from "./SignPage";
 import {
   act,
-  dynamicDisclosureContextMock,
+  dynamicModalContextMock,
   fireEvent,
-  render,
+  renderInModal,
   screen,
   userEvent,
   waitFor,
@@ -39,7 +39,7 @@ beforeEach(() => {
 
 describe("<FormPage />", () => {
   it("renders a form with default form values", async () => {
-    render(
+    await renderInModal(
       <FormPage
         form={{
           sender: mockImplicitAccount(0).address.pkh,
@@ -48,7 +48,7 @@ describe("<FormPage />", () => {
         }}
         nft={nft}
       />,
-      { store }
+      store
     );
 
     await waitFor(() =>
@@ -60,14 +60,14 @@ describe("<FormPage />", () => {
   });
 
   describe("nft", () => {
-    it("displays the correct name", () => {
-      render(<FormPage nft={nft} />, { store });
+    it("displays the correct name", async () => {
+      await renderInModal(<FormPage nft={nft} />, store);
 
       expect(screen.getByTestId("nft-name")).toHaveTextContent(nft.metadata.name as string);
     });
 
-    it("renders the correct balance", () => {
-      render(<FormPage nft={mockNFTBalance(1, { balance: "10" })} />, { store });
+    it("renders the correct balance", async () => {
+      await renderInModal(<FormPage nft={mockNFTBalance(1, { balance: "10" })} />, store);
 
       expect(screen.getByTestId("nft-owned")).toHaveTextContent("10");
     });
@@ -76,7 +76,7 @@ describe("<FormPage />", () => {
   describe("validation", () => {
     describe("To", () => {
       it("is required", async () => {
-        render(<FormPage nft={nft} />, { store });
+        await renderInModal(<FormPage nft={nft} />, store);
 
         fireEvent.blur(screen.getByLabelText("To"));
         await waitFor(() => {
@@ -87,7 +87,7 @@ describe("<FormPage />", () => {
       });
 
       it("allows only valid addresses", async () => {
-        render(<FormPage nft={nft} />, { store });
+        await renderInModal(<FormPage nft={nft} />, store);
 
         fireEvent.change(screen.getByLabelText("To"), {
           target: { value: "invalid" },
@@ -110,7 +110,7 @@ describe("<FormPage />", () => {
 
     describe("quantity", () => {
       it("doesn't allow values < 1", async () => {
-        render(<FormPage nft={nft} />, { store });
+        await renderInModal(<FormPage nft={nft} />, store);
         fireEvent.change(screen.getByTestId("quantity-input"), {
           target: { value: "0" },
         });
@@ -121,7 +121,7 @@ describe("<FormPage />", () => {
       });
 
       it("doesn't allow values above the nft balance", async () => {
-        render(<FormPage nft={mockNFTBalance(1, { balance: "5" })} />, { store });
+        await renderInModal(<FormPage nft={mockNFTBalance(1, { balance: "5" })} />, store);
         fireEvent.change(screen.getByTestId("quantity-input"), {
           target: { value: "7" },
         });
@@ -136,7 +136,7 @@ describe("<FormPage />", () => {
       it("opens a sign page if estimation succeeds", async () => {
         const user = userEvent.setup();
 
-        render(
+        await renderInModal(
           <FormPage
             form={{
               sender: sender.address.pkh,
@@ -145,7 +145,7 @@ describe("<FormPage />", () => {
             }}
             nft={nft}
           />,
-          { store }
+          store
         );
         const submitButton = screen.getByText("Preview");
         await waitFor(() => {
@@ -170,7 +170,7 @@ describe("<FormPage />", () => {
 
         await act(() => user.click(submitButton));
 
-        expect(dynamicDisclosureContextMock.openWith).toHaveBeenCalledWith(
+        expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
           <SignPage
             data={{ nft: mockNFTBalance(1) }}
             goBack={expect.any(Function)}

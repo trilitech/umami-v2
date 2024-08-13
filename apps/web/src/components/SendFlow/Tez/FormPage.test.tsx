@@ -12,9 +12,9 @@ import { FormPage } from "./FormPage";
 import { SignPage } from "./SignPage";
 import {
   act,
-  dynamicDisclosureContextMock,
+  dynamicModalContextMock,
   fireEvent,
-  render,
+  renderInModal,
   screen,
   userEvent,
   waitFor,
@@ -33,8 +33,8 @@ beforeEach(() => {
 
 describe("<Form />", () => {
   describe("default values", () => {
-    it("renders an empty form by default", () => {
-      render(<FormPage />, { store });
+    it("renders an empty form by default", async () => {
+      await renderInModal(<FormPage />, store);
 
       expect(screen.getByLabelText("From")).toHaveValue("");
       expect(screen.getByLabelText("From")).toBeEnabled();
@@ -42,8 +42,8 @@ describe("<Form />", () => {
       expect(screen.getByLabelText("Amount")).toHaveValue(null);
     });
 
-    it("renders a form with a prefilled sender", () => {
-      render(<FormPage sender={mockImplicitAccount(0)} />, { store });
+    it("renders a form with a prefilled sender", async () => {
+      await renderInModal(<FormPage sender={mockImplicitAccount(0)} />, store);
 
       expect(screen.getByTestId("real-address-input-sender")).toHaveValue(
         mockImplicitAccount(0).address.pkh
@@ -51,7 +51,7 @@ describe("<Form />", () => {
     });
 
     it("renders a form with default form values", async () => {
-      render(
+      await renderInModal(
         <FormPage
           form={{
             sender: mockImplicitAccount(0).address.pkh,
@@ -59,7 +59,7 @@ describe("<Form />", () => {
             recipient: mockImplicitAccount(1).address.pkh,
           }}
         />,
-        { store }
+        store
       );
 
       await waitFor(() =>
@@ -74,7 +74,7 @@ describe("<Form />", () => {
     });
 
     it("renders a form with default form values but disabled sender if it's provided", async () => {
-      render(
+      await renderInModal(
         <FormPage
           form={{
             sender: mockImplicitAccount(0).address.pkh,
@@ -83,7 +83,7 @@ describe("<Form />", () => {
           }}
           sender={mockImplicitAccount(0)}
         />,
-        { store }
+        store
       );
 
       await waitFor(() =>
@@ -98,7 +98,7 @@ describe("<Form />", () => {
     });
 
     it("renders a form with prefilled recipient", async () => {
-      render(
+      await renderInModal(
         <FormPage
           form={{
             sender: "",
@@ -106,7 +106,7 @@ describe("<Form />", () => {
             recipient: mockImplicitAccount(1).address.pkh,
           }}
         />,
-        { store }
+        store
       );
 
       await waitFor(() =>
@@ -121,7 +121,7 @@ describe("<Form />", () => {
   describe("validations", () => {
     describe("From", () => {
       it("is required", async () => {
-        render(<FormPage />, { store });
+        await renderInModal(<FormPage />, store);
 
         fireEvent.blur(screen.getByLabelText("From"));
         await waitFor(() =>
@@ -131,7 +131,7 @@ describe("<Form />", () => {
 
       it("allows only owned accounts", async () => {
         addTestAccount(store, mockMnemonicAccount(0));
-        render(<FormPage />, { store });
+        await renderInModal(<FormPage />, store);
 
         fireEvent.change(screen.getByLabelText("From"), {
           target: { value: mockImplicitAccount(1).address.pkh },
@@ -149,7 +149,7 @@ describe("<Form />", () => {
 
       it("allows owned multisig accounts", async () => {
         addTestAccount(store, mockMultisigAccount(0));
-        render(<FormPage />, { store });
+        await renderInModal(<FormPage />, store);
 
         fireEvent.change(screen.getByLabelText("From"), {
           target: { value: mockMultisigAccount(1).address.pkh },
@@ -168,7 +168,7 @@ describe("<Form />", () => {
 
     describe("To", () => {
       it("is required", async () => {
-        render(<FormPage />, { store });
+        await renderInModal(<FormPage />, store);
 
         fireEvent.blur(screen.getByLabelText("To"));
         await waitFor(() =>
@@ -179,7 +179,7 @@ describe("<Form />", () => {
       });
 
       it("allows only valid addresses", async () => {
-        render(<FormPage />, { store });
+        await renderInModal(<FormPage />, store);
 
         fireEvent.change(screen.getByLabelText("To"), {
           target: { value: "invalid" },
@@ -202,7 +202,7 @@ describe("<Form />", () => {
 
     describe("Amount", () => {
       it("is required", async () => {
-        render(<FormPage />, { store });
+        await renderInModal(<FormPage />, store);
 
         fireEvent.blur(screen.getByLabelText("Amount"));
         await waitFor(() =>
@@ -220,7 +220,7 @@ describe("<Form />", () => {
 
     it("shows a toast if estimation fails", async () => {
       const user = userEvent.setup();
-      render(
+      await renderInModal(
         <FormPage
           form={{
             sender: mockImplicitAccount(0).address.pkh,
@@ -228,7 +228,7 @@ describe("<Form />", () => {
             prettyAmount: "1",
           }}
         />,
-        { store }
+        store
       );
       const submitButton = screen.getByText("Preview");
       await waitFor(() => expect(submitButton).toBeEnabled());
@@ -249,7 +249,7 @@ describe("<Form />", () => {
       "opens a sign page if estimation succeeds",
       async sender => {
         const user = userEvent.setup();
-        render(
+        await renderInModal(
           <FormPage
             form={{
               sender: sender.address.pkh,
@@ -257,7 +257,7 @@ describe("<Form />", () => {
               prettyAmount: "1",
             }}
           />,
-          { store }
+          store
         );
         const submitButton = screen.getByText("Preview");
         await waitFor(() => expect(submitButton).toBeEnabled());
@@ -276,7 +276,7 @@ describe("<Form />", () => {
         jest.mocked(estimate).mockResolvedValueOnce(operations);
         await act(() => user.click(submitButton));
 
-        expect(dynamicDisclosureContextMock.openWith).toHaveBeenCalledWith(
+        expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
           <SignPage
             data={undefined}
             goBack={expect.any(Function)}

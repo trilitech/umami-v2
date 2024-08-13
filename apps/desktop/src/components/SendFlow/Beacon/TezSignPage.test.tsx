@@ -8,7 +8,7 @@ import { GHOSTNET, MAINNET, makeToolkit } from "@umami/tezos";
 import { TezSignPage } from "./TezSignPage";
 import {
   act,
-  dynamicDisclosureContextMock,
+  dynamicModalContextMock,
   render,
   screen,
   userEvent,
@@ -82,8 +82,6 @@ describe("<TezSignPage />", () => {
         transactionHash: "ophash",
       })
     );
-    expect(dynamicDisclosureContextMock.openWith).toHaveBeenCalledWith(
-      <SuccessStep hash="ophash" />
-    );
+    expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(<SuccessStep hash="ophash" />);
   });
 });

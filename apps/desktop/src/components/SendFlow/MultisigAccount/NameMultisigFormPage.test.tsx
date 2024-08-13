@@ -5,7 +5,7 @@ import { type UmamiStore, addTestAccount, makeStore } from "@umami/state";
 import { NameMultisigFormPage } from "./NameMultisigFormPage";
 import { SelectApproversFormPage } from "./SelectApproversFormPage";
 import {
-  dynamicDisclosureContextMock,
+  dynamicModalContextMock,
   fireEvent,
   render,
   screen,
@@ -134,7 +134,7 @@ describe("NameMultisigFormPage", () => {
       fireEvent.click(submitButton);
 
       await waitFor(() => {
-        expect(dynamicDisclosureContextMock.openWith).toHaveBeenCalledWith(
+        expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
           <SelectApproversFormPage
             form={{ name: MULTISIG_NAME } as any}
             goBack={expect.any(Function)}
@@ -158,7 +158,7 @@ describe("NameMultisigFormPage", () => {
       fireEvent.click(submitButton);
 
       await waitFor(() => {
-        expect(dynamicDisclosureContextMock.openWith).toHaveBeenCalledWith(
+        expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
           <SelectApproversFormPage
             form={{ name: "Updated Multisig Name" } as any}
             goBack={expect.any(Function)}

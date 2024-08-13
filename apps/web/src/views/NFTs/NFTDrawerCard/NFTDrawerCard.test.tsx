@@ -2,7 +2,7 @@ import { mockNFTBalance } from "@umami/core";
 
 import { NFTDrawerCard } from "./NFTDrawerCard";
 import { FormPage } from "../../../components/SendFlow/NFT/FormPage";
-import { act, dynamicDisclosureContextMock, render, screen, userEvent } from "../../../testUtils";
+import { act, dynamicModalContextMock, render, screen, userEvent } from "../../../testUtils";
 
 describe("<NFTDrawerCard />", () => {
   describe("image", () => {
@@ -97,7 +97,7 @@ describe("<NFTDrawerCard />", () => {
     expect(button).toBeVisible();
     await act(() => user.click(button));
 
-    expect(dynamicDisclosureContextMock.openWith).toHaveBeenCalledWith(<FormPage nft={nft} />);
+    expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(<FormPage nft={nft} />);
   });
 
   it("renders JSON metadata", () => {

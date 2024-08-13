@@ -9,8 +9,8 @@ import { GHOSTNET, makeToolkit, prettyTezAmount } from "@umami/tezos";
 import { OriginationOperationSignPage } from "./OriginationOperationSignPage";
 import {
   act,
-  dynamicDisclosureContextMock,
-  render,
+  dynamicModalContextMock,
+  renderInModal,
   screen,
   userEvent,
   waitFor,
@@ -48,7 +48,7 @@ jest.mock("@umami/state", () => ({
 
 describe("<OriginationOperationSignPage />", () => {
   it("renders fee", async () => {
-    render(<OriginationOperationSignPage message={message} operation={operation} />);
+    await renderInModal(<OriginationOperationSignPage message={message} operation={operation} />);
 
     await waitFor(() => expect(screen.getByText(prettyTezAmount(123))).toBeVisible());
   });
@@ -62,7 +62,7 @@ describe("<OriginationOperationSignPage />", () => {
     jest.mocked(executeOperations).mockResolvedValue({ opHash: "ophash" } as BatchWalletOperation);
     jest.spyOn(WalletClient, "respond").mockResolvedValue();
 
-    render(<OriginationOperationSignPage message={message} operation={operation} />);
+    await renderInModal(<OriginationOperationSignPage message={message} operation={operation} />);
 
     await act(() => user.type(screen.getByLabelText("Password"), "Password"));
 
@@ -86,8 +86,6 @@ describe("<OriginationOperationSignPage />", () => {
         transactionHash: "ophash",
       })
     );
-    expect(dynamicDisclosureContextMock.openWith).toHaveBeenCalledWith(
-      <SuccessStep hash="ophash" />
-    );
+    expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(<SuccessStep hash="ophash" />);
   });
 });

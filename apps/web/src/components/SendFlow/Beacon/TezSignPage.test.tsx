@@ -8,8 +8,8 @@ import { GHOSTNET, MAINNET, makeToolkit } from "@umami/tezos";
 import { TezSignPage } from "./TezSignPage";
 import {
   act,
-  dynamicDisclosureContextMock,
-  render,
+  dynamicModalContextMock,
+  renderInModal,
   screen,
   userEvent,
   waitFor,
@@ -56,7 +56,7 @@ describe("<TezSignPage />", () => {
     jest.mocked(executeOperations).mockResolvedValue({ opHash: "ophash" } as BatchWalletOperation);
     jest.spyOn(WalletClient, "respond").mockResolvedValue();
 
-    render(<TezSignPage message={message} operation={operation} />, { store });
+    await renderInModal(<TezSignPage message={message} operation={operation} />, store);
 
     expect(screen.getByText("Ghostnet")).toBeInTheDocument();
     expect(screen.queryByText("Mainnet")).not.toBeInTheDocument();
@@ -82,8 +82,6 @@ describe("<TezSignPage />", () => {
         transactionHash: "ophash",
       })
     );
-    expect(dynamicDisclosureContextMock.openWith).toHaveBeenCalledWith(
-      <SuccessStep hash="ophash" />
-    );
+    expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(<SuccessStep hash="ophash" />);
   });
 });

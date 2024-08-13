@@ -4,8 +4,8 @@ import { renameAccount } from "@umami/state";
 import { RenameAccountPage } from "./RenameAccountModal";
 import {
   act,
-  dynamicDisclosureContextMock,
-  render,
+  dynamicModalContextMock,
+  renderInModal,
   screen,
   userEvent,
   waitFor,
@@ -21,14 +21,14 @@ const mockAccount = mockImplicitAccount(0);
 
 describe("<RenameAccountPage />", () => {
   it("renders correctly with initial values", async () => {
-    render(<RenameAccountPage account={mockAccount} />);
+    await renderInModal(<RenameAccountPage account={mockAccount} />);
 
     await waitFor(() => expect(screen.getByText("Edit name")).toBeVisible());
     expect(screen.getByPlaceholderText("Enter contact's name")).toHaveValue(mockAccount.label);
   });
 
   it("shows validation error when name is empty", async () => {
-    render(<RenameAccountPage account={mockAccount} />);
+    await renderInModal(<RenameAccountPage account={mockAccount} />);
     const user = userEvent.setup();
 
     await act(() => user.clear(screen.getByPlaceholderText("Enter contact's name")));
@@ -39,9 +39,9 @@ describe("<RenameAccountPage />", () => {
 
   it("dispatches renameAccount and navigates back on valid form submission", async () => {
     const user = userEvent.setup();
-    const { goBack } = dynamicDisclosureContextMock;
+    const { goBack } = dynamicModalContextMock;
 
-    render(<RenameAccountPage account={mockAccount} />);
+    await renderInModal(<RenameAccountPage account={mockAccount} />);
 
     await act(() => user.clear(screen.getByPlaceholderText("Enter contact's name")));
     await act(() => user.type(screen.getByPlaceholderText("Enter contact's name"), "New Name"));

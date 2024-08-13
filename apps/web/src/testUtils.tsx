@@ -1,15 +1,27 @@
-import { Modal } from "@chakra-ui/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import * as testLib from "@testing-library/react";
 import { type UserEvent } from "@testing-library/user-event";
-import { DynamicModalContext, useDynamicModal } from "@umami/components";
+import {
+  DynamicDrawerContext,
+  DynamicModalContext,
+  useDynamicDrawer,
+  useDynamicDrawerContext,
+  useDynamicModal,
+  useDynamicModalContext,
+} from "@umami/components";
 import { type UmamiStore, makeStore } from "@umami/state";
-import { type PropsWithChildren, type ReactNode, act } from "react";
+import { type PropsWithChildren, type ReactElement, type ReactNode, act } from "react";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 
 // can be used to spyOn the openWith and onClose methods
-export const dynamicDisclosureContextMock = {
+export const dynamicModalContextMock = {
+  onClose: jest.fn(),
+  openWith: jest.fn(),
+  goBack: jest.fn(),
+};
+
+export const dynamicDrawerContextMock = {
   onClose: jest.fn(),
   openWith: jest.fn(),
   goBack: jest.fn(),
@@ -19,21 +31,38 @@ const makeWrapper =
   (store: UmamiStore) =>
   ({ children }: PropsWithChildren) => {
     const dynamicModal = useDynamicModal();
+    const dynamicDrawer = useDynamicDrawer();
 
-    const openWith = dynamicModal.openWith;
-    const onClose = dynamicModal.onClose;
-    const goBack = dynamicModal.goBack;
+    const modalOpenWith = dynamicModal.openWith;
+    const modalOnClose = dynamicModal.onClose;
+    const modalGoBack = dynamicModal.goBack;
     jest.spyOn(dynamicModal, "openWith").mockImplementation(async (...args) => {
-      dynamicDisclosureContextMock.openWith(...args);
-      return openWith(...args);
+      dynamicModalContextMock.openWith(...args);
+      return modalOpenWith(...args);
     });
     jest.spyOn(dynamicModal, "onClose").mockImplementation((...args) => {
-      dynamicDisclosureContextMock.onClose(...args);
-      return onClose(...args);
+      dynamicModalContextMock.onClose(...args);
+      return modalOnClose(...args);
     });
     jest.spyOn(dynamicModal, "goBack").mockImplementation(() => {
-      dynamicDisclosureContextMock.goBack();
-      return goBack();
+      dynamicModalContextMock.goBack();
+      return modalGoBack();
+    });
+
+    const drawerOpenWith = dynamicDrawer.openWith;
+    const drawerOnClose = dynamicDrawer.onClose;
+    const drawerGoBack = dynamicDrawer.goBack;
+    jest.spyOn(dynamicDrawer, "openWith").mockImplementation(async (...args) => {
+      dynamicDrawerContextMock.openWith(...args);
+      return drawerOpenWith(...args);
+    });
+    jest.spyOn(dynamicDrawer, "onClose").mockImplementation((...args) => {
+      dynamicDrawerContextMock.onClose(...args);
+      return drawerOnClose(...args);
+    });
+    jest.spyOn(dynamicDrawer, "goBack").mockImplementation(() => {
+      dynamicDrawerContextMock.goBack();
+      return drawerGoBack();
     });
 
     return (
@@ -41,12 +70,11 @@ const makeWrapper =
         <QueryClientProvider client={new QueryClient()}>
           <Provider store={store}>
             <DynamicModalContext.Provider value={dynamicModal}>
-              {/* Crutch for desktop views to be testable */}
-              {/* TODO: remove it when those views are rebuilt for the web */}
-              <Modal isOpen={true} onClose={jest.fn()}>
+              <DynamicDrawerContext.Provider value={dynamicDrawer}>
                 {children}
                 {dynamicModal.content}
-              </Modal>
+                {dynamicDrawer.content}
+              </DynamicDrawerContext.Provider>
             </DynamicModalContext.Provider>
           </Provider>
         </QueryClientProvider>
@@ -87,6 +115,28 @@ const customRender = <
   return {
     store,
     ...testLib.render(ui, { wrapper: makeWrapper(store), ...options }),
+  };
+};
+
+export const renderInDrawer = async (component: ReactElement, store?: UmamiStore) => {
+  const { result, store: _store } = customRenderHook(useDynamicDrawerContext, { store });
+
+  await act(() => result.current.openWith(component));
+
+  return {
+    store: _store,
+    result,
+  };
+};
+
+export const renderInModal = async (component: ReactElement, store?: UmamiStore) => {
+  const { result, store: _store } = customRenderHook(useDynamicModalContext, { store });
+
+  await act(() => result.current.openWith(component));
+
+  return {
+    store: _store,
+    result,
   };
 };
 

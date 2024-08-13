@@ -20,7 +20,7 @@ import { FormPage, type FormValues } from "./FormPage";
 import { SignPage } from "./SignPage";
 import {
   act,
-  dynamicDisclosureContextMock,
+  dynamicModalContextMock,
   render,
   screen,
   userEvent,
@@ -142,7 +142,7 @@ describe("<Form />", () => {
 
       await act(() => user.click(submitButton));
 
-      expect(dynamicDisclosureContextMock.openWith).toHaveBeenCalledWith(
+      expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
         <SignPage
           data={undefined}
           goBack={expect.any(Function)}
