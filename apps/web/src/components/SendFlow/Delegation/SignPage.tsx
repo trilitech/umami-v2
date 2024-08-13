@@ -10,17 +10,15 @@ import { SignPageHeader } from "../SignPageHeader";
 import { type SignPageProps, useSignPageHelpers } from "../utils";
 
 export const SignPage = (props: SignPageProps) => {
-  const { mode, operations: initialOperations } = props;
-  const { fee, operations, estimationFailed, isLoading, form, signer, onSign } = useSignPageHelpers(
-    initialOperations,
-    mode
-  );
+  const { operations: initialOperations } = props;
+  const { fee, operations, estimationFailed, isLoading, form, signer, onSign } =
+    useSignPageHelpers(initialOperations);
   const baker = (operations.operations[0] as Delegation).recipient;
   return (
     <FormProvider {...form}>
       <ModalContent>
         <form>
-          <SignPageHeader {...props} />
+          <SignPageHeader />
           <ModalBody>
             <FormLabel>From</FormLabel>
             <AddressTile address={signer.address} />

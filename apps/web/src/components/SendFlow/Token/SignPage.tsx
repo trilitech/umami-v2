@@ -12,14 +12,11 @@ import { type SignPageProps, useSignPageHelpers } from "../utils";
 
 export const SignPage = (props: SignPageProps<{ token: FA12TokenBalance | FA2TokenBalance }>) => {
   const {
-    mode,
     operations: initialOperations,
     data: { token },
   } = props;
-  const { fee, operations, estimationFailed, isLoading, form, signer, onSign } = useSignPageHelpers(
-    initialOperations,
-    mode
-  );
+  const { fee, operations, estimationFailed, isLoading, form, signer, onSign } =
+    useSignPageHelpers(initialOperations);
 
   const { amount, recipient } = operations.operations[0] as TokenTransfer;
 
@@ -27,7 +24,7 @@ export const SignPage = (props: SignPageProps<{ token: FA12TokenBalance | FA2Tok
     <FormProvider {...form}>
       <ModalContent>
         <form>
-          <SignPageHeader {...props} />
+          <SignPageHeader />
           <ModalBody>
             <TokenTile amount={amount} token={token} />
 

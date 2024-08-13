@@ -12,18 +12,17 @@ import { type SignPageProps, useSignPageHelpers } from "../utils";
 // TODO: test
 export const SignPage = (props: SignPageProps<{ stakedBalance: number }>) => {
   const {
-    mode,
     operations,
     data: { stakedBalance },
   } = props;
-  const { isLoading, form, signer, onSign, fee } = useSignPageHelpers(operations, mode);
+  const { isLoading, form, signer, onSign, fee } = useSignPageHelpers(operations);
   const { amount: mutezAmount } = operations.operations[0] as Unstake;
 
   return (
     <FormProvider {...form}>
       <ModalContent>
         <form>
-          <SignPageHeader {...props} />
+          <SignPageHeader />
           <ModalBody>
             <FormLabel marginTop="24px">From</FormLabel>
             <AddressTile address={operations.sender.address} />

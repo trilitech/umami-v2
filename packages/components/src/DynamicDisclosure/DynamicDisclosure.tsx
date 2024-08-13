@@ -16,6 +16,8 @@ import {
 } from "react";
 import { RemoveScroll } from "react-remove-scroll";
 
+import { merge, cloneDeep } from "lodash";
+
 interface DynamicDisclosureContextType {
   openWith: (
     content: ReactElement,
@@ -27,6 +29,8 @@ interface DynamicDisclosureContextType {
   isOpen: boolean;
   goBack: () => void;
   hasPrevious: boolean;
+  formValues: Record<string, any>;
+  allFormValues: Record<string, any>;
 }
 
 const defaultContextValue = {
@@ -35,6 +39,8 @@ const defaultContextValue = {
   goBack: () => {},
   isOpen: false,
   hasPrevious: false,
+  formValues: {},
+  allFormValues: {},
 };
 
 /**
@@ -45,8 +51,16 @@ export const DynamicModalContext = createContext<DynamicDisclosureContextType>(d
 export const DynamicDrawerContext =
   createContext<DynamicDisclosureContextType>(defaultContextValue);
 
+/* istanbul ignore next */
 export const useDynamicModalContext = () => useContext(DynamicModalContext);
+/* istanbul ignore next */
 export const useDynamicDrawerContext = () => useContext(DynamicDrawerContext);
+
+type DisclosureStackItem = {
+  content: ReactElement;
+  props: ThemingProps & { onClose: () => void | Promise<void> };
+  formValues: Record<string, any>;
+};
 
 /**
  * It's easier to have just one global place where you can put a modal
@@ -61,12 +75,7 @@ export const useDynamicDrawerContext = () => useContext(DynamicDrawerContext);
  *
  */
 export const useDynamicDisclosure = () => {
-  const stackRef = useRef<
-    Array<{
-      content: ReactElement;
-      props: ThemingProps & { onClose: () => void | Promise<void> };
-    }>
-  >([]);
+  const stackRef = useRef<DisclosureStackItem[]>([]);
   const [currentIndex, setCurrentIndex] = useState(-1);
 
   const openWith = async (
@@ -84,6 +93,7 @@ export const useDynamicDisclosure = () => {
     stackRef.current.push({
       content,
       props: { ...props, onClose },
+      formValues: {},
     });
     setCurrentIndex(current => current + 1);
 
@@ -97,6 +107,12 @@ export const useDynamicDisclosure = () => {
 
   const currentItem = stackRef.current[currentIndex] || null;
 
+  // Note: be careful not to use the same form input names
+  // otherwise, the values will be overwritten with the ones from the latest form
+  const allFormValues = stackRef.current
+    .map(item => item.formValues)
+    .reduce((acc, curr) => merge(acc, cloneDeep(curr)), {});
+
   return {
     isOpen: !!currentItem,
     onClose: currentItem?.props.onClose || (() => {}),
@@ -104,7 +120,9 @@ export const useDynamicDisclosure = () => {
     goBack,
     content: currentItem?.content,
     props: currentItem?.props || {},
+    formValues: currentItem?.formValues || {},
     hasPrevious: stackRef.current.length > 1,
+    allFormValues,
   };
 };
 

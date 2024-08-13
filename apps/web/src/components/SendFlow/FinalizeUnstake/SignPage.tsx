@@ -22,11 +22,10 @@ import { type SignPageProps, useSignPageHelpers } from "../utils";
 // TODO: test
 export const SignPage = (props: SignPageProps<{ finalizableAmount: BigNumber }>) => {
   const {
-    mode,
     operations,
     data: { finalizableAmount },
   } = props;
-  const { isLoading, form, signer, onSign, fee } = useSignPageHelpers(operations, mode);
+  const { isLoading, form, signer, onSign, fee } = useSignPageHelpers(operations);
 
   return (
     <FormProvider {...form}>

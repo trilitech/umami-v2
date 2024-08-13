@@ -14,10 +14,11 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
+import { useMultiForm } from "@umami/components";
 import { type FA2Transfer, type NFTBalance } from "@umami/core";
 import { useCurrentAccount } from "@umami/state";
 import { type RawPkh, parseContractPkh, parsePkh } from "@umami/tezos";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider } from "react-hook-form";
 
 import { NFTTile } from "./NFTTile";
 import { SignPage } from "./SignPage";
@@ -25,11 +26,7 @@ import { ChevronDownIcon } from "../../../assets/icons";
 import { useColor } from "../../../styles/useColor";
 import { KnownAccountsAutocomplete } from "../../AddressAutocomplete";
 import { FormPageHeader } from "../FormPageHeader";
-import {
-  useAddToBatchFormAction,
-  useHandleOnSubmitFormActions,
-  useOpenSignPageFormAction,
-} from "../onSubmitFormActionHooks";
+import { usePreviewOperation } from "../onSubmitFormActionHooks";
 import { type FormPageProps, FormSubmitButton, formDefaultValues } from "../utils";
 
 export type FormValues = {
@@ -42,25 +39,12 @@ export const FormPage = (props: FormPageProps<FormValues> & { nft: NFTBalance })
   const { nft } = props;
   const sender = useCurrentAccount()!;
   const color = useColor();
-  const openSignPage = useOpenSignPageFormAction({
-    SignPage,
-    signPageExtraData: { nft },
-    FormPage,
-    defaultFormPageProps: { ...props, sender },
-    toOperation: toOperation(nft),
-  });
-
-  const addToBatch = useAddToBatchFormAction(toOperation(nft));
-
-  const {
-    onFormSubmitActionHandlers: [onSingleSubmit],
-    isLoading,
-  } = useHandleOnSubmitFormActions([openSignPage, addToBatch]);
-
-  const form = useForm<FormValues>({
+  const { previewOperation, isLoading } = usePreviewOperation(toOperation(nft), SignPage, { nft });
+  const form = useMultiForm<FormValues>({
     mode: "onBlur",
     defaultValues: { quantity: 1, ...formDefaultValues({ ...props, sender }) },
   });
+
   const {
     formState: { errors },
     register,
@@ -70,7 +54,7 @@ export const FormPage = (props: FormPageProps<FormValues> & { nft: NFTBalance })
   return (
     <FormProvider {...form}>
       <ModalContent>
-        <form onSubmit={handleSubmit(onSingleSubmit)}>
+        <form onSubmit={handleSubmit(previewOperation)}>
           <FormPageHeader />
 
           <ModalBody>
