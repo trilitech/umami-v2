@@ -6,7 +6,7 @@ import { DrawerCloseButton } from "../../components/CloseButton";
 
 export const NFTDrawer = ({ nft }: { nft: NFTBalance }) => (
   <DrawerContent>
-    <DrawerHeader justifyContent="flex-end" display="flex">
+    <DrawerHeader justifyContent="flex-end" display="flex" minHeight={{ base: "54px", lg: "70px" }}>
       <DrawerCloseButton />
     </DrawerHeader>
     <DrawerBody>

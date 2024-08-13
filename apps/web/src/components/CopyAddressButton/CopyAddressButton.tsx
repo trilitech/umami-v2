@@ -11,7 +11,13 @@ export const CopyAddressButton = memo(
     const color = useColor();
 
     return (
-      <CopyButton aria-label="Copy Address" {...props} value={address}>
+      <CopyButton
+        height="auto"
+        aria-label="Copy Address"
+        variant="unstyled"
+        {...props}
+        value={address}
+      >
         <Text color={color("700")} size="sm">
           {isLong ? address : formatPkh(address)}
         </Text>
