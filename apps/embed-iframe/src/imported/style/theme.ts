@@ -84,12 +84,28 @@ const theme = extendTheme({
     Modal: {
       baseStyle: (props: StyleFunctionProps) => ({
         dialog: {
-          padding: "36px 42px",
-          bg: mode(light.grey.white, dark.grey.white)(props),
+          padding: {
+            base: "36px",
+            lg: "42px",
+          },
+          background: mode(light.grey.white, dark.grey.white)(props),
           border: "1.5px solid",
+          borderTopRightRadius: "30px",
+          borderTopLeftRadius: "30px",
+          borderBottomRightRadius: { lg: "30px", base: 0 },
+          borderBottomLeftRadius: { lg: "30px", base: 0 },
           borderColor: mode(light.grey[100], dark.grey[100])(props),
-          borderRadius: "30px",
           boxShadow: "2px 4px 12px 0px rgba(45, 55, 72, 0.05)",
+          marginBottom: {
+            lg: "auto",
+          },
+          minWidth: {
+            base: "100%",
+            lg: "384px",
+          },
+          width: {
+            lg: "384px",
+          },
         },
         closeButton: {
           top: "10px",
