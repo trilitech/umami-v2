@@ -219,6 +219,9 @@ const theme = extendTheme({
         md: { height: "42px", minWidth: "42px", padding: "0 12px" },
         lg: { height: "48px", minWidth: "48px", padding: "0 12px" },
       },
+      defaultProps: {
+        size: "lg"
+      },
       baseStyle: {
         borderRadius: "full",
         _disabled: {
