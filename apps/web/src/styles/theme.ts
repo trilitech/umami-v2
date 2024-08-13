@@ -162,6 +162,24 @@ const theme = extendTheme({
         },
       },
     },
+    Radio: {
+      baseStyle: {
+        control: {
+          width: "20px",
+          height: "20px",
+          _checked: {
+            background: light.blue,
+            borderColor: light.blue,
+          },
+          borderColor: "gray.400",
+        },
+        label: {
+          width: "100%",
+          display: "flex",
+          justifyContent: "space-between",
+        },
+      },
+    },
     Switch: {
       baseStyle: (props: StyleFunctionProps) => ({
         track: {
@@ -306,14 +324,15 @@ const theme = extendTheme({
       variants: {
         dropdown: {
           content: {
-            boxShadow: "0px 0px 10px 0px rgba(45, 55, 72, 0.10)",
             borderRadius: "30px",
             border: "1.5px solid",
             borderColor: "gray.100",
             bg: "white",
           },
           body: {
+            boxShadow: "0px 0px 10px 0px rgba(45, 55, 72, 0.10)",
             padding: "12px",
+            borderRadius: "30px",
           },
         },
       },
