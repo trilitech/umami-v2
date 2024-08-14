@@ -7381,7 +7381,7 @@ __metadata:
     bip39: "npm:^3.1.0"
     depcheck: "npm:^1.4.7"
     eslint: "npm:^8.57.0"
-    framer-motion: "npm:^11.3.24"
+    framer-motion: "npm:^11.3.27"
     jest: "npm:^29.7.0"
     lodash: "npm:^4.17.21"
     madge: "npm:^8.0.0"
@@ -7483,7 +7483,7 @@ __metadata:
     date-fns: "npm:^3.6.0"
     depcheck: "npm:^1.4.7"
     eslint: "npm:^8.57.0"
-    framer-motion: "npm:^11.3.24"
+    framer-motion: "npm:^11.3.27"
     jest: "npm:^29.7.0"
     lodash: "npm:^4.17.21"
     madge: "npm:^8.0.0"
@@ -7600,7 +7600,7 @@ __metadata:
     electron-updater: "npm:6.3.3"
     electronmon: "npm:^2.0.3"
     eslint: "npm:^8.57.0"
-    framer-motion: "npm:^11.3.24"
+    framer-motion: "npm:^11.3.27"
     identity-obj-proxy: "npm:^3.0.0"
     immer: "npm:^10.1.1"
     jest: "npm:29.7.0"
@@ -7681,7 +7681,7 @@ __metadata:
     "@vitejs/plugin-react": "npm:^4.3.1"
     depcheck: "npm:^1.4.7"
     eslint: "npm:^8.57.0"
-    framer-motion: "npm:^11.3.24"
+    framer-motion: "npm:^11.3.27"
     madge: "npm:^8.0.0"
     prettier: "npm:^3.3.2"
     react: "npm:^18.3.1"
@@ -7834,7 +7834,7 @@ __metadata:
     bip39: "npm:^3.1.0"
     depcheck: "npm:^1.4.7"
     eslint: "npm:^8.57.0"
-    framer-motion: "npm:^11.3.24"
+    framer-motion: "npm:^11.3.27"
     immer: "npm:^10.1.1"
     jest: "npm:^29.7.0"
     lodash: "npm:^4.17.21"
@@ -8017,7 +8017,7 @@ __metadata:
     eslint: "npm:^8.57.0"
     eslint-plugin-storybook: "npm:^0.8.0"
     focus-visible: "npm:^5.2.1"
-    framer-motion: "npm:^11.3.24"
+    framer-motion: "npm:^11.3.27"
     immer: "npm:^10.1.1"
     jest: "npm:^29.7.0"
     jest-transformer-svg: "npm:^2.0.2"
@@ -13014,9 +13014,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"framer-motion@npm:^11.3.24":
-  version: 11.3.24
-  resolution: "framer-motion@npm:11.3.24"
+"framer-motion@npm:^11.3.27":
+  version: 11.3.27
+  resolution: "framer-motion@npm:11.3.27"
   dependencies:
     tslib: "npm:^2.4.0"
   peerDependencies:
@@ -13030,7 +13030,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10/e16a15defeae92190ae90e2b49fe84a069ed6710dad8db9ebb1b6612d6a0acce27e060c0e18d36d244f68e66893af6340c19097c1b4988e194b6e0ac8e81c21e
+  checksum: 10/ee5f3dcc0d024653f1039a856c77c5508aedcd3b0b79fcf8860dcd66a78c709584a19c4d1678936c424e3ae38ab9fa5ea0ca061356569c1bffce450a55313a90
   languageName: node
   linkType: hard
 
