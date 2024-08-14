@@ -220,7 +220,7 @@ const theme = extendTheme({
         lg: { height: "48px", minWidth: "48px", padding: "0 12px" },
       },
       defaultProps: {
-        size: "lg"
+        size: "lg",
       },
       baseStyle: {
         borderRadius: "full",

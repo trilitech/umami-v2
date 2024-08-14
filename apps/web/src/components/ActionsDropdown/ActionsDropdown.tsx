@@ -14,7 +14,7 @@ export const ActionsDropdown = ({ actions, children }: PropsWithChildren<Actions
     <Popover variant="dropdown">
       <PopoverTrigger>{children}</PopoverTrigger>
       <Portal>
-        <PopoverContent maxWidth="204px">
+        <PopoverContent maxWidth="204px" data-testid="popover-content">
           <PopoverBody color={color("400")}>{actions}</PopoverBody>
         </PopoverContent>
       </Portal>

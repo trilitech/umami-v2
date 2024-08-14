@@ -42,6 +42,7 @@ const NetworkMenuItem = ({ network, isDefault }: NetworkMenuItemProps) => {
   const actions = (
     <Box>
       <Button
+        data-testid="edit-network"
         onClick={e => {
           e.stopPropagation();
           return openWith(<EditNetworkMenu network={network} />);
@@ -53,7 +54,7 @@ const NetworkMenuItem = ({ network, isDefault }: NetworkMenuItemProps) => {
           Edit
         </Text>
       </Button>
-      <Button onClick={removeNetwork} variant="dropdownOption">
+      <Button data-testid="remove-network" onClick={removeNetwork} variant="dropdownOption">
         <TrashIcon />
         <Text color={color("900")} fontWeight="600">
           Remove
@@ -63,7 +64,7 @@ const NetworkMenuItem = ({ network, isDefault }: NetworkMenuItemProps) => {
   );
 
   return (
-    <Flex justifyContent="space-between" width="full">
+    <Flex justifyContent="space-between" width="full" data-testid={`network-${network.name}`}>
       <Radio width="full" spacing="20px" value={network.name}>
         <Box>
           <Text color={color("900")} fontWeight="600" size="lg">
@@ -78,6 +79,7 @@ const NetworkMenuItem = ({ network, isDefault }: NetworkMenuItemProps) => {
             alignSelf="flex-end"
             color={color("500")}
             aria-label="Network actions"
+            data-testid="popover-menu"
             icon={<ThreeDotsIcon />}
             onClick={event => event.stopPropagation()}
           />
