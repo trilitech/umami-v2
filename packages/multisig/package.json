@@ -63,7 +63,7 @@
     "@tzkt/sdk-api": "^2.2.1",
     "@umami/tezos": "workspace:^",
     "@umami/tzkt": "workspace:^",
-    "axios": "^1.7.3",
+    "axios": "^1.7.4",
     "lodash": "^4.17.21",
     "zod": "^3.23.8"
   }
