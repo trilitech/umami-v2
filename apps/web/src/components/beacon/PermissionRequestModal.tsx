@@ -129,7 +129,7 @@ export const PermissionRequestModal = ({ request }: { request: PermissionRequest
         </FormProvider>
       </ModalBody>
       <ModalFooter>
-        <Button width="100%" isDisabled={!isValid} onClick={grant} size="lg">
+        <Button width="100%" isDisabled={!isValid} onClick={grant}>
           Allow
         </Button>
       </ModalFooter>

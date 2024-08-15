@@ -148,7 +148,7 @@ export const RestoreMnemonic = ({ goToStep }: { goToStep: (step: OnboardingStep)
                   );
                 })}
               </Grid>
-              <Button width="100%" isDisabled={!isValid} size="lg" type="submit">
+              <Button width="100%" isDisabled={!isValid} type="submit">
                 Continue
               </Button>
 

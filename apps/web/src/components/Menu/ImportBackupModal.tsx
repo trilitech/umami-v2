@@ -53,7 +53,7 @@ export const ImportBackupModal = () => {
               type="password"
             />
           </FormControl>
-          <Button width="100%" size="lg" type="submit" variant="primary">
+          <Button width="100%" type="submit" variant="primary">
             Import Backup
           </Button>
         </form>

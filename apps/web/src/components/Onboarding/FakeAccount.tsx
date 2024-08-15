@@ -64,7 +64,7 @@ export const FakeAccount = ({ onClose }: { onClose: () => void }) => {
           <FormLabel>IDP (For a social account)</FormLabel>
           <Input {...register("idp")} autoComplete="off" placeholder="Please enter the IDP" />
         </FormControl>
-        <Button width="100%" marginTop="12px" size="lg" type="submit">
+        <Button width="100%" marginTop="12px" type="submit">
           Add account
         </Button>
       </form>

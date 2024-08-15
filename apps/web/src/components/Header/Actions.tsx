@@ -1,4 +1,4 @@
-import { Button, Flex, IconButton } from "@chakra-ui/react";
+import { Button, Flex, Icon, IconButton } from "@chakra-ui/react";
 import { useDynamicDrawerContext } from "@umami/components";
 import { useAddPeer } from "@umami/state";
 
@@ -18,7 +18,16 @@ export const Actions = () => {
       </Button>
       <IconButton
         aria-label="Open menu"
-        icon={<MenuIcon />}
+        icon={
+          <Icon
+            as={MenuIcon}
+            width={{
+              base: "18px",
+              lg: "24px",
+            }}
+            height="auto"
+          />
+        }
         isRound
         onClick={() => openWith(<Menu />)}
         size={{

@@ -76,12 +76,12 @@ export const VerifySeedphrase = ({
                 </FormControl>
               );
             })}
-            <Button width="100%" marginTop="20px" isDisabled={!isValid} size="lg" type="submit">
+            <Button width="100%" marginTop="20px" isDisabled={!isValid} type="submit">
               Continue
             </Button>
 
             {IS_DEV && (
-              <Button width="100%" marginTop="12px" onClick={onSubmit} size="lg">
+              <Button width="100%" marginTop="12px" onClick={onSubmit}>
                 Bypass (Dev only)
               </Button>
             )}
