@@ -7,6 +7,7 @@ import {
   type AccordionProps,
   Box,
   Heading,
+  Icon,
 } from "@chakra-ui/react";
 import { type NFTBalance } from "@umami/core";
 
@@ -33,17 +34,14 @@ export const JSONAccordion = ({ nft, ...props }: { nft: NFTBalance } & Accordion
           <Box position="relative">
             <CopyButton
               position="absolute"
-              top="12px"
-              right="0"
-              width="24px"
-              height="24px"
-              color={color("500")}
+              top="2px"
+              right="-6px"
               _hover={{ color: color("700") }}
               aria-label="Copy JSON"
               value={formattedJSON}
-              variant="auxiliary"
+              variant="iconButton"
             >
-              <FileCopyIcon />
+              <Icon as={FileCopyIcon} width="24px" height="24px" />
             </CopyButton>
           </Box>
           <pre

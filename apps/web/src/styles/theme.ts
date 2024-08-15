@@ -194,9 +194,9 @@ const theme = extendTheme({
       }),
     },
     Link: {
-      baseStyle: (props: StyleFunctionProps) => ({
-        color: mode(light.grey[600], dark.grey[600])(props),
-      }),
+      baseStyle: {
+        color: "gray.500",
+      },
       variants: {
         dropdownOption: {
           display: "flex",
@@ -237,6 +237,16 @@ const theme = extendTheme({
         },
       },
       variants: {
+        iconButton: {
+          height: "34px",
+          width: "34px",
+          bg: "transparent",
+          color: "gray.500",
+          _hover: {
+            background: "gray.100",
+            color: "gray.600",
+          },
+        },
         dropdownOption: {
           display: "flex",
           justifyContent: "flex-start",
