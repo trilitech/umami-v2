@@ -7640,7 +7640,7 @@ __metadata:
     typedoc: "npm:^0.26.5"
     typedoc-plugin-missing-exports: "npm:^3.0.0"
     typescript: "npm:5.5.4"
-    vite: "npm:^5.4.0"
+    vite: "npm:^5.4.1"
     vite-plugin-checker: "npm:^0.7.2"
     vite-plugin-node-polyfills: "npm:^0.22.0"
     zod: "npm:^3.23.8"
@@ -7690,7 +7690,7 @@ __metadata:
     rimraf: "npm:^6.0.1"
     sass: "npm:^1.77.8"
     typescript: "npm:5.5.4"
-    vite: "npm:^5.4.0"
+    vite: "npm:^5.4.1"
     vite-plugin-node-polyfills: "npm:^0.22.0"
     vite-plugin-svgr: "npm:^4.2.0"
   languageName: unknown
@@ -8046,7 +8046,7 @@ __metadata:
     rimraf: "npm:^6.0.1"
     storybook: "npm:^8.2.9"
     typescript: "npm:^5.5.4"
-    vite: "npm:^5.4.0"
+    vite: "npm:^5.4.1"
     vite-plugin-node-polyfills: "npm:^0.22.0"
     vite-plugin-svgr: "npm:^4.2.0"
     zod: "npm:^3.23.8"
@@ -17539,6 +17539,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"postcss@npm:^8.4.41":
+  version: 8.4.41
+  resolution: "postcss@npm:8.4.41"
+  dependencies:
+    nanoid: "npm:^3.3.7"
+    picocolors: "npm:^1.0.1"
+    source-map-js: "npm:^1.2.0"
+  checksum: 10/6e6176c2407eff60493ca60a706c6b7def20a722c3adda94ea1ece38345eb99964191336fd62b62652279cec6938e79e0b1e1d477142c8d3516e7a725a74ee37
+  languageName: node
+  linkType: hard
+
 "precinct@npm:^12.0.2":
   version: 12.1.2
   resolution: "precinct@npm:12.1.2"
@@ -21422,13 +21433,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^5.4.0":
-  version: 5.4.0
-  resolution: "vite@npm:5.4.0"
+"vite@npm:^5.4.1":
+  version: 5.4.1
+  resolution: "vite@npm:5.4.1"
   dependencies:
     esbuild: "npm:^0.21.3"
     fsevents: "npm:~2.3.3"
-    postcss: "npm:^8.4.40"
+    postcss: "npm:^8.4.41"
     rollup: "npm:^4.13.0"
   peerDependencies:
     "@types/node": ^18.0.0 || >=20.0.0
@@ -21461,7 +21472,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 10/5a98b1d30cc8c0263551f417a360102d40b78b9170e9e58a99c1a394ab700c7e604d3c52dafda323c11356a76eba865800d3d8588b33a8febdeaddd5a8981410
+  checksum: 10/1cf22e5a8ec782ea9417a77ad4b16e518f69cf23c99a5af5bb92dc4acbfce70109a35a35faea8fc0789f4637b6304618f6b84e4c5dfe3c9c2875dff7d749b02d
   languageName: node
   linkType: hard
 
