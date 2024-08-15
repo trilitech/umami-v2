@@ -47,6 +47,24 @@ const sizes = {
 const theme = extendTheme({
   components: {
     Accordion: {
+      variants: {
+        onboarding: {
+          button: {
+            justifyContent: "center",
+            height: "60px",
+            padding: "6px 5px",
+            background: "none",
+            borderWidth: "1.5px",
+            borderStyle: "solid",
+            borderColor: "gray.100",
+            borderRadius: "70px",
+            _hover: { background: "none" },
+          },
+          panel: {
+            padding: "6px",
+          },
+        },
+      },
       baseStyle: {
         panel: {
           padding: "10px 0",
@@ -162,6 +180,22 @@ const theme = extendTheme({
           _hover: {
             bg: "gray.100",
             color: "gray.600",
+          },
+        },
+      },
+      variants: {
+        onboarding: {
+          tab: {
+            borderRadius: "full",
+            _hover: {
+              background: "gray.100",
+            },
+            _selected: {
+              background: "gray.100",
+              _hover: {
+                background: "gray.100",
+              },
+            },
           },
         },
       },
