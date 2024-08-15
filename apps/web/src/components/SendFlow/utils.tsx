@@ -57,7 +57,7 @@ export const FormSubmitButton = ({ title = "Preview", ...props }: ButtonProps) =
   } = useFormContext();
 
   return (
-    <Button width="full" isDisabled={!isValid} size="lg" type="submit" variant="primary" {...props}>
+    <Button width="full" isDisabled={!isValid} type="submit" variant="primary" {...props}>
       {title}
     </Button>
   );

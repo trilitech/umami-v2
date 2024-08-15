@@ -89,7 +89,7 @@ export const AccountSelectorModal = () => {
             ))}
           </VStack>
 
-          <Button width="full" onClick={openOnboardingModal} size="lg" variant="primary">
+          <Button width="full" onClick={openOnboardingModal} variant="primary">
             Add Account
           </Button>
         </ModalBody>

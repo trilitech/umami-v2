@@ -67,7 +67,7 @@ export const RestoreBackupFile = () => {
               <FormLabel>Your password (if you have one)</FormLabel>
               <Input data-testid="password-input" type="password" {...register("password")} />
             </FormControl>
-            <Button width="100%" marginTop="32px" isDisabled={!isValid} size="lg" type="submit">
+            <Button width="100%" marginTop="32px" isDisabled={!isValid} type="submit">
               Import Wallet
             </Button>
           </ModalBody>

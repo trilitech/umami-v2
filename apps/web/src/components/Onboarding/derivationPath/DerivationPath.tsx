@@ -163,7 +163,7 @@ export const DerivationPath = ({
             </Select>
           </FormControl>
         )}
-        <Button width="100%" marginTop="12px" isDisabled={!isValid} size="lg" type="submit">
+        <Button width="100%" marginTop="12px" isDisabled={!isValid} type="submit">
           Continue
         </Button>
 

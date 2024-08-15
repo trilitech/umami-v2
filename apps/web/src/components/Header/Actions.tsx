@@ -26,7 +26,7 @@ export const Actions = () => {
               lg: "24px",
             }}
             height="auto"
-          ></Icon>
+          />
         }
         isRound
         onClick={() => openWith(<Menu />)}

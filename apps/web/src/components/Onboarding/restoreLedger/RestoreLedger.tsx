@@ -85,7 +85,7 @@ export const RestoreLedger = ({
             <ListItem key={index}>{item.content}</ListItem>
           ))}
         </OrderedList>
-        <Button width="100%" isLoading={isLoading} onClick={connectLedger} size="lg">
+        <Button width="100%" isLoading={isLoading} onClick={connectLedger}>
           Export Public Key
         </Button>
       </VStack>

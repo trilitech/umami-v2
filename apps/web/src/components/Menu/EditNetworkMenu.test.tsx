@@ -20,7 +20,7 @@ describe("<EditNetworkMenu />", () => {
     it("doesn't render name field", async () => {
       await renderInDrawer(<EditNetworkMenu network={MAINNET} />, store);
 
-      await waitFor(() => expect(screen.queryByLabelText("Name")).not.toBeInTheDocument());
+      expect(screen.queryByLabelText("Name")).not.toBeInTheDocument();
     });
 
     it("saves the updates", async () => {
@@ -92,7 +92,7 @@ describe("<EditNetworkMenu />", () => {
         fireEvent.change(screen.getByLabelText("Name"), { target: { value: MAINNET.name } });
         fireEvent.blur(screen.getByLabelText("Name"));
         await waitFor(() => {
-          expect(screen.getByText("Network with this name already exists")).toBeInTheDocument();
+          expect(screen.getByText("Network with this name already exists")).toBeVisible();
         });
       });
 
@@ -100,7 +100,7 @@ describe("<EditNetworkMenu />", () => {
         await renderInDrawer(<EditNetworkMenu />, store);
         fireEvent.blur(screen.getByLabelText("Name"));
         await waitFor(() => {
-          expect(screen.getByText("Name is required")).toBeInTheDocument();
+          expect(screen.getByText("Name is required")).toBeVisible();
         });
       });
     });
@@ -109,7 +109,7 @@ describe("<EditNetworkMenu />", () => {
       await renderInDrawer(<EditNetworkMenu />, store);
       fireEvent.blur(screen.getByLabelText("RPC URL"));
       await waitFor(() => {
-        expect(screen.getByText("RPC URL is required")).toBeInTheDocument();
+        expect(screen.getByText("RPC URL is required")).toBeVisible();
       });
     });
 
@@ -117,7 +117,7 @@ describe("<EditNetworkMenu />", () => {
       await renderInDrawer(<EditNetworkMenu />, store);
       fireEvent.blur(screen.getByLabelText("Tzkt API URL"));
       await waitFor(() => {
-        expect(screen.getByText("Tzkt API URL is required")).toBeInTheDocument();
+        expect(screen.getByText("Tzkt API URL is required")).toBeVisible();
       });
     });
 
@@ -125,7 +125,7 @@ describe("<EditNetworkMenu />", () => {
       await renderInDrawer(<EditNetworkMenu />, store);
       fireEvent.blur(screen.getByLabelText("Tzkt Explorer URL"));
       await waitFor(() => {
-        expect(screen.getByText("Tzkt Explorer URL is required")).toBeInTheDocument();
+        expect(screen.getByText("Tzkt Explorer URL is required")).toBeVisible();
       });
     });
 

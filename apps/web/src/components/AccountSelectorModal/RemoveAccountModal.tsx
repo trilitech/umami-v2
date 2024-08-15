@@ -62,7 +62,7 @@ export const RemoveAccountModal = ({ account }: RemoveAccountModalProps) => {
         <ModalCloseButton />
       </ModalHeader>
       <ModalFooter>
-        <Button width="full" onClick={handleRemoveAccount} size="lg" variant="alert">
+        <Button width="full" onClick={handleRemoveAccount} variant="alert">
           {buttonLabel}
         </Button>
       </ModalFooter>

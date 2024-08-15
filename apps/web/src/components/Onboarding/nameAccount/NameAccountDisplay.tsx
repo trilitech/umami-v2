@@ -33,7 +33,7 @@ export const NameAccountDisplay = ({
           />
         </FormControl>
 
-        <Button width="100%" marginTop="32px" size="lg" type="submit">
+        <Button width="100%" marginTop="32px" type="submit">
           Continue
         </Button>
       </form>
