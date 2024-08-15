@@ -63,7 +63,7 @@ describe("<BeaconPeers />", () => {
       render(<BeaconPeers />, { store });
 
       await waitFor(() => {
-        expect(screen.getByText("Your dApps will appear here")).toBeInTheDocument();
+        expect(screen.getByText("Your Apps will appear here...")).toBeInTheDocument();
       });
       expect(screen.queryByTestId("peer-row")).not.toBeInTheDocument();
     });

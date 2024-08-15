@@ -54,8 +54,15 @@ export const BeaconPeers = () => {
  * @param peerInfos - peerInfo provided by beacon Api + computed dAppId.
  * @param removePeer - hook for deleting dApp connections.
  */
-const PeersDisplay = ({ peerInfos }: { peerInfos: ExtendedPeerInfo[] }) => (
-  <VStack alignItems="flex-start" gap="24px" marginTop="24px" divider={<Divider />} spacing="0">
+const PeersDisplay = ({ peerInfos, ...props }: { peerInfos: ExtendedPeerInfo[] }) => (
+  <VStack
+    alignItems="flex-start"
+    gap="24px"
+    marginTop="24px"
+    divider={<Divider />}
+    spacing="0"
+    {...props}
+  >
     {peerInfos.map(peerInfo => (
       <PeerRow key={peerInfo.senderId} peerInfo={peerInfo} />
     ))}
@@ -90,7 +97,6 @@ const PeerRow = ({ peerInfo }: { peerInfo: ExtendedPeerInfo }) => {
         </Center>
       </Flex>
       <IconButton
-        alignSelf="flex-end"
         color={color("500")}
         aria-label="Remove Peer"
         icon={<TrashIcon />}

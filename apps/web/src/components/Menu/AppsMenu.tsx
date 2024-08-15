@@ -16,7 +16,7 @@ export const AppsMenu = () => {
         width="fit-content"
         marginTop="18px"
         padding="0 24px"
-        onClick={() => navigator.clipboard.readText().then(text => addPeer(text))}
+        onClick={() => navigator.clipboard.readText().then(addPeer)}
         variant="secondary"
       >
         Connect
