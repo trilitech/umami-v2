@@ -15,6 +15,7 @@ import { FormProvider } from "react-hook-form";
 
 import { CheckmarkIcon, CloseIcon, FileUploadIcon } from "../../../assets/icons";
 import { useColor } from "../../../styles/useColor";
+import { trackSuccessfulConnection } from "../../../utils/analytics";
 import { persistor } from "../../../utils/persistor";
 import { PasswordInput } from "../../PasswordInput";
 
@@ -42,6 +43,7 @@ export const ImportBackupTab = () => {
       }
       const backup = JSON.parse(await file[0].text());
       await restoreBackup(backup, password, persistor);
+      trackSuccessfulConnection("onboarding", "restore_from_backup");
     });
 
   const { ref, ...inputRegisterProps } = register("file", {
