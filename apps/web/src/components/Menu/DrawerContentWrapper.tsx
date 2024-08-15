@@ -1,4 +1,4 @@
-import { DrawerBody, DrawerContent, Flex, Heading } from "@chakra-ui/react";
+import { DrawerBody, Flex, Heading } from "@chakra-ui/react";
 import { type PropsWithChildren } from "react";
 
 import { useColor } from "../../styles/useColor";
@@ -16,7 +16,7 @@ export const DrawerContentWrapper = ({
   const color = useColor();
 
   return (
-    <DrawerContent>
+    <>
       <DrawerBackButton />
       <DrawerCloseButton />
       <DrawerBody as={Flex} flexDirection="column" paddingTop={{ base: "78px", lg: "90px" }}>
@@ -27,6 +27,6 @@ export const DrawerContentWrapper = ({
         )}
         {children}
       </DrawerBody>
-    </DrawerContent>
+    </>
   );
 };
