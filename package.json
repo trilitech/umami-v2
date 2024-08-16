@@ -33,6 +33,7 @@
     "turbo": "^2.0.14"
   },
   "resolutions": {
-    "@typescript-eslint/utils": "^7.15.0"
+    "@typescript-eslint/utils": "^7.15.0",
+    "axios": "^1.7.4"
   }
 }
