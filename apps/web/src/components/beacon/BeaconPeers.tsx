@@ -5,7 +5,7 @@ import { parsePkh } from "@umami/tezos";
 import capitalize from "lodash/capitalize";
 import { useEffect, useState } from "react";
 
-import { StubIcon as TrashIcon } from "../../assets/icons";
+import { CodeSandboxIcon, StubIcon as TrashIcon } from "../../assets/icons";
 import { AddressPill } from "../../components/AddressPill/AddressPill";
 import { useColor } from "../../styles/useColor";
 import { EmptyMessage } from "../EmptyMessage";
@@ -88,7 +88,13 @@ const PeerRow = ({ peerInfo }: { peerInfo: ExtendedPeerInfo }) => {
       data-testid="peer-row"
     >
       <Flex height="100%">
-        <Image width="60px" marginRight="16px" objectFit="cover" src={peerInfo.icon} />
+        <Center width="60px" marginRight="12px">
+          <Image
+            objectFit="cover"
+            fallback={<CodeSandboxIcon width="36px" height="auto" />}
+            src={peerInfo.icon}
+          />
+        </Center>
         <Center alignItems="flex-start" flexDirection="column" gap="6px">
           <Heading color={color("900")} size="lg">
             {peerInfo.name}

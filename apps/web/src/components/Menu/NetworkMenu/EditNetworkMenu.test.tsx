@@ -2,7 +2,7 @@ import { type UmamiStore, makeStore, networksActions } from "@umami/state";
 import { GHOSTNET, MAINNET } from "@umami/tezos";
 
 import { EditNetworkMenu } from "./EditNetworkMenu";
-import { act, fireEvent, renderInDrawer, screen, userEvent, waitFor } from "../../testUtils";
+import { act, fireEvent, renderInDrawer, screen, userEvent, waitFor } from "../../../testUtils";
 
 const customNetwork = { ...GHOSTNET, name: "custom" };
 

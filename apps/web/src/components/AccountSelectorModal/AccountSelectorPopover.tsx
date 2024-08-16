@@ -82,7 +82,7 @@ export const AccountSelectorPopover = ({ account }: AccountSelectorPopoverProps)
         variant="dropdownOption"
       >
         <ExternalLinkIcon />
-        <Text color={color("900")} fontWeight="600">
+        <Text color={color("900")} fontWeight="600" size="lg">
           View in TzKT
         </Text>
       </Link>
