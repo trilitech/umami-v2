@@ -2,7 +2,7 @@ import { type ErrorContext } from "@umami/core";
 import { type UmamiStore, errorsActions, makeStore } from "@umami/state";
 
 import { ErrorLogsMenu } from "./ErrorLogsMenu";
-import { renderInDrawer, screen, userEvent } from "../../testUtils";
+import { renderInDrawer, screen, userEvent } from "../../../testUtils";
 
 let store: UmamiStore;
 

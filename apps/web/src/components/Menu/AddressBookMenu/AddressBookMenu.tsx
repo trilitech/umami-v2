@@ -15,13 +15,13 @@ import { type Contact } from "@umami/core";
 import { useSortedContacts } from "@umami/state";
 
 import { DeleteContactModal } from "./DeleteContactModal";
-import { DrawerContentWrapper } from "./DrawerContentWrapper";
 import { EditContactMenu } from "./EditContactMenu";
-import { EditIcon, ThreeDotsIcon, TrashIcon } from "../../assets/icons";
-import { useColor } from "../../styles/useColor";
-import { ActionsDropdown } from "../ActionsDropdown";
-import { CopyAddressButton } from "../CopyAddressButton";
-import { EmptyMessage } from "../EmptyMessage";
+import { EditIcon, ThreeDotsIcon, TrashIcon } from "../../../assets/icons";
+import { useColor } from "../../../styles/useColor";
+import { ActionsDropdown } from "../../ActionsDropdown";
+import { CopyAddressButton } from "../../CopyAddressButton";
+import { EmptyMessage } from "../../EmptyMessage";
+import { DrawerContentWrapper } from "../DrawerContentWrapper";
 
 type ContactItemProps = {
   contact: Contact;

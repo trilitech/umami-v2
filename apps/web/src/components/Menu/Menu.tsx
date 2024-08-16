@@ -3,9 +3,9 @@ import { useColorMode } from "@chakra-ui/system";
 import { useDynamicDrawerContext, useDynamicModalContext } from "@umami/components";
 import { downloadBackupFile } from "@umami/state";
 
-import { AddressBookMenu } from "./AddressBookMenu";
-import { AdvancedMenu } from "./AdvancedMenu";
-import { AppsMenu } from "./AppsMenu";
+import { AddressBookMenu } from "./AddressBookMenu/AddressBookMenu";
+import { AdvancedMenu } from "./AdvancedMenu/AdvancedMenu";
+import { AppsMenu } from "./AppsMenu/AppsMenu";
 import { GenericMenu } from "./GenericMenu";
 import { LogoutModal } from "./LogoutModal";
 import {

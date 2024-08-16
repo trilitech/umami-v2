@@ -1,7 +1,7 @@
 import { WalletClient } from "@umami/state";
 
 import { AppsMenu } from "./AppsMenu";
-import { act, renderInDrawer, screen, userEvent } from "../../testUtils";
+import { act, renderInDrawer, screen, userEvent } from "../../../testUtils";
 
 describe("<AppsMenu />", () => {
   it("calls addPeer on button click with the copied text", async () => {

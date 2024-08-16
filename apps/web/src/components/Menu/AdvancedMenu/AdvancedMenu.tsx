@@ -1,10 +1,10 @@
 import { useDynamicDrawerContext } from "@umami/components";
 
-import { ChangePasswordMenu } from "./ChangePasswordMenu";
-import { ErrorLogsMenu } from "./ErrorLogsMenu";
-import { GenericMenu } from "./GenericMenu";
-import { NetworkMenu } from "./NetworkMenu";
-import { AlertCircleIcon, LockIcon, RadioIcon } from "../../assets/icons";
+import { ChangePasswordMenu } from "../ChangePasswordMenu/ChangePasswordMenu";
+import { ErrorLogsMenu } from "../ErrorLogsMenu/ErrorLogsMenu";
+import { GenericMenu } from "../GenericMenu";
+import { NetworkMenu } from "../NetworkMenu/NetworkMenu";
+import { AlertCircleIcon, LockIcon, RadioIcon } from "../../../assets/icons";
 
 export const AdvancedMenu = () => {
   const { openWith } = useDynamicDrawerContext();

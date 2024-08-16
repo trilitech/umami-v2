@@ -14,7 +14,7 @@ import { isValidContractPkh } from "@umami/tezos";
 import { type FC, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 
-import { DrawerContentWrapper } from "./DrawerContentWrapper";
+import { DrawerContentWrapper } from "../DrawerContentWrapper";
 
 /**
  * Modal used for both adding new contacts & editing existing contacts.

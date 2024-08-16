@@ -13,9 +13,9 @@ import { useDynamicModalContext } from "@umami/components";
 import { type Contact } from "@umami/core";
 import { contactsActions, useAppDispatch } from "@umami/state";
 
-import { useColor } from "../../styles/useColor";
-import { ModalCloseButton } from "../CloseButton";
-import { CopyAddressButton } from "../CopyAddressButton";
+import { useColor } from "../../../styles/useColor";
+import { ModalCloseButton } from "../../CloseButton";
+import { CopyAddressButton } from "../../CopyAddressButton";
 
 type DeleteContactModalProps = {
   contact: Contact;

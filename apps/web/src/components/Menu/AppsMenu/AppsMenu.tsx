@@ -1,8 +1,8 @@
 import { Button, Divider, Text } from "@chakra-ui/react";
 import { useAddPeer } from "@umami/state";
 
-import { DrawerContentWrapper } from "./DrawerContentWrapper";
-import { BeaconPeers } from "../beacon";
+import { DrawerContentWrapper } from "../DrawerContentWrapper";
+import { BeaconPeers } from "../../beacon";
 
 export const AppsMenu = () => {
   const addPeer = useAddPeer();

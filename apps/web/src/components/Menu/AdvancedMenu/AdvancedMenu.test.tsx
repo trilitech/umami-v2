@@ -1,8 +1,8 @@
 import { AdvancedMenu } from "./AdvancedMenu";
-import { ChangePasswordMenu } from "./ChangePasswordMenu";
-import { ErrorLogsMenu } from "./ErrorLogsMenu";
-import { NetworkMenu } from "./NetworkMenu";
-import { dynamicDrawerContextMock, renderInDrawer, screen, userEvent } from "../../testUtils";
+import { dynamicDrawerContextMock, renderInDrawer, screen, userEvent } from "../../../testUtils";
+import { ChangePasswordMenu } from "../ChangePasswordMenu/ChangePasswordMenu";
+import { ErrorLogsMenu } from "../ErrorLogsMenu/ErrorLogsMenu";
+import { NetworkMenu } from "../NetworkMenu/NetworkMenu";
 
 describe("<AdvancedMenu />", () => {
   it("renders advanced menu items correctly", async () => {
