@@ -1,4 +1,11 @@
-import { Drawer, DrawerOverlay, Modal, ModalOverlay, type ThemingProps } from "@chakra-ui/react";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerOverlay,
+  Modal,
+  ModalOverlay,
+  type ThemingProps,
+} from "@chakra-ui/react";
 import {
   type PropsWithChildren,
   type ReactElement,
@@ -135,7 +142,7 @@ export const useDynamicDrawer = () => {
     content: (
       <Drawer isOpen={isOpen} placement="right" {...props}>
         <DrawerOverlay />
-        {content}
+        <DrawerContent>{content}</DrawerContent>
       </Drawer>
     ),
   };

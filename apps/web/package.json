@@ -22,6 +22,7 @@
     "build:storybook": "storybook build"
   },
   "dependencies": {
+    "@airgap/beacon-wallet": "^4.2.2",
     "@chakra-ui/anatomy": "2.2.2",
     "@chakra-ui/cli": "^2.4.1",
     "@chakra-ui/icons": "^2.1.1",

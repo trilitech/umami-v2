@@ -1,24 +1,14 @@
 import { type ExtendedPeerInfo, getSenderId } from "@airgap/beacon-wallet";
-import {
-  AspectRatio,
-  Box,
-  Center,
-  Divider,
-  Flex,
-  Heading,
-  Icon,
-  IconButton,
-  Image,
-  Text,
-} from "@chakra-ui/react";
+import { Center, Divider, Flex, Heading, IconButton, Image, Text, VStack } from "@chakra-ui/react";
 import { useGetConnectionInfo, usePeers, useRemovePeer } from "@umami/state";
 import { parsePkh } from "@umami/tezos";
-import { capitalize, noop } from "lodash";
-import { Fragment, useEffect, useState } from "react";
+import capitalize from "lodash/capitalize";
+import { useEffect, useState } from "react";
 
 import { StubIcon as TrashIcon } from "../../assets/icons";
 import { AddressPill } from "../../components/AddressPill/AddressPill";
 import { useColor } from "../../styles/useColor";
+import { EmptyMessage } from "../EmptyMessage";
 
 /**
  * Component displaying a list of connected dApps.
@@ -27,8 +17,6 @@ import { useColor } from "../../styles/useColor";
  */
 export const BeaconPeers = () => {
   const { peers } = usePeers();
-  const color = useColor();
-
   const [peersWithId, setPeersWithId] = useState<ExtendedPeerInfo[]>([]);
 
   // senderId will always be set here, even if we haven't saved it in beaconSlice for a dApp.
@@ -38,17 +26,20 @@ export const BeaconPeers = () => {
       senderId: peer.senderId || (await getSenderId(peer.publicKey)),
     }));
 
-    Promise.all(peerIdPromises).then(setPeersWithId).catch(noop);
+    Promise.all(peerIdPromises)
+      .then(setPeersWithId)
+      .catch(() => {});
   }, [peers]);
 
   if (peersWithId.length === 0) {
     return (
-      <Box data-testid="beacon-peers-empty">
-        <Divider />
-        <Text marginTop="31px" color={color("400")} size="lg">
-          Your dApps will appear here
-        </Text>
-      </Box>
+      <EmptyMessage
+        alignItems="flex-start"
+        marginTop="40px"
+        data-testid="beacon-peers-empty"
+        subtitle="Apps"
+        title="Apps"
+      />
     );
   }
 
@@ -63,15 +54,19 @@ export const BeaconPeers = () => {
  * @param peerInfos - peerInfo provided by beacon Api + computed dAppId.
  * @param removePeer - hook for deleting dApp connections.
  */
-const PeersDisplay = ({ peerInfos }: { peerInfos: ExtendedPeerInfo[] }) => (
-  <Box>
+const PeersDisplay = ({ peerInfos, ...props }: { peerInfos: ExtendedPeerInfo[] }) => (
+  <VStack
+    alignItems="flex-start"
+    gap="24px"
+    marginTop="24px"
+    divider={<Divider />}
+    spacing="0"
+    {...props}
+  >
     {peerInfos.map(peerInfo => (
-      <Fragment key={peerInfo.senderId}>
-        <Divider />
-        <PeerRow peerInfo={peerInfo} />
-      </Fragment>
+      <PeerRow key={peerInfo.senderId} peerInfo={peerInfo} />
     ))}
-  </Box>
+  </VStack>
 );
 
 /**
@@ -81,31 +76,33 @@ const PeersDisplay = ({ peerInfos }: { peerInfos: ExtendedPeerInfo[] }) => (
  * @param onRemove - action for deleting dApp connection.
  */
 const PeerRow = ({ peerInfo }: { peerInfo: ExtendedPeerInfo }) => {
+  const color = useColor();
   const removePeer = useRemovePeer();
 
   return (
-    <Flex justifyContent="space-between" height="106px" data-testid="peer-row" paddingY="30px">
-      <Flex>
-        <AspectRatio width="48px" marginRight="16px" ratio={1}>
-          <Image width="100%" src={peerInfo.icon} />
-        </AspectRatio>
-        <Center alignItems="flex-start" flexDirection="column">
-          <Heading marginBottom="6px" size="md">
+    <Center
+      alignItems="center"
+      justifyContent="space-between"
+      width="full"
+      height="60px"
+      data-testid="peer-row"
+    >
+      <Flex height="100%">
+        <Image width="60px" marginRight="16px" objectFit="cover" src={peerInfo.icon} />
+        <Center alignItems="flex-start" flexDirection="column" gap="6px">
+          <Heading color={color("900")} size="lg">
             {peerInfo.name}
           </Heading>
           <StoredPeerInfo peerInfo={peerInfo} />
         </Center>
       </Flex>
-      <Center>
-        <IconButton
-          aria-label="Remove Peer"
-          icon={<Icon as={TrashIcon} />}
-          onClick={() => removePeer(peerInfo)}
-          size="xs"
-          variant="circle"
-        />
-      </Center>
-    </Flex>
+      <IconButton
+        color={color("500")}
+        aria-label="Remove Peer"
+        icon={<TrashIcon />}
+        onClick={() => removePeer(peerInfo)}
+      />
+    </Center>
   );
 };
 
@@ -119,18 +116,19 @@ const PeerRow = ({ peerInfo }: { peerInfo: ExtendedPeerInfo }) => {
  */
 const StoredPeerInfo = ({ peerInfo }: { peerInfo: ExtendedPeerInfo }) => {
   const connectionInfo = useGetConnectionInfo(peerInfo.senderId);
-  const color = useColor();
+
   if (!connectionInfo) {
     return null;
   }
+
   return (
     <Flex>
       <AddressPill marginRight="10px" address={parsePkh(connectionInfo.accountPkh)} />
       <Divider marginRight="10px" orientation="vertical" />
-      <Text marginTop="2px" marginRight="4px" color={color("450")} fontWeight={650} size="sm">
+      <Text marginTop="2px" marginRight="4px" fontWeight={600} size="sm">
         Network:
       </Text>
-      <Text marginTop="2px" color={color("white")} data-testid="dapp-connection-network" size="sm">
+      <Text marginTop="2px" data-testid="dapp-connection-network" size="sm">
         {capitalize(connectionInfo.networkType)}
       </Text>
     </Flex>

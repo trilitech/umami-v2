@@ -7957,6 +7957,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@umami/web@workspace:apps/web"
   dependencies:
+    "@airgap/beacon-wallet": "npm:^4.2.2"
     "@chakra-ui/anatomy": "npm:2.2.2"
     "@chakra-ui/cli": "npm:^2.4.1"
     "@chakra-ui/icons": "npm:^2.1.1"
