@@ -2,8 +2,8 @@ import { Button, Divider, VStack, useToast } from "@chakra-ui/react";
 import { changeMnemonicPassword, useAppDispatch, useAsyncActionHandler } from "@umami/state";
 import { FormProvider, useForm } from "react-hook-form";
 
-import { DrawerContentWrapper } from "./DrawerContentWrapper";
-import { PasswordInput } from "../PasswordInput";
+import { PasswordInput } from "../../PasswordInput";
+import { DrawerContentWrapper } from "../DrawerContentWrapper";
 
 type ChangePasswordMenuValues = {
   currentPassword: string;

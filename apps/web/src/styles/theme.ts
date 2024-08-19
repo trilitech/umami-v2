@@ -319,11 +319,6 @@ const theme = extendTheme({
       },
     },
     Popover: {
-      baseStyle: {
-        popper: {
-          zIndex: 9999,
-        },
-      },
       variants: {
         dropdown: {
           content: {

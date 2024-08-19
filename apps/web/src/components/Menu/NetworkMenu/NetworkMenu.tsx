@@ -19,11 +19,11 @@ import {
 } from "@umami/state";
 import { type Network, isDefault } from "@umami/tezos";
 
-import { DrawerContentWrapper } from "./DrawerContentWrapper";
 import { EditNetworkMenu } from "./EditNetworkMenu";
-import { EditIcon, ThreeDotsIcon, TrashIcon } from "../../assets/icons";
-import { useColor } from "../../styles/useColor";
-import { ActionsDropdown } from "../ActionsDropdown";
+import { EditIcon, ThreeDotsIcon, TrashIcon } from "../../../assets/icons";
+import { useColor } from "../../../styles/useColor";
+import { ActionsDropdown } from "../../ActionsDropdown";
+import { DrawerContentWrapper } from "../DrawerContentWrapper";
 
 type NetworkMenuItemProps = {
   network: Network;

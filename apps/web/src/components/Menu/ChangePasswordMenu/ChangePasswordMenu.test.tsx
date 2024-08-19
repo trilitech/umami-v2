@@ -1,7 +1,7 @@
 import { changeMnemonicPassword } from "@umami/state";
 
 import { ChangePasswordMenu } from "./ChangePasswordMenu";
-import { fireEvent, renderInDrawer, screen, userEvent, waitFor } from "../../testUtils";
+import { fireEvent, renderInDrawer, screen, userEvent, waitFor } from "../../../testUtils";
 
 jest.mock("@umami/state", () => ({
   ...jest.requireActual("@umami/state"),

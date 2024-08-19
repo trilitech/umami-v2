@@ -9,7 +9,7 @@ import {
   screen,
   userEvent,
   within,
-} from "../../testUtils";
+} from "../../../testUtils";
 
 jest.mock("@umami/state", () => ({
   ...jest.requireActual("@umami/state"),

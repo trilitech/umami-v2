@@ -4,7 +4,7 @@ import { networksActions, useAppDispatch, useAvailableNetworks } from "@umami/st
 import { type Network } from "@umami/tezos";
 import { useForm } from "react-hook-form";
 
-import { DrawerContentWrapper } from "./DrawerContentWrapper";
+import { DrawerContentWrapper } from "../DrawerContentWrapper";
 
 type EditNetworkMenuProps = {
   network?: Network;

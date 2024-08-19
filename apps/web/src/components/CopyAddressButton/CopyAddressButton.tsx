@@ -12,9 +12,11 @@ export const CopyAddressButton = memo(
 
     return (
       <CopyButton
+        left="-8px"
         height="auto"
+        padding="4px 8px"
         aria-label="Copy Address"
-        variant="unstyled"
+        variant="ghost"
         {...props}
         value={address}
       >

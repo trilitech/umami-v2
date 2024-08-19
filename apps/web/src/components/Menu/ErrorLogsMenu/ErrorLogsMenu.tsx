@@ -1,9 +1,9 @@
 import { Box, Button, Divider, Flex, Heading, Link, Text, VStack } from "@chakra-ui/react";
 import { errorsActions, useAppDispatch, useAppSelector } from "@umami/state";
 
-import { DrawerContentWrapper } from "./DrawerContentWrapper";
-import { useColor } from "../../styles/useColor";
-import { EmptyMessage } from "../EmptyMessage";
+import { useColor } from "../../../styles/useColor";
+import { EmptyMessage } from "../../EmptyMessage";
+import { DrawerContentWrapper } from "../DrawerContentWrapper";
 
 export const ErrorLogsMenu = () => {
   const color = useColor();
