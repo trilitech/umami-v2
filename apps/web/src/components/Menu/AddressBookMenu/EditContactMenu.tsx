@@ -35,26 +35,24 @@ export const EditContactMenu: FC<{
   const isEdit = !!(contact?.pkh && contact.name);
 
   const onSubmitContact = async (newContact: Contact) => {
-    if (isValidContractPkh(newContact.pkh)) {
-      await handleAsyncAction(async () => {
+    await handleAsyncAction(async () => {
+      let network: string | undefined;
+
+      if (isValidContractPkh(newContact.pkh)) {
         const contractsWithNetworks = await getNetworksForContracts(availableNetworks, [
           newContact.pkh,
         ]);
-        if (!contractsWithNetworks.has(newContact.pkh)) {
+
+        network = contractsWithNetworks.get(newContact.pkh);
+
+        if (!network) {
           throw new Error(`Network not found for contract ${newContact.pkh}`);
         }
-        dispatch(
-          contactsActions.upsert({
-            ...newContact,
-            network: contractsWithNetworks.get(newContact.pkh),
-          })
-        );
-        goBack();
-      });
-    } else {
-      dispatch(contactsActions.upsert({ ...newContact, network: undefined }));
+      }
+
+      dispatch(contactsActions.upsert({ ...newContact, network }));
       goBack();
-    }
+    });
   };
 
   const {

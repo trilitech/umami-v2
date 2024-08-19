@@ -45,7 +45,7 @@ export const Token = ({ token }: TokenProps) => {
       }}
       paddingY={{ base: "18px", lg: "30px" }}
     >
-      <Flex flex="1" gridArea="token">
+      <Flex alignItems="center" flex="1" gridArea="token">
         <TokenIconWrapper>
           <TokenIcon width="48px" minWidth="48px" contract={token.contract} rounded="full" />
         </TokenIconWrapper>
