@@ -11,6 +11,7 @@ import {
   Text,
   type UseCheckboxGroupReturn,
   VStack,
+  useDisclosure,
 } from "@chakra-ui/react";
 
 import { FilterIcon } from "../../../assets/icons";
@@ -25,11 +26,24 @@ export const NFTFilter = ({
   getCheckboxProps: UseCheckboxGroupReturn["getCheckboxProps"];
 } & ButtonProps) => {
   const color = useColor();
+  const { onOpen, onClose, isOpen } = useDisclosure();
 
   return (
-    <Popover variant="dropdown">
+    <Popover
+      isOpen={isOpen}
+      onClose={onClose}
+      onOpen={onOpen}
+      placement="bottom-end"
+      variant="dropdown"
+    >
       <PopoverTrigger>
-        <Button data-testid="nft-filter-trigger" size="sm" variant="auxiliary" {...props}>
+        <Button
+          background={isOpen ? "gray.100" : "none"}
+          data-testid="nft-filter-trigger"
+          size="sm"
+          variant="auxiliary"
+          {...props}
+        >
           <Icon as={FilterIcon} color={color("400")} />
           <Text color={color("600")} fontWeight="600" size="sm">
             Filter By
@@ -52,7 +66,7 @@ export const NFTFilter = ({
                   {...getCheckboxProps({ value })}
                   color={color("900")}
                   fontWeight="600"
-                  size="lg"
+                  size="md"
                 >
                   {label}
                 </Checkbox>

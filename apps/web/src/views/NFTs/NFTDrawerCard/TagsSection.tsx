@@ -1,4 +1,4 @@
-import { Center, Icon, Text, Wrap, WrapItem } from "@chakra-ui/react";
+import { Flex, Icon, Text, Wrap, WrapItem } from "@chakra-ui/react";
 import { type NFTBalance } from "@umami/core";
 
 import { TagIcon } from "../../../assets/icons";
@@ -17,10 +17,12 @@ export const TagsSection = ({ nft }: { nft: NFTBalance }) => {
     <Wrap marginTop="20px" data-testid="tags-section">
       {tags.map(tag => (
         <WrapItem key={tag} padding="6px" background={color("100")} borderRadius="6px">
-          <Center gap="4px" data-testid="nft-tag">
-            <Icon as={TagIcon} color={color("400")} />
-            <Text color={color("700")}>{tag}</Text>
-          </Center>
+          <Flex gap="4px" data-testid="nft-tag">
+            <Icon as={TagIcon} width="18px" height="18px" color={color("400")} />
+            <Text color={color("700")} size="sm">
+              {tag}
+            </Text>
+          </Flex>
         </WrapItem>
       ))}
     </Wrap>

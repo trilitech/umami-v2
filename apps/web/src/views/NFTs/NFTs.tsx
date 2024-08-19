@@ -1,7 +1,8 @@
-import { Flex, Heading, SimpleGrid } from "@chakra-ui/react";
+import { Box, Flex, Heading, SimpleGrid } from "@chakra-ui/react";
 import { useDynamicDrawerContext } from "@umami/components";
 import { fullId } from "@umami/core";
 import BigNumber from "bignumber.js";
+import { range } from "lodash";
 
 import { NFTCard } from "./NFTCard";
 import { NFTDrawer } from "./NFTDrawer";
@@ -15,10 +16,10 @@ export const NFTs = () => {
   const { nfts, options: nftFilterOptions, getCheckboxProps } = useNFTFilter();
   const totalCount = nfts.reduce((acc, nft) => acc.plus(nft.balance), BigNumber(0)).toNumber();
 
-  let gridTemplateColumns = "repeat(auto-fit, minmax(min(100%/2, max(157px, 100%/5)), 1fr))";
-  if (nfts.length < 3) {
-    gridTemplateColumns = `repeat(auto-fit, min(100% / ${nfts.length} - 6px, 50%))`;
-  }
+  const gridTemplateColumns = {
+    base: "repeat(auto-fit, minmax(min(100%/2, max(157px, 100%/5)), 1fr))",
+    lg: "repeat(auto-fit, minmax(min(100%/2, max(236px, 100%/5)), 1fr))",
+  };
 
   return (
     <Flex flexDirection="column" gap={{ base: "12px", lg: "30px" }} height="full">
@@ -41,6 +42,10 @@ export const NFTs = () => {
                 nft={nft}
                 onClick={() => openWith(<NFTDrawer nft={nft} />)}
               />
+            ))}
+            {/* empty boxes to make up to a full row */}
+            {range(4 - (nfts.length % 4)).map(index => (
+              <Box key={index} />
             ))}
           </SimpleGrid>
         </>
