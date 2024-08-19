@@ -11,7 +11,7 @@ import {
   useValidateNewContactPkh,
 } from "@umami/state";
 import { isValidContractPkh } from "@umami/tezos";
-import { type FC, useEffect, useRef } from "react";
+import { type FC } from "react";
 import { useForm } from "react-hook-form";
 
 import { DrawerContentWrapper } from "../DrawerContentWrapper";
@@ -28,7 +28,7 @@ export const EditContactMenu: FC<{
 }> = ({ contact }) => {
   const { handleAsyncAction } = useAsyncActionHandler();
   const dispatch = useAppDispatch();
-  const { isOpen, goBack } = useDynamicDrawerContext();
+  const { goBack } = useDynamicDrawerContext();
   const availableNetworks = useAvailableNetworks();
 
   // When editing existing contact, its name & pkh are known and provided to the modal.
@@ -49,42 +49,29 @@ export const EditContactMenu: FC<{
             network: contractsWithNetworks.get(newContact.pkh),
           })
         );
+        goBack();
       });
     } else {
       dispatch(contactsActions.upsert({ ...newContact, network: undefined }));
+      goBack();
     }
-    goBack();
-    reset();
   };
 
   const {
     handleSubmit,
     formState: { isValid, errors },
     register,
-    reset,
   } = useForm<Contact>({
     mode: "onBlur",
     defaultValues: contact,
   });
-
-  const onSubmit = ({ name, pkh }: Contact) => {
-    void onSubmitContact({ name: name.trim(), pkh });
-  };
-
-  const resetRef = useRef(reset);
-  useEffect(() => {
-    // Refresh form with contact values when modal opens
-    if (isOpen) {
-      resetRef.current(contact);
-    }
-  }, [isOpen, contact]);
 
   const validatePkh = useValidateNewContactPkh();
   const validateName = useValidateName(contact?.name);
 
   return (
     <DrawerContentWrapper title={isEdit ? "Edit Contact" : "Add Contact"}>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(({ name, pkh }) => onSubmitContact({ name: name.trim(), pkh }))}>
         <VStack gap="30px" marginTop="40px" spacing="0">
           <FormControl isInvalid={!!errors.name}>
             <FormLabel>Name</FormLabel>

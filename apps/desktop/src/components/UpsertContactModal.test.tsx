@@ -53,7 +53,7 @@ describe("<UpsertContactModal />", () => {
       });
 
       it("validates updated address", async () => {
-        const user = userEvent;
+        const user = userEvent.setup();
         render(modalComponent, { store });
 
         const addressInput = screen.getByLabelText("Address");
@@ -68,7 +68,7 @@ describe("<UpsertContactModal />", () => {
       });
 
       it("checks the name is unique", async () => {
-        const user = userEvent;
+        const user = userEvent.setup();
         store.dispatch(contactsActions.upsert(contact2));
         render(modalComponent, { store });
 
@@ -86,7 +86,7 @@ describe("<UpsertContactModal />", () => {
       });
 
       it("adds contact to address book", async () => {
-        const user = userEvent;
+        const user = userEvent.setup();
         store.dispatch(contactsActions.upsert(contact2));
         render(modalComponent, { store });
 
@@ -116,7 +116,7 @@ describe("<UpsertContactModal />", () => {
         jest
           .mocked(getNetworksForContracts)
           .mockResolvedValue(new Map([[contractPkh, "ghostnet"]]));
-        const user = userEvent;
+        const user = userEvent.setup();
         render(modalComponent, { store });
 
         // Set name
@@ -143,7 +143,7 @@ describe("<UpsertContactModal />", () => {
 
       it("shows error toast on unknown network for contract addresses", async () => {
         jest.mocked(getNetworksForContracts).mockResolvedValue(new Map());
-        const user = userEvent;
+        const user = userEvent.setup();
         render(modalComponent, { store });
 
         // Set name
@@ -182,7 +182,7 @@ describe("<UpsertContactModal />", () => {
       });
 
       it("validates initial address field", async () => {
-        const user = userEvent;
+        const user = userEvent.setup();
         render(
           <UpsertContactModal
             contact={{
@@ -203,7 +203,7 @@ describe("<UpsertContactModal />", () => {
       });
 
       it("adds contact to address book with pre-filled address", async () => {
-        const user = userEvent;
+        const user = userEvent.setup();
         store.dispatch(contactsActions.upsert(contact2));
         render(
           <UpsertContactModal
@@ -237,7 +237,7 @@ describe("<UpsertContactModal />", () => {
         jest
           .mocked(getNetworksForContracts)
           .mockResolvedValue(new Map([[contractPkh, "ghostnet"]]));
-        const user = userEvent;
+        const user = userEvent.setup();
         render(
           <UpsertContactModal
             contact={{
@@ -268,7 +268,7 @@ describe("<UpsertContactModal />", () => {
 
       it("shows error toast on unknown network for contract addresses", async () => {
         jest.mocked(getNetworksForContracts).mockResolvedValue(new Map());
-        const user = userEvent;
+        const user = userEvent.setup();
         render(
           <UpsertContactModal
             contact={{
@@ -316,7 +316,7 @@ describe("<UpsertContactModal />", () => {
     });
 
     it("checks the name was updated", async () => {
-      const user = userEvent;
+      const user = userEvent.setup();
       render(<UpsertContactModal contact={contact1} />, { store });
 
       await act(() => user.click(screen.getByLabelText("Name")));
@@ -329,7 +329,7 @@ describe("<UpsertContactModal />", () => {
     });
 
     it("checks the name is unique", async () => {
-      const user = userEvent;
+      const user = userEvent.setup();
       store.dispatch(contactsActions.upsert(contact2));
       render(<UpsertContactModal contact={contact1} />, { store });
 
@@ -347,7 +347,7 @@ describe("<UpsertContactModal />", () => {
     });
 
     it("updates contact in address book", async () => {
-      const user = userEvent;
+      const user = userEvent.setup();
       store.dispatch(contactsActions.upsert(contact2));
       render(<UpsertContactModal contact={contact1} />, { store });
 

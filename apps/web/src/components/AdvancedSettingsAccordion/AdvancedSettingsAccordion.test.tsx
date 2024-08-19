@@ -37,7 +37,7 @@ describe("<AdvancedSettingsAccordion />", () => {
   });
 
   it("updates fee value on change", async () => {
-    const user = userEvent;
+    const user = userEvent.setup();
     render(<TestComponent />);
 
     await act(() => user.click(screen.getByRole("button", { name: "Advanced" })));
@@ -58,7 +58,7 @@ describe("<AdvancedSettingsAccordion />", () => {
   });
 
   it("updates gas limit value on change", async () => {
-    const user = userEvent;
+    const user = userEvent.setup();
     render(<TestComponent />);
     await act(() => user.click(screen.getByRole("button", { name: "Advanced" })));
 
@@ -70,7 +70,7 @@ describe("<AdvancedSettingsAccordion />", () => {
   });
 
   it("updates storage limit value on change", async () => {
-    const user = userEvent;
+    const user = userEvent.setup();
     render(<TestComponent />);
     await act(() => user.click(screen.getByRole("button", { name: "Advanced" })));
 

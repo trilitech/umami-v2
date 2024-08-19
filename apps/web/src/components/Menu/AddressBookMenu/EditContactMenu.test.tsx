@@ -53,7 +53,7 @@ describe("<EditContactMenu />", () => {
       });
 
       it("validates updated address", async () => {
-        const user = userEvent;
+        const user = userEvent.setup();
         await renderInDrawer(modalComponent, store);
 
         const addressInput = screen.getByLabelText("Address");
@@ -68,7 +68,7 @@ describe("<EditContactMenu />", () => {
       });
 
       it("checks the name is unique", async () => {
-        const user = userEvent;
+        const user = userEvent.setup();
         store.dispatch(contactsActions.upsert(contact2));
         await renderInDrawer(modalComponent, store);
 
@@ -86,7 +86,7 @@ describe("<EditContactMenu />", () => {
       });
 
       it("adds contact to address book", async () => {
-        const user = userEvent;
+        const user = userEvent.setup();
         store.dispatch(contactsActions.upsert(contact2));
         await renderInDrawer(modalComponent, store);
 
@@ -116,7 +116,7 @@ describe("<EditContactMenu />", () => {
         jest
           .mocked(getNetworksForContracts)
           .mockResolvedValue(new Map([[contractPkh, "ghostnet"]]));
-        const user = userEvent;
+        const user = userEvent.setup();
         await renderInDrawer(modalComponent, store);
 
         // Set name
@@ -143,7 +143,7 @@ describe("<EditContactMenu />", () => {
 
       it("shows error toast on unknown network for contract addresses", async () => {
         jest.mocked(getNetworksForContracts).mockResolvedValue(new Map());
-        const user = userEvent;
+        const user = userEvent.setup();
         await renderInDrawer(modalComponent, store);
 
         // Set name
@@ -182,7 +182,7 @@ describe("<EditContactMenu />", () => {
       });
 
       it("validates initial address field", async () => {
-        const user = userEvent;
+        const user = userEvent.setup();
         await renderInDrawer(
           <EditContactMenu
             contact={{
@@ -203,7 +203,7 @@ describe("<EditContactMenu />", () => {
       });
 
       it("adds contact to address book with pre-filled address", async () => {
-        const user = userEvent;
+        const user = userEvent.setup();
         store.dispatch(contactsActions.upsert(contact2));
         await renderInDrawer(
           <EditContactMenu
@@ -237,7 +237,7 @@ describe("<EditContactMenu />", () => {
         jest
           .mocked(getNetworksForContracts)
           .mockResolvedValue(new Map([[contractPkh, "ghostnet"]]));
-        const user = userEvent;
+        const user = userEvent.setup();
         await renderInDrawer(
           <EditContactMenu
             contact={{
@@ -268,7 +268,7 @@ describe("<EditContactMenu />", () => {
 
       it("shows error toast on unknown network for contract addresses", async () => {
         jest.mocked(getNetworksForContracts).mockResolvedValue(new Map());
-        const user = userEvent;
+        const user = userEvent.setup();
         await renderInDrawer(
           <EditContactMenu
             contact={{
@@ -316,7 +316,7 @@ describe("<EditContactMenu />", () => {
     });
 
     it("checks the name was updated", async () => {
-      const user = userEvent;
+      const user = userEvent.setup();
       await renderInDrawer(<EditContactMenu contact={contact1} />, store);
 
       await act(() => user.click(screen.getByLabelText("Name")));
@@ -329,7 +329,7 @@ describe("<EditContactMenu />", () => {
     });
 
     it("checks the name is unique", async () => {
-      const user = userEvent;
+      const user = userEvent.setup();
       store.dispatch(contactsActions.upsert(contact2));
       await renderInDrawer(<EditContactMenu contact={contact1} />, store);
 
@@ -347,7 +347,7 @@ describe("<EditContactMenu />", () => {
     });
 
     it("updates contact in address book", async () => {
-      const user = userEvent;
+      const user = userEvent.setup();
       store.dispatch(contactsActions.upsert(contact2));
       await renderInDrawer(<EditContactMenu contact={contact1} />, store);
 
