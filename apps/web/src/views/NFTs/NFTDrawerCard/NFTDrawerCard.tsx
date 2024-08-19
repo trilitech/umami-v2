@@ -1,14 +1,4 @@
-import {
-  AspectRatio,
-  Button,
-  Card,
-  CardBody,
-  Flex,
-  Heading,
-  Image,
-  Square,
-  Text,
-} from "@chakra-ui/react";
+import { Button, Card, CardBody, Flex, Heading, Image, Square, Text } from "@chakra-ui/react";
 import { useDynamicModalContext } from "@umami/components";
 import { type NFTBalance, artifactUri, mimeType, tokenName } from "@umami/core";
 import { getIPFSurl } from "@umami/tezos";
@@ -33,26 +23,30 @@ export const NFTDrawerCard = ({ nft }: { nft: NFTBalance }) => {
   return (
     <Flex flexDirection="column">
       <Card boxShadow="none">
-        <CardBody justifyContent="center" display="flex" padding="0">
+        <CardBody
+          justifyContent="center"
+          display="flex"
+          maxHeight={{ base: "366px", lg: "446px" }}
+          padding="0"
+          aspectRatio={1}
+        >
           <Square
-            maxWidth={{ lg: "446px", base: "366px" }}
-            maxHeight={{ lg: "446px", base: "366px" }}
+            maxHeight={{ base: "366px", lg: "446px" }}
             background={color("50")}
             borderRadius="6px"
-            size="100%"
+            size="full"
           >
             {isVideo ? (
               <ReactPlayer data-testid="nft-video" loop playing url={url} />
             ) : (
-              <AspectRatio width="full" ratio={1}>
-                <Image
-                  borderRadius="6px"
-                  objectFit="contain"
-                  data-testid="nft-image"
-                  fallbackSrc={fallbackUrl}
-                  src={url}
-                />
-              </AspectRatio>
+              <Image
+                maxHeight={{ base: "366px", lg: "446px" }}
+                borderRadius="6px"
+                objectFit="contain"
+                data-testid="nft-image"
+                fallbackSrc={fallbackUrl}
+                src={url}
+              />
             )}
 
             <NFTBalancePill nft={nft} />
