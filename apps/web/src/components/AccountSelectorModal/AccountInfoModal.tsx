@@ -14,8 +14,9 @@ import { QRCode } from "react-qrcode-logo";
 
 import { CopyIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
+import { ModalBackButton } from "../BackButton";
 import { ModalCloseButton } from "../CloseButton";
-import { CopyButton } from "../CopyButton/CopyButton";
+import { CopyButton } from "../CopyButton";
 
 type AccountInfoModalProps = {
   account: Account;
@@ -27,6 +28,7 @@ export const AccountInfoModal = ({ account }: AccountInfoModalProps) => {
   return (
     <ModalContent>
       <ModalHeader>
+        <ModalBackButton />
         <VStack gap="12px">
           <Heading size="xl">Account Info</Heading>
           <Text maxWidth="340px" color={color("700")} fontWeight="400" size="md">
