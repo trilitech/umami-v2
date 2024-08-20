@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@cucumber/cucumber": "^10.9.0",
-    "@playwright/test": "^1.46.0",
+    "@playwright/test": "^1.46.1",
     "@taquito/signer": "^20.0.1",
     "@umami/core": "workspace:^",
     "@umami/state": "workspace:^",
