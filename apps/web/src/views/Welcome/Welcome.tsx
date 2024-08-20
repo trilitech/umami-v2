@@ -16,6 +16,8 @@ import {
   type TextProps,
   useBreakpointValue,
 } from "@chakra-ui/react";
+import { useDynamicModalContext } from "@umami/components";
+import { useState } from "react";
 
 import { LogoLightIcon, TezosLogoIcon } from "../../assets/icons";
 import {
@@ -24,11 +26,14 @@ import {
   RedditAccountIcon,
   TwitterAccountIcon,
 } from "../../components/AccountTile/AccountTileIcon";
+import { ImportWallet } from "../../components/Onboarding/ImportWallet";
 import { useColor } from "../../styles/useColor";
 
 export const Welcome = () => {
+  const [isOnboarding, setIsOnboarding] = useState(false);
   const color = useColor();
   const isMobile = useBreakpointValue({ base: true, lg: false });
+  const { openWith } = useDynamicModalContext();
 
   return (
     <Grid
@@ -47,7 +52,13 @@ export const Welcome = () => {
       padding={{ base: "24px 0 0 0", lg: "24px 46px 46px 46px" }}
       data-testid="welcome-view"
     >
-      <Flex alignItems="center" justifyContent="end" flexDirection="column" gridArea="header">
+      <Flex
+        alignItems="center"
+        justifyContent="end"
+        flexDirection="column"
+        gridArea="header"
+        display={isOnboarding ? "none" : "flex"}
+      >
         <Icon as={LogoLightIcon} width="42px" height="42px" />
         <Heading marginTop="18px" color={color("900")} size="3xl">
           Welcome to Umami
@@ -57,7 +68,11 @@ export const Welcome = () => {
         </Text>
       </Flex>
 
-      <Flex gridArea="main" width={{ base: "full", lg: "510px" }}>
+      <Flex
+        gridArea="main"
+        display={isOnboarding ? "none" : "flex"}
+        width={{ base: "full", lg: "510px" }}
+      >
         <Flex
           alignItems="center"
           alignContent="start"
@@ -99,7 +114,19 @@ export const Welcome = () => {
               <Button width="full" size="lg" variant="primary">
                 Create a new wallet
               </Button>
-              <Button width="full" size="lg" variant="secondary">
+              <Button
+                width="full"
+                onClick={() => {
+                  setIsOnboarding(true);
+                  return openWith(<ImportWallet />, {
+                    size: "xl",
+                    variant: "onboarding",
+                    onClose: () => setIsOnboarding(false),
+                  });
+                }}
+                size="lg"
+                variant="secondary"
+              >
                 I already have a wallet
               </Button>
             </Flex>
@@ -153,6 +180,7 @@ export const Welcome = () => {
           <Logo alignSelf="end" gridArea="tezos-logo" />
 
           <GridItem
+            zIndex={1401}
             justifySelf="end"
             alignSelf="end"
             gap="10px"
