@@ -136,6 +136,22 @@ const theme = extendTheme({
       },
       defaultProps: { variant: "filled" },
       variants: {
+        mnemonic: {
+          field: {
+            borderRadius: "34px",
+            height: { lg: "48px", base: "34px" },
+            border: "1px solid",
+            background: "none",
+            borderColor: "gray.100",
+            fontSize: { lg: "18px", base: "12px" },
+            paddingLeft: { base: "30px", lg: "50px" },
+            paddingRight: "10px",
+            _placeholder: {
+              color: "gray.400",
+            },
+            color: light.grey.white,
+          },
+        },
         filled: {
           field: {
             padding: "16px",
@@ -152,6 +168,36 @@ const theme = extendTheme({
             _focusVisible: {
               borderColor: "gray.400",
             },
+          },
+        },
+      },
+    },
+    List: {
+      variants: {
+        suggestions: {
+          item: {
+            _hover: {
+              background: "gray.400",
+            },
+            background: "gray.200",
+            borderRadius: "4px",
+            cursor: "pointer",
+            height: "30px",
+            listStyleType: "none",
+          },
+          container: {
+            background: "gray.200",
+            border: "1px solid",
+            borderColor: "gray.100",
+            borderRadius: "8px",
+            listStyleType: "none",
+            maxHeight: "230px",
+            width: "200px",
+            marginLeft: "0 !important",
+            overflowX: "hidden",
+            padding: "10px",
+            position: "absolute",
+            zIndex: 2,
           },
         },
       },
@@ -181,6 +227,9 @@ const theme = extendTheme({
             bg: "gray.100",
             color: "gray.600",
           },
+        },
+        tabpanel: {
+          padding: 0,
         },
       },
       variants: {
@@ -283,6 +332,22 @@ const theme = extendTheme({
           _hover: {
             background: "gray.100",
             color: "gray.600",
+          },
+        },
+        outline: {
+          borderColor: "gray.100",
+          _hover: {
+            background: "gray.100",
+          },
+          _active: {
+            background: "gray.100",
+          },
+        },
+        solid: {
+          border: "1px solid",
+          background: "gray.100",
+          _hover: {
+            background: "gray.100",
           },
         },
         dropdownOption: {
@@ -404,6 +469,15 @@ const theme = extendTheme({
       },
     },
     Modal: {
+      sizes: {
+        xl: {
+          dialog: {
+            minWidth: { base: "100%", lg: "536px" },
+            maxWidth: "100%",
+            marginX: 0,
+          },
+        },
+      },
       baseStyle: {
         closeButton: {
           bg: "transparent",
@@ -453,6 +527,13 @@ const theme = extendTheme({
           padding: 0,
           justifyContent: "center",
           marginTop: "30px",
+        },
+      },
+      variants: {
+        onboarding: {
+          dialog: {
+            marginBottom: { base: 0, lg: "100px" },
+          },
         },
       },
     },
