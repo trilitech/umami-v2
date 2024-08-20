@@ -31,6 +31,7 @@ export { default as HourglassIcon } from "./hourglass.svg";
 export { default as IncomingArrowIcon } from "./incoming-arrow.svg";
 export { default as KeyIcon } from "./key.svg";
 export { default as LockIcon } from "./lock.svg";
+export { default as LoginIcon } from "./login.svg";
 export { default as LogoDarkIcon } from "./logo-dark.svg";
 export { default as LogoLightIcon } from "./logo-light.svg";
 export { default as LogoutIcon } from "./logout.svg";
