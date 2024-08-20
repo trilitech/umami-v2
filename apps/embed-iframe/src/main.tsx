@@ -8,6 +8,8 @@ import { EmbedAppProvider } from "./EmbedAppContext";
 import "./main.scss";
 import { LoginModalProvider } from "./LoginModalContext";
 
+import { Analytics } from "@vercel/analytics/react";
+
 const rootElement = document.getElementById("root");
 ReactDOM.createRoot(rootElement!).render(
   <StrictMode>
@@ -16,6 +18,7 @@ ReactDOM.createRoot(rootElement!).render(
         <LoginModalProvider>
           <ColorModeScript initialColorMode={theme.config.initialColorMode} />
           <EmbeddedComponent />
+          <Analytics />
         </LoginModalProvider>
       </EmbedAppProvider>
     </ChakraProvider>

@@ -7,6 +7,8 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 
+import { track } from "@vercel/analytics";
+
 import { LoginModalContent } from "./LoginModalContent";
 import { sendLoginErrorResponse } from "./utils";
 import { TezosSpinner } from "./assets/icons/TezosSpinner";
@@ -14,9 +16,11 @@ import { TezosSpinner } from "./assets/icons/TezosSpinner";
 import { mode } from "@chakra-ui/theme-tools";
 
 import { useLoginModalContext } from "./LoginModalContext";
+import { useEmbedApp } from "./EmbedAppContext";
 
 export const useLoginModal = () => {
   const { isOpen, onOpen, onClose, isLoading } = useLoginModalContext();
+  const { getNetwork, getDAppOrigin } = useEmbedApp();
 
   const colorMode = useColorMode();
 
@@ -60,6 +64,9 @@ export const useLoginModal = () => {
         </Modal>
       </Center>
     ),
-    onOpen,
+    onOpen: () => {
+      track("login_modal_opened", { network: getNetwork(), dAppOrigin: getDAppOrigin() });
+      onOpen();
+    },
   };
 };

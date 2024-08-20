@@ -5,6 +5,8 @@ import * as Auth from "@umami/social-auth";
 
 import { useEffect } from "react";
 
+import { track } from "@vercel/analytics";
+
 import { TezosLogoIcon, UmamiLogoIcon } from "./assets/icons";
 
 import { getErrorContext } from "./imported/utils/getErrorContext";
@@ -20,7 +22,7 @@ const LOGIN_TIMEOUT = 3 * 60 * 1000; // 3 minutes
 
 export const LoginModalContent = () => {
   const { isOpen, onClose, isLoading, setIsLoading } = useLoginModalContext();
-  const { setUserData, getLoginOptions } = useEmbedApp();
+  const { setUserData, getNetwork, getLoginOptions, getDAppOrigin } = useEmbedApp();
 
   const color = useColor();
 
@@ -31,7 +33,9 @@ export const LoginModalContent = () => {
   }, [isOpen]);
 
   const onLoginClick = async (loginType: TypeOfLogin) => {
+    const eventDetails = `${getNetwork()}_${loginType}`;
     setIsLoading(true);
+    track("login_button_click", { details: eventDetails, dAppOrigin: getDAppOrigin() });
     try {
       const { secretKey, id, name, email, imageUrl } = await withTimeout(
         async () => Auth.forIDP(loginType, "embed").getCredentials(),
@@ -42,6 +46,7 @@ export const LoginModalContent = () => {
 
       const userData = { pk, pkh, typeOfLogin: loginType, id, name, emailAddress: email, imageUrl };
       setUserData(userData);
+      track("successful_login", { details: eventDetails, dAppOrigin: getDAppOrigin() });
       sendResponse({
         ...userData,
         type: "login_response",
