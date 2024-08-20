@@ -32,12 +32,11 @@ export const AccountTile = ({
 
       <Flex justifyContent="space-between" width="100%" marginRight="20px">
         <Flex justifyContent="center" flexDirection="column" gap="2px">
-          <Heading color={color("900")} size="sm">
+          <Heading color={color("900")} size="md">
             {account.label}
           </Heading>
           <CopyAddressButton address={address} />
         </Flex>
-
         {children}
       </Flex>
     </Flex>

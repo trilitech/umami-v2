@@ -43,7 +43,7 @@ export const AddressTile = ({ address, ...flexProps }: { address: Address } & Fl
         <Flex justifyContent="center" flexDirection="column" width="full">
           <Heading size="md">{addressKind.label}</Heading>
 
-          <Flex justifyContent="space-between">
+          <Flex alignItems="center" justifyContent="space-between">
             <CopyAddressButton
               color={color("700")}
               address={address.pkh}

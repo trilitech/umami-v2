@@ -31,6 +31,7 @@ interface DynamicDisclosureContextType {
   hasPrevious: boolean;
   formValues: Record<string, any>;
   allFormValues: Record<string, any>;
+  updateFormValues: (values: Record<string, any>) => void;
 }
 
 const defaultContextValue = {
@@ -41,6 +42,7 @@ const defaultContextValue = {
   hasPrevious: false,
   formValues: {},
   allFormValues: {},
+  updateFormValues: () => {},
 };
 
 /**
@@ -50,11 +52,19 @@ const defaultContextValue = {
 export const DynamicModalContext = createContext<DynamicDisclosureContextType>(defaultContextValue);
 export const DynamicDrawerContext =
   createContext<DynamicDisclosureContextType>(defaultContextValue);
+export const FormValuesContext = createContext<{
+  formValues: Record<string, any>;
+  updateFormValues: (values: any) => void;
+}>({
+  formValues: {},
+  updateFormValues: () => {},
+});
 
 /* istanbul ignore next */
 export const useDynamicModalContext = () => useContext(DynamicModalContext);
 /* istanbul ignore next */
 export const useDynamicDrawerContext = () => useContext(DynamicDrawerContext);
+export const useFormValuesContext = () => useContext(FormValuesContext);
 
 type DisclosureStackItem = {
   content: ReactElement;
@@ -107,12 +117,6 @@ export const useDynamicDisclosure = () => {
 
   const currentItem = stackRef.current[currentIndex] || null;
 
-  // Note: be careful not to use the same form input names
-  // otherwise, the values will be overwritten with the ones from the latest form
-  const allFormValues = stackRef.current
-    .map(item => item.formValues)
-    .reduce((acc, curr) => merge(acc, cloneDeep(curr)), {});
-
   return {
     isOpen: !!currentItem,
     onClose: currentItem?.props.onClose || (() => {}),
@@ -122,7 +126,6 @@ export const useDynamicDisclosure = () => {
     props: currentItem?.props || {},
     formValues: currentItem?.formValues || {},
     hasPrevious: stackRef.current.length > 1,
-    allFormValues,
   };
 };
 
@@ -169,14 +172,46 @@ export const useDynamicDrawer = () => {
 export const DynamicDisclosureProvider = ({ children }: PropsWithChildren) => {
   const modalDisclosure = useDynamicModal();
   const drawerDisclosure = useDynamicDrawer();
+  const [formValues, setFormValues] = useState({});
+
+  const updateFormValues = (values: any) => {
+    setFormValues(_values => merge(_values, values));
+  };
 
   return (
-    <DynamicModalContext.Provider value={modalDisclosure}>
-      <DynamicDrawerContext.Provider value={drawerDisclosure}>
-        {children}
-        {drawerDisclosure.content}
-        {modalDisclosure.content}
-      </DynamicDrawerContext.Provider>
-    </DynamicModalContext.Provider>
+    <FormValuesContext.Provider
+      value={{
+        formValues,
+        updateFormValues,
+      }}
+    >
+      <DynamicModalContext.Provider
+        value={{
+          ...modalDisclosure,
+          updateFormValues,
+          allFormValues: formValues,
+          onClose: () => {
+            modalDisclosure.onClose();
+            setFormValues({});
+          },
+        }}
+      >
+        <DynamicDrawerContext.Provider
+          value={{
+            ...drawerDisclosure,
+            updateFormValues,
+            allFormValues: formValues,
+            onClose: () => {
+              drawerDisclosure.onClose();
+              setFormValues({});
+            },
+          }}
+        >
+          {children}
+          {drawerDisclosure.content}
+          {modalDisclosure.content}
+        </DynamicDrawerContext.Provider>
+      </DynamicModalContext.Provider>
+    </FormValuesContext.Provider>
   );
 };

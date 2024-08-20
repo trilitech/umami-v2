@@ -260,6 +260,7 @@ const theme = extendTheme({
           rounded: "full",
         },
         inputElement: {
+          borderRadius: "4px",
           height: "28px",
           padding: "5px 12px",
           fontSize: "inherit",
@@ -392,10 +393,10 @@ const theme = extendTheme({
           },
           minWidth: {
             base: "100%",
-            lg: "508px",
+            lg: "516px",
           },
           width: {
-            lg: "508px",
+            lg: "516px",
           },
         },
         header: {

@@ -1,4 +1,5 @@
 import {
+  Button,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -8,19 +9,22 @@ import {
   ModalBody,
   ModalContent,
   ModalFooter,
+  useBreakpointValue,
 } from "@chakra-ui/react";
+import { useDynamicModalContext, useMultiForm } from "@umami/components";
 import { type TezTransfer } from "@umami/core";
-import { type RawPkh, TEZ, TEZ_DECIMALS, parsePkh, tezToMutez } from "@umami/tezos";
-import { FormProvider, useForm } from "react-hook-form";
+import { type RawPkh, TEZ, TEZ_DECIMALS, isAddressValid, parsePkh, tezToMutez } from "@umami/tezos";
+import { FormProvider } from "react-hook-form";
 
 import { SignPage } from "./SignPage";
-import { KnownAccountsAutocomplete, OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
+import { OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
 import { FormPageHeader } from "../FormPageHeader";
 import {
   useAddToBatchFormAction,
   useHandleOnSubmitFormActions,
   useOpenSignPageFormAction,
 } from "../onSubmitFormActionHooks";
+import { RecipientsModal } from "../RecipientsModal";
 import {
   type FormPageProps,
   FormSubmitButton,
@@ -36,12 +40,18 @@ export type FormValues = {
 };
 
 export const FormPage = ({ ...props }: FormPageProps<FormValues>) => {
+  const { openWith, updateFormValues } = useDynamicModalContext();
   const openSignPage = useOpenSignPageFormAction({
     SignPage,
     signPageExtraData: undefined,
     FormPage,
     defaultFormPageProps: props,
     toOperation,
+  });
+
+  const addressPlaceholderText = useBreakpointValue({
+    base: "Enter address or select",
+    ls: "Enter address or select from contacts",
   });
 
   const addToBatch = useAddToBatchFormAction(toOperation);
@@ -51,7 +61,7 @@ export const FormPage = ({ ...props }: FormPageProps<FormValues>) => {
     isLoading,
   } = useHandleOnSubmitFormActions([openSignPage, addToBatch]);
 
-  const form = useForm<FormValues>({
+  const form = useMultiForm<FormValues>({
     mode: "onBlur",
     defaultValues: formDefaultValues(props),
   });
@@ -105,7 +115,28 @@ export const FormPage = ({ ...props }: FormPageProps<FormValues>) => {
               )}
             </FormControl>
             <FormControl isInvalid={!!errors.recipient}>
-              <KnownAccountsAutocomplete allowUnknown inputName="recipient" label="To" />
+              <FormLabel>To</FormLabel>
+              <InputGroup>
+                <Input
+                  placeholder={addressPlaceholderText}
+                  variant="filled"
+                  {...register("recipient", {
+                    required: "Invalid address or contact name",
+                    validate: value => isAddressValid(value) || "Invalid address",
+                  })}
+                />
+                <InputRightElement paddingRight="10px">
+                  <Button
+                    onClick={() => {
+                      updateFormValues(form.getValues());
+                      return openWith(<RecipientsModal />);
+                    }}
+                    variant="inputElement"
+                  >
+                    Select
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
               {errors.recipient && (
                 <FormErrorMessage data-testid="recipient-error">
                   {errors.recipient.message}
