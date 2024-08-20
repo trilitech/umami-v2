@@ -11,11 +11,9 @@ import { SignPageHeader } from "../SignPageHeader";
 import { type SignPageProps, useSignPageHelpers } from "../utils";
 
 export const SignPage = (props: SignPageProps) => {
-  const { mode, operations: initialOperations } = props;
-  const { fee, operations, estimationFailed, isLoading, form, signer, onSign } = useSignPageHelpers(
-    initialOperations,
-    mode
-  );
+  const { operations: initialOperations } = props;
+  const { fee, operations, estimationFailed, isLoading, form, signer, onSign } =
+    useSignPageHelpers(initialOperations);
 
   const { amount: mutezAmount, recipient } = operations.operations[0] as TezTransfer;
 
@@ -23,7 +21,7 @@ export const SignPage = (props: SignPageProps) => {
     <FormProvider {...form}>
       <ModalContent>
         <form>
-          <SignPageHeader {...props} />
+          <SignPageHeader />
           <ModalBody>
             <TezTile mutezAmount={mutezAmount} />
 

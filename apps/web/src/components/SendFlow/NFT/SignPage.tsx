@@ -8,7 +8,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { type FA2Transfer, type NFTBalance } from "@umami/core";
+import { type EstimatedAccountOperations, type FA2Transfer, type NFTBalance } from "@umami/core";
 import { FormProvider } from "react-hook-form";
 
 import { NFTTile } from "./NFTTile";
@@ -17,19 +17,13 @@ import { AddressTile } from "../../AddressTile/AddressTile";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
 import { SignPageHeader } from "../SignPageHeader";
-import { type SignPageProps, useSignPageHelpers } from "../utils";
+import { useSignPageHelpers } from "../utils";
 
-export const SignPage = (props: SignPageProps<{ nft: NFTBalance }>) => {
-  const {
-    mode,
-    operations: initialOperations,
-    data: { nft },
-  } = props;
+export const SignPage = (props: { nft: NFTBalance; operations: EstimatedAccountOperations }) => {
+  const { operations: initialOperations, nft } = props;
 
-  const { fee, operations, estimationFailed, isLoading, form, signer, onSign } = useSignPageHelpers(
-    initialOperations,
-    mode
-  );
+  const { fee, operations, estimationFailed, isLoading, form, signer, onSign } =
+    useSignPageHelpers(initialOperations);
   const color = useColor();
 
   const { recipient, amount } = operations.operations[0] as FA2Transfer;
@@ -38,7 +32,7 @@ export const SignPage = (props: SignPageProps<{ nft: NFTBalance }>) => {
     <FormProvider {...form}>
       <ModalContent>
         <form>
-          <SignPageHeader {...props} />
+          <SignPageHeader />
           <ModalBody>
             <VStack alignItems="start" spacing="12px">
               <NFTTile nft={nft} />

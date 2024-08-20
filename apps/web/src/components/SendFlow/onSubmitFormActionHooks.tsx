@@ -1,6 +1,6 @@
 import { useToast } from "@chakra-ui/react";
 import { useDynamicModalContext } from "@umami/components";
-import { type Operation, estimate } from "@umami/core";
+import { type EstimatedAccountOperations, type Operation, estimate } from "@umami/core";
 import {
   estimateAndUpdateBatch,
   useAppDispatch,
@@ -113,3 +113,33 @@ export const useHandleOnSubmitFormActions = <FormValues extends BaseFormValues>(
     isLoading,
   };
 };
+
+export function usePreviewOperations<
+  FormValues extends BaseFormValues,
+  SignPageProps extends { operations: EstimatedAccountOperations } = {
+    operations: EstimatedAccountOperations;
+  },
+>(
+  toOperation: (formValues: FormValues) => Operation | Operation[],
+  SignPage: FunctionComponent<SignPageProps>,
+  props: Omit<SignPageProps, "operations">
+) {
+  const network = useSelectedNetwork();
+  const makeFormOperations = useMakeFormOperations(toOperation);
+  const { handleAsyncAction, isLoading } = useAsyncActionHandler();
+  const { openWith } = useDynamicModalContext();
+
+  return {
+    isLoading,
+    previewOperation: (formValues: FormValues) =>
+      handleAsyncAction(async () => {
+        const operations = makeFormOperations(formValues);
+        const estimatedOperations = await estimate(operations, network);
+
+        return openWith(
+          <SignPage {...(props as SignPageProps)} operations={estimatedOperations} />
+        );
+      }),
+  };
+}
+export const usePreviewOperation = usePreviewOperations;

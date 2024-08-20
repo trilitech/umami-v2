@@ -1,4 +1,4 @@
-import { Flex, Heading, ModalHeader } from "@chakra-ui/react";
+import { Heading, ModalHeader } from "@chakra-ui/react";
 import { type AccountOperations, type ImplicitAccount } from "@umami/core";
 import { type PropsWithChildren } from "react";
 
@@ -29,13 +29,10 @@ export const SignPageHeader = ({
   title,
   children,
 }: PropsWithChildren<{
-  goBack?: () => void;
   title?: string;
 }>) => (
   <ModalHeader>
-    <Flex paddingTop="6px">
-      <ModalBackButton />
-    </Flex>
+    <ModalBackButton />
     <Heading data-testid="sign-page-header" size="xl">
       {title || "Confirm Transaction"}
     </Heading>

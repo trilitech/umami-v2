@@ -2,10 +2,21 @@ import * as testLib from "@testing-library/react";
 import { act, PropsWithChildren, ReactNode } from "react";
 import { makeStore, UmamiStore } from "@umami/state";
 import { Provider } from "react-redux";
+import { DynamicModalContext, useDynamicModal } from "./DynamicDisclosure";
+export * from "@testing-library/user-event";
 
 const makeWrapper =
   (store: UmamiStore) =>
-  ({ children }: PropsWithChildren) => <Provider store={store}>{children}</Provider>;
+  ({ children }: PropsWithChildren) => {
+    const modalDisclosure = useDynamicModal();
+
+    return (
+      <DynamicModalContext.Provider value={modalDisclosure}>
+        <Provider store={store}>{children}</Provider>
+        {modalDisclosure.content}
+      </DynamicModalContext.Provider>
+    );
+  };
 
 const customRenderHook = <
   Result,

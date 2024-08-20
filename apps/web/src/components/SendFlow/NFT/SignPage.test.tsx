@@ -1,6 +1,4 @@
-import { Modal } from "@chakra-ui/react";
 import {
-  type NFTBalance,
   makeAccountOperations,
   mockImplicitAccount,
   mockMnemonicAccount,
@@ -11,14 +9,7 @@ import { executeParams } from "@umami/test-utils";
 import { TEZ, parseContractPkh } from "@umami/tezos";
 
 import { SignPage } from "./SignPage";
-import { render, screen, waitFor } from "../../../testUtils";
-import { type SignPageProps } from "../utils";
-
-const fixture = (props: SignPageProps<{ nft: NFTBalance }>) => (
-  <Modal isOpen={true} onClose={() => {}}>
-    <SignPage {...props} />
-  </Modal>
-);
+import { renderInModal, screen, waitFor } from "../../../testUtils";
 
 let store: UmamiStore;
 
@@ -45,12 +36,7 @@ describe("<SignPage />", () => {
 
   describe("fee", () => {
     it("displays the fee in tez", async () => {
-      const props: SignPageProps<{ nft: NFTBalance }> = {
-        operations,
-        mode: "single",
-        data: { nft: mockNFTBalance(1) },
-      };
-      render(fixture(props), { store });
+      await renderInModal(<SignPage nft={mockNFTBalance(1)} operations={operations} />, store);
 
       await waitFor(() => expect(screen.getByTestId("fee")).toHaveTextContent(`1.234567 ${TEZ}`));
     });
@@ -58,12 +44,7 @@ describe("<SignPage />", () => {
 
   describe("nft", () => {
     it("displays the correct name", async () => {
-      const props: SignPageProps<{ nft: NFTBalance }> = {
-        operations,
-        mode: "single",
-        data: { nft: mockNFTBalance(1) },
-      };
-      render(fixture(props), { store });
+      await renderInModal(<SignPage nft={mockNFTBalance(1)} operations={operations} />, store);
 
       await waitFor(() =>
         expect(screen.getByTestId("nft-name")).toHaveTextContent(
@@ -73,12 +54,7 @@ describe("<SignPage />", () => {
     });
 
     it("displays the correct balance", async () => {
-      const props: SignPageProps<{ nft: NFTBalance }> = {
-        operations,
-        mode: "single",
-        data: { nft: mockNFTBalance(1) },
-      };
-      render(fixture(props), { store });
+      await renderInModal(<SignPage nft={mockNFTBalance(1)} operations={operations} />, store);
       await waitFor(() =>
         expect(screen.getByTestId("nft-owned")).toHaveTextContent(mockNFTBalance(1).balance)
       );

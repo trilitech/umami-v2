@@ -13,7 +13,6 @@ import {
 } from "@umami/core";
 import {
   useAsyncActionHandler,
-  useClearBatch,
   useGetBestSignerForAccount,
   useGetImplicitAccount,
   useGetOwnedAccount,
@@ -76,14 +75,12 @@ export const formDefaultValues = <T,>({ sender, form }: FormPageProps<T>) => {
 // TODO: test this
 export const useSignPageHelpers = (
   // the fee & operations you've got from the form
-  initialOperations: EstimatedAccountOperations,
-  mode: SignPageMode
+  initialOperations: EstimatedAccountOperations
 ) => {
   const [estimationFailed, setEstimationFailed] = useState(false);
   const getSigner = useGetImplicitAccount();
   const [operations, setOperations] = useState<EstimatedAccountOperations>(initialOperations);
   const network = useSelectedNetwork();
-  const clearBatch = useClearBatch();
   const { isLoading, handleAsyncAction, handleAsyncActionUnsafe } = useAsyncActionHandler();
   const { openWith } = useDynamicModalContext();
 
@@ -131,9 +128,6 @@ export const useSignPageHelpers = (
         { ...operations, estimates: form.watch("executeParams") },
         tezosToolkit
       );
-      if (mode === "batch") {
-        clearBatch(operations.sender);
-      }
       await openWith(<SuccessStep hash={operation.opHash} />);
       return operation;
     });
@@ -151,14 +145,14 @@ export const useSignPageHelpers = (
 };
 
 export const useMakeFormOperations = <FormValues extends BaseFormValues>(
-  toOperation: (formValues: FormValues) => Operation
+  toOperation: (formValues: FormValues) => Operation | Operation[]
 ): ((formValues: FormValues) => AccountOperations) => {
   const getAccount = useGetOwnedAccount();
   const getSigner = useGetBestSignerForAccount();
 
   return (formValues: FormValues) => {
     const sender = getAccount(formValues.sender);
-    return makeAccountOperations(sender, getSigner(sender), [toOperation(formValues)]);
+    return makeAccountOperations(sender, getSigner(sender), [toOperation(formValues)].flat());
   };
 };
 

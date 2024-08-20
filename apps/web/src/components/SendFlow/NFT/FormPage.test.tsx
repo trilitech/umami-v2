@@ -171,12 +171,7 @@ describe("<FormPage />", () => {
         await act(() => user.click(submitButton));
 
         expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
-          <SignPage
-            data={{ nft: mockNFTBalance(1) }}
-            goBack={expect.any(Function)}
-            mode="single"
-            operations={operations}
-          />
+          <SignPage nft={mockNFTBalance(1)} operations={operations} />
         );
         expect(mockToast).not.toHaveBeenCalled();
       });
