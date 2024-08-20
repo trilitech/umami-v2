@@ -5,7 +5,6 @@ import {
   AccordionItem,
   AccordionPanel,
   Box,
-  Center,
   Flex,
   Heading,
   Text,
@@ -13,7 +12,6 @@ import {
 } from "@chakra-ui/react";
 import * as Auth from "@umami/social-auth";
 
-import { TezosLogoIcon } from "./assets/icons/TezosLogo";
 import { UmamiLogoIcon } from "./assets/icons/UmamiLogo";
 import { JsValueWrap } from "./imported/JsValueWrap";
 
@@ -23,20 +21,19 @@ import { sendOperationErrorResponse, sendResponse, toTezosNetwork } from "./util
 import { makeToolkit, prettyTezAmount } from "@umami/tezos";
 import { useEmbedApp } from "./EmbedAppContext";
 import { useColor } from "./imported/style/useColor";
-import {
-  executeOperations,
-  totalFee,
-} from "@umami/core";
+import { executeOperations, totalFee } from "@umami/core";
 import { LoginButtonComponent } from "./LoginButtonComponent";
 import { useOperationModalContext } from "./OperationModalContext";
+import { getDAppByOrigin } from "./ClientsPermissions";
 
 const SIGN_TIMEOUT = 5 * 60 * 1000; // 5 minutes
 
 export const OperationModalContent = () => {
   const { onClose, isLoading, setIsLoading, estimatedOperations } = useOperationModalContext();
-  const { getNetwork, getUserData } = useEmbedApp();
+  const { getNetwork, getUserData, getDAppOrigin } = useEmbedApp();
 
   const color = useColor();
+  const dAppName = getDAppByOrigin(getDAppOrigin());
 
   const onClick = async () => {
     setIsLoading(true);
@@ -74,57 +71,70 @@ export const OperationModalContent = () => {
         Confirm Operation
       </Heading>
 
-      <Flex justifyContent="space-between" marginBottom="20px">
-        <Text color={color("500")} size="xs" lineHeight="14px" marginRight="5px">
-          Network:
-        </Text>
-        <Text color={color("900")} size="xs" lineHeight="14px">
-          {getNetwork()}
+      <Flex justifyContent="center" marginBottom="16px">
+        <Text color={color("900")} size="sm" lineHeight="14px" textAlign="center">
+          <Text as="span">{dAppName ? dAppName : getDAppOrigin()}</Text>
+          <Text as="span" color={color("500")} marginLeft="5px">
+            is requesting permission to sign this operation
+          </Text>
         </Text>
       </Flex>
 
-      <Accordion allowToggle defaultIndex={[0]} width="100%" marginBottom="10px">
-        <AccordionItem background={color("100")} border="none" borderRadius="8px">
+      <Accordion allowToggle width="100%" marginBottom="10px">
+        <AccordionItem border="none">
           <AccordionButton>
             <Heading flex="1" textAlign="left" paddingY="6px" size="sm">
-              Operations
+              Show Details
             </Heading>
             <AccordionIcon />
           </AccordionButton>
-          <AccordionPanel>
-            <JsValueWrap overflowY="auto" maxHeight="200px" value={estimatedOperations!.operations} />
+
+          <AccordionPanel width="100%">
+            <JsValueWrap
+              background={color("100")}
+              overflowY="auto"
+              maxHeight="200px"
+              value={estimatedOperations!.operations}
+              marginBottom="16px"
+            />
+
+            <Flex alignItems="center" justifyContent="space-between">
+              <Flex marginRight="110px">
+                <Text marginRight="4px" color={color("500")} size="xs">
+                  Count:
+                </Text>
+                <Text color={color("900")} data-testid="transaction-length" size="xs">
+                  {estimatedOperations!.operations.length}
+                </Text>
+              </Flex>
+
+              <Flex alignItems="center" marginBottom="5px">
+                <Text marginRight="4px" color={color("500")} size="xs">
+                  Fee:
+                </Text>
+                <Text color={color("900")} data-testid="fee" size="xs">
+                  {isLoading ? "..." : prettyTezAmount(totalFee(estimatedOperations!.estimates))}
+                </Text>
+              </Flex>
+            </Flex>
+
+            <Flex justifyContent="space-between">
+              <Text color={color("500")} size="xs" lineHeight="14px" marginRight="5px">
+                Network:
+              </Text>
+              <Text color={color("900")} size="xs" lineHeight="14px">
+                {getNetwork()}
+              </Text>
+            </Flex>
           </AccordionPanel>
         </AccordionItem>
       </Accordion>
 
-      <Flex alignItems="center" justifyContent="space-between" marginBottom="20px">
-        <Flex marginRight="110px">
-          <Text marginRight="4px" color={color("500")} size="sm">
-            Count:
-          </Text>
-          <Text color={color("900")} data-testid="transaction-length" size="sm">
-            {estimatedOperations!.operations.length}
-          </Text>
-        </Flex>
-
-        <Flex alignItems="center">
-          <Text marginRight="4px" color={color("500")} size="sm">
-            Fee:
-          </Text>
-          <Text color={color("900")} data-testid="fee" size="sm">
-            {isLoading ? "..." : prettyTezAmount(totalFee(estimatedOperations!.estimates))}
-          </Text>
-        </Flex>
-      </Flex>
-
-      <LoginButtonComponent loginType={getUserData()!.typeOfLogin} onClick={onClick} />
-
-      <Center marginTop="30px">
-        <Text marginRight="10px" color={color("500")} fontSize="xs" lineHeight="14px">
-          Powered by
-        </Text>
-        <TezosLogoIcon />
-      </Center>
+      <LoginButtonComponent
+        loginType={getUserData()!.typeOfLogin}
+        prefix="Confirm with"
+        onClick={onClick}
+      />
     </VStack>
   );
 };

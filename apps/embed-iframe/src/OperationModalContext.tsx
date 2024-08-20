@@ -8,8 +8,8 @@ interface OperationModalContextState {
   onClose: () => void;
   isLoading: boolean;
   setIsLoading: (isLoading: boolean) => void;
-    estimatedOperations: EstimatedAccountOperations | null;
-    setEstimatedOperations: (estimatedOperations: EstimatedAccountOperations | null) => void;
+  estimatedOperations: EstimatedAccountOperations | null;
+  setEstimatedOperations: (estimatedOperations: EstimatedAccountOperations | null) => void;
 }
 
 const OperationModalContext = createContext<OperationModalContextState | undefined>(undefined);
@@ -23,7 +23,15 @@ export const OperationModalProvider = ({ children }: PropsWithChildren) => {
 
   return (
     <OperationModalContext.Provider
-      value={{ isOpen, onOpen, onClose, isLoading, setIsLoading, estimatedOperations, setEstimatedOperations }}
+      value={{
+        isOpen,
+        onOpen,
+        onClose,
+        isLoading,
+        setIsLoading,
+        estimatedOperations,
+        setEstimatedOperations,
+      }}
     >
       {children}
     </OperationModalContext.Provider>

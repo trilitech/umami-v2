@@ -6,9 +6,11 @@ import { FacebookLogoIcon, GoogleLogoIcon, RedditLogoIcon, TwitterLogoIcon } fro
 export const LoginButtonComponent = ({
   onClick,
   loginType,
+  prefix,
 }: {
   onClick: () => void;
   loginType: TypeOfLogin;
+  prefix?: string;
 }) => (
   <Button
     position="relative"
@@ -22,7 +24,7 @@ export const LoginButtonComponent = ({
       <LogoIconWithBackground loginType={loginType} />
     </Box>
     <Heading textAlign="center" flex="1" fontSize="14px" lineHeight="18px">
-      {buttonLabel(loginType)}
+      {prefix ? `${prefix} ${socialLabel(loginType)}` : socialLabel(loginType)}
     </Heading>
   </Button>
 );
@@ -55,7 +57,7 @@ const LogoIcon = ({ loginType }: { loginType: TypeOfLogin }) => {
   }
 };
 
-const buttonLabel = (loginType: TypeOfLogin) => {
+const socialLabel = (loginType: TypeOfLogin) => {
   switch (loginType) {
     case "facebook":
       return "Facebook";
