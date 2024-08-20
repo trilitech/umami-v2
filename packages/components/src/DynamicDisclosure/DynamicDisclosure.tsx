@@ -17,6 +17,7 @@ import {
 import { RemoveScroll } from "react-remove-scroll";
 
 import { merge, cloneDeep } from "lodash";
+import { UseFormReturn } from "react-hook-form";
 
 interface DynamicDisclosureContextType {
   openWith: (
@@ -28,6 +29,7 @@ interface DynamicDisclosureContextType {
   onClose: () => void;
   isOpen: boolean;
   goBack: () => void;
+  updateFormValues: (values: Record<string, any>) => void;
   hasPrevious: boolean;
   formValues: Record<string, any>;
   allFormValues: Record<string, any>;
@@ -37,6 +39,7 @@ const defaultContextValue = {
   openWith: async () => {},
   onClose: () => {},
   goBack: () => {},
+  updateFormValues: () => {},
   isOpen: false,
   hasPrevious: false,
   formValues: {},
@@ -82,6 +85,7 @@ export const useDynamicDisclosure = () => {
     content: ReactElement,
     props: ThemingProps & {
       onClose?: () => void | Promise<void>;
+      preserveForm?: UseFormReturn;
     } = {}
   ) => {
     const onClose = () => {
@@ -95,6 +99,11 @@ export const useDynamicDisclosure = () => {
       props: { ...props, onClose },
       formValues: {},
     });
+
+    if (props.preserveForm) {
+      merge(formValues, props.preserveForm.getValues());
+    }
+
     setCurrentIndex(current => current + 1);
 
     return Promise.resolve();
@@ -113,14 +122,20 @@ export const useDynamicDisclosure = () => {
     .map(item => item.formValues)
     .reduce((acc, curr) => merge(acc, cloneDeep(curr)), {});
 
+  const formValues = currentItem?.formValues || {};
+  const updateFormValues = (values: Record<string, any>) => {
+    merge(formValues, values);
+  };
+
   return {
     isOpen: !!currentItem,
     onClose: currentItem?.props.onClose || (() => {}),
     openWith,
     goBack,
+    updateFormValues,
     content: currentItem?.content,
     props: currentItem?.props || {},
-    formValues: currentItem?.formValues || {},
+    formValues,
     hasPrevious: stackRef.current.length > 1,
     allFormValues,
   };
