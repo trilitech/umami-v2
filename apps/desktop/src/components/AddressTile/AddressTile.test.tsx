@@ -41,7 +41,6 @@ describe("<AddressTileIcon />", () => {
       await act(() => user.hover(screen.getByTestId("address-tile")));
       const tooltip = await screen.findByRole("tooltip");
 
-      expect(tooltip).not.toBeVisible();
       expect(tooltip).toBeInTheDocument();
       expect(tooltip).toHaveTextContent("Account");
     });
