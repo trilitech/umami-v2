@@ -51,8 +51,7 @@ describe("<RestoreMnemonic />", () => {
       await act(() => user.click(confirmBtn));
 
       expect(mockToast).toHaveBeenCalledWith({
-        description:
-          'Invalid Mnemonic: "test test test test test test test test test test test test test test test test test test test test test test test test"',
+        description: "Invalid Mnemonic",
         status: "error",
         isClosable: true,
       });

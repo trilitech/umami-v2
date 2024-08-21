@@ -74,7 +74,7 @@ export const getPublicKeyPairFromSk = async (sk: string): Promise<PublicKeyPair>
 export const derivePublicKeyPair = async (
   mnemonic: string,
   derivationPath: string,
-  curve: Curves = "ed25519"
+  curve: Curves
 ): Promise<PublicKeyPair> =>
   deriveSecretKey(mnemonic, derivationPath, curve).then(getPublicKeyPairFromSk);
 

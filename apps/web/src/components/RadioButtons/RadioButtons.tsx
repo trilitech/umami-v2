@@ -19,7 +19,7 @@ export const RadioButtons = <T extends FieldValues, U extends Path<T>, V extends
   return (
     <>
       {options.map(option => {
-        const isSelected = form.getValues(inputName) === option;
+        const isSelected = form.watch(inputName) === option;
 
         return (
           <Button
@@ -27,6 +27,7 @@ export const RadioButtons = <T extends FieldValues, U extends Path<T>, V extends
             width="full"
             borderColor={color("100")}
             borderRadius="4px"
+            data-testid={isSelected ? "radio-button-selected" : undefined}
             onClick={() => {
               onSelect?.(option);
               form.setValue(inputName, option);
