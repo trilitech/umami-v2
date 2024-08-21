@@ -125,7 +125,7 @@
     "storybook": "^8.2.9",
     "typescript": "^5.5.4",
     "vite": "^5.4.2",
-    "vite-plugin-node-polyfills": "^0.17.0",
+    "vite-plugin-node-polyfills": "^0.22.0",
     "vite-plugin-svgr": "^4.2.0"
   },
   "packageManager": "pnpm@9.7.1"
