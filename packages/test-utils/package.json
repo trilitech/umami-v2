@@ -1,6 +1,6 @@
 {
   "name": "@umami/test-utils",
-  "packageManager": "yarn@4.3.1",
+  "packageManager": "pnpm@9.7.1",
   "type": "module",
   "module": "./dist/index.js",
   "main": "./dist/index.cjs",
@@ -32,7 +32,7 @@
     "build:quick": "tsup-node",
     "clean": "rimraf build dist .turbo",
     "check-circular-deps": "madge --circular src/index.ts",
-    "check-types:watch": "yarn check-types --watch",
+    "check-types:watch": "pnpm check-types --watch",
     "check-types": "tsc",
     "dev": "tsup-node --watch",
     "format:ci": "prettier --ignore-path ../../.gitignore --check .",

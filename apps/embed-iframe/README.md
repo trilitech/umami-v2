@@ -25,21 +25,21 @@ For any operation, users can choose to approve or decline the request, which giv
 
 In the project directory, you can run:
 
-### `yarn build`
+### `pnpm build`
 
 Builds the app for production to the `dist` folder.\
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
-### `yarn dev`
+### `pnpm dev`
 
 Runs the app in development mode at [http://localhost:5173/](http://localhost:5173/).
 
 The page will automatically reload if you make edits. You will also see any lint errors displayed in the console.
 
-### `yarn preview`
+### `pnpm preview`
 
 This command allows you to locally preview the production build.
 
-### `yarn format` & `yarn lint`
+### `pnpm format` & `pnpm lint`
 
 These commands apply formatting rules to the codebase.

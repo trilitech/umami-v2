@@ -13,16 +13,16 @@
   "type": "commonjs",
   "main": "build/electron.js",
   "scripts": {
-    "audit": "yarn npm audit --exclude @toruslabs/customauth",
+    "audit": "pnpm audit --exclude @toruslabs/customauth",
     "build": "vite build",
     "clean": "rimraf build dist .turbo",
     "check-circular-deps": "madge --circular src/index.tsx",
-    "check-types:watch": "yarn check-types --watch",
+    "check-types:watch": "pnpm check-types --watch",
     "check-types": "tsc",
     "dev": "vite dev --host 127.0.0.1 --open",
     "docs": "typedoc",
     "electron:package:linux": "electron-builder -l",
-    "electron:package:mac:debug": "DEBUG=true yarn build --mode dev && sed -i='' 's@devTools: false@devTools: true@g' build/electron.js && yarn electron:package:mac -c electron-builder.dev.yml && rm -rf build",
+    "electron:package:mac:debug": "DEBUG=true pnpm build --mode dev && sed -i='' 's@devTools: false@devTools: true@g' build/electron.js && pnpm electron:package:mac -c electron-builder.dev.yml && rm -rf build",
     "electron:package:mac": "electron-builder -m",
     "electron:package:win": "electron-builder -w",
     "electron:start": "electronmon .",
@@ -31,7 +31,7 @@
     "lint:ci": "eslint src --ext .js,.jsx,.ts,.tsx --max-warnings=0",
     "lint": "eslint src --ext .js,.jsx,.ts,.tsx --fix",
     "preview": "vite preview --host 127.0.0.1 --port 3000",
-    "test:watch": "cross-env DEV=true yarn test --watch",
+    "test:watch": "cross-env DEV=true pnpm test --watch",
     "test": "cross-env TZ=CET jest",
     "theme:watch": "chakra-cli tokens src/style/theme.ts --watch",
     "theme": "chakra-cli tokens src/style/theme.ts"
@@ -73,6 +73,7 @@
     "@types/babel__preset-env": "^7.9.7",
     "@types/identity-obj-proxy": "^3.0.2",
     "@types/jest": "^29.5.12",
+    "@types/lodash": "^4",
     "@types/md5": "^2.3.5",
     "@types/node": "20.14.11",
     "@types/papaparse": "^5.3.14",
@@ -149,10 +150,10 @@
     "typescript": "5.5.4",
     "vite": "^5.4.2",
     "vite-plugin-checker": "^0.7.2",
-    "vite-plugin-node-polyfills": "^0.22.0",
+    "vite-plugin-node-polyfills": "^0.17.0",
     "zod": "^3.23.8"
   },
-  "packageManager": "yarn@4.3.1",
+  "packageManager": "pnpm@9.7.1",
   "dependencies": {
     "electron-updater": "6.3.3"
   }
