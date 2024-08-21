@@ -13,48 +13,51 @@ import {
   TabPanel,
   Text,
 } from "@chakra-ui/react";
-import { MnemonicAutocomplete } from "@umami/components";
+import { MnemonicAutocomplete, useDynamicModalContext, useMultiForm } from "@umami/components";
 import { useAsyncActionHandler } from "@umami/state";
 import { range } from "lodash";
-import { useState } from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useFieldArray } from "react-hook-form";
 
 import { CloseIcon } from "../../../assets/icons";
 import { useColor } from "../../../styles/useColor";
+import { RadioButtons } from "../../RadioButtons/RadioButtons";
+import { SetupPassword } from "../SetupPassword";
 
 const MNEMONIC_SIZE_OPTIONS = [12, 15, 18, 21, 24];
 
 export const SeedPhraseTabPanel = () => {
   const color = useColor();
-  const [mnemonicSize, setMnemonicSize] = useState(24);
   const { handleAsyncAction } = useAsyncActionHandler();
-  const form = useForm({
+  const form = useMultiForm<{ mnemonicSize: number; mnemonic: { val: string }[] }>({
     mode: "onBlur",
+    defaultValues: {
+      mnemonicSize: 24,
+      mnemonic: range(24).map(() => ({ val: "" })),
+    },
   });
+  const { openWith } = useDynamicModalContext();
 
   const {
     handleSubmit,
-    setValue,
-    trigger,
+    register,
+    control,
     formState: { isValid },
   } = form;
 
-  const changeMnemonicSize = (size: number) => {
-    if (!MNEMONIC_SIZE_OPTIONS.includes(size)) {
-      return;
+  const { fields, remove, append, update } = useFieldArray({
+    control,
+    name: "mnemonic",
+    rules: { required: true, minLength: 12, maxLength: 24 },
+  });
+
+  const mnemonicSize = form.watch("mnemonicSize");
+
+  const changeMnemonicSize = (newSize: number) => {
+    if (newSize > mnemonicSize) {
+      append(range(mnemonicSize, newSize).map(() => ({ val: "" })));
+    } else {
+      remove(range(newSize - 1, mnemonicSize));
     }
-
-    setMnemonicSize(prevSize => {
-      // If the users reduces the size, we will trim the words down to the new size
-      if (prevSize > size) {
-        range(size, Math.max(...MNEMONIC_SIZE_OPTIONS)).forEach(index =>
-          setValue(`word${index}`, undefined)
-        );
-      }
-
-      return size;
-    });
-    return trigger();
   };
 
   const pasteMnemonic = (mnemonic: string) =>
@@ -63,14 +66,14 @@ export const SeedPhraseTabPanel = () => {
       if (!MNEMONIC_SIZE_OPTIONS.includes(words.length)) {
         throw new Error(`the mnemonic must be ${MNEMONIC_SIZE_OPTIONS.join(", ")} words long`);
       }
-      words.slice(0, mnemonicSize).forEach((word, i) => setValue(`word${i}`, word));
-      return trigger();
+      words.slice(0, mnemonicSize).forEach((word, i) => update(i, { val: word }));
+      return Promise.resolve();
     });
 
   return (
     <TabPanel>
       <FormProvider {...form}>
-        <form onSubmit={handleSubmit(() => {})}>
+        <form onSubmit={handleSubmit(() => openWith(<SetupPassword type="mnemonic" />))}>
           <Flex flexDirection="column" gap="30px">
             <Accordion allowToggle>
               <AccordionItem>
@@ -78,31 +81,22 @@ export const SeedPhraseTabPanel = () => {
                   <Heading size="md">{mnemonicSize} word seed phrase</Heading>
                   <AccordionIcon />
                 </AccordionButton>
+
                 <AccordionPanel>
                   <Flex gap="8px">
-                    {MNEMONIC_SIZE_OPTIONS.map(size => {
-                      const isSelected = size === mnemonicSize;
-                      return (
-                        <Button
-                          key={size}
-                          width="full"
-                          borderColor={color("100")}
-                          borderRadius="4px"
-                          onClick={() => changeMnemonicSize(size)}
-                          variant={isSelected ? "solid" : "outline"}
-                        >
-                          {size}
-                        </Button>
-                      );
-                    })}
+                    <RadioButtons
+                      inputName="mnemonicSize"
+                      onSelect={changeMnemonicSize}
+                      options={MNEMONIC_SIZE_OPTIONS}
+                    />
                   </Flex>
                 </AccordionPanel>
               </AccordionItem>
             </Accordion>
 
             <Grid gridRowGap="16px" gridColumnGap="12px" gridTemplateColumns="repeat(3, 1fr)">
-              {range(mnemonicSize).map(index => (
-                <GridItem key={index}>
+              {fields.map((field, index) => (
+                <GridItem key={field.id}>
                   <Text
                     position="absolute"
                     zIndex={1}
@@ -115,8 +109,9 @@ export const SeedPhraseTabPanel = () => {
                     {String(index + 1).padStart(2, "0")}.
                   </Text>
                   <MnemonicAutocomplete
-                    inputName={`word${index}`}
+                    inputName={`mnemonic.${index}.val`}
                     inputProps={{
+                      ...register(`mnemonic.${index}.val`, { required: true }),
                       // eslint-disable-next-line @typescript-eslint/no-misused-promises
                       onPaste: async e => {
                         e.preventDefault();
@@ -129,7 +124,7 @@ export const SeedPhraseTabPanel = () => {
                 </GridItem>
               ))}
             </Grid>
-            <Button gap="4px" onClick={() => form.reset()} variant="ghost">
+            <Button gap="4px" onClick={() => form.resetField("mnemonic")} variant="ghost">
               <Icon as={CloseIcon} />
               Clear All
             </Button>
