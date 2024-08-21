@@ -1,3 +1,4 @@
+import { type Curves } from "@taquito/signer";
 import { type MnemonicAccount } from "@umami/core";
 import {
   type Network,
@@ -29,25 +30,29 @@ export const generate24WordMnemonic = () => generateMnemonic(256);
  *
  * @param mnemonic - Space separated words making a BIP39 seed phrase.
  * @param derivationPathTemplate - Path pattern for searching for the key pairs.
+ * @param curve - Elliptic curve used for the key pairs.
  * @returns List of revealed {@link PublicKeyPair} associated with the given parameters.
  */
 export const restoreRevealedPublicKeyPairs = async (
   mnemonic: string,
   derivationPathTemplate: string,
+  curve: Curves,
   network: Network
 ): Promise<PublicKeyPair[]> => {
   const result: PublicKeyPair[] = [];
   let accountIndex = 0;
   let pubKeyPair = await derivePublicKeyPair(
     mnemonic,
-    makeDerivationPath(derivationPathTemplate, accountIndex)
+    makeDerivationPath(derivationPathTemplate, accountIndex),
+    curve
   );
   do {
     result.push(pubKeyPair);
     accountIndex += 1;
     pubKeyPair = await derivePublicKeyPair(
       mnemonic,
-      makeDerivationPath(derivationPathTemplate, accountIndex)
+      makeDerivationPath(derivationPathTemplate, accountIndex),
+      curve
     );
   } while (await isAccountRevealed(pubKeyPair.pkh, network));
   return result;
@@ -69,15 +74,18 @@ export const restoreRevealedPublicKeyPairs = async (
  */
 export const useRestoreRevealedMnemonicAccounts = () => {
   const getNextAvailableAccountLabels = useGetNextAvailableAccountLabels();
+
   return async (
     mnemonic: string,
     network: Network,
     derivationPathTemplate: string,
-    label: string
+    label: string,
+    curve: Curves
   ): Promise<MnemonicAccount[]> => {
     const pubKeyPairs = await restoreRevealedPublicKeyPairs(
       mnemonic,
       derivationPathTemplate,
+      curve,
       network
     );
     const seedFingerPrint = await getFingerPrint(mnemonic);
@@ -85,7 +93,7 @@ export const useRestoreRevealedMnemonicAccounts = () => {
 
     return pubKeyPairs.map(({ pk, pkh }, accountIndex) => ({
       type: "mnemonic",
-      curve: "ed25519",
+      curve,
       pk,
       address: { type: "implicit", pkh },
       derivationPath: makeDerivationPath(derivationPathTemplate, accountIndex),

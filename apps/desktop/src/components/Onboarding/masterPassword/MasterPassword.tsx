@@ -37,6 +37,7 @@ export const MasterPassword = ({
           await restoreFromMnemonic({
             ...account,
             password,
+            curve: "ed25519", // TODO: add support for other curves
           });
       }
       toast({ description: "Account successfully created!", status: "success" });

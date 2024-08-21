@@ -15,20 +15,26 @@ import {
 } from "@chakra-ui/react";
 import { MnemonicAutocomplete, useDynamicModalContext, useMultiForm } from "@umami/components";
 import { useAsyncActionHandler } from "@umami/state";
+import { validateMnemonic } from "bip39";
 import { range } from "lodash";
 import { FormProvider, useFieldArray } from "react-hook-form";
 
 import { CloseIcon } from "../../../assets/icons";
 import { useColor } from "../../../styles/useColor";
-import { RadioButtons } from "../../RadioButtons/RadioButtons";
+import { RadioButtons } from "../../RadioButtons";
 import { SetupPassword } from "../SetupPassword";
 
 const MNEMONIC_SIZE_OPTIONS = [12, 15, 18, 21, 24];
 
+type FormValues = {
+  mnemonicSize: number;
+  mnemonic: { val: string }[];
+};
+
 export const SeedPhraseTabPanel = () => {
   const color = useColor();
-  const { handleAsyncAction } = useAsyncActionHandler();
-  const form = useMultiForm<{ mnemonicSize: number; mnemonic: { val: string }[] }>({
+  const { handleAsyncAction, isLoading } = useAsyncActionHandler();
+  const form = useMultiForm<FormValues>({
     mode: "onBlur",
     defaultValues: {
       mnemonicSize: 24,
@@ -56,7 +62,7 @@ export const SeedPhraseTabPanel = () => {
     if (newSize > mnemonicSize) {
       append(range(mnemonicSize, newSize).map(() => ({ val: "" })));
     } else {
-      remove(range(newSize - 1, mnemonicSize));
+      remove(range(newSize, mnemonicSize));
     }
   };
 
@@ -70,10 +76,18 @@ export const SeedPhraseTabPanel = () => {
       return Promise.resolve();
     });
 
+  const onSubmit = ({ mnemonic }: FormValues) =>
+    handleAsyncAction(async () => {
+      if (!validateMnemonic(mnemonic.map(({ val }) => val).join(" "))) {
+        throw new Error("Invalid Mnemonic");
+      }
+      return openWith(<SetupPassword mode="mnemonic" />);
+    });
+
   return (
     <TabPanel>
       <FormProvider {...form}>
-        <form onSubmit={handleSubmit(() => openWith(<SetupPassword type="mnemonic" />))}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <Flex flexDirection="column" gap="30px">
             <Accordion allowToggle>
               <AccordionItem>
@@ -128,7 +142,7 @@ export const SeedPhraseTabPanel = () => {
               <Icon as={CloseIcon} />
               Clear All
             </Button>
-            <Button isDisabled={!isValid} type="submit" variant="primary">
+            <Button isDisabled={!isValid} isLoading={isLoading} type="submit" variant="primary">
               Next
             </Button>
           </Flex>
