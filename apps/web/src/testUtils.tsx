@@ -8,6 +8,7 @@ import {
   useDynamicDrawerContext,
   useDynamicModal,
   useDynamicModalContext,
+  useMultiForm,
 } from "@umami/components";
 import { type UmamiStore, makeStore } from "@umami/state";
 import { type PropsWithChildren, type ReactElement, type ReactNode, act } from "react";
@@ -129,8 +130,38 @@ export const renderInDrawer = async (component: ReactElement, store?: UmamiStore
   };
 };
 
-export const renderInModal = async (component: ReactElement, store?: UmamiStore) => {
+const DummyForm = ({
+  defaultValues,
+  nextPage,
+}: {
+  defaultValues: Record<string, any>;
+  nextPage: ReactElement;
+}) => {
+  const { openWith } = useDynamicModalContext();
+  const form = useMultiForm({ mode: "onBlur", defaultValues });
+
+  const onSubmit = () => openWith(nextPage);
+
+  return (
+    <form onSubmit={form.handleSubmit(onSubmit)}>
+      <button type="submit" />
+    </form>
+  );
+};
+
+export const renderInModal = async (
+  component: ReactElement,
+  store?: UmamiStore,
+  allFormValues?: Record<string, any>
+) => {
   const { result, store: _store } = customRenderHook(useDynamicModalContext, { store });
+
+  if (allFormValues) {
+    await act(() =>
+      result.current.openWith(<DummyForm defaultValues={allFormValues} nextPage={component} />)
+    );
+    fireEvent.click(screen.getByRole("button"));
+  }
 
   await act(() => result.current.openWith(component));
 
