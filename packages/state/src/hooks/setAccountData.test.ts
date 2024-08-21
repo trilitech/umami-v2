@@ -15,7 +15,6 @@ import {
   isAccountRevealed,
   makeDerivationPath,
 } from "@umami/tezos";
-import { act } from "react";
 
 import { useRemoveDependenciesAndMultisigs } from "./removeAccountDependencies";
 import {
@@ -27,7 +26,13 @@ import {
 } from "./setAccountData";
 import { accountsActions } from "../slices";
 import { type UmamiStore, makeStore } from "../store";
-import { addTestAccount, addTestAccounts, fakeIsAccountRevealed, renderHook } from "../testUtils";
+import {
+  act,
+  addTestAccount,
+  addTestAccounts,
+  fakeIsAccountRevealed,
+  renderHook,
+} from "../testUtils";
 
 let store: UmamiStore;
 beforeEach(() => {

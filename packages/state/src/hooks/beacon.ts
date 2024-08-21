@@ -5,9 +5,9 @@ import {
   Serializer,
 } from "@airgap/beacon-wallet";
 import { useToast } from "@chakra-ui/react";
+import { useQuery } from "@tanstack/react-query";
 import { type RawPkh } from "@umami/tezos";
 import { uniq } from "lodash";
-import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { useAppSelector } from "./useAppSelector";
@@ -60,18 +60,16 @@ export const useRemoveConnection = () => {
 };
 
 export const usePeers = () => {
-  const [peers, setPeers] = useState<ExtendedPeerInfo[]>([]);
+  const query = useQuery({
+    queryKey: ["beaconPeers"],
+    queryFn: async () => {
+      const peers = await WalletClient.getPeers();
+      return peers as ExtendedPeerInfo[];
+    },
+    initialData: [],
+  });
 
-  const refresh = useCallback(async () => {
-    const peers = await WalletClient.getPeers();
-    setPeers(peers as ExtendedPeerInfo[]);
-  }, []);
-
-  useEffect(() => {
-    void refresh();
-  }, [refresh]);
-
-  return { peers, refresh };
+  return { peers: query.data, refresh: query.refetch };
 };
 
 export const useRemovePeer = () => {
@@ -108,7 +106,7 @@ export const useAddPeer = () => {
       .deserialize(payload)
       .then(parsePeerInfo)
       .then(peer => WalletClient.addPeer(peer as ExtendedPeerInfo))
-      .then(refresh)
+      .then(() => refresh())
       .catch(e => {
         toast({
           description:

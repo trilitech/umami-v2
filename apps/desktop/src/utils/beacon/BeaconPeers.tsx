@@ -1,4 +1,4 @@
-import { type ExtendedPeerInfo, getSenderId } from "@airgap/beacon-wallet";
+import { type ExtendedPeerInfo } from "@airgap/beacon-wallet";
 import {
   AspectRatio,
   Box,
@@ -12,8 +12,8 @@ import {
 } from "@chakra-ui/react";
 import { useGetConnectionInfo, usePeers, useRemovePeer } from "@umami/state";
 import { parsePkh } from "@umami/tezos";
-import { capitalize, noop } from "lodash";
-import { Fragment, useEffect, useState } from "react";
+import capitalize from "lodash/capitalize";
+import { Fragment } from "react";
 
 import { TrashIcon } from "../../assets/icons";
 import { AddressPill } from "../../components/AddressPill/AddressPill";
@@ -27,19 +27,7 @@ import colors from "../../style/colors";
 export const BeaconPeers = () => {
   const { peers } = usePeers();
 
-  const [peersWithId, setPeersWithId] = useState<ExtendedPeerInfo[]>([]);
-
-  // senderId will always be set here, even if we haven't saved it in beaconSlice for a dApp.
-  useEffect(() => {
-    const peerIdPromises = peers.map(async peer => ({
-      ...peer,
-      senderId: peer.senderId || (await getSenderId(peer.publicKey)),
-    }));
-
-    Promise.all(peerIdPromises).then(setPeersWithId).catch(noop);
-  }, [peers]);
-
-  if (peersWithId.length === 0) {
+  if (peers.length === 0) {
     return (
       <Box data-testid="beacon-peers-empty">
         <Divider />
@@ -50,27 +38,17 @@ export const BeaconPeers = () => {
     );
   }
 
-  return <PeersDisplay data-testid="beacon-peers" peerInfos={peersWithId} />;
+  return (
+    <Box data-testid="beacon-peers">
+      {peers.map(peerInfo => (
+        <Fragment key={peerInfo.senderId}>
+          <Divider />
+          <PeerRow peerInfo={peerInfo} />
+        </Fragment>
+      ))}
+    </Box>
+  );
 };
-
-/**
- * Component for displaying a list of connected dApps.
- *
- * Each {@link PeerRow} contains info about a single dApp & delete button.
- *
- * @param peerInfos - peerInfo provided by beacon Api + computed dAppId.
- * @param removePeer - hook for deleting dApp connections.
- */
-const PeersDisplay = ({ peerInfos }: { peerInfos: ExtendedPeerInfo[] }) => (
-  <Box>
-    {peerInfos.map(peerInfo => (
-      <Fragment key={peerInfo.senderId}>
-        <Divider />
-        <PeerRow peerInfo={peerInfo} />
-      </Fragment>
-    ))}
-  </Box>
-);
 
 /**
  * Component for displaying info about single connected dApp.
