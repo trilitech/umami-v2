@@ -1,9 +1,8 @@
-import { type ExtendedPeerInfo, getSenderId } from "@airgap/beacon-wallet";
+import { type ExtendedPeerInfo } from "@airgap/beacon-wallet";
 import { Center, Divider, Flex, Heading, IconButton, Image, Text, VStack } from "@chakra-ui/react";
 import { useGetConnectionInfo, usePeers, useRemovePeer } from "@umami/state";
 import { parsePkh } from "@umami/tezos";
 import capitalize from "lodash/capitalize";
-import { useEffect, useState } from "react";
 
 import { CodeSandboxIcon, StubIcon as TrashIcon } from "../../assets/icons";
 import { AddressPill } from "../../components/AddressPill/AddressPill";
@@ -17,21 +16,8 @@ import { EmptyMessage } from "../EmptyMessage";
  */
 export const BeaconPeers = () => {
   const { peers } = usePeers();
-  const [peersWithId, setPeersWithId] = useState<ExtendedPeerInfo[]>([]);
 
-  // senderId will always be set here, even if we haven't saved it in beaconSlice for a dApp.
-  useEffect(() => {
-    const peerIdPromises = peers.map(async peer => ({
-      ...peer,
-      senderId: peer.senderId || (await getSenderId(peer.publicKey)),
-    }));
-
-    Promise.all(peerIdPromises)
-      .then(setPeersWithId)
-      .catch(() => {});
-  }, [peers]);
-
-  if (peersWithId.length === 0) {
+  if (peers.length === 0) {
     return (
       <EmptyMessage
         alignItems="flex-start"
@@ -43,31 +29,21 @@ export const BeaconPeers = () => {
     );
   }
 
-  return <PeersDisplay data-testid="beacon-peers" peerInfos={peersWithId} />;
+  return (
+    <VStack
+      alignItems="flex-start"
+      gap="24px"
+      marginTop="24px"
+      data-testid="beacon-peers"
+      divider={<Divider />}
+      spacing="0"
+    >
+      {peers.map(peerInfo => (
+        <PeerRow key={peerInfo.senderId} peerInfo={peerInfo} />
+      ))}
+    </VStack>
+  );
 };
-
-/**
- * Component for displaying a list of connected dApps.
- *
- * Each {@link PeerRow} contains info about a single dApp & delete button.
- *
- * @param peerInfos - peerInfo provided by beacon Api + computed dAppId.
- * @param removePeer - hook for deleting dApp connections.
- */
-const PeersDisplay = ({ peerInfos, ...props }: { peerInfos: ExtendedPeerInfo[] }) => (
-  <VStack
-    alignItems="flex-start"
-    gap="24px"
-    marginTop="24px"
-    divider={<Divider />}
-    spacing="0"
-    {...props}
-  >
-    {peerInfos.map(peerInfo => (
-      <PeerRow key={peerInfo.senderId} peerInfo={peerInfo} />
-    ))}
-  </VStack>
-);
 
 /**
  * Component for displaying info about single connected dApp.
@@ -91,7 +67,7 @@ const PeerRow = ({ peerInfo }: { peerInfo: ExtendedPeerInfo }) => {
         <Center width="60px" marginRight="12px">
           <Image
             objectFit="cover"
-            fallback={<CodeSandboxIcon width="36px" height="auto" />}
+            fallback={<CodeSandboxIcon width="36px" height="36px" />}
             src={peerInfo.icon}
           />
         </Center>

@@ -21,6 +21,7 @@ export const addTestAccounts = (store: UmamiStore, accounts: (Account | Multisig
 import { PropsWithChildren, act } from "react";
 import { Provider } from "react-redux";
 import { RawPkh } from "@umami/tezos";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const customRenderHook = <
   Result,
@@ -37,7 +38,9 @@ const customRenderHook = <
   const store = options?.store ?? makeStore();
 
   const Wrapper = ({ children }: PropsWithChildren) => (
-    <Provider store={store}>{children}</Provider>
+    <QueryClientProvider client={new QueryClient()}>
+      <Provider store={store}>{children}</Provider>
+    </QueryClientProvider>
   );
 
   return {
