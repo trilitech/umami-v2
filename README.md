@@ -20,10 +20,10 @@ This is a monorepo which contains all the packages related to Umami.
 ## Initial setup
 
 - Node.js version is 20.x, you can use [NVM](https://github.com/nvm-sh/nvm) to install it and select for this project.
-- Yarn 4.x should be used, you can find the installation guide [here](https://yarnpkg.com/getting-started/install).
-- `yarn install` to install all the dependencies
+- pnpm should be used, you can find the installation guide [here](https://pnpm.io/installation).
+- `pnpm install` to install all the dependencies
 - `npm install turbo --global` to be able to use the [turborepo](https://turbo.build/repo/docs) tooling
-- `yarn playwright install --with-deps chromium` to be able to run e2e tests
+- `pnpm playwright install --with-deps chromium` to be able to run e2e tests
 
 ## Dev workflow
 
@@ -32,7 +32,7 @@ Here's a [guide](https://turbo.build/repo/docs/crafting-your-repository/running-
 
 ## Testing
 
-In order to run all tests in all projects it's enough to run `yarn test` or `turbo test` in the root directory. But, inside the packages
-you should use `turbo test`. It will bundle all the dependencies and only then will run the tests whilst `yarn test` will only attempt to run the tests.
+In order to run all tests in all projects it's enough to run `pnpm test` or `turbo test` in the root directory. But, inside the packages
+you should use `turbo test`. It will bundle all the dependencies and only then will run the tests whilst `pnpm test` will only attempt to run the tests.
 
 Coverage info will be provided in several formats, including HTML at `<package_name>/coverage/lcov-report`.

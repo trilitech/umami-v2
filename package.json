@@ -6,13 +6,10 @@
   "repository": "https://github.com/trilitech/umami-v2",
   "license": "MIT",
   "engines": {
-    "node": ">=20 <21.0.0"
+    "node": ">=20 <21.0.0",
+    "pnpm": ">=9.7.0"
   },
-  "packageManager": "yarn@4.4.0",
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
+  "packageManager": "pnpm@9.7.1",
   "scripts": {
     "build": "turbo build",
     "build:watch": "turbo watch build:quick --filter=./packages/\\*",
@@ -29,11 +26,11 @@
   "devDependencies": {
     "jest": "^29.7.0",
     "rimraf": "^6.0.1",
-    "tsup": "^8.2.4",
     "turbo": "^2.0.14"
   },
   "resolutions": {
     "@typescript-eslint/utils": "^7.15.0",
-    "axios": "^1.7.4"
+    "axios": "^1.7.4",
+    "esbuild": "^0.23.0"
   }
 }
