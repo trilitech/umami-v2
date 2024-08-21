@@ -25,7 +25,7 @@ export const useOnboardWithSocial = (idp: Auth.IDP, onAuth: () => void) => {
       handleAsyncAction(
         async () => {
           const { secretKey, name, id, email } = await withTimeout(
-            () => Auth.forIDP(idp, "web").getCredentials(),
+            () => Auth.forIDP(idp).getCredentials(),
             LOGIN_TIMEOUT
           );
           const { pk, pkh } = await getPublicKeyPairFromSk(secretKey);

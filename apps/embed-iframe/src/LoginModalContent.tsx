@@ -38,7 +38,7 @@ export const LoginModalContent = () => {
     track("login_button_click", { details: eventDetails, dAppOrigin: getDAppOrigin() });
     try {
       const { secretKey, id, name, email, imageUrl } = await withTimeout(
-        async () => Auth.forIDP(loginType, "embed").getCredentials(),
+        async () => Auth.forIDP(loginType).getCredentials(),
         LOGIN_TIMEOUT
       );
       const signer = new InMemorySigner(secretKey);
