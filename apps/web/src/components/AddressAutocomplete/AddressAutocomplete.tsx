@@ -130,14 +130,16 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
           >
             <AddressTile
               width={size === "short" ? "338px" : "365px"}
-              paddingTop="8px"
               background="transparent"
               address={parsePkh(currentRealValue)}
+              paddingX="16px"
+              paddingY={{ base: "2px", md: "8px" }}
+              size="xs"
             />
             {keepValid ? (
               <Icon as={ChevronDownIcon} marginRight="12px" data-testid="chevron-icon" />
             ) : (
-              <CrossButton marginRight="14px" />
+              <CrossButton marginRight="14px" onClick={clearInput} />
             )}
           </Center>
         </Box>

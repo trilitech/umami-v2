@@ -16,20 +16,25 @@ import { useColor } from "../../styles/useColor";
 export const CopyButton = ({
   value,
   children,
+  isCopyDisabled = false,
   ...props
-}: PropsWithChildren<{ value: string } & ButtonProps>) => {
+}: PropsWithChildren<{ value: string; isCopyDisabled?: boolean } & ButtonProps>) => {
   const color = useColor();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const onClick = (event: MouseEvent) => {
+    if (isCopyDisabled) {
+      return;
+    }
+
     event.stopPropagation();
     setTimeout(onClose, 1000);
     return navigator.clipboard.writeText(value);
   };
 
   return (
-    <Popover isOpen={isOpen} onClose={onClose} onOpen={onOpen}>
+    <Popover isOpen={isCopyDisabled ? false : isOpen} onClose={onClose} onOpen={onOpen}>
       <PopoverTrigger>
         <Button
           gap="4px"

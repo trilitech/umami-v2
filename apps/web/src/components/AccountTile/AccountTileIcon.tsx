@@ -13,7 +13,13 @@ import {
 } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
 
-export const AccountTileIcon = ({ account }: { account: ImplicitAccount }) => {
+export const AccountTileIcon = ({
+  size = 30,
+  account,
+}: {
+  size?: number;
+  account: ImplicitAccount;
+}) => {
   const color = useColor();
 
   switch (account.type) {
@@ -22,7 +28,7 @@ export const AccountTileIcon = ({ account }: { account: ImplicitAccount }) => {
     case "mnemonic":
       return (
         <Center borderRadius="full">
-          <ReactIdenticon background="white" size={30} string={account.address.pkh} />
+          <ReactIdenticon background="white" size={size} string={account.address.pkh} />
         </Center>
       );
     case "social": {

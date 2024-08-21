@@ -26,10 +26,11 @@ export const Suggestions = ({
       maxHeight="300px"
       marginTop="8px"
       marginLeft={0}
-      background={color("300")}
+      background={color("white")}
       border="1px solid"
       borderColor={color("400")}
       borderRadius="8px"
+      transform={{ base: "translateY(calc(-100% - 66px))", lg: "unset" }}
       data-testid="suggestions-list"
       listStyleType="none"
     >
@@ -37,7 +38,6 @@ export const Suggestions = ({
         <Box key={contact.pkh}>
           <ListItem
             marginBottom={i === contacts.length - 1 ? "5px" : 0}
-            padding="5px 15px 0 5px"
             data-testid={`suggestion-${contact.pkh}`}
             onMouseDown={() => {
               // onMouseDown is the only way for this to fire before the onBlur callback of the Input
@@ -46,15 +46,14 @@ export const Suggestions = ({
             }}
           >
             <AddressTile
-              height="40px"
-              padding="10px 8px 10px 5px"
-              background={color("300")}
-              borderRadius="4px"
+              background="none"
+              borderRadius="0"
               _hover={{
-                background: color("400"),
+                background: color("100"),
               }}
               cursor="pointer"
               address={parsePkh(contact.pkh)}
+              size="xs"
             />
           </ListItem>
         </Box>

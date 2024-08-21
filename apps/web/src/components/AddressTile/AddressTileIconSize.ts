@@ -1,1 +1,1 @@
-export type AddressTileIconSize = "sm" | "lg";
+export type AddressTileIconSize = "xs" | "sm" | "lg";
