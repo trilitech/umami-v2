@@ -66,10 +66,7 @@ export const SignButton = ({
 
   const onSocialSign = async () =>
     handleAsyncAction(async () => {
-      const { secretKey } = await Auth.forIDP(
-        (signer as SocialAccount).idp,
-        "desktop"
-      ).getCredentials();
+      const { secretKey } = await Auth.forIDP((signer as SocialAccount).idp).getCredentials();
       return onSubmit(await makeToolkit({ type: "social", secretKey, network }));
     });
 

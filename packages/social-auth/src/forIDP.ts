@@ -3,25 +3,24 @@ import { FacebookAuth } from "./FacebookAuth";
 import { GoogleAuth } from "./GoogleAuth";
 import { RedditAuth } from "./RedditAuth";
 import { TwitterAuth } from "./TwitterAuth";
-import type { IDP, RedirectSurface } from "./types";
+import type { IDP } from "./types";
 
 /**
  * Returns the Auth instance for the given IDP and redirect surface.
  *
  * @param idp - The Identity Provider to create an Auth instance for.
- * @param redirectSurface - The UI surface where the user should be redirected after authentication.
  */
-export const forIDP = (idp: IDP, redirectSurface: RedirectSurface) => {
+export const forIDP = (idp: IDP) => {
   switch (idp) {
     case "google":
-      return new GoogleAuth(redirectSurface);
+      return new GoogleAuth();
     case "email":
-      return new EmailAuth(redirectSurface);
+      return new EmailAuth();
     case "reddit":
-      return new RedditAuth(redirectSurface);
+      return new RedditAuth();
     case "facebook":
-      return new FacebookAuth(redirectSurface);
+      return new FacebookAuth();
     case "twitter":
-      return new TwitterAuth(redirectSurface);
+      return new TwitterAuth();
   }
 };

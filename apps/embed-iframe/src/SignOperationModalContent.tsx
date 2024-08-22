@@ -47,7 +47,7 @@ export const OperationModalContent = ({
     setIsLoading(true);
     try {
       const { secretKey } = await withTimeout(
-        async () => Auth.forIDP(getUserData()!.typeOfLogin, "embed").getCredentials(),
+        async () => Auth.forIDP(getUserData()!.typeOfLogin).getCredentials(),
         SIGN_TIMEOUT
       );
       const toolkit = await makeToolkit({

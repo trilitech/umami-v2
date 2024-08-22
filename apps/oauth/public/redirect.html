@@ -214,30 +214,45 @@
           } catch (e) {
             console.error(e);
           }
-          if (instanceParams.redirectToOpener === "embed") {
-            // communicate to back to umami-embed-iframe
-            window.opener.postMessage(
-              {
-                channel: "redirect_channel_" + instanceParams.instanceId,
-                data: {
-                  instanceParams: instanceParams,
-                  hashParams: hashParams,
-                  queryParams: queryParams,
-                },
-                error: error,
+
+          const getTargetOrigin = () => {
+            if (typeof instanceParams.redirectToOpener !== "string") {
+              return null;
+            }
+
+            const regex = /https:\/\/(umami-v2-web|umami-embed-iframe)(-git-.*)?\.vercel\.app\/?/;
+            if (instanceParams.redirectToOpener.match(regex)) {
+              return instanceParams.redirectToOpener;
+            }
+
+            return null;
+          };
+
+          const targetOrigin = getTargetOrigin();
+
+          if (targetOrigin) {
+            // communicate back to a web page through window.postMessage
+            const message = {
+              channel: "redirect_channel_" + instanceParams.instanceId,
+              data: {
+                instanceParams: { ...instanceParams, redirectToOpener: true },
+                hashParams: hashParams,
+                queryParams: queryParams,
               },
-              "https://umami-embed-iframe.vercel.app"
-            );
+              error: error,
+            };
+
+            window.opener.postMessage(message, targetOrigin);
           } else if (instanceParams.redirectToOpener) {
-            // communicate back to umami
-            let msg = {
+            // communicate back to umami desktop app through a deeplink
+            const message = {
               channel: "redirect_channel_" + instanceParams.instanceId,
               ...instanceParams,
               ...hashParams,
               ...queryParams,
               ...error,
             };
-            searchParams = new URLSearchParams(msg).toString();
+            searchParams = new URLSearchParams(message).toString();
             window.open("umami://auth/" + searchParams, "_self");
           } else {
             // communicate via broadcast channel
