@@ -1,9 +1,12 @@
-import { IconButton } from "@chakra-ui/react";
+import { type ButtonProps, IconButton } from "@chakra-ui/react";
 
 import { useOnboardWithSocial } from "./useOnboardWithSocial";
-import { TwitterIcon } from "../../../assets/icons";
+import { TwitterIcon } from "../../assets/icons";
 
-export const OnboardWithTwitterButton = ({ onAuth }: { onAuth: () => void }) => {
+export const OnboardWithTwitterButton = ({
+  onAuth,
+  ...props
+}: { onAuth?: () => void } & ButtonProps) => {
   const { isLoading, onboard } = useOnboardWithSocial("twitter", onAuth);
 
   return (
@@ -15,6 +18,7 @@ export const OnboardWithTwitterButton = ({ onAuth }: { onAuth: () => void }) => 
       isLoading={isLoading}
       onClick={onboard}
       variant="socialLogin"
+      {...props}
     />
   );
 };

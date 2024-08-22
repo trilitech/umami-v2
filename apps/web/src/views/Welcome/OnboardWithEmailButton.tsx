@@ -1,8 +1,8 @@
 import { IconButton } from "@chakra-ui/react";
 
 import { useOnboardWithSocial } from "./useOnboardWithSocial";
-import { EnvelopeIcon } from "../../../assets/icons";
-import { useColor } from "../../../styles/useColor";
+import { EnvelopeIcon } from "../../assets/icons";
+import { useColor } from "../../styles/useColor";
 
 // eslint-disable-next-line import/no-unused-modules
 export const OnboardWithEmailButton = ({ onAuth }: { onAuth: () => void }) => {

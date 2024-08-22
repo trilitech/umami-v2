@@ -1,9 +1,12 @@
-import { IconButton } from "@chakra-ui/react";
+import { type ButtonProps, IconButton } from "@chakra-ui/react";
 
 import { useOnboardWithSocial } from "./useOnboardWithSocial";
-import { FacebookIcon } from "../../../assets/icons";
+import { FacebookIcon } from "../../assets/icons";
 
-export const OnboardWithFacebookButton = ({ onAuth }: { onAuth: () => void }) => {
+export const OnboardWithFacebookButton = ({
+  onAuth,
+  ...props
+}: { onAuth?: () => void } & ButtonProps) => {
   const { isLoading, onboard } = useOnboardWithSocial("facebook", onAuth);
 
   return (
@@ -14,6 +17,7 @@ export const OnboardWithFacebookButton = ({ onAuth }: { onAuth: () => void }) =>
       isLoading={isLoading}
       onClick={onboard}
       variant="socialLogin"
+      {...props}
     />
   );
 };
