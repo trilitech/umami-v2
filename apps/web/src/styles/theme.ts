@@ -424,6 +424,12 @@ const theme = extendTheme({
             _hover: { bg: dark.grey[300] },
           },
         },
+        socialLogin: {
+          backgroundColor: "black",
+          _hover: {
+            backgroundColor: "gray.700",
+          },
+        },
         empty: {
           bg: "transparent",
           minWidth: "auto",

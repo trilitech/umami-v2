@@ -15,7 +15,7 @@ const LOGIN_TIMEOUT = minutesToMilliseconds(1);
  * @param idp - the identity provider to use for authentication
  * @param onAuth - callback which will be called on a successful authentication
  */
-export const useOnboardWithSocial = (idp: Auth.IDP, onAuth: () => void) => {
+export const useOnboardWithSocial = (idp: Auth.IDP, onAuth?: () => void) => {
   const toast = useToast();
   const { isLoading, handleAsyncAction } = useAsyncActionHandler();
   const restoreSocial = useRestoreSocial();
@@ -31,7 +31,7 @@ export const useOnboardWithSocial = (idp: Auth.IDP, onAuth: () => void) => {
           const { pk, pkh } = await getPublicKeyPairFromSk(secretKey);
           restoreSocial(pk, pkh, email || name || id, idp);
           toast({ description: `Successfully added ${name || id} account`, status: "success" });
-          onAuth();
+          onAuth?.();
         },
         { title: "Social login failed" }
       ),

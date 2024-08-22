@@ -1,12 +1,12 @@
 import { Button, Divider, Flex, Text, VStack } from "@chakra-ui/react";
 
-import { OnboardWithFacebookButton } from "./OnboardWithFacebookButton";
-import { OnboardWithGoogleButton } from "./OnboardWithGoogleButton";
-import { OnboardWithRedditButton } from "./OnboardWithRedditButton";
-import { OnboardWithTwitterButton } from "./OnboardWithTwitterButton";
 import { StubIcon as WalletPlusIcon } from "../../../assets/icons";
 import { IS_DEV } from "../../../env";
 import { useColor } from "../../../styles/useColor";
+import { OnboardWithFacebookButton } from "../../../views/Welcome/OnboardWithFacebookButton";
+import { OnboardWithGoogleButton } from "../../../views/Welcome/OnboardWithGoogleButton";
+import { OnboardWithRedditButton } from "../../../views/Welcome/OnboardWithRedditButton";
+import { OnboardWithTwitterButton } from "../../../views/Welcome/OnboardWithTwitterButton";
 import { ModalContentWrapper } from "../ModalContentWrapper";
 import { type OnboardingStep } from "../OnboardingStep";
 

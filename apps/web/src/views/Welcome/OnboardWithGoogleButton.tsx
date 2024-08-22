@@ -1,9 +1,12 @@
-import { IconButton } from "@chakra-ui/react";
+import { type ButtonProps, IconButton } from "@chakra-ui/react";
 
 import { useOnboardWithSocial } from "./useOnboardWithSocial";
-import { GoogleIcon } from "../../../assets/icons";
+import { GoogleIcon } from "../../assets/icons";
 
-export const OnboardWithGoogleButton = ({ onAuth }: { onAuth: () => void }) => {
+export const OnboardWithGoogleButton = ({
+  onAuth,
+  ...props
+}: { onAuth?: () => void } & ButtonProps) => {
   const { isLoading, onboard } = useOnboardWithSocial("google", onAuth);
 
   return (
@@ -14,6 +17,7 @@ export const OnboardWithGoogleButton = ({ onAuth }: { onAuth: () => void }) => {
       isLoading={isLoading}
       onClick={onboard}
       variant="socialLogin"
+      {...props}
     />
   );
 };
