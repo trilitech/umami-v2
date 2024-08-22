@@ -23,18 +23,32 @@ export const AddressTileIcon = memo(
     const account = getAccount(addressKind.pkh);
     const color = useColor();
 
+    const sizes = {
+      xs: 20,
+      sm: 30,
+    };
+
     const baseIconProps = {
       borderRadius: "4px",
       color: color("500"),
     };
 
     if (account) {
-      return <AccountTileIcon account={account as ImplicitAccount} />;
+      return (
+        <AccountTileIcon
+          account={account as ImplicitAccount}
+          size={sizes[size as Exclude<AddressTileIconSize, "lg">]}
+        />
+      );
     }
 
     let sizeInPx;
     let padding;
     switch (size) {
+      case "xs":
+        sizeInPx = "20px";
+        padding = "4px";
+        break;
       case "sm":
         sizeInPx = "30px";
         padding = "5px";

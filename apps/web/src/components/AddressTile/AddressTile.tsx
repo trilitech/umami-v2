@@ -18,11 +18,16 @@ import { CopyAddressButton } from "../CopyAddressButton";
  * @param flexProps - Defines component style.
  * @param hideBalance - If true, balance will not be displayed.
  */
-export const AddressTile = ({ address, ...flexProps }: { address: Address } & FlexProps) => {
+export const AddressTile = ({
+  size = "sm",
+  address,
+  ...flexProps
+}: { address: Address; size?: "xs" | "sm" } & FlexProps) => {
   const addressKind = useAddressKind(address);
   const color = useColor();
 
   const balance = useGetAccountBalance()(address.pkh);
+  const isSmall = size === "xs";
 
   return (
     <Flex
@@ -35,19 +40,36 @@ export const AddressTile = ({ address, ...flexProps }: { address: Address } & Fl
       data-testid="address-tile"
       {...flexProps}
     >
-      <Flex gap="16px" width="full">
-        <AccountTileWrapper>
-          <AddressTileIcon addressKind={addressKind} size="sm" />
+      <Flex alignItems="center" gap="16px" width="full">
+        <AccountTileWrapper size={size}>
+          <AddressTileIcon addressKind={addressKind} size={size} />
         </AccountTileWrapper>
 
-        <Flex justifyContent="center" flexDirection="column" width="full">
-          <Heading size="md">{addressKind.label}</Heading>
+        <Flex
+          justifyContent={isSmall ? "space-between" : "center"}
+          flexDirection={{ base: "column", md: isSmall ? "row" : "column" }}
+          width="full"
+        >
+          <Flex
+            alignItems="center"
+            overflow="hidden"
+            width="150px"
+            marginRight="10px"
+            whiteSpace="nowrap"
+          >
+            <Heading overflow="hidden" textOverflow="ellipsis" size={isSmall ? "sm" : "md"}>
+              {addressKind.label}
+            </Heading>
+          </Flex>
 
-          <Flex justifyContent="space-between">
+          <Flex alignItems="center" justifyContent="space-between" width="full">
             <CopyAddressButton
               color={color("700")}
+              fontSize={isSmall ? "12px" : "14px"}
               address={address.pkh}
+              isCopyDisabled={isSmall}
               isLong={addressKind.type === "unknown"}
+              variant={isSmall ? "unstyled" : "ghost"}
             />
             <Text size="sm">{balance !== undefined && prettyTezAmount(balance)}</Text>
           </Flex>
