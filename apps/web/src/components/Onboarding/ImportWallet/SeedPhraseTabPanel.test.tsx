@@ -31,12 +31,20 @@ describe("<SeedPhraseTabPanel />", () => {
     render(<TestComponent />);
 
     await act(() => user.click(screen.getByText("24 word seed phrase")));
-    const changeSizeButton = await screen.findByRole("button", { name: "12" });
-    await act(() => user.click(changeSizeButton));
+    const changeTo12Button = await screen.findByRole("button", { name: "12" });
+    await act(() => user.click(changeTo12Button));
 
     expect(screen.queryByText("24 word seed phrase")).not.toBeInTheDocument();
     expect(screen.getByText("12 word seed phrase")).toBeVisible();
     expect(screen.getAllByRole("textbox")).toHaveLength(12);
+
+    const changeTo15Button = await screen.findByRole("button", { name: "15" });
+    await act(() => user.click(changeTo15Button));
+
+    expect(screen.queryByText("24 word seed phrase")).not.toBeInTheDocument();
+    expect(screen.queryByText("12 word seed phrase")).not.toBeInTheDocument();
+    expect(screen.getByText("15 word seed phrase")).toBeVisible();
+    expect(screen.getAllByRole("textbox")).toHaveLength(15);
   });
 
   it("validates the presence of the words", async () => {

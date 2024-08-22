@@ -31,7 +31,7 @@
     "lint:ci": "eslint src --ext .js,.jsx,.ts,.tsx --max-warnings=0",
     "lint": "eslint src --ext .js,.jsx,.ts,.tsx --fix",
     "preview": "vite preview --host 127.0.0.1 --port 3000",
-    "test:watch": "cross-env DEV=true pnpm test --watch",
+    "test:watch": "cross-env DEV=true pnpm run test --watch",
     "test": "cross-env TZ=CET jest",
     "theme:watch": "chakra-cli tokens src/style/theme.ts --watch",
     "theme": "chakra-cli tokens src/style/theme.ts"

@@ -29,10 +29,10 @@ export const useMultiForm = <
     onInvalid: Parameters<typeof form.handleSubmit>[1]
   ) =>
     form.handleSubmit(
-      (async (submittedValues: any) => {
-        await onValid(submittedValues);
+      ((submittedValues: any) => {
         // update current context values
         merge(formDefaultValues, submittedValues);
+        return onValid(submittedValues);
       }) as any,
       onInvalid
     );
