@@ -23,8 +23,8 @@ export const BeaconPeers = () => {
         alignItems="flex-start"
         marginTop="40px"
         data-testid="beacon-peers-empty"
-        subtitle="Apps"
-        title="Apps"
+        subtitle="No Apps to show"
+        title="Your Apps will appear here..."
       />
     );
   }

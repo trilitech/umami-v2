@@ -20,6 +20,7 @@ export const Actions = () => {
               base: "18px",
               lg: "24px",
             }}
+            height="auto"
           />
         }
         isRound

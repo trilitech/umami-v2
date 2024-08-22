@@ -22,7 +22,7 @@ export const NFTs = () => {
   };
 
   return (
-    <Flex flexDirection="column" gap={{ base: "12px", lg: "30px" }} height="full">
+    <Flex flexDirection="column" flexGrow={1} gap={{ base: "12px", lg: "30px" }}>
       {nfts.length ? (
         <>
           <Flex justifyContent="space-between">
@@ -50,7 +50,13 @@ export const NFTs = () => {
           </SimpleGrid>
         </>
       ) : (
-        <EmptyMessage subtitle="NFTs" title="NFT" />
+        <EmptyMessage
+          margin="auto"
+          cta="Buy your first NFT"
+          ctaUrl="/test"
+          subtitle={"Explore and purchase unique digital assets\n to start your collection."}
+          title="Browse NFTs"
+        />
       )}
     </Flex>
   );
