@@ -16,7 +16,6 @@ import {
   InputGroup,
   InputRightElement,
   ModalBody,
-  ModalCloseButton,
   ModalContent,
   ModalHeader,
 } from "@chakra-ui/react";
@@ -34,6 +33,7 @@ import { FormProvider } from "react-hook-form";
 import { LockIcon } from "../../../assets/icons";
 import { useColor } from "../../../styles/useColor";
 import { ModalBackButton } from "../../BackButton";
+import { ModalCloseButton } from "../../CloseButton";
 import { PasswordInput } from "../../PasswordInput";
 import { RadioButtons } from "../../RadioButtons";
 
