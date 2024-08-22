@@ -13,6 +13,7 @@ import { useOperationModal } from "./operationModalHooks";
 import { sendResponse } from "./utils";
 import "./EmbeddedComponent.scss";
 import { useEmbedApp } from "./EmbedAppContext";
+import { useSignPayloadModal } from "./signPayloadModalHooks";
 
 export function EmbeddedComponent() {
   const { getNetwork, getUserData, setNetwork, setUserData, setLoginOptions, setDAppOrigin } =
@@ -21,6 +22,8 @@ export function EmbeddedComponent() {
 
   const { onOpen: openLoginModal, modalElement: loginModalElement } = useLoginModal();
   const { onOpen: openOperationModal, modalElement: operationModalElement } = useOperationModal();
+  const { onOpen: openSignPayloadModal, modalElement: signPayloadModalElement } =
+    useSignPayloadModal();
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -86,6 +89,10 @@ export function EmbeddedComponent() {
             openOperationModal(data.operations);
           }
           break;
+        case "sign_request":
+          if (validateUserSession(data.type)) {
+            openSignPayloadModal(data.signingType, data.payload);
+          }
       }
     } catch {
       /* empty */
@@ -161,6 +168,15 @@ export function EmbeddedComponent() {
           return false;
         }
         break;
+      case "sign_request":
+        if (!clientPermissions.signPayload) {
+          sendResponse({
+            type: toMatchingResponseType(request.type),
+            error: "no_permissions",
+            errorMessage: "No permissions found for sign actions",
+          });
+          return false;
+        }
     }
     return true;
   };
@@ -188,6 +204,7 @@ export function EmbeddedComponent() {
     <Box className="embedded-component">
       {loginModalElement}
       {operationModalElement}
+      {signPayloadModalElement}
     </Box>
   );
 }

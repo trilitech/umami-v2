@@ -29,6 +29,14 @@ export const sendOperationErrorResponse = (errorMessage: string) => {
   });
 };
 
+export const sendSignPayloadErrorResponse = (errorMessage: string) => {
+  sendResponse({
+    type: "sign_response",
+    error: "sign_failed",
+    errorMessage,
+  });
+};
+
 export const toTezosNetwork = (network: Network) => {
   switch (network) {
     case "ghostnet":

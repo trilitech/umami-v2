@@ -10,6 +10,7 @@ import { LoginModalProvider } from "./LoginModalContext";
 import { OperationModalProvider } from "./OperationModalContext";
 
 import { Analytics } from "@vercel/analytics/react";
+import { SignPayloadModalProvider } from "./SignPayloadModalContext";
 
 const rootElement = document.getElementById("root");
 ReactDOM.createRoot(rootElement!).render(
@@ -18,9 +19,11 @@ ReactDOM.createRoot(rootElement!).render(
       <EmbedAppProvider>
         <LoginModalProvider>
           <OperationModalProvider>
-            <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-            <EmbeddedComponent />
-            <Analytics />
+            <SignPayloadModalProvider>
+              <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+              <EmbeddedComponent />
+              <Analytics />
+            </SignPayloadModalProvider>
           </OperationModalProvider>
         </LoginModalProvider>
       </EmbedAppProvider>

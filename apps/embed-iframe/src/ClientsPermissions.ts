@@ -2,6 +2,7 @@ interface Permissions {
   origins: string[];
   login: boolean;
   operations: boolean;
+  signPayload: boolean;
 }
 
 const clientPermissions: Record<string, Permissions> = {
@@ -12,6 +13,7 @@ const clientPermissions: Record<string, Permissions> = {
     ],
     login: true,
     operations: false,
+    signPayload: false,
   },
 };
 

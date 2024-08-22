@@ -41,7 +41,7 @@ export const OperationModalProvider = ({ children }: PropsWithChildren) => {
 export const useOperationModalContext = (): OperationModalContextState => {
   const context = useContext(OperationModalContext);
   if (context === undefined) {
-    throw new Error("useOperationModal must be used within a OperationModalProvider");
+    throw new Error("useOperationModalContext must be used within a OperationModalProvider");
   }
   return context;
 };
