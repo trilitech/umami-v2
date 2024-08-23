@@ -9,6 +9,7 @@ import { NFTDrawer } from "./NFTDrawer";
 import { NFTFilter, useNFTFilter } from "./NFTFilter";
 import { EmptyMessage, VerifyMessage } from "../../components/EmptyMessage";
 import { useCheckVerified } from "../../components/Onboarding/useCheckUnverified";
+import { ViewOverlay } from "../../components/ViewOverlay/ViewOverlay";
 import { useColor } from "../../styles/useColor";
 
 export const NFTs = () => {
@@ -24,44 +25,47 @@ export const NFTs = () => {
   };
 
   return (
-    <Flex flexDirection="column" flexGrow={1} gap={{ base: "12px", lg: "30px" }}>
-      {nfts.length ? (
-        <>
-          <Flex justifyContent="space-between">
-            <NFTFilter getCheckboxProps={getCheckboxProps} options={nftFilterOptions} />
-            <Heading color={color("600")} data-testid="total-count" size="sm">
-              {totalCount}
-            </Heading>
-          </Flex>
-          <SimpleGrid
-            gridTemplateColumns={gridTemplateColumns}
-            spacingX="12px"
-            spacingY={{ base: "18px", lg: "30px" }}
-          >
-            {nfts.map(nft => (
-              <NFTCard
-                key={fullId(nft)}
-                nft={nft}
-                onClick={() => openWith(<NFTDrawer nft={nft} />)}
-              />
-            ))}
-            {/* empty boxes to make up to a full row */}
-            {range(4 - (nfts.length % 4)).map(index => (
-              <Box key={index} />
-            ))}
-          </SimpleGrid>
-        </>
-      ) : isVerified ? (
-        <EmptyMessage
-          margin="auto"
-          cta="Buy your first NFT"
-          ctaUrl="/test"
-          subtitle={"Explore and purchase unique digital assets\n to start your collection."}
-          title="Browse NFTs"
-        />
-      ) : (
-        <VerifyMessage />
-      )}
-    </Flex>
+    <>
+      <Flex zIndex={1} flexDirection="column" flexGrow={1} gap={{ base: "12px", lg: "30px" }}>
+        {nfts.length ? (
+          <>
+            <Flex justifyContent="space-between">
+              <NFTFilter getCheckboxProps={getCheckboxProps} options={nftFilterOptions} />
+              <Heading color={color("600")} data-testid="total-count" size="sm">
+                {totalCount}
+              </Heading>
+            </Flex>
+            <SimpleGrid
+              gridTemplateColumns={gridTemplateColumns}
+              spacingX="12px"
+              spacingY={{ base: "18px", lg: "30px" }}
+            >
+              {nfts.map(nft => (
+                <NFTCard
+                  key={fullId(nft)}
+                  nft={nft}
+                  onClick={() => openWith(<NFTDrawer nft={nft} />)}
+                />
+              ))}
+              {/* empty boxes to make up to a full row */}
+              {range(4 - (nfts.length % 4)).map(index => (
+                <Box key={index} />
+              ))}
+            </SimpleGrid>
+          </>
+        ) : isVerified ? (
+          <EmptyMessage
+            margin="auto"
+            cta="Buy your first NFT"
+            ctaUrl="/test"
+            subtitle={"Explore and purchase unique digital assets\n to start your collection."}
+            title="Browse NFTs"
+          />
+        ) : (
+          <VerifyMessage />
+        )}
+      </Flex>
+      <ViewOverlay iconType="nfts" />
+    </>
   );
 };

@@ -8,6 +8,7 @@ import { ArrowDownLeftIcon, WalletIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
 import { AccountInfoModal } from "../AccountSelectorModal";
 import { IconButtonWithText } from "../IconButtonWithText";
+import { useCheckVerified } from "../Onboarding/useCheckUnverified";
 
 export const AccountBalance = () => {
   const color = useColor();
@@ -16,6 +17,7 @@ export const AccountBalance = () => {
   const address = currentAccount.address.pkh;
   const balance = useGetAccountBalance()(address);
   const usdBalance = useGetDollarBalance()(address);
+  const isVerified = useCheckVerified();
 
   const buyTezUrl = `https://widget.wert.io/default/widget/?commodity=XTZ&address=${address}&network=tezos&commodity_id=xtz.simple.tezos`;
 
@@ -50,10 +52,16 @@ export const AccountBalance = () => {
         marginTop={{ base: "20px", lg: "40px" }}
       >
         <Link href={buyTezUrl} isExternal>
-          <IconButtonWithText icon={WalletIcon} label="Buy" variant="secondary" />
+          <IconButtonWithText
+            disabled={!isVerified}
+            icon={WalletIcon}
+            label="Buy"
+            variant="secondary"
+          />
         </Link>
         <Flex gap="24px">
           <IconButtonWithText
+            disabled={!isVerified}
             icon={ArrowDownLeftIcon}
             label="Receive"
             onClick={() => openWith(<AccountInfoModal account={currentAccount} />)}

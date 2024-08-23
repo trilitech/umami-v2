@@ -18,6 +18,7 @@ import { AlertIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
 import { ModalCloseButton } from "../CloseButton";
 
+// TODO: Replace with actual copy paste
 const accordionItems = [
   {
     title: "Why Verify?",
