@@ -47,7 +47,7 @@ export const AccountTileIcon = ({
     }
     // eslint-disable-next-line no-fallthrough
     case "secret_key":
-      return <Icon as={KeyIcon} width="28px" height="28px" color={color("600")} />;
+      return <Icon as={KeyIcon} width="28px" height="28px" color={color("600", "white")} />;
   }
 };
 
