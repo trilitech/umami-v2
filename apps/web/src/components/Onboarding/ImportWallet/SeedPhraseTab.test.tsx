@@ -1,26 +1,14 @@
-import { Tab, TabList, TabPanels, Tabs } from "@chakra-ui/react";
 import { mockToast } from "@umami/state";
 import { mnemonic1 } from "@umami/test-utils";
 
-import { SeedPhraseTabPanel } from "./SeedPhraseTabPanel";
+import { SeedPhraseTab } from "./SeedPhraseTab";
 import { act, render, screen, userEvent } from "../../../testUtils";
-
-const TestComponent = () => (
-  <Tabs defaultIndex={0}>
-    <TabList>
-      <Tab>Seed Phrase</Tab>
-    </TabList>
-    <TabPanels>
-      <SeedPhraseTabPanel />
-    </TabPanels>
-  </Tabs>
-);
 
 jest.setTimeout(10000);
 
-describe("<SeedPhraseTabPanel />", () => {
+describe("<SeedPhraseTab />", () => {
   it("has 24 words by default", () => {
-    render(<TestComponent />);
+    render(<SeedPhraseTab />);
 
     expect(screen.getByText("24 word seed phrase")).toBeVisible();
     expect(screen.getAllByRole("textbox")).toHaveLength(24);
@@ -28,7 +16,7 @@ describe("<SeedPhraseTabPanel />", () => {
 
   it("can change the number of words", async () => {
     const user = userEvent.setup();
-    render(<TestComponent />);
+    render(<SeedPhraseTab />);
 
     await act(() => user.click(screen.getByText("24 word seed phrase")));
     const changeTo12Button = await screen.findByRole("button", { name: "12" });
@@ -49,7 +37,7 @@ describe("<SeedPhraseTabPanel />", () => {
 
   it("validates the presence of the words", async () => {
     const user = userEvent.setup();
-    render(<TestComponent />);
+    render(<SeedPhraseTab />);
 
     const submitButton = screen.getByRole("button", { name: "Next" });
 
@@ -63,7 +51,7 @@ describe("<SeedPhraseTabPanel />", () => {
   describe("paste", () => {
     it("shows an error when incorrect number of words were pasted", async () => {
       const user = userEvent.setup();
-      render(<TestComponent />);
+      render(<SeedPhraseTab />);
 
       const textbox = screen.getAllByRole("textbox")[0];
       await act(() => user.click(textbox));
@@ -78,7 +66,7 @@ describe("<SeedPhraseTabPanel />", () => {
 
     it("fills in the form automatically", async () => {
       const user = userEvent.setup({});
-      render(<TestComponent />);
+      render(<SeedPhraseTab />);
 
       const textbox = screen.getAllByRole("textbox")[0];
       await act(() => user.click(textbox));
@@ -88,6 +76,46 @@ describe("<SeedPhraseTabPanel />", () => {
       screen.getAllByRole("textbox").forEach((textbox, i) => {
         expect(textbox).toHaveValue(mnemonic1.split(" ")[i]);
       });
+    });
+  });
+
+  describe("clear all", () => {
+    it("clears all the words", async () => {
+      const user = userEvent.setup();
+
+      render(<SeedPhraseTab />);
+
+      const textboxes = screen.getAllByRole("textbox");
+
+      const textbox1 = textboxes[0];
+      const textbox2 = textboxes[15];
+      await act(() => user.type(textbox1, "something1"));
+      await act(() => user.type(textbox2, "something2"));
+
+      expect(textbox1).toHaveValue("something1");
+      expect(textbox2).toHaveValue("something2");
+
+      await act(() => user.click(screen.getByRole("button", { name: "Clear All" })));
+
+      expect(textbox1).toHaveValue(undefined);
+      expect(textbox2).toHaveValue(undefined);
+
+      expect(screen.getAllByRole("textbox")).toHaveLength(24);
+    });
+
+    it("clears all the words when changing the number of words", async () => {
+      const user = userEvent.setup();
+
+      render(<SeedPhraseTab />);
+
+      await act(() => user.click(screen.getByText("24 word seed phrase")));
+      const changeTo12Button = await screen.findByRole("button", { name: "12" });
+      await act(() => user.click(changeTo12Button));
+      expect(screen.getAllByRole("textbox")).toHaveLength(12);
+
+      await act(() => user.click(screen.getByRole("button", { name: "Clear All" })));
+
+      expect(screen.getAllByRole("textbox")).toHaveLength(12);
     });
   });
 });
