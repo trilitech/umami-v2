@@ -26,8 +26,8 @@ importers:
   apps/desktop:
     dependencies:
       electron-updater:
-        specifier: 6.3.3
-        version: 6.3.3
+        specifier: 6.3.4
+        version: 6.3.4
     devDependencies:
       '@airgap/beacon-wallet':
         specifier: ^4.2.2
@@ -6165,8 +6165,8 @@ packages:
   electron-to-chromium@1.5.4:
     resolution: {integrity: sha512-orzA81VqLyIGUEA77YkVA1D+N+nNfl2isJVjjmOyrlxuooZ19ynb+dOlaDTqd/idKRS9lDCSBmtzM+kyCsMnkA==}
 
-  electron-updater@6.3.3:
-    resolution: {integrity: sha512-Kj1u6kfyxUyatnspvKa6qhGn82rMZfUD03WOvCGJ12PyRss/AC8kkYsN9IrJihKTlN8nRwTjZ1JM2UUXoD0KsA==}
+  electron-updater@6.3.4:
+    resolution: {integrity: sha512-uZUo7p1Y53G4tl6Cgw07X1yF8Jlz6zhaL7CQJDZ1fVVkOaBfE2cWtx80avwDVi8jHp+I/FWawrMgTAeCCNIfAg==}
 
   electron@32.0.1:
     resolution: {integrity: sha512-5Hd5Jaf9niYVR2hZxoRd3gOrcxPOxQV1XPV5WaoSfT9jLJHFadhlKtuSDIk3U6rQZke+aC7GqPPAv55nWFCMsA==}
@@ -16069,7 +16069,7 @@ snapshots:
 
   electron-to-chromium@1.5.4: {}
 
-  electron-updater@6.3.3:
+  electron-updater@6.3.4:
     dependencies:
       builder-util-runtime: 9.2.5
       fs-extra: 10.1.0
