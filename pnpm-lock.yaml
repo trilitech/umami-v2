@@ -520,8 +520,8 @@ importers:
         specifier: 16.0.6
         version: 16.0.6(@babel/runtime@7.25.4)
       '@trilitech-umami/umami-embed':
-        specifier: ^0.2.5
-        version: 0.2.5
+        specifier: ^0.2.6
+        version: 0.2.6
       '@umami/social-auth':
         specifier: workspace:^
         version: link:../../packages/social-auth
@@ -4477,8 +4477,8 @@ packages:
     peerDependencies:
       '@babel/runtime': 7.x
 
-  '@trilitech-umami/umami-embed@0.2.5':
-    resolution: {integrity: sha512-fdSx6DI6Zq028eyuBebwYq7XzbttavwwmcJ4aCDspngFirgQFWYsT1byrEchwiAWdNAIeM+wPpipz+DGaz+3Yw==}
+  '@trilitech-umami/umami-embed@0.2.6':
+    resolution: {integrity: sha512-G7IWnsZ6tPnxJNKdlTZTRcnOZ0sEEFDdqXrB1LRmxNfsl8tnS/+yb8OTmG1bC1E1n2IyTPVb8JW+OJycYXSnRQ==}
 
   '@trysound/sax@0.2.0':
     resolution: {integrity: sha512-L7z9BgrNEcYyUYtF+HaEfiS5ebkh9jXqbszz7pC0hRBPaatV0XjSD3+eHrpqFemQfgwiFF0QPIarnIihIDn7OA==}
@@ -13879,7 +13879,7 @@ snapshots:
     transitivePeerDependencies:
       - '@sentry/types'
 
-  '@trilitech-umami/umami-embed@0.2.5':
+  '@trilitech-umami/umami-embed@0.2.6':
     dependencies:
       '@airgap/beacon-types': 4.2.2
       async-mutex: 0.5.0
