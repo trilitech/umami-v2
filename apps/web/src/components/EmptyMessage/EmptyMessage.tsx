@@ -2,14 +2,22 @@ import { Button, Flex, type FlexProps, Link, Text } from "@chakra-ui/react";
 
 import { useColor } from "../../styles/useColor";
 
-type EmptyMessageProps = {
+export type EmptyMessageProps = {
   title: string;
   subtitle?: string;
   cta?: string;
   ctaUrl?: string;
+  onClick?: () => void;
 } & FlexProps;
 
-export const EmptyMessage = ({ title, subtitle, cta, ctaUrl, ...props }: EmptyMessageProps) => {
+export const EmptyMessage = ({
+  title,
+  subtitle,
+  cta,
+  ctaUrl,
+  onClick,
+  ...props
+}: EmptyMessageProps) => {
   const color = useColor();
 
   return (
@@ -44,6 +52,7 @@ export const EmptyMessage = ({ title, subtitle, cta, ctaUrl, ...props }: EmptyMe
           fontSize="18px"
           href={ctaUrl}
           isExternal
+          onClick={() => onClick?.()}
           variant="secondary"
         >
           {cta}

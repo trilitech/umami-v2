@@ -1,14 +1,17 @@
 import { Box, Flex, Link, Text } from "@chakra-ui/react";
+import { useDynamicModalContext } from "@umami/components";
 import { useCurrentAccount, useGetAccountBalance, useGetDollarBalance } from "@umami/state";
 import { prettyTezAmount } from "@umami/tezos";
 
 import { SendTezButton } from "./SendTezButton";
 import { ArrowDownLeftIcon, WalletIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
+import { AccountInfoModal } from "../AccountSelectorModal";
 import { IconButtonWithText } from "../IconButtonWithText";
 
 export const AccountBalance = () => {
   const color = useColor();
+  const { openWith } = useDynamicModalContext();
   const currentAccount = useCurrentAccount()!;
   const address = currentAccount.address.pkh;
   const balance = useGetAccountBalance()(address);
@@ -50,7 +53,12 @@ export const AccountBalance = () => {
           <IconButtonWithText icon={WalletIcon} label="Buy" variant="secondary" />
         </Link>
         <Flex gap="24px">
-          <IconButtonWithText icon={ArrowDownLeftIcon} label="Receive" variant="secondary" />
+          <IconButtonWithText
+            icon={ArrowDownLeftIcon}
+            label="Receive"
+            onClick={() => openWith(<AccountInfoModal account={currentAccount} />)}
+            variant="secondary"
+          />
           <SendTezButton />
         </Flex>
       </Flex>

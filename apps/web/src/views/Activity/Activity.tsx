@@ -5,11 +5,13 @@ import { type UIEvent, useRef } from "react";
 
 import loadingDots from "../../assets/loading-dots.gif";
 import loadingWheel from "../../assets/loading-wheel.gif";
-import { EmptyMessage } from "../../components/EmptyMessage";
+import { EmptyMessage, VerifyMessage } from "../../components/EmptyMessage";
+import { useCheckVerified } from "../../components/Onboarding/useCheckUnverified";
 import { OperationTile } from "../../components/OperationTile";
 import { useColor } from "../../styles/useColor";
 
 export const Activity = () => {
+  const isVerified = useCheckVerified();
   const color = useColor();
   const currentAccount = useCurrentAccount()!;
   const { operations, loadMore, hasMore, isLoading, isFirstLoad } = useGetOperations([
@@ -43,15 +45,19 @@ export const Activity = () => {
         <Image width="150px" height="75px" marginBottom="136px" src={loadingWheel} />
       </Center>
 
-      {operations.length === 0 && !isLoading && (
-        <EmptyMessage
-          margin="auto"
-          cta="Buy Tez Now"
-          ctaUrl={buyTezUrl}
-          subtitle={"You need Tez to take part in any activity.\n Buy some to get started."}
-          title="Welcome to Your Web3 Wallet"
-        />
-      )}
+      {operations.length === 0 &&
+        !isLoading &&
+        (isVerified ? (
+          <EmptyMessage
+            margin="auto"
+            cta="Buy Tez Now"
+            ctaUrl={buyTezUrl}
+            subtitle={"You need Tez to take part in any activity.\n Buy some to get started."}
+            title="Welcome to Your Web3 Wallet"
+          />
+        ) : (
+          <VerifyMessage />
+        ))}
       {operations.length > 0 && (
         <Box borderRadius="8px" onScroll={onScroll}>
           {operations.map((operation, i) => {

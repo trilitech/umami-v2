@@ -7,10 +7,12 @@ import { range } from "lodash";
 import { NFTCard } from "./NFTCard";
 import { NFTDrawer } from "./NFTDrawer";
 import { NFTFilter, useNFTFilter } from "./NFTFilter";
-import { EmptyMessage } from "../../components/EmptyMessage";
+import { EmptyMessage, VerifyMessage } from "../../components/EmptyMessage";
+import { useCheckVerified } from "../../components/Onboarding/useCheckUnverified";
 import { useColor } from "../../styles/useColor";
 
 export const NFTs = () => {
+  const isVerified = useCheckVerified();
   const color = useColor();
   const { openWith } = useDynamicDrawerContext();
   const { nfts, options: nftFilterOptions, getCheckboxProps } = useNFTFilter();
@@ -49,7 +51,7 @@ export const NFTs = () => {
             ))}
           </SimpleGrid>
         </>
-      ) : (
+      ) : isVerified ? (
         <EmptyMessage
           margin="auto"
           cta="Buy your first NFT"
@@ -57,6 +59,8 @@ export const NFTs = () => {
           subtitle={"Explore and purchase unique digital assets\n to start your collection."}
           title="Browse NFTs"
         />
+      ) : (
+        <VerifyMessage />
       )}
     </Flex>
   );

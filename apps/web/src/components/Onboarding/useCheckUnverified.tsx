@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 
-export const useCheckUnverified = () => {
-  const [isUnverified, setIsUnverified] = useState(false);
+export const useCheckVerified = () => {
+  const [isVerified, setIsVerified] = useState(false);
 
   useEffect(() => {
-    const isUnverified = localStorage.getItem("user:unverified");
+    const isVerified = localStorage.getItem("user:verified");
 
-    setIsUnverified(!!isUnverified);
+    setIsVerified(isVerified ? JSON.parse(isVerified) : false);
   }, []);
 
-  return isUnverified;
+  return isVerified;
 };
