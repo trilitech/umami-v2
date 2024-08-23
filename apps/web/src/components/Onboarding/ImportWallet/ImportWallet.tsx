@@ -10,7 +10,7 @@ import {
   Tabs,
 } from "@chakra-ui/react";
 
-import { SeedPhraseTabPanel } from "./SeedPhraseTabPanel";
+import { SeedPhraseTab } from "./SeedPhraseTab";
 import { LoginIcon } from "../../../assets/icons";
 import { useColor } from "../../../styles/useColor";
 import { ModalCloseButton } from "../../CloseButton";
@@ -33,7 +33,9 @@ export const ImportWallet = () => {
           <TabSwitch options={["Seed Phrase", "Secret Key", "Backup", "Ledger"]} />
 
           <TabPanels padding="30px 0 0 0">
-            <SeedPhraseTabPanel />
+            <TabPanel>
+              <SeedPhraseTab />
+            </TabPanel>
             <TabPanel>Secret Key</TabPanel>
             <TabPanel>Backup</TabPanel>
             <TabPanel>Ledger</TabPanel>
