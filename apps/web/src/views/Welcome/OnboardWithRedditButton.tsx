@@ -1,9 +1,12 @@
-import { IconButton } from "@chakra-ui/react";
+import { type ButtonProps, IconButton } from "@chakra-ui/react";
 
 import { useOnboardWithSocial } from "./useOnboardWithSocial";
-import { RedditIcon } from "../../../assets/icons";
+import { RedditIcon } from "../../assets/icons";
 
-export const OnboardWithRedditButton = ({ onAuth }: { onAuth: () => void }) => {
+export const OnboardWithRedditButton = ({
+  onAuth,
+  ...props
+}: { onAuth?: () => void } & ButtonProps) => {
   const { isLoading, onboard } = useOnboardWithSocial("reddit", onAuth);
 
   return (
@@ -14,6 +17,7 @@ export const OnboardWithRedditButton = ({ onAuth }: { onAuth: () => void }) => {
       isLoading={isLoading}
       onClick={onboard}
       variant="socialLogin"
+      {...props}
     />
   );
 };

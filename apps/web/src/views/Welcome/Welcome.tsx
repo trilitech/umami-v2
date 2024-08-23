@@ -8,8 +8,6 @@ import {
   GridItem,
   Heading,
   Icon,
-  IconButton,
-  type IconButtonProps,
   Link,
   type LinkProps,
   Text,
@@ -19,13 +17,11 @@ import {
 import { useDynamicModalContext } from "@umami/components";
 import { useState } from "react";
 
+import { OnboardWithFacebookButton } from "./OnboardWithFacebookButton";
+import { OnboardWithGoogleButton } from "./OnboardWithGoogleButton";
+import { OnboardWithRedditButton } from "./OnboardWithRedditButton";
+import { OnboardWithTwitterButton } from "./OnboardWithTwitterButton";
 import { LogoLightIcon, TezosLogoIcon } from "../../assets/icons";
-import {
-  FacebookAccountIcon,
-  GoogleAccountIcon,
-  RedditAccountIcon,
-  TwitterAccountIcon,
-} from "../../components/AccountTile/AccountTileIcon";
 import { ImportWallet } from "../../components/Onboarding/ImportWallet";
 import { useColor } from "../../styles/useColor";
 
@@ -96,10 +92,10 @@ export const Welcome = () => {
               marginTop="30px"
               color={color("white", "black")}
             >
-              <SocialLoginButton aria-label="google-login" icon={<GoogleAccountIcon />} />
-              <SocialLoginButton aria-label="facebook-login" icon={<FacebookAccountIcon />} />
-              <SocialLoginButton aria-label="twitter-login" icon={<TwitterAccountIcon />} />
-              <SocialLoginButton aria-label="reddit-login" icon={<RedditAccountIcon />} />
+              <OnboardWithGoogleButton />
+              <OnboardWithFacebookButton />
+              <OnboardWithTwitterButton />
+              <OnboardWithRedditButton />
             </Flex>
 
             <Center gap="4px" width="full">
@@ -198,19 +194,6 @@ export const Welcome = () => {
         </>
       )}
     </Grid>
-  );
-};
-
-const SocialLoginButton = (props: IconButtonProps) => {
-  const color = useColor();
-
-  return (
-    <IconButton
-      _hover={{ backgroundColor: color("400", "600") }}
-      backgroundColor={color("white", "black")}
-      size="lg"
-      {...props}
-    />
   );
 };
 
