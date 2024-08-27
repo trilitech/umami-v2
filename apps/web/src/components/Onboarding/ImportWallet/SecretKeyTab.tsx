@@ -54,7 +54,7 @@ export const SecretKeyTab = () => {
           {isEncrypted && <PasswordInput inputName="secretKeyPassword" minLength={0} />}
 
           <Button width="full" isDisabled={!isValid} type="submit" variant="primary">
-            Import Wallet
+            Next
           </Button>
         </Flex>
       </form>

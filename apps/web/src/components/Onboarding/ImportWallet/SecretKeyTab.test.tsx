@@ -46,7 +46,7 @@ describe("<SecretKeyTab />", () => {
         user.type(screen.getByLabelText("Secret Key"), UNENCRYPTED_SECRET_KEY + "somedatas")
       );
 
-      await act(() => user.click(screen.getByRole("button", { name: "Import Wallet" })));
+      await act(() => user.click(screen.getByRole("button", { name: "Next" })));
 
       expect(mockToast).toHaveBeenCalledTimes(1);
       expect(mockToast).toHaveBeenCalledWith({
@@ -64,7 +64,7 @@ describe("<SecretKeyTab />", () => {
       await act(() => user.type(screen.getByLabelText("Secret Key"), ENCRYPTED_SECRET_KEY));
       await act(() => user.type(screen.getByLabelText("Password"), "wrongpassword"));
 
-      await act(() => user.click(screen.getByRole("button", { name: "Import Wallet" })));
+      await act(() => user.click(screen.getByRole("button", { name: "Next" })));
 
       expect(mockToast).toHaveBeenCalledTimes(1);
       expect(mockToast).toHaveBeenCalledWith({

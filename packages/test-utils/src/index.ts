@@ -6,3 +6,4 @@ export * from "./mnemonic";
 export * from "./nftTokens";
 export * from "./tzktResponse";
 export * from "./v1BackupFile";
+export * from "./fileUploadMock";
