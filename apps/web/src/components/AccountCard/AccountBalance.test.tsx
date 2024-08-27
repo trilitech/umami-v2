@@ -95,4 +95,18 @@ describe("<AccountBalance />", () => {
       expect(screen.queryByTestId("usd-balance")).not.toBeInTheDocument();
     });
   });
+
+  describe("if user is unverified", () => {
+    beforeEach(() => {
+      localStorage.setItem("user:verified", "false");
+    });
+
+    it.each(["Buy", "Send", "Receive"])("%s button is disabled", buttonName => {
+      render(<AccountBalance />, { store });
+
+      const button = screen.getByRole("button", { name: buttonName });
+
+      expect(button).toBeDisabled();
+    });
+  });
 });

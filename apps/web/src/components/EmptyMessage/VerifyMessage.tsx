@@ -10,7 +10,7 @@ export const VerifyMessage = ({ ...props }: Omit<EmptyMessageProps, "title">) =>
   const color = useColor();
 
   return (
-    <Flex alignItems="center" flexDirection="column" margin="auto">
+    <Flex alignItems="center" flexDirection="column" margin="auto" data-testid="verify-message">
       <EmptyMessage
         cta="Verify Now"
         subtitle={

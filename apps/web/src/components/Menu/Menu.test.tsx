@@ -5,7 +5,7 @@ import { AddressBookMenu } from "./AddressBookMenu/AddressBookMenu";
 import { AdvancedMenu } from "./AdvancedMenu/AdvancedMenu";
 import { AppsMenu } from "./AppsMenu/AppsMenu";
 import { LogoutModal } from "./LogoutModal";
-import { Menu } from "./Menu";
+import { Menu, useOnboardingModal } from "./Menu";
 import {
   dynamicDrawerContextMock,
   dynamicModalContextMock,
@@ -33,67 +33,86 @@ describe("<Menu />", () => {
     });
   });
 
-  it("renders menu items correctly", async () => {
-    await renderInDrawer(<Menu />);
+  describe("when user is verified", () => {
+    it("renders menu items correctly", async () => {
+      await renderInDrawer(<Menu />);
 
-    expect(screen.getByText("Advanced")).toBeVisible();
-    expect(screen.getByText("Address Book")).toBeVisible();
-    expect(screen.getByText("Add Account")).toBeVisible();
-    expect(screen.getByText("Save Backup")).toBeVisible();
-    expect(screen.getByText("Apps")).toBeVisible();
-    expect(screen.getByText("Light mode")).toBeVisible();
-    expect(screen.getByText("Logout")).toBeVisible();
+      expect(screen.getByText("Advanced")).toBeVisible();
+      expect(screen.getByText("Address Book")).toBeVisible();
+      expect(screen.getByText("Add Account")).toBeVisible();
+      expect(screen.getByText("Save Backup")).toBeVisible();
+      expect(screen.getByText("Apps")).toBeVisible();
+      expect(screen.getByText("Light mode")).toBeVisible();
+      expect(screen.getByText("Logout")).toBeVisible();
+    });
+
+    it.each([
+      ["Advanced", AdvancedMenu],
+      ["Address Book", AddressBookMenu],
+      ["Apps", AppsMenu],
+    ])("opens %label menu correctly", async (label, Component) => {
+      const user = userEvent.setup();
+      const { openWith } = dynamicDrawerContextMock;
+
+      await renderInDrawer(<Menu />);
+
+      await user.click(screen.getByText(label));
+      expect(openWith).toHaveBeenCalledWith(<Component />);
+    });
+
+    it("opens Logout menu correctly", async () => {
+      const user = userEvent.setup();
+      const { openWith } = dynamicModalContextMock;
+
+      await renderInDrawer(<Menu />);
+
+      await user.click(screen.getByText("Logout"));
+      expect(openWith).toHaveBeenCalledWith(<LogoutModal />);
+    });
+
+    it("calls downloadBackupFile function when Save Backup is clicked", async () => {
+      const user = userEvent.setup();
+      await renderInDrawer(<Menu />);
+
+      await user.click(screen.getByText("Save Backup"));
+
+      expect(downloadBackupFile).toHaveBeenCalled();
+    });
+
+    it("calls toggleColorMode function when Light mode is clicked", async () => {
+      const user = userEvent.setup();
+      await renderInDrawer(<Menu />);
+
+      await user.click(screen.getByText("Light mode"));
+
+      expect(useColorMode().toggleColorMode).toHaveBeenCalled();
+    });
+
+    it("opens Add Account modal when Add Account button is clicked", async () => {
+      const user = userEvent.setup();
+      await renderInDrawer(<Menu />);
+
+      await user.click(screen.getByText("Add Account"));
+
+      expect(useOnboardingModal().onOpen).toHaveBeenCalled();
+    });
   });
 
-  it.each([
-    ["Advanced", AdvancedMenu],
-    ["Address Book", AddressBookMenu],
-    ["Apps", AppsMenu],
-  ])("opens %label menu correctly", async (label, Component) => {
-    const user = userEvent.setup();
-    const { openWith } = dynamicDrawerContextMock;
+  describe("when user is unverified", () => {
+    beforeEach(() => {
+      localStorage.setItem("user:verified", "false");
+    });
 
-    await renderInDrawer(<Menu />);
+    it("renders menu items correctly", async () => {
+      await renderInDrawer(<Menu />);
 
-    await user.click(screen.getByText(label));
-    expect(openWith).toHaveBeenCalledWith(<Component />);
+      expect(screen.getByText("Advanced")).toBeVisible();
+      expect(screen.queryByText("Address Book")).not.toBeInTheDocument();
+      expect(screen.queryByText("Add Account")).not.toBeInTheDocument();
+      expect(screen.queryByText("Save Backup")).not.toBeInTheDocument();
+      expect(screen.queryByText("Apps")).not.toBeInTheDocument();
+      expect(screen.getByText("Light mode")).toBeVisible();
+      expect(screen.getByText("Logout")).toBeVisible();
+    });
   });
-
-  it("opens Logout menu correctly", async () => {
-    const user = userEvent.setup();
-    const { openWith } = dynamicModalContextMock;
-
-    await renderInDrawer(<Menu />);
-
-    await user.click(screen.getByText("Logout"));
-    expect(openWith).toHaveBeenCalledWith(<LogoutModal />);
-  });
-
-  it("calls downloadBackupFile function when Save Backup is clicked", async () => {
-    const user = userEvent.setup();
-    await renderInDrawer(<Menu />);
-
-    await user.click(screen.getByText("Save Backup"));
-
-    expect(downloadBackupFile).toHaveBeenCalled();
-  });
-
-  it("calls toggleColorMode function when Light mode is clicked", async () => {
-    const user = userEvent.setup();
-    await renderInDrawer(<Menu />);
-
-    await user.click(screen.getByText("Light mode"));
-
-    expect(useColorMode().toggleColorMode).toHaveBeenCalled();
-  });
-
-  // TODO: Uncomment when this functionality is implemented
-  // it("opens Add Account modal when Add Account button is clicked", async () => {
-  //   const user = userEvent.setup();
-  //   await renderInDrawer(<Menu />);
-
-  //   await user.click(screen.getByText("Add Account"));
-
-  //   expect(useOnboardingModal().onOpen).toHaveBeenCalled();
-  // });
 });

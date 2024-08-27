@@ -52,7 +52,7 @@ export const EmptyMessage = ({
           fontSize="18px"
           href={ctaUrl}
           isExternal
-          onClick={() => onClick?.()}
+          onClick={onClick}
           variant="secondary"
         >
           {cta}

@@ -5,6 +5,17 @@ import { TextDecoder, TextEncoder } from "util";
 import { mockToast } from "@umami/state";
 import { setupJestCanvasMock } from "jest-canvas-mock";
 
+const localStorageMock = () => {
+  const store: { [key: string]: string } = {};
+
+  return {
+    getItem: (key: string) => store[key] || null,
+    setItem: (key: string, value: string) => {
+      store[key] = value.toString();
+    },
+  };
+};
+
 jest.mock("./env", () => ({ IS_DEV: false }));
 
 jest.doMock("@chakra-ui/react", () => ({
@@ -23,7 +34,13 @@ jest.mock("./utils/persistor", () => ({
   pause: jest.fn(),
 }));
 
-beforeEach(() => setupJestCanvasMock());
+beforeEach(() => {
+  setupJestCanvasMock();
+
+  Object.defineProperty(window, "localStorage", {
+    value: localStorageMock(),
+  });
+});
 
 // TODO: fix act warnings
 const originalError = console.error;

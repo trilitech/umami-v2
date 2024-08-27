@@ -1,4 +1,5 @@
 import { Box, Center, Divider, Flex, Image } from "@chakra-ui/react";
+import { type Account } from "@umami/core";
 import { useGetOperations } from "@umami/data-polling";
 import { useCurrentAccount } from "@umami/state";
 import { type UIEvent, useRef } from "react";
@@ -14,12 +15,12 @@ import { useColor } from "../../styles/useColor";
 export const Activity = () => {
   const isVerified = useCheckVerified();
   const color = useColor();
-  const currentAccount = useCurrentAccount()!;
+  const currentAccount = useCurrentAccount();
   const { operations, loadMore, hasMore, isLoading, isFirstLoad } = useGetOperations([
-    currentAccount,
+    currentAccount ?? ({} as Account),
   ]);
 
-  const buyTezUrl = `https://widget.wert.io/default/widget/?commodity=XTZ&address=${currentAccount.address.pkh}&network=tezos&commodity_id=xtz.simple.tezos`;
+  const buyTezUrl = `https://widget.wert.io/default/widget/?commodity=XTZ&address=${currentAccount?.address.pkh}&network=tezos&commodity_id=xtz.simple.tezos`;
 
   // used to run loadMore only once when the user scrolls to the bottom
   // otherwise it might be called multiple times which would trigger multiple fetches
@@ -48,9 +49,9 @@ export const Activity = () => {
           <Image width="150px" height="75px" marginBottom="136px" src={loadingWheel} />
         </Center>
 
-        {operations.length === 0 &&
-          !isLoading &&
-          (isVerified ? (
+        {isVerified ? (
+          operations.length === 0 &&
+          !isLoading && (
             <EmptyMessage
               margin="auto"
               cta="Buy Tez Now"
@@ -58,9 +59,10 @@ export const Activity = () => {
               subtitle={"You need Tez to take part in any activity.\n Buy some to get started."}
               title="Welcome to Your Web3 Wallet"
             />
-          ) : (
-            <VerifyMessage />
-          ))}
+          )
+        ) : (
+          <VerifyMessage />
+        )}
         {operations.length > 0 && (
           <Box borderRadius="8px" onScroll={onScroll}>
             {operations.map((operation, i) => {

@@ -51,7 +51,11 @@ export const AccountBalance = () => {
         justifyContent="space-between"
         marginTop={{ base: "20px", lg: "40px" }}
       >
-        <Link pointerEvents={isVerified ? "auto" : "none"} href={buyTezUrl} isExternal>
+        <Link
+          pointerEvents={isVerified ? "auto" : "none"}
+          href={isVerified ? buyTezUrl : ""}
+          isExternal
+        >
           <IconButtonWithText
             icon={WalletIcon}
             isDisabled={!isVerified}

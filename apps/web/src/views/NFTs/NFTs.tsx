@@ -57,7 +57,7 @@ export const NFTs = () => {
           <EmptyMessage
             margin="auto"
             cta="Buy your first NFT"
-            ctaUrl="/test"
+            ctaUrl="https://objkt.com/"
             subtitle={"Explore and purchase unique digital assets\n to start your collection."}
             title="Browse NFTs"
           />
