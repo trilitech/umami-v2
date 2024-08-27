@@ -77,7 +77,11 @@ describe("<SetupPassword />", () => {
     it("calls restoreFromSecretKey with default parameters", async () => {
       const user = userEvent.setup();
       const store = makeStore();
-      const allFormValues = { secretKey: "some secret key" };
+      const allFormValues = {
+        secretKey:
+          "edskRicpWcBughiZrP7jDEXse7gMSwa1HG6CEEHZa9y6eBYfpoAii3BqFdemgfpehhbGjxgkPpECxqcCQReGNLsAsh46TwGDEA",
+        secretKeyPassword: "",
+      };
       const mockRestoreFromSecretKey = jest.fn();
       jest.mocked(useRestoreFromSecretKey).mockReturnValue(mockRestoreFromSecretKey);
 

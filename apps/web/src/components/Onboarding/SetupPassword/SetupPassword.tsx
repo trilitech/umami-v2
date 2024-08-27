@@ -28,7 +28,7 @@ import {
   useRestoreFromMnemonic,
   useRestoreFromSecretKey,
 } from "@umami/state";
-import { defaultDerivationPathTemplate } from "@umami/tezos";
+import { decryptSecretKey, defaultDerivationPathTemplate } from "@umami/tezos";
 import { FormProvider } from "react-hook-form";
 
 import { LockIcon } from "../../../assets/icons";
@@ -83,7 +83,11 @@ export const SetupPassword = ({ mode }: { mode: "mnemonic" | "secret_key" }) => 
           break;
         }
         case "secret_key": {
-          await restoreFromSecretKey(allFormValues.secretKey, password, DEFAULT_ACCOUNT_LABEL);
+          const secretKey = await decryptSecretKey(
+            allFormValues.secretKey,
+            allFormValues.secretKeyPassword
+          );
+          await restoreFromSecretKey(secretKey, password, DEFAULT_ACCOUNT_LABEL);
         }
       }
       return onClose();

@@ -105,3 +105,24 @@ export const getLedgerPublicKeyPair = async (derivationPath?: string): Promise<P
 
 export const getIPFSurl = (ipfsPath?: string) =>
   ipfsPath?.replace("ipfs://", "https://ipfs.io/ipfs/");
+
+// todo: test
+export const decryptSecretKey = async (secretKey: string, password: string) => {
+  try {
+    const signer = await InMemorySigner.fromSecretKey(secretKey.trim(), password);
+    return await signer.secretKey();
+  } catch (error: any) {
+    const message = error.message || "";
+
+    // if the password doesn't match taquito throws this error
+    if (message.includes("Cannot read properties of null")) {
+      throw new Error("Key-password pair is invalid");
+    }
+
+    if (message.includes("Invalid checksum")) {
+      throw new Error("Invalid secret key: checksum doesn't match");
+    }
+
+    throw error;
+  }
+};
