@@ -10,6 +10,7 @@ import {
   Tabs,
 } from "@chakra-ui/react";
 
+import { ImportBackupTab } from "./ImportBackupTab";
 import { SecretKeyTab } from "./SecretKeyTab";
 import { SeedPhraseTab } from "./SeedPhraseTab";
 import { LoginIcon } from "../../../assets/icons";
@@ -40,7 +41,9 @@ export const ImportWallet = () => {
             <TabPanel>
               <SecretKeyTab />
             </TabPanel>
-            <TabPanel>Backup</TabPanel>
+            <TabPanel>
+              <ImportBackupTab />
+            </TabPanel>
             <TabPanel>Ledger</TabPanel>
           </TabPanels>
         </Tabs>

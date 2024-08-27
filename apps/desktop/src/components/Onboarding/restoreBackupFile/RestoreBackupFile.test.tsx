@@ -1,5 +1,5 @@
 import { mockToast, useRestoreBackup } from "@umami/state";
-import { umamiBackup } from "@umami/test-utils";
+import { fileUploadMock, umamiBackup } from "@umami/test-utils";
 
 import { RestoreBackupFile } from "./RestoreBackupFile";
 import {
@@ -18,16 +18,8 @@ jest.mock("@umami/state", () => ({
 }));
 
 describe("<RestoreBackupFile />", () => {
-  const setupBackupFile = (json: any) => {
-    const str = JSON.stringify(json);
-    const blob = new Blob([str]);
-    const file = new File([blob], "backup.json", { type: "application/json" });
-    File.prototype.text = jest.fn().mockResolvedValueOnce(str);
-    return file;
-  };
-
   const uploadBackupFile = async (json: any, user: UserEvent, password?: string) => {
-    const file = setupBackupFile(json);
+    const file = fileUploadMock(json);
 
     await act(() => user.upload(screen.getByLabelText("Upload File"), file));
     if (password) {
