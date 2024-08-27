@@ -17,10 +17,10 @@ export const IconButtonWithText = memo(
       primary: {
         circle: {
           _groupHover: { backgroundColor: color("blueDark") },
-          backgroundColor: color("blue"),
+          backgroundColor: props.isDisabled ? color("100") : color("blue"),
         },
         icon: {
-          color: color("white", "black"),
+          color: props.isDisabled ? color("300") : color("white", "black"),
         },
       },
       secondary: {
@@ -29,7 +29,7 @@ export const IconButtonWithText = memo(
           backgroundColor: color("100"),
         },
         icon: {
-          color: color("gray.900"),
+          color: props.isDisabled ? color("300") : color("900"),
         },
       },
     }[variant];
@@ -49,7 +49,11 @@ export const IconButtonWithText = memo(
         <Circle {...style.circle} size="48px">
           <Icon as={icon} width="24px" height="24px" {...style.icon} />
         </Circle>
-        <Heading color={color("900")} _groupHover={{ color: color("700") }} size="sm">
+        <Heading
+          color={props.isDisabled ? color("300") : color("900")}
+          _groupHover={{ color: color("700") }}
+          size="sm"
+        >
           {label}
         </Heading>
       </Button>

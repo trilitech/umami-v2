@@ -323,9 +323,8 @@ const theme = extendTheme({
       baseStyle: {
         borderRadius: "full",
         _disabled: {
-          bg: "gray.100",
-          color: "gray.300",
           opacity: 1,
+          pointerEvents: "none",
         },
         _hover: {
           _disabled: {

@@ -13,8 +13,8 @@ export const SendTezButton = () => {
 
   return (
     <IconButtonWithText
-      disabled={!isVerified}
       icon={ArrowUpRightIcon}
+      isDisabled={!isVerified}
       label="Send"
       onClick={() => openWith(<SendTezFormPage sender={currentAccount} />)}
       variant="primary"

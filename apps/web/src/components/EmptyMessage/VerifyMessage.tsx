@@ -13,7 +13,6 @@ export const VerifyMessage = ({ ...props }: Omit<EmptyMessageProps, "title">) =>
     <Flex alignItems="center" flexDirection="column" margin="auto">
       <EmptyMessage
         cta="Verify Now"
-        onClick={() => console.log("Verify Now")}
         subtitle={
           "Please verify your account, to unlock all features\n and keep your account secure."
         }

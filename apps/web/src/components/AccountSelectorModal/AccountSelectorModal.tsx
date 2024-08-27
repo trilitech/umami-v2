@@ -79,7 +79,7 @@ export const AccountSelectorModal = () => {
                   return (
                     <AccountTile key={address} account={account} onClick={onClick}>
                       <Flex justifyContent="center" flexDirection="column" gap="2px">
-                        <AccountSelectorPopover account={account} />
+                        {isVerified && <AccountSelectorPopover account={account} />}
                         <Text color={color("700")} size="sm">
                           {balance ? prettyTezAmount(balance) : "\u00A0"}
                         </Text>

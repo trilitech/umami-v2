@@ -23,14 +23,41 @@ export const useOnboardingModal = () => ({
   onOpen: () => {},
   modalElement: <></>,
 });
+import { useCheckVerified } from "../Onboarding/useCheckUnverified";
 
 export const Menu = () => {
   const { openWith: openModal } = useDynamicModalContext();
   const { openWith: openDrawer } = useDynamicDrawerContext();
   const { colorMode, toggleColorMode } = useColorMode();
   const { onOpen: openOnboardingModal, modalElement } = useOnboardingModal();
+  const isVerified = useCheckVerified();
 
   const colorModeSwitchLabel = colorMode === "light" ? "Light mode" : "Dark mode";
+
+  const menuItemsForVerifiedUser = [
+    {
+      label: "Address Book",
+      icon: <BookIcon />,
+      onClick: () => openDrawer(<AddressBookMenu />),
+      hasArrow: true,
+    },
+    {
+      label: "Add Account",
+      icon: <UserPlusIcon />,
+      onClick: openOnboardingModal,
+    },
+    {
+      label: "Save Backup",
+      icon: <DownloadIcon />,
+      onClick: downloadBackupFile,
+    },
+    {
+      label: "Apps",
+      icon: <CodeSandboxIcon />,
+      onClick: () => openDrawer(<AppsMenu />),
+      hasArrow: true,
+    },
+  ];
 
   const menuItems = [
     [
@@ -40,28 +67,7 @@ export const Menu = () => {
         onClick: () => openDrawer(<AdvancedMenu />),
         hasArrow: true,
       },
-      {
-        label: "Address Book",
-        icon: <BookIcon />,
-        onClick: () => openDrawer(<AddressBookMenu />),
-        hasArrow: true,
-      },
-      {
-        label: "Add Account",
-        icon: <UserPlusIcon />,
-        onClick: openOnboardingModal,
-      },
-      {
-        label: "Save Backup",
-        icon: <DownloadIcon />,
-        onClick: downloadBackupFile,
-      },
-      {
-        label: "Apps",
-        icon: <CodeSandboxIcon />,
-        onClick: () => openDrawer(<AppsMenu />),
-        hasArrow: true,
-      },
+      ...(isVerified ? menuItemsForVerifiedUser : []),
     ],
     [
       {
