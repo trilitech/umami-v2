@@ -26,6 +26,8 @@ export const Activity = () => {
   // otherwise it might be called multiple times which would trigger multiple fetches
   const skipLoadMore = useRef<boolean>(false);
 
+  const isEmpty = operations.length === 0 && !isLoading;
+
   const onScroll = (e: UIEvent<HTMLDivElement>) => {
     if (skipLoadMore.current || !hasMore || isLoading) {
       return;
@@ -43,15 +45,13 @@ export const Activity = () => {
 
   return (
     <>
-      <ViewOverlay iconType="activity" />
       <Flex zIndex={1} flexDirection="column" flexGrow={1}>
         <Center display={isLoading && isFirstLoad ? "flex" : "none"} height="100%">
           <Image width="150px" height="75px" marginBottom="136px" src={loadingWheel} />
         </Center>
 
         {isVerified ? (
-          operations.length === 0 &&
-          !isLoading && (
+          isEmpty && (
             <EmptyMessage
               margin="auto"
               cta="Buy Tez Now"
@@ -87,6 +87,7 @@ export const Activity = () => {
           </Box>
         )}
       </Flex>
+      {isEmpty && <ViewOverlay iconType="activity" />}
     </>
   );
 };

@@ -34,7 +34,7 @@ export const Tokens = () => {
           <VerifyMessage />
         )}
       </Flex>
-      <ViewOverlay iconType="tokens" />
+      {!availableTokens.length && <ViewOverlay iconType="tokens" />}
     </>
   );
 };

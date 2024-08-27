@@ -17,13 +17,13 @@ import {
   SettingsIcon,
   UserPlusIcon,
 } from "../../assets/icons";
+import { useCheckVerified } from "../Onboarding/useCheckUnverified";
 
 // TODO: Make this work
 export const useOnboardingModal = () => ({
   onOpen: () => {},
   modalElement: <></>,
 });
-import { useCheckVerified } from "../Onboarding/useCheckUnverified";
 
 export const Menu = () => {
   const { openWith: openModal } = useDynamicModalContext();

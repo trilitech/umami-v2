@@ -5,7 +5,7 @@ import { AddressBookMenu } from "./AddressBookMenu/AddressBookMenu";
 import { AdvancedMenu } from "./AdvancedMenu/AdvancedMenu";
 import { AppsMenu } from "./AppsMenu/AppsMenu";
 import { LogoutModal } from "./LogoutModal";
-import { Menu, useOnboardingModal } from "./Menu";
+import { Menu } from "./Menu";
 import {
   dynamicDrawerContextMock,
   dynamicModalContextMock,
@@ -88,14 +88,15 @@ describe("<Menu />", () => {
       expect(useColorMode().toggleColorMode).toHaveBeenCalled();
     });
 
-    it("opens Add Account modal when Add Account button is clicked", async () => {
-      const user = userEvent.setup();
-      await renderInDrawer(<Menu />);
+    // TODO: add when Add Account logic is ready
+    // it("opens Add Account modal when Add Account button is clicked", async () => {
+    //   const user = userEvent.setup();
+    //   await renderInDrawer(<Menu />);
 
-      await user.click(screen.getByText("Add Account"));
+    //   await user.click(screen.getByText("Add Account"));
 
-      expect(useOnboardingModal().onOpen).toHaveBeenCalled();
-    });
+    //   expect(useOnboardingModal().onOpen).toHaveBeenCalled();
+    // });
   });
 
   describe("when user is unverified", () => {

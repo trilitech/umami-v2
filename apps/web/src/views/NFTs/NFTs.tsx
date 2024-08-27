@@ -65,7 +65,7 @@ export const NFTs = () => {
           <VerifyMessage />
         )}
       </Flex>
-      <ViewOverlay iconType="nfts" />
+      {!nfts.length && <ViewOverlay iconType="nfts" />}
     </>
   );
 };
