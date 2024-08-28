@@ -139,7 +139,7 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
             {keepValid ? (
               <Icon as={ChevronDownIcon} marginRight="12px" data-testid="chevron-icon" />
             ) : (
-              <CrossButton marginRight="14px" onClick={clearInput} />
+              <CrossButton marginRight="12px" onClick={clearInput} />
             )}
           </Center>
         </Box>
@@ -148,6 +148,7 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
         <InputGroup>
           <Input
             {...style}
+            paddingRight="40px"
             aria-label={inputName}
             autoComplete="off"
             id={inputId}
@@ -165,9 +166,9 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
             placeholder="Enter address or contact name"
             value={rawValue}
           />
-          <InputRightElement>
+          <InputRightElement marginRight="12px">
             {rawValue ? (
-              <CrossButton marginRight="0px" onClick={clearInput} />
+              <CrossButton width="16px" height="auto" onClick={clearInput} />
             ) : (
               <ChevronDownIcon data-testid="chevron-icon" />
             )}
@@ -188,13 +189,7 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
 };
 
 const CrossButton = (props: IconProps) => (
-  <Icon
-    as={XMarkIcon}
-    marginRight="16px"
-    cursor="pointer"
-    data-testid="clear-input-button"
-    {...props}
-  />
+  <Icon as={XMarkIcon} cursor="pointer" data-testid="clear-input-button" {...props} />
 );
 
 export const OwnedImplicitAccountsAutocomplete = <T extends FieldValues, U extends Path<T>>(

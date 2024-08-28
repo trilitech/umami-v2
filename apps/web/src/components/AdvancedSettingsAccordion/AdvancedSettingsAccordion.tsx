@@ -53,13 +53,13 @@ export const AdvancedSettingsAccordion = ({ index = 0 }: AdvancedSettingsAccordi
   return (
     <Accordion width="full" marginTop="16px" allowToggle>
       <AccordionItem background={color("100")} border="none" borderRadius="8px">
-        <AccordionButton>
+        <AccordionButton borderRadius="full">
           <Heading flex="1" textAlign="left" marginY="10px" size="md">
             Advanced
           </Heading>
           <AccordionIcon />
         </AccordionButton>
-        <AccordionPanel gap="16px" display="flex">
+        <AccordionPanel gap="16px" display="flex" padding="16px">
           <FormControl>
             <FormLabel fontSize="14px">Fee</FormLabel>
             <InputGroup>
