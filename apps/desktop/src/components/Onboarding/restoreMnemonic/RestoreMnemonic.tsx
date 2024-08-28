@@ -65,7 +65,7 @@ export const RestoreMnemonic = ({ goToStep }: { goToStep: (step: OnboardingStep)
     handleAsyncAction(async () => {
       const mnemonic = Object.values(data).join(" ").trim();
       if (!validateMnemonic(mnemonic)) {
-        throw new Error(`Invalid Mnemonic: "${mnemonic}"`);
+        throw new Error("Invalid Mnemonic");
       }
       goToStep({
         type: "nameAccount",

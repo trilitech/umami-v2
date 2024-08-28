@@ -47,6 +47,7 @@ export const useRestoreV1BackupFile = () => {
         password,
         label: DEFAULT_ACCOUNT_LABEL,
         derivationPathTemplate: derivationPaths[i],
+        curve: "ed25519",
       });
     }
   };

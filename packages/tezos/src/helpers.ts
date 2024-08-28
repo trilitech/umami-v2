@@ -74,7 +74,7 @@ export const getPublicKeyPairFromSk = async (sk: string): Promise<PublicKeyPair>
 export const derivePublicKeyPair = async (
   mnemonic: string,
   derivationPath: string,
-  curve: Curves = "ed25519"
+  curve: Curves
 ): Promise<PublicKeyPair> =>
   deriveSecretKey(mnemonic, derivationPath, curve).then(getPublicKeyPairFromSk);
 
@@ -94,9 +94,17 @@ export const isValidMichelson = (object: any): boolean => {
   }
 };
 
-export const getLedgerPublicKeyPair = async (derivationPath?: string): Promise<PublicKeyPair> => {
+export const getLedgerPublicKeyPair = async (
+  derivationPath: string,
+  curve: Curves
+): Promise<PublicKeyPair> => {
   const transport = await TransportWebUSB.create();
-  const ledgerSigner = new LedgerSigner(transport, derivationPath, true);
+  const ledgerSigner = new LedgerSigner(
+    transport,
+    derivationPath,
+    true,
+    curveToDerivationType(curve)
+  );
   const pk = await ledgerSigner.publicKey();
   const pkh = await ledgerSigner.publicKeyHash();
   await transport.close();
@@ -105,3 +113,24 @@ export const getLedgerPublicKeyPair = async (derivationPath?: string): Promise<P
 
 export const getIPFSurl = (ipfsPath?: string) =>
   ipfsPath?.replace("ipfs://", "https://ipfs.io/ipfs/");
+
+// todo: test
+export const decryptSecretKey = async (secretKey: string, password: string) => {
+  try {
+    const signer = await InMemorySigner.fromSecretKey(secretKey.trim(), password);
+    return await signer.secretKey();
+  } catch (error: any) {
+    const message = error.message || "";
+
+    // if the password doesn't match taquito throws this error
+    if (message.includes("Cannot read properties of null")) {
+      throw new Error("Key-password pair is invalid");
+    }
+
+    if (message.includes("Invalid checksum")) {
+      throw new Error("Invalid secret key: checksum doesn't match");
+    }
+
+    throw error;
+  }
+};

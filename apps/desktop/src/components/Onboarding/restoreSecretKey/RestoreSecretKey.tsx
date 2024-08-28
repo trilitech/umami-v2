@@ -1,6 +1,6 @@
 import { Button, FormControl, FormErrorMessage, FormLabel, Textarea } from "@chakra-ui/react";
-import { InMemorySigner } from "@taquito/signer";
 import { isEncryptedSecretKeyPrefix, useAsyncActionHandler } from "@umami/state";
+import { decryptSecretKey } from "@umami/tezos";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
@@ -32,29 +32,11 @@ export const RestoreSecretKey = ({ goToStep }: { goToStep: (step: OnboardingStep
     password: string;
   }) =>
     handleAsyncAction(async () => {
-      try {
-        // validate secret key
-        const signer = await InMemorySigner.fromSecretKey(rawSecretKey.trim(), password);
-        const unencryptedSecretKey = await signer.secretKey();
-
-        goToStep({
-          type: "nameAccount",
-          account: { type: "secret_key", secretKey: unencryptedSecretKey },
-        });
-      } catch (error: any) {
-        const message = error.message || "";
-
-        // if the password doesn't match taquito throws this error
-        if (message.includes("Cannot read properties of null")) {
-          throw new Error("Key-password pair is invalid");
-        }
-
-        if (message.includes("Invalid checksum")) {
-          throw new Error("Invalid secret key: checksum doesn't match");
-        }
-
-        throw error;
-      }
+      const unencryptedSecretKey = await decryptSecretKey(rawSecretKey.trim(), password);
+      goToStep({
+        type: "nameAccount",
+        account: { type: "secret_key", secretKey: unencryptedSecretKey },
+      });
     });
 
   return (

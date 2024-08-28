@@ -16,7 +16,7 @@
     "lint:ci": "eslint src --ext .ts,.tsx --max-warnings=0",
     "lint": "eslint src --ext .ts,.tsx --fix",
     "preview": "vite preview",
-    "test:watch": "cross-env DEV=true pnpm test --watch",
+    "test:watch": "cross-env DEV=true pnpm run test --watch",
     "test": "cross-env TZ=CET jest",
     "storybook": "storybook dev -p 6006",
     "build:storybook": "storybook build"

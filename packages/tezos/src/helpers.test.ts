@@ -8,6 +8,7 @@ import { defaultDerivationPathTemplate, getDefaultDerivationPath } from "./deriv
 import { isAccountRevealed } from "./fetch";
 import {
   curveToDerivationType,
+  decryptSecretKey,
   derivePublicKeyPair,
   deriveSecretKey,
   getFingerPrint,
@@ -165,6 +166,43 @@ describe("helpers", () => {
 
     it("converts an IPFS URI to an HTTP one", () => {
       expect(getIPFSurl("ipfs://some/image/uri")).toBe("https://ipfs.io/ipfs/some/image/uri");
+    });
+  });
+
+  describe("decryptSecretKey", () => {
+    const ENCRYPTED_SECRET_KEY =
+      "edesk1GXwWmGjXiLHBKxGBxwmNvG21vKBh6FBxc4CyJ8adQQE2avP5vBB57ZUZ93Anm7i4k8RmsHaPzVAvpnHkFF";
+    const UNENCRYPTED_SECRET_KEY =
+      "edskRk1hRPhBCsGRDfqRBKDY5ecPKLfBhQDC4MvmWwa8i8dXUiGEyWJ7vUDjFo1k59PHfRrQKSEM9ieJNH3FbqrrDFg18ZZorh";
+
+    it("returns the same key if it's not encrypted", async () => {
+      await expect(decryptSecretKey(UNENCRYPTED_SECRET_KEY, "")).resolves.toEqual(
+        UNENCRYPTED_SECRET_KEY
+      );
+    });
+
+    it("returns the same key if it's not encrypted when arbitrary password is provided", async () => {
+      await expect(decryptSecretKey(UNENCRYPTED_SECRET_KEY, "test pass")).resolves.toEqual(
+        UNENCRYPTED_SECRET_KEY
+      );
+    });
+
+    it("decrypts the key if it's encrypted", async () => {
+      await expect(decryptSecretKey(ENCRYPTED_SECRET_KEY, "test")).resolves.toEqual(
+        UNENCRYPTED_SECRET_KEY
+      );
+    });
+
+    it("throws an error if the password is incorrect", async () => {
+      await expect(decryptSecretKey(ENCRYPTED_SECRET_KEY, "wrong password")).rejects.toThrow(
+        "Key-password pair is invalid"
+      );
+    });
+
+    it("throws when the key is invalid", async () => {
+      await expect(decryptSecretKey(UNENCRYPTED_SECRET_KEY + "asdasd", "")).rejects.toThrow(
+        "Invalid secret key: checksum doesn't match"
+      );
     });
   });
 });

@@ -34,19 +34,27 @@ export const AccountTileIcon = ({
     case "social": {
       switch (account.idp) {
         case "facebook":
-          return <Icon as={FacebookIcon} width="48px" height="48px" />;
+          return <FacebookAccountIcon />;
         case "google":
-          return <Icon as={GoogleIcon} width="48px" height="48px" />;
+          return <GoogleAccountIcon />;
         case "twitter":
-          return <Icon as={TwitterIcon} width="28px" height="28px" />;
+          return <TwitterAccountIcon />;
         case "email":
           return <Icon as={EnvelopeIcon} width="28px" height="28px" color={color("600")} />;
         case "reddit":
-          return <Icon as={RedditIcon} width="28px" height="28px" />;
+          return <RedditAccountIcon />;
       }
     }
     // eslint-disable-next-line no-fallthrough
     case "secret_key":
-      return <Icon as={KeyIcon} width="28px" height="28px" color={color("600")} />;
+      return <Icon as={KeyIcon} width="28px" height="28px" color={color("600", "white")} />;
   }
 };
+
+export const FacebookAccountIcon = () => <Icon as={FacebookIcon} width="48px" height="48px" />;
+
+export const GoogleAccountIcon = () => <Icon as={GoogleIcon} width="48px" height="48px" />;
+
+export const TwitterAccountIcon = () => <Icon as={TwitterIcon} width="28px" height="28px" />;
+
+export const RedditAccountIcon = () => <Icon as={RedditIcon} width="28px" height="28px" />;

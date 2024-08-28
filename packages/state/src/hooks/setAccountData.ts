@@ -1,3 +1,4 @@
+import { type Curves } from "@taquito/signer";
 import {
   type ImplicitAccount,
   type LedgerAccount,
@@ -45,23 +46,27 @@ export const useRestoreFromMnemonic = () => {
   const network = useSelectedNetwork();
   const restoreRevealedMnemonicAccounts = useRestoreRevealedMnemonicAccounts();
   const dispatch = useDispatch();
+
   return async ({
     mnemonic,
     password,
     derivationPathTemplate,
     label,
+    curve,
   }: {
     mnemonic: string;
     password: string;
     derivationPathTemplate: string;
     label: string;
+    curve: Curves;
   }) => {
     const seedFingerprint = await getFingerPrint(mnemonic);
     const accounts = await restoreRevealedMnemonicAccounts(
       mnemonic,
       network,
       derivationPathTemplate,
-      label
+      label,
+      curve
     );
     const encryptedMnemonic = await encrypt(mnemonic, password);
 
@@ -116,20 +121,20 @@ export const useDeriveMnemonicAccount = () => {
     const nextIndex = existingGroupAccounts.length;
 
     // Newly derived accounts use a derivation path in the same pattern as the first account
-    const pattern = existingGroupAccounts[0].derivationPathTemplate;
+    const { derivationPathTemplate, curve } = existingGroupAccounts[0];
 
-    const nextDerivationPath = makeDerivationPath(pattern, nextIndex);
-    const { pk, pkh } = await derivePublicKeyPair(seedphrase, nextDerivationPath);
+    const nextDerivationPath = makeDerivationPath(derivationPathTemplate, nextIndex);
+    const { pk, pkh } = await derivePublicKeyPair(seedphrase, nextDerivationPath, curve);
 
     const uniqueLabel = getNextAvailableAccountLabels(label, 1)[0];
     const account: MnemonicAccount = {
       type: "mnemonic",
-      curve: "ed25519",
+      curve,
       pk,
       address: { type: "implicit", pkh },
       derivationPath: nextDerivationPath,
       seedFingerPrint: fingerPrint,
-      derivationPathTemplate: pattern,
+      derivationPathTemplate,
       label: uniqueLabel,
     };
 
@@ -152,24 +157,8 @@ export const useRestoreFromSecretKey = () => {
 
 export const useRestoreLedger = () => {
   const dispatch = useAppDispatch();
-  return (
-    derivationPathTemplate: string | undefined,
-    derivationPath: string,
-    pk: string,
-    pkh: string,
-    label: string
-  ) => {
-    const account: LedgerAccount = {
-      derivationPathTemplate,
-      derivationPath,
-      curve: "ed25519",
-      type: "ledger",
-      pk: pk,
-      address: { type: "implicit", pkh },
-      label,
-    };
-    dispatch(addAccount(account));
-  };
+
+  return (account: LedgerAccount) => dispatch(addAccount(account));
 };
 
 export const useRestoreSocial = () => {

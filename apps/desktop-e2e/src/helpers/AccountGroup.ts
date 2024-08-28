@@ -93,7 +93,8 @@ export class AccountGroupBuilder {
     for (let i = 0; i < this.accountGroup.accounts.length; i++) {
       const keyPair = await derivePublicKeyPair(
         this.seedPhrase.join(" "),
-        makeDerivationPath(this.derivationPathTemplate, i)
+        makeDerivationPath(this.derivationPathTemplate, i),
+        "ed25519"
       );
       this.accountGroup.accounts[i].pkh = keyPair.pkh;
     }

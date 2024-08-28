@@ -4,7 +4,7 @@ import { type StyleFunctionProps, mode } from "@chakra-ui/theme-tools";
 import { dark, light } from "./colors";
 
 const config = {
-  initialColorMode: "light",
+  initialColorMode: "dark",
   useSystemColorMode: false,
 };
 
@@ -47,6 +47,24 @@ const sizes = {
 const theme = extendTheme({
   components: {
     Accordion: {
+      variants: {
+        onboarding: {
+          button: {
+            justifyContent: "center",
+            height: "60px",
+            padding: "6px 5px",
+            background: "none",
+            borderWidth: "1.5px",
+            borderStyle: "solid",
+            borderColor: "gray.100",
+            borderRadius: "70px",
+            _hover: { background: "none" },
+          },
+          panel: {
+            padding: "6px",
+          },
+        },
+      },
       baseStyle: {
         panel: {
           padding: "10px 0",
@@ -93,6 +111,10 @@ const theme = extendTheme({
           fontSize: "24px",
           lineHeight: "32px",
         },
+        "3xl": {
+          fontSize: "30px",
+          lineHeight: "36px",
+        },
       },
     },
     Card: {
@@ -114,6 +136,22 @@ const theme = extendTheme({
       },
       defaultProps: { variant: "filled" },
       variants: {
+        mnemonic: {
+          field: {
+            borderRadius: "34px",
+            height: { lg: "48px", base: "34px" },
+            border: "1px solid",
+            background: "none",
+            borderColor: "gray.100",
+            fontSize: { lg: "18px", base: "12px" },
+            paddingLeft: { base: "30px", lg: "50px" },
+            paddingRight: "10px",
+            _placeholder: {
+              color: "gray.400",
+            },
+            color: light.grey.white,
+          },
+        },
         filled: {
           field: {
             padding: "16px",
@@ -130,6 +168,47 @@ const theme = extendTheme({
             _focusVisible: {
               borderColor: "gray.400",
             },
+          },
+        },
+      },
+    },
+    List: {
+      variants: {
+        suggestions: {
+          item: {
+            _hover: {
+              background: "gray.400",
+            },
+            background: "gray.200",
+            borderRadius: "4px",
+            cursor: "pointer",
+            height: "30px",
+            listStyleType: "none",
+          },
+          container: {
+            background: "gray.200",
+            border: "1px solid",
+            borderColor: "gray.100",
+            borderRadius: "8px",
+            listStyleType: "none",
+            maxHeight: "230px",
+            width: "200px",
+            marginLeft: "0 !important",
+            overflowX: "hidden",
+            padding: "10px",
+            position: "absolute",
+            zIndex: 2,
+          },
+        },
+        explanation: {
+          item: {
+            display: "flex",
+            gap: "10px",
+            borderRadius: "6px",
+            padding: "12px 24px",
+            fontSize: "16px",
+            backgroundColor: "gray.100",
+            color: "gray.500",
           },
         },
       },
@@ -158,6 +237,25 @@ const theme = extendTheme({
           _hover: {
             bg: "gray.100",
             color: "gray.600",
+          },
+        },
+        tabpanel: {
+          padding: 0,
+        },
+      },
+      variants: {
+        onboarding: {
+          tab: {
+            borderRadius: "full",
+            _hover: {
+              background: "gray.100",
+            },
+            _selected: {
+              background: "gray.100",
+              _hover: {
+                background: "gray.100",
+              },
+            },
           },
         },
       },
@@ -247,6 +345,22 @@ const theme = extendTheme({
             color: "gray.600",
           },
         },
+        outline: {
+          borderColor: "gray.100",
+          _hover: {
+            background: "gray.100",
+          },
+          _active: {
+            background: "gray.100",
+          },
+        },
+        solid: {
+          border: "1px solid",
+          background: "gray.100",
+          _hover: {
+            background: "gray.100",
+          },
+        },
         dropdownOption: {
           display: "flex",
           justifyContent: "flex-start",
@@ -321,6 +435,12 @@ const theme = extendTheme({
             _hover: { bg: dark.grey[300] },
           },
         },
+        socialLogin: {
+          backgroundColor: "black",
+          _hover: {
+            backgroundColor: "gray.700",
+          },
+        },
         empty: {
           bg: "transparent",
           minWidth: "auto",
@@ -366,6 +486,15 @@ const theme = extendTheme({
       },
     },
     Modal: {
+      sizes: {
+        xl: {
+          dialog: {
+            minWidth: { base: "100%", lg: "536px" },
+            maxWidth: "100%",
+            marginX: 0,
+          },
+        },
+      },
       baseStyle: {
         closeButton: {
           bg: "transparent",
@@ -415,6 +544,13 @@ const theme = extendTheme({
           padding: 0,
           justifyContent: "center",
           marginTop: "30px",
+        },
+      },
+      variants: {
+        onboarding: {
+          dialog: {
+            marginBottom: { base: 0, lg: "100px" },
+          },
         },
       },
     },
