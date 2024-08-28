@@ -51,25 +51,23 @@ export const AccountBalance = () => {
         justifyContent="space-between"
         marginTop={{ base: "20px", lg: "40px" }}
       >
-        <Link
+        <IconButtonWithText
+          as={Link}
           pointerEvents={isVerified ? "auto" : "none"}
           href={isVerified ? buyTezUrl : ""}
+          icon={WalletIcon}
+          isDisabled={!isVerified}
           isExternal
-        >
-          <IconButtonWithText
-            icon={WalletIcon}
-            isDisabled={!isVerified}
-            label="Buy"
-            variant="secondary"
-          />
-        </Link>
+          label="Buy"
+          variant="iconButtonSolid"
+        />
         <Flex gap="24px">
           <IconButtonWithText
             icon={ArrowDownLeftIcon}
             isDisabled={!isVerified}
             label="Receive"
             onClick={() => openWith(<AccountInfoModal account={currentAccount} />)}
-            variant="secondary"
+            variant="iconButtonSolid"
           />
           <SendTezButton />
         </Flex>

@@ -104,9 +104,10 @@ describe("<AccountBalance />", () => {
     it.each(["Buy", "Send", "Receive"])("%s button is disabled", buttonName => {
       render(<AccountBalance />, { store });
 
-      const button = screen.getByRole("button", { name: buttonName });
+      const button = screen.getByLabelText(buttonName);
 
-      expect(button).toBeDisabled();
+      // eslint-disable-next-line jest-dom/prefer-enabled-disabled
+      expect(button).toHaveAttribute("disabled");
     });
   });
 });

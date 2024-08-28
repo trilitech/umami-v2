@@ -323,8 +323,10 @@ const theme = extendTheme({
       baseStyle: {
         borderRadius: "full",
         _disabled: {
+          bg: "gray.100",
+          color: "gray.300",
           opacity: 1,
-          pointerEvents: "none",
+          cursor: "auto",
         },
         _hover: {
           _disabled: {
@@ -425,13 +427,23 @@ const theme = extendTheme({
           _hover: { background: "gray.100" },
         },
         iconButtonSolid: {
-          bg: light.grey[100],
-          color: light.grey[900],
-          _hover: { bg: light.grey[200] },
+          bg: "gray.100",
+          color: "gray.900",
+          _hover: { bg: "gray.200" },
           _dark: {
-            bg: dark.grey[100],
-            color: dark.grey[900],
-            _hover: { bg: dark.grey[300] },
+            bg: "gray.100",
+            color: "gray.900",
+            _hover: { bg: "gray.300" },
+          },
+          _disabled: {
+            _hover: {
+              _dark: {
+                bg: "gray.100",
+              },
+            },
+            _dark: {
+              color: "gray.300",
+            },
           },
         },
         socialLogin: {
