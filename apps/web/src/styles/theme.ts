@@ -200,6 +200,17 @@ const theme = extendTheme({
             zIndex: 2,
           },
         },
+        explanation: {
+          item: {
+            display: "flex",
+            gap: "10px",
+            borderRadius: "6px",
+            padding: "12px 24px",
+            fontSize: "16px",
+            backgroundColor: "gray.100",
+            color: "gray.500",
+          },
+        },
       },
     },
     FormLabel: {

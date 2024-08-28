@@ -6,8 +6,9 @@ import {
 } from "@umami/state";
 import { mnemonic1 } from "@umami/test-utils";
 
-import { CURVES, SetupPassword } from "./SetupPassword";
+import { SetupPassword } from "./SetupPassword";
 import { act, fireEvent, renderInModal, screen, userEvent, waitFor } from "../../../testUtils";
+import { CURVES } from "../AdvancedAccountSettings";
 
 jest.mock("@umami/state", () => ({
   ...jest.requireActual("@umami/state"),

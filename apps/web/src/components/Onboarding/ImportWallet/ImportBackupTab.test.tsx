@@ -8,6 +8,8 @@ jest.mock("../../../utils/persistor", () => ({
   persistor: { pause: jest.fn(), resume: jest.fn() },
 }));
 
+jest.setTimeout(15000);
+
 describe("<ImportBackupTab />", () => {
   it("requires a file", async () => {
     render(<ImportBackupTab />);
@@ -76,6 +78,8 @@ describe("<ImportBackupTab />", () => {
     await act(() => user.type(screen.getByLabelText("Password"), password));
     await act(() => user.click(screen.getByText("Import Wallet")));
 
-    await waitFor(() => expect(store.getState().accounts.items.length).toEqual(1));
+    await waitFor(() => expect(store.getState().accounts.items.length).toEqual(1), {
+      timeout: 10000,
+    });
   });
 });

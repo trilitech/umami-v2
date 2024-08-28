@@ -157,24 +157,8 @@ export const useRestoreFromSecretKey = () => {
 
 export const useRestoreLedger = () => {
   const dispatch = useAppDispatch();
-  return (
-    derivationPathTemplate: string | undefined,
-    derivationPath: string,
-    pk: string,
-    pkh: string,
-    label: string
-  ) => {
-    const account: LedgerAccount = {
-      derivationPathTemplate,
-      derivationPath,
-      curve: "ed25519",
-      type: "ledger",
-      pk: pk,
-      address: { type: "implicit", pkh },
-      label,
-    };
-    dispatch(addAccount(account));
-  };
+
+  return (account: LedgerAccount) => dispatch(addAccount(account));
 };
 
 export const useRestoreSocial = () => {

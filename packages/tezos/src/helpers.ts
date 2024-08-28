@@ -94,9 +94,17 @@ export const isValidMichelson = (object: any): boolean => {
   }
 };
 
-export const getLedgerPublicKeyPair = async (derivationPath?: string): Promise<PublicKeyPair> => {
+export const getLedgerPublicKeyPair = async (
+  derivationPath: string,
+  curve: Curves
+): Promise<PublicKeyPair> => {
   const transport = await TransportWebUSB.create();
-  const ledgerSigner = new LedgerSigner(transport, derivationPath, true);
+  const ledgerSigner = new LedgerSigner(
+    transport,
+    derivationPath,
+    true,
+    curveToDerivationType(curve)
+  );
   const pk = await ledgerSigner.publicKey();
   const pkh = await ledgerSigner.publicKeyHash();
   await transport.close();
