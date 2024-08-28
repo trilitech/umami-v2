@@ -1,5 +1,9 @@
 import { mockToast } from "@umami/state";
-import { defaultDerivationPathTemplate, getLedgerPublicKeyPair } from "@umami/tezos";
+import {
+  defaultDerivationPathTemplate,
+  getLedgerPublicKeyPair,
+  mockImplicitAddress,
+} from "@umami/tezos";
 
 import { RestoreLedger } from "./RestoreLedger";
 import { act, render, screen, userEvent } from "../../../mocks/testUtils";
@@ -25,7 +29,7 @@ const fixture = () => {
 describe("<RestoreLedger />", () => {
   test("success", async () => {
     const user = userEvent.setup();
-    getPkMock.mockResolvedValue({ pk: "test", pkh: "test" });
+    getPkMock.mockResolvedValue({ pk: "test", pkh: mockImplicitAddress(0).pkh });
     render(fixture());
 
     const confirmBtn = screen.getByRole("button", {

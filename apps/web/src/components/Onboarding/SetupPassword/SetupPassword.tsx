@@ -1,20 +1,9 @@
 import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
   Button,
   Center,
   Flex,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
   Heading,
   Icon,
-  Input,
-  InputGroup,
-  InputRightElement,
   ModalBody,
   ModalCloseButton,
   ModalContent,
@@ -35,7 +24,7 @@ import { LockIcon } from "../../../assets/icons";
 import { useColor } from "../../../styles/useColor";
 import { ModalBackButton } from "../../BackButton";
 import { PasswordInput } from "../../PasswordInput";
-import { RadioButtons } from "../../RadioButtons";
+import { AdvancedAccountSettings } from "../AdvancedAccountSettings";
 
 type FormFields = {
   password: string;
@@ -43,8 +32,6 @@ type FormFields = {
   derivationPath: string;
   curve: Exclude<Curves, "bip25519">;
 };
-
-export const CURVES = ["ed25519", "secp256k1", "p256"];
 
 export const SetupPassword = ({ mode }: { mode: "mnemonic" | "secret_key" }) => {
   const color = useColor();
@@ -61,9 +48,7 @@ export const SetupPassword = ({ mode }: { mode: "mnemonic" | "secret_key" }) => 
   });
 
   const {
-    formState: { errors, isValid },
-    register,
-    resetField,
+    formState: { isValid },
     getValues,
   } = form;
 
@@ -116,62 +101,7 @@ export const SetupPassword = ({ mode }: { mode: "mnemonic" | "secret_key" }) => 
                 validate={value => value === getValues("password") || "Passwords do not match"}
               />
 
-              {mode === "mnemonic" && (
-                <Accordion marginTop="6px" allowToggle data-testid="advanced-section">
-                  <AccordionItem>
-                    <AccordionButton justifyContent="center" color={color("900")}>
-                      <Heading size="md">Advanced</Heading>
-                      <AccordionIcon />
-                    </AccordionButton>
-
-                    <AccordionPanel>
-                      <Flex flexDirection="column" gap="24px">
-                        <FormControl isInvalid={!!errors.curve}>
-                          <FormLabel>Elliptic Curve</FormLabel>
-                          <Flex gap="8px">
-                            <RadioButtons
-                              fontSize="sm"
-                              fontWeight="400"
-                              inputName="curve"
-                              options={CURVES}
-                            />
-                          </Flex>
-                        </FormControl>
-
-                        <FormControl isInvalid={!!errors.derivationPath}>
-                          <FormLabel>Derivation Path</FormLabel>
-
-                          <InputGroup>
-                            <Input
-                              {...register("derivationPath", {
-                                required: "Derivation path is required",
-                              })}
-                              placeholder="m/44'/1729'/?'/0' (default)"
-                            />
-                            <InputRightElement>
-                              <Button
-                                marginRight="10px"
-                                color={color("200")}
-                                fontWeight="600"
-                                background={color("black")}
-                                borderRadius="4px"
-                                _hover={{ background: color("400") }}
-                                onClick={() => resetField("derivationPath")}
-                                size="sm"
-                              >
-                                Reset
-                              </Button>
-                            </InputRightElement>
-                          </InputGroup>
-                          {errors.derivationPath && (
-                            <FormErrorMessage>{errors.derivationPath.message}</FormErrorMessage>
-                          )}
-                        </FormControl>
-                      </Flex>
-                    </AccordionPanel>
-                  </AccordionItem>
-                </Accordion>
-              )}
+              {mode === "mnemonic" && <AdvancedAccountSettings />}
 
               <Button
                 width="full"

@@ -3,7 +3,12 @@ import { Button, FormControl, FormLabel, Input } from "@chakra-ui/react";
 import { RpcClient } from "@taquito/rpc";
 import type { IDP } from "@umami/social-auth";
 import { useRestoreLedger, useRestoreSocial } from "@umami/state";
-import { GHOSTNET, defaultDerivationPathTemplate, makeDerivationPath } from "@umami/tezos";
+import {
+  GHOSTNET,
+  defaultDerivationPathTemplate,
+  makeDerivationPath,
+  parseImplicitPkh,
+} from "@umami/tezos";
 import { useForm } from "react-hook-form";
 
 import { ModalContentWrapper } from "./ModalContentWrapper";
@@ -31,13 +36,15 @@ export const FakeAccount = ({ onClose }: { onClose: () => void }) => {
     if (idp) {
       restoreSocial(pk, pkh, name, idp);
     } else {
-      restoreLedger(
-        defaultDerivationPathTemplate,
-        makeDerivationPath(defaultDerivationPathTemplate, 0),
+      restoreLedger({
+        type: "ledger",
+        derivationPathTemplate: defaultDerivationPathTemplate,
+        derivationPath: makeDerivationPath(defaultDerivationPathTemplate, 0),
         pk,
-        pkh,
-        name
-      );
+        address: parseImplicitPkh(pkh),
+        label: name,
+        curve: "ed25519",
+      });
     }
     onClose();
   };

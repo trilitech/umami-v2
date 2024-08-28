@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 
 import { ImportBackupTab } from "./ImportBackupTab";
+import { LedgerTab } from "./LedgerTab";
 import { SecretKeyTab } from "./SecretKeyTab";
 import { SeedPhraseTab } from "./SeedPhraseTab";
 import { LoginIcon } from "../../../assets/icons";
@@ -31,7 +32,7 @@ export const ImportWallet = () => {
         </Center>
       </ModalHeader>
       <ModalBody>
-        <Tabs variant="onboarding">
+        <Tabs isLazy variant="onboarding">
           <TabSwitch options={["Seed Phrase", "Secret Key", "Backup", "Ledger"]} />
 
           <TabPanels padding="30px 0 0 0">
@@ -44,7 +45,9 @@ export const ImportWallet = () => {
             <TabPanel>
               <ImportBackupTab />
             </TabPanel>
-            <TabPanel>Ledger</TabPanel>
+            <TabPanel>
+              <LedgerTab />
+            </TabPanel>
           </TabPanels>
         </Tabs>
       </ModalBody>

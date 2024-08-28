@@ -1,7 +1,7 @@
 import { Button, ListItem, OrderedList, VStack, useToast } from "@chakra-ui/react";
 import { withTimeout } from "@umami/core";
 import { useAsyncActionHandler, useRestoreLedger } from "@umami/state";
-import { getLedgerPublicKeyPair, makeDerivationPath } from "@umami/tezos";
+import { getLedgerPublicKeyPair, makeDerivationPath, parseImplicitPkh } from "@umami/tezos";
 
 import { USBIcon } from "../../../assets/icons";
 import { ModalContentWrapper } from "../ModalContentWrapper";
@@ -49,9 +49,19 @@ export const RestoreLedger = ({
 
           const derivationPath = account.derivationPathTemplate
             ? makeDerivationPath(account.derivationPathTemplate, 0)
-            : account.derivationPath;
-          const { pk, pkh } = await getLedgerPublicKeyPair(derivationPath);
-          restoreLedger(account.derivationPathTemplate, derivationPath!, pk, pkh, account.label);
+            : account.derivationPath!;
+          // TODO: add support for other curves
+          const curve = "ed25519";
+          const { pk, pkh } = await getLedgerPublicKeyPair(derivationPath, curve);
+          restoreLedger({
+            type: "ledger",
+            derivationPath,
+            pk,
+            address: parseImplicitPkh(pkh),
+            curve,
+            label: account.label,
+            derivationPathTemplate: account.derivationPathTemplate,
+          });
           toast.close(toastId);
           toast({ description: "Account successfully created!", status: "success" });
           closeModal();
