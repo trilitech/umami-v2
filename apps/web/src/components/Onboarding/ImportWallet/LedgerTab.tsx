@@ -1,4 +1,4 @@
-import { Button, Flex, Heading, Link, ListItem, OrderedList } from "@chakra-ui/react";
+import { Button, Flex, Heading, Link, ListItem, OrderedList, Text } from "@chakra-ui/react";
 import { type Curves } from "@taquito/signer";
 import { useDynamicModalContext, useMultiForm } from "@umami/components";
 import {
@@ -76,32 +76,38 @@ export const LedgerTab = () => {
               <Heading color={color("black")} size="lg">
                 3
               </Heading>
-              Ensure your ledger has the{" "}
-              <Link
-                textDecoration="underline"
-                _hover={{ color: color("600") }}
-                href="https://support.ledger.com/article/360002731113-zd"
-                isExternal
-              >
-                latest firmware
-              </Link>{" "}
-              version
+
+              <Text>
+                Ensure your ledger has the{" "}
+                <Link
+                  textDecoration="underline"
+                  _hover={{ color: color("600") }}
+                  href="https://support.ledger.com/article/360002731113-zd"
+                  isExternal
+                >
+                  latest firmware
+                </Link>{" "}
+                version
+              </Text>
             </ListItem>
 
             <ListItem>
               <Heading color={color("black")} size="lg">
                 4
               </Heading>
-              Install & open the{" "}
-              <Link
-                textDecoration="underline"
-                _hover={{ color: color("600") }}
-                href="https://support.ledger.com/article/360016057774-zd"
-                isExternal
-              >
-                Tezos Wallet
-              </Link>{" "}
-              app on your ledger
+
+              <Text>
+                Install & open the{" "}
+                <Link
+                  textDecoration="underline"
+                  _hover={{ color: color("600") }}
+                  href="https://support.ledger.com/article/360016057774-zd"
+                  isExternal
+                >
+                  Tezos Wallet
+                </Link>{" "}
+                app on your ledger
+              </Text>
             </ListItem>
 
             <ListItem>

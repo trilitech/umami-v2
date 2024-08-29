@@ -14,8 +14,11 @@ import { useDynamicModalContext, useMultiForm } from "@umami/components";
 import { DEFAULT_ACCOUNT_LABEL } from "@umami/core";
 import {
   useAsyncActionHandler,
+  useGetNextAvailableAccountLabels,
+  useIsPasswordSet,
   useRestoreFromMnemonic,
   useRestoreFromSecretKey,
+  useValidateMasterPassword,
 } from "@umami/state";
 import { decryptSecretKey, defaultDerivationPathTemplate } from "@umami/tezos";
 import { FormProvider } from "react-hook-form";
@@ -39,6 +42,10 @@ export const SetupPassword = ({ mode }: { mode: "mnemonic" | "secret_key" }) => 
   const { allFormValues, onClose } = useDynamicModalContext();
   const restoreFromMnemonic = useRestoreFromMnemonic();
   const restoreFromSecretKey = useRestoreFromSecretKey();
+  const checkPassword = useValidateMasterPassword();
+  const getNextAvailableAccountLabels = useGetNextAvailableAccountLabels();
+  const isPasswordSet = useIsPasswordSet();
+
   const form = useMultiForm<FormFields>({
     mode: "onBlur",
     defaultValues: {
@@ -54,6 +61,10 @@ export const SetupPassword = ({ mode }: { mode: "mnemonic" | "secret_key" }) => 
 
   const onSubmit = ({ password, curve, derivationPath }: FormFields) =>
     handleAsyncAction(async () => {
+      const label = getNextAvailableAccountLabels(DEFAULT_ACCOUNT_LABEL)[0];
+
+      await checkPassword?.(password);
+
       switch (mode) {
         case "mnemonic": {
           const mnemonic = allFormValues.mnemonic.map(({ val }: { val: string }) => val).join(" ");
@@ -62,7 +73,7 @@ export const SetupPassword = ({ mode }: { mode: "mnemonic" | "secret_key" }) => 
             mnemonic,
             password,
             derivationPathTemplate: derivationPath,
-            label: DEFAULT_ACCOUNT_LABEL,
+            label,
             curve,
           });
           break;
@@ -72,9 +83,10 @@ export const SetupPassword = ({ mode }: { mode: "mnemonic" | "secret_key" }) => 
             allFormValues.secretKey,
             allFormValues.secretKeyPassword
           );
-          await restoreFromSecretKey(secretKey, password, DEFAULT_ACCOUNT_LABEL);
+          await restoreFromSecretKey(secretKey, password, label);
         }
       }
+
       return onClose();
     });
 
@@ -92,14 +104,19 @@ export const SetupPassword = ({ mode }: { mode: "mnemonic" | "secret_key" }) => 
         <FormProvider {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <Flex flexDirection="column" gap="24px">
-              <PasswordInput inputName="password" label="Set Password" />
-
               <PasswordInput
-                inputName="passwordConfirmation"
-                label="Confirm Password"
-                required="Password confirmation is required"
-                validate={value => value === getValues("password") || "Passwords do not match"}
+                inputName="password"
+                label={isPasswordSet ? "Password" : "Set Password"}
               />
+
+              {!isPasswordSet && (
+                <PasswordInput
+                  inputName="passwordConfirmation"
+                  label="Confirm Password"
+                  required="Password confirmation is required"
+                  validate={value => value === getValues("password") || "Passwords do not match"}
+                />
+              )}
 
               {mode === "mnemonic" && <AdvancedAccountSettings />}
 

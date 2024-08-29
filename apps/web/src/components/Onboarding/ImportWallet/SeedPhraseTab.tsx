@@ -120,7 +120,7 @@ export const SeedPhraseTab = () => {
                   zIndex={1}
                   marginTop={{ lg: "10px", base: "8px" }}
                   marginLeft={{ lg: "16px", base: "10px" }}
-                  color={color("white", "black")}
+                  color={color("black")}
                   textAlign="right"
                   size={{ lg: "lg", base: "xs" }}
                 >

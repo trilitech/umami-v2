@@ -1,6 +1,7 @@
 import { useToast } from "@chakra-ui/react";
 import {
   useAsyncActionHandler,
+  useIsPasswordSet,
   useRestoreFromMnemonic,
   useRestoreFromSecretKey,
   useValidateMasterPassword,
@@ -20,15 +21,14 @@ export const MasterPassword = ({
   const restoreFromMnemonic = useRestoreFromMnemonic();
   const restoreFromSecretKey = useRestoreFromSecretKey();
   const checkPassword = useValidateMasterPassword();
-  const passwordHasBeenSet = checkPassword !== null;
+  const passwordHasBeenSet = useIsPasswordSet();
 
   const { isLoading, handleAsyncAction } = useAsyncActionHandler();
   const toast = useToast();
   const handleSubmit = (password: string) =>
     handleAsyncAction(async () => {
-      if (passwordHasBeenSet) {
-        await checkPassword(password);
-      }
+      await checkPassword?.(password);
+
       switch (account.type) {
         case "secret_key":
           await restoreFromSecretKey(account.secretKey, password, account.label);
