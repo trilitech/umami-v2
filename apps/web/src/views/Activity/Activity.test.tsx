@@ -41,8 +41,10 @@ describe("<Activity />", () => {
       await waitFor(() => {
         expect(screen.getByTestId("empty-state-message")).toBeVisible();
       });
-      expect(screen.getByText("No Activity to show")).toBeVisible();
-      expect(screen.getByText("Your activity will appear here...")).toBeVisible();
+      expect(screen.getByText("Buy Tez Now")).toBeVisible();
+      expect(
+        screen.getByText("You need Tez to take part in any activity. Buy some to get started.")
+      ).toBeVisible();
       expect(screen.queryByTestId("view-all-operations-button")).not.toBeInTheDocument();
     });
   });
@@ -78,6 +80,20 @@ describe("<Activity />", () => {
       );
 
       await waitFor(() => expect(screen.getAllByTestId(/operation-tile-/).length).toEqual(2));
+    });
+  });
+
+  describe("when user is unverified", () => {
+    beforeEach(() => {
+      localStorage.setItem("user:verified", "false");
+    });
+
+    it("renders verify message", async () => {
+      render(<Activity />, { store });
+
+      await waitFor(() => {
+        expect(screen.getByTestId("verify-message")).toBeVisible();
+      });
     });
   });
 });

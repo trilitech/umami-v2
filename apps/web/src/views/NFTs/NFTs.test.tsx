@@ -28,7 +28,9 @@ describe("<NFTs />", () => {
     const emptyMessage = screen.getByTestId("empty-state-message");
 
     expect(emptyMessage).toBeVisible();
-    expect(emptyMessage).toHaveTextContent("Your NFTs will appear here...");
+    expect(emptyMessage).toHaveTextContent(
+      "Explore and purchase unique digital assets to start your collection."
+    );
   });
 
   it("renders the total count of NFTs", () => {

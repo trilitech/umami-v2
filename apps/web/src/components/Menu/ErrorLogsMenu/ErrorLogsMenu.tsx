@@ -60,7 +60,7 @@ export const ErrorLogsMenu = () => {
           </VStack>
         </Box>
       ) : (
-        <EmptyMessage alignItems="flex-start" marginTop="40px" title="logs" />
+        <EmptyMessage alignItems="flex-start" marginTop="40px" title="No logs to show" />
       )}
     </DrawerContentWrapper>
   );

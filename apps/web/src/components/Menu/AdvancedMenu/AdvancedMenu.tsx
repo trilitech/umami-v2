@@ -1,6 +1,7 @@
 import { useDynamicDrawerContext } from "@umami/components";
 
 import { AlertCircleIcon, LockIcon, RadioIcon } from "../../../assets/icons";
+import { useCheckVerified } from "../../Onboarding/useCheckUnverified";
 import { ChangePasswordMenu } from "../ChangePasswordMenu/ChangePasswordMenu";
 import { ErrorLogsMenu } from "../ErrorLogsMenu/ErrorLogsMenu";
 import { GenericMenu } from "../GenericMenu";
@@ -8,6 +9,16 @@ import { NetworkMenu } from "../NetworkMenu/NetworkMenu";
 
 export const AdvancedMenu = () => {
   const { openWith } = useDynamicDrawerContext();
+  const isVerified = useCheckVerified();
+
+  const menuItemsForVerifiedUser = [
+    {
+      label: "Network",
+      icon: <RadioIcon />,
+      onClick: () => openWith(<NetworkMenu />),
+      hasArrow: true,
+    },
+  ];
 
   const menuItems = [
     [
@@ -17,12 +28,7 @@ export const AdvancedMenu = () => {
         onClick: () => openWith(<ChangePasswordMenu />),
         hasArrow: true,
       },
-      {
-        label: "Network",
-        icon: <RadioIcon />,
-        onClick: () => openWith(<NetworkMenu />),
-        hasArrow: true,
-      },
+      ...(isVerified ? menuItemsForVerifiedUser : []),
     ],
     [
       {

@@ -51,7 +51,7 @@ export const RemoveAccountModal = ({ account }: RemoveAccountModalProps) => {
     <ModalContent>
       <ModalHeader>
         <Flex alignItems="center" justifyContent="center" flexDirection="column">
-          <AlertIcon width="24px" />
+          <AlertIcon width="24px" color="red" />
           <Heading marginTop="18px" marginBottom="12px" size="xl">
             Remove Account
           </Heading>

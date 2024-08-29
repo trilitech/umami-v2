@@ -95,4 +95,19 @@ describe("<AccountBalance />", () => {
       expect(screen.queryByTestId("usd-balance")).not.toBeInTheDocument();
     });
   });
+
+  describe("if user is unverified", () => {
+    beforeEach(() => {
+      localStorage.setItem("user:verified", "false");
+    });
+
+    it.each(["Buy", "Send", "Receive"])("%s button is disabled", buttonName => {
+      render(<AccountBalance />, { store });
+
+      const button = screen.getByLabelText(buttonName);
+
+      // eslint-disable-next-line jest-dom/prefer-enabled-disabled
+      expect(button).toHaveAttribute("disabled");
+    });
+  });
 });

@@ -1,4 +1,4 @@
-import { Box, Card, CardBody } from "@chakra-ui/react";
+import { Box, Card, CardBody, Flex } from "@chakra-ui/react";
 import { Navigate, Route, Routes } from "react-router";
 
 import { Activity } from "../../views/Activity";
@@ -16,6 +16,7 @@ export const Main = () => (
   >
     <Card minHeight="full" borderRadius="30px">
       <CardBody
+        as={Flex}
         padding={{
           base: "18px",
           lg: "40px",

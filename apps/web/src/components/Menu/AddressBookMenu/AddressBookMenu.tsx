@@ -118,8 +118,8 @@ export const AddressBookMenu = () => {
         <EmptyMessage
           alignItems="flex-start"
           marginTop="40px"
-          subtitle="Contacts"
-          title="Contacts"
+          subtitle="Your Contacts will appear here..."
+          title="No Contacts to show"
         />
       )}
     </DrawerContentWrapper>

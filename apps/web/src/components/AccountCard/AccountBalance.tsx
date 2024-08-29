@@ -1,18 +1,23 @@
 import { Box, Flex, Link, Text } from "@chakra-ui/react";
+import { useDynamicModalContext } from "@umami/components";
 import { useCurrentAccount, useGetAccountBalance, useGetDollarBalance } from "@umami/state";
 import { prettyTezAmount } from "@umami/tezos";
 
 import { SendTezButton } from "./SendTezButton";
 import { ArrowDownLeftIcon, WalletIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
+import { AccountInfoModal } from "../AccountSelectorModal";
 import { IconButtonWithText } from "../IconButtonWithText";
+import { useCheckVerified } from "../Onboarding/useCheckUnverified";
 
 export const AccountBalance = () => {
   const color = useColor();
+  const { openWith } = useDynamicModalContext();
   const currentAccount = useCurrentAccount()!;
   const address = currentAccount.address.pkh;
   const balance = useGetAccountBalance()(address);
   const usdBalance = useGetDollarBalance()(address);
+  const isVerified = useCheckVerified();
 
   const buyTezUrl = `https://widget.wert.io/default/widget/?commodity=XTZ&address=${address}&network=tezos&commodity_id=xtz.simple.tezos`;
 
@@ -46,11 +51,24 @@ export const AccountBalance = () => {
         justifyContent="space-between"
         marginTop={{ base: "20px", lg: "40px" }}
       >
-        <Link href={buyTezUrl} isExternal>
-          <IconButtonWithText icon={WalletIcon} label="Buy" variant="secondary" />
-        </Link>
+        <IconButtonWithText
+          as={Link}
+          pointerEvents={isVerified ? "auto" : "none"}
+          href={isVerified ? buyTezUrl : ""}
+          icon={WalletIcon}
+          isDisabled={!isVerified}
+          isExternal
+          label="Buy"
+          variant="iconButtonSolid"
+        />
         <Flex gap="24px">
-          <IconButtonWithText icon={ArrowDownLeftIcon} label="Receive" variant="secondary" />
+          <IconButtonWithText
+            icon={ArrowDownLeftIcon}
+            isDisabled={!isVerified}
+            label="Receive"
+            onClick={() => openWith(<AccountInfoModal account={currentAccount} />)}
+            variant="iconButtonSolid"
+          />
           <SendTezButton />
         </Flex>
       </Flex>

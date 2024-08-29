@@ -22,6 +22,7 @@ import { ThreeDotsIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
 import { AccountTile } from "../AccountTile";
 import { ModalCloseButton } from "../CloseButton";
+import { useCheckVerified } from "../Onboarding/useCheckUnverified";
 
 export const AccountSelectorModal = () => {
   const accounts = useImplicitAccounts();
@@ -30,6 +31,7 @@ export const AccountSelectorModal = () => {
   // TODO: add ConnectOptions onboarding modal
   const { onOpen: openOnboardingModal, modalElement } = { modalElement: null, onOpen: () => {} };
   const { onClose } = useDynamicModalContext();
+  const isVerified = useCheckVerified();
 
   const dispatch = useDispatch();
 
@@ -77,7 +79,7 @@ export const AccountSelectorModal = () => {
                   return (
                     <AccountTile key={address} account={account} onClick={onClick}>
                       <Flex justifyContent="center" flexDirection="column" gap="2px">
-                        <AccountSelectorPopover account={account} />
+                        {isVerified && <AccountSelectorPopover account={account} />}
                         <Text color={color("700")} size="sm">
                           {balance ? prettyTezAmount(balance) : "\u00A0"}
                         </Text>
@@ -89,9 +91,11 @@ export const AccountSelectorModal = () => {
             ))}
           </VStack>
 
-          <Button width="full" onClick={openOnboardingModal} variant="primary">
-            Add Account
-          </Button>
+          {isVerified && (
+            <Button width="full" onClick={openOnboardingModal} variant="primary">
+              Add Account
+            </Button>
+          )}
         </ModalBody>
       </ModalContent>
     </>

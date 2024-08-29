@@ -1,4 +1,4 @@
-import { Button, type ButtonProps, Circle, Heading, Icon } from "@chakra-ui/react";
+import { type ButtonProps, Flex, Heading, Icon, IconButton } from "@chakra-ui/react";
 import { type FunctionComponent, memo } from "react";
 
 import { useColor } from "../../styles/useColor";
@@ -6,55 +6,27 @@ import { useColor } from "../../styles/useColor";
 type IconButtonWithTextProps = {
   icon: FunctionComponent;
   label: string;
-  variant: "primary" | "secondary";
-} & Omit<ButtonProps, "variant">;
+  href?: string;
+  isExternal?: boolean;
+} & ButtonProps;
 
-export const IconButtonWithText = memo(
-  ({ icon, label, variant, ...props }: IconButtonWithTextProps) => {
-    const color = useColor();
+export const IconButtonWithText = memo(({ icon, label, ...props }: IconButtonWithTextProps) => {
+  const color = useColor();
 
-    const style = {
-      primary: {
-        circle: {
-          _groupHover: { backgroundColor: color("blueDark") },
-          backgroundColor: color("blue"),
-        },
-        icon: {
-          color: color("white", "black"),
-        },
-      },
-      secondary: {
-        circle: {
-          _groupHover: { backgroundColor: color("200") },
-          backgroundColor: color("100"),
-        },
-        icon: {
-          color: color("gray.900"),
-        },
-      },
-    }[variant];
-
-    return (
-      <Button
-        justifyContent="space-between"
-        flexDirection="column"
-        gap="6px"
-        padding="0"
-        borderRadius="0"
-        data-group
+  return (
+    <Flex alignItems="center" justifyContent="space-between" flexDirection="column" gap="6px">
+      <IconButton
+        borderRadius="full"
+        aria-label={label}
+        icon={<Icon as={icon} width="24px" height="24px" />}
         size="lg"
-        variant="empty"
         {...props}
-      >
-        <Circle {...style.circle} size="48px">
-          <Icon as={icon} width="24px" height="24px" {...style.icon} />
-        </Circle>
-        <Heading color={color("900")} _groupHover={{ color: color("700") }} size="sm">
-          {label}
-        </Heading>
-      </Button>
-    );
-  }
-);
+      />
+      <Heading color={props.isDisabled ? color("300") : color("900")} size="sm">
+        {label}
+      </Heading>
+    </Flex>
+  );
+});
 
 IconButtonWithText.displayName = "IconButtonWithText";
