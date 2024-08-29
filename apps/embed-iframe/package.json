@@ -32,7 +32,7 @@
     "@taquito/utils": "^20.0.0",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "6.5.0",
-    "@testing-library/react": "14.3.1",
+    "@testing-library/react": "16.0.1",
     "@testing-library/user-event": "14.5.2",
     "@toruslabs/customauth": "16.0.6",
     "@trilitech-umami/umami-embed": "^0.2.6",
