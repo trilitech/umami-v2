@@ -1,6 +1,7 @@
 export * from "./Account";
 export * from "./AccountOperations";
 export * from "./Contact";
+export * from "./decodePayload";
 export * from "./Delegate";
 export * from "./ErrorContext";
 export * from "./estimate";
