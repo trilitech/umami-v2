@@ -1,7 +1,7 @@
 {
   "name": "@umami/eslint-config",
   "main": "index.js",
-  "packageManager": "pnpm@9.7.1",
+  "packageManager": "pnpm@9.9.0",
   "license": "MIT",
   "files": [
     "index.js"

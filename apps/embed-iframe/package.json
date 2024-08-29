@@ -1,7 +1,7 @@
 {
   "name": "@umami/embed-iframe",
   "type": "module",
-  "packageManager": "pnpm@9.7.1",
+  "packageManager": "pnpm@9.9.0",
   "scripts": {
     "build": "vite build",
     "dev": "vite dev",
