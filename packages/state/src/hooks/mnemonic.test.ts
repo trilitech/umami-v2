@@ -139,6 +139,7 @@ describe.each(["ed25519", "secp256k1", "p256"] as const)("with %s curve", curve 
         type: "mnemonic",
         seedFingerPrint: "mockFingerPrint",
         derivationPathTemplate: "44'/1729'/?'/0'",
+        isVerified: true,
       }));
 
       jest

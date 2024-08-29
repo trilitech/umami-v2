@@ -38,13 +38,14 @@ type FormFields = {
   curve: Exclude<Curves, "bip25519">;
 };
 
-export const SetupPassword = ({
-  mode,
-  mnemonic,
-}: {
-  mode?: "mnemonic" | "secret_key";
+type Mode = "mnemonic" | "secret_key";
+
+type SetupPasswordProps = {
+  mode?: Mode;
   mnemonic?: string;
-}) => {
+} & ({ mode: Mode } | { mnemonic: string });
+
+export const SetupPassword = ({ mode, mnemonic }: SetupPasswordProps) => {
   const color = useColor();
   const { handleAsyncAction, isLoading } = useAsyncActionHandler();
   const { allFormValues, onClose } = useDynamicModalContext();
