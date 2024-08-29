@@ -79,7 +79,7 @@
     "@umami/tzkt": "workspace:^",
     "axios": "^1.7.5",
     "bip39": "^3.1.0",
-    "framer-motion": "^11.3.30",
+    "framer-motion": "^11.3.31",
     "immer": "^10.1.1",
     "lodash": "^4.17.21",
     "@types/jest": "^29.5.12",
