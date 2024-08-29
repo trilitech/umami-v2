@@ -1,6 +1,6 @@
 {
   "name": "@umami/data-polling",
-  "packageManager": "pnpm@9.7.1",
+  "packageManager": "pnpm@9.9.0",
   "type": "module",
   "module": "./dist/index.js",
   "main": "./dist/index.cjs",

@@ -9,7 +9,7 @@
     "node": ">=20 <21.0.0",
     "pnpm": ">=9.7.0"
   },
-  "packageManager": "pnpm@9.7.1",
+  "packageManager": "pnpm@9.9.0",
   "scripts": {
     "build": "turbo build",
     "build:watch": "turbo watch build:quick --filter=./packages/\\*",
