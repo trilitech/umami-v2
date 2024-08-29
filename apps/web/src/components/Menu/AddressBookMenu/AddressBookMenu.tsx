@@ -80,7 +80,12 @@ const ContactItem = ({ contact }: ContactItemProps) => {
         </Center>
       </Flex>
       <ActionsDropdown actions={actions}>
-        <IconButton color={color("500")} aria-label="Remove Peer" icon={<ThreeDotsIcon />} />
+        <IconButton
+          color={color("500")}
+          aria-label="Remove Peer"
+          icon={<ThreeDotsIcon />}
+          variant="iconButtonSolid"
+        />
       </ActionsDropdown>
     </Center>
   );

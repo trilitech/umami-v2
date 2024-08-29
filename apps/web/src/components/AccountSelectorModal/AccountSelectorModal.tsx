@@ -66,6 +66,7 @@ export const AccountSelectorModal = () => {
                     aria-label="actions"
                     icon={<ThreeDotsIcon />}
                     size="xs"
+                    variant="ghost"
                   />
                 </Center>
                 {accounts.map(account => {
