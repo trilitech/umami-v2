@@ -1,6 +1,6 @@
 /* istanbul ignore file */
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { type Account } from "@umami/core";
+import { ImplicitAccount, type Account } from "@umami/core";
 import {
   type AppDispatch,
   assetsActions,
@@ -47,7 +47,7 @@ type QueryParams =
  *   hasMore - true if there are more operations to fetch
  *   loadMore - function to load more operations (older ones)
  */
-export const useGetOperations = (accounts: Account[]) => {
+export const useGetOperations = (accounts: (Account | ImplicitAccount)[]) => {
   const network = useSelectedNetwork();
   const dispatch = useAppDispatch();
   const refetchTrigger = useRefetchTrigger();

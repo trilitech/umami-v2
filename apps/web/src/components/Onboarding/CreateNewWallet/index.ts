@@ -1,0 +1,1 @@
+export { CreateNewWallet } from "./CreateNewWallet";

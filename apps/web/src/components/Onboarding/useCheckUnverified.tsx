@@ -1,10 +1,11 @@
-import { useMemo } from "react";
+import { useCurrentAccount } from "@umami/state";
 
 export const useCheckVerified = () => {
-  const isVerified = useMemo(() => {
-    const isVerified = localStorage.getItem("user:verified");
-    return isVerified ? JSON.parse(isVerified) : true;
-  }, []);
+  const currentAccount = useCurrentAccount()!;
 
-  return isVerified;
+  if (currentAccount.type === "mnemonic") {
+    return currentAccount.isVerified;
+  }
+
+  return true;
 };

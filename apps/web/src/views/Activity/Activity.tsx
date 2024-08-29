@@ -14,6 +14,7 @@ import { useColor } from "../../styles/useColor";
 
 export const Activity = () => {
   const isVerified = useCheckVerified();
+
   const color = useColor();
   const currentAccount = useCurrentAccount();
   const { operations, loadMore, hasMore, isLoading, isFirstLoad } = useGetOperations([
