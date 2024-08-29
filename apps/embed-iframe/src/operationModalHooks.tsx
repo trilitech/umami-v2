@@ -2,7 +2,13 @@ import type { PartialTezosOperation } from "@airgap/beacon-types";
 import { Center, Modal, ModalCloseButton, ModalContent } from "@chakra-ui/react";
 
 import { OperationModalContent } from "./OperationModalContent";
-import { sendOperationErrorResponse, toSocialAccount, toTezosNetwork } from "./utils";
+import {
+  sendComputationErrorResponse,
+  sendOperationErrorResponse,
+  sendResponse,
+  toSocialAccount,
+  toTezosNetwork,
+} from "./utils";
 import { useOperationModalContext } from "./OperationModalContext";
 import { ModalLoadingOverlay } from "./ModalLoadingOverlay";
 import { estimate, getErrorContext, toAccountOperations } from "@umami/core";
@@ -42,11 +48,11 @@ export const useOperationModal = () => {
           accountOperations,
           toTezosNetwork(getNetwork()!)
         );
-
         setEstimatedOperations(estimatedOperations);
         onOpen();
+        sendResponse({ type: "computation_completed_response" });
       } catch (error) {
-        sendOperationErrorResponse(getErrorContext(error).description);
+        sendComputationErrorResponse(getErrorContext(error).description);
         onClose();
       }
     },
