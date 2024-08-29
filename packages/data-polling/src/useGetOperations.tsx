@@ -53,6 +53,8 @@ export const useGetOperations = (accounts: (Account | ImplicitAccount)[]) => {
   const refetchTrigger = useRefetchTrigger();
   const handleError = useReactQueryErrorHandler();
 
+  const accountIsVerified = accounts.every(acc => acc.type === "mnemonic" && acc.isVerified);
+
   const {
     isFetching,
     data: operations,
@@ -62,6 +64,7 @@ export const useGetOperations = (accounts: (Account | ImplicitAccount)[]) => {
     fetchPreviousPage,
     error,
   } = useInfiniteQuery({
+    enabled: accountIsVerified,
     queryFn: ({ pageParam }: { pageParam: QueryParams }) =>
       fetchOperationsAndUpdateTokensInfo(dispatch, network, accounts, pageParam),
     queryKey: ["operations", accounts, dispatch, network],
@@ -99,13 +102,17 @@ export const useGetOperations = (accounts: (Account | ImplicitAccount)[]) => {
   handleError(error);
 
   useEffect(() => {
-    const interval = setInterval(() => void fetchPreviousPage(), BLOCK_TIME);
+    if (accountIsVerified) {
+      const interval = setInterval(() => void fetchPreviousPage(), BLOCK_TIME);
 
-    return () => clearInterval(interval);
+      return () => clearInterval(interval);
+    }
   }, [fetchPreviousPage]);
 
   useEffect(() => {
-    void fetchPreviousPage();
+    if (accountIsVerified) {
+      void fetchPreviousPage();
+    }
   }, [refetchTrigger, fetchPreviousPage]);
 
   return {

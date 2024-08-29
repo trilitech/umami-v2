@@ -134,7 +134,7 @@ export const mockMnemonicAccount = (index: number, label?: string): MnemonicAcco
   address: mockImplicitAddress(index),
   pk: mockPk(index),
   seedFingerPrint: "mockPrint",
-  isVerified: true,
+  isVerified: false,
 });
 
 export const mockSecretKeyAccount = (index: number, label?: string): SecretKeyAccount => ({
