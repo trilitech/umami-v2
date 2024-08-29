@@ -83,6 +83,7 @@ const PeerRow = ({ peerInfo }: { peerInfo: ExtendedPeerInfo }) => {
         aria-label="Remove Peer"
         icon={<TrashIcon />}
         onClick={() => removePeer(peerInfo)}
+        variant="iconButtonSolid"
       />
     </Center>
   );

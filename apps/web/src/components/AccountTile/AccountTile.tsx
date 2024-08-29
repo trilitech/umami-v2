@@ -10,32 +10,47 @@ import { CopyAddressButton } from "../CopyAddressButton";
 export const AccountTile = ({
   account,
   children,
+  size = "sm",
   ...props
-}: PropsWithChildren<{ account: ImplicitAccount }> & FlexProps) => {
+}: PropsWithChildren<{ account: ImplicitAccount; size?: "xs" | "sm" }> & FlexProps) => {
   const color = useColor();
   const address = account.address.pkh;
 
+  const sizes = {
+    xs: 20,
+    sm: 30,
+  };
+
+  const isSmall = size === "xs";
+  const copyButtonStyles = isSmall
+    ? {
+        padding: 0,
+        left: 0,
+      }
+    : {};
+
   return (
     <Flex
-      gap="10px"
-      paddingLeft="12px"
+      gap={isSmall ? "6px" : "10px"}
+      padding={isSmall ? "6px 12px 6px 6px" : "12px 0 12px 16px"}
       borderRadius="full"
       _hover={{ background: color("100") }}
       cursor={props.onClick ? "pointer" : undefined}
       data-testid="account-tile"
-      paddingY="12px"
       {...props}
     >
-      <AccountTileWrapper>
-        <AccountTileIcon account={account} />
+      <AccountTileWrapper size={size}>
+        <AccountTileIcon account={account} size={sizes[size]} />
       </AccountTileWrapper>
 
-      <Flex justifyContent="space-between" width="100%" marginRight="20px">
+      <Flex justifyContent="space-between" width="100%" marginRight={isSmall ? 0 : "20px"}>
         <Flex justifyContent="center" flexDirection="column" gap="2px">
-          <Heading color={color("900")} size="sm">
-            {account.label}
-          </Heading>
-          <CopyAddressButton address={address} />
+          {!isSmall && (
+            <Heading color={color("900")} size="sm">
+              {account.label}
+            </Heading>
+          )}
+          <CopyAddressButton address={address} isCopyDisabled={isSmall} {...copyButtonStyles} />
         </Flex>
 
         {children}

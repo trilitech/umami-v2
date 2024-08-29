@@ -5,6 +5,11 @@ import { TextDecoder, TextEncoder } from "util";
 import { mockToast } from "@umami/state";
 import { setupJestCanvasMock } from "jest-canvas-mock";
 
+const intersectionObserverMock = () => ({
+  observe: jest.fn(),
+  unobserve: jest.fn(),
+});
+
 const localStorageMock = () => {
   const store: { [key: string]: string } = {};
 
@@ -28,6 +33,7 @@ Object.defineProperties(global, {
   crypto: { value: webcrypto, writable: true },
   TextDecoder: { value: TextDecoder, writable: true },
   TextEncoder: { value: TextEncoder, writable: true },
+  IntersectionObserver: { value: intersectionObserverMock, writable: true, configurable: true },
 });
 
 jest.mock("./utils/persistor", () => ({

@@ -25,6 +25,7 @@ export const AccountCard = () => {
       <AccountTile
         background={color("50")}
         account={currentAccount}
+        id="account-tile"
         onClick={() => openWith(<AccountSelectorModal />)}
       >
         <IconButton

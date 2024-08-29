@@ -99,6 +99,7 @@ export const AccountSelectorPopover = ({ account }: AccountSelectorPopoverProps)
         icon={<ThreeDotsIcon />}
         onClick={event => event.stopPropagation()}
         size="xs"
+        variant="ghost"
       />
     </ActionsDropdown>
   );
