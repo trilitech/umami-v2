@@ -1,8 +1,16 @@
+import { type UmamiStore, accountsActions, makeStore } from "@umami/state";
+
 import { AdvancedMenu } from "./AdvancedMenu";
 import { dynamicDrawerContextMock, renderInDrawer, screen, userEvent } from "../../../testUtils";
 import { ChangePasswordMenu } from "../ChangePasswordMenu/ChangePasswordMenu";
 import { ErrorLogsMenu } from "../ErrorLogsMenu/ErrorLogsMenu";
 import { NetworkMenu } from "../NetworkMenu/NetworkMenu";
+
+let store: UmamiStore;
+
+beforeEach(() => {
+  store = makeStore();
+});
 
 describe("<AdvancedMenu />", () => {
   describe("when user is verified", () => {
@@ -29,12 +37,10 @@ describe("<AdvancedMenu />", () => {
   });
 
   describe("when user is unverified", () => {
-    beforeEach(() => {
-      localStorage.setItem("user:verified", "false");
-    });
-
     it("renders menu items correctly", async () => {
-      await renderInDrawer(<AdvancedMenu />);
+      store.dispatch(accountsActions.setIsVerified(false));
+
+      await renderInDrawer(<AdvancedMenu />, store);
 
       expect(screen.getByText("Change Password")).toBeVisible();
       expect(screen.queryByText("Network")).not.toBeInTheDocument();

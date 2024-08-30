@@ -1,5 +1,5 @@
 import { useColorMode } from "@chakra-ui/system";
-import { downloadBackupFile } from "@umami/state";
+import { type UmamiStore, accountsActions, downloadBackupFile, makeStore } from "@umami/state";
 
 import { AddressBookMenu } from "./AddressBookMenu/AddressBookMenu";
 import { AdvancedMenu } from "./AdvancedMenu/AdvancedMenu";
@@ -23,6 +23,12 @@ jest.mock("@umami/state", () => ({
   ...jest.requireActual("@umami/state"),
   downloadBackupFile: jest.fn(),
 }));
+
+let store: UmamiStore;
+
+beforeEach(() => {
+  store = makeStore();
+});
 
 describe("<Menu />", () => {
   beforeEach(() => {
@@ -101,11 +107,11 @@ describe("<Menu />", () => {
 
   describe("when user is unverified", () => {
     beforeEach(() => {
-      localStorage.setItem("user:verified", "false");
+      store.dispatch(accountsActions.setIsVerified(false));
     });
 
     it("renders menu items correctly", async () => {
-      await renderInDrawer(<Menu />);
+      await renderInDrawer(<Menu />, store);
 
       expect(screen.getByText("Advanced")).toBeVisible();
       expect(screen.queryByText("Address Book")).not.toBeInTheDocument();

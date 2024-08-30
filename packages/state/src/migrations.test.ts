@@ -160,4 +160,8 @@ describe("migrations", () => {
       });
     });
   });
+
+  test("8", () => {
+    expect(accountsMigrations[8]({ isVerified: false })).toEqual({ isVerified: true });
+  });
 });

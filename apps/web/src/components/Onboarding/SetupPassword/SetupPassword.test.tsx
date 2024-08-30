@@ -1,5 +1,6 @@
 import {
   type UmamiStore,
+  generate24WordMnemonic,
   makeStore,
   useRestoreFromMnemonic,
   useRestoreFromSecretKey,
@@ -14,6 +15,7 @@ jest.mock("@umami/state", () => ({
   ...jest.requireActual("@umami/state"),
   useRestoreFromMnemonic: jest.fn(),
   useRestoreFromSecretKey: jest.fn(),
+  generate24WordMnemonic: jest.fn(),
 }));
 
 const password = "password";
@@ -144,6 +146,8 @@ describe("<SetupPassword />", () => {
         label: "Account",
         curve: "ed25519",
       });
+
+      expect(store.getState().accounts.isVerified).toBe(true);
     });
 
     it.each(CURVES)("calls restoreFromMnemonic with curve %s", async curve => {
@@ -201,6 +205,49 @@ describe("<SetupPassword />", () => {
         label: "Account",
         curve: "ed25519",
       });
+    });
+  });
+
+  describe("new-mnemonic mode", () => {
+    const store = makeStore();
+    const mockRestoreFromMnemonic = jest.fn();
+
+    beforeEach(() => {
+      jest.mocked(useRestoreFromMnemonic).mockReturnValue(mockRestoreFromMnemonic);
+      jest.mocked(generate24WordMnemonic).mockReturnValue(mnemonic1);
+    });
+
+    it("doesn't render advanced section", async () => {
+      await renderInModal(<SetupPassword mode="new-mnemonic" />);
+
+      expect(screen.queryByTestId("advanced-section")).not.toBeInTheDocument();
+    });
+
+    it("calls restoreFromMnemonic with predefined mnemonic", async () => {
+      const user = userEvent.setup();
+
+      await renderInModal(<SetupPassword mode="new-mnemonic" />, store);
+
+      const passwordInput = screen.getByLabelText("Set Password");
+      const passwordConfirmationInput = screen.getByLabelText("Confirm Password");
+
+      await act(() => user.type(passwordInput, password));
+      await act(() => user.type(passwordConfirmationInput, password));
+
+      const submitButton = screen.getByRole("button", { name: "Create Account" });
+
+      await act(() => user.click(submitButton));
+
+      await waitFor(() => expect(mockRestoreFromMnemonic).toHaveBeenCalledTimes(1));
+      expect(mockRestoreFromMnemonic).toHaveBeenCalledWith({
+        mnemonic: mnemonic1,
+        password,
+        derivationPathTemplate: "44'/1729'/?'/0'",
+        label: "Account",
+        curve: "ed25519",
+      });
+
+      expect(store.getState().accounts.isVerified).toBe(false);
     });
   });
 });

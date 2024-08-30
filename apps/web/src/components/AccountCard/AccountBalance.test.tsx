@@ -98,7 +98,7 @@ describe("<AccountBalance />", () => {
 
   describe("if user is unverified", () => {
     beforeEach(() => {
-      localStorage.setItem("user:verified", "false");
+      store.dispatch(accountsActions.setIsVerified(false));
     });
 
     it.each(["Buy", "Send", "Receive"])("%s button is disabled", buttonName => {

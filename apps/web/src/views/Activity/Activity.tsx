@@ -1,4 +1,5 @@
 import { Box, Center, Divider, Flex, Image } from "@chakra-ui/react";
+import { type Account } from "@umami/core";
 import { useGetOperations } from "@umami/data-polling";
 import { useCurrentAccount } from "@umami/state";
 import { type UIEvent, useRef } from "react";
@@ -15,12 +16,12 @@ export const Activity = () => {
   const isVerified = useCheckVerified();
 
   const color = useColor();
-  const currentAccount = useCurrentAccount()!;
+  const currentAccount = useCurrentAccount();
   const { operations, loadMore, hasMore, isLoading, isFirstLoad } = useGetOperations([
-    currentAccount,
+    currentAccount ?? ({} as Account),
   ]);
 
-  const buyTezUrl = `https://widget.wert.io/default/widget/?commodity=XTZ&address=${currentAccount.address.pkh}&network=tezos&commodity_id=xtz.simple.tezos`;
+  const buyTezUrl = `https://widget.wert.io/default/widget/?commodity=XTZ&address=${currentAccount?.address.pkh}&network=tezos&commodity_id=xtz.simple.tezos`;
 
   // used to run loadMore only once when the user scrolls to the bottom
   // otherwise it might be called multiple times which would trigger multiple fetches
