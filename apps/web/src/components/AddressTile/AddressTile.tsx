@@ -5,7 +5,7 @@ import { type Address, prettyTezAmount } from "@umami/tezos";
 
 import { AddressTileIcon } from "./AddressTileIcon";
 import { useColor } from "../../styles/useColor";
-import { AccountTileWrapper } from "../AccountTile/AccountTileWrapper";
+import { AccountTileWrapper } from "../AccountTile";
 import { CopyAddressButton } from "../CopyAddressButton";
 
 /**

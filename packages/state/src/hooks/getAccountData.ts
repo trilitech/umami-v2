@@ -106,6 +106,8 @@ export const useValidateMasterPassword = () => {
   };
 };
 
+export const useIsPasswordSet = () => !!useValidateMasterPassword();
+
 export const useIsOwnedAddress = () => {
   const ownedAccounts = useAllAccounts();
   const addressesSet = new Set(ownedAccounts.map(acc => acc.address.pkh));

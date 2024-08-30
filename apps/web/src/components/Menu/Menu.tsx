@@ -17,19 +17,13 @@ import {
   SettingsIcon,
   UserPlusIcon,
 } from "../../assets/icons";
+import { OnboardOptionsModal } from "../Onboarding/OnboardOptions";
 import { useCheckVerified } from "../Onboarding/useCheckUnverified";
-
-// TODO: Make this work
-export const useOnboardingModal = () => ({
-  onOpen: () => {},
-  modalElement: <></>,
-});
 
 export const Menu = () => {
   const { openWith: openModal } = useDynamicModalContext();
   const { openWith: openDrawer } = useDynamicDrawerContext();
   const { colorMode, toggleColorMode } = useColorMode();
-  const { onOpen: openOnboardingModal, modalElement } = useOnboardingModal();
   const isVerified = useCheckVerified();
 
   const colorModeSwitchLabel = colorMode === "light" ? "Light mode" : "Dark mode";
@@ -44,7 +38,7 @@ export const Menu = () => {
     {
       label: "Add Account",
       icon: <UserPlusIcon />,
-      onClick: openOnboardingModal,
+      onClick: () => openModal(<OnboardOptionsModal />),
     },
     {
       label: "Save Backup",
@@ -86,10 +80,5 @@ export const Menu = () => {
     ],
   ];
 
-  return (
-    <>
-      <GenericMenu menuItems={menuItems} />
-      {modalElement}
-    </>
-  );
+  return <GenericMenu menuItems={menuItems} />;
 };

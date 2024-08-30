@@ -42,6 +42,7 @@ export const SecretKeyTab = () => {
             <FormLabel>Secret Key</FormLabel>
             <Textarea
               minHeight="120px"
+              fontSize="18px"
               {...register("secretKey", {
                 required: "Secret Key is required",
                 onChange: event => setIsEncrypted(isEncryptedSecretKeyPrefix(event.target.value)),

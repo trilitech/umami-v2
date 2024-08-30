@@ -1,7 +1,7 @@
 import { type ButtonProps, IconButton } from "@chakra-ui/react";
 
 import { useOnboardWithSocial } from "./useOnboardWithSocial";
-import { FacebookIcon } from "../../assets/icons";
+import { FacebookIcon } from "../../../assets/icons";
 
 export const OnboardWithFacebookButton = ({
   onAuth,

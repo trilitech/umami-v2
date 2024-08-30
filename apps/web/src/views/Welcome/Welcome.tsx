@@ -1,5 +1,4 @@
 import {
-  Button,
   Center,
   Divider,
   Flex,
@@ -15,21 +14,15 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 import { useDynamicModalContext } from "@umami/components";
-import { useState } from "react";
 
-import { OnboardWithFacebookButton } from "./OnboardWithFacebookButton";
-import { OnboardWithGoogleButton } from "./OnboardWithGoogleButton";
-import { OnboardWithRedditButton } from "./OnboardWithRedditButton";
-import { OnboardWithTwitterButton } from "./OnboardWithTwitterButton";
 import { LogoLightIcon, TezosLogoIcon } from "../../assets/icons";
-import { ImportWallet } from "../../components/Onboarding/ImportWallet";
+import { OnboardOptions } from "../../components/Onboarding/OnboardOptions";
 import { useColor } from "../../styles/useColor";
 
 export const Welcome = () => {
-  const [isOnboarding, setIsOnboarding] = useState(false);
   const color = useColor();
   const isMobile = useBreakpointValue({ base: true, lg: false });
-  const { openWith } = useDynamicModalContext();
+  const { isOpen: isOnboarding } = useDynamicModalContext();
 
   return (
     <Grid
@@ -82,58 +75,13 @@ export const Welcome = () => {
           borderBottomRadius={{ base: 0, lg: "30px" }}
           backgroundColor={color("white")}
         >
-          <Heading color={color("900")} size="lg">
-            Continue with:
-          </Heading>
-
-          <Center flexDirection="column" gap="36px" width="full" height="full">
-            <Flex
-              gap={{ base: "24px", lg: "30px" }}
-              marginTop="30px"
-              color={color("white", "black")}
-            >
-              <OnboardWithGoogleButton />
-              <OnboardWithFacebookButton />
-              <OnboardWithTwitterButton />
-              <OnboardWithRedditButton />
-            </Flex>
-
-            <Center gap="4px" width="full">
-              <Divider width="full" />
-              <Text color={color("500")} size="lg">
-                or
-              </Text>
-              <Divider width="full" />
-            </Center>
-
-            <Flex flexDirection="column" gap="12px" width="full">
-              <Button width="full" size="lg" variant="primary">
-                Create a new wallet
-              </Button>
-              <Button
-                width="full"
-                onClick={() => {
-                  setIsOnboarding(true);
-                  return openWith(<ImportWallet />, {
-                    size: "xl",
-                    variant: "onboarding",
-                    onClose: () => setIsOnboarding(false),
-                  });
-                }}
-                size="lg"
-                variant="secondary"
-              >
-                I already have a wallet
-              </Button>
-            </Flex>
-
+          <OnboardOptions>
             <Text color={color("700")} size="sm">
               By proceeding, you agree to Umami's{" "}
               <Link fontWeight="600" href="https://umamiwallet.com/tos.html" isExternal>
                 Terms of Use
               </Link>
             </Text>
-
             {isMobile && (
               <>
                 <Flex gap="10px">
@@ -152,7 +100,7 @@ export const Welcome = () => {
                 <Logo />
               </>
             )}
-          </Center>
+          </OnboardOptions>
         </Flex>
       </Flex>
       {!isMobile && (

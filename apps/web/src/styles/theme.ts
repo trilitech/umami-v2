@@ -149,7 +149,7 @@ const theme = extendTheme({
             _placeholder: {
               color: "gray.400",
             },
-            color: light.grey.white,
+            color: "black",
           },
         },
         filled: {
@@ -447,9 +447,15 @@ const theme = extendTheme({
           },
         },
         socialLogin: {
-          backgroundColor: "black",
+          backgroundColor: "white",
+          _dark: {
+            backgroundColor: "black",
+          },
           _hover: {
-            backgroundColor: "gray.700",
+            backgroundColor: "gray.300",
+            _dark: {
+              backgroundColor: "gray.700",
+            },
           },
         },
         empty: {

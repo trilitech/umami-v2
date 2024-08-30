@@ -9,6 +9,7 @@ import {
   TabPanels,
   Tabs,
 } from "@chakra-ui/react";
+import { useImplicitAccounts } from "@umami/state";
 
 import { ImportBackupTab } from "./ImportBackupTab";
 import { LedgerTab } from "./LedgerTab";
@@ -19,8 +20,12 @@ import { useColor } from "../../../styles/useColor";
 import { ModalCloseButton } from "../../CloseButton";
 import { TabSwitch } from "../../TabSwitch/TabSwitch";
 
+const BEFORE_ONBOARDING_OPTIONS = ["Seed Phrase", "Secret Key", "Backup", "Ledger"];
+const AFTER_ONBOARDING_OPTIONS = ["Seed Phrase", "Secret Key", "Ledger"];
+
 export const ImportWallet = () => {
   const color = useColor();
+  const hasOnboarded = useImplicitAccounts().length > 0;
 
   return (
     <ModalContent>
@@ -31,20 +36,28 @@ export const ImportWallet = () => {
           <Heading size="xl">Import Wallet</Heading>
         </Center>
       </ModalHeader>
+
       <ModalBody>
         <Tabs isLazy variant="onboarding">
-          <TabSwitch options={["Seed Phrase", "Secret Key", "Backup", "Ledger"]} />
+          <TabSwitch
+            options={hasOnboarded ? AFTER_ONBOARDING_OPTIONS : BEFORE_ONBOARDING_OPTIONS}
+          />
 
           <TabPanels padding="30px 0 0 0">
             <TabPanel>
               <SeedPhraseTab />
             </TabPanel>
+
             <TabPanel>
               <SecretKeyTab />
             </TabPanel>
-            <TabPanel>
-              <ImportBackupTab />
-            </TabPanel>
+
+            {!hasOnboarded && (
+              <TabPanel>
+                <ImportBackupTab />
+              </TabPanel>
+            )}
+
             <TabPanel>
               <LedgerTab />
             </TabPanel>

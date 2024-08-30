@@ -1,19 +1,19 @@
 import { type ButtonProps, IconButton } from "@chakra-ui/react";
 
 import { useOnboardWithSocial } from "./useOnboardWithSocial";
-import { GoogleIcon } from "../../assets/icons";
+import { RedditIcon } from "../../../assets/icons";
 
-export const OnboardWithGoogleButton = ({
+export const OnboardWithRedditButton = ({
   onAuth,
   ...props
 }: { onAuth?: () => void } & ButtonProps) => {
-  const { isLoading, onboard } = useOnboardWithSocial("google", onAuth);
+  const { isLoading, onboard } = useOnboardWithSocial("reddit", onAuth);
 
   return (
     <IconButton
-      aria-label="Google SSO"
-      data-testid="login-button-google"
-      icon={<GoogleIcon />}
+      aria-label="Reddit SSO"
+      data-testid="login-button-reddit"
+      icon={<RedditIcon />}
       isLoading={isLoading}
       onClick={onboard}
       variant="socialLogin"
