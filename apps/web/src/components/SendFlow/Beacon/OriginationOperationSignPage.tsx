@@ -21,6 +21,7 @@ import { FormProvider } from "react-hook-form";
 
 import { type BeaconSignPageProps } from "./BeaconSignPageProps";
 import { useSignWithBeacon } from "./useSignWithBeacon";
+import { CodeSandboxIcon } from "../../../assets/icons";
 import { useColor } from "../../../styles/useColor";
 import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";
 import { JsValueWrap } from "../../JsValueWrap";
@@ -41,10 +42,10 @@ export const OriginationOperationSignPage = ({ operation, message }: BeaconSignP
               Operation Request
             </Flex>
             <Flex alignItems="center" justifyContent="center" marginTop="10px">
-              <Heading marginRight="4px" color={color("450")} size="sm">
+              <Heading marginRight="4px" color={color("700")} size="sm">
                 Network:
               </Heading>
-              <Text color={color("400")} size="sm">
+              <Text color={color("700")} fontWeight="400" size="sm">
                 {capitalize(message.network.type)}
               </Text>
             </Flex>
@@ -59,7 +60,12 @@ export const OriginationOperationSignPage = ({ operation, message }: BeaconSignP
               backgroundColor={color("100")}
             >
               <AspectRatio width="60px" marginRight="12px" ratio={1}>
-                <Image borderRadius="4px" src={message.appMetadata.icon} />
+                <Image
+                  borderRadius="4px"
+                  objectFit="cover"
+                  fallback={<CodeSandboxIcon width="36px" height="36px" />}
+                  src={message.appMetadata.icon}
+                />
               </AspectRatio>
               <Heading size="sm">{message.appMetadata.name}</Heading>
             </Flex>
@@ -76,7 +82,7 @@ export const OriginationOperationSignPage = ({ operation, message }: BeaconSignP
                   </Heading>
                   <AccordionIcon />
                 </AccordionButton>
-                <AccordionPanel overflowY="auto" maxHeight="300px">
+                <AccordionPanel overflowY="auto" maxHeight="300px" padding="10px 0 0">
                   <JsValueWrap value={code} />
                 </AccordionPanel>
               </AccordionItem>
@@ -89,7 +95,7 @@ export const OriginationOperationSignPage = ({ operation, message }: BeaconSignP
                   </Heading>
                   <AccordionIcon />
                 </AccordionButton>
-                <AccordionPanel overflowY="auto" maxHeight="300px">
+                <AccordionPanel overflowY="auto" maxHeight="300px" padding="10px 0 0">
                   <JsValueWrap value={storage} />
                 </AccordionPanel>
               </AccordionItem>

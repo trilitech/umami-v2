@@ -17,7 +17,6 @@ import {
   Heading,
   Image,
   ModalBody,
-  ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalHeader,
@@ -33,8 +32,10 @@ import {
 import { capitalize } from "lodash";
 import { FormProvider, useForm } from "react-hook-form";
 
+import { CodeSandboxIcon } from "../../assets/icons";
 import { OwnedImplicitAccountsAutocomplete } from "../../components/AddressAutocomplete";
 import { useColor } from "../../styles/useColor";
+import { ModalCloseButton } from "../CloseButton";
 import { JsValueWrap } from "../JsValueWrap";
 
 export const PermissionRequestModal = ({ request }: { request: PermissionRequestOutput }) => {
@@ -75,15 +76,15 @@ export const PermissionRequestModal = ({ request }: { request: PermissionRequest
         <Flex alignItems="center" justifyContent="center">
           Permission Request
         </Flex>
-        <Text marginTop="10px" color={color("400")} textAlign="center" size="sm">
+        <Text marginTop="10px" color={color("700")} textAlign="center" size="sm">
           {request.appMetadata.name} is requesting permission to sign this operation.
         </Text>
 
         <Flex alignItems="center" justifyContent="center" marginTop="10px">
-          <Heading marginRight="4px" color={color("450")} size="sm">
+          <Heading marginRight="4px" color={color("700")} size="sm">
             Network:
           </Heading>
-          <Text color={color("400")} size="sm">
+          <Text color={color("700")} fontWeight="400" size="sm">
             {capitalize(request.network.type)}
           </Text>
         </Flex>
@@ -98,20 +99,25 @@ export const PermissionRequestModal = ({ request }: { request: PermissionRequest
           backgroundColor={color("100")}
         >
           <AspectRatio width="60px" marginRight="12px" ratio={1}>
-            <Image borderRadius="4px" src={request.appMetadata.icon} />
+            <Image
+              borderRadius="4px"
+              objectFit="cover"
+              fallback={<CodeSandboxIcon width="36px" height="36px" />}
+              src={request.appMetadata.icon}
+            />
           </AspectRatio>
           <Heading size="sm">{request.appMetadata.name}</Heading>
         </Flex>
 
         <Accordion marginTop="16px" allowToggle={true}>
           <AccordionItem background={color("100")} border="none" borderRadius="8px">
-            <AccordionButton>
+            <AccordionButton borderRadius="full">
               <Heading flex="1" textAlign="left" marginY="10px" size="md">
                 Request
               </Heading>
               <AccordionIcon />
             </AccordionButton>
-            <AccordionPanel>
+            <AccordionPanel padding="10px 0 0">
               <JsValueWrap overflow="auto" maxHeight="250px" value={request} />
             </AccordionPanel>
           </AccordionItem>
@@ -129,7 +135,7 @@ export const PermissionRequestModal = ({ request }: { request: PermissionRequest
         </FormProvider>
       </ModalBody>
       <ModalFooter>
-        <Button width="100%" isDisabled={!isValid} onClick={grant}>
+        <Button width="100%" isDisabled={!isValid} onClick={grant} variant="primary">
           Allow
         </Button>
       </ModalFooter>

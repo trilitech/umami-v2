@@ -56,13 +56,13 @@ export const ContractCallSignPage = ({ operation, message }: BeaconSignPageProps
             <FormLabel marginTop="24px">Contract Call Parameter</FormLabel>
             <Accordion allowToggle={true}>
               <AccordionItem background={color("100")} border="none" borderRadius="8px">
-                <AccordionButton>
+                <AccordionButton borderRadius="full">
                   <Box flex="1" textAlign="left">
                     JSON
                   </Box>
                   <AccordionIcon />
                 </AccordionButton>
-                <AccordionPanel>
+                <AccordionPanel padding="10px 0 0">
                   <JsValueWrap value={{ entrypoint, values: args }} />
                 </AccordionPanel>
               </AccordionItem>

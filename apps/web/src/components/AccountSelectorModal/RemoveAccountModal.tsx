@@ -12,6 +12,7 @@ import { type LedgerAccount, type SecretKeyAccount, type SocialAccount } from "@
 import { useImplicitAccounts, useRemoveAccount } from "@umami/state";
 
 import { AlertIcon } from "../../assets/icons";
+import { useColor } from "../../styles/useColor";
 import { ModalCloseButton } from "../CloseButton";
 
 type RemoveAccountModalProps = {
@@ -21,6 +22,7 @@ type RemoveAccountModalProps = {
 export const RemoveAccountModal = ({ account }: RemoveAccountModalProps) => {
   const { goBack, onClose } = useDynamicModalContext();
   const removeAccount = useRemoveAccount();
+  const color = useColor();
 
   const isLastImplicitAccount = useImplicitAccounts().length === 1;
 
@@ -55,7 +57,7 @@ export const RemoveAccountModal = ({ account }: RemoveAccountModalProps) => {
           <Heading marginTop="18px" marginBottom="12px" size="xl">
             Remove Account
           </Heading>
-          <Text maxWidth="340px" color="gray.700" fontWeight="400" size="md">
+          <Text maxWidth="340px" color={color("700")} fontWeight="400" size="md">
             {description}
           </Text>
         </Flex>
