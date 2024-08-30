@@ -16,7 +16,7 @@
   "devDependencies": {
     "@babel/core": "^7.25.2",
     "@testing-library/dom": "^10.4.0",
-    "@testing-library/react": "^16.0.0",
+    "@testing-library/react": "^16.0.1",
     "@types/babel__core": "^7.20.5",
     "@types/eslint": "^8",
     "@types/lodash": "^4",
@@ -79,7 +79,7 @@
     "@umami/tzkt": "workspace:^",
     "axios": "^1.7.5",
     "bip39": "^3.1.0",
-    "framer-motion": "^11.3.30",
+    "framer-motion": "^11.3.31",
     "immer": "^10.1.1",
     "lodash": "^4.17.21",
     "@types/jest": "^29.5.12",
