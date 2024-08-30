@@ -18,6 +18,7 @@ export const accountsInitialState: AccountsState = {
   items: [],
   seedPhrases: {},
   secretKeys: {},
+  isVerified: true,
 };
 
 /**
@@ -130,6 +131,9 @@ export const accountsSlice = createSlice({
     },
     setCurrent: (state, { payload: address }: { payload: RawPkh | undefined }) => {
       state.current = address;
+    },
+    setIsVerified: (state, { payload }: { payload: boolean }) => {
+      state.isVerified = payload;
     },
   },
 });

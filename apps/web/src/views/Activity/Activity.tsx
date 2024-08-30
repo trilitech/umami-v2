@@ -6,7 +6,7 @@ import { type UIEvent, useRef } from "react";
 import loadingDots from "../../assets/loading-dots.gif";
 import loadingWheel from "../../assets/loading-wheel.gif";
 import { EmptyMessage, VerifyMessage } from "../../components/EmptyMessage";
-import { useCheckVerified } from "../../components/Onboarding/useCheckUnverified";
+import { useCheckVerified } from "../../components/Onboarding/useCheckVerified";
 import { OperationTile } from "../../components/OperationTile";
 import { ViewOverlay } from "../../components/ViewOverlay/ViewOverlay";
 import { useColor } from "../../styles/useColor";

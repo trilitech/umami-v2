@@ -5,7 +5,6 @@ import {
   Heading,
   Icon,
   ModalBody,
-  ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalHeader,
@@ -15,6 +14,9 @@ import { type Curves } from "@taquito/signer";
 import { useDynamicModalContext, useMultiForm } from "@umami/components";
 import { DEFAULT_ACCOUNT_LABEL } from "@umami/core";
 import {
+  accountsActions,
+  generate24WordMnemonic,
+  useAppDispatch,
   useAsyncActionHandler,
   useGetNextAvailableAccountLabels,
   useIsPasswordSet,
@@ -28,6 +30,7 @@ import { FormProvider } from "react-hook-form";
 import { LockIcon, UserIcon } from "../../../assets/icons";
 import { useColor } from "../../../styles/useColor";
 import { ModalBackButton } from "../../BackButton";
+import { ModalCloseButton } from "../../CloseButton";
 import { PasswordInput } from "../../PasswordInput";
 import { AdvancedAccountSettings } from "../AdvancedAccountSettings";
 
@@ -38,14 +41,13 @@ type FormFields = {
   curve: Exclude<Curves, "bip25519">;
 };
 
-type Mode = "mnemonic" | "secret_key";
+type Mode = "mnemonic" | "secret_key" | "new-mnemonic";
 
 type SetupPasswordProps = {
-  mode?: Mode;
-  mnemonic?: string;
-} & ({ mode: Mode } | { mnemonic: string });
+  mode: Mode;
+};
 
-export const SetupPassword = ({ mode, mnemonic }: SetupPasswordProps) => {
+export const SetupPassword = ({ mode }: SetupPasswordProps) => {
   const color = useColor();
   const { handleAsyncAction, isLoading } = useAsyncActionHandler();
   const { allFormValues, onClose } = useDynamicModalContext();
@@ -55,6 +57,7 @@ export const SetupPassword = ({ mode, mnemonic }: SetupPasswordProps) => {
   const getNextAvailableAccountLabels = useGetNextAvailableAccountLabels();
   const isPasswordSet = useIsPasswordSet();
 
+  const dispatch = useAppDispatch();
   const form = useMultiForm<FormFields>({
     mode: "onBlur",
     defaultValues: {
@@ -75,8 +78,20 @@ export const SetupPassword = ({ mode, mnemonic }: SetupPasswordProps) => {
       await checkPassword?.(password);
 
       switch (mode) {
-        case "mnemonic": {
-          const mnemonic = allFormValues.mnemonic.map(({ val }: { val: string }) => val).join(" ");
+        case "secret_key": {
+          const secretKey = await decryptSecretKey(
+            allFormValues.secretKey,
+            allFormValues.secretKeyPassword
+          );
+          await restoreFromSecretKey(secretKey, password, DEFAULT_ACCOUNT_LABEL);
+          break;
+        }
+        case "mnemonic":
+        case "new-mnemonic": {
+          const mnemonic =
+            mode === "new-mnemonic"
+              ? generate24WordMnemonic()
+              : allFormValues.mnemonic.map(({ val }: { val: string }) => val).join(" ");
 
           await restoreFromMnemonic({
             mnemonic,
@@ -85,23 +100,22 @@ export const SetupPassword = ({ mode, mnemonic }: SetupPasswordProps) => {
             label,
             curve,
           });
+
+          if (mode === "new-mnemonic") {
+            dispatch(accountsActions.setIsVerified(false));
+          }
           break;
-        }
-        case "secret_key": {
-          const secretKey = await decryptSecretKey(
-            allFormValues.secretKey,
-            allFormValues.secretKeyPassword
-          );
-          await restoreFromSecretKey(secretKey, password, label);
         }
       }
 
       return onClose();
     });
 
-  const icon = mode ? LockIcon : UserIcon;
-  const title = mode ? "Almost there" : "Create Password";
-  const buttonLabel = mode ? "Import Wallet" : "Create Account";
+  const isNewMnemonic = mode === "new-mnemonic";
+
+  const icon = isNewMnemonic ? UserIcon : LockIcon;
+  const title = isNewMnemonic ? "Create Password" : "Almost there";
+  const buttonLabel = isNewMnemonic ? "Create Account" : "Import Wallet";
 
   return (
     <ModalContent>
@@ -111,7 +125,7 @@ export const SetupPassword = ({ mode, mnemonic }: SetupPasswordProps) => {
         <Center flexDirection="column" gap="16px">
           <Icon as={icon} width="24px" height="24px" color={color("blue")} />
           <Heading size="xl">{title}</Heading>
-          {!mode && (
+          {isNewMnemonic && (
             <Text
               width="full"
               maxWidth="340px"

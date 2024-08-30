@@ -19,7 +19,6 @@ export type MnemonicAccount = {
   seedFingerPrint: string;
   address: ImplicitAddress;
   pk: string;
-  isVerified: boolean;
 };
 
 export type LedgerAccount = {

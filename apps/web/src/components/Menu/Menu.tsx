@@ -18,7 +18,7 @@ import {
   UserPlusIcon,
 } from "../../assets/icons";
 import { OnboardOptionsModal } from "../Onboarding/OnboardOptions";
-import { useCheckVerified } from "../Onboarding/useCheckUnverified";
+import { useCheckVerified } from "../Onboarding/useCheckVerified";
 
 export const Menu = () => {
   const { openWith: openModal } = useDynamicModalContext();

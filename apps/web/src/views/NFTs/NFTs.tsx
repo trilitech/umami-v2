@@ -8,7 +8,7 @@ import { NFTCard } from "./NFTCard";
 import { NFTDrawer } from "./NFTDrawer";
 import { NFTFilter, useNFTFilter } from "./NFTFilter";
 import { EmptyMessage, VerifyMessage } from "../../components/EmptyMessage";
-import { useCheckVerified } from "../../components/Onboarding/useCheckUnverified";
+import { useCheckVerified } from "../../components/Onboarding/useCheckVerified";
 import { ViewOverlay } from "../../components/ViewOverlay/ViewOverlay";
 import { useColor } from "../../styles/useColor";
 

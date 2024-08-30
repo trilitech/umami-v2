@@ -6,6 +6,7 @@ import {
   assetsActions,
   tokensActions,
   useAppDispatch,
+  useAppSelector,
   useSelectedNetwork,
 } from "@umami/state";
 import { BLOCK_TIME, type Network } from "@umami/tezos";
@@ -53,7 +54,7 @@ export const useGetOperations = (accounts: (Account | ImplicitAccount)[]) => {
   const refetchTrigger = useRefetchTrigger();
   const handleError = useReactQueryErrorHandler();
 
-  const accountIsVerified = accounts.every(acc => acc.type === "mnemonic" && acc.isVerified);
+  const isVerified = useAppSelector(state => state.accounts.isVerified);
 
   const {
     isFetching,
@@ -64,7 +65,7 @@ export const useGetOperations = (accounts: (Account | ImplicitAccount)[]) => {
     fetchPreviousPage,
     error,
   } = useInfiniteQuery({
-    enabled: accountIsVerified,
+    enabled: isVerified,
     queryFn: ({ pageParam }: { pageParam: QueryParams }) =>
       fetchOperationsAndUpdateTokensInfo(dispatch, network, accounts, pageParam),
     queryKey: ["operations", accounts, dispatch, network],
@@ -102,7 +103,7 @@ export const useGetOperations = (accounts: (Account | ImplicitAccount)[]) => {
   handleError(error);
 
   useEffect(() => {
-    if (accountIsVerified) {
+    if (isVerified) {
       const interval = setInterval(() => void fetchPreviousPage(), BLOCK_TIME);
 
       return () => clearInterval(interval);
@@ -110,7 +111,7 @@ export const useGetOperations = (accounts: (Account | ImplicitAccount)[]) => {
   }, [fetchPreviousPage]);
 
   useEffect(() => {
-    if (accountIsVerified) {
+    if (isVerified) {
       void fetchPreviousPage();
     }
   }, [refetchTrigger, fetchPreviousPage]);

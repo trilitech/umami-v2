@@ -23,7 +23,7 @@ import { useColor } from "../../styles/useColor";
 import { AccountTile } from "../AccountTile";
 import { ModalCloseButton } from "../CloseButton";
 import { OnboardOptionsModal } from "../Onboarding/OnboardOptions";
-import { useCheckVerified } from "../Onboarding/useCheckUnverified";
+import { useCheckVerified } from "../Onboarding/useCheckVerified";
 
 export const AccountSelectorModal = () => {
   const accounts = useImplicitAccounts();

@@ -136,7 +136,6 @@ export const useDeriveMnemonicAccount = () => {
       seedFingerPrint: fingerPrint,
       derivationPathTemplate,
       label: uniqueLabel,
-      isVerified: false,
     };
 
     dispatch(accountsActions.addAccount(account));

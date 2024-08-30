@@ -3,7 +3,7 @@ import { useCurrentAccount } from "@umami/state";
 
 import { ArrowUpRightIcon } from "../../assets/icons";
 import { IconButtonWithText } from "../IconButtonWithText/IconButtonWithText";
-import { useCheckVerified } from "../Onboarding/useCheckUnverified";
+import { useCheckVerified } from "../Onboarding/useCheckVerified";
 import { FormPage as SendTezFormPage } from "../SendFlow/Tez/FormPage";
 
 export const SendTezButton = () => {

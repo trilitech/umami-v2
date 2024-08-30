@@ -100,7 +100,6 @@ export const useRestoreRevealedMnemonicAccounts = () => {
       derivationPathTemplate,
       seedFingerPrint,
       label: accountLabels[accountIndex],
-      isVerified: false,
     }));
   };
 };

@@ -98,10 +98,6 @@ export const accountsMigrations = {
   7: identity,
   8: (state: any) =>
     produce(state, (draft: any) => {
-      draft.items.forEach((account: any) => {
-        if (account.type === "mnemonic") {
-          account.isVerified = true;
-        }
-      });
+      draft.isVerified = true;
     }),
 } as any;

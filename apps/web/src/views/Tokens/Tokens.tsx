@@ -4,7 +4,7 @@ import { useCurrentAccount, useGetAccountAllTokens } from "@umami/state";
 
 import { Token } from "./Token";
 import { EmptyMessage, VerifyMessage } from "../../components/EmptyMessage";
-import { useCheckVerified } from "../../components/Onboarding/useCheckUnverified";
+import { useCheckVerified } from "../../components/Onboarding/useCheckVerified";
 import { ViewOverlay } from "../../components/ViewOverlay/ViewOverlay";
 
 export const Tokens = () => {
