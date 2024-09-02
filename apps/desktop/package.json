@@ -68,7 +68,7 @@
     "@testing-library/jest-dom": "6.5.0",
     "@testing-library/react": "16.0.1",
     "@testing-library/user-event": "14.5.2",
-    "@toruslabs/customauth": "16.0.6",
+    "@toruslabs/customauth": "19.1.2",
     "@types/babel__core": "^7.20.5",
     "@types/babel__preset-env": "^7.9.7",
     "@types/identity-obj-proxy": "^3.0.2",
