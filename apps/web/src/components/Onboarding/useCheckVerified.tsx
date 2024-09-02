@@ -1,7 +1,11 @@
-import { useAppSelector } from "@umami/state";
+import { useCurrentAccount } from "@umami/state";
 
 export const useCheckVerified = () => {
-  const isVerified = useAppSelector(state => state.accounts.isVerified);
+  const account = useCurrentAccount()!;
 
-  return isVerified;
+  if (account.type === "mnemonic") {
+    return account.isVerified;
+  }
+
+  return true;
 };

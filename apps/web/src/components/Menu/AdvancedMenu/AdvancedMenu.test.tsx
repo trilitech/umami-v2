@@ -1,4 +1,5 @@
-import { type UmamiStore, accountsActions, makeStore } from "@umami/state";
+import { mockImplicitAccount } from "@umami/core";
+import { type UmamiStore, accountsActions, addTestAccount, makeStore } from "@umami/state";
 
 import { AdvancedMenu } from "./AdvancedMenu";
 import { dynamicDrawerContextMock, renderInDrawer, screen, userEvent } from "../../../testUtils";
@@ -7,9 +8,12 @@ import { ErrorLogsMenu } from "../ErrorLogsMenu/ErrorLogsMenu";
 import { NetworkMenu } from "../NetworkMenu/NetworkMenu";
 
 let store: UmamiStore;
+const account = mockImplicitAccount(0);
 
 beforeEach(() => {
   store = makeStore();
+  addTestAccount(store, account);
+  store.dispatch(accountsActions.setCurrent(account.address.pkh));
 });
 
 describe("<AdvancedMenu />", () => {
@@ -38,7 +42,12 @@ describe("<AdvancedMenu />", () => {
 
   describe("when user is unverified", () => {
     it("renders menu items correctly", async () => {
-      store.dispatch(accountsActions.setIsVerified(false));
+      store.dispatch(
+        accountsActions.setIsVerified({
+          pkh: account.address.pkh,
+          isVerified: false,
+        })
+      );
 
       await renderInDrawer(<AdvancedMenu />, store);
 

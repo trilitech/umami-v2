@@ -54,7 +54,7 @@ export const useGetOperations = (accounts: (Account | ImplicitAccount)[]) => {
   const refetchTrigger = useRefetchTrigger();
   const handleError = useReactQueryErrorHandler();
 
-  const isVerified = useAppSelector(state => state.accounts.isVerified);
+  const isVerified = accounts.every(acc => acc.type === "mnemonic" && acc.isVerified);
 
   const {
     isFetching,

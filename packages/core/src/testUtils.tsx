@@ -125,7 +125,7 @@ export const mockImplicitAccount = (
   }
 };
 
-export const mockMnemonicAccount = (index: number, label?: string): MnemonicAccount => ({
+export const mockMnemonicAccount = (index: number, label?: string, isVerified: boolean = true): MnemonicAccount => ({
   curve: "ed25519",
   derivationPath: getDefaultDerivationPath(index),
   derivationPathTemplate: "44'/1729'/?'/0'",
@@ -134,6 +134,7 @@ export const mockMnemonicAccount = (index: number, label?: string): MnemonicAcco
   address: mockImplicitAddress(index),
   pk: mockPk(index),
   seedFingerPrint: "mockPrint",
+  isVerified,
 });
 
 export const mockSecretKeyAccount = (index: number, label?: string): SecretKeyAccount => ({

@@ -80,7 +80,8 @@ export const useRestoreRevealedMnemonicAccounts = () => {
     network: Network,
     derivationPathTemplate: string,
     label: string,
-    curve: Curves
+    curve: Curves,
+    mode: "mnemonic" | "new-mnemonic" = "mnemonic"
   ): Promise<MnemonicAccount[]> => {
     const pubKeyPairs = await restoreRevealedPublicKeyPairs(
       mnemonic,
@@ -100,6 +101,7 @@ export const useRestoreRevealedMnemonicAccounts = () => {
       derivationPathTemplate,
       seedFingerPrint,
       label: accountLabels[accountIndex],
+      isVerified: mode === "mnemonic",
     }));
   };
 };

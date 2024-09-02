@@ -24,9 +24,12 @@ jest.mock("@umami/tzkt", () => ({
 }));
 
 let store: UmamiStore;
+const account = mockImplicitAccount(0);
 
 beforeEach(() => {
   store = makeStore();
+  addTestAccount(store, account);
+  store.dispatch(accountsActions.setCurrent(account.address.pkh));
 });
 
 describe("<Activity />", () => {
@@ -92,7 +95,12 @@ describe("<Activity />", () => {
 
   describe("when user is unverified", () => {
     beforeEach(() => {
-      store.dispatch(accountsActions.setIsVerified(false));
+      store.dispatch(
+        accountsActions.setIsVerified({
+          pkh: account.address.pkh,
+          isVerified: false,
+        })
+      );
     });
 
     it("renders verify message", async () => {

@@ -23,7 +23,6 @@ describe("accountsSlice", () => {
       items: [],
       seedPhrases: {},
       secretKeys: {},
-      isVerified: true,
     });
   });
 
@@ -56,7 +55,6 @@ describe("accountsSlice", () => {
         ],
         seedPhrases: { mockPrint1: {}, mockPrint2: {} },
         secretKeys: {},
-        isVerified: true,
       });
 
       store.dispatch(accountsActions.removeMnemonicAndAccounts({ fingerPrint: "mockPrint1" }));
@@ -65,7 +63,6 @@ describe("accountsSlice", () => {
         items: [mockImplicitAccount(2, undefined, "mockPrint2")],
         seedPhrases: { mockPrint2: {} },
         secretKeys: {},
-        isVerified: true,
       });
     });
   });

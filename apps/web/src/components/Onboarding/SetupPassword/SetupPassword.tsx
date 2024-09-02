@@ -14,7 +14,6 @@ import { type Curves } from "@taquito/signer";
 import { useDynamicModalContext, useMultiForm } from "@umami/components";
 import { DEFAULT_ACCOUNT_LABEL } from "@umami/core";
 import {
-  accountsActions,
   generate24WordMnemonic,
   useAppDispatch,
   useAsyncActionHandler,
@@ -99,11 +98,8 @@ export const SetupPassword = ({ mode }: SetupPasswordProps) => {
             derivationPathTemplate: derivationPath,
             label,
             curve,
+            mode,
           });
-
-          if (mode === "new-mnemonic") {
-            dispatch(accountsActions.setIsVerified(false));
-          }
           break;
         }
       }

@@ -1,5 +1,12 @@
 import { useColorMode } from "@chakra-ui/system";
-import { type UmamiStore, accountsActions, downloadBackupFile, makeStore } from "@umami/state";
+import { mockImplicitAccount } from "@umami/core";
+import {
+  type UmamiStore,
+  accountsActions,
+  addTestAccount,
+  downloadBackupFile,
+  makeStore,
+} from "@umami/state";
 
 import { AddressBookMenu } from "./AddressBookMenu/AddressBookMenu";
 import { AdvancedMenu } from "./AdvancedMenu/AdvancedMenu";
@@ -25,9 +32,12 @@ jest.mock("@umami/state", () => ({
 }));
 
 let store: UmamiStore;
+const account = mockImplicitAccount(0);
 
 beforeEach(() => {
   store = makeStore();
+  addTestAccount(store, account);
+  store.dispatch(accountsActions.setCurrent(account.address.pkh));
 });
 
 describe("<Menu />", () => {
@@ -107,7 +117,12 @@ describe("<Menu />", () => {
 
   describe("when user is unverified", () => {
     beforeEach(() => {
-      store.dispatch(accountsActions.setIsVerified(false));
+      store.dispatch(
+        accountsActions.setIsVerified({
+          pkh: account.address.pkh,
+          isVerified: false,
+        })
+      );
     });
 
     it("renders menu items correctly", async () => {

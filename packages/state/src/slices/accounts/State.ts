@@ -8,5 +8,4 @@ export type AccountsState = {
   seedPhrases: Record<string, EncryptedData | undefined>;
   secretKeys: Record<RawPkh, EncryptedData | undefined>;
   current?: RawPkh | undefined;
-  isVerified: boolean;
 };

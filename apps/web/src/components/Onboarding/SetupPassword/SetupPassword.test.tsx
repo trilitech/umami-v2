@@ -146,8 +146,6 @@ describe("<SetupPassword />", () => {
         label: "Account",
         curve: "ed25519",
       });
-
-      expect(store.getState().accounts.isVerified).toBe(true);
     });
 
     it.each(CURVES)("calls restoreFromMnemonic with curve %s", async curve => {
@@ -246,8 +244,6 @@ describe("<SetupPassword />", () => {
         label: "Account",
         curve: "ed25519",
       });
-
-      expect(store.getState().accounts.isVerified).toBe(false);
     });
   });
 });
