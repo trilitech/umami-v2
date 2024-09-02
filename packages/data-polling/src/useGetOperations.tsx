@@ -1,12 +1,11 @@
 /* istanbul ignore file */
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { ImplicitAccount, type Account } from "@umami/core";
+import { type Account } from "@umami/core";
 import {
   type AppDispatch,
   assetsActions,
   tokensActions,
   useAppDispatch,
-  useAppSelector,
   useSelectedNetwork,
 } from "@umami/state";
 import { BLOCK_TIME, type Network } from "@umami/tezos";
@@ -48,13 +47,11 @@ type QueryParams =
  *   hasMore - true if there are more operations to fetch
  *   loadMore - function to load more operations (older ones)
  */
-export const useGetOperations = (accounts: (Account | ImplicitAccount)[]) => {
+export const useGetOperations = (accounts: Account[]) => {
   const network = useSelectedNetwork();
   const dispatch = useAppDispatch();
   const refetchTrigger = useRefetchTrigger();
   const handleError = useReactQueryErrorHandler();
-
-  const isVerified = accounts.every(acc => acc.type === "mnemonic" && acc.isVerified);
 
   const {
     isFetching,
@@ -65,7 +62,6 @@ export const useGetOperations = (accounts: (Account | ImplicitAccount)[]) => {
     fetchPreviousPage,
     error,
   } = useInfiniteQuery({
-    enabled: isVerified,
     queryFn: ({ pageParam }: { pageParam: QueryParams }) =>
       fetchOperationsAndUpdateTokensInfo(dispatch, network, accounts, pageParam),
     queryKey: ["operations", accounts, dispatch, network],
@@ -103,17 +99,13 @@ export const useGetOperations = (accounts: (Account | ImplicitAccount)[]) => {
   handleError(error);
 
   useEffect(() => {
-    if (isVerified) {
-      const interval = setInterval(() => void fetchPreviousPage(), BLOCK_TIME);
+    const interval = setInterval(() => void fetchPreviousPage(), BLOCK_TIME);
 
-      return () => clearInterval(interval);
-    }
+    return () => clearInterval(interval);
   }, [fetchPreviousPage]);
 
   useEffect(() => {
-    if (isVerified) {
-      void fetchPreviousPage();
-    }
+    void fetchPreviousPage();
   }, [refetchTrigger, fetchPreviousPage]);
 
   return {

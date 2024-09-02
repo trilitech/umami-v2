@@ -18,13 +18,13 @@ import {
   UserPlusIcon,
 } from "../../assets/icons";
 import { OnboardOptionsModal } from "../Onboarding/OnboardOptions";
-import { useCheckVerified } from "../Onboarding/useCheckVerified";
+import { useIsAccountVerified } from "../Onboarding/useIsAccountVerified";
 
 export const Menu = () => {
   const { openWith: openModal } = useDynamicModalContext();
   const { openWith: openDrawer } = useDynamicDrawerContext();
   const { colorMode, toggleColorMode } = useColorMode();
-  const isVerified = useCheckVerified();
+  const isVerified = useIsAccountVerified();
 
   const colorModeSwitchLabel = colorMode === "light" ? "Light mode" : "Dark mode";
 

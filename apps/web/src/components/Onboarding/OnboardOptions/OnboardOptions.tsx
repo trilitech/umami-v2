@@ -52,7 +52,7 @@ export const OnboardOptions = ({ children }: PropsWithChildren) => {
         <Flex flexDirection="column" gap="12px" width="full">
           <Button
             width="full"
-            onClick={() => openWith(<SetupPassword mode="new-mnemonic" />)}
+            onClick={() => openWith(<SetupPassword mode="new_mnemonic" />)}
             size="lg"
             variant="primary"
           >

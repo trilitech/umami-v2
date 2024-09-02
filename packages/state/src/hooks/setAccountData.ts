@@ -53,14 +53,14 @@ export const useRestoreFromMnemonic = () => {
     derivationPathTemplate,
     label,
     curve,
-    mode = "mnemonic",
+    isVerified = true,
   }: {
     mnemonic: string;
     password: string;
     derivationPathTemplate: string;
     label: string;
     curve: Curves;
-    mode?: "mnemonic" | "new-mnemonic";
+    isVerified?: boolean;
   }) => {
     const seedFingerprint = await getFingerPrint(mnemonic);
     const accounts = await restoreRevealedMnemonicAccounts(
@@ -69,7 +69,7 @@ export const useRestoreFromMnemonic = () => {
       derivationPathTemplate,
       label,
       curve,
-      mode
+      isVerified
     );
     const encryptedMnemonic = await encrypt(mnemonic, password);
 

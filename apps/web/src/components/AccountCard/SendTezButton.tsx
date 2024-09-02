@@ -3,13 +3,13 @@ import { useCurrentAccount } from "@umami/state";
 
 import { ArrowUpRightIcon } from "../../assets/icons";
 import { IconButtonWithText } from "../IconButtonWithText/IconButtonWithText";
-import { useCheckVerified } from "../Onboarding/useCheckVerified";
+import { useIsAccountVerified } from "../Onboarding/useIsAccountVerified";
 import { FormPage as SendTezFormPage } from "../SendFlow/Tez/FormPage";
 
 export const SendTezButton = () => {
   const { openWith } = useDynamicModalContext();
   const currentAccount = useCurrentAccount()!;
-  const isVerified = useCheckVerified();
+  const isVerified = useIsAccountVerified();
 
   return (
     <IconButtonWithText

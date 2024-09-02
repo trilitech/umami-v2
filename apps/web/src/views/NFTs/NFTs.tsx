@@ -8,12 +8,12 @@ import { NFTCard } from "./NFTCard";
 import { NFTDrawer } from "./NFTDrawer";
 import { NFTFilter, useNFTFilter } from "./NFTFilter";
 import { EmptyMessage, VerifyMessage } from "../../components/EmptyMessage";
-import { useCheckVerified } from "../../components/Onboarding/useCheckVerified";
+import { useIsAccountVerified } from "../../components/Onboarding/useIsAccountVerified";
 import { ViewOverlay } from "../../components/ViewOverlay/ViewOverlay";
 import { useColor } from "../../styles/useColor";
 
 export const NFTs = () => {
-  const isVerified = useCheckVerified();
+  const isVerified = useIsAccountVerified();
   const color = useColor();
   const { openWith } = useDynamicDrawerContext();
   const { nfts, options: nftFilterOptions, getCheckboxProps } = useNFTFilter();

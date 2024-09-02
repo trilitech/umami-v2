@@ -15,7 +15,6 @@ import { useDynamicModalContext, useMultiForm } from "@umami/components";
 import { DEFAULT_ACCOUNT_LABEL } from "@umami/core";
 import {
   generate24WordMnemonic,
-  useAppDispatch,
   useAsyncActionHandler,
   useGetNextAvailableAccountLabels,
   useIsPasswordSet,
@@ -40,7 +39,7 @@ type FormFields = {
   curve: Exclude<Curves, "bip25519">;
 };
 
-type Mode = "mnemonic" | "secret_key" | "new-mnemonic";
+type Mode = "mnemonic" | "secret_key" | "new_mnemonic";
 
 type SetupPasswordProps = {
   mode: Mode;
@@ -56,7 +55,6 @@ export const SetupPassword = ({ mode }: SetupPasswordProps) => {
   const getNextAvailableAccountLabels = useGetNextAvailableAccountLabels();
   const isPasswordSet = useIsPasswordSet();
 
-  const dispatch = useAppDispatch();
   const form = useMultiForm<FormFields>({
     mode: "onBlur",
     defaultValues: {
@@ -86,9 +84,9 @@ export const SetupPassword = ({ mode }: SetupPasswordProps) => {
           break;
         }
         case "mnemonic":
-        case "new-mnemonic": {
+        case "new_mnemonic": {
           const mnemonic =
-            mode === "new-mnemonic"
+            mode === "new_mnemonic"
               ? generate24WordMnemonic()
               : allFormValues.mnemonic.map(({ val }: { val: string }) => val).join(" ");
 
@@ -98,7 +96,7 @@ export const SetupPassword = ({ mode }: SetupPasswordProps) => {
             derivationPathTemplate: derivationPath,
             label,
             curve,
-            mode,
+            isVerified: mode === "mnemonic",
           });
           break;
         }
@@ -107,7 +105,7 @@ export const SetupPassword = ({ mode }: SetupPasswordProps) => {
       return onClose();
     });
 
-  const isNewMnemonic = mode === "new-mnemonic";
+  const isNewMnemonic = mode === "new_mnemonic";
 
   const icon = isNewMnemonic ? UserIcon : LockIcon;
   const title = isNewMnemonic ? "Create Password" : "Almost there";

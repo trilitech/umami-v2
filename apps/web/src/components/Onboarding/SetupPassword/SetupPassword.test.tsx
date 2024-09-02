@@ -145,6 +145,7 @@ describe("<SetupPassword />", () => {
         derivationPathTemplate: "44'/1729'/?'/0'",
         label: "Account",
         curve: "ed25519",
+        isVerified: true,
       });
     });
 
@@ -173,6 +174,7 @@ describe("<SetupPassword />", () => {
         derivationPathTemplate: "44'/1729'/?'/0'",
         label: "Account",
         curve,
+        isVerified: true,
       });
     });
 
@@ -202,11 +204,12 @@ describe("<SetupPassword />", () => {
         derivationPathTemplate: "m/44'/1729'/0'/0'/0'",
         label: "Account",
         curve: "ed25519",
+        isVerified: true,
       });
     });
   });
 
-  describe("new-mnemonic mode", () => {
+  describe("new_mnemonic mode", () => {
     const store = makeStore();
     const mockRestoreFromMnemonic = jest.fn();
 
@@ -216,7 +219,7 @@ describe("<SetupPassword />", () => {
     });
 
     it("doesn't render advanced section", async () => {
-      await renderInModal(<SetupPassword mode="new-mnemonic" />);
+      await renderInModal(<SetupPassword mode="new_mnemonic" />);
 
       expect(screen.queryByTestId("advanced-section")).not.toBeInTheDocument();
     });
@@ -224,7 +227,7 @@ describe("<SetupPassword />", () => {
     it("calls restoreFromMnemonic with predefined mnemonic", async () => {
       const user = userEvent.setup();
 
-      await renderInModal(<SetupPassword mode="new-mnemonic" />, store);
+      await renderInModal(<SetupPassword mode="new_mnemonic" />, store);
 
       const passwordInput = screen.getByLabelText("Set Password");
       const passwordConfirmationInput = screen.getByLabelText("Confirm Password");
@@ -243,6 +246,7 @@ describe("<SetupPassword />", () => {
         derivationPathTemplate: "44'/1729'/?'/0'",
         label: "Account",
         curve: "ed25519",
+        isVerified: false,
       });
     });
   });

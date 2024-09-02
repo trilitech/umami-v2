@@ -7,16 +7,17 @@ import { type UIEvent, useRef } from "react";
 import loadingDots from "../../assets/loading-dots.gif";
 import loadingWheel from "../../assets/loading-wheel.gif";
 import { EmptyMessage, VerifyMessage } from "../../components/EmptyMessage";
-import { useCheckVerified } from "../../components/Onboarding/useCheckVerified";
+import { useIsAccountVerified } from "../../components/Onboarding/useIsAccountVerified";
 import { OperationTile } from "../../components/OperationTile";
 import { ViewOverlay } from "../../components/ViewOverlay/ViewOverlay";
 import { useColor } from "../../styles/useColor";
 
 export const Activity = () => {
-  const isVerified = useCheckVerified();
+  const isVerified = useIsAccountVerified();
 
   const color = useColor();
   const currentAccount = useCurrentAccount();
+
   const { operations, loadMore, hasMore, isLoading, isFirstLoad } = useGetOperations([
     currentAccount ?? ({} as Account),
   ]);

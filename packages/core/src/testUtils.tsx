@@ -125,7 +125,11 @@ export const mockImplicitAccount = (
   }
 };
 
-export const mockMnemonicAccount = (index: number, label?: string, isVerified: boolean = true): MnemonicAccount => ({
+export const mockMnemonicAccount = (
+  index: number,
+  label?: string,
+  isVerified = true
+): MnemonicAccount => ({
   curve: "ed25519",
   derivationPath: getDefaultDerivationPath(index),
   derivationPathTemplate: "44'/1729'/?'/0'",
