@@ -60,7 +60,7 @@ export const useRestoreFromMnemonic = () => {
     label: string;
     curve: Curves;
   }) => {
-    const seedFingerprint = await getFingerPrint(mnemonic);
+    const seedFingerprint = await getFingerPrint();
     const accounts = await restoreRevealedMnemonicAccounts(
       mnemonic,
       network,

@@ -3,6 +3,7 @@ import { DerivationType, LedgerSigner } from "@taquito/ledger-signer";
 import { InMemorySigner } from "@taquito/signer";
 import { mnemonic1 } from "@umami/test-utils";
 import axios from "axios";
+import MockDate from "mockdate";
 
 import { defaultDerivationPathTemplate, getDefaultDerivationPath } from "./derivationPathUtils";
 import { isAccountRevealed } from "./fetch";
@@ -89,7 +90,8 @@ describe("helpers", () => {
   });
 
   test("getFingerPrint", async () => {
-    expect(await getFingerPrint("asd")).toEqual("688787d8");
+    MockDate.set("2023-03-27T14:15:09.760Z");
+    expect(await getFingerPrint()).toEqual("2eb4531a");
   });
 
   describe("curveToDerivationPath", () => {

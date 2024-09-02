@@ -7,11 +7,10 @@ import { TezosToolkit } from "@taquito/taquito";
 import { FakeSigner } from "./fakeSigner";
 import { type PublicKeyPair, type SignerConfig } from "./types";
 
-// Temporary solution for generating fingerprint for seedphrase
-// https://remarkablemark.medium.com/how-to-generate-a-sha-256-hash-with-javascript-d3b2696382fd
-export const getFingerPrint = async (seedPhrase: string): Promise<string> => {
-  const utf8 = new TextEncoder().encode(seedPhrase);
-  const hashBuffer = await crypto.subtle.digest("SHA-256", utf8);
+export const getFingerPrint = async (): Promise<string> => {
+  const now = String(new Date().getTime() / 1000);
+  const utf8 = new TextEncoder().encode(now);
+  const hashBuffer = await crypto.subtle.digest("SHA-1", utf8);
   const hashArray = Array.from(new Uint8Array(hashBuffer));
   const hashHex = hashArray
     .map(bytes => bytes.toString(16).padStart(2, "0"))

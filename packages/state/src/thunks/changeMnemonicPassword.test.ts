@@ -17,7 +17,7 @@ beforeEach(() => {
 });
 
 beforeEach(async () => {
-  const fingerPrint1 = await getFingerPrint(mnemonic1);
+  const fingerPrint1 = await getFingerPrint();
   store.dispatch(
     accountsActions.addMnemonicAccounts({
       seedFingerprint: fingerPrint1,
@@ -29,7 +29,7 @@ beforeEach(async () => {
     })
   );
 
-  const fingerPrint2 = await getFingerPrint(mnemonic2);
+  const fingerPrint2 = await getFingerPrint();
   store.dispatch(
     accountsActions.addMnemonicAccounts({
       seedFingerprint: fingerPrint2,
@@ -43,8 +43,8 @@ beforeEach(async () => {
 
 describe("changeMnemonicPassword", () => {
   it("should update password", async () => {
-    const fingerPrint1 = await getFingerPrint(mnemonic1);
-    const fingerPrint2 = await getFingerPrint(mnemonic2);
+    const fingerPrint1 = await getFingerPrint();
+    const fingerPrint2 = await getFingerPrint();
 
     const action = await store.dispatch<any>(
       changeMnemonicPassword({ currentPassword, newPassword })
@@ -64,8 +64,8 @@ describe("changeMnemonicPassword", () => {
   });
 
   it("should throw with old password", async () => {
-    const fingerPrint1 = await getFingerPrint(mnemonic1);
-    const fingerPrint2 = await getFingerPrint(mnemonic2);
+    const fingerPrint1 = await getFingerPrint();
+    const fingerPrint2 = await getFingerPrint();
 
     const action: {
       type: string;

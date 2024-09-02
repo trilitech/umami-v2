@@ -51,7 +51,7 @@ export class AccountGroupBuilder {
       throw new Error(`Seed phrase is not used for ${this.accountGroup.type} accounts}`);
     }
     this.seedPhrase = seedPhrase;
-    this.accountGroup.label = `Seedphrase ${await getFingerPrint(seedPhrase.join(" "))}`;
+    this.accountGroup.label = `Seedphrase ${await getFingerPrint()}`;
   }
 
   getSeedPhrase = () => this.seedPhrase;
