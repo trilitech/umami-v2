@@ -205,3 +205,18 @@ export const useCurrentAccount = (): ImplicitAccount | undefined => {
 
   return currentAccount;
 };
+
+export const useGetDecryptedMnemonic = () => {
+  const seedPhrases = useSeedPhrases();
+
+  return async (account: MnemonicAccount, password: string) => {
+    const encryptedMnemonic = seedPhrases[account.seedFingerPrint];
+
+    if (!encryptedMnemonic) {
+      throw new Error(`Missing seedphrase for account ${account.address.pkh}`);
+    }
+
+    const mnemonic = await decrypt(encryptedMnemonic, password);
+    return mnemonic;
+  };
+};

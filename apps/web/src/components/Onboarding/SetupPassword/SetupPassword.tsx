@@ -43,9 +43,10 @@ type Mode = "mnemonic" | "secret_key" | "new_mnemonic";
 
 type SetupPasswordProps = {
   mode: Mode;
+  handleSubmit?: (password: string) => void;
 };
 
-export const SetupPassword = ({ mode }: SetupPasswordProps) => {
+export const SetupPassword = ({ mode, handleSubmit }: SetupPasswordProps) => {
   const color = useColor();
   const { handleAsyncAction, isLoading } = useAsyncActionHandler();
   const { allFormValues, onClose } = useDynamicModalContext();
@@ -133,7 +134,11 @@ export const SetupPassword = ({ mode }: SetupPasswordProps) => {
         </Center>
       </ModalHeader>
       <FormProvider {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+        <form
+          onSubmit={form.handleSubmit(formFields =>
+            handleSubmit ? handleSubmit(formFields.password) : onSubmit(formFields)
+          )}
+        >
           <ModalBody>
             <Flex flexDirection="column" gap="24px">
               <PasswordInput
