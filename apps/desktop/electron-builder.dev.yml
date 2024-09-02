@@ -8,6 +8,7 @@ protocols:
   name: umami
   schemes:
     - umami
+afterPack: scripts/afterPack.js
 mac:
   identity: null
   hardenedRuntime: true

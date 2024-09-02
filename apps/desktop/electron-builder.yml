@@ -8,6 +8,7 @@ protocols:
   name: umami
   schemes:
     - umami
+afterPack: scripts/afterPack.js
 publish:
   provider: github
   private: true
@@ -17,10 +18,12 @@ mac:
   target:
     - target: dmg
       arch:
-        - universal
+        - arm64
+        - x64
     - target: zip
       arch:
-        - universal
+        - arm64
+        - x64
   notarize:
     teamId: JHLP96SU5D
 win:

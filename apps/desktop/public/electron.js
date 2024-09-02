@@ -1,9 +1,31 @@
 // Module to control the application lifecycle and the native browser window.
-const { app, BrowserWindow, shell, ipcMain } = require("electron");
+const { app, BrowserWindow, shell, net, ipcMain, protocol } = require("electron");
 const path = require("path");
 const url = require("url");
 const process = require("process");
 const { autoUpdater } = require("electron-updater");
+
+const APP_PROTOCOL = "app";
+const APP_HOST = "assets";
+
+const appURL = app.isPackaged
+  ? url.format({
+      pathname: `${APP_HOST}/index.html`,
+      protocol: `${APP_PROTOCOL}:`,
+      slashes: true,
+    })
+  : "http://localhost:3000";
+
+protocol.registerSchemesAsPrivileged([
+  {
+    scheme: APP_PROTOCOL,
+    privileges: {
+      standard: true,
+      secure: true,
+      supportFetchAPI: true,
+    },
+  },
+]);
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -39,20 +61,35 @@ function createWindow() {
   mainWindow.webContents.session.setDevicePermissionHandler(details => {
     return (
       details.deviceType === "usb" &&
-      (details.origin === "file://" || details.origin === "http://localhost:3000")
+      (details.origin === `${APP_PROTOCOL}://${APP_HOST}` ||
+        details.origin === "http://localhost:3000")
     );
   });
 
-  // In production, set the initial browser path to the local bundle generated
-  // by the Create React App build process.
-  // In development, set it to localhost to allow live/hot-reloading.
-  const appURL = app.isPackaged
-    ? url.format({
-        pathname: path.join(__dirname, "index.html"),
-        protocol: "file:",
-        slashes: true,
-      })
-    : "http://localhost:3000";
+  protocol.handle(APP_PROTOCOL, async req => {
+    try {
+      const uri = new URL(decodeURI(req.url));
+
+      if (
+        req.url.includes("..") || // relative paths aren't allowed
+        uri.protocol !== `${APP_PROTOCOL}:` || // protocol mismatch
+        !uri.pathname || // path must be defined
+        uri.pathname === "/" || // path must not be root
+        uri.host !== APP_HOST // host must match
+      ) {
+        return new Response("Invalid request", { status: 400 });
+      }
+      const pathToServe = path.join(__dirname, uri.pathname);
+      const relativePath = path.relative(__dirname, pathToServe);
+      if (!(relativePath && !relativePath.startsWith("..") && !path.isAbsolute(relativePath))) {
+        return new Response("Invalid request", { status: 400 });
+      }
+      return net.fetch(url.pathToFileURL(pathToServe).href);
+    } catch (e) {
+      return new Response("Unexpected error in app:// protocol handler.", { status: 500 });
+    }
+  });
+
   mainWindow.loadURL(appURL);
   mainWindow.once("ready-to-show", () => {
     mainWindow.show();
