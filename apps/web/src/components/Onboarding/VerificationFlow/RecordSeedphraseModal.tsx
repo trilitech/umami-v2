@@ -12,19 +12,22 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
+import { useDynamicModalContext } from "@umami/components";
 
-import { CopyIcon, KeyIcon } from "../../assets/icons";
-import { useColor } from "../../styles/useColor";
-import { ModalBackButton } from "../BackButton";
-import { ModalCloseButton } from "../CloseButton";
-import { CopyButton } from "../CopyButton";
+import { VerifySeedphraseModal } from "./VerifySeedphraseModal";
+import { CopyIcon, KeyIcon } from "../../../assets/icons";
+import { useColor } from "../../../styles/useColor";
+import { ModalBackButton } from "../../BackButton";
+import { ModalCloseButton } from "../../CloseButton";
+import { CopyButton } from "../../CopyButton";
 
 type CopySeedphraseModalProps = {
   seedPhrase: string;
 };
 
-export const CopySeedphraseModal = ({ seedPhrase }: CopySeedphraseModalProps) => {
+export const RecordSeedphraseModal = ({ seedPhrase }: CopySeedphraseModalProps) => {
   const color = useColor();
+  const { openWith } = useDynamicModalContext();
   const words = seedPhrase.split(" ");
 
   return (
@@ -33,7 +36,7 @@ export const CopySeedphraseModal = ({ seedPhrase }: CopySeedphraseModalProps) =>
         <ModalBackButton />
         <ModalCloseButton />
         <Center flexDirection="column" gap="12px">
-          <Icon as={KeyIcon} width="24px" height="24px" marginBottom="4px" color={color("blue")} />
+          <Icon as={KeyIcon} boxSize="24px" marginBottom="4px" color={color("blue")} />
           <Heading size="xl">Import Wallet</Heading>
           <Text width="full" color={color("700")} fontWeight="400" textAlign="center" size="md">
             Record these 24 words in order to restore your wallet in the future
@@ -42,23 +45,28 @@ export const CopySeedphraseModal = ({ seedPhrase }: CopySeedphraseModalProps) =>
       </ModalHeader>
 
       <ModalBody>
-        <Grid gridRowGap="16px" gridColumnGap="12px" gridTemplateColumns="repeat(3, 1fr)">
+        <Grid
+          gridRowGap="16px"
+          gridColumnGap={{ base: "8px", md: "12px" }}
+          gridTemplateColumns="repeat(3, 1fr)"
+        >
           {words.map((word, index) => (
             <GridItem
               key={index}
               as={Flex}
               alignItems="center"
-              gap="8px"
-              padding="12px 16px"
+              gap={{ base: "6px", lg: "8px" }}
+              maxHeight={{ base: "34px", lg: "48px" }}
+              padding={{ base: "10px 12px", lg: "12px 16px" }}
               borderWidth="1.5px"
               borderStyle="dashed"
               borderColor={color("300")}
               borderRadius="full"
             >
-              <Text color={color("300")} fontSize="lg">
+              <Text color={color("300")} fontSize={{ base: "xs", lg: "lg" }}>
                 {String(index + 1).padStart(2, "0")}.
               </Text>
-              <Text fontSize="lg" fontWeight="medium">
+              <Text fontSize={{ base: "xs", lg: "lg" }} fontWeight="medium">
                 {word}
               </Text>
             </GridItem>
@@ -70,7 +78,13 @@ export const CopySeedphraseModal = ({ seedPhrase }: CopySeedphraseModalProps) =>
         </CopyButton>
       </ModalBody>
       <ModalFooter>
-        <Button width="full" variant="primary">
+        <Button
+          width="full"
+          onClick={() =>
+            openWith(<VerifySeedphraseModal seedPhrase={seedPhrase} />, { size: "xl" })
+          }
+          variant="primary"
+        >
           Next
         </Button>
       </ModalFooter>

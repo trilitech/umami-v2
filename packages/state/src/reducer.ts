@@ -29,6 +29,7 @@ const accountsPersistConfig = {
   version: VERSION,
   storage,
   migrate: createAsyncMigrate(accountsMigrations, { debug: false }),
+  blacklist: ["password"],
 };
 
 const rootReducers = combineReducers({

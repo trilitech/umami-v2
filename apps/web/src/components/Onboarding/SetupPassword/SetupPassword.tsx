@@ -14,7 +14,9 @@ import { type Curves } from "@taquito/signer";
 import { useDynamicModalContext, useMultiForm } from "@umami/components";
 import { DEFAULT_ACCOUNT_LABEL } from "@umami/core";
 import {
+  accountsActions,
   generate24WordMnemonic,
+  useAppDispatch,
   useAsyncActionHandler,
   useGetNextAvailableAccountLabels,
   useIsPasswordSet,
@@ -42,11 +44,14 @@ type FormFields = {
 type Mode = "mnemonic" | "secret_key" | "new_mnemonic";
 
 type SetupPasswordProps = {
-  mode: Mode;
-  handleSubmit?: (password: string) => void;
+  mode?: Mode;
+  handleProceedToVerification?: (password: string) => void;
 };
 
-export const SetupPassword = ({ mode, handleSubmit }: SetupPasswordProps) => {
+export const SetupPassword = ({
+  mode,
+  handleProceedToVerification: handleProceedToVerification,
+}: SetupPasswordProps) => {
   const color = useColor();
   const { handleAsyncAction, isLoading } = useAsyncActionHandler();
   const { allFormValues, onClose } = useDynamicModalContext();
@@ -55,6 +60,7 @@ export const SetupPassword = ({ mode, handleSubmit }: SetupPasswordProps) => {
   const checkPassword = useValidateMasterPassword();
   const getNextAvailableAccountLabels = useGetNextAvailableAccountLabels();
   const isPasswordSet = useIsPasswordSet();
+  const dispatch = useAppDispatch();
 
   const form = useMultiForm<FormFields>({
     mode: "onBlur",
@@ -70,6 +76,18 @@ export const SetupPassword = ({ mode, handleSubmit }: SetupPasswordProps) => {
   } = form;
 
   const isNewMnemonic = mode === "new_mnemonic";
+
+  const onHandleSubmit = (formFields: FormFields) => {
+    if (handleProceedToVerification) {
+      return handleProceedToVerification(formFields.password);
+    }
+
+    if (isNewMnemonic) {
+      dispatch(accountsActions.setPassword(formFields.password));
+    }
+
+    return onSubmit(formFields);
+  };
 
   const onSubmit = ({ password, curve, derivationPath }: FormFields) =>
     handleAsyncAction(async () => {
@@ -102,14 +120,16 @@ export const SetupPassword = ({ mode, handleSubmit }: SetupPasswordProps) => {
           });
           break;
         }
+        default:
+          break;
       }
 
       return onClose();
     });
 
   const icon = isNewMnemonic ? UserIcon : LockIcon;
-  const title = isNewMnemonic ? "Create Password" : "Almost there";
-  const buttonLabel = isNewMnemonic ? "Create Account" : "Import Wallet";
+  const title = mode ? (isNewMnemonic ? "Create Password" : "Almost there") : "Confirm password";
+  const buttonLabel = mode ? (isNewMnemonic ? "Create Account" : "Import Wallet") : "Confirm";
 
   return (
     <ModalContent>
@@ -120,25 +140,19 @@ export const SetupPassword = ({ mode, handleSubmit }: SetupPasswordProps) => {
           <Icon as={icon} width="24px" height="24px" color={color("blue")} />
           <Heading size="xl">{title}</Heading>
           {isNewMnemonic && (
-            <Text
-              width="full"
-              maxWidth="340px"
-              color={color("700")}
-              fontWeight="400"
-              textAlign="center"
-              size="md"
-            >
+            <Text width="full" color={color("700")} fontWeight="400" textAlign="center" size="md">
               Set a password to unlock your wallet. Make sure to store your password safely.
+            </Text>
+          )}
+          {!mode && (
+            <Text width="full" color={color("700")} fontWeight="400" textAlign="center" size="md">
+              Confirm the password to secure your wallet and verification process.
             </Text>
           )}
         </Center>
       </ModalHeader>
       <FormProvider {...form}>
-        <form
-          onSubmit={form.handleSubmit(formFields =>
-            handleSubmit ? handleSubmit(formFields.password) : onSubmit(formFields)
-          )}
-        >
+        <form onSubmit={form.handleSubmit(onHandleSubmit)}>
           <ModalBody>
             <Flex flexDirection="column" gap="24px">
               <PasswordInput

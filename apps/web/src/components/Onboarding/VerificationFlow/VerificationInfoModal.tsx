@@ -14,9 +14,10 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-import { AlertIcon } from "../../assets/icons";
-import { useColor } from "../../styles/useColor";
-import { ModalCloseButton } from "../CloseButton";
+import { useHandleVerify } from "./useHandleVerify";
+import { AlertIcon } from "../../../assets/icons";
+import { useColor } from "../../../styles/useColor";
+import { ModalCloseButton } from "../../CloseButton";
 
 // TODO: Replace with actual copy paste
 const accordionItems = [
@@ -38,6 +39,7 @@ const accordionItems = [
 
 export const VerificationInfoModal = () => {
   const color = useColor();
+  const handleVerify = useHandleVerify();
 
   return (
     <ModalContent>
@@ -78,7 +80,7 @@ export const VerificationInfoModal = () => {
         </Accordion>
       </ModalBody>
       <ModalFooter>
-        <Button width="full" variant="primary">
+        <Button width="full" onClick={handleVerify} variant="primary">
           Verify Now
         </Button>
       </ModalFooter>

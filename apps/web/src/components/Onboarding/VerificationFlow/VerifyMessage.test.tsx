@@ -1,6 +1,6 @@
+import { VerificationInfoModal } from "./VerificationInfoModal";
 import { VerifyMessage } from "./VerifyMessage";
-import { dynamicModalContextMock, render, screen, userEvent } from "../../testUtils";
-import { VerificationInfoModal } from "../Onboarding/VerificationInfoModal";
+import { dynamicModalContextMock, render, screen, userEvent } from "../../../testUtils";
 
 describe("<VerifyMessage />", () => {
   it("renders correctly", () => {

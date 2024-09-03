@@ -3,8 +3,9 @@ import { fullId } from "@umami/core";
 import { useCurrentAccount, useGetAccountAllTokens } from "@umami/state";
 
 import { Token } from "./Token";
-import { EmptyMessage, VerifyMessage } from "../../components/EmptyMessage";
-import { useIsAccountVerified } from "../../components/Onboarding/useIsAccountVerified";
+import { EmptyMessage } from "../../components/EmptyMessage";
+import { useIsAccountVerified } from "../../components/Onboarding/VerificationFlow/useIsAccountVerified";
+import { VerifyMessage } from "../../components/Onboarding/VerificationFlow/VerifyMessage";
 import { ViewOverlay } from "../../components/ViewOverlay/ViewOverlay";
 
 export const Tokens = () => {
