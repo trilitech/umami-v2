@@ -52,6 +52,8 @@ export const VerifySeedphraseModal = ({ seedPhrase }: VerifySeedphraseModalProps
       })
     );
 
+    dispatch(accountsActions.setPassword(""));
+
     onClose();
   };
 
@@ -115,7 +117,7 @@ export const VerifySeedphraseModal = ({ seedPhrase }: VerifySeedphraseModalProps
           </ModalBody>
           <ModalFooter flexDirection="column">
             <Button width="full" isDisabled={!isValid} type="submit" variant="primary">
-              Continue
+              Verify
             </Button>
 
             {IS_DEV && (

@@ -2,7 +2,7 @@ import { Box, Icon } from "@chakra-ui/react";
 
 import { CoinIcon, LockIcon, PyramidIcon, WalletIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
-import { useIsAccountVerified } from "../Onboarding/VerificationFlow/useIsAccountVerified";
+import { useIsAccountVerified } from "../Onboarding/VerificationFlow";
 
 type ViewOverlayProps = {
   iconType: "activity" | "earn" | "nfts" | "tokens";

@@ -4,7 +4,7 @@ import { useCurrentAccount, useGetAccountAllTokens } from "@umami/state";
 
 import { Token } from "./Token";
 import { EmptyMessage } from "../../components/EmptyMessage";
-import { useIsAccountVerified } from "../../components/Onboarding/VerificationFlow/useIsAccountVerified";
+import { useIsAccountVerified } from "../../components/Onboarding/VerificationFlow";
 import { VerifyMessage } from "../../components/Onboarding/VerificationFlow/VerifyMessage";
 import { ViewOverlay } from "../../components/ViewOverlay/ViewOverlay";
 

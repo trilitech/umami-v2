@@ -8,7 +8,7 @@ import { ArrowDownLeftIcon, WalletIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
 import { AccountInfoModal } from "../AccountSelectorModal";
 import { IconButtonWithText } from "../IconButtonWithText";
-import { useIsAccountVerified } from "../Onboarding/VerificationFlow/useIsAccountVerified";
+import { useIsAccountVerified } from "../Onboarding/VerificationFlow";
 
 export const AccountBalance = () => {
   const color = useColor();
