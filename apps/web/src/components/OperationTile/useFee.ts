@@ -7,7 +7,7 @@ import {
   type TransactionOperation,
   type UnstakeOperation,
 } from "@umami/tzkt";
-import BigNumber from "bignumber.js";
+import { BigNumber } from "bignumber.js";
 import { get } from "lodash";
 
 const FEE_FIELDS = ["bakerFee", "storageFee", "allocationFee"] as const;

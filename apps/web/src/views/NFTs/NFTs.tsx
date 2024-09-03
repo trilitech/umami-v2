@@ -1,7 +1,7 @@
 import { Box, Flex, Heading, SimpleGrid } from "@chakra-ui/react";
 import { useDynamicDrawerContext } from "@umami/components";
 import { fullId } from "@umami/core";
-import BigNumber from "bignumber.js";
+import { BigNumber } from "bignumber.js";
 import { range } from "lodash";
 
 import { NFTCard } from "./NFTCard";

@@ -7,9 +7,9 @@ import {
   useValidateMasterPassword,
 } from "@umami/state";
 
+import { type MasterPasswordStep } from "../OnboardingStep";
 import { EnterAndConfirmPassword } from "./password/EnterAndConfirmPassword";
 import { EnterPassword } from "./password/EnterPassword";
-import { type MasterPasswordStep } from "../OnboardingStep";
 
 export const MasterPassword = ({
   account,

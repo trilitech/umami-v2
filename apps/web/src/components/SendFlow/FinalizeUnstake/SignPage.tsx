@@ -9,7 +9,7 @@ import {
   ModalFooter,
   ModalHeader,
 } from "@chakra-ui/react";
-import type BigNumber from "bignumber.js";
+import { type BigNumber } from "bignumber.js";
 import { FormProvider } from "react-hook-form";
 
 import { AddressTile } from "../../AddressTile/AddressTile";

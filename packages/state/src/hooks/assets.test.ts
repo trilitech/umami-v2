@@ -1,6 +1,6 @@
 import { mockBaker, rawAccountFixture } from "@umami/core";
 import { mockImplicitAddress } from "@umami/tezos";
-import BigNumber from "bignumber.js";
+import { BigNumber } from "bignumber.js";
 
 import {
   useBakerList,

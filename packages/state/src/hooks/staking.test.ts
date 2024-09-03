@@ -1,6 +1,6 @@
 import { rawAccountFixture } from "@umami/core";
 import { MAINNET, mockImplicitAddress } from "@umami/tezos";
-import BigNumber from "bignumber.js";
+import { BigNumber } from "bignumber.js";
 
 import {
   useAccountPendingUnstakeRequests,

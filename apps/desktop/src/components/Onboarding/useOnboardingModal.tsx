@@ -8,6 +8,7 @@ import {
 import { useStepHistory } from "@umami/components";
 import { useImplicitAccounts } from "@umami/state";
 
+import { ModalBackButton } from "../ModalBackButton";
 import { ConnectOptions } from "./connectOptions/ConnectOptions";
 import { ConnectOrCreate } from "./connectOrCreate/ConnectOrCreate";
 import { DerivationPath } from "./derivationPath/DerivationPath";
@@ -23,7 +24,6 @@ import { RestoreMnemonic } from "./restoreMnemonic/RestoreMnemonic";
 import { RestoreSecretKey } from "./restoreSecretKey/RestoreSecretKey";
 import { ShowSeedphrase } from "./showSeedphrase/ShowSeedphrase";
 import { VerifySeedphrase } from "./verifySeedphrase/VerifySeedphrase";
-import { ModalBackButton } from "../ModalBackButton";
 
 export const useOnboardingModal = (onModalClose?: () => void) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
