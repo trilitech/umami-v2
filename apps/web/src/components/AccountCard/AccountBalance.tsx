@@ -8,7 +8,7 @@ import { ArrowDownLeftIcon, WalletIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
 import { AccountInfoModal } from "../AccountSelectorModal";
 import { IconButtonWithText } from "../IconButtonWithText";
-import { useCheckVerified } from "../Onboarding/useCheckUnverified";
+import { useIsAccountVerified } from "../Onboarding/useIsAccountVerified";
 
 export const AccountBalance = () => {
   const color = useColor();
@@ -17,7 +17,7 @@ export const AccountBalance = () => {
   const address = currentAccount.address.pkh;
   const balance = useGetAccountBalance()(address);
   const usdBalance = useGetDollarBalance()(address);
-  const isVerified = useCheckVerified();
+  const isVerified = useIsAccountVerified();
 
   const buyTezUrl = `https://widget.wert.io/default/widget/?commodity=XTZ&address=${address}&network=tezos&commodity_id=xtz.simple.tezos`;
 

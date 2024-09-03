@@ -160,4 +160,22 @@ describe("migrations", () => {
       });
     });
   });
+
+  test("8", () => {
+    expect(
+      accountsMigrations[8]({
+        items: [
+          mockMnemonicAccount(0, { isVerified: false }),
+          mockMnemonicAccount(1, { isVerified: false }),
+          { ...mockSecretKeyAccount(2), isVerified: false },
+        ],
+      })
+    ).toEqual({
+      items: [
+        mockMnemonicAccount(0, { isVerified: true }),
+        mockMnemonicAccount(1, { isVerified: true }),
+        { ...mockSecretKeyAccount(2), isVerified: false },
+      ],
+    });
+  });
 });

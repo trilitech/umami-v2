@@ -79,7 +79,7 @@ describe("renameAccount", () => {
       store.dispatch(renameAccount(mockMnemonicAccount(0), "new name"));
 
       expect(store.getState().accounts.items).toEqual([
-        { ...mockMnemonicAccount(0), label: "new name" },
+        mockMnemonicAccount(0, { label: "new name" }),
         mockMnemonicAccount(1),
       ]);
     });

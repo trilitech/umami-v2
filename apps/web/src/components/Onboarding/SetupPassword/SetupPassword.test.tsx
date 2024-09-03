@@ -1,5 +1,6 @@
 import {
   type UmamiStore,
+  generate24WordMnemonic,
   makeStore,
   useRestoreFromMnemonic,
   useRestoreFromSecretKey,
@@ -14,6 +15,7 @@ jest.mock("@umami/state", () => ({
   ...jest.requireActual("@umami/state"),
   useRestoreFromMnemonic: jest.fn(),
   useRestoreFromSecretKey: jest.fn(),
+  generate24WordMnemonic: jest.fn(),
 }));
 
 const password = "password";
@@ -143,6 +145,7 @@ describe("<SetupPassword />", () => {
         derivationPathTemplate: "44'/1729'/?'/0'",
         label: "Account",
         curve: "ed25519",
+        isVerified: true,
       });
     });
 
@@ -171,6 +174,7 @@ describe("<SetupPassword />", () => {
         derivationPathTemplate: "44'/1729'/?'/0'",
         label: "Account",
         curve,
+        isVerified: true,
       });
     });
 
@@ -200,6 +204,49 @@ describe("<SetupPassword />", () => {
         derivationPathTemplate: "m/44'/1729'/0'/0'/0'",
         label: "Account",
         curve: "ed25519",
+        isVerified: true,
+      });
+    });
+  });
+
+  describe("new_mnemonic mode", () => {
+    const store = makeStore();
+    const mockRestoreFromMnemonic = jest.fn();
+
+    beforeEach(() => {
+      jest.mocked(useRestoreFromMnemonic).mockReturnValue(mockRestoreFromMnemonic);
+      jest.mocked(generate24WordMnemonic).mockReturnValue(mnemonic1);
+    });
+
+    it("doesn't render advanced section", async () => {
+      await renderInModal(<SetupPassword mode="new_mnemonic" />);
+
+      expect(screen.queryByTestId("advanced-section")).not.toBeInTheDocument();
+    });
+
+    it("calls restoreFromMnemonic with predefined mnemonic", async () => {
+      const user = userEvent.setup();
+
+      await renderInModal(<SetupPassword mode="new_mnemonic" />, store);
+
+      const passwordInput = screen.getByLabelText("Set Password");
+      const passwordConfirmationInput = screen.getByLabelText("Confirm Password");
+
+      await act(() => user.type(passwordInput, password));
+      await act(() => user.type(passwordConfirmationInput, password));
+
+      const submitButton = screen.getByRole("button", { name: "Create Account" });
+
+      await act(() => user.click(submitButton));
+
+      await waitFor(() => expect(mockRestoreFromMnemonic).toHaveBeenCalledTimes(1));
+      expect(mockRestoreFromMnemonic).toHaveBeenCalledWith({
+        mnemonic: mnemonic1,
+        password,
+        derivationPathTemplate: "44'/1729'/?'/0'",
+        label: "Account",
+        curve: "ed25519",
+        isVerified: false,
       });
     });
   });

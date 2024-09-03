@@ -131,6 +131,14 @@ export const accountsSlice = createSlice({
     setCurrent: (state, { payload: address }: { payload: RawPkh | undefined }) => {
       state.current = address;
     },
+    setIsVerified: (
+      state,
+      { payload: { pkh, isVerified } }: { payload: { pkh: RawPkh; isVerified: boolean } }
+    ) => {
+      const account = state.items.find(account => account.address.pkh === pkh) as MnemonicAccount;
+
+      account.isVerified = isVerified;
+    },
   },
 });
 

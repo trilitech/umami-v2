@@ -23,13 +23,13 @@ import { useColor } from "../../styles/useColor";
 import { AccountTile } from "../AccountTile";
 import { ModalCloseButton } from "../CloseButton";
 import { OnboardOptionsModal } from "../Onboarding/OnboardOptions";
-import { useCheckVerified } from "../Onboarding/useCheckUnverified";
+import { useIsAccountVerified } from "../Onboarding/useIsAccountVerified";
 
 export const AccountSelectorModal = () => {
   const accounts = useImplicitAccounts();
   const color = useColor();
   const getBalance = useGetAccountBalance();
-  const isVerified = useCheckVerified();
+  const isVerified = useIsAccountVerified();
   const { openWith, onClose } = useDynamicModalContext();
 
   const dispatch = useDispatch();

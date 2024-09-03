@@ -112,10 +112,7 @@ export const mockImplicitAccount = (
 ): ImplicitAccount => {
   switch (type) {
     case "mnemonic":
-      return {
-        ...mockMnemonicAccount(index, label),
-        seedFingerPrint: fingerPrint,
-      };
+      return mockMnemonicAccount(index, { label, seedFingerPrint: fingerPrint });
     case "social":
       return mockSocialAccount(index, label);
     case "ledger":
@@ -125,15 +122,20 @@ export const mockImplicitAccount = (
   }
 };
 
-export const mockMnemonicAccount = (index: number, label?: string): MnemonicAccount => ({
+export const mockMnemonicAccount = (
+  index: number,
+  options?: Partial<MnemonicAccount>
+): MnemonicAccount => ({
   curve: "ed25519",
   derivationPath: getDefaultDerivationPath(index),
   derivationPathTemplate: "44'/1729'/?'/0'",
   type: "mnemonic",
-  label: label || mockAccountLabel(index),
   address: mockImplicitAddress(index),
   pk: mockPk(index),
   seedFingerPrint: "mockPrint",
+  isVerified: true,
+  ...options,
+  label: options?.label || mockAccountLabel(index),
 });
 
 export const mockSecretKeyAccount = (index: number, label?: string): SecretKeyAccount => ({

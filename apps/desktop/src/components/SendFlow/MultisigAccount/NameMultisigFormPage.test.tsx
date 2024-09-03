@@ -69,7 +69,7 @@ describe("NameMultisigFormPage", () => {
     });
 
     it("checks that typed name is unique", async () => {
-      addTestAccount(store, mockMnemonicAccount(1, "Used Name"));
+      addTestAccount(store, mockMnemonicAccount(1, { label: "Used Name" }));
       await renderMultisigForm(name);
 
       const input = screen.getByLabelText("Account Name");
@@ -84,7 +84,7 @@ describe("NameMultisigFormPage", () => {
     });
 
     it("checks that typed name is unique - after trim()", async () => {
-      addTestAccount(store, mockMnemonicAccount(1, "Used Name"));
+      addTestAccount(store, mockMnemonicAccount(1, { label: "Used Name" }));
       await renderMultisigForm(name);
 
       const input = screen.getByLabelText("Account Name");
@@ -207,7 +207,7 @@ describe("NameMultisigFormPage", () => {
     });
 
     it("checks that pre-set name is unique", async () => {
-      addTestAccount(store, mockMnemonicAccount(1, MULTISIG_NAME));
+      addTestAccount(store, mockMnemonicAccount(1, { label: MULTISIG_NAME }));
       await renderMultisigForm(MULTISIG_NAME);
 
       fireEvent.blur(screen.getByLabelText("Account Name"));
@@ -220,7 +220,7 @@ describe("NameMultisigFormPage", () => {
     });
 
     it("checks that pre-set name is unique - after trim()", async () => {
-      addTestAccount(store, mockMnemonicAccount(1, MULTISIG_NAME));
+      addTestAccount(store, mockMnemonicAccount(1, { label: MULTISIG_NAME }));
       await renderMultisigForm(`\t${MULTISIG_NAME}  `);
 
       fireEvent.blur(screen.getByLabelText("Account Name"));

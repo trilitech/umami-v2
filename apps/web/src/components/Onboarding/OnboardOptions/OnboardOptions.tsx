@@ -9,6 +9,7 @@ import { OnboardWithTwitterButton } from "./OnboardWithTwitterButton";
 import { useColor } from "../../../styles/useColor";
 import { AccountTileWrapper } from "../../AccountTile";
 import { ImportWallet } from "../ImportWallet";
+import { SetupPassword } from "../SetupPassword";
 
 export const OnboardOptions = ({ children }: PropsWithChildren) => {
   const color = useColor();
@@ -49,7 +50,12 @@ export const OnboardOptions = ({ children }: PropsWithChildren) => {
         </Center>
 
         <Flex flexDirection="column" gap="12px" width="full">
-          <Button width="full" size="lg" variant="primary">
+          <Button
+            width="full"
+            onClick={() => openWith(<SetupPassword mode="new_mnemonic" />)}
+            size="lg"
+            variant="primary"
+          >
             Create a new wallet
           </Button>
           <Button

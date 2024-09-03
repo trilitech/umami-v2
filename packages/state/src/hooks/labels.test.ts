@@ -65,7 +65,7 @@ describe("labelsHooks", () => {
           mockLedgerAccount(0, "Ledger Account Label"),
           mockSocialAccount(1, "Social Account Label"),
           mockSecretKeyAccount(2, "Secret Key Account Label"),
-          mockMnemonicAccount(3, "Mnemonic Account Label"),
+          mockMnemonicAccount(3, { label: "Mnemonic Account Label" }),
         ]);
         store.dispatch(multisigsActions.setMultisigs([mockMultisigAccount(4)]));
         store.dispatch(renameAccount(mockMultisigAccount(5), "Multisig Account Label"));
@@ -108,7 +108,10 @@ describe("labelsHooks", () => {
       },
       {
         type: "mnemonic" as const,
-        accounts: [mockMnemonicAccount(0, "Test acc 2"), mockMnemonicAccount(1, "Test acc 4")],
+        accounts: [
+          mockMnemonicAccount(0, { label: "Test acc 2" }),
+          mockMnemonicAccount(1, { label: "Test acc 4" }),
+        ],
       },
       {
         type: "secret_key" as const,

@@ -83,10 +83,10 @@ describe("<MultisigPendingOperation />", () => {
 
   it("User can accomplish a proposal execution", async () => {
     const user = userEvent.setup();
-    const account: MnemonicAccount = {
-      ...mockMnemonicAccount(0),
+    const account: MnemonicAccount = mockMnemonicAccount(0, {
       address: parseImplicitPkh("tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3"),
-    };
+    });
+
     const multisig = { ...mockMultisigAccount(0), signers: [account.address] };
 
     const operation = makeAccountOperations(account, account, [
@@ -146,10 +146,9 @@ describe("<MultisigPendingOperation />", () => {
 
   test("User can accomplish a proposal approval", async () => {
     const user = userEvent.setup();
-    const signer: ImplicitAccount = {
-      ...mockMnemonicAccount(0),
+    const signer: ImplicitAccount = mockMnemonicAccount(0, {
       address: parseImplicitPkh("tz1UNer1ijeE9ndjzSszRduR3CzX49hoBUB3"),
-    };
+    });
 
     const multisig = { ...mockMultisigAccount(0), signers: [signer.address] };
 

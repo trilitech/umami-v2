@@ -5,14 +5,16 @@ import {
   Heading,
   Icon,
   ModalBody,
-  ModalCloseButton,
   ModalContent,
+  ModalFooter,
   ModalHeader,
+  Text,
 } from "@chakra-ui/react";
 import { type Curves } from "@taquito/signer";
 import { useDynamicModalContext, useMultiForm } from "@umami/components";
 import { DEFAULT_ACCOUNT_LABEL } from "@umami/core";
 import {
+  generate24WordMnemonic,
   useAsyncActionHandler,
   useGetNextAvailableAccountLabels,
   useIsPasswordSet,
@@ -23,9 +25,10 @@ import {
 import { decryptSecretKey, defaultDerivationPathTemplate } from "@umami/tezos";
 import { FormProvider } from "react-hook-form";
 
-import { LockIcon } from "../../../assets/icons";
+import { LockIcon, UserIcon } from "../../../assets/icons";
 import { useColor } from "../../../styles/useColor";
 import { ModalBackButton } from "../../BackButton";
+import { ModalCloseButton } from "../../CloseButton";
 import { PasswordInput } from "../../PasswordInput";
 import { AdvancedAccountSettings } from "../AdvancedAccountSettings";
 
@@ -36,7 +39,13 @@ type FormFields = {
   curve: Exclude<Curves, "bip25519">;
 };
 
-export const SetupPassword = ({ mode }: { mode: "mnemonic" | "secret_key" }) => {
+type Mode = "mnemonic" | "secret_key" | "new_mnemonic";
+
+type SetupPasswordProps = {
+  mode: Mode;
+};
+
+export const SetupPassword = ({ mode }: SetupPasswordProps) => {
   const color = useColor();
   const { handleAsyncAction, isLoading } = useAsyncActionHandler();
   const { allFormValues, onClose } = useDynamicModalContext();
@@ -59,6 +68,8 @@ export const SetupPassword = ({ mode }: { mode: "mnemonic" | "secret_key" }) => 
     getValues,
   } = form;
 
+  const isNewMnemonic = mode === "new_mnemonic";
+
   const onSubmit = ({ password, curve, derivationPath }: FormFields) =>
     handleAsyncAction(async () => {
       const label = getNextAvailableAccountLabels(DEFAULT_ACCOUNT_LABEL)[0];
@@ -66,8 +77,19 @@ export const SetupPassword = ({ mode }: { mode: "mnemonic" | "secret_key" }) => 
       await checkPassword?.(password);
 
       switch (mode) {
-        case "mnemonic": {
-          const mnemonic = allFormValues.mnemonic.map(({ val }: { val: string }) => val).join(" ");
+        case "secret_key": {
+          const secretKey = await decryptSecretKey(
+            allFormValues.secretKey,
+            allFormValues.secretKeyPassword
+          );
+          await restoreFromSecretKey(secretKey, password, DEFAULT_ACCOUNT_LABEL);
+          break;
+        }
+        case "mnemonic":
+        case "new_mnemonic": {
+          const mnemonic = isNewMnemonic
+            ? generate24WordMnemonic()
+            : allFormValues.mnemonic.map(({ val }: { val: string }) => val).join(" ");
 
           await restoreFromMnemonic({
             mnemonic,
@@ -75,20 +97,18 @@ export const SetupPassword = ({ mode }: { mode: "mnemonic" | "secret_key" }) => 
             derivationPathTemplate: derivationPath,
             label,
             curve,
+            isVerified: !isNewMnemonic,
           });
           break;
-        }
-        case "secret_key": {
-          const secretKey = await decryptSecretKey(
-            allFormValues.secretKey,
-            allFormValues.secretKeyPassword
-          );
-          await restoreFromSecretKey(secretKey, password, label);
         }
       }
 
       return onClose();
     });
+
+  const icon = isNewMnemonic ? UserIcon : LockIcon;
+  const title = isNewMnemonic ? "Create Password" : "Almost there";
+  const buttonLabel = isNewMnemonic ? "Create Account" : "Import Wallet";
 
   return (
     <ModalContent>
@@ -96,13 +116,25 @@ export const SetupPassword = ({ mode }: { mode: "mnemonic" | "secret_key" }) => 
         <ModalBackButton />
         <ModalCloseButton />
         <Center flexDirection="column" gap="16px">
-          <Icon as={LockIcon} width="24px" height="24px" color={color("blue")} />
-          <Heading size="xl">Almost there</Heading>
+          <Icon as={icon} width="24px" height="24px" color={color("blue")} />
+          <Heading size="xl">{title}</Heading>
+          {isNewMnemonic && (
+            <Text
+              width="full"
+              maxWidth="340px"
+              color={color("700")}
+              fontWeight="400"
+              textAlign="center"
+              size="md"
+            >
+              Set a password to unlock your wallet. Make sure to store your password safely.
+            </Text>
+          )}
         </Center>
       </ModalHeader>
-      <ModalBody>
-        <FormProvider {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
+      <FormProvider {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <ModalBody>
             <Flex flexDirection="column" gap="24px">
               <PasswordInput
                 inputName="password"
@@ -119,20 +151,21 @@ export const SetupPassword = ({ mode }: { mode: "mnemonic" | "secret_key" }) => 
               )}
 
               {mode === "mnemonic" && <AdvancedAccountSettings />}
-
-              <Button
-                width="full"
-                isDisabled={!isValid}
-                isLoading={isLoading}
-                type="submit"
-                variant="primary"
-              >
-                Import Wallet
-              </Button>
             </Flex>
-          </form>
-        </FormProvider>
-      </ModalBody>
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              width="full"
+              isDisabled={!isValid}
+              isLoading={isLoading}
+              type="submit"
+              variant="primary"
+            >
+              {buttonLabel}
+            </Button>
+          </ModalFooter>
+        </form>
+      </FormProvider>
     </ModalContent>
   );
 };

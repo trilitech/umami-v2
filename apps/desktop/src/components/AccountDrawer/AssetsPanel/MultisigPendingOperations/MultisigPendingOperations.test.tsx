@@ -36,10 +36,9 @@ describe("<MultisigPendingOperations />", () => {
     store.dispatch(multisigsActions.setMultisigs([multisig]));
     store.dispatch(multisigsActions.setPendingOperations(multisigPendingOpsFixtures));
 
-    const mockAccount: MnemonicAccount = {
-      ...mockMnemonicAccount(0),
+    const mockAccount: MnemonicAccount = mockMnemonicAccount(0, {
       address: mockImplicitAddress(0),
-    };
+    });
 
     addTestAccount(store, mockAccount);
 

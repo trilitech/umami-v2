@@ -88,6 +88,7 @@ describe.each(["ed25519", "secp256k1", "p256"] as const)(
           seedFingerPrint: MOCK_FINGERPRINT,
           label: label,
           derivationPathTemplate: DERIVATION_PATH_TEMPLATE,
+          isVerified: true,
         };
       };
 

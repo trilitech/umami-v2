@@ -51,7 +51,7 @@ describe("<RenameAccountModal />", () => {
 
     it("does not allow existing account name", async () => {
       const account = mockMnemonicAccount(0);
-      [account, mockMnemonicAccount(1, "Existing Account Name")].forEach(account =>
+      [account, mockMnemonicAccount(1, { label: "Existing Account Name" })].forEach(account =>
         addTestAccount(store, account)
       );
       render(<RenameAccountModal account={account} />, { store });

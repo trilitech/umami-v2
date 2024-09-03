@@ -56,6 +56,7 @@ export { default as TrashIcon } from "./trash.svg";
 export { default as TwitterIcon } from "./twitter.svg";
 export { default as UnknownIcon } from "./unknown-contact.svg";
 export { default as USBIcon } from "./usb.svg";
+export { default as UserIcon } from "./user.svg";
 export { default as UserPlusIcon } from "./user-plus.svg";
 export { default as VerifiedIcon } from "./verified.svg";
 export { default as WalletIcon } from "./wallet.svg";

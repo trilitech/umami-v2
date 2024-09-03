@@ -5,7 +5,7 @@ import { fromPairs, identity } from "lodash";
 
 import { announcementInitialState as announcementsInitialState } from "./slices/announcement";
 
-export const VERSION = 7;
+export const VERSION = 8;
 
 export const mainStoreMigrations = {
   0: (state: any) =>
@@ -64,6 +64,7 @@ export const mainStoreMigrations = {
       delete draft.assets["balances"];
       delete draft.assets["delegationLevels"];
     }),
+  8: identity,
 } as any;
 
 export const accountsMigrations = {
@@ -95,4 +96,12 @@ export const accountsMigrations = {
   5: identity,
   6: identity,
   7: identity,
+  8: (state: any) =>
+    produce(state, (draft: any) => {
+      draft.items.forEach((account: any) => {
+        if (account.type === "mnemonic") {
+          account.isVerified = true;
+        }
+      });
+    }),
 } as any;

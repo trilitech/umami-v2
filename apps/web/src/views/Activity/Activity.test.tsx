@@ -1,5 +1,11 @@
 import { mockImplicitAccount, mockMnemonicAccount } from "@umami/core";
-import { type UmamiStore, addTestAccount, makeStore, networksActions } from "@umami/state";
+import {
+  type UmamiStore,
+  accountsActions,
+  addTestAccount,
+  makeStore,
+  networksActions,
+} from "@umami/state";
 import { MAINNET } from "@umami/tezos";
 import {
   type TzktCombinedOperation,
@@ -18,8 +24,12 @@ jest.mock("@umami/tzkt", () => ({
 }));
 
 let store: UmamiStore;
+const account = mockImplicitAccount(0);
+
 beforeEach(() => {
   store = makeStore();
+  addTestAccount(store, account);
+  store.dispatch(accountsActions.setCurrent(account.address.pkh));
 });
 
 describe("<Activity />", () => {
@@ -85,7 +95,12 @@ describe("<Activity />", () => {
 
   describe("when user is unverified", () => {
     beforeEach(() => {
-      localStorage.setItem("user:verified", "false");
+      store.dispatch(
+        accountsActions.setIsVerified({
+          pkh: account.address.pkh,
+          isVerified: false,
+        })
+      );
     });
 
     it("renders verify message", async () => {
