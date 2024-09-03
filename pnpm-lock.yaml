@@ -87,11 +87,11 @@ importers:
         specifier: ^2.2.7
         version: 2.2.7(react-redux@9.1.2(@types/react@18.3.5)(react@18.3.1)(redux@5.0.1))(react@18.3.1)
       '@tanstack/react-query':
-        specifier: ^5.53.2
-        version: 5.53.2(react@18.3.1)
+        specifier: ^5.53.3
+        version: 5.53.3(react@18.3.1)
       '@tanstack/react-query-devtools':
-        specifier: ^5.53.2
-        version: 5.53.2(@tanstack/react-query@5.53.2(react@18.3.1))(react@18.3.1)
+        specifier: ^5.53.3
+        version: 5.53.3(@tanstack/react-query@5.53.3(react@18.3.1))(react@18.3.1)
       '@taquito/ledger-signer':
         specifier: ^20.0.1
         version: 20.0.1
@@ -635,8 +635,8 @@ importers:
         specifier: ^2.2.7
         version: 2.2.7(react-redux@9.1.2(@types/react@18.3.5)(react@18.3.1)(redux@5.0.1))(react@18.3.1)
       '@tanstack/react-query':
-        specifier: ^5.53.2
-        version: 5.53.2(react@18.3.1)
+        specifier: ^5.53.3
+        version: 5.53.3(react@18.3.1)
       '@taquito/beacon-wallet':
         specifier: ^20.0.1
         version: 20.0.1
@@ -1197,8 +1197,8 @@ importers:
         specifier: ^11.13.0
         version: 11.13.0(@emotion/react@11.13.3(@types/react@18.3.5)(react@18.3.1))(@types/react@18.3.5)(react@18.3.1)
       '@tanstack/react-query':
-        specifier: ^5.53.2
-        version: 5.53.2(react@18.3.1)
+        specifier: ^5.53.3
+        version: 5.53.3(react@18.3.1)
       '@taquito/rpc':
         specifier: ^20.0.1
         version: 20.0.1
@@ -1536,8 +1536,8 @@ importers:
         specifier: ^2.2.7
         version: 2.2.7(react-redux@9.1.2(@types/react@18.3.5)(react@18.3.1)(redux@5.0.1))(react@18.3.1)
       '@tanstack/react-query':
-        specifier: ^5.53.2
-        version: 5.53.2(react@18.3.1)
+        specifier: ^5.53.3
+        version: 5.53.3(react@18.3.1)
       '@taquito/signer':
         specifier: ^20.0.1
         version: 20.0.1
@@ -4256,20 +4256,20 @@ packages:
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
 
-  '@tanstack/query-core@5.53.2':
-    resolution: {integrity: sha512-gCsABpRrYfLsmwcQ0JCE5I3LOQ9KYrDDSnseUDP3T7ukV8E7+lhlHDJS4Gegt1TSZCsxKhc1J5A7TkF5ePjDUQ==}
+  '@tanstack/query-core@5.53.3':
+    resolution: {integrity: sha512-ZfjAgd7NpqDx0e4aYBt7EmS2enbulPrJwowTy+mayRE93WUUH+sIYHun1TdRjpGwDPMNNZ5D6goh7n3CwoO+HA==}
 
   '@tanstack/query-devtools@5.52.3':
     resolution: {integrity: sha512-oGX9qJuNpr4vOQyeksqHr+FgLQGs5UooK87R1wTtcsUUdrRKGSgs3cBllZMtWBJxg+yVvg0TlHNGYLMjvqX3GA==}
 
-  '@tanstack/react-query-devtools@5.53.2':
-    resolution: {integrity: sha512-PvsJqEZMyj/Iur4y/UhxSmxjZaP/KvstO+bGiioI0FbjFerjaeZNRv0WzHU/iSs3TutBt7EMUMC2k9MSGeb3CA==}
+  '@tanstack/react-query-devtools@5.53.3':
+    resolution: {integrity: sha512-9uppT6i8kbNbmt4Pf14tgDQgZciGjqeiSvlTSqsjO3aJtDO7hAvxi4uhC/AcASlw6FmZnzQQRevPeBqT2NuYgw==}
     peerDependencies:
-      '@tanstack/react-query': ^5.53.2
+      '@tanstack/react-query': ^5.53.3
       react: ^18 || ^19
 
-  '@tanstack/react-query@5.53.2':
-    resolution: {integrity: sha512-ZxG/rspElkfqg2LElnNtsNgPtiCZ4Wl2XY43bATQqPvNgyrhzbCFzCjDwSQy9fJhSiDVALSlxYS8YOIiToqQmg==}
+  '@tanstack/react-query@5.53.3':
+    resolution: {integrity: sha512-286mN/91CeM7vC6CZFLKYDHSw+WyMX6ekIvzoTbpM4xyPb99VSyCKPLyPgaOatKqYm6ooMBquSq9NGRdKgsJfg==}
     peerDependencies:
       react: ^18 || ^19
 
@@ -13493,19 +13493,19 @@ snapshots:
       - supports-color
       - typescript
 
-  '@tanstack/query-core@5.53.2': {}
+  '@tanstack/query-core@5.53.3': {}
 
   '@tanstack/query-devtools@5.52.3': {}
 
-  '@tanstack/react-query-devtools@5.53.2(@tanstack/react-query@5.53.2(react@18.3.1))(react@18.3.1)':
+  '@tanstack/react-query-devtools@5.53.3(@tanstack/react-query@5.53.3(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@tanstack/query-devtools': 5.52.3
-      '@tanstack/react-query': 5.53.2(react@18.3.1)
+      '@tanstack/react-query': 5.53.3(react@18.3.1)
       react: 18.3.1
 
-  '@tanstack/react-query@5.53.2(react@18.3.1)':
+  '@tanstack/react-query@5.53.3(react@18.3.1)':
     dependencies:
-      '@tanstack/query-core': 5.53.2
+      '@tanstack/query-core': 5.53.3
       react: 18.3.1
 
   '@taquito/beacon-wallet@20.0.1':
