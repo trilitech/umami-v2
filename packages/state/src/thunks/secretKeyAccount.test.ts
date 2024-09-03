@@ -60,12 +60,12 @@ describe("secretKeyAccount", () => {
     });
 
     it("doesn't update accounts slice on adding account with existing pkh", async () => {
-      const existingMnemonic = {
-        ...mockMnemonicAccount(0),
+      const existingMnemonic = mockMnemonicAccount(0, {
         curve,
         pk: publicKey,
         address: { type: "implicit" as const, pkh },
-      };
+      });
+
       addTestAccount(store, existingMnemonic);
 
       const label = "Secret Key Acc";

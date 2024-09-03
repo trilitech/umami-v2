@@ -68,6 +68,8 @@ export const SetupPassword = ({ mode }: SetupPasswordProps) => {
     getValues,
   } = form;
 
+  const isNewMnemonic = mode === "new_mnemonic";
+
   const onSubmit = ({ password, curve, derivationPath }: FormFields) =>
     handleAsyncAction(async () => {
       const label = getNextAvailableAccountLabels(DEFAULT_ACCOUNT_LABEL)[0];
@@ -85,10 +87,9 @@ export const SetupPassword = ({ mode }: SetupPasswordProps) => {
         }
         case "mnemonic":
         case "new_mnemonic": {
-          const mnemonic =
-            mode === "new_mnemonic"
-              ? generate24WordMnemonic()
-              : allFormValues.mnemonic.map(({ val }: { val: string }) => val).join(" ");
+          const mnemonic = isNewMnemonic
+            ? generate24WordMnemonic()
+            : allFormValues.mnemonic.map(({ val }: { val: string }) => val).join(" ");
 
           await restoreFromMnemonic({
             mnemonic,
@@ -96,7 +97,7 @@ export const SetupPassword = ({ mode }: SetupPasswordProps) => {
             derivationPathTemplate: derivationPath,
             label,
             curve,
-            isVerified: mode === "mnemonic",
+            isVerified: !isNewMnemonic,
           });
           break;
         }
@@ -104,8 +105,6 @@ export const SetupPassword = ({ mode }: SetupPasswordProps) => {
 
       return onClose();
     });
-
-  const isNewMnemonic = mode === "new_mnemonic";
 
   const icon = isNewMnemonic ? UserIcon : LockIcon;
   const title = isNewMnemonic ? "Create Password" : "Almost there";

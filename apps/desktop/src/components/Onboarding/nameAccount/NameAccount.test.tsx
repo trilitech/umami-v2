@@ -87,7 +87,10 @@ describe("<NameAccount />", () => {
       },
       {
         type: "mnemonic" as const,
-        accounts: [mockMnemonicAccount(0, labelBase), mockMnemonicAccount(2, `${labelBase} 3`)],
+        accounts: [
+          mockMnemonicAccount(0, { label: labelBase }),
+          mockMnemonicAccount(2, { label: `${labelBase} 3` }),
+        ],
       },
       {
         type: "secret_key" as const,
