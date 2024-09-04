@@ -1,5 +1,5 @@
 import { format } from "@taquito/utils";
-import BigNumber from "bignumber.js";
+import { BigNumber } from "bignumber.js";
 
 import { TEZ, TEZ_DECIMALS } from "./constants";
 

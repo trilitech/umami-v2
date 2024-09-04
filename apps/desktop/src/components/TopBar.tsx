@@ -14,8 +14,8 @@ import { differenceInMinutes, differenceInSeconds, formatDistance } from "date-f
 import { useEffect, useState } from "react";
 
 import { BuyTezForm } from "./BuyTez/BuyTezForm";
-import { FormPage as SendTezForm } from "./SendFlow/Tez/FormPage";
 import { FetchingIcon } from "../assets/icons";
+import { FormPage as SendTezForm } from "./SendFlow/Tez/FormPage";
 import { CheckIcon } from "../assets/icons/CheckIcon";
 import colors from "../style/colors";
 

@@ -1,4 +1,4 @@
-import BigNumber from "bignumber.js";
+import { BigNumber } from "bignumber.js";
 
 import { useGetAccountState } from "./assets";
 import { useGetProtocolSettings } from "./protocolSettings";

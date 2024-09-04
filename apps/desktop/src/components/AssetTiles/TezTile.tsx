@@ -1,6 +1,6 @@
 import { Flex } from "@chakra-ui/react";
 import { prettyTezAmount } from "@umami/tezos";
-import type BigNumber from "bignumber.js";
+import { type BigNumber } from "bignumber.js";
 
 import { TezIcon } from "../../assets/icons";
 import colors from "../../style/colors";
