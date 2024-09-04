@@ -7,12 +7,10 @@ import {
   Button,
   Flex,
   Grid,
-  GridItem,
   Heading,
   Icon,
-  Text,
 } from "@chakra-ui/react";
-import { MnemonicAutocomplete, useDynamicModalContext, useMultiForm } from "@umami/components";
+import { useDynamicModalContext, useMultiForm } from "@umami/components";
 import { useAsyncActionHandler } from "@umami/state";
 import { validateMnemonic } from "bip39";
 import { range } from "lodash";
@@ -20,6 +18,7 @@ import { FormProvider, useFieldArray } from "react-hook-form";
 
 import { CloseIcon } from "../../../assets/icons";
 import { useColor } from "../../../styles/useColor";
+import { MnemonicWord } from "../../MnemonicWord";
 import { RadioButtons } from "../../RadioButtons";
 import { SetupPassword } from "../SetupPassword";
 
@@ -114,21 +113,11 @@ export const SeedPhraseTab = () => {
 
           <Grid gridRowGap="16px" gridColumnGap="12px" gridTemplateColumns="repeat(3, 1fr)">
             {fields.map((field, index) => (
-              <GridItem key={field.id}>
-                <Text
-                  position="absolute"
-                  zIndex={1}
-                  marginTop={{ lg: "10px", base: "8px" }}
-                  marginLeft={{ lg: "16px", base: "10px" }}
-                  color={color("black")}
-                  textAlign="right"
-                  size={{ lg: "lg", base: "xs" }}
-                >
-                  {String(index + 1).padStart(2, "0")}.
-                </Text>
-                <MnemonicAutocomplete
-                  inputName={`mnemonic.${index}.val`}
-                  inputProps={{
+              <MnemonicWord
+                key={field.id}
+                autocompleteProps={{
+                  inputName: `mnemonic.${index}.val`,
+                  inputProps: {
                     ...register(`mnemonic.${index}.val`, { required: true }),
                     // eslint-disable-next-line @typescript-eslint/no-misused-promises
                     onPaste: async e => {
@@ -137,9 +126,10 @@ export const SeedPhraseTab = () => {
                     },
                     variant: "mnemonic",
                     placeholder: `word #${index + 1}`,
-                  }}
-                />
-              </GridItem>
+                  },
+                }}
+                index={index}
+              />
             ))}
           </Grid>
           <Button gap="4px" onClick={clearAll} variant="ghost">

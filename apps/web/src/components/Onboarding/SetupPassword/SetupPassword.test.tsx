@@ -2,23 +2,40 @@ import {
   type UmamiStore,
   generate24WordMnemonic,
   makeStore,
+  useGetDecryptedMnemonic,
+  useIsPasswordSet,
   useRestoreFromMnemonic,
   useRestoreFromSecretKey,
 } from "@umami/state";
 import { mnemonic1 } from "@umami/test-utils";
 
 import { SetupPassword } from "./SetupPassword";
-import { act, fireEvent, renderInModal, screen, userEvent, waitFor } from "../../../testUtils";
+import {
+  act,
+  dynamicModalContextMock,
+  fireEvent,
+  renderInModal,
+  screen,
+  userEvent,
+  waitFor,
+} from "../../../testUtils";
 import { CURVES } from "../AdvancedAccountSettings";
+import { ImportantNoticeModal } from "../VerificationFlow/ImportantNoticeModal";
 
 jest.mock("@umami/state", () => ({
   ...jest.requireActual("@umami/state"),
   useRestoreFromMnemonic: jest.fn(),
   useRestoreFromSecretKey: jest.fn(),
   generate24WordMnemonic: jest.fn(),
+  useGetDecryptedMnemonic: jest.fn(),
+  useIsPasswordSet: jest.fn(),
 }));
 
 const password = "password";
+
+beforeEach(() => {
+  jest.mocked(useGetDecryptedMnemonic).mockReturnValue(() => Promise.resolve(mnemonic1));
+});
 
 describe("<SetupPassword />", () => {
   describe.each(["mnemonic", "secret_key"] as const)("%s mode", mode => {
@@ -247,6 +264,28 @@ describe("<SetupPassword />", () => {
         label: "Account",
         curve: "ed25519",
         isVerified: false,
+      });
+    });
+  });
+
+  describe("verification mode", () => {
+    it("renders the verification screen", async () => {
+      jest.mocked(useIsPasswordSet).mockReturnValue(true);
+      const { openWith } = dynamicModalContextMock;
+      const user = userEvent.setup();
+
+      await renderInModal(<SetupPassword mode="verification" />);
+
+      const passwordInput = screen.getByLabelText("Password");
+
+      await act(() => user.type(passwordInput, password));
+
+      const submitButton = screen.getByRole("button", { name: "Confirm" });
+
+      await act(() => user.click(submitButton));
+
+      expect(openWith).toHaveBeenCalledWith(<ImportantNoticeModal mnemonic={mnemonic1} />, {
+        size: "xl",
       });
     });
   });

@@ -28,25 +28,24 @@ beforeEach(() => {
 describe("useHandleVerify", () => {
   it("should open SetupPassword modal if master password is not set", async () => {
     const { openWith } = dynamicModalContextMock;
-    const { result } = renderHook(() => useHandleVerify(), { store });
-
-    await act(async () => await result.current());
-
-    expect(openWith).toHaveBeenCalledWith(
-      <SetupPassword handleProceedToVerification={expect.any(Function)} />
-    );
-  });
-
-  it("should open ImportantNoticeModal modal if master password is set", async () => {
-    (useGetDecryptedMnemonic as jest.Mock).mockImplementation(() => () => mnemonic1);
-    store.dispatch(accountsActions.setPassword("password"));
-
-    const { openWith } = dynamicModalContextMock;
-    const { result } = renderHook(() => useHandleVerify(), { store });
+    const { result } = renderHook(useHandleVerify, { store });
 
     await act(() => result.current());
 
-    expect(openWith).toHaveBeenCalledWith(<ImportantNoticeModal seedPhrase={mnemonic1} />, {
+    expect(openWith).toHaveBeenCalledWith(<SetupPassword mode="verification" />);
+  });
+
+  it("should open ImportantNoticeModal modal if master password is set", async () => {
+    jest.mocked(useGetDecryptedMnemonic).mockReturnValue(() => Promise.resolve(mnemonic1));
+
+    store.dispatch(accountsActions.setPassword("password"));
+
+    const { openWith } = dynamicModalContextMock;
+    const { result } = renderHook(useHandleVerify, { store });
+
+    await act(() => result.current());
+
+    expect(openWith).toHaveBeenCalledWith(<ImportantNoticeModal mnemonic={mnemonic1} />, {
       size: "xl",
     });
   });

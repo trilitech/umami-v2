@@ -165,8 +165,8 @@ export const useGetMostFundedImplicitAccount = () => {
 };
 
 export const useGetSecretKey = () => {
-  const seedPhrases = useSeedPhrases();
   const encryptedSecretKeys = useSecretKeys();
+  const getDecryptedMnemonic = useGetDecryptedMnemonic();
 
   return async (account: MnemonicAccount | SecretKeyAccount, password: string) => {
     if (account.type === "secret_key") {
@@ -178,12 +178,7 @@ export const useGetSecretKey = () => {
       return decrypt(encryptedSecretKey, password);
     }
 
-    const encryptedMnemonic = seedPhrases[account.seedFingerPrint];
-    if (!encryptedMnemonic) {
-      throw new Error(`Missing seedphrase for account ${account.address.pkh}`);
-    }
-
-    const mnemonic = await decrypt(encryptedMnemonic, password);
+    const mnemonic = await getDecryptedMnemonic(account, password);
     return deriveSecretKey(mnemonic, account.derivationPath, account.curve);
   };
 };
@@ -216,7 +211,6 @@ export const useGetDecryptedMnemonic = () => {
       throw new Error(`Missing seedphrase for account ${account.address.pkh}`);
     }
 
-    const mnemonic = await decrypt(encryptedMnemonic, password);
-    return mnemonic;
+    return decrypt(encryptedMnemonic, password);
   };
 };

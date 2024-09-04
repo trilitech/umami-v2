@@ -12,12 +12,14 @@ import {
 } from "@chakra-ui/react";
 import { type Curves } from "@taquito/signer";
 import { useDynamicModalContext, useMultiForm } from "@umami/components";
-import { DEFAULT_ACCOUNT_LABEL } from "@umami/core";
+import { DEFAULT_ACCOUNT_LABEL, type MnemonicAccount } from "@umami/core";
 import {
   accountsActions,
   generate24WordMnemonic,
   useAppDispatch,
   useAsyncActionHandler,
+  useCurrentAccount,
+  useGetDecryptedMnemonic,
   useGetNextAvailableAccountLabels,
   useIsPasswordSet,
   useRestoreFromMnemonic,
@@ -33,6 +35,7 @@ import { ModalBackButton } from "../../BackButton";
 import { ModalCloseButton } from "../../CloseButton";
 import { PasswordInput } from "../../PasswordInput";
 import { AdvancedAccountSettings } from "../AdvancedAccountSettings";
+import { ImportantNoticeModal } from "../VerificationFlow/ImportantNoticeModal";
 
 type FormFields = {
   password: string;
@@ -41,26 +44,51 @@ type FormFields = {
   curve: Exclude<Curves, "bip25519">;
 };
 
-type Mode = "mnemonic" | "secret_key" | "new_mnemonic";
+type Mode = "mnemonic" | "secret_key" | "new_mnemonic" | "verification";
 
 type SetupPasswordProps = {
-  mode?: Mode;
-  handleProceedToVerification?: (password: string) => void;
+  mode: Mode;
 };
 
-export const SetupPassword = ({
-  mode,
-  handleProceedToVerification: handleProceedToVerification,
-}: SetupPasswordProps) => {
+const getModeConfig = (mode: Mode) => {
+  switch (mode) {
+    case "verification":
+      return {
+        icon: LockIcon,
+        title: "Confirm password",
+        buttonLabel: "Confirm",
+        subtitle: "Confirm the password to secure your wallet and verification process.",
+      };
+    case "new_mnemonic":
+      return {
+        icon: UserIcon,
+        title: "Create Password",
+        buttonLabel: "Create Account",
+        subtitle: "Set a password to unlock your wallet. Make sure to store your password safely.",
+      };
+    case "mnemonic":
+    case "secret_key":
+      return {
+        icon: LockIcon,
+        title: "Almost there",
+        buttonLabel: "Import Wallet",
+      };
+  }
+};
+
+export const SetupPassword = ({ mode }: SetupPasswordProps) => {
   const color = useColor();
   const { handleAsyncAction, isLoading } = useAsyncActionHandler();
-  const { allFormValues, onClose } = useDynamicModalContext();
+  const dispatch = useAppDispatch();
+
+  const { allFormValues, onClose, openWith } = useDynamicModalContext();
   const restoreFromMnemonic = useRestoreFromMnemonic();
   const restoreFromSecretKey = useRestoreFromSecretKey();
   const checkPassword = useValidateMasterPassword();
   const getNextAvailableAccountLabels = useGetNextAvailableAccountLabels();
   const isPasswordSet = useIsPasswordSet();
-  const dispatch = useAppDispatch();
+  const getDecryptedMnemonic = useGetDecryptedMnemonic();
+  const currentAccount = useCurrentAccount();
 
   const form = useMultiForm<FormFields>({
     mode: "onBlur",
@@ -76,18 +104,6 @@ export const SetupPassword = ({
   } = form;
 
   const isNewMnemonic = mode === "new_mnemonic";
-
-  const onHandleSubmit = (formFields: FormFields) => {
-    if (handleProceedToVerification) {
-      return handleProceedToVerification(formFields.password);
-    }
-
-    if (isNewMnemonic) {
-      dispatch(accountsActions.setPassword(formFields.password));
-    }
-
-    return onSubmit(formFields);
-  };
 
   const onSubmit = ({ password, curve, derivationPath }: FormFields) =>
     handleAsyncAction(async () => {
@@ -118,18 +134,24 @@ export const SetupPassword = ({
             curve,
             isVerified: !isNewMnemonic,
           });
+
+          if (isNewMnemonic) {
+            dispatch(accountsActions.setPassword(password));
+          }
+
           break;
         }
-        default:
-          break;
+        case "verification": {
+          const mnemonic = await getDecryptedMnemonic(currentAccount as MnemonicAccount, password);
+
+          return openWith(<ImportantNoticeModal mnemonic={mnemonic} />, { size: "xl" });
+        }
       }
 
       return onClose();
     });
 
-  const icon = isNewMnemonic ? UserIcon : LockIcon;
-  const title = mode ? (isNewMnemonic ? "Create Password" : "Almost there") : "Confirm password";
-  const buttonLabel = mode ? (isNewMnemonic ? "Create Account" : "Import Wallet") : "Confirm";
+  const { icon, title, buttonLabel, subtitle } = getModeConfig(mode);
 
   return (
     <ModalContent>
@@ -139,20 +161,15 @@ export const SetupPassword = ({
         <Center flexDirection="column" gap="16px">
           <Icon as={icon} width="24px" height="24px" color={color("blue")} />
           <Heading size="xl">{title}</Heading>
-          {isNewMnemonic && (
+          {subtitle && (
             <Text width="full" color={color("700")} fontWeight="400" textAlign="center" size="md">
-              Set a password to unlock your wallet. Make sure to store your password safely.
-            </Text>
-          )}
-          {!mode && (
-            <Text width="full" color={color("700")} fontWeight="400" textAlign="center" size="md">
-              Confirm the password to secure your wallet and verification process.
+              {subtitle}
             </Text>
           )}
         </Center>
       </ModalHeader>
       <FormProvider {...form}>
-        <form onSubmit={form.handleSubmit(onHandleSubmit)}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
           <ModalBody>
             <Flex flexDirection="column" gap="24px">
               <PasswordInput

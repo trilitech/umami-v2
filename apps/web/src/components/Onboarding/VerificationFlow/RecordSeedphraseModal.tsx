@@ -3,7 +3,6 @@ import {
   Center,
   Flex,
   Grid,
-  GridItem,
   Heading,
   Icon,
   ModalBody,
@@ -20,6 +19,7 @@ import { useColor } from "../../../styles/useColor";
 import { ModalBackButton } from "../../BackButton";
 import { ModalCloseButton } from "../../CloseButton";
 import { CopyButton } from "../../CopyButton";
+import { MnemonicWord } from "../../MnemonicWord";
 
 type CopySeedphraseModalProps = {
   seedPhrase: string;
@@ -37,7 +37,7 @@ export const RecordSeedphraseModal = ({ seedPhrase }: CopySeedphraseModalProps) 
         <ModalCloseButton />
         <Center flexDirection="column" gap="12px">
           <Icon as={KeyIcon} boxSize="24px" marginBottom="4px" color={color("blue")} />
-          <Heading size="xl">Import Wallet</Heading>
+          <Heading size="xl">Record Seed Phrase</Heading>
           <Text width="full" color={color("700")} fontWeight="400" textAlign="center" size="md">
             Record these 24 words in order to restore your wallet in the future
           </Text>
@@ -51,25 +51,19 @@ export const RecordSeedphraseModal = ({ seedPhrase }: CopySeedphraseModalProps) 
           gridTemplateColumns="repeat(3, 1fr)"
         >
           {words.map((word, index) => (
-            <GridItem
+            <MnemonicWord
               key={index}
               as={Flex}
-              alignItems="center"
-              gap={{ base: "6px", lg: "8px" }}
-              maxHeight={{ base: "34px", lg: "48px" }}
-              padding={{ base: "10px 12px", lg: "12px 16px" }}
+              height={{ lg: "48px", base: "34px" }}
+              color="black"
+              border="1px solid"
               borderWidth="1.5px"
               borderStyle="dashed"
               borderColor={color("300")}
               borderRadius="full"
-            >
-              <Text color={color("300")} fontSize={{ base: "xs", lg: "lg" }}>
-                {String(index + 1).padStart(2, "0")}.
-              </Text>
-              <Text fontSize={{ base: "xs", lg: "lg" }} fontWeight="medium">
-                {word}
-              </Text>
-            </GridItem>
+              index={index}
+              word={word}
+            />
           ))}
         </Grid>
         <CopyButton width="full" marginTop="16px" value={seedPhrase} variant="ghost">

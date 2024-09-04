@@ -1,4 +1,4 @@
-import { mockMnemonicAccount, mockSocialAccount } from "@umami/core";
+import { mockLedgerAccount, mockMnemonicAccount, mockSocialAccount } from "@umami/core";
 import { type UmamiStore, addTestAccount, makeStore } from "@umami/state";
 
 import { useIsAccountVerified } from "./useIsAccountVerified";
@@ -11,24 +11,16 @@ beforeEach(() => {
 });
 
 describe("useIsAccountVerified", () => {
-  it("returns true if the account is not mnemonic", () => {
-    addTestAccount(store, mockSocialAccount(0));
+  it.each([
+    // verified status, account type, account
+    [true, "social", mockSocialAccount(0)],
+    [true, "ledger", mockLedgerAccount(0)],
+    [true, "verified mnemonic", mockMnemonicAccount(0)],
+    [false, "unverified mnemonic", mockMnemonicAccount(0, { isVerified: false })],
+  ])("returns %s for %s account", (isVerified, _, account) => {
+    addTestAccount(store, account);
     const { result } = renderHook(() => useIsAccountVerified(), { store });
 
-    expect(result.current).toBe(true);
-  });
-
-  it("returns true if the account is mnemonic and verified", () => {
-    addTestAccount(store, mockMnemonicAccount(0));
-    const { result } = renderHook(() => useIsAccountVerified(), { store });
-
-    expect(result.current).toBe(true);
-  });
-
-  it("returns false if the account is mnemonic and not verified", () => {
-    addTestAccount(store, mockMnemonicAccount(0, { isVerified: false }));
-    const { result } = renderHook(() => useIsAccountVerified(), { store });
-
-    expect(result.current).toBe(false);
+    expect(result.current).toBe(isVerified);
   });
 });

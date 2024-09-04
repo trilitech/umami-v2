@@ -45,10 +45,10 @@ const items = [
 ];
 
 type ImportantNoticeModalProps = {
-  seedPhrase: string;
+  mnemonic: string;
 };
 
-export const ImportantNoticeModal = ({ seedPhrase }: ImportantNoticeModalProps) => {
+export const ImportantNoticeModal = ({ mnemonic }: ImportantNoticeModalProps) => {
   const color = useColor();
   const { openWith } = useDynamicModalContext();
 
@@ -85,7 +85,7 @@ export const ImportantNoticeModal = ({ seedPhrase }: ImportantNoticeModalProps) 
       <ModalFooter>
         <Button
           width="full"
-          onClick={() => openWith(<RecordSeedphraseModal seedPhrase={seedPhrase} />)}
+          onClick={() => openWith(<RecordSeedphraseModal seedPhrase={mnemonic} />, { size: "xl" })}
           variant="primary"
         >
           Next

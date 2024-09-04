@@ -12,7 +12,7 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
-import { MnemonicAutocomplete, useDynamicModalContext } from "@umami/components";
+import { useDynamicModalContext } from "@umami/components";
 import { selectRandomElements } from "@umami/core";
 import { accountsActions, useAppDispatch, useCurrentAccount } from "@umami/state";
 import { useState } from "react";
@@ -23,6 +23,7 @@ import { IS_DEV } from "../../../env";
 import { useColor } from "../../../styles/useColor";
 import { ModalBackButton } from "../../BackButton";
 import { ModalCloseButton } from "../../CloseButton";
+import { MnemonicWord } from "../../MnemonicWord";
 
 type VerifySeedphraseModalProps = {
   seedPhrase: string;
@@ -35,6 +36,11 @@ export const VerifySeedphraseModal = ({ seedPhrase }: VerifySeedphraseModalProps
   const { onClose } = useDynamicModalContext();
   const form = useForm({
     mode: "onBlur",
+    defaultValues: {
+      word1: "",
+      word2: "",
+      word3: "",
+    },
   });
   const {
     handleSubmit,
@@ -73,43 +79,32 @@ export const VerifySeedphraseModal = ({ seedPhrase }: VerifySeedphraseModalProps
       <FormProvider {...form}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <ModalBody>
-            <Flex gap="12px">
+            <Flex gap={{ base: "8px", md: "12px" }}>
               {randomElements.map(({ index, value }) => {
-                const inputName = `${index}`;
-                const error = errors[inputName];
+                const inputName = `word${index + 1}`;
+                const error = errors[inputName as keyof typeof errors];
 
                 return (
                   <FormControl key={index} isInvalid={!!error}>
-                    <Flex key={index} alignItems="center">
-                      <Text
-                        position="absolute"
-                        zIndex={1}
-                        marginLeft={{ lg: "16px", base: "10px" }}
-                        color={color("black")}
-                        textAlign="right"
-                        size={{ lg: "lg", base: "xs" }}
-                      >
-                        {String(index + 1).padStart(2, "0")}.
-                      </Text>
-                      <MnemonicAutocomplete
-                        inputName={inputName}
-                        inputProps={{
+                    <MnemonicWord
+                      autocompleteProps={{
+                        inputName,
+                        inputProps: {
                           variant: "mnemonic",
                           placeholder: `word #${index + 1}`,
-                        }}
-                        listProps={{
+                        },
+                        listProps: {
                           marginTop: "6px",
-                        }}
-                        validate={_value => {
+                        },
+                        validate: _value => {
                           if (_value !== value) {
                             return "Word doesn't match";
                           }
-                        }}
-                      />
-                    </Flex>
-                    {error?.message && (
-                      <FormErrorMessage>{(error as any).message}</FormErrorMessage>
-                    )}
+                        },
+                      }}
+                      index={index}
+                    />
+                    {error?.message && <FormErrorMessage>{error.message}</FormErrorMessage>}
                   </FormControl>
                 );
               })}
