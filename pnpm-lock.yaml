@@ -30,8 +30,8 @@ importers:
         version: 6.3.4
     devDependencies:
       '@airgap/beacon-wallet':
-        specifier: ^4.2.2
-        version: 4.2.2
+        specifier: ^4.3.0
+        version: 4.3.0
       '@babel/core':
         specifier: ^7.25.2
         version: 7.25.2
@@ -602,8 +602,8 @@ importers:
   apps/web:
     dependencies:
       '@airgap/beacon-wallet':
-        specifier: ^4.2.2
-        version: 4.2.2
+        specifier: ^4.3.0
+        version: 4.3.0
       '@chakra-ui/anatomy':
         specifier: 2.2.2
         version: 2.2.2
@@ -1042,8 +1042,8 @@ importers:
   packages/core:
     dependencies:
       '@airgap/beacon-wallet':
-        specifier: ^4.2.2
-        version: 4.2.2
+        specifier: ^4.3.0
+        version: 4.3.0
       '@taquito/rpc':
         specifier: ^20.0.1
         version: 20.0.1(encoding@0.1.13)
@@ -1521,8 +1521,8 @@ importers:
   packages/state:
     dependencies:
       '@airgap/beacon-wallet':
-        specifier: ^4.2.2
-        version: 4.2.2
+        specifier: ^4.3.0
+        version: 4.3.0
       '@chakra-ui/react':
         specifier: ^2.8.2
         version: 2.8.2(@emotion/react@11.13.3(@types/react@18.3.5)(react@18.3.1))(@emotion/styled@11.13.0(@emotion/react@11.13.3(@types/react@18.3.5)(react@18.3.1))(@types/react@18.3.5)(react@18.3.1))(@types/react@18.3.5)(framer-motion@11.5.2(@emotion/is-prop-valid@1.3.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -1898,14 +1898,23 @@ packages:
   '@airgap/beacon-core@4.2.2':
     resolution: {integrity: sha512-pvp6T57fL734Yi81ZOvAo6oQmw7PPsj5BLC/brg17ic2uGCF0aFgYrExTDxVz5SoM93v5NJCPvg1TRkitTcvtA==}
 
+  '@airgap/beacon-core@4.3.0':
+    resolution: {integrity: sha512-O9b4Nn1xLu/6KjugT7cPy3g/yI7qJwnXbjNNJ80VSWNAMSCzKrC/FZ7SulZDM2POq0CixP7jcPNblspemRRxRg==}
+
   '@airgap/beacon-dapp@4.2.2':
     resolution: {integrity: sha512-kXH9gwjkbZKlt1irg/QGOWJeUwvR+ffa/3m39F8Mv5uIdS/PnOU4QMso6F4VVbtk6RmAGFr1gG/Q6pIkkWPFxg==}
 
   '@airgap/beacon-transport-matrix@4.2.2':
     resolution: {integrity: sha512-lCwFo6laGQbowvQoGU5tlkgrdBx9S9Nyk/OjJUE5Db9DgvQZhRR77zA0jl7lPdYDYcKeklHahBz6vwkiN/ferA==}
 
+  '@airgap/beacon-transport-matrix@4.3.0':
+    resolution: {integrity: sha512-Md3crBPgj6RTkBlR5UegHLuwqLt/EkksWnMAlVpMRN17gKdhEsvrU7FRIIUHgS9oljzc82ir7QHKuGA2hID8LQ==}
+
   '@airgap/beacon-transport-postmessage@4.2.2':
     resolution: {integrity: sha512-xLFeTEw6Yydq+4cr8IISxFprEQm3Us1QKNI/zNTAy1ssTxML1MZGAoLXWm/3adXKc8kzeR7dZH9blNEKhZWGcQ==}
+
+  '@airgap/beacon-transport-postmessage@4.3.0':
+    resolution: {integrity: sha512-l/mx2hXFuxnJ7cuoVnvU2F67RQhhzsv/stOEqEa8JIK9izufsKC09Jl2866IWEz1yqCZ/FQ6GI64M/Dq30mEmg==}
 
   '@airgap/beacon-transport-walletconnect@4.2.2':
     resolution: {integrity: sha512-ftwUDhQdjLPtyX1ESUp9VkFS5vyEvp377eL4lVFaEdqf4mCpxg/XxHffO/o7OeRD1NI0nZfCxsKOWU2plg+ghg==}
@@ -1922,8 +1931,11 @@ packages:
   '@airgap/beacon-utils@4.2.2':
     resolution: {integrity: sha512-TwDJ8O8/Lky6qdpczVJKWACu3BWEE49hMyCylXYJPnLlCZtpaqByD6awc+BEooJkC2c8Bj4V3JfcwBJGNzMs6w==}
 
-  '@airgap/beacon-wallet@4.2.2':
-    resolution: {integrity: sha512-UnyxUg++ip8Hqfa7lnnZH623MraPfGtMqGLt22aYvZHrRA9ypBcJRVhBqWDeD3WUdGrVdSjtCQ0I+mHn7jIGSg==}
+  '@airgap/beacon-utils@4.3.0':
+    resolution: {integrity: sha512-5g2tfJi30/x26sLmFv24iGY5aVlo78hZ561GB0BQlthJrROoCkFNZu7/uz/fXU/2+4dBFhJ9j/Ily5ELeq5JkQ==}
+
+  '@airgap/beacon-wallet@4.3.0':
+    resolution: {integrity: sha512-kODhz8zjRqffeNNGKUeYckm7rOyW9N87eFWSSGML1Y+/QOpe7CdclxaYqqjcPg6MzQM3SmKl6qre821SEJONSQ==}
 
   '@ampproject/remapping@2.3.0':
     resolution: {integrity: sha512-30iZtAPgz+LTIYoeivqYo853f02jBYSd5uGnGpkFV0M3xOt9aN73erkgYAmZU43x4VfqcnLxW9Kpg3R5LC4YYw==}
@@ -2609,6 +2621,10 @@ packages:
 
   '@babel/regjsgen@0.8.0':
     resolution: {integrity: sha512-x/rqGMdzj+fWZvCOYForTghzbtqPDZ5gPwaoNGHdgDfF2QA/XZbCBp4Moo5scrkAMPhB7z26XM/AaHuIJdgauA==}
+
+  '@babel/runtime@7.23.4':
+    resolution: {integrity: sha512-2Yv65nlWnWlSpe3fXEyX5i7fx5kIKo4Qbcj+hMO0odwaneFjfXw5fdum+4yL20O0QiaHpia0cYQ9xpNMqrBwHg==}
+    engines: {node: '>=6.9.0'}
 
   '@babel/runtime@7.25.6':
     resolution: {integrity: sha512-VBj9MYyDb9tuLq7yzqjgzt6Q+IBQLrGZfdjOekyEirZPHxXWoTSGUTMrpsfi58Up73d13NfYLv8HT9vmznjzhQ==}
@@ -5380,6 +5396,9 @@ packages:
     resolution: {integrity: sha512-yQbXgO/OSZVD2IsiLlro+7Hf6Q18EJrKSEsdoMzKePKXct3gvD8oLcOQdIzGupr5Fj+EDe8gO/lxc1BzfMpxvA==}
     engines: {node: '>=8'}
 
+  broadcast-channel@7.0.0:
+    resolution: {integrity: sha512-a2tW0Ia1pajcPBOGUF2jXlDnvE9d5/dg6BG9h60OmRUcZVr/veUrU8vEQFwwQIhwG3KVzYwSk3v2nRRGFgQDXQ==}
+
   brorand@1.1.0:
     resolution: {integrity: sha512-cKV8tMCEpQs4hK/ik71d6LrPOnpkpGBR0wzxqr68g2m/LB2GxVYQroAjMJZRVM1Y4BCjCKc3vAamxSzOY2RP+w==}
 
@@ -6579,6 +6598,9 @@ packages:
 
   event-stream@3.3.4:
     resolution: {integrity: sha512-QHpkERcGsR0T7Qm3HNJSyXKEEj8AHNxkY3PK8TS2KJvQ7NiSHe3DDpwVKKtoYprL/AreyzFBeIkBIWChAqn60g==}
+
+  eventemitter3@4.0.7:
+    resolution: {integrity: sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw==}
 
   events@3.3.0:
     resolution: {integrity: sha512-mQw+2fkQbALzQ7V0MY0IqdnXNOeTtP4r0lN9z7AAawCXgqea7bDii20AYrIBrFd/Hx0M2Ocz6S111CaFkUcb0Q==}
@@ -8334,6 +8356,10 @@ packages:
   oblivious-set@1.1.1:
     resolution: {integrity: sha512-Oh+8fK09mgGmAshFdH6hSVco6KZmd1tTwNFWj35OvzdmJTMZtAkbn05zar2iG3v6sDs1JLEtOiBGNb6BHwkb2w==}
 
+  oblivious-set@1.4.0:
+    resolution: {integrity: sha512-szyd0ou0T8nsAqHtprRcP3WidfsN1TnAR5yWXf2mFCEr5ek3LEOkT6EZ/92Xfs74HIdyhG5WkGxIssMU0jBaeg==}
+    engines: {node: '>=16'}
+
   ofetch@1.3.4:
     resolution: {integrity: sha512-KLIET85ik3vhEfS+3fDlc/BAZiAp+43QEC/yCo5zkNoY2YaKvNkOaFr/6wCFgFH1kuYQM5pMNi0Tg8koiIemtw==}
 
@@ -8379,6 +8405,10 @@ packages:
     resolution: {integrity: sha512-BZOr3nRQHOntUjTrH8+Lh54smKHoHyur8We1V8DSMVrl5A2malOOwuJRnKRDjSnkoeBh4at6BwEnb5I7Jl31wg==}
     engines: {node: '>=8'}
 
+  p-finally@1.0.0:
+    resolution: {integrity: sha512-LICb2p9CB7FS+0eR1oqWnHhp0FljGLZCWBE9aix0Uye9W8LTQPwMTYVGWQWIw9RdQiDg4+epXQODwIYJtSJaow==}
+    engines: {node: '>=4'}
+
   p-limit@2.3.0:
     resolution: {integrity: sha512-//88mFWSJx8lxCzwdAABTJL2MyWB12+eIY7MDL2SqLmAkeKU9qxRvWuSyTjm3FUmpBEMuFfckAIqEaVGUDxb6w==}
     engines: {node: '>=6'}
@@ -8402,6 +8432,14 @@ packages:
   p-map@4.0.0:
     resolution: {integrity: sha512-/bjOqmgETBYB5BoEeGVea8dmvHb2m9GLy1E9W43yeyfP6QQCZGFNa+XRceJEuDB6zqr+gKpIAmlLebMpykw/MQ==}
     engines: {node: '>=10'}
+
+  p-queue@6.6.2:
+    resolution: {integrity: sha512-RwFpb72c/BhQLEXIZ5K2e+AhgNVmIejGlTgiB9MzZ0e93GRvqZ7uSi0dvRF7/XIXDeNkra2fNHBxTyPDGySpjQ==}
+    engines: {node: '>=8'}
+
+  p-timeout@3.2.0:
+    resolution: {integrity: sha512-rhIwUycgwwKcP9yTOOFK/AKsAopjjCakVqLHePO3CC6Mir1Z99xT+R63jZxAT5lFZLa2inS5h+ZS2GvR99/FBg==}
+    engines: {node: '>=8'}
 
   p-try@2.2.0:
     resolution: {integrity: sha512-R4nPAVTAU0B9D35/Gk3uJf/7XYbQcyohSKdvAxIRSNghFl4e71hVoGnBNQz9cWaXxO2I10KTC+3jMdvvoKw6dQ==}
@@ -10527,6 +10565,17 @@ snapshots:
       '@stablelib/x25519-session': 1.0.4
       bs58check: 2.1.2
 
+  '@airgap/beacon-core@4.3.0':
+    dependencies:
+      '@airgap/beacon-types': 4.3.0
+      '@airgap/beacon-utils': 4.3.0
+      '@stablelib/ed25519': 1.0.3
+      '@stablelib/nacl': 1.0.4
+      '@stablelib/utf8': 1.0.2
+      '@stablelib/x25519-session': 1.0.4
+      broadcast-channel: 7.0.0
+      bs58check: 2.1.2
+
   '@airgap/beacon-dapp@4.2.2(encoding@0.1.13)':
     dependencies:
       '@airgap/beacon-core': 4.2.2
@@ -10562,11 +10611,25 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
+  '@airgap/beacon-transport-matrix@4.3.0':
+    dependencies:
+      '@airgap/beacon-core': 4.3.0
+      '@airgap/beacon-utils': 4.3.0
+      axios: 1.7.4(debug@4.3.6)
+    transitivePeerDependencies:
+      - debug
+
   '@airgap/beacon-transport-postmessage@4.2.2':
     dependencies:
       '@airgap/beacon-core': 4.2.2
       '@airgap/beacon-types': 4.2.2
       '@airgap/beacon-utils': 4.2.2
+
+  '@airgap/beacon-transport-postmessage@4.3.0':
+    dependencies:
+      '@airgap/beacon-core': 4.3.0
+      '@airgap/beacon-types': 4.3.0
+      '@airgap/beacon-utils': 4.3.0
 
   '@airgap/beacon-transport-walletconnect@4.2.2(encoding@0.1.13)':
     dependencies:
@@ -10634,11 +10697,19 @@ snapshots:
       '@stablelib/utf8': 1.0.2
       bs58check: 2.1.2
 
-  '@airgap/beacon-wallet@4.2.2':
+  '@airgap/beacon-utils@4.3.0':
     dependencies:
-      '@airgap/beacon-core': 4.2.2
-      '@airgap/beacon-transport-matrix': 4.2.2
-      '@airgap/beacon-transport-postmessage': 4.2.2
+      '@stablelib/ed25519': 1.0.3
+      '@stablelib/nacl': 1.0.4
+      '@stablelib/random': 1.0.2
+      '@stablelib/utf8': 1.0.2
+      bs58check: 2.1.2
+
+  '@airgap/beacon-wallet@4.3.0':
+    dependencies:
+      '@airgap/beacon-core': 4.3.0
+      '@airgap/beacon-transport-matrix': 4.3.0
+      '@airgap/beacon-transport-postmessage': 4.3.0
     transitivePeerDependencies:
       - debug
 
@@ -11539,6 +11610,10 @@ snapshots:
       source-map-support: 0.5.21
 
   '@babel/regjsgen@0.8.0': {}
+
+  '@babel/runtime@7.23.4':
+    dependencies:
+      regenerator-runtime: 0.14.1
 
   '@babel/runtime@7.25.6':
     dependencies:
@@ -15413,6 +15488,13 @@ snapshots:
     dependencies:
       fill-range: 7.1.1
 
+  broadcast-channel@7.0.0:
+    dependencies:
+      '@babel/runtime': 7.23.4
+      oblivious-set: 1.4.0
+      p-queue: 6.6.2
+      unload: 2.4.1
+
   brorand@1.1.0: {}
 
   browser-assert@1.2.1: {}
@@ -16936,6 +17018,8 @@ snapshots:
       split: 0.3.3
       stream-combiner: 0.0.4
       through: 2.3.8
+
+  eventemitter3@4.0.7: {}
 
   events@3.3.0: {}
 
@@ -19066,6 +19150,8 @@ snapshots:
 
   oblivious-set@1.1.1: {}
 
+  oblivious-set@1.4.0: {}
+
   ofetch@1.3.4:
     dependencies:
       destr: 2.0.3
@@ -19121,6 +19207,8 @@ snapshots:
 
   p-cancelable@2.1.1: {}
 
+  p-finally@1.0.0: {}
+
   p-limit@2.3.0:
     dependencies:
       p-try: 2.2.0
@@ -19144,6 +19232,15 @@ snapshots:
   p-map@4.0.0:
     dependencies:
       aggregate-error: 3.1.0
+
+  p-queue@6.6.2:
+    dependencies:
+      eventemitter3: 4.0.7
+      p-timeout: 3.2.0
+
+  p-timeout@3.2.0:
+    dependencies:
+      p-finally: 1.0.0
 
   p-try@2.2.0: {}
 
