@@ -13,6 +13,14 @@ export const sendLoginErrorResponse = (errorMessage: string) => {
   });
 };
 
+export const sendComputationErrorResponse = (errorMessage: string) => {
+  sendResponse({
+    type: "computation_completed_response",
+    error: "operation_failed",
+    errorMessage,
+  });
+};
+
 export const sendOperationErrorResponse = (errorMessage: string) => {
   sendResponse({
     type: "operation_response",

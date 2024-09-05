@@ -29,7 +29,7 @@ import { getDAppByOrigin } from "./ClientsPermissions";
 const SIGN_TIMEOUT = 5 * 60 * 1000; // 5 minutes
 
 export const OperationModalContent = () => {
-  const { onClose, isLoading, setIsLoading, estimatedOperations } = useOperationModalContext();
+  const { onClose, setIsLoading, estimatedOperations } = useOperationModalContext();
   const { getNetwork, getUserData, getDAppOrigin } = useEmbedApp();
 
   const color = useColor();
@@ -113,7 +113,7 @@ export const OperationModalContent = () => {
                   Fee:
                 </Text>
                 <Text color={color("900")} data-testid="fee" size="xs">
-                  {isLoading ? "..." : prettyTezAmount(totalFee(estimatedOperations!.estimates))}
+                  {prettyTezAmount(totalFee(estimatedOperations!.estimates))}
                 </Text>
               </Flex>
             </Flex>
