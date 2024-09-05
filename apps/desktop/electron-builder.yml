@@ -14,6 +14,11 @@ publish:
 mac:
   hardenedRuntime: true
   gatekeeperAssess: false
+  extendInfo:
+    NSBluetoothAlwaysUsageDescription: null
+    NSBluetoothPeripheralUsageDescription: null
+    NSCameraUsageDescription: null
+    NSMicrophoneUsageDescription: null
   target:
     - target: dmg
       arch:

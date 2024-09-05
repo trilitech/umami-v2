@@ -11,6 +11,12 @@ protocols:
 mac:
   identity: null
   hardenedRuntime: true
+  extendInfo:
+    NSBluetoothAlwaysUsageDescription: null
+    NSBluetoothPeripheralUsageDescription: null
+    NSCameraUsageDescription: null
+    NSMicrophoneUsageDescription: null
+
   gatekeeperAssess: false
   target:
     - target: dmg
