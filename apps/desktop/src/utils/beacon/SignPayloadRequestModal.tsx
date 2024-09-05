@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 import { type TezosToolkit } from "@taquito/taquito";
 import { useDynamicModalContext } from "@umami/components";
-import { decodePayload } from "@umami/core";
+import { decodeBeaconPayload } from "@umami/core";
 import { WalletClient, useGetImplicitAccount } from "@umami/state";
 import { FormProvider, useForm } from "react-hook-form";
 
@@ -71,7 +71,7 @@ export const SignPayloadRequestModal = ({ request }: { request: SignPayloadReque
             backgroundColor={colors.gray[800]}
           >
             <Text color={colors.gray[450]} size="md">
-              {decodePayload(request.payload)}
+              {decodeBeaconPayload(request.payload)}
             </Text>
           </Box>
         </ModalBody>

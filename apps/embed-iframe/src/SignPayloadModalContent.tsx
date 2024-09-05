@@ -12,7 +12,7 @@ import { useColor } from "./imported/style/useColor";
 import { LoginButtonComponent } from "./LoginButtonComponent";
 import { getDAppByOrigin } from "./ClientsPermissions";
 import { useSignPayloadModalContext } from "./SignPayloadModalContext";
-import { decodePayload } from "@umami/core";
+import { decodeBeaconPayload } from "@umami/core";
 
 const SIGN_TIMEOUT = 5 * 60 * 1000; // 5 minutes
 
@@ -79,7 +79,7 @@ export const SignPayloadModalContent = () => {
         borderRadius="5px"
         backgroundColor={color("100")}
       >
-        <Text size="sm">{decodePayload(payload!)}</Text>
+        <Text size="sm">{decodeBeaconPayload(payload!)}</Text>
       </Box>
 
       <LoginButtonComponent
