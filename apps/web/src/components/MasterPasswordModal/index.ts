@@ -1,0 +1,1 @@
+export { MasterPasswordModal } from "./MasterPasswordModal";

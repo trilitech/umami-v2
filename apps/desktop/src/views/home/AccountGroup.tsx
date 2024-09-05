@@ -1,11 +1,10 @@
 import { Box, Center, Heading } from "@chakra-ui/react";
 import { useDynamicModalContext } from "@umami/components";
-import { type Account } from "@umami/core";
+import { type Account, getAccountGroupLabel } from "@umami/core";
 import { useImplicitAccounts, useRemoveMnemonic, useRemoveNonMnemonic } from "@umami/state";
 
 import { AccountGroupPopover } from "./AccountGroupPopover";
 import { DeriveMnemonicAccountModal } from "./DeriveMnemonicAccountModal";
-import { getAccountGroupLabel } from "./getAccountGroupLabel";
 import { AccountTile } from "../../components/AccountTile/AccountTile";
 import { ConfirmationModal } from "../../components/ConfirmationModal";
 
