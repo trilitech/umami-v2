@@ -25,7 +25,7 @@ export const LoginModalProvider = ({ children }: PropsWithChildren) => {
 export const useLoginModalContext = (): LoginModalContextState => {
   const context = useContext(LoginModalContext);
   if (context === undefined) {
-    throw new Error("useLoginModal must be used within a LoginModalProvider");
+    throw new Error("useLoginModalContext must be used within a LoginModalProvider");
   }
   return context;
 };

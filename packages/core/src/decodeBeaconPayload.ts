@@ -47,7 +47,7 @@ const getPayloadHexBytes = (payload: SignPayloadRequestOutput["payload"]) => {
  * @returns The decoded string, or the original payload if decoding fails.
  * @see {@link https://taquito.io/docs/signing/} for more info.
  */
-export const decodePayload = (payload: SignPayloadRequestOutput["payload"]): string => {
+export const decodeBeaconPayload = (payload: SignPayloadRequestOutput["payload"]): string => {
   try {
     const string = new TextDecoder("utf-8").decode(hex2buf(getPayloadHexBytes(payload)));
 

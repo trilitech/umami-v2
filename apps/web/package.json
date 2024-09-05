@@ -40,7 +40,6 @@
     "@taquito/rpc": "^20.0.1",
     "@taquito/signer": "^20.0.1",
     "@taquito/taquito": "^20.0.1",
-    "@taquito/utils": "^20.0.1",
     "@tzkt/sdk-api": "^2.2.1",
     "@umami/components": "workspace:^",
     "@umami/core": "workspace:^",
