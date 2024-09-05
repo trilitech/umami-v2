@@ -1,5 +1,5 @@
 import { type Estimation } from "@umami/tezos";
-import BigNumber from "bignumber.js";
+import { BigNumber } from "bignumber.js";
 
 import { type Account, type ImplicitAccount, type MultisigAccount } from "./Account";
 import { type Operation } from "./Operation";

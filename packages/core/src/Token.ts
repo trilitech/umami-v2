@@ -6,7 +6,7 @@ import {
   type RawTzktTokenInfo,
   type RawTzktTokenMetadata,
 } from "@umami/tzkt";
-import BigNumber from "bignumber.js";
+import { BigNumber } from "bignumber.js";
 import repeat from "lodash/repeat";
 
 export type TokenId = string;

@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { type Unstake } from "@umami/core";
 import { type RawPkh, TEZ, TEZ_DECIMALS, parsePkh, tezToMutez } from "@umami/tezos";
-import BigNumber from "bignumber.js";
+import { BigNumber } from "bignumber.js";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { SignPage } from "./SignPage";
