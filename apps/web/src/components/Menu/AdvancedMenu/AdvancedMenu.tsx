@@ -1,7 +1,7 @@
 import { useDynamicDrawerContext } from "@umami/components";
 
 import { AlertCircleIcon, LockIcon, RadioIcon } from "../../../assets/icons";
-import { useIsAccountVerified } from "../../Onboarding/useIsAccountVerified";
+import { useIsAccountVerified } from "../../Onboarding/VerificationFlow";
 import { ChangePasswordMenu } from "../ChangePasswordMenu/ChangePasswordMenu";
 import { ErrorLogsMenu } from "../ErrorLogsMenu/ErrorLogsMenu";
 import { GenericMenu } from "../GenericMenu";

@@ -18,6 +18,7 @@ export const accountsInitialState: AccountsState = {
   items: [],
   seedPhrases: {},
   secretKeys: {},
+  password: "",
 };
 
 /**
@@ -138,6 +139,9 @@ export const accountsSlice = createSlice({
       const account = state.items.find(account => account.address.pkh === pkh) as MnemonicAccount;
 
       account.isVerified = isVerified;
+    },
+    setPassword: (state, { payload }: { payload: string }) => {
+      state.password = payload;
     },
   },
 });

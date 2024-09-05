@@ -7,8 +7,8 @@ import { range } from "lodash";
 import { NFTCard } from "./NFTCard";
 import { NFTDrawer } from "./NFTDrawer";
 import { NFTFilter, useNFTFilter } from "./NFTFilter";
-import { EmptyMessage, VerifyMessage } from "../../components/EmptyMessage";
-import { useIsAccountVerified } from "../../components/Onboarding/useIsAccountVerified";
+import { EmptyMessage } from "../../components/EmptyMessage";
+import { VerifyMessage, useIsAccountVerified } from "../../components/Onboarding/VerificationFlow";
 import { ViewOverlay } from "../../components/ViewOverlay/ViewOverlay";
 import { useColor } from "../../styles/useColor";
 

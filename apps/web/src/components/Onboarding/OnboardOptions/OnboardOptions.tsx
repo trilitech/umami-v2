@@ -17,7 +17,7 @@ export const OnboardOptions = ({ children }: PropsWithChildren) => {
   const { openWith } = useDynamicModalContext();
 
   return (
-    <Flex alignItems="center" flexDirection="column">
+    <Flex alignItems="center" flexDirection="column" width="full">
       <Heading color={color("900")} size="lg">
         Continue with:
       </Heading>

@@ -1,18 +1,21 @@
 import { Flex, Link } from "@chakra-ui/react";
 import { useDynamicModalContext } from "@umami/components";
 
-import { EmptyMessage, type EmptyMessageProps } from "./EmptyMessage";
-import { useColor } from "../../styles/useColor";
-import { VerificationInfoModal } from "../Onboarding/VerificationInfoModal";
+import { useHandleVerify } from "./useHandleVerify";
+import { VerificationInfoModal } from "./VerificationInfoModal";
+import { useColor } from "../../../styles/useColor";
+import { EmptyMessage, type EmptyMessageProps } from "../../EmptyMessage";
 
 export const VerifyMessage = ({ ...props }: Omit<EmptyMessageProps, "title">) => {
-  const { openWith } = useDynamicModalContext();
   const color = useColor();
+  const { openWith } = useDynamicModalContext();
+  const handleVerify = useHandleVerify();
 
   return (
     <Flex alignItems="center" flexDirection="column" margin="auto" data-testid="verify-message">
       <EmptyMessage
         cta="Verify Now"
+        onClick={handleVerify}
         subtitle={
           "Please verify your account, to unlock all features\n and keep your account secure."
         }

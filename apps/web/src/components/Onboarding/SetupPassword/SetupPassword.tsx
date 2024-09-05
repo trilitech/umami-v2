@@ -12,10 +12,14 @@ import {
 } from "@chakra-ui/react";
 import { type Curves } from "@taquito/signer";
 import { useDynamicModalContext, useMultiForm } from "@umami/components";
-import { DEFAULT_ACCOUNT_LABEL } from "@umami/core";
+import { DEFAULT_ACCOUNT_LABEL, type MnemonicAccount } from "@umami/core";
 import {
+  accountsActions,
   generate24WordMnemonic,
+  useAppDispatch,
   useAsyncActionHandler,
+  useCurrentAccount,
+  useGetDecryptedMnemonic,
   useGetNextAvailableAccountLabels,
   useIsPasswordSet,
   useRestoreFromMnemonic,
@@ -31,6 +35,7 @@ import { ModalBackButton } from "../../BackButton";
 import { ModalCloseButton } from "../../CloseButton";
 import { PasswordInput } from "../../PasswordInput";
 import { AdvancedAccountSettings } from "../AdvancedAccountSettings";
+import { ImportantNoticeModal } from "../VerificationFlow/ImportantNoticeModal";
 
 type FormFields = {
   password: string;
@@ -39,21 +44,51 @@ type FormFields = {
   curve: Exclude<Curves, "bip25519">;
 };
 
-type Mode = "mnemonic" | "secret_key" | "new_mnemonic";
+type Mode = "mnemonic" | "secret_key" | "new_mnemonic" | "verification";
 
 type SetupPasswordProps = {
   mode: Mode;
 };
 
+const getModeConfig = (mode: Mode) => {
+  switch (mode) {
+    case "verification":
+      return {
+        icon: LockIcon,
+        title: "Confirm password",
+        buttonLabel: "Confirm",
+        subtitle: "Confirm the password to secure your wallet and verification process.",
+      };
+    case "new_mnemonic":
+      return {
+        icon: UserIcon,
+        title: "Create Password",
+        buttonLabel: "Create Account",
+        subtitle: "Set a password to unlock your wallet. Make sure to store your password safely.",
+      };
+    case "mnemonic":
+    case "secret_key":
+      return {
+        icon: LockIcon,
+        title: "Almost there",
+        buttonLabel: "Import Wallet",
+      };
+  }
+};
+
 export const SetupPassword = ({ mode }: SetupPasswordProps) => {
   const color = useColor();
   const { handleAsyncAction, isLoading } = useAsyncActionHandler();
-  const { allFormValues, onClose } = useDynamicModalContext();
+  const dispatch = useAppDispatch();
+
+  const { allFormValues, onClose, openWith } = useDynamicModalContext();
   const restoreFromMnemonic = useRestoreFromMnemonic();
   const restoreFromSecretKey = useRestoreFromSecretKey();
   const checkPassword = useValidateMasterPassword();
   const getNextAvailableAccountLabels = useGetNextAvailableAccountLabels();
   const isPasswordSet = useIsPasswordSet();
+  const getDecryptedMnemonic = useGetDecryptedMnemonic();
+  const currentAccount = useCurrentAccount();
 
   const form = useMultiForm<FormFields>({
     mode: "onBlur",
@@ -99,16 +134,24 @@ export const SetupPassword = ({ mode }: SetupPasswordProps) => {
             curve,
             isVerified: !isNewMnemonic,
           });
+
+          if (isNewMnemonic) {
+            dispatch(accountsActions.setPassword(password));
+          }
+
           break;
+        }
+        case "verification": {
+          const mnemonic = await getDecryptedMnemonic(currentAccount as MnemonicAccount, password);
+
+          return openWith(<ImportantNoticeModal mnemonic={mnemonic} />, { size: "xl" });
         }
       }
 
       return onClose();
     });
 
-  const icon = isNewMnemonic ? UserIcon : LockIcon;
-  const title = isNewMnemonic ? "Create Password" : "Almost there";
-  const buttonLabel = isNewMnemonic ? "Create Account" : "Import Wallet";
+  const { icon, title, buttonLabel, subtitle } = getModeConfig(mode);
 
   return (
     <ModalContent>
@@ -118,16 +161,9 @@ export const SetupPassword = ({ mode }: SetupPasswordProps) => {
         <Center flexDirection="column" gap="16px">
           <Icon as={icon} width="24px" height="24px" color={color("blue")} />
           <Heading size="xl">{title}</Heading>
-          {isNewMnemonic && (
-            <Text
-              width="full"
-              maxWidth="340px"
-              color={color("700")}
-              fontWeight="400"
-              textAlign="center"
-              size="md"
-            >
-              Set a password to unlock your wallet. Make sure to store your password safely.
+          {subtitle && (
+            <Text width="full" color={color("700")} fontWeight="400" textAlign="center" size="md">
+              {subtitle}
             </Text>
           )}
         </Center>

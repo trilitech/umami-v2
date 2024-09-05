@@ -18,7 +18,7 @@ import {
   UserPlusIcon,
 } from "../../assets/icons";
 import { OnboardOptionsModal } from "../Onboarding/OnboardOptions";
-import { useIsAccountVerified } from "../Onboarding/useIsAccountVerified";
+import { useIsAccountVerified } from "../Onboarding/VerificationFlow";
 
 export const Menu = () => {
   const { openWith: openModal } = useDynamicModalContext();

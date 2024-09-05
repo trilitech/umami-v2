@@ -6,8 +6,8 @@ import { type UIEvent, useRef } from "react";
 
 import loadingDots from "../../assets/loading-dots.gif";
 import loadingWheel from "../../assets/loading-wheel.gif";
-import { EmptyMessage, VerifyMessage } from "../../components/EmptyMessage";
-import { useIsAccountVerified } from "../../components/Onboarding/useIsAccountVerified";
+import { EmptyMessage } from "../../components/EmptyMessage";
+import { VerifyMessage, useIsAccountVerified } from "../../components/Onboarding/VerificationFlow";
 import { OperationTile } from "../../components/OperationTile";
 import { ViewOverlay } from "../../components/ViewOverlay/ViewOverlay";
 import { useColor } from "../../styles/useColor";
