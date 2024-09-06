@@ -98,9 +98,11 @@ describe("<SetupPassword />", () => {
       const user = userEvent.setup();
       const store = makeStore();
       const allFormValues = {
-        secretKey:
-          "edskRicpWcBughiZrP7jDEXse7gMSwa1HG6CEEHZa9y6eBYfpoAii3BqFdemgfpehhbGjxgkPpECxqcCQReGNLsAsh46TwGDEA",
-        secretKeyPassword: "",
+        current: {
+          secretKey:
+            "edskRicpWcBughiZrP7jDEXse7gMSwa1HG6CEEHZa9y6eBYfpoAii3BqFdemgfpehhbGjxgkPpECxqcCQReGNLsAsh46TwGDEA",
+          secretKeyPassword: "",
+        },
       };
       const mockRestoreFromSecretKey = jest.fn();
       jest.mocked(useRestoreFromSecretKey).mockReturnValue(mockRestoreFromSecretKey);
@@ -119,7 +121,7 @@ describe("<SetupPassword />", () => {
 
       await waitFor(() => expect(mockRestoreFromSecretKey).toHaveBeenCalledTimes(1));
       expect(mockRestoreFromSecretKey).toHaveBeenCalledWith(
-        allFormValues.secretKey,
+        allFormValues.current.secretKey,
         password,
         "Account"
       );

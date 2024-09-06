@@ -12,7 +12,7 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
-import { useDynamicModalContext, useMultiForm } from "@umami/components";
+import { useMultiForm } from "@umami/components";
 import { type ReactElement } from "react";
 
 import { UserIcon } from "../../assets/icons";
@@ -23,18 +23,15 @@ import { ModalCloseButton } from "../CloseButton";
 type NameAccountModalProps = {
   title?: string;
   subtitle?: string;
-  nextModal: ReactElement;
-  onSubmit?: (values: Record<string, any>) => void;
+  onSubmit: (values: { accountName: string }) => void;
 };
 
 export const NameAccountModal = ({
   title = "Name Your Account",
   subtitle,
   onSubmit,
-  nextModal,
 }: NameAccountModalProps) => {
   const color = useColor();
-  const { openWith } = useDynamicModalContext();
 
   const form = useMultiForm({
     mode: "onBlur",
@@ -44,11 +41,6 @@ export const NameAccountModal = ({
   });
 
   const { register, handleSubmit } = form;
-
-  const handleProceedToNext = (values: { accountName: string }) => {
-    onSubmit?.(values);
-    return openWith(nextModal);
-  };
 
   return (
     <ModalContent>
@@ -65,7 +57,7 @@ export const NameAccountModal = ({
           )}
         </Center>
       </ModalHeader>
-      <form onSubmit={handleSubmit(handleProceedToNext)} style={{ width: "100%" }}>
+      <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
         <ModalBody>
           <FormControl>
             <FormLabel>Account name</FormLabel>

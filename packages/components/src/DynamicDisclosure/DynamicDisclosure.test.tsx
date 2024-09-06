@@ -1,5 +1,5 @@
-import { useDynamicDrawer, useDynamicModal } from "./DynamicDisclosure";
-import { act, render, renderHook, screen } from "../testUtils";
+import { useDynamicDrawer, useDynamicModal, useDynamicModalContext } from "./DynamicDisclosure";
+import { act, render, renderHook, screen, waitFor } from "../testUtils";
 
 describe("DynamicDisclosure", () => {
   describe("useDynamicModal", () => {
@@ -43,15 +43,12 @@ describe("DynamicDisclosure", () => {
       expect(onClose).toHaveBeenCalled();
     });
 
-    it("handles multiple modals with goBack", async () => {
+    it("calls the onClose callback when the modal is closed", async () => {
+      const onClose = jest.fn();
       const view = renderHook(() => useDynamicModal());
-      await act(() => view.result.current.openWith(<div>test data 1</div>));
-      await act(() => view.result.current.openWith(<div>test data 2</div>));
-      act(() => view.result.current.goBack());
-      expect(view.result.current.isOpen).toBe(true);
-      render(view.result.current.content);
-      expect(screen.getByText("test data 1")).toBeVisible();
-      expect(screen.queryByText("test data 2")).not.toBeInTheDocument();
+      await act(() => view.result.current.openWith(<div>test data</div>, { onClose }));
+      act(() => view.result.current.onClose());
+      expect(onClose).toHaveBeenCalled();
     });
   });
 
@@ -95,16 +92,96 @@ describe("DynamicDisclosure", () => {
       act(() => view.result.current.onClose());
       expect(onClose).toHaveBeenCalled();
     });
+  });
 
-    it("handles multiple drawers with goBack", async () => {
-      const view = renderHook(() => useDynamicDrawer());
-      await act(() => view.result.current.openWith(<div>test data 1</div>));
-      await act(() => view.result.current.openWith(<div>test data 2</div>));
-      act(() => view.result.current.goBack());
-      expect(view.result.current.isOpen).toBe(true);
-      render(view.result.current.content);
-      expect(screen.getByText("test data 1")).toBeVisible();
-      expect(screen.queryByText("test data 2")).not.toBeInTheDocument();
+  describe("goBack functionality", () => {
+    it("should go back one step when goBack is called without parameters", () => {
+      const { result } = renderHook(() => useDynamicModalContext());
+
+      act(() => {
+        result.current.openWith(<div>First</div>);
+        result.current.openWith(<div>Second</div>);
+      });
+
+      expect(result.current.isOpen).toBe(true);
+      expect(result.current.hasPrevious).toBe(true);
+
+      act(() => {
+        result.current.goBack();
+      });
+
+      expect(result.current.isOpen).toBe(true);
+      expect(result.current.hasPrevious).toBe(false);
+    });
+
+    it("should go back to specific index when goBack is called with a valid index", async () => {
+      const { result } = renderHook(() => useDynamicModalContext());
+
+      act(() => {
+        result.current.openWith(<div>First</div>);
+      });
+
+      act(() => {
+        result.current.openWith(<div>Second</div>);
+      });
+
+      act(() => {
+        result.current.openWith(<div>Third</div>);
+      });
+
+      expect(result.current.hasPrevious).toBe(true);
+
+      act(() => {
+        result.current.goBack(0);
+      });
+
+      expect(result.current.hasPrevious).toBe(false);
+      expect(screen.getByText("First")).toBeVisible();
+    });
+
+    it("should update hasPrevious correctly", () => {
+      const { result } = renderHook(() => useDynamicModalContext());
+
+      expect(result.current.hasPrevious).toBe(false);
+
+      act(() => {
+        result.current.openWith(<div>First</div>);
+      });
+
+      expect(result.current.hasPrevious).toBe(false);
+
+      act(() => {
+        result.current.openWith(<div>Second</div>);
+      });
+
+      expect(result.current.hasPrevious).toBe(true);
+
+      act(() => {
+        result.current.goBack();
+      });
+
+      expect(result.current.hasPrevious).toBe(false);
+    });
+
+    it("should go back one step when goBack is called with out-of-bounds index", async () => {
+      const { result } = renderHook(() => useDynamicModalContext());
+
+      act(() => {
+        result.current.openWith(<div>First</div>);
+        result.current.openWith(<div>Second</div>);
+        result.current.openWith(<div>Third</div>);
+      });
+
+      expect(result.current.isOpen).toBe(true);
+      expect(result.current.hasPrevious).toBe(true);
+
+      act(() => {
+        result.current.goBack(5);
+      });
+
+      expect(result.current.isOpen).toBe(true);
+      expect(result.current.hasPrevious).toBe(true);
+      expect(screen.getByText("Second")).toBeVisible();
     });
   });
 });

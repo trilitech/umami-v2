@@ -19,7 +19,7 @@ import { ModalCloseButton } from "../CloseButton";
 import { PasswordInput } from "../PasswordInput";
 
 type MasterPasswordModalProps = {
-  onSubmit: (password: string) => void;
+  onSubmit: ({ password }: { password: string }) => void;
 };
 
 export const MasterPasswordModal = ({ onSubmit }: MasterPasswordModalProps) => {
@@ -45,7 +45,7 @@ export const MasterPasswordModal = ({ onSubmit }: MasterPasswordModalProps) => {
         </Center>
       </ModalHeader>
       <FormProvider {...form}>
-        <form onSubmit={form.handleSubmit(formFields => onSubmit(formFields.password))}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
           <ModalBody>
             <PasswordInput
               data-testid="master-password"
