@@ -114,8 +114,8 @@ export const SetupPassword = ({ mode }: SetupPasswordProps) => {
       switch (mode) {
         case "secret_key": {
           const secretKey = await decryptSecretKey(
-            allFormValues.secretKey,
-            allFormValues.secretKeyPassword
+            allFormValues.current?.secretKey,
+            allFormValues.current?.secretKeyPassword
           );
           await restoreFromSecretKey(secretKey, password, DEFAULT_ACCOUNT_LABEL);
           break;
@@ -124,7 +124,7 @@ export const SetupPassword = ({ mode }: SetupPasswordProps) => {
         case "new_mnemonic": {
           const mnemonic = isNewMnemonic
             ? generate24WordMnemonic()
-            : allFormValues.mnemonic.map(({ val }: { val: string }) => val).join(" ");
+            : allFormValues.current?.mnemonic.map(({ val }: { val: string }) => val).join(" ");
 
           await restoreFromMnemonic({
             mnemonic,
