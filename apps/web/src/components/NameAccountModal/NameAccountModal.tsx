@@ -21,11 +21,18 @@ import { ModalBackButton } from "../BackButton";
 import { ModalCloseButton } from "../CloseButton";
 
 type NameAccountModalProps = {
+  title?: string;
+  subtitle?: string;
   nextModal: ReactElement;
   onSubmit?: (values: Record<string, any>) => void;
 };
 
-export const NameAccountModal = ({ onSubmit, nextModal }: NameAccountModalProps) => {
+export const NameAccountModal = ({
+  title = "Name Your Account",
+  subtitle,
+  onSubmit,
+  nextModal,
+}: NameAccountModalProps) => {
   const color = useColor();
   const { openWith } = useDynamicModalContext();
 
@@ -50,10 +57,12 @@ export const NameAccountModal = ({ onSubmit, nextModal }: NameAccountModalProps)
         <ModalCloseButton />
         <Center flexDirection="column" gap="12px">
           <Icon as={UserIcon} boxSize="24px" marginBottom="4px" color={color("blue")} />
-          <Heading size="xl">Name Your Account</Heading>
-          <Text width="full" color={color("700")} fontWeight="400" textAlign="center" size="md">
-            Name the new account derived from mnemonic
-          </Text>
+          <Heading size="xl">{title}</Heading>
+          {subtitle && (
+            <Text width="full" color={color("700")} fontWeight="400" textAlign="center" size="md">
+              {subtitle}
+            </Text>
+          )}
         </Center>
       </ModalHeader>
       <form onSubmit={handleSubmit(handleProceedToNext)} style={{ width: "100%" }}>
