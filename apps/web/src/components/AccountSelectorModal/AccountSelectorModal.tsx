@@ -13,7 +13,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useDynamicModalContext } from "@umami/components";
-import { getAccountGroupLabel } from "@umami/core";
+import { type ImplicitAccount, type MnemonicAccount, getAccountGroupLabel } from "@umami/core";
 import { accountsActions, useGetAccountBalance, useImplicitAccounts } from "@umami/state";
 import { prettyTezAmount } from "@umami/tezos";
 import { capitalize } from "lodash";
@@ -38,6 +38,19 @@ export const AccountSelectorModal = () => {
   const dispatch = useDispatch();
 
   const groupedAccounts = Object.groupBy(accounts, getAccountGroupLabel);
+
+  const handleDeriveAccount = (account?: ImplicitAccount) => {
+    if (!account) {
+      return;
+    }
+
+    switch (account.type) {
+      case "mnemonic":
+        return openWith(<DeriveMnemonicAccount account={account as MnemonicAccount} />);
+      default:
+        break;
+    }
+  };
 
   return (
     <ModalContent>
@@ -75,7 +88,7 @@ export const AccountSelectorModal = () => {
                     color={color("500")}
                     aria-label={`Remove ${type} accounts`}
                     icon={<PlusIcon />}
-                    onClick={() => openWith(<DeriveMnemonicAccount />)}
+                    onClick={() => handleDeriveAccount(accounts?.[0])}
                     size="sm"
                     variant="ghost"
                   />
