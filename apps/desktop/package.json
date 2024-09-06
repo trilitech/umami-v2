@@ -103,7 +103,7 @@
     "cross-env": "^7.0.3",
     "date-fns": "^3.6.0",
     "depcheck": "^1.4.7",
-    "electron": "32.0.1",
+    "electron": "32.0.2",
     "electron-builder": "^25.0.5",
     "electronmon": "^2.0.3",
     "eslint": "^8.57.0",
