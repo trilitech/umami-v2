@@ -32,7 +32,7 @@ export const MasterPasswordModal = ({ onSubmit }: MasterPasswordModalProps) => {
   });
 
   return (
-    <ModalContent>
+    <ModalContent data-testid="master-password-modal">
       <ModalHeader>
         <ModalBackButton />
         <ModalCloseButton />
