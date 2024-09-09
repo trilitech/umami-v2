@@ -16,7 +16,7 @@ import { useDynamicModalContext } from "@umami/components";
 import { type ImplicitAccount, type MnemonicAccount, getAccountGroupLabel } from "@umami/core";
 import { accountsActions, useGetAccountBalance, useImplicitAccounts } from "@umami/state";
 import { prettyTezAmount } from "@umami/tezos";
-import { capitalize } from "lodash";
+import { groupBy } from "lodash";
 import { useDispatch } from "react-redux";
 
 import { AccountSelectorPopover } from "./AccountSelectorPopover";
@@ -24,7 +24,7 @@ import { PlusIcon, TrashIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
 import { AccountTile } from "../AccountTile";
 import { ModalCloseButton } from "../CloseButton";
-import { DeriveMnemonicAccountModal } from "../DeriveMnemonicAccountModal";
+import { DeriveMnemonicAccountModal } from "./DeriveMnemonicAccountModal";
 import { OnboardOptionsModal } from "../Onboarding/OnboardOptions";
 import { useIsAccountVerified } from "../Onboarding/VerificationFlow";
 
@@ -37,7 +37,7 @@ export const AccountSelectorModal = () => {
 
   const dispatch = useDispatch();
 
-  const groupedAccounts = Object.groupBy(accounts, getAccountGroupLabel);
+  const groupedAccounts = groupBy(accounts, getAccountGroupLabel);
 
   const handleDeriveAccount = (account?: ImplicitAccount) => {
     if (!account) {
@@ -48,7 +48,7 @@ export const AccountSelectorModal = () => {
       case "mnemonic":
         return openWith(<DeriveMnemonicAccountModal account={account as MnemonicAccount} />);
       default:
-        break;
+        return openWith(<OnboardOptionsModal />);
     }
   };
 
@@ -74,7 +74,7 @@ export const AccountSelectorModal = () => {
                 paddingLeft="12px"
               >
                 <Heading color={color("900")} size="sm">
-                  {type.split("_").map(capitalize).join(" ")}
+                  {type}
                 </Heading>
                 <Flex gap="12px">
                   <IconButton
@@ -86,15 +86,15 @@ export const AccountSelectorModal = () => {
                   />
                   <IconButton
                     color={color("500")}
-                    aria-label={`Remove ${type} accounts`}
+                    aria-label={`Add ${type} account`}
                     icon={<PlusIcon />}
-                    onClick={() => handleDeriveAccount(accounts?.[0])}
+                    onClick={() => handleDeriveAccount(accounts[0])}
                     size="sm"
                     variant="ghost"
                   />
                 </Flex>
               </Center>
-              {accounts?.map(account => {
+              {accounts.map(account => {
                 const address = account.address.pkh;
                 const balance = getBalance(address);
                 const onClick = () => {

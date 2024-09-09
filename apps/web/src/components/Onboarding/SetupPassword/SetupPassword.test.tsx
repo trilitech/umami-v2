@@ -130,7 +130,9 @@ describe("<SetupPassword />", () => {
 
   describe("mnemonic mode", () => {
     let store: UmamiStore;
-    const allFormValues = { mnemonic: mnemonic1.split(" ").map(word => ({ val: word })) };
+    const allFormValues = {
+      current: { mnemonic: mnemonic1.split(" ").map(word => ({ val: word })) },
+    };
     const mockRestoreFromMnemonic = jest.fn();
 
     beforeEach(() => {

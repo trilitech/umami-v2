@@ -42,7 +42,7 @@ export const NameAccountModal = ({
   const { register, handleSubmit } = form;
 
   return (
-    <ModalContent>
+    <ModalContent data-testid="name-account-modal">
       <ModalHeader>
         <ModalBackButton />
         <ModalCloseButton />
