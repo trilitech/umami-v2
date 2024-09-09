@@ -13,7 +13,6 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useMultiForm } from "@umami/components";
-import { type ReactElement } from "react";
 
 import { UserIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";

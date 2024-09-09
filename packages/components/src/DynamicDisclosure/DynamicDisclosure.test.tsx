@@ -1,5 +1,5 @@
 import { useDynamicDrawer, useDynamicModal, useDynamicModalContext } from "./DynamicDisclosure";
-import { act, render, renderHook, screen, waitFor } from "../testUtils";
+import { act, render, renderHook, screen } from "../testUtils";
 
 describe("DynamicDisclosure", () => {
   describe("useDynamicModal", () => {
@@ -89,7 +89,7 @@ describe("DynamicDisclosure", () => {
       const onClose = jest.fn();
       const view = renderHook(() => useDynamicDrawer());
       await act(() => view.result.current.openWith(<div>test data</div>, { onClose }));
-      act(() => view.result.current.onClose());
+      await act(() => view.result.current.onClose());
       expect(onClose).toHaveBeenCalled();
     });
   });
@@ -112,31 +112,6 @@ describe("DynamicDisclosure", () => {
 
       expect(result.current.isOpen).toBe(true);
       expect(result.current.hasPrevious).toBe(false);
-    });
-
-    it("should go back to specific index when goBack is called with a valid index", async () => {
-      const { result } = renderHook(() => useDynamicModalContext());
-
-      act(() => {
-        result.current.openWith(<div>First</div>);
-      });
-
-      act(() => {
-        result.current.openWith(<div>Second</div>);
-      });
-
-      act(() => {
-        result.current.openWith(<div>Third</div>);
-      });
-
-      expect(result.current.hasPrevious).toBe(true);
-
-      act(() => {
-        result.current.goBack(0);
-      });
-
-      expect(result.current.hasPrevious).toBe(false);
-      expect(screen.getByText("First")).toBeVisible();
     });
 
     it("should update hasPrevious correctly", () => {
@@ -163,25 +138,52 @@ describe("DynamicDisclosure", () => {
       expect(result.current.hasPrevious).toBe(false);
     });
 
-    it("should go back one step when goBack is called with out-of-bounds index", async () => {
-      const { result } = renderHook(() => useDynamicModalContext());
+    describe("goToIndex functionality", () => {
+      it("goToIndex should go back to specific index when is called with a valid index", async () => {
+        const { result } = renderHook(() => useDynamicModalContext());
 
-      act(() => {
-        result.current.openWith(<div>First</div>);
-        result.current.openWith(<div>Second</div>);
-        result.current.openWith(<div>Third</div>);
+        act(() => {
+          result.current.openWith(<div>First</div>);
+        });
+
+        act(() => {
+          result.current.openWith(<div>Second</div>);
+        });
+
+        act(() => {
+          result.current.openWith(<div>Third</div>);
+        });
+
+        expect(result.current.hasPrevious).toBe(true);
+
+        act(() => {
+          result.current.goToIndex(0);
+        });
+
+        expect(result.current.hasPrevious).toBe(false);
+        expect(screen.getByText("First")).toBeVisible();
       });
 
-      expect(result.current.isOpen).toBe(true);
-      expect(result.current.hasPrevious).toBe(true);
+      it("goToIndex should go back one step when is called with out-of-bounds index", async () => {
+        const { result } = renderHook(() => useDynamicModalContext());
 
-      act(() => {
-        result.current.goBack(5);
+        act(() => {
+          result.current.openWith(<div>First</div>);
+          result.current.openWith(<div>Second</div>);
+          result.current.openWith(<div>Third</div>);
+        });
+
+        expect(result.current.isOpen).toBe(true);
+        expect(result.current.hasPrevious).toBe(true);
+
+        act(() => {
+          result.current.goToIndex(5);
+        });
+
+        expect(result.current.isOpen).toBe(true);
+        expect(result.current.hasPrevious).toBe(true);
+        expect(screen.getByText("Second")).toBeVisible();
       });
-
-      expect(result.current.isOpen).toBe(true);
-      expect(result.current.hasPrevious).toBe(true);
-      expect(screen.getByText("Second")).toBeVisible();
     });
   });
 });
