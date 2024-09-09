@@ -27,7 +27,8 @@ interface DynamicDisclosureContextType {
   ) => Promise<void>;
   onClose: () => void;
   isOpen: boolean;
-  goBack: (index?: number) => void;
+  goBack: () => void;
+  goToIndex: (index: number) => void;
   hasPrevious: boolean;
   formValues: Record<string, any>;
   allFormValues: RefObject<Record<string, any>>;
@@ -37,6 +38,7 @@ const defaultContextValue = {
   openWith: async () => {},
   onClose: () => {},
   goBack: () => {},
+  goToIndex: () => {},
   isOpen: false,
   hasPrevious: false,
   formValues: {},
@@ -100,7 +102,12 @@ export const useDynamicDisclosure = () => {
     return Promise.resolve();
   };
 
-  const goBack = (index = -1) => {
+  const goBack = () => {
+    setCurrentIndex(current => current - 1);
+    stackRef.current.pop();
+  };
+
+  const goToIndex = (index = -1) => {
     if (index >= 0 && index < stackRef.current.length) {
       // Go to specific index
       const itemsToRemove = stackRef.current.length - index - 1;
@@ -128,6 +135,7 @@ export const useDynamicDisclosure = () => {
     onClose: currentItem?.props.onClose || (() => {}),
     openWith,
     goBack,
+    goToIndex,
     content: currentItem?.content,
     props: currentItem?.props || {},
     formValues: currentItem?.formValues || {},

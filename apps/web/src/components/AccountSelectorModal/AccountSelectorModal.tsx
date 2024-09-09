@@ -24,7 +24,7 @@ import { PlusIcon, TrashIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
 import { AccountTile } from "../AccountTile";
 import { ModalCloseButton } from "../CloseButton";
-import { DeriveMnemonicAccount } from "../DeriveMnemonicAccount";
+import { DeriveMnemonicAccountModal } from "../DeriveMnemonicAccountModal";
 import { OnboardOptionsModal } from "../Onboarding/OnboardOptions";
 import { useIsAccountVerified } from "../Onboarding/VerificationFlow";
 
@@ -46,7 +46,7 @@ export const AccountSelectorModal = () => {
 
     switch (account.type) {
       case "mnemonic":
-        return openWith(<DeriveMnemonicAccount account={account as MnemonicAccount} />);
+        return openWith(<DeriveMnemonicAccountModal account={account as MnemonicAccount} />);
       default:
         break;
     }

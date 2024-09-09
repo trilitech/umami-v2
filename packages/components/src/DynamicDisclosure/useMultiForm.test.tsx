@@ -19,7 +19,7 @@ const Page3 = () => {
   return (
     <ModalContent>
       <ModalHeader>
-        <Button onClick={() => goBack()}>Go back</Button>
+        <Button onClick={goBack}>Go back</Button>
       </ModalHeader>
       <ModalBody>
         <Box data-testid="all-form-values">{JSON.stringify(allFormValues.current)}</Box>
@@ -35,7 +35,7 @@ const Page2 = () => {
   return (
     <ModalContent>
       <ModalHeader>
-        <Button onClick={() => goBack()}>Go back</Button>
+        <Button onClick={goBack}>Go back</Button>
       </ModalHeader>
       <ModalBody>
         <form data-testid="form2" onSubmit={form.handleSubmit(() => openWith(<Page3 />))}>

@@ -1,4 +1,4 @@
-import { Account } from "./Account";
+import { type Account } from "./Account";
 
 export const getAccountGroupLabel = (account: Account) => {
   switch (account.type) {

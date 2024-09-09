@@ -6,18 +6,16 @@ import { useAsyncActionHandler, useDeriveMnemonicAccount } from "@umami/state";
 import { MasterPasswordModal } from "../MasterPasswordModal";
 import { NameAccountModal } from "../NameAccountModal";
 
-type DeriveMnemonicAccountProps = {
+type DeriveMnemonicAccountModalProps = {
   account: MnemonicAccount;
 };
 
-export const DeriveMnemonicAccount = ({ account }: DeriveMnemonicAccountProps) => {
-  const { goBack, allFormValues, openWith } = useDynamicModalContext();
+export const DeriveMnemonicAccountModal = ({ account }: DeriveMnemonicAccountModalProps) => {
+  const { goToIndex, openWith } = useDynamicModalContext();
 
   const { handleAsyncAction } = useAsyncActionHandler();
   const toast = useToast();
   const deriveMnemonicAccount = useDeriveMnemonicAccount();
-
-  console.log("allFormValues", allFormValues);
 
   const handleNameSubmit = ({ accountName }: { accountName: string }) => {
     const handlePasswordSubmit = ({ password }: { password: string }) =>
@@ -28,7 +26,7 @@ export const DeriveMnemonicAccount = ({ account }: DeriveMnemonicAccountProps) =
             password,
             label: accountName.trim() || DEFAULT_ACCOUNT_LABEL,
           });
-          goBack(0);
+          goToIndex(0);
 
           toast({
             description: `New account created! Successfully derived account from ${account.seedFingerPrint}`,
