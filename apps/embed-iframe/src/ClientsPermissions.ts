@@ -9,7 +9,8 @@ const clientPermissions: Record<string, Permissions> = {
   kanvas: {
     origins: [
       "https://kanvas-poa.vercel.app",
-      "https://kanvas-poa-git-poa-release-trili-tech.vercel.app", // TODO: remove once the integration is done
+      // TODO: remove once the integration is done (here & in vercel.json)
+      "https://kanvas-poa-git-poa-release-trili-tech.vercel.app",
     ],
     login: true,
     operations: false,
