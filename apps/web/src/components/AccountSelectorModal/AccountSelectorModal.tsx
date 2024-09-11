@@ -13,8 +13,19 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useDynamicModalContext } from "@umami/components";
-import { type ImplicitAccount, type MnemonicAccount, getAccountGroupLabel } from "@umami/core";
-import { accountsActions, useGetAccountBalance, useImplicitAccounts } from "@umami/state";
+import {
+  type Account,
+  type ImplicitAccount,
+  type MnemonicAccount,
+  getAccountGroupLabel,
+} from "@umami/core";
+import {
+  accountsActions,
+  useGetAccountBalance,
+  useImplicitAccounts,
+  useRemoveMnemonic,
+  useRemoveNonMnemonic,
+} from "@umami/state";
 import { prettyTezAmount } from "@umami/tezos";
 import { groupBy } from "lodash";
 import { useDispatch } from "react-redux";
@@ -25,6 +36,7 @@ import { useColor } from "../../styles/useColor";
 import { AccountTile } from "../AccountTile";
 import { ModalCloseButton } from "../CloseButton";
 import { DeriveMnemonicAccountModal } from "./DeriveMnemonicAccountModal";
+import { ConfirmationModal } from "../ConfirmationModal";
 import { OnboardOptionsModal } from "../Onboarding/OnboardOptions";
 import { useIsAccountVerified } from "../Onboarding/VerificationFlow";
 
@@ -33,6 +45,8 @@ export const AccountSelectorModal = () => {
   const color = useColor();
   const getBalance = useGetAccountBalance();
   const isVerified = useIsAccountVerified();
+  const removeMnemonic = useRemoveMnemonic();
+  const removeNonMnemonic = useRemoveNonMnemonic();
   const { openWith, onClose } = useDynamicModalContext();
 
   const dispatch = useDispatch();
@@ -50,6 +64,33 @@ export const AccountSelectorModal = () => {
       default:
         return openWith(<OnboardOptionsModal />);
     }
+  };
+
+  const buttonLabel = (isLast: boolean) => (isLast ? "Remove & Off-board" : "Remove");
+  const description = (isLast: boolean, type: string) =>
+    isLast
+      ? "Removing all your accounts will off-board you from Umami. This will remove or reset all customized settings to their defaults. Personal data (including saved contacts, password and accounts) won't be affected."
+      : `Are you sure you want to remove all of your ${type}?`;
+
+  const onRemove = (accounts: Account[]) => {
+    const account = accounts[0];
+    const isLast = accounts.length === accounts.length;
+
+    return openWith(
+      <ConfirmationModal
+        buttonLabel={buttonLabel(isLast)}
+        description={description(isLast, account.type)}
+        onSubmit={() => {
+          if (account.type === "mnemonic") {
+            removeMnemonic(account.seedFingerPrint);
+          } else if (account.type !== "multisig") {
+            removeNonMnemonic(account.type);
+          }
+          onClose();
+        }}
+        title="Remove All Accounts"
+      />
+    );
   };
 
   return (
@@ -81,6 +122,7 @@ export const AccountSelectorModal = () => {
                     color={color("500")}
                     aria-label={`Remove ${type} accounts`}
                     icon={<TrashIcon />}
+                    onClick={() => onRemove(accounts)}
                     size="sm"
                     variant="ghost"
                   />
