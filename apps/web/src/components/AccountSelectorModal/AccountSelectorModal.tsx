@@ -41,17 +41,17 @@ import { OnboardOptionsModal } from "../Onboarding/OnboardOptions";
 import { useIsAccountVerified } from "../Onboarding/VerificationFlow";
 
 export const AccountSelectorModal = () => {
-  const accounts = useImplicitAccounts();
+  const implicitAccounts = useImplicitAccounts();
   const color = useColor();
   const getBalance = useGetAccountBalance();
   const isVerified = useIsAccountVerified();
   const removeMnemonic = useRemoveMnemonic();
   const removeNonMnemonic = useRemoveNonMnemonic();
-  const { openWith, onClose } = useDynamicModalContext();
+  const { openWith, goBack, onClose } = useDynamicModalContext();
 
   const dispatch = useDispatch();
 
-  const groupedAccounts = groupBy(accounts, getAccountGroupLabel);
+  const groupedAccounts = groupBy(implicitAccounts, getAccountGroupLabel);
 
   const handleDeriveAccount = (account?: ImplicitAccount) => {
     if (!account) {
@@ -72,21 +72,21 @@ export const AccountSelectorModal = () => {
       ? "Removing all your accounts will off-board you from Umami. This will remove or reset all customized settings to their defaults. Personal data (including saved contacts, password and accounts) won't be affected."
       : `Are you sure you want to remove all of your ${type}?`;
 
-  const onRemove = (accounts: Account[]) => {
+  const onRemove = (type: string, accounts: Account[]) => {
     const account = accounts[0];
-    const isLast = accounts.length === accounts.length;
+    const isLast = accounts.length === implicitAccounts.length;
 
     return openWith(
       <ConfirmationModal
         buttonLabel={buttonLabel(isLast)}
-        description={description(isLast, account.type)}
+        description={description(isLast, type)}
         onSubmit={() => {
           if (account.type === "mnemonic") {
             removeMnemonic(account.seedFingerPrint);
           } else if (account.type !== "multisig") {
             removeNonMnemonic(account.type);
           }
-          onClose();
+          goBack();
         }}
         title="Remove All Accounts"
       />
@@ -122,7 +122,7 @@ export const AccountSelectorModal = () => {
                     color={color("500")}
                     aria-label={`Remove ${type} accounts`}
                     icon={<TrashIcon />}
-                    onClick={() => onRemove(accounts)}
+                    onClick={() => onRemove(type, accounts)}
                     size="sm"
                     variant="ghost"
                   />

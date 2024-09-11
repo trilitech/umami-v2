@@ -6,7 +6,7 @@ import { ConfirmationModal } from "../ConfirmationModal";
 export const LogoutModal = () => (
   <ConfirmationModal
     buttonLabel="Logout"
-    description="Are you sure you want to logout?"
+    description="Before logging out, make sure your mnemonic phrase is securely saved. Losing this phrase could result in permanent loss of access to your data."
     onSubmit={() => logout(persistor)}
     title="Logout"
   />

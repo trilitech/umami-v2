@@ -4,7 +4,13 @@ import {
   mockMnemonicAccount,
   mockSocialAccount,
 } from "@umami/core";
-import { type UmamiStore, accountsActions, addTestAccounts, makeStore } from "@umami/state";
+import {
+  type UmamiStore,
+  accountsActions,
+  addTestAccount,
+  addTestAccounts,
+  makeStore,
+} from "@umami/state";
 
 import { AccountSelectorModal } from "./AccountSelectorModal";
 import { DeriveMnemonicAccountModal } from "./DeriveMnemonicAccountModal";
@@ -57,6 +63,87 @@ describe("<AccountSelectorModal />", () => {
       expect(openWith).toHaveBeenCalledWith(getModalComponent());
     }
   );
+
+  describe("when clicking 'Remove account group' button", () => {
+    it.each([
+      ["mnemonic", mockMnemonicAccount(0)],
+      ["ledger", mockLedgerAccount(1)],
+      ["social", mockSocialAccount(2)],
+    ])(
+      "opens confirmation modal when clicking remove button for %s accounts",
+      async (_, account) => {
+        const user = userEvent.setup();
+        await renderInModal(<AccountSelectorModal />, store);
+        const accountLabel = getAccountGroupLabel(account);
+
+        const removeButton = screen.getByLabelText(`Remove ${accountLabel} accounts`);
+        await act(() => user.click(removeButton));
+
+        expect(screen.getByText("Remove All Accounts")).toBeInTheDocument();
+
+        await waitFor(() =>
+          expect(
+            screen.getByText(`Are you sure you want to remove all of your ${accountLabel}?`)
+          ).toBeVisible()
+        );
+      }
+    );
+
+    it("removes mnemonic accounts when confirmed", async () => {
+      const user = userEvent.setup();
+      await renderInModal(<AccountSelectorModal />, store);
+      const account = mockMnemonicAccount(0);
+      const accountLabel = getAccountGroupLabel(account);
+      const removeButton = screen.getByLabelText(`Remove ${accountLabel} accounts`);
+      await act(() => user.click(removeButton));
+
+      const confirmButton = screen.getByText("Remove");
+      await act(() => user.click(confirmButton));
+
+      expect(store.getState().accounts.seedPhrases[account.seedFingerPrint]).toBe(undefined);
+      expect(store.getState().accounts.items.length).toBe(2);
+    });
+
+    it.each([
+      ["ledger", mockLedgerAccount(1)],
+      ["social", mockSocialAccount(2)],
+    ])("removes %s accounts when confirmed", async (_, account) => {
+      const user = userEvent.setup();
+      await renderInModal(<AccountSelectorModal />, store);
+      const accountLabel = getAccountGroupLabel(account);
+      const accounts = store.getState().accounts.items;
+
+      const removeButton = screen.getByLabelText(`Remove ${accountLabel} accounts`);
+      await act(() => user.click(removeButton));
+
+      const confirmButton = screen.getByText("Remove");
+      await act(() => user.click(confirmButton));
+
+      expect(store.getState().accounts.items.length).toBe(accounts.length - 1);
+    });
+
+    it('shows "Remove & Off-board" message when removing last group of accounts', async () => {
+      store.dispatch(accountsActions.reset());
+      addTestAccount(store, mockSocialAccount(0));
+
+      const user = userEvent.setup();
+      const accountLabel = getAccountGroupLabel(mockSocialAccount(0));
+      await renderInModal(<AccountSelectorModal />, store);
+
+      const removeButton = screen.getByLabelText(`Remove ${accountLabel} accounts`);
+      await act(() => user.click(removeButton));
+
+      expect(screen.getByText("Remove & Off-board")).toBeInTheDocument();
+
+      await waitFor(() =>
+        expect(
+          screen.getByText(
+            "Removing all your accounts will off-board you from Umami. This will remove or reset all customized settings to their defaults. Personal data (including saved contacts, password and accounts) won't be affected."
+          )
+        ).toBeVisible()
+      );
+    });
+  });
 
   it("opens appropriate modal when clicking 'Add Account' button", async () => {
     const user = userEvent.setup();
