@@ -7,7 +7,7 @@
     "index.js"
   ],
   "dependencies": {
-    "@stylistic/eslint-plugin": "^2.7.2",
+    "@stylistic/eslint-plugin": "^2.8.0",
     "@tanstack/eslint-plugin-query": "^5.53.0",
     "@typescript-eslint/eslint-plugin": "^8.5.0",
     "@typescript-eslint/parser": "^8.5.0",
