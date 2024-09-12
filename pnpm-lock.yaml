@@ -768,8 +768,8 @@ importers:
         specifier: ^5.1.0
         version: 5.1.0(@chakra-ui/react@2.8.2(@emotion/react@11.13.3(@types/react@18.3.5)(react@18.3.1))(@emotion/styled@11.13.0(@emotion/react@11.13.3(@types/react@18.3.5)(react@18.3.1))(@types/react@18.3.5)(react@18.3.1))(@types/react@18.3.5)(framer-motion@11.5.4(@emotion/is-prop-valid@1.3.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@storybook/components@8.3.0(storybook@8.3.0))(@storybook/manager-api@8.3.0(storybook@8.3.0))(@storybook/preview-api@8.3.0(storybook@8.3.0))(@storybook/types@8.3.0(storybook@8.3.0))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@chromatic-com/storybook':
-        specifier: ^2.0.0
-        version: 2.0.0(react@18.3.1)(storybook@8.3.0)
+        specifier: ^2.0.1
+        version: 2.0.1(react@18.3.1)
       '@emotion/is-prop-valid':
         specifier: ^1.3.0
         version: 1.3.0
@@ -3134,11 +3134,9 @@ packages:
   '@chriscdn/promise-semaphore@2.0.9':
     resolution: {integrity: sha512-kKXJcm5gM8FN8O8U20H19/85b8R33K0Q2u5cnm9mfblK/7QcNChlOhCTWgnrr8wYiuF1ZbYIZcioxW79QfjnmQ==}
 
-  '@chromatic-com/storybook@2.0.0':
-    resolution: {integrity: sha512-9sG8BVdf4ipEbX9OGNFX/USvnpi3SffEuRiIn1Qzsp/dM263EVdCAPcS9GOAZz6zOgcgaScdyvjTQozBYJrIVA==}
+  '@chromatic-com/storybook@2.0.1':
+    resolution: {integrity: sha512-BWedsjGOMXsWIWqDmdV9VV1lx2GSauBISu0a2ZbwL2BPN4yrBypsOOuQ8hKvtEfFlYetGmTafi1N5W1oR1CW3A==}
     engines: {node: '>=16.0.0', yarn: '>=1.22.18'}
-    peerDependencies:
-      storybook: ^8.2.0
 
   '@colors/colors@1.5.0':
     resolution: {integrity: sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==}
@@ -12204,13 +12202,12 @@ snapshots:
 
   '@chriscdn/promise-semaphore@2.0.9': {}
 
-  '@chromatic-com/storybook@2.0.0(react@18.3.1)(storybook@8.3.0)':
+  '@chromatic-com/storybook@2.0.1(react@18.3.1)':
     dependencies:
       chromatic: 11.7.0
       filesize: 10.1.4
       jsonfile: 6.1.0
       react-confetti: 6.1.0(react@18.3.1)
-      storybook: 8.3.0
       strip-ansi: 7.1.0
     transitivePeerDependencies:
       - '@chromatic-com/cypress'
