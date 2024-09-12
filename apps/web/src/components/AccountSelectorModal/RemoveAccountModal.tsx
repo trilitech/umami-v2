@@ -1,19 +1,8 @@
-import {
-  Button,
-  Flex,
-  Heading,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  Text,
-} from "@chakra-ui/react";
 import { useDynamicModalContext } from "@umami/components";
 import { type LedgerAccount, type SecretKeyAccount, type SocialAccount } from "@umami/core";
 import { useImplicitAccounts, useRemoveAccount } from "@umami/state";
 
-import { AlertIcon } from "../../assets/icons";
-import { useColor } from "../../styles/useColor";
-import { ModalCloseButton } from "../CloseButton";
+import { ConfirmationModal } from "../ConfirmationModal";
 
 type RemoveAccountModalProps = {
   account: SocialAccount | LedgerAccount | SecretKeyAccount;
@@ -22,7 +11,6 @@ type RemoveAccountModalProps = {
 export const RemoveAccountModal = ({ account }: RemoveAccountModalProps) => {
   const { goBack, onClose } = useDynamicModalContext();
   const removeAccount = useRemoveAccount();
-  const color = useColor();
 
   const isLastImplicitAccount = useImplicitAccounts().length === 1;
 
@@ -50,24 +38,11 @@ export const RemoveAccountModal = ({ account }: RemoveAccountModalProps) => {
   }
 
   return (
-    <ModalContent>
-      <ModalHeader>
-        <Flex alignItems="center" justifyContent="center" flexDirection="column">
-          <AlertIcon width="24px" color="red" />
-          <Heading marginTop="18px" marginBottom="12px" size="xl">
-            Remove Account
-          </Heading>
-          <Text maxWidth="340px" color={color("700")} fontWeight="400" size="md">
-            {description}
-          </Text>
-        </Flex>
-        <ModalCloseButton />
-      </ModalHeader>
-      <ModalFooter>
-        <Button width="full" onClick={handleRemoveAccount} variant="alert">
-          {buttonLabel}
-        </Button>
-      </ModalFooter>
-    </ModalContent>
+    <ConfirmationModal
+      buttonLabel={buttonLabel}
+      description={description}
+      onSubmit={handleRemoveAccount}
+      title="Remove Account"
+    />
   );
 };
