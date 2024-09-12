@@ -1,6 +1,8 @@
 import { Tab as ChakraTab } from "@chakra-ui/react";
 import { NavLink, useMatch } from "react-router-dom";
 
+import { useColor } from "../../styles/useColor";
+
 type TabProps = {
   to: string;
   label: string;
@@ -8,6 +10,7 @@ type TabProps = {
 
 export const Tab = ({ to, label }: TabProps) => {
   const isActive = useMatch(to);
+  const color = useColor();
 
   return (
     <ChakraTab
@@ -15,8 +18,8 @@ export const Tab = ({ to, label }: TabProps) => {
       width="full"
       to={to}
       {...(isActive && {
-        bg: "gray.200",
-        color: "gray.900",
+        bg: color("100"),
+        color: color("900"),
       })}
     >
       {label}

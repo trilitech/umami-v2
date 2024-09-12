@@ -223,26 +223,26 @@ const theme = extendTheme({
       sizes,
     },
     Tabs: {
-      baseStyle: {
+      baseStyle: (props: StyleFunctionProps) => ({
         tab: {
           color: "gray.500",
           _selected: {
             _hover: {
-              bg: "gray.200",
-              color: "gray.900",
+              bg: mode("gray.200", "gray.100")(props),
+              color: "gray.600",
             },
-            bg: "gray.200",
+            bg: "gray.100",
             color: "gray.900",
           },
           _hover: {
             bg: "gray.100",
-            color: "gray.600",
+            color: "gray.900",
           },
         },
         tabpanel: {
           padding: 0,
         },
-      },
+      }),
       variants: {
         onboarding: {
           tab: {
@@ -283,7 +283,7 @@ const theme = extendTheme({
         track: {
           backgroundColor: mode(light.grey[300], dark.grey[300])(props),
           _checked: {
-            backgroundColor: mode(light.grey[400], dark.grey[400])(props),
+            backgroundColor: mode(light.grey[400], dark.grey[600])(props),
           },
         },
         thumb: {
@@ -597,11 +597,11 @@ const theme = extendTheme({
     global: (props: StyleFunctionProps) => ({
       body: {
         color: mode(light.grey[600], dark.grey[600])(props),
-        bgColor: mode(light.bg, dark.bg)(props),
+        bg: mode(light.bg, dark.bg)(props),
         bgImage: mode(light.bgGradient, dark.bgGradient)(props),
         _before: {
-          bgColor: mode(light.bgMaskColor, dark.bgMaskColor)(props),
           maskImage: "url(/static/bg.svg)",
+          bgColor: mode(light.bgMaskColor, dark.bgMaskColor)(props),
         },
       },
       ":root": {
