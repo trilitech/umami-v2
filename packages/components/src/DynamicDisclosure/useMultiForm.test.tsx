@@ -8,8 +8,9 @@ import {
   ModalContent,
   ModalHeader,
 } from "@chakra-ui/react";
-import { useMultiForm } from "./useMultiForm";
+
 import { useDynamicModalContext } from "./DynamicDisclosure";
+import { useMultiForm } from "./useMultiForm";
 import { act, renderHook, screen, userEvent, waitFor } from "../testUtils";
 
 const Page3 = () => {
@@ -21,7 +22,7 @@ const Page3 = () => {
         <Button onClick={goBack}>Go back</Button>
       </ModalHeader>
       <ModalBody>
-        <Box data-testid="all-form-values">{JSON.stringify(allFormValues)}</Box>
+        <Box data-testid="all-form-values">{JSON.stringify(allFormValues.current)}</Box>
       </ModalBody>
     </ModalContent>
   );

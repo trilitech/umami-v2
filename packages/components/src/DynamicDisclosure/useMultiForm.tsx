@@ -1,6 +1,7 @@
 import merge from "lodash/merge";
-import { FieldValues, UseFormProps, UseFormReturn, useForm } from "react-hook-form";
-import { useDynamicModalContext, useDynamicDrawerContext } from "./DynamicDisclosure";
+import { type FieldValues, type UseFormProps, type UseFormReturn, useForm } from "react-hook-form";
+
+import { useDynamicDrawerContext, useDynamicModalContext } from "./DynamicDisclosure";
 
 export const useMultiForm = <
   TFieldValues extends FieldValues = FieldValues,
@@ -18,10 +19,11 @@ export const useMultiForm = <
   const drawerContext = useDynamicDrawerContext();
 
   const formDefaultValues =
-    usedIn === "drawer" ? drawerContext?.formValues : modalContext?.formValues;
+    usedIn === "drawer" ? drawerContext.formValues : modalContext.formValues;
+
   const form = useForm<TFieldValues, TContext, TTransformedValues>({
     ...props,
-    defaultValues: { ...props?.defaultValues, ...formDefaultValues } as any,
+    defaultValues: { ...props.defaultValues, ...formDefaultValues } as any,
   });
 
   const handleSubmit = (

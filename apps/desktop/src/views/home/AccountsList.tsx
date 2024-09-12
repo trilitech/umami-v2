@@ -1,10 +1,10 @@
 import { Box, Button, Text } from "@chakra-ui/react";
 import { useDynamicModalContext } from "@umami/components";
+import { getAccountGroupLabel } from "@umami/core";
 import { useAllAccounts } from "@umami/state";
 import { compact, groupBy } from "lodash";
 
 import { AccountGroup } from "./AccountGroup";
-import { getAccountGroupLabel } from "./getAccountGroupLabel";
 import { KeyIcon } from "../../assets/icons";
 import { NestedScroll } from "../../components/NestedScroll";
 import { NameMultisigFormPage } from "../../components/SendFlow/MultisigAccount/NameMultisigFormPage";

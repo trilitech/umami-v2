@@ -14,6 +14,7 @@ import { QRCode } from "react-qrcode-logo";
 
 import { CopyIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
+import { ModalBackButton } from "../BackButton";
 import { ModalCloseButton } from "../CloseButton";
 import { CopyButton } from "../CopyButton/CopyButton";
 
@@ -33,6 +34,7 @@ export const AccountInfoModal = ({ account }: AccountInfoModalProps) => {
             You can receive tez or other digital assets by scanning or sharing this QR code
           </Text>
         </VStack>
+        <ModalBackButton />
         <ModalCloseButton />
       </ModalHeader>
       <ModalBody>

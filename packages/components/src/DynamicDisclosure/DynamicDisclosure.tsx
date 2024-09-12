@@ -6,17 +6,17 @@ import {
   ModalOverlay,
   type ThemingProps,
 } from "@chakra-ui/react";
+import { cloneDeep, merge } from "lodash";
 import {
   type PropsWithChildren,
   type ReactElement,
+  type RefObject,
   createContext,
   useContext,
   useRef,
   useState,
 } from "react";
 import { RemoveScroll } from "react-remove-scroll";
-
-import { merge, cloneDeep } from "lodash";
 
 interface DynamicDisclosureContextType {
   openWith: (
@@ -28,19 +28,21 @@ interface DynamicDisclosureContextType {
   onClose: () => void;
   isOpen: boolean;
   goBack: () => void;
+  goToIndex: (index: number) => void;
   hasPrevious: boolean;
   formValues: Record<string, any>;
-  allFormValues: Record<string, any>;
+  allFormValues: RefObject<Record<string, any>>;
 }
 
 const defaultContextValue = {
   openWith: async () => {},
   onClose: () => {},
   goBack: () => {},
+  goToIndex: () => {},
   isOpen: false,
   hasPrevious: false,
   formValues: {},
-  allFormValues: {},
+  allFormValues: { current: {} },
 };
 
 /**
@@ -105,11 +107,26 @@ export const useDynamicDisclosure = () => {
     stackRef.current.pop();
   };
 
-  const currentItem = stackRef.current[currentIndex] || null;
+  const goToIndex = (index = -1) => {
+    if (index >= 0 && index < stackRef.current.length) {
+      // Go to specific index
+      const itemsToRemove = stackRef.current.length - index - 1;
+      stackRef.current.splice(index + 1, itemsToRemove);
+      setCurrentIndex(index);
+    } else {
+      // Default behavior: go back one step
+      setCurrentIndex(current => current - 1);
+      stackRef.current.pop();
+    }
+  };
+
+  const currentItem = stackRef.current.at(currentIndex) || null;
 
   // Note: be careful not to use the same form input names
   // otherwise, the values will be overwritten with the ones from the latest form
-  const allFormValues = stackRef.current
+  const allFormValues = useRef({});
+
+  allFormValues.current = stackRef.current
     .map(item => item.formValues)
     .reduce((acc, curr) => merge(acc, cloneDeep(curr)), {});
 
@@ -118,6 +135,7 @@ export const useDynamicDisclosure = () => {
     onClose: currentItem?.props.onClose || (() => {}),
     openWith,
     goBack,
+    goToIndex,
     content: currentItem?.content,
     props: currentItem?.props || {},
     formValues: currentItem?.formValues || {},
@@ -129,7 +147,7 @@ export const useDynamicDisclosure = () => {
 export const useDynamicModal = () => {
   const disclosure = useDynamicDisclosure();
 
-  const { isOpen, props, content } = disclosure;
+  const { isOpen, props, content, onClose } = disclosure;
 
   return {
     ...disclosure,
@@ -141,6 +159,7 @@ export const useDynamicModal = () => {
         isCentered
         isOpen={isOpen}
         motionPreset="slideInBottom"
+        onClose={onClose}
         {...props}
       >
         <ModalOverlay />
@@ -153,12 +172,12 @@ export const useDynamicModal = () => {
 export const useDynamicDrawer = () => {
   const disclosure = useDynamicDisclosure();
 
-  const { isOpen, content, props } = disclosure;
+  const { isOpen, content, props, onClose } = disclosure;
 
   return {
     ...disclosure,
     content: (
-      <Drawer isOpen={isOpen} placement="right" {...props}>
+      <Drawer isOpen={isOpen} onClose={onClose} placement="right" {...props}>
         <DrawerOverlay />
         <DrawerContent>{content}</DrawerContent>
       </Drawer>

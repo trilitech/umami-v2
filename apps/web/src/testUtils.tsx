@@ -20,12 +20,14 @@ export const dynamicModalContextMock = {
   onClose: jest.fn(),
   openWith: jest.fn(),
   goBack: jest.fn(),
+  goToIndex: jest.fn(),
 };
 
 export const dynamicDrawerContextMock = {
   onClose: jest.fn(),
   openWith: jest.fn(),
   goBack: jest.fn(),
+  goToIndex: jest.fn(),
 };
 
 const makeWrapper =
@@ -37,6 +39,7 @@ const makeWrapper =
     const modalOpenWith = dynamicModal.openWith;
     const modalOnClose = dynamicModal.onClose;
     const modalGoBack = dynamicModal.goBack;
+    const modalGoToIndex = dynamicModal.goToIndex;
     jest.spyOn(dynamicModal, "openWith").mockImplementation(async (...args) => {
       dynamicModalContextMock.openWith(...args);
       return modalOpenWith(...args);
@@ -49,10 +52,15 @@ const makeWrapper =
       dynamicModalContextMock.goBack();
       return modalGoBack();
     });
+    jest.spyOn(dynamicModal, "goToIndex").mockImplementation((...args) => {
+      dynamicModalContextMock.goToIndex(...args);
+      return modalGoToIndex(...args);
+    });
 
     const drawerOpenWith = dynamicDrawer.openWith;
     const drawerOnClose = dynamicDrawer.onClose;
     const drawerGoBack = dynamicDrawer.goBack;
+    const drawerGoToIndex = dynamicDrawer.goToIndex;
     jest.spyOn(dynamicDrawer, "openWith").mockImplementation(async (...args) => {
       dynamicDrawerContextMock.openWith(...args);
       return drawerOpenWith(...args);
@@ -64,6 +72,10 @@ const makeWrapper =
     jest.spyOn(dynamicDrawer, "goBack").mockImplementation(() => {
       dynamicDrawerContextMock.goBack();
       return drawerGoBack();
+    });
+    jest.spyOn(dynamicDrawer, "goToIndex").mockImplementation((...args) => {
+      dynamicDrawerContextMock.goToIndex(...args);
+      return drawerGoToIndex(...args);
     });
 
     return (
@@ -158,7 +170,9 @@ export const renderInModal = async (
 
   if (allFormValues) {
     await act(() =>
-      result.current.openWith(<DummyForm defaultValues={allFormValues} nextPage={component} />)
+      result.current.openWith(
+        <DummyForm defaultValues={allFormValues.current ?? allFormValues} nextPage={component} />
+      )
     );
     fireEvent.click(screen.getByRole("button"));
   }
