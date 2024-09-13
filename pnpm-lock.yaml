@@ -517,8 +517,8 @@ importers:
         specifier: 16.0.6
         version: 16.0.6(@babel/runtime@7.25.6)
       '@trilitech-umami/umami-embed':
-        specifier: ^0.2.6
-        version: 0.2.6
+        specifier: ^0.2.7
+        version: 0.2.7
       '@umami/core':
         specifier: workspace:^
         version: link:../../packages/core
@@ -4462,8 +4462,8 @@ packages:
     peerDependencies:
       '@babel/runtime': 7.x
 
-  '@trilitech-umami/umami-embed@0.2.6':
-    resolution: {integrity: sha512-G7IWnsZ6tPnxJNKdlTZTRcnOZ0sEEFDdqXrB1LRmxNfsl8tnS/+yb8OTmG1bC1E1n2IyTPVb8JW+OJycYXSnRQ==}
+  '@trilitech-umami/umami-embed@0.2.7':
+    resolution: {integrity: sha512-GQ60jMSgkEM9jxX4UwGbnWcZntnowd7Mckav5eRR0SBEQlD78GMcfSKX5CJRRlj+lHtQr0C/HJ5Ktp/CyNusMQ==}
 
   '@trysound/sax@0.2.0':
     resolution: {integrity: sha512-L7z9BgrNEcYyUYtF+HaEfiS5ebkh9jXqbszz7pC0hRBPaatV0XjSD3+eHrpqFemQfgwiFF0QPIarnIihIDn7OA==}
@@ -13947,7 +13947,7 @@ snapshots:
     transitivePeerDependencies:
       - '@sentry/types'
 
-  '@trilitech-umami/umami-embed@0.2.6':
+  '@trilitech-umami/umami-embed@0.2.7':
     dependencies:
       '@airgap/beacon-types': 4.3.0
       async-mutex: 0.5.0
