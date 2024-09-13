@@ -14,18 +14,22 @@ import {
   getRelevantMultisigContracts,
   parseMultisig,
 } from "./helpers";
-import { type RawTzktMultisigContract } from "./types";
 
 const mockedAxios = jest.spyOn(axios, "get");
 
 const mockedContractsGet = jest.spyOn(api, "contractsGet");
+const mockedContractsGetCount = jest.spyOn(api, "contractsGetCount");
 
-const tzktGetSameMultisigsResponse: RawTzktMultisigContract[] = [
+const tzktGetSameMultisigsResponse = [
   {
+    id: 1,
+    type: "contract",
     address: mockContractAddress(0).pkh,
     storage: { threshold: "2", pending_ops: 0, signers: [mockImplicitAddress(0).pkh] },
   },
   {
+    id: 2,
+    type: "contract",
     address: mockContractAddress(2).pkh,
     storage: { threshold: "2", pending_ops: 1, signers: [mockImplicitAddress(2).pkh] },
   },
@@ -35,7 +39,8 @@ describe("multisig helpers", () => {
   describe.each(DefaultNetworks)("on $name", network => {
     describe("getRelevantMultisigContracts", () => {
       it("fetches multisig contracts", async () => {
-        mockedContractsGet.mockResolvedValue(tzktGetSameMultisigsResponse as any);
+        mockedContractsGetCount.mockResolvedValue(tzktGetSameMultisigsResponse.length);
+        mockedContractsGet.mockResolvedValue(tzktGetSameMultisigsResponse);
 
         const result = await getRelevantMultisigContracts(
           new Set([mockImplicitAddress(0).pkh]),

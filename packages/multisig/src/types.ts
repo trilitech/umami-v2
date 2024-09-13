@@ -17,6 +17,7 @@ export type Multisig = {
 export type MultisigPendingOperations = Record<BigmapId, MultisigOperation[] | undefined>;
 
 export type RawTzktMultisigContract = {
+  id: number;
   address: string;
   storage: {
     signers: string[];
