@@ -130,7 +130,7 @@ export const SetupPassword = ({ mode }: SetupPasswordProps) => {
             mnemonic,
             password,
             derivationPathTemplate: derivationPath,
-            label,
+            label: allFormValues.current?.accountName || label,
             curve,
             isVerified: !isNewMnemonic,
           });
