@@ -101,7 +101,7 @@ export const useAddPeer = () => {
   const { refresh } = usePeers();
   const toast = useToast();
 
-  return (payload: string) =>
+  return async (payload: string) =>
     new Serializer()
       .deserialize(payload)
       .then(parsePeerInfo)
@@ -109,8 +109,7 @@ export const useAddPeer = () => {
       .then(() => refresh())
       .catch(e => {
         toast({
-          description:
-            "Beacon sync code in the clipboard is invalid. Please copy a beacon sync code from the dApp",
+          description: `Beacon sync code in the clipboard is INVALID. Please copy a beacon sync code from the dApp: ${payload}`,
           status: "error",
         });
         console.error(e);

@@ -4,6 +4,7 @@ export { addTestAccount, addTestAccounts, mockToast } from "./testUtils";
 export { type AppDispatch, makeStore, type UmamiStore } from "./store";
 
 export * from "./beacon";
+export * from "./wallet-connect";
 export * from "./hooks";
 export * from "./migrations";
 export * from "./slices";

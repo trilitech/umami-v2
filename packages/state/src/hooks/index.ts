@@ -18,3 +18,7 @@ export * from "./removeAccountDependencies";
 export * from "./setAccountData";
 export * from "./staking";
 export * from "./tokens";
+export * from "./walletConnect";
+export * from "./modalStore";
+export * from "./SettingsStore";
+export * from "./TezosData";
