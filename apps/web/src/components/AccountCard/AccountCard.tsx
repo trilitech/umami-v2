@@ -23,7 +23,7 @@ export const AccountCard = () => {
       borderRadius="40px"
     >
       <AccountTile
-        background={color("50")}
+        background={color("100")}
         account={currentAccount}
         id="account-tile"
         onClick={() => openWith(<AccountSelectorModal />)}
