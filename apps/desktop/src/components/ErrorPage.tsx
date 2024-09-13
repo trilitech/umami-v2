@@ -1,11 +1,11 @@
 import { Box, Button, Center, Heading, Link, VStack } from "@chakra-ui/react";
-import { downloadBackupFile } from "@umami/state";
 
 import { useOffboardingModal } from "./Offboarding/useOffboardingModal";
 import { ModalContentWrapper } from "./Onboarding/ModalContentWrapper";
 import { NoticeIcon, ReloadIcon } from "../assets/icons";
 import BackgroundImage from "../assets/onboarding/background_image.png";
 import colors from "../style/colors";
+import { useSaveBackup } from "../utils/useSaveBackup";
 
 const feedbackEmailBodyTemplate =
   "What is it about? (if a bug report please consider including your account address) %0A PLEASE FILL %0A%0A What is the feedback? %0A PLEASE FILL";
@@ -16,9 +16,11 @@ const refresh = () => {
 
 export const ErrorPage = () => {
   const { modalElement: OffboardingModal, onOpen: onOpenOffboardingModal } = useOffboardingModal();
+  const { content: saveBackupModal, onOpen: saveBackup } = useSaveBackup();
 
   return (
     <Center height="100vh" padding="60px" backgroundImage={BackgroundImage} backgroundSize="cover">
+      {saveBackupModal}
       <Box
         width="480px"
         padding="40px"
@@ -34,7 +36,7 @@ export const ErrorPage = () => {
           title="Oops! Something went wrong!"
         >
           <VStack width="100%" spacing="16px">
-            <Button width="100%" borderRadius="4px" onClick={downloadBackupFile} size="lg">
+            <Button width="100%" borderRadius="4px" onClick={saveBackup} size="lg">
               Save Backup
             </Button>
 

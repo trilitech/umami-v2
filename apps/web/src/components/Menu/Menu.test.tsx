@@ -4,8 +4,8 @@ import {
   type UmamiStore,
   accountsActions,
   addTestAccount,
-  downloadBackupFile,
   makeStore,
+  useDownloadBackupFile,
 } from "@umami/state";
 
 import { AddressBookMenu } from "./AddressBookMenu/AddressBookMenu";
@@ -29,7 +29,7 @@ jest.mock("@chakra-ui/system", () => ({
 
 jest.mock("@umami/state", () => ({
   ...jest.requireActual("@umami/state"),
-  downloadBackupFile: jest.fn(),
+  useDownloadBackupFile: jest.fn(),
 }));
 
 let store: UmamiStore;
@@ -89,11 +89,18 @@ describe("<Menu />", () => {
 
     it("calls downloadBackupFile function when Save Backup is clicked", async () => {
       const user = userEvent.setup();
+      const mockDownloadBackupFile = jest.fn();
+      jest.mocked(useDownloadBackupFile).mockReturnValue(mockDownloadBackupFile);
+
       await renderInDrawer(<Menu />, store);
 
       await user.click(screen.getByText("Save Backup"));
 
-      expect(downloadBackupFile).toHaveBeenCalled();
+      await user.type(screen.getByLabelText("Set Password"), "password");
+      await user.type(screen.getByLabelText("Confirm Password"), "password");
+      await user.click(screen.getByRole("button", { name: "Save Backup" }));
+
+      expect(mockDownloadBackupFile).toHaveBeenCalled();
     });
 
     it("calls toggleColorMode function when Light mode is clicked", async () => {

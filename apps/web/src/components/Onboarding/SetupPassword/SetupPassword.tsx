@@ -19,6 +19,7 @@ import {
   useAppDispatch,
   useAsyncActionHandler,
   useCurrentAccount,
+  useDownloadBackupFile,
   useGetDecryptedMnemonic,
   useGetNextAvailableAccountLabels,
   useIsPasswordSet,
@@ -44,7 +45,13 @@ type FormFields = {
   curve: Exclude<Curves, "bip25519">;
 };
 
-export type Mode = "mnemonic" | "secret_key" | "new_mnemonic" | "verification" | "add_account";
+export type Mode =
+  | "mnemonic"
+  | "secret_key"
+  | "new_mnemonic"
+  | "verification"
+  | "add_account"
+  | "save_backup";
 
 type SetupPasswordProps = {
   mode: Mode;
@@ -65,6 +72,12 @@ const getModeConfig = (mode: Mode) => {
         title: "Create Password",
         buttonLabel: "Create Account",
         subtitle: "Set a password to unlock your wallet. Make sure to store your password safely.",
+      };
+    case "save_backup":
+      return {
+        icon: LockIcon,
+        title: "Encrypt Backup",
+        buttonLabel: "Save Backup",
       };
     case "mnemonic":
     case "secret_key":
@@ -96,6 +109,7 @@ export const SetupPassword = ({ mode }: SetupPasswordProps) => {
   const isPasswordSet = useIsPasswordSet();
   const getDecryptedMnemonic = useGetDecryptedMnemonic();
   const currentAccount = useCurrentAccount();
+  const downloadBackupFile = useDownloadBackupFile();
 
   const form = useMultiForm<FormFields>({
     mode: "onBlur",
@@ -153,6 +167,9 @@ export const SetupPassword = ({ mode }: SetupPasswordProps) => {
           const mnemonic = await getDecryptedMnemonic(currentAccount as MnemonicAccount, password);
 
           return openWith(<ImportantNoticeModal mnemonic={mnemonic} />, { size: "xl" });
+        }
+        case "save_backup": {
+          await downloadBackupFile(password);
         }
       }
 

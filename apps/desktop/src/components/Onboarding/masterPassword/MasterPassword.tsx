@@ -14,9 +14,11 @@ import { EnterPassword } from "./password/EnterPassword";
 export const MasterPassword = ({
   account,
   onClose,
+  onVerify,
 }: {
-  account: MasterPasswordStep["account"];
-  onClose: () => void;
+  account?: MasterPasswordStep["account"];
+  onClose?: () => void;
+  onVerify?: (password: string) => void;
 }) => {
   const restoreFromMnemonic = useRestoreFromMnemonic();
   const restoreFromSecretKey = useRestoreFromSecretKey();
@@ -25,9 +27,18 @@ export const MasterPassword = ({
 
   const { isLoading, handleAsyncAction } = useAsyncActionHandler();
   const toast = useToast();
+
   const handleSubmit = (password: string) =>
     handleAsyncAction(async () => {
       await checkPassword?.(password);
+
+      if (onVerify) {
+        return onVerify(password);
+      }
+
+      if (!account) {
+        throw new Error("No account data provided.");
+      }
 
       switch (account.type) {
         case "secret_key":
@@ -41,7 +52,7 @@ export const MasterPassword = ({
           });
       }
       toast({ description: "Account successfully created!", status: "success" });
-      onClose();
+      onClose?.();
     });
 
   if (passwordHasBeenSet) {
