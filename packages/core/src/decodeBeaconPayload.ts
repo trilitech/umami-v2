@@ -1,44 +1,7 @@
-import { type SignPayloadRequestOutput } from "@airgap/beacon-wallet";
+import { SigningType } from "@airgap/beacon-wallet";
+import { CODEC, type ProtocolsHash, Uint8ArrayConsumer, getCodec } from "@taquito/local-forging";
+import { DefaultProtocol, unpackData } from "@taquito/michel-codec";
 import { hex2buf } from "@taquito/utils";
-
-// Padding for a sign request payload in Micheline expression.
-const PAYLOAD_PADDING = "0501";
-
-const getPayloadHexBytes = (payload: SignPayloadRequestOutput["payload"]) => {
-  let index = 0;
-
-  if (payload.startsWith(PAYLOAD_PADDING)) {
-    index = 4;
-
-    while (index < payload.length && payload[index] === "0") {
-      index += 1;
-    }
-
-    let payloadByteLengthRaw = "";
-    let payloadByteLength = 0;
-    const paddingLength = index;
-
-    while (index < payload.length && payload[index] !== "0") {
-      payloadByteLengthRaw += payload[index];
-      payloadByteLength = parseInt(payloadByteLengthRaw, 16);
-
-      const remainingPayloadLength = payload.length - payloadByteLengthRaw.length - paddingLength;
-
-      if (payloadByteLength * 2 === remainingPayloadLength) {
-        index += 1;
-        break;
-      }
-
-      if (payloadByteLength * 2 > remainingPayloadLength) {
-        throw new Error("Invalid payload length");
-      }
-
-      index += 1;
-    }
-  }
-
-  return payload.slice(index);
-};
 
 /**
  * Decodes a sign request payload string.
@@ -47,12 +10,54 @@ const getPayloadHexBytes = (payload: SignPayloadRequestOutput["payload"]) => {
  * @returns The decoded string, or the original payload if decoding fails.
  * @see {@link https://taquito.io/docs/signing/} for more info.
  */
-export const decodeBeaconPayload = (payload: SignPayloadRequestOutput["payload"]): string => {
+export const decodeBeaconPayload = (
+  payload: string,
+  signingType: SigningType
+): { result: string; error?: string } => {
   try {
-    const string = new TextDecoder("utf-8").decode(hex2buf(getPayloadHexBytes(payload)));
+    if (!payload.length) {
+      return { result: "" };
+    }
+    let result = payload;
 
-    return string || payload;
-  } catch (_) {
-    return payload;
+    switch (signingType) {
+      case SigningType.MICHELINE:
+      case SigningType.OPERATION: {
+        const consumer = Uint8ArrayConsumer.fromHexString(payload);
+        const uint8array = consumer.consume(consumer.length());
+        const parsed = unpackData(uint8array);
+
+        if ("string" in parsed && Object.keys(parsed).length === 1) {
+          result = parsed.string;
+        } else {
+          result = JSON.stringify(parsed);
+        }
+        break;
+      }
+      case SigningType.RAW: {
+        try {
+          result = JSON.stringify(parseOperationMicheline(payload));
+        } catch {
+          result = new TextDecoder("utf-8", { fatal: true }).decode(hex2buf(payload));
+        }
+        break;
+      }
+      default: {
+        throw new Error(`Unsupported signing type: ${signingType}`);
+      }
+    }
+
+    if (!isValidASCII(result)) {
+      throw new Error("Invalid payload. Only ASCII characters are supported.");
+    }
+
+    return { result };
+  } catch {
+    return { result: payload, error: "Cannot parse Beacon payload" };
   }
 };
+
+const isValidASCII = (str: string) => str.split("").every(char => char.charCodeAt(0) < 128);
+
+const parseOperationMicheline = (payload: string) =>
+  getCodec(CODEC.MANAGER, DefaultProtocol as string as ProtocolsHash).decoder(payload);

@@ -61,6 +61,8 @@
   },
   "dependencies": {
     "@airgap/beacon-wallet": "^4.3.0",
+    "@taquito/local-forging": "^20.0.1",
+    "@taquito/michel-codec": "^20.0.1",
     "@taquito/rpc": "^20.0.1",
     "@taquito/signer": "^20.0.1",
     "@taquito/taquito": "^20.0.1",
