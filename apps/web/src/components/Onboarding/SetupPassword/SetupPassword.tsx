@@ -44,7 +44,7 @@ type FormFields = {
   curve: Exclude<Curves, "bip25519">;
 };
 
-type Mode = "mnemonic" | "secret_key" | "new_mnemonic" | "verification";
+export type Mode = "mnemonic" | "secret_key" | "new_mnemonic" | "verification" | "add_account";
 
 type SetupPasswordProps = {
   mode: Mode;
@@ -72,6 +72,13 @@ const getModeConfig = (mode: Mode) => {
         icon: LockIcon,
         title: "Almost there",
         buttonLabel: "Import Wallet",
+      };
+    case "add_account":
+      return {
+        icon: LockIcon,
+        title: "Confirm password",
+        buttonLabel: "Add Account",
+        subtitle: "Confirm the password to add your account.",
       };
   }
 };
@@ -103,7 +110,7 @@ export const SetupPassword = ({ mode }: SetupPasswordProps) => {
     getValues,
   } = form;
 
-  const isNewMnemonic = mode === "new_mnemonic";
+  const isNewMnemonic = mode === "new_mnemonic" || mode === "add_account";
 
   const onSubmit = ({ password, curve, derivationPath }: FormFields) =>
     handleAsyncAction(async () => {
@@ -121,7 +128,8 @@ export const SetupPassword = ({ mode }: SetupPasswordProps) => {
           break;
         }
         case "mnemonic":
-        case "new_mnemonic": {
+        case "new_mnemonic":
+        case "add_account": {
           const mnemonic = isNewMnemonic
             ? generate24WordMnemonic()
             : allFormValues.current?.mnemonic.map(({ val }: { val: string }) => val).join(" ");
@@ -151,7 +159,7 @@ export const SetupPassword = ({ mode }: SetupPasswordProps) => {
       return onClose();
     });
 
-  const { icon, title, buttonLabel, subtitle } = getModeConfig(mode);
+  const { title, subtitle, buttonLabel, icon } = getModeConfig(mode);
 
   return (
     <ModalContent>

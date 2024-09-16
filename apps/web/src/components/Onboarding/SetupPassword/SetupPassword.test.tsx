@@ -230,7 +230,7 @@ describe("<SetupPassword />", () => {
     });
   });
 
-  describe("new_mnemonic mode", () => {
+  describe.each(["new_mnemonic", "add_account"] as const)("%s mode", mode => {
     const store = makeStore();
     const mockRestoreFromMnemonic = jest.fn();
 
@@ -240,7 +240,7 @@ describe("<SetupPassword />", () => {
     });
 
     it("doesn't render advanced section", async () => {
-      await renderInModal(<SetupPassword mode="new_mnemonic" />);
+      await renderInModal(<SetupPassword mode={mode} />);
 
       expect(screen.queryByTestId("advanced-section")).not.toBeInTheDocument();
     });
@@ -248,7 +248,7 @@ describe("<SetupPassword />", () => {
     it("calls restoreFromMnemonic with predefined mnemonic", async () => {
       const user = userEvent.setup();
 
-      await renderInModal(<SetupPassword mode="new_mnemonic" />, store);
+      await renderInModal(<SetupPassword mode={mode} />, store);
 
       const passwordInput = screen.getByLabelText("Set Password");
       const passwordConfirmationInput = screen.getByLabelText("Confirm Password");

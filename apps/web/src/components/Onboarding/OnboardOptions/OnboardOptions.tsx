@@ -23,7 +23,7 @@ export const OnboardOptions = ({ children }: PropsWithChildren) => {
       return openWith(
         <NameAccountModal
           buttonLabel="Continue"
-          onSubmit={() => openWith(<SetupPassword mode="new_mnemonic" />)}
+          onSubmit={() => openWith(<SetupPassword mode="add_account" />)}
           subtitle={"Name your account or edit your\n account name later."}
           title="Create Account"
           withAdvancedSettings
