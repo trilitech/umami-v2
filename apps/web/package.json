@@ -52,7 +52,7 @@
     "bignumber.js": "^9.1.2",
     "bip39": "^3.1.0",
     "cross-env": "^7.0.3",
-    "date-fns": "^3.6.0",
+    "date-fns": "^4.0.0",
     "focus-visible": "^5.2.1",
     "framer-motion": "^11.5.4",
     "immer": "^10.1.1",
