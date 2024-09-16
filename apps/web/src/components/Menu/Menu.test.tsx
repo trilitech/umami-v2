@@ -20,6 +20,7 @@ import {
   screen,
   userEvent,
 } from "../../testUtils";
+import { OnboardOptionsModal } from "../Onboarding/OnboardOptions";
 
 jest.mock("@chakra-ui/system", () => ({
   ...jest.requireActual("@chakra-ui/system"),
@@ -51,7 +52,7 @@ describe("<Menu />", () => {
 
   describe("when user is verified", () => {
     it("renders menu items correctly", async () => {
-      await renderInDrawer(<Menu />);
+      await renderInDrawer(<Menu />, store);
 
       expect(screen.getByText("Advanced")).toBeVisible();
       expect(screen.getByText("Address Book")).toBeVisible();
@@ -70,7 +71,7 @@ describe("<Menu />", () => {
       const user = userEvent.setup();
       const { openWith } = dynamicDrawerContextMock;
 
-      await renderInDrawer(<Menu />);
+      await renderInDrawer(<Menu />, store);
 
       await user.click(screen.getByText(label));
       expect(openWith).toHaveBeenCalledWith(<Component />);
@@ -80,7 +81,7 @@ describe("<Menu />", () => {
       const user = userEvent.setup();
       const { openWith } = dynamicModalContextMock;
 
-      await renderInDrawer(<Menu />);
+      await renderInDrawer(<Menu />, store);
 
       await user.click(screen.getByText("Logout"));
       expect(openWith).toHaveBeenCalledWith(<LogoutModal />);
@@ -88,7 +89,7 @@ describe("<Menu />", () => {
 
     it("calls downloadBackupFile function when Save Backup is clicked", async () => {
       const user = userEvent.setup();
-      await renderInDrawer(<Menu />);
+      await renderInDrawer(<Menu />, store);
 
       await user.click(screen.getByText("Save Backup"));
 
@@ -97,22 +98,22 @@ describe("<Menu />", () => {
 
     it("calls toggleColorMode function when Light mode is clicked", async () => {
       const user = userEvent.setup();
-      await renderInDrawer(<Menu />);
+      await renderInDrawer(<Menu />, store);
 
       await user.click(screen.getByText("Light mode"));
 
       expect(useColorMode().toggleColorMode).toHaveBeenCalled();
     });
 
-    // TODO: add when Add Account logic is ready
-    // it("opens Add Account modal when Add Account button is clicked", async () => {
-    //   const user = userEvent.setup();
-    //   await renderInDrawer(<Menu />);
+    it("opens Add Account modal when Add Account button is clicked", async () => {
+      const { openWith } = dynamicModalContextMock;
+      const user = userEvent.setup();
+      await renderInDrawer(<Menu />, store);
 
-    //   await user.click(screen.getByText("Add Account"));
+      await user.click(screen.getByText("Add Account"));
 
-    //   expect(useOnboardingModal().onOpen).toHaveBeenCalled();
-    // });
+      expect(openWith).toHaveBeenCalledWith(<OnboardOptionsModal />);
+    });
   });
 
   describe("when user is unverified", () => {

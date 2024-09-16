@@ -13,12 +13,15 @@ beforeEach(() => {
 describe("useIsAccountVerified", () => {
   it.each([
     // verified status, account type, account
+    [false, "undefined", undefined],
     [true, "social", mockSocialAccount(0)],
     [true, "ledger", mockLedgerAccount(0)],
     [true, "verified mnemonic", mockMnemonicAccount(0)],
     [false, "unverified mnemonic", mockMnemonicAccount(0, { isVerified: false })],
   ])("returns %s for %s account", (isVerified, _, account) => {
-    addTestAccount(store, account);
+    if (account) {
+      addTestAccount(store, account);
+    }
     const { result } = renderHook(() => useIsAccountVerified(), { store });
 
     expect(result.current).toBe(isVerified);

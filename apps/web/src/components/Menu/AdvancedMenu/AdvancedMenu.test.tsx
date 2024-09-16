@@ -19,7 +19,7 @@ beforeEach(() => {
 describe("<AdvancedMenu />", () => {
   describe("when user is verified", () => {
     it("renders advanced menu items correctly", async () => {
-      await renderInDrawer(<AdvancedMenu />);
+      await renderInDrawer(<AdvancedMenu />, store);
 
       expect(screen.getByText("Change Password")).toBeVisible();
       expect(screen.getByText("Network")).toBeVisible();
@@ -33,7 +33,7 @@ describe("<AdvancedMenu />", () => {
     ])("opens %label menu", async (label, Component) => {
       const { openWith } = dynamicDrawerContextMock;
 
-      await renderInDrawer(<AdvancedMenu />);
+      await renderInDrawer(<AdvancedMenu />, store);
 
       await userEvent.click(screen.getByText(label));
       expect(openWith).toHaveBeenCalledWith(<Component />);
