@@ -33,7 +33,7 @@ export const ErrorLogsMenu = () => {
           </Button>
         </Flex>
       )}
-      <Divider marginTop={{ base: "36px", lg: "40px" }} />
+      <Divider marginTop={{ base: "36px", md: "40px" }} />
       {errors.length ? (
         <Box overflowY="auto">
           <VStack

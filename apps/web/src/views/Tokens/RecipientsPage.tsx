@@ -17,7 +17,7 @@ import { AccountTile } from "../../components/AccountTile";
 
 export const RecipientsPage = () => {
   const accounts = useAppSelector(s => s.accounts.items);
-  const showAmount = useBreakpointValue({ base: false, lg: true });
+  const showAmount = useBreakpointValue({ base: false, md: true });
   const { goBack } = useDynamicModalContext();
   const getBalance = useGetAccountBalance();
 

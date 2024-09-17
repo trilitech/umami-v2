@@ -18,7 +18,7 @@ export const Actions = () => {
             as={MenuIcon}
             width={{
               base: "18px",
-              lg: "24px",
+              md: "24px",
             }}
             height="auto"
           />
@@ -27,7 +27,7 @@ export const Actions = () => {
         onClick={() => openWith(<Menu />)}
         size={{
           base: "md",
-          lg: "lg",
+          md: "lg",
         }}
         variant="iconButtonSolid"
       />

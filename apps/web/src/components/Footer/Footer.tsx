@@ -9,11 +9,11 @@ export const Footer = () => {
     <Flex
       justifyContent={{
         base: "center",
-        lg: "flex-start",
+        md: "flex-start",
       }}
       fontSize={{
         base: "sm",
-        lg: "md",
+        md: "md",
       }}
       lineHeight="1"
     >

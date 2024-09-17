@@ -11,7 +11,7 @@ export const ColorSchemeModeToggle = () => {
       gap="14px"
       display={{
         base: "none",
-        lg: "flex",
+        md: "flex",
       }}
     >
       {switchText}

@@ -30,7 +30,7 @@ export const Suggestions = ({
       border="1px solid"
       borderColor={color("400")}
       borderRadius="8px"
-      transform={{ base: "translateY(calc(-100% - 66px))", lg: "unset" }}
+      transform={{ base: "translateY(calc(-100% - 66px))", md: "unset" }}
       data-testid="suggestions-list"
       listStyleType="none"
     >

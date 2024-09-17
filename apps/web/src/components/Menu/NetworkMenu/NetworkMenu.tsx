@@ -106,7 +106,7 @@ export const NetworkMenu = () => {
       >
         Add New
       </Button>
-      <Divider marginTop={{ base: "36px", lg: "40px" }} />
+      <Divider marginTop={{ base: "36px", md: "40px" }} />
       <RadioGroup onChange={selectNetwork} value={currentNetwork.name}>
         <VStack
           alignItems="flex-start"

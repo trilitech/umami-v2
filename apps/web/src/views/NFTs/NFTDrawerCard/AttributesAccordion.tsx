@@ -38,12 +38,12 @@ export const AttributesAccordion = ({
           <AccordionIcon />
         </AccordionButton>
         <AccordionPanel>
-          <Wrap spacing={{ base: "12px", lg: "10px" }}>
+          <Wrap spacing={{ base: "12px", md: "10px" }}>
             {attributes.map(attr => (
               <WrapItem key={attr.name} flex="1" data-testid="nft-attribute">
                 <Card
-                  width={{ lg: "142px", base: "165px" }}
-                  height={{ lg: "142px", base: "165px" }}
+                  width={{ md: "142px", base: "165px" }}
+                  height={{ md: "142px", base: "165px" }}
                   marginBottom="2px"
                   background={color("100")}
                 >

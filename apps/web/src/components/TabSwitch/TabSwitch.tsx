@@ -27,7 +27,7 @@ import { useColor } from "../../styles/useColor";
 export const TabSwitch = ({ options }: { options: string[] }) => {
   const color = useColor();
   const { selectedIndex, setSelectedIndex } = useTabsContext();
-  const isMobile = useBreakpointValue({ base: true, lg: false });
+  const isMobile = useBreakpointValue({ base: true, md: false });
   const [isAccordionCollapsed, setIsAccordionCollapsed] = useState(true);
   const currentTab = options[selectedIndex];
 

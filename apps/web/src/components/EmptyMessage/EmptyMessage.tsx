@@ -30,7 +30,7 @@ export const EmptyMessage = ({
       data-testid="empty-state-message"
       {...props}
     >
-      <Text color={color("900")} fontWeight="600" size={{ base: "xl", lg: "2xl" }}>
+      <Text color={color("900")} fontWeight="600" size={{ base: "xl", md: "2xl" }}>
         {title}
       </Text>
       {subtitle && (
@@ -39,7 +39,7 @@ export const EmptyMessage = ({
           whiteSpace="pre-line"
           size={{
             base: "md",
-            lg: "lg",
+            md: "lg",
           }}
         >
           {subtitle}

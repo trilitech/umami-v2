@@ -24,14 +24,14 @@ export const Token = ({ token }: TokenProps) => {
   return (
     <Grid
       as="li"
-      gridRowGap={{ base: "18px", lg: "0" }}
+      gridRowGap={{ base: "18px", md: "0" }}
       gridTemplateColumns={{
         base: "auto",
-        lg: "1fr 1fr auto",
+        md: "1fr 1fr auto",
       }}
       gridTemplateAreas={{
         base: '"token token" "amount action"',
-        lg: '"token amount action"',
+        md: '"token amount action"',
       }}
       width="full"
       _first={{
@@ -43,7 +43,7 @@ export const Token = ({ token }: TokenProps) => {
       _notLast={{
         borderBottom: `1px solid ${color("100")}`,
       }}
-      paddingY={{ base: "18px", lg: "30px" }}
+      paddingY={{ base: "18px", md: "30px" }}
     >
       <Flex alignItems="center" flex="1" gridArea="token">
         <TokenIconWrapper>

@@ -26,12 +26,12 @@ export const NFTDrawerCard = ({ nft }: { nft: NFTBalance }) => {
         <CardBody
           justifyContent="center"
           display="flex"
-          maxHeight={{ base: "366px", lg: "446px" }}
+          maxHeight={{ base: "366px", md: "446px" }}
           padding="0"
           aspectRatio={1}
         >
           <Square
-            maxHeight={{ base: "366px", lg: "446px" }}
+            maxHeight={{ base: "366px", md: "446px" }}
             background={color("50")}
             borderRadius="6px"
             size="full"
@@ -40,7 +40,7 @@ export const NFTDrawerCard = ({ nft }: { nft: NFTBalance }) => {
               <ReactPlayer data-testid="nft-video" loop playing url={url} />
             ) : (
               <Image
-                maxHeight={{ base: "366px", lg: "446px" }}
+                maxHeight={{ base: "366px", md: "446px" }}
                 borderRadius="6px"
                 objectFit="contain"
                 data-testid="nft-image"
@@ -77,9 +77,9 @@ export const NFTDrawerCard = ({ nft }: { nft: NFTBalance }) => {
 
       <AttributesAccordion marginTop="20px" nft={nft} />
 
-      <PropertiesAccordion marginTop={{ base: "24px", lg: "30px" }} nft={nft} />
+      <PropertiesAccordion marginTop={{ base: "24px", md: "30px" }} nft={nft} />
 
-      <JSONAccordion marginTop={{ base: "24px", lg: "30px" }} nft={nft} />
+      <JSONAccordion marginTop={{ base: "24px", md: "30px" }} nft={nft} />
     </Flex>
   );
 };

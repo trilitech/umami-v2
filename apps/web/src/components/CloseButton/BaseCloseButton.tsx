@@ -7,11 +7,11 @@ export const BaseCloseButton = (props: Omit<IconButtonProps, "aria-label">) => (
     position="absolute"
     top={{
       base: "12px",
-      lg: "18px",
+      md: "18px",
     }}
     right={{
       base: "12px",
-      lg: "18px",
+      md: "18px",
     }}
     padding="0"
     icon={<CloseIcon width="24px" height="24px" />}

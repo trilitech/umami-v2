@@ -54,7 +54,7 @@ export const RecordSeedphraseModal = ({ seedPhrase }: CopySeedphraseModalProps) 
             <MnemonicWord
               key={index}
               as={Flex}
-              height={{ lg: "48px", base: "34px" }}
+              height={{ md: "48px", base: "34px" }}
               color="black"
               border="1px solid"
               borderWidth="1.5px"
