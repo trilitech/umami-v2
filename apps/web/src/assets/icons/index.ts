@@ -9,6 +9,7 @@ export { default as CheckmarkIcon } from "./checkmark.svg";
 export { default as ChevronDownIcon } from "./chevron-down.svg";
 export { default as ChevronRightIcon } from "./chevron-right.svg";
 export { default as CloseIcon } from "./close.svg";
+export { default as CheckCircleIcon } from "./check-circle.svg";
 export { default as CodeSandboxIcon } from "./code-sandbox.svg";
 export { default as CoinIcon } from "./coin.svg";
 export { default as ContactIcon } from "./contact-s.svg";
