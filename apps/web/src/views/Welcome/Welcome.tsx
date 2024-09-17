@@ -21,24 +21,24 @@ import { useColor } from "../../styles/useColor";
 
 export const Welcome = () => {
   const color = useColor();
-  const isMobile = useBreakpointValue({ base: true, lg: false });
+  const isMobile = useBreakpointValue({ base: true, md: false });
   const { isOpen: isOnboarding } = useDynamicModalContext();
 
   return (
     <Grid
       justifyItems="center"
-      gridGap={{ base: "36px", lg: "60px" }}
-      gridTemplateRows={{ base: "130px auto", lg: "auto 444px auto" }}
+      gridGap={{ base: "36px", md: "60px" }}
+      gridTemplateRows={{ base: "130px auto", md: "auto 444px auto" }}
       gridTemplateAreas={{
         base: "'header' 'main'",
-        lg: `
+        md: `
      'header header header'
      'main main main'
      'copyright tezos-logo social'
     `,
       }}
       height="100vh"
-      padding={{ base: "24px 0 0 0", lg: "24px 46px 46px 46px" }}
+      padding={{ base: "24px 0 0 0", md: "24px 46px 46px 46px" }}
       data-testid="welcome-view"
     >
       <Flex
@@ -60,7 +60,7 @@ export const Welcome = () => {
       <Flex
         gridArea="main"
         display={isOnboarding ? "none" : "flex"}
-        width={{ base: "full", lg: "510px" }}
+        width={{ base: "full", md: "510px" }}
       >
         <Flex
           alignItems="center"
@@ -68,11 +68,11 @@ export const Welcome = () => {
           flexDirection="column"
           width="full"
           height="full"
-          padding={{ base: "36px 12px", lg: "36px 42px" }}
+          padding={{ base: "36px 12px", md: "36px 42px" }}
           border="1px solid"
           borderColor={color("100")}
           borderTopRadius="30px"
-          borderBottomRadius={{ base: 0, lg: "30px" }}
+          borderBottomRadius={{ base: 0, md: "30px" }}
           backgroundColor={color("white")}
         >
           <OnboardOptions>

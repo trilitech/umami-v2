@@ -139,12 +139,12 @@ const theme = extendTheme({
         mnemonic: {
           field: {
             borderRadius: "34px",
-            height: { lg: "48px", base: "34px" },
+            height: { md: "48px", base: "34px" },
             border: "1px solid",
             background: "none",
             borderColor: "gray.100",
-            fontSize: { lg: "18px", base: "12px" },
-            paddingLeft: { base: "30px", lg: "50px" },
+            fontSize: { md: "18px", base: "12px" },
+            paddingLeft: { base: "30px", md: "50px" },
             paddingRight: "10px",
             _placeholder: {
               color: "gray.400",
@@ -489,16 +489,16 @@ const theme = extendTheme({
           width: "100%",
           minWidth: {
             base: "100%",
-            lg: "506px",
+            md: "506px",
           },
         },
         header: {
-          padding: { base: "12px", lg: "20px" },
+          padding: { base: "12px", md: "20px" },
         },
         body: {
           paddingTop: 0,
           paddingBottom: "20px",
-          paddingX: { base: "12px", lg: "30px" },
+          paddingX: { base: "12px", md: "30px" },
         },
       },
     },
@@ -506,7 +506,7 @@ const theme = extendTheme({
       sizes: {
         xl: {
           dialog: {
-            minWidth: { base: "100%", lg: "536px" },
+            minWidth: { base: "100%", md: "536px" },
             maxWidth: "100%",
             marginX: 0,
           },
@@ -524,24 +524,24 @@ const theme = extendTheme({
         dialog: {
           borderTopRightRadius: "30px",
           borderTopLeftRadius: "30px",
-          borderBottomRightRadius: { lg: "30px", base: 0 },
-          borderBottomLeftRadius: { lg: "30px", base: 0 },
+          borderBottomRightRadius: { md: "30px", base: 0 },
+          borderBottomLeftRadius: { md: "30px", base: 0 },
           background: "white",
           border: "1.5px solid",
           borderColor: "gray.100",
           padding: {
             base: "36px",
-            lg: "42px",
+            md: "42px",
           },
           marginBottom: {
-            lg: "auto",
+            md: "auto",
           },
           minWidth: {
             base: "100%",
-            lg: "508px",
+            md: "508px",
           },
           width: {
-            lg: "508px",
+            md: "508px",
           },
         },
         header: {
@@ -566,7 +566,7 @@ const theme = extendTheme({
       variants: {
         onboarding: {
           dialog: {
-            marginBottom: { base: 0, lg: "100px" },
+            marginBottom: { base: 0, md: "100px" },
           },
         },
       },

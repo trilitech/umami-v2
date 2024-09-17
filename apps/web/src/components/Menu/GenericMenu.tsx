@@ -12,8 +12,8 @@ type GenericMenuProps = {
 export const GenericMenu = ({ title, menuItems }: GenericMenuProps) => (
   <DrawerContentWrapper title={title}>
     <VStack
-      gap={{ base: "18px", lg: "24px" }}
-      marginTop={title ? { base: "36px", lg: "40px" } : 0}
+      gap={{ base: "18px", md: "24px" }}
+      marginTop={title ? { base: "36px", md: "40px" } : 0}
       divider={<Divider />}
       spacing="0"
     >

@@ -27,7 +27,7 @@ export const AccountBalance = () => {
         <Text
           display={{
             base: "none",
-            lg: "block",
+            md: "block",
           }}
           color={color("600")}
           fontWeight="600"
@@ -49,7 +49,7 @@ export const AccountBalance = () => {
       <Flex
         alignItems="center"
         justifyContent="space-between"
-        marginTop={{ base: "20px", lg: "40px" }}
+        marginTop={{ base: "20px", md: "40px" }}
       >
         <IconButtonWithText
           as={Link}

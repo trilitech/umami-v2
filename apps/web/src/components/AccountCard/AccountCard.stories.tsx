@@ -44,7 +44,7 @@ const meta: Meta<StoryProps> = {
 
     return (
       <Provider store={store}>
-        <Box width="100%" maxWidth={{ lg: "600px" }}>
+        <Box width="100%" maxWidth={{ md: "600px" }}>
           <AccountCard />
         </Box>
       </Provider>

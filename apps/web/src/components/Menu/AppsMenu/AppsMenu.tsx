@@ -21,7 +21,7 @@ export const AppsMenu = () => {
       >
         Connect
       </Button>
-      <Divider marginTop={{ base: "36px", lg: "40px" }} />
+      <Divider marginTop={{ base: "36px", md: "40px" }} />
       <BeaconPeers />
     </DrawerContentWrapper>
   );

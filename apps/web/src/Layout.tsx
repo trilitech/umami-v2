@@ -13,19 +13,19 @@ export const Layout = () => {
   return (
     <Grid
       justifyContent="center"
-      gridGap={{ lg: "20px", base: "12px" }}
-      gridTemplateRows={{ base: "auto auto 1fr auto", lg: "auto auto 1fr auto" }}
-      gridTemplateColumns={{ base: "1fr", lg: "340px minmax(min-content, 1060px)" }}
+      gridGap={{ md: "20px", base: "12px" }}
+      gridTemplateRows={{ base: "auto auto 1fr auto", md: "auto auto 1fr auto" }}
+      gridTemplateColumns={{ base: "1fr", md: "340px minmax(min-content, 1060px)" }}
       gridTemplateAreas={{
         base: '"header" "sidebar" "main" "footer" "nav"',
-        lg: `"header header" "sidebar nav" "sidebar main" "footer main"`,
+        md: `"header header" "sidebar nav" "sidebar main" "footer main"`,
       }}
-      height={{ lg: "100vh", base: "100dvh" }}
-      padding={{ lg: "20px 46px 0", base: "54px 0 0" }}
+      height={{ md: "100vh", base: "100dvh" }}
+      padding={{ md: "20px 46px 0", base: "54px 0 0" }}
       data-testid="signed-in-layout"
     >
       <GridItem
-        position={{ base: "fixed", lg: "static" }}
+        position={{ base: "fixed", md: "static" }}
         zIndex={{ base: 2 }}
         top={{ base: 0 }}
         left={{ base: 0 }}
@@ -47,7 +47,7 @@ export const Layout = () => {
         gridArea="main"
         paddingX={{
           base: "12px",
-          lg: "0",
+          md: "0",
         }}
       >
         <Main />
@@ -56,7 +56,7 @@ export const Layout = () => {
         gridArea="sidebar"
         paddingX={{
           base: "12px",
-          lg: "0",
+          md: "0",
         }}
       >
         <Sidebar />
@@ -64,7 +64,7 @@ export const Layout = () => {
       <GridItem
         gridArea="footer"
         marginTop={{ base: "20px" }}
-        marginBottom={{ base: "20px", lg: "46px" }}
+        marginBottom={{ base: "20px", md: "46px" }}
       >
         <Footer />
       </GridItem>

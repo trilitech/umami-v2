@@ -9,9 +9,9 @@ import { Tokens } from "../../views/Tokens";
 export const Main = () => (
   <Box
     overflowY="auto"
-    height={{ lg: "calc(100% + 29px)" }}
-    marginTop={{ lg: "-75px" }}
-    paddingTop={{ lg: "75px" }}
+    height={{ md: "calc(100% + 29px)" }}
+    marginTop={{ md: "-75px" }}
+    paddingTop={{ md: "75px" }}
     borderRadius="30px"
   >
     <Card minHeight="full" borderRadius="30px">
@@ -19,7 +19,7 @@ export const Main = () => (
         as={Flex}
         padding={{
           base: "18px",
-          lg: "40px",
+          md: "40px",
         }}
       >
         <Routes>

@@ -21,12 +21,12 @@ export const NFTs = () => {
 
   const gridTemplateColumns = {
     base: "repeat(auto-fit, minmax(min(100%/2, max(157px, 100%/5)), 1fr))",
-    lg: "repeat(auto-fit, minmax(min(100%/2, max(236px, 100%/5)), 1fr))",
+    md: "repeat(auto-fit, minmax(min(100%/2, max(236px, 100%/5)), 1fr))",
   };
 
   return (
     <>
-      <Flex zIndex={1} flexDirection="column" flexGrow={1} gap={{ base: "12px", lg: "30px" }}>
+      <Flex zIndex={1} flexDirection="column" flexGrow={1} gap={{ base: "12px", md: "30px" }}>
         {nfts.length ? (
           <>
             <Flex justifyContent="space-between">
@@ -38,7 +38,7 @@ export const NFTs = () => {
             <SimpleGrid
               gridTemplateColumns={gridTemplateColumns}
               spacingX="12px"
-              spacingY={{ base: "18px", lg: "30px" }}
+              spacingY={{ base: "18px", md: "30px" }}
             >
               {nfts.map(nft => (
                 <NFTCard

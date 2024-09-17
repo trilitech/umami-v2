@@ -18,11 +18,11 @@ export const MnemonicWord = ({ index, word, autocompleteProps, ...props }: Mnemo
       <Text
         position="absolute"
         zIndex={1}
-        marginTop={{ lg: "11px", base: "8px" }}
-        marginLeft={{ lg: "16px", base: "10px" }}
+        marginTop={{ md: "11px", base: "8px" }}
+        marginLeft={{ md: "16px", base: "10px" }}
         color={color("300")}
         textAlign="right"
-        size={{ lg: "lg", base: "xs" }}
+        size={{ md: "lg", base: "xs" }}
       >
         {String(index + 1).padStart(2, "0")}.
       </Text>
@@ -31,8 +31,8 @@ export const MnemonicWord = ({ index, word, autocompleteProps, ...props }: Mnemo
         <Text
           alignSelf="center"
           paddingRight="10px"
-          paddingLeft={{ base: "30px", lg: "48px" }}
-          fontSize={{ base: "xs", lg: "lg" }}
+          paddingLeft={{ base: "30px", md: "48px" }}
+          fontSize={{ base: "xs", md: "lg" }}
           fontWeight="medium"
         >
           {word}

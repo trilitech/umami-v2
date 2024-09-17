@@ -106,7 +106,7 @@ export const AddressBookMenu = () => {
       >
         Add Contact
       </Button>
-      <Divider marginTop={{ base: "36px", lg: "40px" }} />
+      <Divider marginTop={{ base: "36px", md: "40px" }} />
       {contacts.length ? (
         <VStack
           alignItems="flex-start"

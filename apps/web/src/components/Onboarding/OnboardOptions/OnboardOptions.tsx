@@ -41,7 +41,7 @@ export const OnboardOptions = ({ children }: PropsWithChildren) => {
       </Heading>
 
       <Center flexDirection="column" gap="36px" width="full" height="full">
-        <Flex gap={{ base: "24px", lg: "30px" }} marginTop="30px" color={color("white", "black")}>
+        <Flex gap={{ base: "24px", md: "30px" }} marginTop="30px" color={color("white", "black")}>
           <AccountTileWrapper>
             <OnboardWithGoogleButton />
           </AccountTileWrapper>
