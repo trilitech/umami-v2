@@ -1027,8 +1027,8 @@ importers:
         specifier: ^6.0.1
         version: 6.0.1
       tsup:
-        specifier: ^8.2.4
-        version: 8.2.4(jiti@1.21.6)(postcss@8.4.45)(typescript@5.5.4)(yaml@2.5.1)
+        specifier: ^8.3.0
+        version: 8.3.0(jiti@1.21.6)(postcss@8.4.45)(typescript@5.5.4)(yaml@2.5.1)
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -1118,8 +1118,8 @@ importers:
         specifier: ^6.0.1
         version: 6.0.1
       tsup:
-        specifier: ^8.2.4
-        version: 8.2.4(jiti@1.21.6)(postcss@8.4.45)(typescript@5.5.4)(yaml@2.5.1)
+        specifier: ^8.3.0
+        version: 8.3.0(jiti@1.21.6)(postcss@8.4.45)(typescript@5.5.4)(yaml@2.5.1)
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -1176,8 +1176,8 @@ importers:
         specifier: ^6.0.1
         version: 6.0.1
       tsup:
-        specifier: ^8.2.4
-        version: 8.2.4(jiti@1.21.6)(postcss@8.4.45)(typescript@5.5.4)(yaml@2.5.1)
+        specifier: ^8.3.0
+        version: 8.3.0(jiti@1.21.6)(postcss@8.4.45)(typescript@5.5.4)(yaml@2.5.1)
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -1291,8 +1291,8 @@ importers:
         specifier: ^6.0.1
         version: 6.0.1
       tsup:
-        specifier: ^8.2.4
-        version: 8.2.4(jiti@1.21.6)(postcss@8.4.45)(typescript@5.5.4)(yaml@2.5.1)
+        specifier: ^8.3.0
+        version: 8.3.0(jiti@1.21.6)(postcss@8.4.45)(typescript@5.5.4)(yaml@2.5.1)
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -1369,8 +1369,8 @@ importers:
         specifier: ^6.0.1
         version: 6.0.1
       tsup:
-        specifier: ^8.2.4
-        version: 8.2.4(jiti@1.21.6)(postcss@8.4.45)(typescript@5.5.4)(yaml@2.5.1)
+        specifier: ^8.3.0
+        version: 8.3.0(jiti@1.21.6)(postcss@8.4.45)(typescript@5.5.4)(yaml@2.5.1)
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -1451,8 +1451,8 @@ importers:
         specifier: ^6.0.1
         version: 6.0.1
       tsup:
-        specifier: ^8.2.4
-        version: 8.2.4(jiti@1.21.6)(postcss@8.4.45)(typescript@5.5.4)(yaml@2.5.1)
+        specifier: ^8.3.0
+        version: 8.3.0(jiti@1.21.6)(postcss@8.4.45)(typescript@5.5.4)(yaml@2.5.1)
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -1509,8 +1509,8 @@ importers:
         specifier: ^6.0.1
         version: 6.0.1
       tsup:
-        specifier: ^8.2.4
-        version: 8.2.4(jiti@1.21.6)(postcss@8.4.45)(typescript@5.5.4)(yaml@2.5.1)
+        specifier: ^8.3.0
+        version: 8.3.0(jiti@1.21.6)(postcss@8.4.45)(typescript@5.5.4)(yaml@2.5.1)
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -1666,8 +1666,8 @@ importers:
         specifier: ^6.0.1
         version: 6.0.1
       tsup:
-        specifier: ^8.2.4
-        version: 8.2.4(jiti@1.21.6)(postcss@8.4.45)(typescript@5.5.4)(yaml@2.5.1)
+        specifier: ^8.3.0
+        version: 8.3.0(jiti@1.21.6)(postcss@8.4.45)(typescript@5.5.4)(yaml@2.5.1)
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -1721,8 +1721,8 @@ importers:
         specifier: ^6.0.1
         version: 6.0.1
       tsup:
-        specifier: ^8.2.4
-        version: 8.2.4(jiti@1.21.6)(postcss@8.4.45)(typescript@5.5.4)(yaml@2.5.1)
+        specifier: ^8.3.0
+        version: 8.3.0(jiti@1.21.6)(postcss@8.4.45)(typescript@5.5.4)(yaml@2.5.1)
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -1803,8 +1803,8 @@ importers:
         specifier: ^6.0.1
         version: 6.0.1
       tsup:
-        specifier: ^8.2.4
-        version: 8.2.4(jiti@1.21.6)(postcss@8.4.45)(typescript@5.5.4)(yaml@2.5.1)
+        specifier: ^8.3.0
+        version: 8.3.0(jiti@1.21.6)(postcss@8.4.45)(typescript@5.5.4)(yaml@2.5.1)
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -1884,8 +1884,8 @@ importers:
         specifier: ^6.0.1
         version: 6.0.1
       tsup:
-        specifier: ^8.2.4
-        version: 8.2.4(jiti@1.21.6)(postcss@8.4.45)(typescript@5.5.4)(yaml@2.5.1)
+        specifier: ^8.3.0
+        version: 8.3.0(jiti@1.21.6)(postcss@8.4.45)(typescript@5.5.4)(yaml@2.5.1)
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -6637,6 +6637,14 @@ packages:
   fd-slicer@1.1.0:
     resolution: {integrity: sha512-cE1qsB/VwyQozZ+q1dGxR8LBYNZeofhEdUNGSMbQD3Gw2lAzX9Zb3uIU6Ebc/Fmyjo9AWWfnn0AUCHqtevs/8g==}
 
+  fdir@6.3.0:
+    resolution: {integrity: sha512-QOnuT+BOtivR77wYvCWHfGt9s4Pz1VIMbD463vegT5MLqNXy8rYFT/lPVEqf/bhYeT6qmqrNHhsX+rWwe3rOCQ==}
+    peerDependencies:
+      picomatch: ^3 || ^4
+    peerDependenciesMeta:
+      picomatch:
+        optional: true
+
   figures@3.2.0:
     resolution: {integrity: sha512-yaduQFRKLXYOGgEn6AZau90j3ggSOyiqXU0F9JZfeXYhNa+Jk4X+s45A2zg5jns87GAFa34BBm2kXw4XpNcbdg==}
     engines: {node: '>=8'}
@@ -9609,6 +9617,10 @@ packages:
   tiny-typed-emitter@2.1.0:
     resolution: {integrity: sha512-qVtvMxeXbVej0cQWKqVSSAHmKZEHAvxdF8HEUBFWts8h+xEo5m/lEiPakuyZ3BnCBjOD8i24kzNOiOLLgsSxhA==}
 
+  tinyglobby@0.2.6:
+    resolution: {integrity: sha512-NbBoFBpqfcgd1tCiO8Lkfdk+xrA7mlLR9zgvZcZWQQwU63XAfUePyd6wZBaU93Hqw347lHnwFzttAkemHzzz4g==}
+    engines: {node: '>=12.0.0'}
+
   tinyrainbow@1.2.0:
     resolution: {integrity: sha512-weEDEq7Z5eTHPDh4xjX789+fHfF+P8boiFB+0vbWzpbnbsEr/GRaohi/uMKxg8RZMXnl1ItAi/IUHWMsjDV7kQ==}
     engines: {node: '>=14.0.0'}
@@ -9713,8 +9725,8 @@ packages:
   tslib@2.6.3:
     resolution: {integrity: sha512-xNvxJEOUiWPGhUuUdQgAJPKOOJfGnIyKySOc09XkKsgdUV/3E2zvwZYdejjmRgPCgcym1juLH3226yA7sEFJKQ==}
 
-  tsup@8.2.4:
-    resolution: {integrity: sha512-akpCPePnBnC/CXgRrcy72ZSntgIEUa1jN0oJbbvpALWKNOz1B7aM+UVDWGRGIO/T/PZugAESWDJUAb5FD48o8Q==}
+  tsup@8.3.0:
+    resolution: {integrity: sha512-ALscEeyS03IomcuNdFdc0YWGVIkwH1Ws7nfTbAPuoILvEV2hpGQAY72LIOjglGo4ShWpZfpBqP/jpQVCzqYQag==}
     engines: {node: '>=18'}
     hasBin: true
     peerDependencies:
@@ -16900,6 +16912,10 @@ snapshots:
     dependencies:
       pend: 1.2.0
 
+  fdir@6.3.0(picomatch@4.0.2):
+    optionalDependencies:
+      picomatch: 4.0.2
+
   figures@3.2.0:
     dependencies:
       escape-string-regexp: 1.0.5
@@ -20295,6 +20311,11 @@ snapshots:
 
   tiny-typed-emitter@2.1.0: {}
 
+  tinyglobby@0.2.6:
+    dependencies:
+      fdir: 6.3.0(picomatch@4.0.2)
+      picomatch: 4.0.2
+
   tinyrainbow@1.2.0: {}
 
   tinyspy@3.0.2: {}
@@ -20394,16 +20415,15 @@ snapshots:
 
   tslib@2.6.3: {}
 
-  tsup@8.2.4(jiti@1.21.6)(postcss@8.4.45)(typescript@5.5.4)(yaml@2.5.1):
+  tsup@8.3.0(jiti@1.21.6)(postcss@8.4.45)(typescript@5.5.4)(yaml@2.5.1):
     dependencies:
       bundle-require: 5.0.0(esbuild@0.23.0)
       cac: 6.7.14
       chokidar: 3.6.0
       consola: 3.2.3
-      debug: 4.3.6
+      debug: 4.3.7(supports-color@8.1.1)
       esbuild: 0.23.0
       execa: 5.1.1
-      globby: 11.1.0
       joycon: 3.1.1
       picocolors: 1.0.1
       postcss-load-config: 6.0.1(jiti@1.21.6)(postcss@8.4.45)(yaml@2.5.1)
@@ -20411,6 +20431,7 @@ snapshots:
       rollup: 4.21.0
       source-map: 0.8.0-beta.0
       sucrase: 3.35.0
+      tinyglobby: 0.2.6
       tree-kill: 1.2.2
     optionalDependencies:
       postcss: 8.4.45
