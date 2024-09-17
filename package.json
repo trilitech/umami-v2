@@ -31,7 +31,6 @@
   },
   "resolutions": {
     "@typescript-eslint/utils": "^7.15.0",
-    "axios": "^1.7.4",
     "esbuild": "^0.23.0"
   }
 }
