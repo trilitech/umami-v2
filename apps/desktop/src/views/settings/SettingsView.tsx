@@ -1,6 +1,5 @@
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { useDynamicModalContext } from "@umami/components";
-import { downloadBackupFile } from "@umami/state";
 import { type PropsWithChildren } from "react";
 
 import { DAppsDrawerCard } from "./DAppsDrawerCard";
@@ -11,6 +10,7 @@ import { ChangePasswordForm } from "../../components/ChangePassword/ChangePasswo
 import { ClickableCard, SettingsCardWithDrawerIcon } from "../../components/ClickableCard";
 import { useOffboardingModal } from "../../components/Offboarding/useOffboardingModal";
 import { TopBar } from "../../components/TopBar";
+import { useSaveBackup } from "../../utils/useSaveBackup";
 
 export const SettingsView = () => (
   <Flex flexDirection="column" height="100%">
@@ -27,33 +27,28 @@ export const SettingsView = () => (
 
 const GeneralSection = () => (
   <SectionContainer title="General">
-    {/*
-        TODO: implement this
-        <SettingsCard left="Theme">
-          <Flex alignItems="center" justifyContent="space-between">
-            <Text size="sm">Light</Text>
-            <Switch marginX={3} isChecked isDisabled />
-            <Heading size="sm">Dark</Heading>
-          </Flex>
-        </SettingsCard>
-      */}
     <NetworkSettingsDrawerCard />
     <ErrorLogsDrawerCard />
   </SectionContainer>
 );
 
-const BackupSection = () => (
-  <SectionContainer title="Backup">
-    <ClickableCard isSelected={false} onClick={downloadBackupFile}>
-      <Flex alignItems="center" justifyContent="space-between">
-        <Heading size="sm">Download backup file</Heading>
-        <Button onClick={downloadBackupFile} variant="unstyled">
-          <DownloadIcon cursor="pointer" />
-        </Button>
-      </Flex>
-    </ClickableCard>
-  </SectionContainer>
-);
+const BackupSection = () => {
+  const { onOpen, content } = useSaveBackup();
+
+  return (
+    <SectionContainer title="Backup">
+      {content}
+      <ClickableCard isSelected={false} onClick={onOpen}>
+        <Flex alignItems="center" justifyContent="space-between">
+          <Heading size="sm">Download backup file</Heading>
+          <Button onClick={onOpen} variant="unstyled">
+            <DownloadIcon cursor="pointer" />
+          </Button>
+        </Flex>
+      </ClickableCard>
+    </SectionContainer>
+  );
+};
 
 const AdvancedSection = () => {
   const { modalElement: OffboardingModal, onOpen: onOpenOffboardingModal } = useOffboardingModal();
@@ -62,10 +57,6 @@ const AdvancedSection = () => {
   return (
     <SectionContainer title="Advanced Settings">
       <DAppsDrawerCard />
-      {/*
-        TODO: implement this
-        <SettingsCardWithDrawerIcon left="Reset Settings" onClick={() => {}} />
-      */}
       <SettingsCardWithDrawerIcon
         left="Off-board Wallet"
         isSelected={false}

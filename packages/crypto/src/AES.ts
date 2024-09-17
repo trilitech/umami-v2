@@ -18,7 +18,7 @@ export const encrypt = async (data: string, password: string): Promise<Encrypted
   const encrypted = await crypto.subtle.encrypt(
     {
       name: AES_MODE,
-      iv: iv,
+      iv,
     },
     derivedKey,
     Buffer.from(data, "utf-8")

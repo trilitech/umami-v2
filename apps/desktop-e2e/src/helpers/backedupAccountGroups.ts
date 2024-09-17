@@ -1,7 +1,7 @@
 import { mnemonic1 } from "@umami/test-utils";
 import { DEFAULT_DERIVATION_PATH_TEMPLATE } from "@umami/tezos";
 
-import { type AccountGroup, AccountGroupBuilder } from "../../helpers/AccountGroup";
+import { type AccountGroup, AccountGroupBuilder } from "./AccountGroup";
 
 export const v1BackedupAccountGroups = async () => {
   const expectedGroups: AccountGroup[] = [];

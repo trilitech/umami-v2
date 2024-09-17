@@ -6,11 +6,8 @@ import { mnemonic1 as existingSeedphrase } from "@umami/test-utils";
 import { DEFAULT_DERIVATION_PATH_TEMPLATE } from "@umami/tezos";
 
 import { type CustomWorld } from "./world";
-import {
-  v1BackedupAccountGroups,
-  v2BackedupAccountGroups,
-} from "../fixtures/backups/backedupAccountGroups";
 import { type AccountGroup, AccountGroupBuilder } from "../helpers/AccountGroup";
+import { v1BackedupAccountGroups, v2BackedupAccountGroups } from "../helpers/backedupAccountGroups";
 import { AccountsPage } from "../pages/AccountsPage";
 
 export const BASE_URL = "http://127.0.0.1:3000";
@@ -83,7 +80,12 @@ When("I upload {string} backup file", async function (this: CustomWorld, backupF
   const fileChooserPromise = this.page.waitForEvent("filechooser");
   await this.page.getByTestId("file-input").click();
   const fileChooser = await fileChooserPromise;
-  await fileChooser.setFiles(path.join(__dirname, `../fixtures/backups/${backupFileName}`));
+  await fileChooser.setFiles(
+    path.resolve(
+      __dirname,
+      `../../../../packages/test-utils/src/fixtures/backups/${backupFileName}`
+    )
+  );
 });
 
 Then(/I am on an? (\w+) page/, async function (this: CustomWorld, pageName) {

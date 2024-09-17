@@ -109,8 +109,6 @@ describe("getAccountDataHooks", () => {
       const signers = [mockMnemonicAccount(0), mockMnemonicAccount(1), mockMnemonicAccount(2)];
       const multisig = { ...mockMultisigAccount(0), signers: signers.map(s => s.address) };
 
-      console.log(signers);
-
       addTestAccounts(store, signers);
       store.dispatch(multisigsActions.setMultisigs([multisig]));
 

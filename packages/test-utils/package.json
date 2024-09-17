@@ -5,13 +5,19 @@
   "module": "./dist/index.js",
   "main": "./dist/index.cjs",
   "types": "./dist/index.d.ts",
+  "files": [
+    "src/fixtures/backups/V1Backup.json",
+    "src/fixtures/backups/V2Backup.json",
+    "src/fixtures/backups/V21Backup.json"
+  ],
   "exports": {
     ".": {
       "@umami/source": "./src/index.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs",
       "types": "./dist/index.d.ts"
-    }
+    },
+    "./backups/*": "./src/fixtures/backups/*"
   },
   "devDependencies": {
     "@types/eslint": "^8",
