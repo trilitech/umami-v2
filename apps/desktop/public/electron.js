@@ -69,17 +69,17 @@ function createWindow() {
   protocol.handle(APP_PROTOCOL, async req => {
     try {
       const uri = new URL(decodeURI(req.url));
-
+      const pathname = uri.pathname === "/" ? "/index.html" : uri.pathname;
       if (
         req.url.includes("..") || // relative paths aren't allowed
         uri.protocol !== `${APP_PROTOCOL}:` || // protocol mismatch
-        !uri.pathname || // path must be defined
-        uri.pathname === "/" || // path must not be root
+        !pathname || // path must be defined
         uri.host !== APP_HOST // host must match
       ) {
         return new Response("Invalid request", { status: 400 });
       }
-      const pathToServe = path.join(__dirname, uri.pathname);
+
+      const pathToServe = path.join(__dirname, pathname);
       const relativePath = path.relative(__dirname, pathToServe);
       if (!(relativePath && !relativePath.startsWith("..") && !path.isAbsolute(relativePath))) {
         return new Response("Invalid request", { status: 400 });
