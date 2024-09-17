@@ -84,8 +84,8 @@ importers:
         specifier: ^11.13.0
         version: 11.13.0(@emotion/react@11.13.3(@types/react@18.3.6)(react@18.3.1))(@types/react@18.3.6)(react@18.3.1)
       '@ledgerhq/hw-transport-webusb':
-        specifier: ^6.29.2
-        version: 6.29.2
+        specifier: ^6.29.3
+        version: 6.29.3
       '@reduxjs/toolkit':
         specifier: ^2.2.7
         version: 2.2.7(react-redux@9.1.2(@types/react@18.3.6)(react@18.3.1)(redux@5.0.1))(react@18.3.1)
@@ -1730,8 +1730,8 @@ importers:
   packages/tezos:
     dependencies:
       '@ledgerhq/hw-transport-webusb':
-        specifier: ^6.29.2
-        version: 6.29.2
+        specifier: ^6.29.3
+        version: 6.29.3
       '@taquito/ledger-signer':
         specifier: ^20.0.1
         version: 20.0.1(encoding@0.1.13)
@@ -3625,14 +3625,23 @@ packages:
   '@ledgerhq/devices@8.4.2':
     resolution: {integrity: sha512-oWNTp3jCMaEvRHsXNYE/yo+PFMgXAJGFHLOU1UdE4/fYkniHbD9wdxwyZrZvrxr9hNw4/9wHiThyITwPtMzG7g==}
 
+  '@ledgerhq/devices@8.4.3':
+    resolution: {integrity: sha512-+ih+M27E6cm6DHrmw3GbS3mEaznCyFc0e62VdQux40XK2psgYhL2yBPftM4KCrBYm1UbHqXzqLN+Jb7rNIzsHg==}
+
   '@ledgerhq/errors@6.18.0':
     resolution: {integrity: sha512-L3jQWAGyooxRDk/MRlW2v4Ji9+kloBtdmz9wBkHaj2j0n+05rweJSV3GHw9oye1BYMbVFqFffmT4H3hlXlCasw==}
 
-  '@ledgerhq/hw-transport-webusb@6.29.2':
-    resolution: {integrity: sha512-BBFvntj4L0toMhabluuQ3eEnbUTDbdQ11tliaTqwlrPxhwUmzx+o3M5q8edKkyUdoAeuvXz9a1CVeHGP0fvhBA==}
+  '@ledgerhq/errors@6.19.0':
+    resolution: {integrity: sha512-c3Jid7euMSnpHFp8H7iPtsmKDjwbTjlG46YKdw+RpCclsqtBx1uQDlYmcbP1Yv9201kVlUFUhhP4H623k8xzlQ==}
+
+  '@ledgerhq/hw-transport-webusb@6.29.3':
+    resolution: {integrity: sha512-8XGeJAOhWz8iulv2kpi/XPPkm0hGxPVcuhla/VOXSegVF8XKqZBgQGJmIzeJSMf9vSdzAmaGLpn4OtxB1nnJog==}
 
   '@ledgerhq/hw-transport@6.31.2':
     resolution: {integrity: sha512-B27UIzMzm2IXPGYnEB95R7eHxpXBkTBHh6MUJJQZVknt8LilEz1tfpTYUdzAKDGQ+Z5MZyYb01Eh3Zqm3kn3uw==}
+
+  '@ledgerhq/hw-transport@6.31.3':
+    resolution: {integrity: sha512-rFplkHWF5NXtlYwAusqLlMu298NHtRD+2q/jrTYc//uu/xJO9LkDIgKid6IVF2+e1Wj7yX6YQVrU6L0Yu1ntEw==}
 
   '@ledgerhq/logs@6.12.0':
     resolution: {integrity: sha512-ExDoj1QV5eC6TEbMdLUMMk9cfvNKhhv5gXol4SmULRVCx/3iyCPhJ74nsb3S0Vb+/f+XujBEj3vQn5+cwS0fNA==}
@@ -12891,24 +12900,40 @@ snapshots:
 
   '@ledgerhq/devices@8.4.2':
     dependencies:
-      '@ledgerhq/errors': 6.18.0
+      '@ledgerhq/errors': 6.19.0
+      '@ledgerhq/logs': 6.12.0
+      rxjs: 7.8.1
+      semver: 7.6.3
+
+  '@ledgerhq/devices@8.4.3':
+    dependencies:
+      '@ledgerhq/errors': 6.19.0
       '@ledgerhq/logs': 6.12.0
       rxjs: 7.8.1
       semver: 7.6.3
 
   '@ledgerhq/errors@6.18.0': {}
 
-  '@ledgerhq/hw-transport-webusb@6.29.2':
+  '@ledgerhq/errors@6.19.0': {}
+
+  '@ledgerhq/hw-transport-webusb@6.29.3':
     dependencies:
-      '@ledgerhq/devices': 8.4.2
-      '@ledgerhq/errors': 6.18.0
-      '@ledgerhq/hw-transport': 6.31.2
+      '@ledgerhq/devices': 8.4.3
+      '@ledgerhq/errors': 6.19.0
+      '@ledgerhq/hw-transport': 6.31.3
       '@ledgerhq/logs': 6.12.0
 
   '@ledgerhq/hw-transport@6.31.2':
     dependencies:
       '@ledgerhq/devices': 8.4.2
       '@ledgerhq/errors': 6.18.0
+      '@ledgerhq/logs': 6.12.0
+      events: 3.3.0
+
+  '@ledgerhq/hw-transport@6.31.3':
+    dependencies:
+      '@ledgerhq/devices': 8.4.3
+      '@ledgerhq/errors': 6.19.0
       '@ledgerhq/logs': 6.12.0
       events: 3.3.0
 
