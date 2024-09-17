@@ -63,13 +63,10 @@ export const AdvancedAccountSettings = () => {
                 <InputRightElement>
                   <Button
                     marginRight="10px"
-                    color={color("200")}
-                    fontWeight="600"
-                    background={color("black")}
                     borderRadius="4px"
-                    _hover={{ background: color("400") }}
                     onClick={() => resetField("derivationPath")}
                     size="sm"
+                    variant="inputElement"
                   >
                     Reset
                   </Button>

@@ -6,7 +6,7 @@ const light = {
   green: "#38A169",
   greenDark: "#25855A",
   bg: "#E0E0FF",
-  bgGradient: "linear-gradient(67deg, rgba(248, 248, 255, 0.70) 0%, #F8F8FF 100%)",
+  bgGradient: "linear-gradient(67deg, rgba(226, 232, 240, 0.7) 0%, #E2E8F0 100%);",
   bgMaskColor: "#F8F8FF",
   grey: {
     black: "#121224",
@@ -33,7 +33,8 @@ const dark = {
   green: "#38A169",
   greenDark: "#25855A",
   bg: "#121224",
-  bgGradient: "linear-gradient(67deg, rgba(22, 22, 43, 0.20) 0%, #16162B 100%)",
+  bgGradient:
+    "linear-gradient(67deg, rgba(22, 22, 43, 0.20) 0%, rgba(22, 22, 43, 0.90) 29%, #16162B 100%)",
   bgMaskColor: "#16162B",
   grey: {
     black: "#FFFFFF",

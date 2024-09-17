@@ -595,10 +595,12 @@ const theme = extendTheme({
   config,
   styles: {
     global: (props: StyleFunctionProps) => ({
+      "#root": {
+        bg: mode(light.bgGradient, dark.bgGradient)(props),
+      },
       body: {
         color: mode(light.grey[600], dark.grey[600])(props),
         bg: mode(light.bg, dark.bg)(props),
-        bgImage: mode(light.bgGradient, dark.bgGradient)(props),
         _before: {
           maskImage: "url(/static/bg.svg)",
           bgColor: mode(light.bgMaskColor, dark.bgMaskColor)(props),

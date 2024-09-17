@@ -3,5 +3,5 @@ import { useCurrentAccount } from "@umami/state";
 export const useIsAccountVerified = () => {
   const account = useCurrentAccount();
 
-  return account?.type !== "mnemonic" || account.isVerified;
+  return !!account && (account.type !== "mnemonic" || account.isVerified);
 };

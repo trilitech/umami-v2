@@ -230,7 +230,7 @@ describe("<SetupPassword />", () => {
     });
   });
 
-  describe("new_mnemonic mode", () => {
+  describe("adding new account mode", () => {
     const store = makeStore();
     const mockRestoreFromMnemonic = jest.fn();
 
@@ -239,13 +239,16 @@ describe("<SetupPassword />", () => {
       jest.mocked(generate24WordMnemonic).mockReturnValue(mnemonic1);
     });
 
-    it("doesn't render advanced section", async () => {
-      await renderInModal(<SetupPassword mode="new_mnemonic" />);
+    it.each(["new_mnemonic", "add_account"] as const)(
+      "doesn't render advanced section",
+      async mode => {
+        await renderInModal(<SetupPassword mode={mode} />);
 
-      expect(screen.queryByTestId("advanced-section")).not.toBeInTheDocument();
-    });
+        expect(screen.queryByTestId("advanced-section")).not.toBeInTheDocument();
+      }
+    );
 
-    it("calls restoreFromMnemonic with predefined mnemonic", async () => {
+    it("calls restoreFromMnemonic with predefined mnemonic for new_mnemonic mode", async () => {
       const user = userEvent.setup();
 
       await renderInModal(<SetupPassword mode="new_mnemonic" />, store);
@@ -257,6 +260,31 @@ describe("<SetupPassword />", () => {
       await act(() => user.type(passwordConfirmationInput, password));
 
       const submitButton = screen.getByRole("button", { name: "Create Account" });
+
+      await act(() => user.click(submitButton));
+
+      await waitFor(() => expect(mockRestoreFromMnemonic).toHaveBeenCalledTimes(1));
+      expect(mockRestoreFromMnemonic).toHaveBeenCalledWith({
+        mnemonic: mnemonic1,
+        password,
+        derivationPathTemplate: "44'/1729'/?'/0'",
+        label: "Account",
+        curve: "ed25519",
+        isVerified: false,
+      });
+    });
+
+    it("calls restoreFromMnemonic with predefined mnemonic for add_account mode", async () => {
+      jest.mocked(useIsPasswordSet).mockReturnValue(true);
+      const user = userEvent.setup();
+
+      await renderInModal(<SetupPassword mode="add_account" />, store);
+
+      const passwordInput = screen.getByLabelText("Password");
+
+      await act(() => user.type(passwordInput, password));
+
+      const submitButton = screen.getByRole("button", { name: "Add Account" });
 
       await act(() => user.click(submitButton));
 

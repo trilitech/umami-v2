@@ -39,7 +39,7 @@ describe("<DeriveMnemonicAccountModal />", () => {
 
     const account = mockMnemonicAccount(0);
     await renderInModal(<DeriveMnemonicAccountModal account={account} />, store);
-    await act(() => user.type(screen.getByLabelText("Account name"), "Test Account"));
+    await act(() => user.type(screen.getByLabelText("Account name (Optional)"), "Test Account"));
     await act(() => user.click(screen.getByRole("button", { name: "Continue" })));
 
     await waitFor(() => {
@@ -53,7 +53,7 @@ describe("<DeriveMnemonicAccountModal />", () => {
     const account = mockMnemonicAccount(0);
     await renderInModal(<DeriveMnemonicAccountModal account={account} />, store);
 
-    await act(() => user.type(screen.getByLabelText("Account name"), "Test Account"));
+    await act(() => user.type(screen.getByLabelText("Account name (Optional)"), "Test Account"));
     await act(() => user.click(screen.getByRole("button", { name: "Continue" })));
     await act(() => user.type(screen.getByLabelText("Password"), "test-password"));
     await act(() => user.click(screen.getByRole("button", { name: "Submit" })));
