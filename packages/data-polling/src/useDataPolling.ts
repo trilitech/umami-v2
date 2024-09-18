@@ -1,6 +1,6 @@
 import { assetsActions, useAppDispatch } from "@umami/state";
 import { fromUnixTime } from "date-fns";
-import { max } from "lodash";
+import max from "lodash/max";
 import { useEffect } from "react";
 
 import { usePollAccountStates } from "./usePollAccountStates";
