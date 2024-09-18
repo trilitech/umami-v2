@@ -6,7 +6,6 @@ settings:
 
 overrides:
   '@typescript-eslint/utils': ^7.15.0
-  axios: ^1.7.4
   esbuild: ^0.23.0
 
 importers:
@@ -210,8 +209,8 @@ importers:
         specifier: ^4.3.1
         version: 4.3.1(vite@5.4.6(@types/node@20.14.11)(sass@1.78.0))
       axios:
-        specifier: ^1.7.4
-        version: 1.7.4(debug@4.3.7)
+        specifier: ^1.7.7
+        version: 1.7.7(debug@4.3.7)
       babel-jest:
         specifier: ^29.7.0
         version: 29.7.0(@babel/core@7.25.2)
@@ -1399,8 +1398,8 @@ importers:
         specifier: workspace:^
         version: link:../tzkt
       axios:
-        specifier: ^1.7.4
-        version: 1.7.4(debug@4.3.7)
+        specifier: ^1.7.7
+        version: 1.7.7(debug@4.3.7)
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -1569,8 +1568,8 @@ importers:
         specifier: workspace:^
         version: link:../tzkt
       axios:
-        specifier: ^1.7.4
-        version: 1.7.4(debug@4.3.7)
+        specifier: ^1.7.7
+        version: 1.7.7(debug@4.3.7)
       bip39:
         specifier: ^3.1.0
         version: 3.1.0
@@ -1757,8 +1756,8 @@ importers:
         specifier: ^20.0.1
         version: 20.0.1
       axios:
-        specifier: ^1.7.4
-        version: 1.7.4(debug@4.3.7)
+        specifier: ^1.7.7
+        version: 1.7.7(debug@4.3.7)
       bignumber.js:
         specifier: ^9.1.2
         version: 9.1.2
@@ -1829,8 +1828,8 @@ importers:
         specifier: workspace:^
         version: link:../tezos
       axios:
-        specifier: ^1.7.4
-        version: 1.7.4(debug@4.3.7)
+        specifier: ^1.7.7
+        version: 1.7.7(debug@4.3.7)
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -5238,8 +5237,8 @@ packages:
     resolution: {integrity: sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ==}
     engines: {node: '>= 0.4'}
 
-  axios@1.7.4:
-    resolution: {integrity: sha512-DukmaFRnY6AzAALSH4J2M3k6PkaC+MfaAGdEERRWcC9q3/TWQwLpHR8ZRLKTdQ3aBDL64EdluRDjJqKw+BPZEw==}
+  axios@1.7.7:
+    resolution: {integrity: sha512-S4kL7XrjgBmvdGut0sN3yJxqYzrDOnivkBiN0OFs6hLiUam3UPvswUo0kqGyhqUZGEOytHyumEdXsAkgCOUf3Q==}
 
   babel-jest@29.7.0:
     resolution: {integrity: sha512-BrvGY3xZSwEcCzKvKsCi2GgHqDqsYkOP4/by5xCgIwGXQxIEh+8ew3gmrE1y7XRR6LHZIj6yLYnUi/mm2KXKBg==}
@@ -10495,7 +10494,7 @@ snapshots:
     dependencies:
       '@airgap/beacon-core': 4.2.2
       '@airgap/beacon-utils': 4.2.2
-      axios: 1.7.4(debug@4.3.7)
+      axios: 1.7.7(debug@4.3.7)
     transitivePeerDependencies:
       - debug
 
@@ -10503,7 +10502,7 @@ snapshots:
     dependencies:
       '@airgap/beacon-core': 4.3.0
       '@airgap/beacon-utils': 4.3.0
-      axios: 1.7.4(debug@4.3.7)
+      axios: 1.7.7(debug@4.3.7)
     transitivePeerDependencies:
       - debug
 
@@ -15161,7 +15160,7 @@ snapshots:
     dependencies:
       possible-typed-array-names: 1.0.0
 
-  axios@1.7.4(debug@4.3.7):
+  axios@1.7.7(debug@4.3.7):
     dependencies:
       follow-redirects: 1.15.6(debug@4.3.7)
       form-data: 4.0.0
@@ -21076,7 +21075,7 @@ snapshots:
 
   wait-on@8.0.1(debug@4.3.7):
     dependencies:
-      axios: 1.7.4(debug@4.3.7)
+      axios: 1.7.7(debug@4.3.7)
       joi: 17.13.3
       lodash: 4.17.21
       minimist: 1.2.8
