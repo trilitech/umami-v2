@@ -67,10 +67,9 @@ export const FormPage = ({ ...props }: FormPageProps<FormValues>) => {
       <ModalContent>
         <form onSubmit={handleSubmit(onSingleSubmit)}>
           <FormPageHeader />
-          <ModalBody>
+          <ModalBody gap="24px">
             <FormControl isInvalid={!!errors.prettyAmount}>
               <FormLabel>Amount</FormLabel>
-
               <InputGroup>
                 <Input
                   isDisabled={isLoading}
@@ -82,7 +81,7 @@ export const FormPage = ({ ...props }: FormPageProps<FormValues>) => {
                   })}
                   placeholder="0.000000"
                 />
-                <InputRightElement>{TEZ}</InputRightElement>
+                <InputRightElement marginRight="12px">{TEZ}</InputRightElement>
               </InputGroup>
               {errors.prettyAmount && (
                 <FormErrorMessage data-testid="amount-error">
