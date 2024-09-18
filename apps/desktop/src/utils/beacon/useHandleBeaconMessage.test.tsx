@@ -106,7 +106,7 @@ describe("<useHandleBeaconMessage />", () => {
 
       act(() => handleMessage(message));
 
-      await screen.findByText("Connect with pairing request");
+      await screen.findByText("mockDappName/dApp Pairing Request");
     });
 
     it("sends an error response to the dapp on close", async () => {
@@ -127,7 +127,7 @@ describe("<useHandleBeaconMessage />", () => {
 
       act(() => handleMessage(message));
 
-      await screen.findByText("Connect with pairing request");
+      await screen.findByText("mockDappName/dApp Pairing Request");
 
       act(() => screen.getByRole("button", { name: "Close" }).click());
 

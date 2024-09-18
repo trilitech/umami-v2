@@ -51,7 +51,7 @@ describe("<SignPayloadRequestModal />", () => {
   it("renders the payload to sign", async () => {
     await renderInModal(<SignPayloadRequestModal request={request} />, store);
 
-    await waitFor(() => expect(screen.getByText(decodedPayload)).toBeVisible());
+    await waitFor(() => expect(screen.getByText(new RegExp(decodedPayload))).toBeVisible());
   });
 
   it("sends the signed payload back to the DApp", async () => {
