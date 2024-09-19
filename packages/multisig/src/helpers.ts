@@ -83,7 +83,7 @@ const parseMultisigOperation = (raw: RawTzktMultisigBigMap): MultisigOperation =
     bigmapId: bigmap,
     rawActions: value.actions,
     // For now, we assume the approver is always an implicit account
-    approvals: value.approvals.map(parseImplicitPkh),
+    approvals: value.approvals?.map(parseImplicitPkh) ?? [],
   };
 };
 

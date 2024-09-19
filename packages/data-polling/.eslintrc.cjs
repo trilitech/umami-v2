@@ -6,5 +6,12 @@ module.exports = {
     parser: "@typescript-eslint/parser",
     tsconfigRootDir: __dirname,
   },
-  overrides: [{ files: ["src/index.ts"], rules: { "import/no-unused-modules": "off" } }],
+  overrides: [
+    {
+      files: ["*.ts", "*.tsx"],
+      rules: {
+        "import/no-unused-modules": "off",
+      },
+    },
+  ],
 };

@@ -32,6 +32,6 @@ export type RawTzktMultisigBigMap = {
   key: string | null;
   value: {
     actions: string;
-    approvals: string[];
+    approvals?: string[];
   } | null;
 };

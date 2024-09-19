@@ -6,6 +6,7 @@ import { useCallback } from "react";
 export const useReactQueryErrorHandler = () => {
   const dispatch = useAppDispatch();
   const toast = useToast();
+  const toastId = "data-fetching-error";
 
   return useCallback(
     (error: any) => {
@@ -13,13 +14,17 @@ export const useReactQueryErrorHandler = () => {
         return;
       }
       dispatch(errorsActions.add(getErrorContext(error)));
-      toast({
-        id: "data-fetching-error",
-        description: `Data fetching error: ${error.message}`,
-        status: "error",
-        isClosable: true,
-        duration: 10000,
-      });
+
+      if (!toast.isActive(toastId)) {
+        toast({
+          id: toastId,
+          description: `Data fetching error: ${error.message}`,
+          status: "error",
+          isClosable: true,
+          duration: 10000,
+        });
+      }
+      console.error(error);
     },
     [dispatch, toast]
   );
