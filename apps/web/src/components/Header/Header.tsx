@@ -60,7 +60,7 @@ export const Header = () => {
       }}
     >
       {mode(<Icon as={LogoLightIcon} {...size} />, <Icon as={LogoDarkIcon} {...size} />)(colorMode)}
-      <SlideFade in={isVisible} offsetY="20px">
+      <SlideFade in={isVisible} offsetY="20px" unmountOnExit>
         <AccountTile
           background={color("100")}
           account={currentAccount}

@@ -1,4 +1,4 @@
-import { useAllAccounts, useContactsForSelectedNetwork } from "@umami/state";
+import { useContactsForSelectedNetwork, useImplicitAccounts } from "@umami/state";
 import { type FieldValues, type Path } from "react-hook-form";
 
 import { AddressAutocomplete } from "./AddressAutocomplete";
@@ -9,7 +9,7 @@ export const KnownAccountsAutocomplete = <T extends FieldValues, U extends Path<
 ) => {
   const contacts = useContactsForSelectedNetwork();
 
-  const accounts = useAllAccounts().map(account => ({
+  const accounts = useImplicitAccounts().map(account => ({
     name: account.label,
     pkh: account.address.pkh,
   }));
