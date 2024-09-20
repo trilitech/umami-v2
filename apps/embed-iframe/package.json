@@ -4,6 +4,8 @@
   "packageManager": "pnpm@9.9.0",
   "scripts": {
     "build": "vite build",
+    "build:mainnet": "cp vercel.mainnet.json vercel.json && vite build",
+    "build:ghostnet": "cp vercel.ghostnet.json vercel.json && vite build",
     "dev": "vite dev",
     "preview": "vite preview",
     "format:ci": "prettier --ignore-path ../../.gitignore --check .",
