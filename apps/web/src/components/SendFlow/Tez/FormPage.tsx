@@ -14,7 +14,9 @@ import { type RawPkh, TEZ, TEZ_DECIMALS, parsePkh, tezToMutez } from "@umami/tez
 import { FormProvider, useForm } from "react-hook-form";
 
 import { SignPage } from "./SignPage";
-import { KnownAccountsAutocomplete, OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
+import { useColor } from "../../../styles/useColor";
+import { KnownAccountsAutocomplete } from "../../AddressAutocomplete";
+import { TezTile } from "../../AssetTiles";
 import { FormPageHeader } from "../FormPageHeader";
 import {
   useAddToBatchFormAction,
@@ -31,11 +33,13 @@ import {
 
 export type FormValues = {
   sender: RawPkh;
+
   recipient: RawPkh;
   prettyAmount: string;
 };
 
 export const FormPage = ({ ...props }: FormPageProps<FormValues>) => {
+  const color = useColor();
   const openSignPage = useOpenSignPageFormAction({
     SignPage,
     signPageExtraData: undefined,
@@ -68,6 +72,10 @@ export const FormPage = ({ ...props }: FormPageProps<FormValues>) => {
         <form onSubmit={handleSubmit(onSingleSubmit)}>
           <FormPageHeader />
           <ModalBody gap="24px">
+            <FormControl data-testid="available-balance" isInvalid={!!errors.sender}>
+              <FormLabel>Available Balance</FormLabel>
+              <TezTile address={props.sender?.address.pkh} />
+            </FormControl>
             <FormControl isInvalid={!!errors.prettyAmount}>
               <FormLabel>Amount</FormLabel>
               <InputGroup>
@@ -81,25 +89,13 @@ export const FormPage = ({ ...props }: FormPageProps<FormValues>) => {
                   })}
                   placeholder="0.000000"
                 />
-                <InputRightElement marginRight="12px">{TEZ}</InputRightElement>
+                <InputRightElement marginRight="16px" color={color("400")} fontSize="16px">
+                  {TEZ}
+                </InputRightElement>
               </InputGroup>
               {errors.prettyAmount && (
                 <FormErrorMessage data-testid="amount-error">
                   {errors.prettyAmount.message}
-                </FormErrorMessage>
-              )}
-            </FormControl>
-
-            <FormControl isInvalid={!!errors.sender}>
-              <OwnedAccountsAutocomplete
-                allowUnknown={false}
-                inputName="sender"
-                isDisabled={!!props.sender}
-                label="From"
-              />
-              {errors.sender && (
-                <FormErrorMessage data-testid="from-error">
-                  {errors.sender.message}
                 </FormErrorMessage>
               )}
             </FormControl>

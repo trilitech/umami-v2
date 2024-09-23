@@ -36,18 +36,9 @@ describe("<Form />", () => {
     it("renders an empty form by default", async () => {
       await renderInModal(<FormPage />, store);
 
-      expect(screen.getByLabelText("From")).toHaveValue("");
-      expect(screen.getByLabelText("From")).toBeEnabled();
+      expect(screen.getByTestId("available-balance")).toBeInTheDocument();
       expect(screen.getByTestId("real-address-input-recipient")).toHaveValue("");
       expect(screen.getByLabelText("Amount")).toHaveValue(null);
-    });
-
-    it("renders a form with a prefilled sender", async () => {
-      await renderInModal(<FormPage sender={mockImplicitAccount(0)} />, store);
-
-      expect(screen.getByTestId("real-address-input-sender")).toHaveValue(
-        mockImplicitAccount(0).address.pkh
-      );
     });
 
     it("renders a form with default form values", async () => {
@@ -62,11 +53,6 @@ describe("<Form />", () => {
         store
       );
 
-      await waitFor(() =>
-        expect(screen.getByTestId("real-address-input-sender")).toHaveValue(
-          mockImplicitAccount(0).address.pkh
-        )
-      );
       expect(screen.getByTestId("real-address-input-recipient")).toHaveValue(
         mockImplicitAccount(1).address.pkh
       );
@@ -86,11 +72,6 @@ describe("<Form />", () => {
         store
       );
 
-      await waitFor(() =>
-        expect(screen.getByTestId("real-address-input-sender")).toHaveValue(
-          mockImplicitAccount(0).address.pkh
-        )
-      );
       expect(screen.getByTestId("real-address-input-recipient")).toHaveValue(
         mockImplicitAccount(1).address.pkh
       );
@@ -119,53 +100,6 @@ describe("<Form />", () => {
 
   // TODO: add custom matchers for the fields so that this code doesn't have to be repeated over and over again
   describe("validations", () => {
-    describe("From", () => {
-      it("is required", async () => {
-        await renderInModal(<FormPage />, store);
-
-        fireEvent.blur(screen.getByLabelText("From"));
-        await waitFor(() =>
-          expect(screen.getByTestId("from-error")).toHaveTextContent("Invalid address or contact")
-        );
-      });
-
-      it("allows only owned accounts", async () => {
-        addTestAccount(store, mockMnemonicAccount(0));
-        await renderInModal(<FormPage />, store);
-
-        fireEvent.change(screen.getByLabelText("From"), {
-          target: { value: mockImplicitAccount(1).address.pkh },
-        });
-        await waitFor(() =>
-          expect(screen.getByTestId("from-error")).toHaveTextContent("Invalid address or contact")
-        );
-
-        fireEvent.change(screen.getByLabelText("From"), {
-          target: { value: mockImplicitAccount(0).address.pkh },
-        });
-
-        await waitFor(() => expect(screen.queryByTestId("from-error")).not.toBeInTheDocument());
-      });
-
-      it("allows owned multisig accounts", async () => {
-        addTestAccount(store, mockMultisigAccount(0));
-        await renderInModal(<FormPage />, store);
-
-        fireEvent.change(screen.getByLabelText("From"), {
-          target: { value: mockMultisigAccount(1).address.pkh },
-        });
-        await waitFor(() =>
-          expect(screen.getByTestId("from-error")).toHaveTextContent("Invalid address or contact")
-        );
-
-        fireEvent.change(screen.getByLabelText("From"), {
-          target: { value: mockMultisigAccount(0).address.pkh },
-        });
-
-        await waitFor(() => expect(screen.queryByTestId("from-error")).not.toBeInTheDocument());
-      });
-    });
-
     describe("To", () => {
       it("is required", async () => {
         await renderInModal(<FormPage />, store);

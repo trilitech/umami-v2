@@ -105,7 +105,7 @@ export const useGetTokenTransfer = () => {
 
 const useConversionRate = () => useAppSelector(s => s.assets.conversionRate);
 
-const useTezToDollar = () => {
+export const useTezToDollar = () => {
   const rate = useConversionRate();
 
   if (!rate) {

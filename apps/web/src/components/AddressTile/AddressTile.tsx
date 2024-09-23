@@ -35,7 +35,7 @@ export const AddressTile = ({
       justifyContent="space-between"
       width="100%"
       padding="12px 16px"
-      background={color("50")}
+      background={color("100")}
       borderRadius="4px"
       data-testid="address-tile"
       {...flexProps}
