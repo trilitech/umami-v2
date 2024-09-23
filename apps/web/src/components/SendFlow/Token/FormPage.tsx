@@ -23,7 +23,8 @@ import { type RawPkh, parseContractPkh, parsePkh } from "@umami/tezos";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { SignPage } from "./SignPage";
-import { KnownAccountsAutocomplete, OwnedAccountsAutocomplete } from "../../AddressAutocomplete";
+import { KnownAccountsAutocomplete } from "../../AddressAutocomplete";
+import { TokenTile } from "../../AssetTiles";
 import { FormPageHeader } from "../FormPageHeader";
 import {
   useAddToBatchFormAction,
@@ -82,7 +83,11 @@ export const FormPage = (
       <ModalContent>
         <form onSubmit={handleSubmit(onSingleSubmit)}>
           <FormPageHeader />
-          <ModalBody>
+          <ModalBody gap="24px">
+            <FormControl data-testid="available-balance">
+              <FormLabel>Available Balance</FormLabel>
+              <TokenTile amount={token.balance} token={token} />
+            </FormControl>
             <FormControl isInvalid={!!errors.prettyAmount}>
               <FormLabel>Amount</FormLabel>
               <InputGroup>
@@ -110,21 +115,6 @@ export const FormPage = (
                 </FormErrorMessage>
               )}
             </FormControl>
-
-            <FormControl isInvalid={!!errors.sender}>
-              <OwnedAccountsAutocomplete
-                allowUnknown={false}
-                inputName="sender"
-                isDisabled={true}
-                label="From"
-              />
-              {errors.sender && (
-                <FormErrorMessage data-testid="from-error">
-                  {errors.sender.message}
-                </FormErrorMessage>
-              )}
-            </FormControl>
-
             <FormControl isInvalid={!!errors.recipient}>
               <KnownAccountsAutocomplete allowUnknown inputName="recipient" label="To" />
               {errors.recipient && (

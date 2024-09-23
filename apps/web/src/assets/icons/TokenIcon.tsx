@@ -7,5 +7,6 @@ type TokenIconProps = {
 
 export const TokenIcon = ({ contract, ...props }: TokenIconProps) => {
   const url = `https://services.tzkt.io/v1/avatars/${contract}`;
+
   return <Image fallbackSrc="./static/coin-front.svg" src={url} {...props} />;
 };

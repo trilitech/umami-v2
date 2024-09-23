@@ -50,15 +50,7 @@ beforeEach(() => {
 
 describe("<FormPage />", () => {
   describe("default values", () => {
-    it("renders a form with a prefilled sender", () => {
-      render(fixture({ sender: mockImplicitAccount(1) }), { store });
-
-      expect(screen.getByTestId("address-tile")).toHaveTextContent(
-        mockImplicitAccount(1).address.pkh
-      );
-    });
-
-    it("renders a form with default form values", async () => {
+    it("renders a form with default form values", () => {
       render(
         fixture({
           sender: mockAccount,
@@ -71,9 +63,6 @@ describe("<FormPage />", () => {
         { store }
       );
 
-      await waitFor(() =>
-        expect(screen.getByTestId("real-address-input-sender")).toHaveValue(mockAccount.address.pkh)
-      );
       expect(screen.getByTestId("real-address-input-recipient")).toHaveValue(
         mockImplicitAccount(1).address.pkh
       );
