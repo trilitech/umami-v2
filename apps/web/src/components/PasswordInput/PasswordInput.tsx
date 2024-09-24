@@ -8,13 +8,14 @@ import {
   type InputProps,
   InputRightElement,
 } from "@chakra-ui/react";
+import { usePasswordValidation } from "@umami/components";
 import { useState } from "react";
 import { type FieldValues, type Path, type RegisterOptions, useFormContext } from "react-hook-form";
 
 import { EyeIcon, EyeOffIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
 
-const MIN_LENGTH = 8;
+const MIN_LENGTH = 12;
 
 // <T extends FieldValues> is needed to be compatible with the useForm's type parameter (FormData)
 // <U extends Path<T>> makes sure that we can pass in only valid inputName that exists in FormData
@@ -23,6 +24,7 @@ type PasswordInputProps<T extends FieldValues, U extends Path<T>> = {
   label?: string;
   placeholder?: string;
   required?: string | boolean;
+  checkPasswordStrength?: boolean;
   minLength?: RegisterOptions<T, U>["minLength"];
   validate?: RegisterOptions<T, U>["validate"];
 } & InputProps & {
@@ -35,6 +37,7 @@ export const PasswordInput = <T extends FieldValues, U extends Path<T>>({
   placeholder = "Enter your password",
   required = "Password is required",
   minLength = MIN_LENGTH,
+  checkPasswordStrength = false,
   validate,
   ...rest
 }: PasswordInputProps<T, U>) => {
@@ -43,6 +46,8 @@ export const PasswordInput = <T extends FieldValues, U extends Path<T>>({
     formState: { errors },
   } = useFormContext<T>();
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const { validatePassword, PasswordStrengthBar } = usePasswordValidation();
+
   const color = useColor();
 
   const error = errors[inputName];
@@ -66,7 +71,7 @@ export const PasswordInput = <T extends FieldValues, U extends Path<T>>({
                     message: `Your password must be at least ${minLength} characters long`,
                   }
                 : undefined,
-            validate,
+            validate: checkPasswordStrength ? validatePassword : validate,
           })}
           {...rest}
         />
@@ -87,7 +92,7 @@ export const PasswordInput = <T extends FieldValues, U extends Path<T>>({
           />
         </InputRightElement>
       </InputGroup>
-
+      {checkPasswordStrength && PasswordStrengthBar}
       {error && (
         <FormErrorMessage data-testid={`${rest["data-testid"]}-error`}>
           {errorMessage}

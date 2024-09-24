@@ -25,6 +25,7 @@
     "@types/md5": "^2.3.5",
     "@types/react": "18.3.11",
     "@types/react-dom": "18.3.0",
+    "@types/zxcvbn": "^4.4.5",
     "@umami/eslint-config": "workspace:^",
     "@umami/jest-config": "workspace:^",
     "@umami/multisig": "workspace:^",
@@ -81,6 +82,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.52.2",
-    "react-remove-scroll": "^2.6.0"
+    "react-remove-scroll": "^2.6.0",
+    "zxcvbn": "^4.4.2"
   }
 }

@@ -73,7 +73,7 @@ export const SetupPassword = ({ mode }: SetupPasswordProps) => {
   const isPasswordSet = useIsPasswordSet();
 
   const form = useMultiForm<FormFields>({
-    mode: "onBlur",
+    mode: "onChange",
     defaultValues: {
       derivationPath: defaultDerivationPathTemplate,
       curve: "ed25519",
@@ -107,14 +107,15 @@ export const SetupPassword = ({ mode }: SetupPasswordProps) => {
           <ModalBody>
             <Flex flexDirection="column" gap="24px">
               <PasswordInput
+                checkPasswordStrength={!isPasswordSet}
                 inputName="password"
                 label={isPasswordSet ? "Password" : "Set Password"}
               />
-
               {!isPasswordSet && (
                 <PasswordInput
                   inputName="passwordConfirmation"
                   label="Confirm Password"
+                  minLength={0}
                   required="Password confirmation is required"
                   validate={value => value === getValues("password") || "Passwords do not match"}
                 />

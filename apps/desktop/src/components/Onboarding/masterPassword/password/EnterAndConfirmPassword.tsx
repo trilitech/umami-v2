@@ -19,7 +19,7 @@ export const EnterAndConfirmPassword = ({
   };
 
   const form = useForm<ConfirmPasswordFormValues>({
-    mode: "onBlur",
+    mode: "onChange",
   });
 
   const {
@@ -40,6 +40,7 @@ export const EnterAndConfirmPassword = ({
         <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
           <FormControl isInvalid={!!errors.password}>
             <PasswordInput
+              checkPasswordStrength
               data-testid="password"
               inputName="password"
               placeholder="Enter master password"
@@ -52,6 +53,7 @@ export const EnterAndConfirmPassword = ({
               data-testid="confirmation"
               inputName="confirm"
               label="Confirm Password"
+              minLength={0}
               placeholder="Confirm your password"
               required="Confirmation is required"
               validate={(val: string) =>
