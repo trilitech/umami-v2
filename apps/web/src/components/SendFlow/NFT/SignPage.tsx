@@ -1,6 +1,8 @@
 import {
   Divider,
   Flex,
+  FormControl,
+  FormLabel,
   Heading,
   ModalBody,
   ModalContent,
@@ -34,37 +36,30 @@ export const SignPage = (props: { nft: NFTBalance; operations: EstimatedAccountO
         <form>
           <SignPageHeader />
           <ModalBody>
-            <VStack alignItems="start" spacing="12px">
-              <NFTTile nft={nft} />
-
-              <Flex justifyContent="space-between" width="full" color={color("700")}>
-                <Flex alignItems="center" gap="4px">
+            <VStack alignItems="start" spacing="24px">
+              <Flex flexDirection="column" gap="12px" width="full" color={color("700")}>
+                <NFTTile nft={nft} />
+                <Flex gap="4px">
                   <Heading size="md">Quantity:</Heading>
-
-                  <Flex alignItems="center">
-                    <Text data-testid="nft-amount">{amount}</Text>
-                    <Text color={color("400")}>/</Text>
-                    <Text data-testid="nft-owned">{nft.balance}</Text>
-                  </Flex>
+                  <Text data-testid="nft-amount">{amount}</Text>
+                  <Text color={color("400")}>/</Text>
+                  <Text marginRight="auto" data-testid="nft-owned">
+                    {nft.balance}
+                  </Text>
+                  <SignPageFee fee={fee} />
                 </Flex>
-
-                <SignPageFee fee={fee} />
               </Flex>
-
-              <Divider marginY="12px" />
-
-              <Heading color={color("900")} size="md">
-                From
-              </Heading>
-              <AddressTile address={operations.sender.address} />
-
-              <Heading color={color("900")} size="md">
-                To
-              </Heading>
-              <AddressTile address={recipient} />
+              <Divider />
+              <FormControl>
+                <FormLabel>From</FormLabel>
+                <AddressTile address={operations.sender.address} />
+              </FormControl>
+              <FormControl>
+                <FormLabel>To</FormLabel>
+                <AddressTile address={recipient} />
+              </FormControl>
             </VStack>
           </ModalBody>
-
           <ModalFooter>
             <SignButton
               isDisabled={estimationFailed}

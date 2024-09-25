@@ -14,7 +14,7 @@ export const NFTTile = ({ nft }: { nft: NFT }) => {
       alignItems="center"
       width="100%"
       padding="15px 16px"
-      background={color("50")}
+      background={color("100")}
       borderRadius="4px"
       aria-label="nft"
       data-testid="nft-name"

@@ -1,4 +1,11 @@
-import { Flex, FormLabel, ModalBody, ModalContent, ModalFooter } from "@chakra-ui/react";
+import {
+  Flex,
+  FormControl,
+  FormLabel,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+} from "@chakra-ui/react";
 import { type FA12TokenBalance, type FA2TokenBalance, type TokenTransfer } from "@umami/core";
 import { FormProvider } from "react-hook-form";
 
@@ -25,19 +32,22 @@ export const SignPage = (props: SignPageProps<{ token: FA12TokenBalance | FA2Tok
       <ModalContent>
         <form>
           <SignPageHeader />
-          <ModalBody>
-            <TokenTile amount={amount} token={token} />
-
-            <Flex justifyContent="end" marginTop="12px" paddingX="4px">
-              <SignPageFee fee={fee} />
-            </Flex>
-
-            <FormLabel width="full">From</FormLabel>
-            <AddressTile address={operations.sender.address} />
-
-            <FormLabel width="full">To</FormLabel>
-            <AddressTile address={recipient} />
-
+          <ModalBody gap="24px">
+            <FormControl>
+              <FormLabel width="full">Amount</FormLabel>
+              <TokenTile amount={amount} token={token} />
+              <Flex justifyContent="end" marginTop="12px" paddingX="4px">
+                <SignPageFee fee={fee} />
+              </Flex>
+            </FormControl>
+            <FormControl>
+              <FormLabel width="full">From</FormLabel>
+              <AddressTile address={operations.sender.address} />
+            </FormControl>
+            <FormControl>
+              <FormLabel width="full">To</FormLabel>
+              <AddressTile address={recipient} />
+            </FormControl>
             <AdvancedSettingsAccordion />
           </ModalBody>
           <ModalFooter>

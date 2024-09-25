@@ -54,6 +54,7 @@ export { default as SelectorIcon } from "./selector.svg";
 export { default as SettingsIcon } from "./settings.svg";
 export { default as TagIcon } from "./tag.svg";
 export { default as TezosLogoIcon } from "./tezos-logo.svg";
+export { default as TezIcon } from "./tez.svg";
 export { default as ThreeDotsIcon } from "./three-dots.svg";
 export { default as TrashIcon } from "./trash.svg";
 export { default as TwitterIcon } from "./twitter.svg";

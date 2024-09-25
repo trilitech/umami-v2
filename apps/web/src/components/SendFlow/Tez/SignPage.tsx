@@ -1,4 +1,11 @@
-import { Flex, FormLabel, ModalBody, ModalContent, ModalFooter } from "@chakra-ui/react";
+import {
+  Flex,
+  FormControl,
+  FormLabel,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+} from "@chakra-ui/react";
 import { type TezTransfer } from "@umami/core";
 import { FormProvider } from "react-hook-form";
 
@@ -22,23 +29,22 @@ export const SignPage = (props: SignPageProps) => {
       <ModalContent>
         <form>
           <SignPageHeader />
-          <ModalBody>
-            <TezTile mutezAmount={mutezAmount} />
-
-            <Flex justifyContent="end" width="full" marginTop="12px">
-              <SignPageFee fee={fee} />
-            </Flex>
-
-            <FormLabel width="full" marginTop="24px">
-              From
-            </FormLabel>
-            <AddressTile address={operations.sender.address} />
-
-            <FormLabel width="full" marginTop="24px">
-              To
-            </FormLabel>
-            <AddressTile address={recipient} />
-
+          <ModalBody gap="24px">
+            <FormControl>
+              <FormLabel width="full">Amount</FormLabel>
+              <TezTile mutezAmount={mutezAmount} />
+              <Flex justifyContent="end" width="full" marginTop="12px">
+                <SignPageFee fee={fee} />
+              </Flex>
+            </FormControl>
+            <FormControl>
+              <FormLabel width="full">From</FormLabel>
+              <AddressTile address={operations.sender.address} />
+            </FormControl>
+            <FormControl>
+              <FormLabel width="full">To</FormLabel>
+              <AddressTile address={recipient} />
+            </FormControl>
             <AdvancedSettingsAccordion />
           </ModalBody>
           <ModalFooter>

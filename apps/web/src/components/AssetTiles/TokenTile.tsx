@@ -1,4 +1,4 @@
-import { AspectRatio, Flex, type FlexProps, Text } from "@chakra-ui/react";
+import { AspectRatio, Flex, type FlexProps, Heading, Text } from "@chakra-ui/react";
 import {
   type FA12TokenBalance,
   type FA2TokenBalance,
@@ -6,7 +6,6 @@ import {
   tokenSymbolSafe,
 } from "@umami/core";
 
-import { PrettyNumber } from "./PrettyNumber";
 import { TokenIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
 
@@ -26,26 +25,25 @@ export const TokenTile = ({
       alignItems="center"
       justifyContent="start"
       width="full"
-      padding="15px"
+      padding="16px"
       background={color("100")}
-      borderRadius="4px"
+      borderRadius="6px"
       data-testid="token-tile"
       {...flexProps}
     >
       <Flex alignItems="center">
-        <AspectRatio width="30px" marginRight="12px" ratio={1}>
-          <TokenIcon
-            padding="6.25px"
-            background={color("200")}
-            borderRadius="4px"
-            contract={contract}
-          />
+        <AspectRatio width="42px" marginRight="12px" ratio={1}>
+          <TokenIcon boxSize="42px" contract={contract} rounded="full" />
         </AspectRatio>
       </Flex>
-      <PrettyNumber number={prettyAmount} />
-      <Text marginLeft="4px" size="sm">
-        {symbol}
-      </Text>
+      <Flex alignItems="baseline">
+        <Heading color={color("900")} data-testid="pretty-number" size="md">
+          {prettyAmount}
+        </Heading>
+        <Text marginLeft="4px" color={color("900")} size="xl">
+          {symbol}
+        </Text>
+      </Flex>
     </Flex>
   );
 };
