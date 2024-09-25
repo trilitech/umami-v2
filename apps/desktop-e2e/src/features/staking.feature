@@ -8,8 +8,8 @@ Feature: Staking
   # stake - unstake - finalize unstake
   Scenario: I delegate to a baker
     Given I have account
-      | type       | label | secretKey                                              | password |
-      | secret_key | Alice | edsk3QoqBuvdamxouPhin7swCvkQNgq4jP5KZPbwWNnwdZpSpJiEbq | 12345678 |
+      | type       | label | secretKey                                              | password            |
+      | secret_key | Alice | edsk3QoqBuvdamxouPhin7swCvkQNgq4jP5KZPbwWNnwdZpSpJiEbq | Qwerty123123!23vcxz |
     And I am on an Accounts page
     When I open account drawer for "Alice"
     And I delegate to "baker1"
@@ -23,8 +23,8 @@ Feature: Staking
 
   Scenario: I undelegate
     Given I have account
-      | type       | label | secretKey                                              | password |
-      | secret_key | Alice | edsk3QoqBuvdamxouPhin7swCvkQNgq4jP5KZPbwWNnwdZpSpJiEbq | 12345678 |
+      | type       | label | secretKey                                              | password            |
+      | secret_key | Alice | edsk3QoqBuvdamxouPhin7swCvkQNgq4jP5KZPbwWNnwdZpSpJiEbq | Qwerty123123!23vcxz |
     And I am on an Accounts page
     When I open account drawer for "Alice"
     And I delegate to "baker1"
@@ -44,8 +44,8 @@ Feature: Staking
 
   Scenario: I stake to a baker
     Given I have account
-      | type       | label | secretKey                                              | password |
-      | secret_key | Alice | edsk3QoqBuvdamxouPhin7swCvkQNgq4jP5KZPbwWNnwdZpSpJiEbq | 12345678 |
+      | type       | label | secretKey                                              | password            |
+      | secret_key | Alice | edsk3QoqBuvdamxouPhin7swCvkQNgq4jP5KZPbwWNnwdZpSpJiEbq | Qwerty123123!23vcxz |
     And I am on an Accounts page
     Given baker "baker1" sets delegation parameters
       | limit-of-staking-over-baking | 5    |
