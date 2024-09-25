@@ -4,7 +4,6 @@ const path = require("path");
 const url = require("url");
 const process = require("process");
 const { autoUpdater } = require("electron-updater");
-
 const APP_PROTOCOL = "app";
 const APP_HOST = "assets";
 
@@ -66,6 +65,38 @@ function createWindow() {
     );
   });
 
+  mainWindow.webContents.session.webRequest.onHeadersReceived((details, callback) => {
+    callback({
+      responseHeaders: {
+        ...details.responseHeaders,
+        "Content-Security-Policy": ["script-src 'self'"],
+      },
+    });
+  });
+
+  mainWindow.webContents.session.setPermissionCheckHandler((_, permission) => {
+    switch (permission) {
+      case "usb":
+      case "clipboard-sanitized-write":
+      case "background-sync":
+      case "accessibility-events":
+        return true;
+      default:
+        return false;
+    }
+  });
+
+  mainWindow.webContents.session.setPermissionRequestHandler((_, permission, callback) => {
+    switch (permission) {
+      case "clipboard-sanitized-write":
+      case "clipboard-read":
+        callback(true);
+        break;
+      default:
+        callback(false);
+    }
+  });
+
   protocol.handle(APP_PROTOCOL, async req => {
     try {
       const uri = new URL(decodeURI(req.url));
@@ -104,15 +135,6 @@ function createWindow() {
       if (index !== -1) {
         mainWindow.webContents.send("deeplinkURL", argv[index]);
       }
-    }
-  });
-
-  mainWindow.webContents.setWindowOpenHandler(details => {
-    if (details.url.startsWith("https") || details.url.startsWith("mailto")) {
-      shell.openExternal(details.url);
-      return { action: "deny" };
-    } else {
-      return { action: "allow" };
     }
   });
 
