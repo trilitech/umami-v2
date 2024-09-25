@@ -25,7 +25,7 @@ type ChangePasswordFormValues = {
 
 export const ChangePasswordForm = () => {
   const { onClose } = useDynamicModalContext();
-  const form = useForm<ChangePasswordFormValues>({ mode: "onBlur" });
+  const form = useForm<ChangePasswordFormValues>({ mode: "all" });
   const toast = useToast();
   const dispatch = useAppDispatch();
   const { handleAsyncAction, isLoading } = useAsyncActionHandler();
@@ -66,6 +66,7 @@ export const ChangePasswordForm = () => {
                 data-testid="current-password"
                 inputName="currentPassword"
                 label="Current Password"
+                minLength={0}
                 placeholder="Enter your current password"
                 required="Current password is required"
               />
@@ -78,6 +79,7 @@ export const ChangePasswordForm = () => {
 
             <FormControl isInvalid={!!errors.newPassword} marginY={6}>
               <PasswordInput
+                checkPasswordStrength
                 data-testid="new-password"
                 inputName="newPassword"
                 label="New Password"
@@ -99,6 +101,7 @@ export const ChangePasswordForm = () => {
                 data-testid="new-password-confirmation"
                 inputName="newPasswordConfirmation"
                 label="Confirm New Password"
+                minLength={0}
                 placeholder="Confirm new password"
                 required="Confirmation is required"
                 validate={(val: string) =>

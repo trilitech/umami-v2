@@ -26,7 +26,7 @@ type PasswordInputProps<T extends FieldValues, U extends Path<T>> = {
   required?: string | boolean;
   checkPasswordStrength?: boolean;
   minLength?: RegisterOptions<T, U>["minLength"];
-  validate?: RegisterOptions<T, U>["validate"];
+  validate?: (val: string) => string | boolean;
 } & InputProps & {
     "data-testid"?: string;
   };
@@ -46,12 +46,28 @@ export const PasswordInput = <T extends FieldValues, U extends Path<T>>({
     formState: { errors },
   } = useFormContext<T>();
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const { validatePassword, PasswordStrengthBar } = usePasswordValidation();
+  const { validatePassword, PasswordStrengthBar } = usePasswordValidation({
+    inputName,
+  });
 
   const color = useColor();
 
   const error = errors[inputName];
   const errorMessage = error?.message as string;
+
+  const handleValidate = (val: string) => {
+    if (validate) {
+      const validateResult = validate(val);
+
+      if (checkPasswordStrength && validateResult === true) {
+        return validatePassword(val);
+      }
+
+      return validateResult;
+    } else if (checkPasswordStrength) {
+      return validatePassword(val);
+    }
+  };
 
   return (
     <FormControl isInvalid={!!error}>
@@ -71,7 +87,7 @@ export const PasswordInput = <T extends FieldValues, U extends Path<T>>({
                     message: `Your password must be at least ${minLength} characters long`,
                   }
                 : undefined,
-            validate: checkPasswordStrength ? validatePassword : validate,
+            validate: handleValidate,
           })}
           {...rest}
         />

@@ -9,13 +9,14 @@ const DEFAULT_COLOR_SCHEME = "gray.100";
 type PasswordStrengthBarProps = {
   score: number;
   colorScheme: string;
+  inputName: string;
 };
 
-const PasswordStrengthBar = ({ score, colorScheme }: PasswordStrengthBarProps) => {
+const PasswordStrengthBar = ({ score, colorScheme, inputName }: PasswordStrengthBarProps) => {
   const form = useFormContext();
 
   const colors = [colorScheme, "red.500", "yellow.500", "green.500"];
-  const passwordError = form.formState.errors.password;
+  const passwordError = form.formState.errors[inputName];
 
   const getColor = (index: number) => {
     switch (score) {
@@ -76,15 +77,17 @@ const PasswordStrengthBar = ({ score, colorScheme }: PasswordStrengthBarProps) =
 
 type UsePasswordValidationProps = {
   colorScheme?: string;
+  inputName?: string;
 };
 
 export const usePasswordValidation = ({
   colorScheme = DEFAULT_COLOR_SCHEME,
+  inputName = "password",
 }: UsePasswordValidationProps = {}) => {
   const [passwordScore, setPasswordScore] = useState(DEFAULT_SCORE);
   const form = useFormContext();
 
-  const passwordError = form.formState.errors.password;
+  const passwordError = form.formState.errors[inputName];
 
   useEffect(() => {
     if (passwordError?.type === "required") {
@@ -105,6 +108,8 @@ export const usePasswordValidation = ({
 
   return {
     validatePassword,
-    PasswordStrengthBar: <PasswordStrengthBar colorScheme={colorScheme} score={passwordScore} />,
+    PasswordStrengthBar: (
+      <PasswordStrengthBar colorScheme={colorScheme} inputName={inputName} score={passwordScore} />
+    ),
   };
 };
