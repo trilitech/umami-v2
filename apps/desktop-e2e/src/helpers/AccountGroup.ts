@@ -1,5 +1,5 @@
 import { InMemorySigner } from "@taquito/signer";
-import { type RawPkh, derivePublicKeyPair, getFingerPrint, makeDerivationPath } from "@umami/tezos";
+import { type RawPkh, derivePublicKeyPair, makeDerivationPath } from "@umami/tezos";
 import lodash from "lodash";
 
 export type AccountGroup = {
@@ -46,12 +46,11 @@ export class AccountGroupBuilder {
     this.derivationPathTemplate = derivationPathTemplate;
   }
 
-  async setSeedPhrase(seedPhrase: string[]): Promise<void> {
+  setSeedPhrase(seedPhrase: string[]): void {
     if (this.accountGroup.type !== "mnemonic") {
       throw new Error(`Seed phrase is not used for ${this.accountGroup.type} accounts}`);
     }
     this.seedPhrase = seedPhrase;
-    this.accountGroup.label = `Seedphrase ${await getFingerPrint(seedPhrase.join(" "))}`;
   }
 
   getSeedPhrase = () => this.seedPhrase;

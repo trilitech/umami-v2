@@ -32,7 +32,7 @@ Then("I record generated seedphrase", async function (this: CustomWorld) {
   for (let i = 0; i < 24; i++) {
     words.push(await this.page.getByTestId(`mnemonic-word-${i}`).innerText());
   }
-  await accountGroupBuilder.setSeedPhrase(words);
+  accountGroupBuilder.setSeedPhrase(words);
 });
 
 When("I enter recorded seedphrase", async function (this: CustomWorld) {
@@ -46,7 +46,7 @@ When("I enter recorded seedphrase", async function (this: CustomWorld) {
 });
 
 When("I enter existing seedphrase", async function (this: CustomWorld) {
-  await accountGroupBuilder.setSeedPhrase(existingSeedphrase.split(" "));
+  accountGroupBuilder.setSeedPhrase(existingSeedphrase.split(" "));
   for (let i = 0; i < 24; i++) {
     await this.page.getByRole("textbox").nth(i).fill(accountGroupBuilder.getSeedPhrase()[i]);
   }

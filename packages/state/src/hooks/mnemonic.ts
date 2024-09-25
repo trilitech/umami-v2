@@ -4,7 +4,7 @@ import {
   type Network,
   type PublicKeyPair,
   derivePublicKeyPair,
-  getFingerPrint,
+  generateHash,
   isAccountRevealed,
   makeDerivationPath,
 } from "@umami/tezos";
@@ -89,7 +89,7 @@ export const useRestoreRevealedMnemonicAccounts = () => {
       curve,
       network
     );
-    const seedFingerPrint = await getFingerPrint(mnemonic);
+    const seedFingerPrint = await generateHash();
     const accountLabels = getNextAvailableAccountLabels(label, pubKeyPairs.length);
 
     return pubKeyPairs.map(({ pk, pkh }, accountIndex) => ({

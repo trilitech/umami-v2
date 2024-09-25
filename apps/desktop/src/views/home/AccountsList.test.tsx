@@ -136,7 +136,7 @@ describe("<AccountsList />", () => {
     restore();
     render(<AccountsList />, { store });
     expect(screen.getAllByTestId("account-tile-container")).toHaveLength(7);
-    expect(screen.getAllByTestId(/account-group-title/)).toHaveLength(4);
+    expect(screen.getAllByTestId(/group-title/)).toHaveLength(4);
 
     const socialAccounts = screen.getByTestId(/account-group-social/i);
     expect(within(socialAccounts).getAllByTestId("account-tile-container")).toHaveLength(2);

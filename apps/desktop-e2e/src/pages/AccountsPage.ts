@@ -32,34 +32,28 @@ export class AccountsPage {
     };
   }
 
+  async getAllGroups(): Promise<AccountGroup[]> {
+    const groupElements = await this.page.getByTestId(/account-group-.*/).all();
+    const groups = [];
+    for (const groupElement of groupElements) {
+      groups.push(await buildGroup(groupElement));
+    }
+    return groups;
+  }
+
   async getGroup(groupTitle: string): Promise<AccountGroup> {
     const group = this.page.getByTestId(`account-group-${groupTitle}`);
-
-    const label = await group.getByTestId("account-group-title").innerText();
-
-    const accountTiles = await group.getByTestId("account-identifier").all();
-    const accounts: Account[] = [];
-    for (const accountTile of accountTiles) {
-      const name = await accountTile.getByRole("heading", { level: 2 }).innerText();
-      const pkh = await accountTile.getByTestId("short-address").innerText();
-
-      // pkh here will be a shortened version of the real pkh
-      accounts.push({ name, pkh });
-    }
-
-    const groupType = /Secret Key/.test(label) ? "secret_key" : "mnemonic";
-
-    return {
-      type: groupType,
-      label,
-      accounts,
-    };
+    return buildGroup(group);
   }
 
   async checkAccountGroup(expectedGroup: AccountGroup): Promise<void> {
-    const group = await this.getGroup(expectedGroup.label);
+    const allGroups = await this.getAllGroups();
 
-    expect(group.label).toEqual(expectedGroup.label);
+    const group = allGroups.find(group =>
+      group.accounts.some(acc => acc.pkh === formatPkh(expectedGroup.accounts[0].pkh))
+    )!;
+
+    expect(group).not.toBeUndefined();
     expect(group.accounts.length).toEqual(expectedGroup.accounts.length);
     for (let i = 0; i < group.accounts.length; i++) {
       expect(group.accounts[i].name).toEqual(expectedGroup.accounts[i].name);
@@ -67,3 +61,25 @@ export class AccountsPage {
     }
   }
 }
+
+const buildGroup = async (groupElement: Locator): Promise<AccountGroup> => {
+  const label = await groupElement.getByTestId("group-title").innerText();
+
+  const accountTiles = await groupElement.getByTestId("account-identifier").all();
+  const accounts: Account[] = [];
+  for (const accountTile of accountTiles) {
+    const name = await accountTile.getByRole("heading", { level: 2 }).innerText();
+    const pkh = await accountTile.getByTestId("short-address").innerText();
+
+    // pkh here will be a shortened version of the real pkh
+    accounts.push({ name, pkh });
+  }
+
+  const groupType = /Secret Key/.test(label) ? "secret_key" : "mnemonic";
+
+  return {
+    type: groupType,
+    label,
+    accounts,
+  };
+};

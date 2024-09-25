@@ -8,7 +8,7 @@ import {
 } from "@umami/core";
 import { decrypt, encrypt } from "@umami/crypto";
 import { type IDP } from "@umami/social-auth";
-import { derivePublicKeyPair, getFingerPrint, makeDerivationPath } from "@umami/tezos";
+import { derivePublicKeyPair, makeDerivationPath } from "@umami/tezos";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 
@@ -62,7 +62,6 @@ export const useRestoreFromMnemonic = () => {
     curve: Curves;
     isVerified?: boolean;
   }) => {
-    const seedFingerprint = await getFingerPrint(mnemonic);
     const accounts = await restoreRevealedMnemonicAccounts(
       mnemonic,
       network,
@@ -75,7 +74,7 @@ export const useRestoreFromMnemonic = () => {
 
     dispatch(
       accountsActions.addMnemonicAccounts({
-        seedFingerprint,
+        seedFingerprint: accounts[0].seedFingerPrint,
         accounts,
         encryptedMnemonic,
       })
@@ -91,7 +90,7 @@ export const useRestoreFromMnemonic = () => {
  *
  * New account is added to the {@link accountsSlice}.
  *
- * @param fingerPrint - Hash of the mnemonic. Generated with {@link getFingerPrint}. We use it to group together accounts derived from the same mnemonic
+ * @param fingerPrint - Hash of the mnemonic. Generated with {@link generateHash}. We use it to group together accounts derived from the same mnemonic
  * @param password - User's password, used for decrypting the mnemonic.
  * @param label - Account name prefix, used to create a unique account name.
  */

@@ -5,18 +5,18 @@ import { type AccountGroup, AccountGroupBuilder } from "./AccountGroup";
 
 export const v1BackedupAccountGroups = async () => {
   const expectedGroups: AccountGroup[] = [];
-  // Seedphrase 5fd091e1
+
   let accountGroupBuilder = new AccountGroupBuilder("mnemonic", 1);
   accountGroupBuilder.setAllAccountNames("Account");
-  await accountGroupBuilder.setSeedPhrase(mnemonic1.split(" "));
+  accountGroupBuilder.setSeedPhrase(mnemonic1.split(" "));
   accountGroupBuilder.setDerivationPathTemplate(DEFAULT_DERIVATION_PATH_TEMPLATE.value);
   expectedGroups.push(await accountGroupBuilder.build());
-  // Seedphrase 1b406abf
+
   const mnemonic =
     "top skirt fan helmet ankle pave original ivory push song bridge broom hawk food parade nation involve sunny rely security ladder beach gown imitate";
   accountGroupBuilder = new AccountGroupBuilder("mnemonic", 1);
   accountGroupBuilder.setAllAccountNames("Account");
-  await accountGroupBuilder.setSeedPhrase(mnemonic.split(" "));
+  accountGroupBuilder.setSeedPhrase(mnemonic.split(" "));
   accountGroupBuilder.setDerivationPathTemplate(DEFAULT_DERIVATION_PATH_TEMPLATE.value);
   expectedGroups.push(await accountGroupBuilder.build());
   // TODO: add related multisig accounts.
@@ -32,7 +32,7 @@ export const v2BackedupAccountGroups = async () => {
   accountGroupBuilder.setAccountName("Restored account 2", 2);
   accountGroupBuilder.setAccountName("htrthrh", 3);
   accountGroupBuilder.setAccountName("12asd", 4);
-  await accountGroupBuilder.setSeedPhrase(mnemonic1.split(" "));
+  accountGroupBuilder.setSeedPhrase(mnemonic1.split(" "));
   accountGroupBuilder.setDerivationPathTemplate(DEFAULT_DERIVATION_PATH_TEMPLATE.value);
   expectedGroups.push(await accountGroupBuilder.build());
   // Seedphrase fa3f3982
@@ -40,7 +40,7 @@ export const v2BackedupAccountGroups = async () => {
     "cluster umbrella blade second miss margin jazz joke blur column bulk monkey wrestle spell day produce noble front alley kangaroo auction sight truck other";
   accountGroupBuilder = new AccountGroupBuilder("mnemonic", 1);
   accountGroupBuilder.setAccountName("test");
-  await accountGroupBuilder.setSeedPhrase(mnemonic2.split(" "));
+  accountGroupBuilder.setSeedPhrase(mnemonic2.split(" "));
   accountGroupBuilder.setDerivationPathTemplate(DEFAULT_DERIVATION_PATH_TEMPLATE.value);
   expectedGroups.push(await accountGroupBuilder.build());
   // Seedphrase 2263e19b
@@ -48,7 +48,7 @@ export const v2BackedupAccountGroups = async () => {
     "few gauge word visa april now grace allow ozone box loop pudding clap barely loud casino ugly demise bottom urge toast fan wedding exclude";
   accountGroupBuilder = new AccountGroupBuilder("mnemonic", 1);
   accountGroupBuilder.setAccountName("test2");
-  await accountGroupBuilder.setSeedPhrase(mnemonic3.split(" "));
+  accountGroupBuilder.setSeedPhrase(mnemonic3.split(" "));
   accountGroupBuilder.setDerivationPathTemplate(DEFAULT_DERIVATION_PATH_TEMPLATE.value);
   expectedGroups.push(await accountGroupBuilder.build());
   // TODO: add ledger account

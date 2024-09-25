@@ -1,7 +1,7 @@
 import { type MnemonicAccount, mockImplicitAccount } from "@umami/core";
 import { type EncryptedData, decrypt, encrypt } from "@umami/crypto";
 import { mnemonic1, mnemonic2 } from "@umami/test-utils";
-import { getFingerPrint } from "@umami/tezos";
+import { generateHash } from "@umami/tezos";
 
 import { changeMnemonicPassword } from "./changeMnemonicPassword";
 import { accountsActions } from "../slices/accounts/accounts";
@@ -16,8 +16,15 @@ beforeEach(() => {
   store = makeStore();
 });
 
+let fingerPrint1: string;
+let fingerPrint2: string;
+
+beforeAll(async () => {
+  fingerPrint1 = await generateHash();
+  fingerPrint2 = await generateHash();
+});
+
 beforeEach(async () => {
-  const fingerPrint1 = await getFingerPrint(mnemonic1);
   store.dispatch(
     accountsActions.addMnemonicAccounts({
       seedFingerprint: fingerPrint1,
@@ -29,7 +36,6 @@ beforeEach(async () => {
     })
   );
 
-  const fingerPrint2 = await getFingerPrint(mnemonic2);
   store.dispatch(
     accountsActions.addMnemonicAccounts({
       seedFingerprint: fingerPrint2,
@@ -43,9 +49,6 @@ beforeEach(async () => {
 
 describe("changeMnemonicPassword", () => {
   it("should update password", async () => {
-    const fingerPrint1 = await getFingerPrint(mnemonic1);
-    const fingerPrint2 = await getFingerPrint(mnemonic2);
-
     const action = await store.dispatch<any>(
       changeMnemonicPassword({ currentPassword, newPassword })
     );
@@ -64,9 +67,6 @@ describe("changeMnemonicPassword", () => {
   });
 
   it("should throw with old password", async () => {
-    const fingerPrint1 = await getFingerPrint(mnemonic1);
-    const fingerPrint2 = await getFingerPrint(mnemonic2);
-
     const action: {
       type: string;
       payload: { newEncryptedMnemonics: Record<string, EncryptedData | undefined> };
