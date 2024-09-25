@@ -73,7 +73,7 @@ export const SetupPassword = ({ mode }: SetupPasswordProps) => {
   const isPasswordSet = useIsPasswordSet();
 
   const form = useMultiForm<FormFields>({
-    mode: "onChange",
+    mode: "all",
     defaultValues: {
       derivationPath: defaultDerivationPathTemplate,
       curve: "ed25519",
@@ -110,6 +110,7 @@ export const SetupPassword = ({ mode }: SetupPasswordProps) => {
                 checkPasswordStrength={!isPasswordSet}
                 inputName="password"
                 label={isPasswordSet ? "Password" : "Set Password"}
+                required="Password is required"
               />
               {!isPasswordSet && (
                 <PasswordInput

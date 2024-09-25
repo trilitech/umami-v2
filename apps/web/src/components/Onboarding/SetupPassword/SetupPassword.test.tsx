@@ -31,7 +31,7 @@ jest.mock("@umami/state", () => ({
   useIsPasswordSet: jest.fn(),
 }));
 
-const password = "password";
+const password = "Qwerty123123!23vcxz";
 
 beforeEach(() => {
   jest.mocked(useGetDecryptedMnemonic).mockReturnValue(() => Promise.resolve(mnemonic1));

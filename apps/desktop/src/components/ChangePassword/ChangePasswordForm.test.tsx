@@ -46,7 +46,7 @@ describe("ChangePassword Form", () => {
       });
     });
 
-    it("requires 8 characters", async () => {
+    it("requires 12 characters", async () => {
       render(fixture());
 
       const newPasswordInput = screen.getByTestId("new-password");
@@ -55,7 +55,7 @@ describe("ChangePassword Form", () => {
 
       await waitFor(() => {
         expect(screen.getByTestId("new-password-error")).toHaveTextContent(
-          "Your password must be at least 8 characters long"
+          "Your password must be at least 12 characters long"
         );
       });
     });
