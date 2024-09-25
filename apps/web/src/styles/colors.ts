@@ -6,7 +6,8 @@ const light = {
   green: "#38A169",
   greenDark: "#25855A",
   bg: "#E0E0FF",
-  bgGradient: "linear-gradient(67deg, rgba(226, 232, 240, 0.7) 0%, #E2E8F0 100%);",
+  bgGradient:
+    "linear-gradient(67deg, rgba(248, 248, 255, 0.70) 0%, rgba(248, 248, 255, 0.96) 29.5%, #F8F8FF 100%);",
   bgMaskColor: "#F8F8FF",
   grey: {
     black: "#121224",
