@@ -29,7 +29,7 @@ jest.mock("./env", () => ({ IS_DEV: false }));
 jest.mock("@umami/components", () => ({
   ...jest.requireActual("@umami/components"),
   usePasswordValidation: () => ({
-    validatePassword: () => true,
+    validatePasswordStrength: () => true,
     PasswordStrengthBar: <div>PasswordStrengthBar</div>,
   }),
 }));

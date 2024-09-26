@@ -79,9 +79,9 @@ export const ChangePasswordForm = () => {
 
             <FormControl isInvalid={!!errors.newPassword} marginY={6}>
               <PasswordInput
-                checkPasswordStrength
                 data-testid="new-password"
                 inputName="newPassword"
+                isCheckPasswordStrengthEnabled
                 label="New Password"
                 placeholder="Enter new password"
                 required="New password is required"

@@ -4,18 +4,23 @@ import { useFormContext } from "react-hook-form";
 import zxcvbn from "zxcvbn";
 
 const DEFAULT_SCORE = 0;
-const DEFAULT_COLOR_SCHEME = "gray.100";
+const DEFAULT_COLOR = "gray.100";
 
 type PasswordStrengthBarProps = {
   score: number;
-  colorScheme: string;
+  color: string;
   inputName: string;
 };
 
-const PasswordStrengthBar = ({ score, colorScheme, inputName }: PasswordStrengthBarProps) => {
+type UsePasswordValidationProps = {
+  color?: string;
+  inputName?: string;
+};
+
+const PasswordStrengthBar = ({ score, color, inputName }: PasswordStrengthBarProps) => {
   const form = useFormContext();
 
-  const colors = [colorScheme, "red.500", "yellow.500", "green.500"];
+  const colors = [color, "red.500", "yellow.500", "green.500"];
   const passwordError = form.formState.errors[inputName];
 
   const getColor = (index: number) => {
@@ -75,13 +80,8 @@ const PasswordStrengthBar = ({ score, colorScheme, inputName }: PasswordStrength
   );
 };
 
-type UsePasswordValidationProps = {
-  colorScheme?: string;
-  inputName?: string;
-};
-
 export const usePasswordValidation = ({
-  colorScheme = DEFAULT_COLOR_SCHEME,
+  color = DEFAULT_COLOR,
   inputName = "password",
 }: UsePasswordValidationProps = {}) => {
   const [passwordScore, setPasswordScore] = useState(DEFAULT_SCORE);
@@ -95,7 +95,7 @@ export const usePasswordValidation = ({
     }
   }, [passwordError]);
 
-  const validatePassword = (value: string) => {
+  const validatePasswordStrength = (value: string) => {
     const result = zxcvbn(value);
 
     setPasswordScore(result.score);
@@ -107,9 +107,9 @@ export const usePasswordValidation = ({
   };
 
   return {
-    validatePassword,
+    validatePasswordStrength,
     PasswordStrengthBar: (
-      <PasswordStrengthBar colorScheme={colorScheme} inputName={inputName} score={passwordScore} />
+      <PasswordStrengthBar color={color} inputName={inputName} score={passwordScore} />
     ),
   };
 };

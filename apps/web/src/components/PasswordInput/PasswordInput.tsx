@@ -24,7 +24,7 @@ type PasswordInputProps<T extends FieldValues, U extends Path<T>> = {
   label?: string;
   placeholder?: string;
   required?: string | boolean;
-  checkPasswordStrength?: boolean;
+  isCheckPasswordStrengthEnabled?: boolean;
   minLength?: RegisterOptions<T, U>["minLength"];
   validate?: (val: string) => string | boolean;
 } & InputProps & {
@@ -37,7 +37,7 @@ export const PasswordInput = <T extends FieldValues, U extends Path<T>>({
   placeholder = "Enter your password",
   required = "Password is required",
   minLength = MIN_LENGTH,
-  checkPasswordStrength = false,
+  isCheckPasswordStrengthEnabled = false,
   validate,
   ...rest
 }: PasswordInputProps<T, U>) => {
@@ -46,7 +46,7 @@ export const PasswordInput = <T extends FieldValues, U extends Path<T>>({
     formState: { errors },
   } = useFormContext<T>();
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const { validatePassword, PasswordStrengthBar } = usePasswordValidation({
+  const { validatePasswordStrength, PasswordStrengthBar } = usePasswordValidation({
     inputName,
   });
 
@@ -59,13 +59,13 @@ export const PasswordInput = <T extends FieldValues, U extends Path<T>>({
     if (validate) {
       const validateResult = validate(val);
 
-      if (checkPasswordStrength && validateResult === true) {
-        return validatePassword(val);
+      if (isCheckPasswordStrengthEnabled && validateResult === true) {
+        return validatePasswordStrength(val);
       }
 
       return validateResult;
-    } else if (checkPasswordStrength) {
-      return validatePassword(val);
+    } else if (isCheckPasswordStrengthEnabled) {
+      return validatePasswordStrength(val);
     }
   };
 
@@ -108,7 +108,7 @@ export const PasswordInput = <T extends FieldValues, U extends Path<T>>({
           />
         </InputRightElement>
       </InputGroup>
-      {checkPasswordStrength && PasswordStrengthBar}
+      {isCheckPasswordStrengthEnabled && PasswordStrengthBar}
       {error && (
         <FormErrorMessage data-testid={`${rest["data-testid"]}-error`}>
           {errorMessage}

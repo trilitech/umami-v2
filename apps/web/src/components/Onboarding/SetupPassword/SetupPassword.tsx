@@ -107,8 +107,8 @@ export const SetupPassword = ({ mode }: SetupPasswordProps) => {
           <ModalBody>
             <Flex flexDirection="column" gap="24px">
               <PasswordInput
-                checkPasswordStrength={!isPasswordSet}
                 inputName="password"
+                isCheckPasswordStrengthEnabled={!isPasswordSet}
                 label={isPasswordSet ? "Password" : "Set Password"}
                 required="Password is required"
               />

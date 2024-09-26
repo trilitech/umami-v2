@@ -40,9 +40,9 @@ export const EnterAndConfirmPassword = ({
         <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
           <FormControl isInvalid={!!errors.password}>
             <PasswordInput
-              checkPasswordStrength
               data-testid="password"
               inputName="password"
+              isCheckPasswordStrengthEnabled
               placeholder="Enter master password"
             />
             {errors.password && <FormErrorMessage>{errors.password.message}</FormErrorMessage>}

@@ -11,7 +11,7 @@ const password = {
 };
 
 const TestComponent = () => {
-  const { validatePassword, PasswordStrengthBar } = usePasswordValidation();
+  const { validatePasswordStrength, PasswordStrengthBar } = usePasswordValidation();
   const { register } = useFormContext();
 
   return (
@@ -21,7 +21,7 @@ const TestComponent = () => {
         id="password"
         type="text"
         {...register("password", {
-          validate: validatePassword,
+          validate: validatePasswordStrength,
         })}
       />
       {PasswordStrengthBar}

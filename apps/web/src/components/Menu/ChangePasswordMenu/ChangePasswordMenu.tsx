@@ -43,9 +43,9 @@ export const ChangePasswordMenu = () => {
             />
             <Divider />
             <PasswordInput
-              checkPasswordStrength
               data-testid="new-password"
               inputName="newPassword"
+              isCheckPasswordStrengthEnabled
               label="New Password"
               placeholder="New password"
               required="New password is required"

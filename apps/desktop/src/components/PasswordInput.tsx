@@ -21,7 +21,7 @@ type PasswordInputProps<T extends FieldValues, U extends Path<T>> = {
   inputName: U;
   label?: string;
   placeholder?: string;
-  checkPasswordStrength?: boolean;
+  isCheckPasswordStrengthEnabled?: boolean;
   required?: string | boolean;
   minLength?: RegisterOptions<T, U>["minLength"];
   validate?: (val: string) => string | boolean;
@@ -33,29 +33,29 @@ export const PasswordInput = <T extends FieldValues, U extends Path<T>>({
   label = "Password",
   placeholder = "Enter your password",
   required = "Password is required",
-  checkPasswordStrength = false,
+  isCheckPasswordStrengthEnabled = false,
   minLength = MIN_LENGTH,
   validate,
   ...rest
 }: PasswordInputProps<T, U>) => {
   const { register } = useFormContext<T>();
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const { validatePassword, PasswordStrengthBar } = usePasswordValidation({
-    colorScheme: colors.gray[500],
+  const { validatePasswordStrength, PasswordStrengthBar } = usePasswordValidation({
+    color: colors.gray[500],
     inputName,
   });
 
   const handleValidate = (val: string) => {
     if (validate) {
-      const validateResult = validate(val);
+      const validationResult = validate(val);
 
-      if (checkPasswordStrength && validateResult === true) {
-        return validatePassword(val);
+      if (isCheckPasswordStrengthEnabled && validationResult === true) {
+        return validatePasswordStrength(val);
       }
 
-      return validateResult;
-    } else if (checkPasswordStrength) {
-      return validatePassword(val);
+      return validationResult;
+    } else if (isCheckPasswordStrengthEnabled) {
+      return validatePasswordStrength(val);
     }
   };
 
@@ -91,7 +91,7 @@ export const PasswordInput = <T extends FieldValues, U extends Path<T>>({
           </Button>
         </InputRightElement>
       </InputGroup>
-      {checkPasswordStrength && PasswordStrengthBar}
+      {isCheckPasswordStrengthEnabled && PasswordStrengthBar}
     </>
   );
 };
