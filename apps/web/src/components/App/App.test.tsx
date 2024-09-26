@@ -9,6 +9,22 @@ jest.mock("@chakra-ui/react", () => ({
   useBreakpointValue: jest.fn(map => map["lg"]),
 }));
 
+jest.mock("@umami/state", () => ({
+  ...jest.requireActual("@umami/state"),
+  walletKit: {
+    core: {}, // Simulate the core object returned by init
+    metadata: {
+      name: "Umami Wallet",
+      description: "Umami Wallet with WalletConnect",
+      url: "https://umamiwallet.com",
+      icons: ["https://umamiwallet.com/assets/favicon-32-45gq0g6M.png"],
+    },
+    on: jest.fn(),
+    off: jest.fn(),
+  },
+  createWalletKit: jest.fn(),
+}));
+
 describe("<App />", () => {
   it("renders welcome screen for a new user", () => {
     render(<App />);

@@ -8,3 +8,4 @@ export * from "./hooks";
 export * from "./migrations";
 export * from "./slices";
 export * from "./thunks";
+export * from "./walletConnect";
