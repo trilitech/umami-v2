@@ -48,6 +48,7 @@ export const EmptyMessage = ({
       {cta && (
         <Button
           as={Link}
+          marginTop={{ base: "12px", md: "0" }}
           padding="0 24px"
           fontSize="18px"
           href={ctaUrl}
