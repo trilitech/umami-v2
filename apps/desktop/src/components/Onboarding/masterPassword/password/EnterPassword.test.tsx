@@ -3,6 +3,8 @@ import { noop } from "lodash";
 import { EnterPassword } from "./EnterPassword";
 import { act, render, screen, userEvent } from "../../../../mocks/testUtils";
 
+const mockPassword = "Qwerty123123!23vcxz";
+
 const fixture = (isLoading: boolean) => <EnterPassword isLoading={isLoading} onSubmit={noop} />;
 
 const checkPasswords = async (password: string, expected: boolean) => {
@@ -19,7 +21,7 @@ describe("<EnterPassword />", () => {
   describe("Form", () => {
     test("Working verification", async () => {
       render(fixture(false));
-      await checkPasswords("password", true);
+      await checkPasswords(mockPassword, true);
     });
 
     test("Not meeting password policy", async () => {

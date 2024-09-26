@@ -101,7 +101,7 @@ export const SignButton = ({
         <Box width="100%">
           <FormProvider {...form}>
             <FormControl isInvalid={!!errors.password} marginY="16px">
-              <PasswordInput data-testid="password" inputName="password" />
+              <PasswordInput data-testid="password" inputName="password" minLength={0} />
               {errors.password && <FormErrorMessage>{errors.password.message}</FormErrorMessage>}
             </FormControl>
             <Button

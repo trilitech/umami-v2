@@ -36,6 +36,7 @@ jest.mock("@umami/state", () => ({
 }));
 
 const MOCK_TEZOS_TOOLKIT = {};
+const password = "Qwerty123123!23vcxz";
 let store: UmamiStore;
 
 beforeEach(() => {
@@ -124,7 +125,7 @@ describe("<MultisigPendingOperation />", () => {
 
     expect(jest.mocked(estimate)).toHaveBeenCalledWith(operation, MAINNET);
 
-    await act(() => user.type(screen.getByTestId("password"), "mockPass"));
+    await act(() => user.type(screen.getByTestId("password"), password));
 
     const submitButton = screen.getByRole("button", {
       name: "Execute transaction",
@@ -187,7 +188,7 @@ describe("<MultisigPendingOperation />", () => {
 
     expect(jest.mocked(estimate)).toHaveBeenCalledWith(operations, MAINNET);
 
-    await act(() => user.type(screen.getByTestId("password"), "mockPass"));
+    await act(() => user.type(screen.getByTestId("password"), password));
 
     const submitButton = screen.getByRole("button", {
       name: "Approve transaction",

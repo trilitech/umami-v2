@@ -25,6 +25,7 @@ const request: SignPayloadRequestOutput = {
 };
 
 const account = mockMnemonicAccount(1);
+const password = "Qwerty123123!23vcxz";
 
 let store: UmamiStore;
 
