@@ -1,6 +1,7 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
+import { z } from "zod";
 import zxcvbn from "zxcvbn";
 
 const DEFAULT_SCORE = 0;
@@ -9,7 +10,7 @@ const DEFAULT_COLOR = "gray.100";
 type PasswordStrengthBarProps = {
   score: number;
   color: string;
-  inputName: string;
+  hasError: boolean;
 };
 
 type UsePasswordValidationProps = {
@@ -17,11 +18,18 @@ type UsePasswordValidationProps = {
   inputName?: string;
 };
 
-const PasswordStrengthBar = ({ score, color, inputName }: PasswordStrengthBarProps) => {
-  const form = useFormContext();
+const PASSWORD_REQUIREMENTS_COUNT = 4;
+const passwordSchema = z
+  .string()
+  .min(12, { message: "Password must be at least 12 characters long" })
+  .regex(/[A-Z]/, { message: "Password must contain at least one uppercase letter" })
+  .regex(/\d/, { message: "Password must contain at least one number" })
+  .regex(/[!@#$%^&*(),.?":{}|<>]/, {
+    message: "Password must contain at least one special character",
+  });
 
+const PasswordStrengthBar = ({ score, color, hasError }: PasswordStrengthBarProps) => {
   const colors = [color, "red.500", "yellow.500", "green.500"];
-  const passwordError = form.formState.errors[inputName];
 
   const getColor = (index: number) => {
     switch (score) {
@@ -37,29 +45,10 @@ const PasswordStrengthBar = ({ score, color, inputName }: PasswordStrengthBarPro
     }
   };
 
-  const getText = () => {
-    switch (score) {
-      case 1:
-      case 2:
-        return "Weak";
-      case 3:
-        return "Medium";
-      case 4:
-        return "Strong";
-      default:
-        return;
-    }
-  };
-
-  const text = getText();
+  const showPasswordStrengthText = !hasError && score === 4;
 
   return (
-    <Flex
-      flexDirection="column"
-      gap="8px"
-      marginTop="12px"
-      data-testid={`password-strength-${text}`}
-    >
+    <Flex flexDirection="column" gap="8px" marginTop="12px">
       <Flex gap="4px" height="6px">
         {Array.from({ length: 3 }).map((_, index) => (
           <Box
@@ -71,9 +60,9 @@ const PasswordStrengthBar = ({ score, color, inputName }: PasswordStrengthBarPro
           />
         ))}
       </Flex>
-      {!passwordError && text && (
+      {showPasswordStrengthText && (
         <Text lineHeight="normal" data-testid="password-strength-text" size="sm">
-          Your password is {text}
+          Your password is strong
         </Text>
       )}
     </Flex>
@@ -97,19 +86,31 @@ export const usePasswordValidation = ({
 
   const validatePasswordStrength = (value: string) => {
     const result = zxcvbn(value);
+    let schemaErrors = 0;
 
-    setPasswordScore(result.score);
+    try {
+      passwordSchema.parse(value);
+    } catch (e) {
+      if (e instanceof z.ZodError) {
+        schemaErrors = e.errors.length;
+        return e.errors[0].message;
+      }
+    } finally {
+      const requirementsMeetingPercentage = (PASSWORD_REQUIREMENTS_COUNT - schemaErrors) / 4;
+      setPasswordScore(Math.ceil(result.score * requirementsMeetingPercentage));
+    }
 
     if (result.score < 4) {
-      return result.feedback.suggestions.at(-1);
+      return result.feedback.suggestions.at(-1) ?? "Keep on, make the password more complex!";
     }
+
     return true;
   };
 
   return {
     validatePasswordStrength,
     PasswordStrengthBar: (
-      <PasswordStrengthBar color={color} inputName={inputName} score={passwordScore} />
+      <PasswordStrengthBar color={color} hasError={!!passwordError} score={passwordScore} />
     ),
   };
 };

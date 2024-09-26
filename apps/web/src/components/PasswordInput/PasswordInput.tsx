@@ -41,10 +41,11 @@ export const PasswordInput = <T extends FieldValues, U extends Path<T>>({
   validate,
   ...rest
 }: PasswordInputProps<T, U>) => {
+  const form = useFormContext<T>();
   const {
     register,
     formState: { errors },
-  } = useFormContext<T>();
+  } = form;
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const { validatePasswordStrength, PasswordStrengthBar } = usePasswordValidation({
     inputName,
@@ -69,6 +70,18 @@ export const PasswordInput = <T extends FieldValues, U extends Path<T>>({
     }
   };
 
+  const registerProps = register(inputName, {
+    required,
+    minLength:
+      minLength && required
+        ? {
+            value: minLength,
+            message: `Your password must be at least ${minLength} characters long`,
+          }
+        : undefined,
+    validate: handleValidate,
+  });
+
   return (
     <FormControl isInvalid={!!error}>
       <FormLabel>{label}</FormLabel>
@@ -78,17 +91,7 @@ export const PasswordInput = <T extends FieldValues, U extends Path<T>>({
           autoComplete="off"
           placeholder={placeholder}
           type={showPassword ? "text" : "password"}
-          {...register(inputName, {
-            required,
-            minLength:
-              minLength && required
-                ? {
-                    value: minLength,
-                    message: `Your password must be at least ${minLength} characters long`,
-                  }
-                : undefined,
-            validate: handleValidate,
-          })}
+          {...registerProps}
           {...rest}
         />
         <InputRightElement>
@@ -117,3 +120,5 @@ export const PasswordInput = <T extends FieldValues, U extends Path<T>>({
     </FormControl>
   );
 };
+
+export default PasswordInput;
