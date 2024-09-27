@@ -2,7 +2,7 @@
 module.exports = {
   extends: ["@umami/eslint-config"],
   parserOptions: {
-    project: "tsconfig.json",
+    project: "./tsconfig.json",
     parser: "@typescript-eslint/parser",
     tsconfigRootDir: __dirname,
   },
