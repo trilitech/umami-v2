@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, Text, VStack } from "@chakra-ui/react";
+import { Box, Flex, Heading, Switch, Text, VStack } from "@chakra-ui/react";
 import * as Auth from "@umami/social-auth";
 
 import { UmamiLogoIcon } from "./assets/icons/UmamiLogo";
@@ -13,12 +13,22 @@ import { LoginButtonComponent } from "./LoginButtonComponent";
 import { getDAppByOrigin } from "./ClientsPermissions";
 import { useSignPayloadModalContext } from "./SignPayloadModalContext";
 import { decodeBeaconPayload } from "@umami/core";
+import { useState } from "react";
+
+import { WarningIcon } from "@chakra-ui/icons";
 
 const SIGN_TIMEOUT = 5 * 60 * 1000; // 5 minutes
 
 export const SignPayloadModalContent = () => {
+  const [showRaw, setShowRaw] = useState(false);
+
   const { onClose, setIsLoading, signingType, payload } = useSignPayloadModalContext();
   const { getNetwork, getUserData, getDAppOrigin } = useEmbedApp();
+
+  const { result: parsedPayload, error: parsingError } = decodeBeaconPayload(
+    payload!,
+    signingType!
+  );
 
   const color = useColor();
   const dAppName = getDAppByOrigin(getDAppOrigin());
@@ -79,8 +89,23 @@ export const SignPayloadModalContent = () => {
         borderRadius="5px"
         backgroundColor={color("100")}
       >
-        <Text size="sm">{decodeBeaconPayload(payload!)}</Text>
+        <Text size="sm">{showRaw ? payload! : parsedPayload.trim()}</Text>
+        {parsingError && (
+          <Flex alignItems="center" gap="4px" marginTop="4px">
+            <WarningIcon width="15px" height="15px" />
+            <Text color="red" size="xs">
+              Raw Payload. Parsing failed
+            </Text>
+          </Flex>
+        )}
       </Box>
+
+      {!parsingError && (
+        <Flex alignItems="center" justifyContent="flex-end" gap="4px" marginBottom="20px" ml="auto">
+          <Text>Raw</Text>
+          <Switch onChange={() => setShowRaw(val => !val)} />
+        </Flex>
+      )}
 
       <LoginButtonComponent
         loginType={getUserData()!.typeOfLogin}
