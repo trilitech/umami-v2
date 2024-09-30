@@ -203,8 +203,8 @@ importers:
         specifier: workspace:^
         version: link:../../packages/tzkt
       '@vitejs/plugin-react':
-        specifier: ^4.3.1
-        version: 4.3.1(vite@5.4.8(@types/node@20.14.11)(sass@1.79.3))
+        specifier: ^4.3.2
+        version: 4.3.2(vite@5.4.8(@types/node@20.14.11)(sass@1.79.3))
       axios:
         specifier: ^1.7.7
         version: 1.7.7(debug@4.3.7)
@@ -547,8 +547,8 @@ importers:
         specifier: workspace:^
         version: link:../../packages/typescript-config
       '@vitejs/plugin-react':
-        specifier: ^4.3.1
-        version: 4.3.1(vite@5.4.8(@types/node@22.1.0)(sass@1.79.3))
+        specifier: ^4.3.2
+        version: 4.3.2(vite@5.4.8(@types/node@22.1.0)(sass@1.79.3))
       depcheck:
         specifier: ^1.4.7
         version: 1.4.7
@@ -857,8 +857,8 @@ importers:
         specifier: workspace:^
         version: link:../../packages/typescript-config
       '@vitejs/plugin-react':
-        specifier: ^4.2.1
-        version: 4.3.1(vite@5.4.8(@types/node@20.14.11)(sass@1.79.3))
+        specifier: ^4.3.2
+        version: 4.3.2(vite@5.4.8(@types/node@20.14.11)(sass@1.79.3))
       depcheck:
         specifier: ^1.4.7
         version: 1.4.7
@@ -4481,6 +4481,7 @@ packages:
 
   '@trilitech-umami/umami-embed@0.2.8':
     resolution: {integrity: sha512-pX2ya3dY1GUsaIEkllKV+DWQAOqIdzK0s8Rn9TbuKxy5hahq4xUf09baBWhun7M/QCs12aEQFk6Vhufwbrpu7Q==}
+    deprecated: Versions below 0.3.0 are deprecated and won't work correctly.
 
   '@trysound/sax@0.2.0':
     resolution: {integrity: sha512-L7z9BgrNEcYyUYtF+HaEfiS5ebkh9jXqbszz7pC0hRBPaatV0XjSD3+eHrpqFemQfgwiFF0QPIarnIihIDn7OA==}
@@ -4846,8 +4847,8 @@ packages:
       react:
         optional: true
 
-  '@vitejs/plugin-react@4.3.1':
-    resolution: {integrity: sha512-m/V2syj5CuVnaxcUJOQRel/Wr31FFXRFlnOoq1TVtkCxsY5veGMTEmpWHndrhB2U8ScHtCQB1e+4hWYExQc6Lg==}
+  '@vitejs/plugin-react@4.3.2':
+    resolution: {integrity: sha512-hieu+o05v4glEBucTcKMK3dlES0OeJlD9YVOAPraVMOInBCwzumaIFiUjr4bHK7NPgnAHgiskUoceKercrN8vg==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
       vite: ^4.2.0 || ^5.0.0
@@ -14448,7 +14449,7 @@ snapshots:
     optionalDependencies:
       react: 18.3.1
 
-  '@vitejs/plugin-react@4.3.1(vite@5.4.8(@types/node@20.14.11)(sass@1.79.3))':
+  '@vitejs/plugin-react@4.3.2(vite@5.4.8(@types/node@20.14.11)(sass@1.79.3))':
     dependencies:
       '@babel/core': 7.25.2
       '@babel/plugin-transform-react-jsx-self': 7.24.7(@babel/core@7.25.2)
@@ -14459,7 +14460,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@vitejs/plugin-react@4.3.1(vite@5.4.8(@types/node@22.1.0)(sass@1.79.3))':
+  '@vitejs/plugin-react@4.3.2(vite@5.4.8(@types/node@22.1.0)(sass@1.79.3))':
     dependencies:
       '@babel/core': 7.25.2
       '@babel/plugin-transform-react-jsx-self': 7.24.7(@babel/core@7.25.2)
