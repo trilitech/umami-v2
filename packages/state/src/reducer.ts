@@ -4,6 +4,7 @@ import storage from "redux-persist/lib/storage";
 
 import { createAsyncMigrate } from "./createAsyncMigrate";
 import { VERSION, accountsMigrations, mainStoreMigrations } from "./migrations";
+import { wcSlice } from "./slices";
 import { accountsSlice } from "./slices/accounts/accounts";
 import { announcementSlice } from "./slices/announcement";
 import { assetsSlice } from "./slices/assets";
@@ -38,6 +39,7 @@ const rootReducers = combineReducers({
   assets: assetsSlice.reducer,
   batches: batchesSlice.reducer,
   beacon: beaconSlice.reducer,
+  walletconnect: wcSlice.reducer,
   contacts: contactsSlice.reducer,
   errors: errorsSlice.reducer,
   multisigs: multisigsSlice.reducer,

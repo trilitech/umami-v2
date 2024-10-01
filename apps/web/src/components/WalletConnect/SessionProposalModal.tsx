@@ -17,12 +17,14 @@ import {
 import { type WalletKitTypes } from "@reown/walletkit";
 import { useDynamicModalContext } from "@umami/components";
 import {
+  useAddWcConnection,
   useAsyncActionHandler,
   useAvailableNetworks,
   useGetImplicitAccount,
   walletKit,
 } from "@umami/state";
-import { type Network } from "@umami/tezos";
+import { type Network, type NetworkName } from "@umami/tezos";
+import { type SessionTypes } from "@walletconnect/types";
 import { buildApprovedNamespaces, getSdkError } from "@walletconnect/utils";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
@@ -37,6 +39,7 @@ export const SessionProposalModal = ({
 }: {
   proposal: WalletKitTypes.SessionProposal;
 }) => {
+  const addConnectionToWcSlice = useAddWcConnection();
   const getAccount = useGetImplicitAccount();
   const availableNetworks: Network[] = useAvailableNetworks();
   const toast = useToast();
@@ -97,11 +100,13 @@ export const SessionProposalModal = ({
           },
         });
 
-        await walletKit.approveSession({
+        const session: SessionTypes.Struct = await walletKit.approveSession({
           id: proposal.id,
           namespaces,
           sessionProperties: {},
         });
+        addConnectionToWcSlice(session, account.address.pkh, network?.split(":")[1] as NetworkName);
+        console.debug("approved WC session", session);
         onClose();
       } catch (e) {
         toast({ description: (e as Error).message, status: "error" });
