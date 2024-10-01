@@ -28,10 +28,13 @@ mac:
     teamId: JHLP96SU5D
 win:
   icon: icons/512x512.png
-  target: nsis
+  target: appx
   signingHashAlgorithms:
     - sha256
   certificateSubjectName: TRILITECH LIMITED
+appx:
+  identityName: com.trilitech.umami
+  electronUpdaterAware: true
 linux:
   artifactName: umami-${version}.${arch}.${ext}
   icon: icons/
