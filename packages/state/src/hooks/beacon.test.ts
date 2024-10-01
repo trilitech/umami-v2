@@ -3,10 +3,10 @@ import { mockMnemonicAccount, mockSocialAccount } from "@umami/core";
 import { type RawPkh } from "@umami/tezos";
 
 import {
-  useAddConnection,
-  useGetConnectionInfo,
-  useRemoveConnection,
-  useResetConnections,
+  useAddBeaconConnection,
+  useGetBeaconConnectionInfo,
+  useRemoveBeaconConnection,
+  useResetBeaconConnections,
 } from "./beacon";
 import { beaconActions } from "../slices";
 import { type UmamiStore, makeStore } from "../store";
@@ -33,7 +33,7 @@ const connectionInfo = (accountPkh: RawPkh, networkType: NetworkType) => ({
 
 describe("useGetConnectedAccount", () => {
   it("returns undefined when no connection for dAppId is stored", () => {
-    const view = renderHook(() => useGetConnectionInfo(dAppId1), { store });
+    const view = renderHook(() => useGetBeaconConnectionInfo(dAppId1), { store });
 
     expect(view.result.current).toBeUndefined();
   });
@@ -42,7 +42,7 @@ describe("useGetConnectedAccount", () => {
     addConnection(dAppId1, pkh1, NetworkType.MAINNET);
     addConnection(dAppId2, pkh2, NetworkType.GHOSTNET);
 
-    const view = renderHook(() => useGetConnectionInfo(dAppId2), { store });
+    const view = renderHook(() => useGetBeaconConnectionInfo(dAppId2), { store });
 
     expect(view.result.current).toEqual(connectionInfo(pkh2, NetworkType.GHOSTNET));
   });
@@ -55,7 +55,7 @@ describe("useResetConnections", () => {
 
     const {
       result: { current: resetBeaconSlice },
-    } = renderHook(() => useResetConnections(), { store });
+    } = renderHook(() => useResetBeaconConnections(), { store });
     resetBeaconSlice();
 
     expect(store.getState().beacon).toEqual({});
@@ -68,7 +68,7 @@ describe("useAddConnection", () => {
 
     const {
       result: { current: addConnectionHook },
-    } = renderHook(() => useAddConnection(), { store });
+    } = renderHook(() => useAddBeaconConnection(), { store });
     addConnectionHook(dAppId2, pkh2, NetworkType.MAINNET);
 
     expect(store.getState().beacon).toEqual({
@@ -82,7 +82,7 @@ describe("useAddConnection", () => {
 
     const {
       result: { current: addConnectionHook },
-    } = renderHook(() => useAddConnection(), { store });
+    } = renderHook(() => useAddBeaconConnection(), { store });
     addConnectionHook(dAppId1, pkh2, NetworkType.MAINNET);
 
     expect(store.getState().beacon).toEqual({
@@ -98,7 +98,7 @@ describe("useRemoveConnection", () => {
 
     const {
       result: { current: removeConnection },
-    } = renderHook(() => useRemoveConnection(), { store });
+    } = renderHook(() => useRemoveBeaconConnection(), { store });
     removeConnection(dAppId2);
 
     expect(store.getState().beacon).toEqual({

@@ -8,6 +8,7 @@ import {
   createWalletKit,
   useAsyncActionHandler,
   useAvailableNetworks,
+  useToggleWcPeerListUpdated,
   walletKit,
 } from "@umami/state";
 import { type Network } from "@umami/tezos";
@@ -29,6 +30,7 @@ export const WalletConnectProvider = ({ children }: PropsWithChildren) => {
   const eventEmitters = useRef<EventEmitter[]>([]);
   const { handleAsyncActionUnsafe } = useAsyncActionHandler();
   const { openWith } = useDynamicModalContext();
+  const toggleWcPeerListUpdated = useToggleWcPeerListUpdated();
   const toast = useToast();
 
   const availableNetworks: Network[] = useAvailableNetworks();
@@ -59,7 +61,6 @@ export const WalletConnectProvider = ({ children }: PropsWithChildren) => {
         }
 
         await openWith(<SessionProposalModal network={network} proposal={proposal} />, {});
-        console.log("Session proposal from dApp", proposal, walletKit.getActiveSessions());
       }).catch(async () => {
         // dApp is waiting so we need to notify it
         await walletKit.rejectSession({
@@ -75,11 +76,13 @@ export const WalletConnectProvider = ({ children }: PropsWithChildren) => {
       // by that time the session is already deleted from WalletKit so we cannot find the dApp name
       console.log("WC session deleted by peer dApp", event);
       toast({
-        description: "Session deleted by peer dApp",
+        description: "WalletConnect Session deleted by peer dApp",
         status: "info",
       });
+      // now re-render peer list
+      toggleWcPeerListUpdated();
     },
-    [toast]
+    [toast, toggleWcPeerListUpdated]
   );
 
   const onSessionRequest = useCallback(
@@ -97,10 +100,7 @@ export const WalletConnectProvider = ({ children }: PropsWithChildren) => {
           description: `Session request from dApp ${session.peer.metadata.name}`,
           status: "info",
         });
-        toast({
-          description: "Request handling is not implemented yet. Rejecting the request.",
-          status: "error",
-        });
+        throw new Error("Not implemented");
       } catch (error) {
         const { id, topic } = event;
         const activeSessions: Record<string, SessionTypes.Struct> = walletKit.getActiveSessions();

@@ -26,7 +26,7 @@ import {
 import { useDynamicModalContext } from "@umami/components";
 import {
   WalletClient,
-  useAddConnection,
+  useAddBeaconConnection,
   useAsyncActionHandler,
   useGetImplicitAccount,
 } from "@umami/state";
@@ -41,7 +41,7 @@ import { JsValueWrap } from "../JsValueWrap";
 
 export const PermissionRequestModal = ({ request }: { request: PermissionRequestOutput }) => {
   const color = useColor();
-  const addConnectionToBeaconSlice = useAddConnection();
+  const addConnectionToBeaconSlice = useAddBeaconConnection();
   const getAccount = useGetImplicitAccount();
   const { onClose } = useDynamicModalContext();
   const { handleAsyncAction } = useAsyncActionHandler();

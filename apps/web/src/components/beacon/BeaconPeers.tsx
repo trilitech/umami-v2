@@ -1,6 +1,6 @@
 import { type ExtendedPeerInfo } from "@airgap/beacon-wallet";
 import { Center, Divider, Flex, Heading, IconButton, Image, Text, VStack } from "@chakra-ui/react";
-import { useGetConnectionInfo, usePeers, useRemovePeer } from "@umami/state";
+import { useBeaconPeers, useGetBeaconConnectionInfo, useRemoveBeaconPeer } from "@umami/state";
 import { parsePkh } from "@umami/tezos";
 import capitalize from "lodash/capitalize";
 
@@ -12,10 +12,10 @@ import { EmptyMessage } from "../EmptyMessage";
 /**
  * Component displaying a list of connected dApps.
  *
- * Loads dApps data from {@link usePeers} hook & zips it with generated dAppIds.
+ * Loads dApps data from {@link useBeaconPeers} hook & zips it with generated dAppIds.
  */
 export const BeaconPeers = () => {
-  const { peers } = usePeers();
+  const { peers } = useBeaconPeers();
 
   if (peers.length === 0) {
     return (
@@ -53,7 +53,7 @@ export const BeaconPeers = () => {
  */
 const PeerRow = ({ peerInfo }: { peerInfo: ExtendedPeerInfo }) => {
   const color = useColor();
-  const removePeer = useRemovePeer();
+  const removePeer = useRemoveBeaconPeer();
 
   return (
     <Center
@@ -98,7 +98,7 @@ const PeerRow = ({ peerInfo }: { peerInfo: ExtendedPeerInfo }) => {
  * @param peerInfo - peerInfo provided by beacon Api + computed dAppId.
  */
 const StoredPeerInfo = ({ peerInfo }: { peerInfo: ExtendedPeerInfo }) => {
-  const connectionInfo = useGetConnectionInfo(peerInfo.senderId);
+  const connectionInfo = useGetBeaconConnectionInfo(peerInfo.senderId);
 
   if (!connectionInfo) {
     return null;

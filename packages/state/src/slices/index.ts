@@ -9,3 +9,4 @@ export * from "./multisigs";
 export * from "./networks";
 export * from "./tokens";
 export * from "./protocolSettings";
+export * from "./WalletConnect";

@@ -1800,9 +1800,12 @@ importers:
       '@walletconnect/jsonrpc-utils':
         specifier: ^1.0.8
         version: 1.0.8
-      '@walletconnect/utils':
+      '@walletconnect/types':
         specifier: ^2.16.2
         version: 2.17.2
+      '@walletconnect/utils':
+        specifier: ^2.16.2
+        version: 2.16.2
       bip39:
         specifier: ^3.1.0
         version: 3.1.0

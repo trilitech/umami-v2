@@ -2,7 +2,7 @@ import { Button, Text } from "@chakra-ui/react";
 import { useAddPeer } from "@umami/state";
 
 import { BeaconPeers } from "../../beacon";
-import { useOnWalletConnect } from "../../WalletConnect";
+import { WcPeers, useOnWalletConnect } from "../../WalletConnect";
 import { DrawerContentWrapper } from "../DrawerContentWrapper";
 
 export const AppsMenu = () => {
@@ -36,6 +36,7 @@ export const AppsMenu = () => {
       title="Apps"
     >
       <BeaconPeers />
+      <WcPeers />
     </DrawerContentWrapper>
   );
 };
