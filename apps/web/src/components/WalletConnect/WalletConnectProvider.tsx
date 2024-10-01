@@ -6,6 +6,8 @@ import {
   createWalletKit,
   useAsyncActionHandler,
   useAvailableNetworks,
+  useRemoveWcConnection,
+  useWcPeers,
   walletKit,
 } from "@umami/state";
 import { type Network } from "@umami/tezos";
@@ -89,12 +91,20 @@ const useOnSessionRequest = () => {
 
 // dApp can release WalletConnect session at any time and then the Wallet is notified by the WalletConnect server.
 const useOnSessionDelete = () => {
+  const { handleAsyncAction } = useAsyncActionHandler();
+  const { peers, refresh } = useWcPeers();
+  const removeWcPeer = useRemoveWcConnection();
   const toast = useToast();
 
   return (event: WalletKitTypes.SessionDelete) =>
-    toast({
-      description: `dApp ${event.topic} released the connection.`,
-      status: "info",
+    handleAsyncAction(async () => {
+      const { topic } = event;
+      toast({
+        description: `Session deleted by dApp ${peers[topic].peer.metadata.name}`,
+        status: "info",
+      });
+      removeWcPeer(topic);
+      await refresh();
     });
 };
 

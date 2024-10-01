@@ -1585,6 +1585,9 @@ importers:
       '@walletconnect/jsonrpc-utils':
         specifier: ^1.0.8
         version: 1.0.8
+      '@walletconnect/types':
+        specifier: ^2.16.2
+        version: 2.16.2
       '@walletconnect/utils':
         specifier: ^2.16.2
         version: 2.16.2
@@ -1675,7 +1678,7 @@ importers:
         version: 8.57.0
       jest:
         specifier: ^29.7.0
-        version: 29.7.0(@types/node@22.1.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.1.0)(typescript@5.5.4))
+        version: 29.7.0(@types/node@20.14.11)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@20.14.11)(typescript@5.5.4))
       madge:
         specifier: ^8.0.0
         version: 8.0.0(typescript@5.5.4)

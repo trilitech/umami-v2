@@ -1,30 +1,34 @@
-import { type ExtendedPeerInfo } from "@airgap/beacon-wallet";
 import { Center, Divider, Flex, Heading, IconButton, Image, Text, VStack } from "@chakra-ui/react";
-import { useBeaconPeers, useGetBeaconConnectionInfo, useRemoveBeaconPeer } from "@umami/state";
+import { useGetWcConnectionInfo, useRemoveWcPeer, useWcPeers } from "@umami/state";
 import { parsePkh } from "@umami/tezos";
+import { type SessionTypes } from "@walletconnect/types";
+import { getSdkError } from "@walletconnect/utils";
 import capitalize from "lodash/capitalize";
 
 import { CodeSandboxIcon, StubIcon as TrashIcon } from "../../assets/icons";
-import { AddressPill } from "../../components/AddressPill/AddressPill";
 import { useColor } from "../../styles/useColor";
+import { AddressPill } from "../AddressPill/AddressPill";
 import { EmptyMessage } from "../EmptyMessage";
 
 /**
  * Component displaying a list of connected dApps.
  *
- * Loads dApps data from {@link useBeaconPeers} hook & zips it with generated dAppIds.
+ * Loads dApps data from {@link useWcPeers} hook & zips it with generated dAppIds.
  */
-export const BeaconPeers = () => {
-  const { peers } = useBeaconPeers();
+export const WcPeers = () => {
+  // const wcPeers: Record<string, SessionTypes.Struct> = walletKit.getActiveSessions();
+  const { peers: wcPeers } = useWcPeers();
 
-  if (peers.length === 0) {
+  console.log("wcPeers", wcPeers);
+
+  if (Object.keys(wcPeers).length === 0) {
     return (
       <EmptyMessage
         alignItems="flex-start"
         marginTop="40px"
-        data-testid="beacon-peers-empty"
-        subtitle="No Apps to show"
-        title="Your Apps will appear here..."
+        data-testid="wc-peers-empty"
+        subtitle="No WalltConnect Apps to show"
+        title="Your WalletConnect Apps will appear here..."
       />
     );
   }
@@ -34,13 +38,16 @@ export const BeaconPeers = () => {
       alignItems="flex-start"
       gap="24px"
       marginTop="24px"
-      data-testid="beacon-peers"
+      data-testid="wc-peers"
       divider={<Divider />}
       spacing="0"
     >
-      {peers.map(peerInfo => (
-        <PeerRow key={peerInfo.senderId} peerInfo={peerInfo} />
-      ))}
+      {
+        // loop peers and print PeerRow
+        Object.entries(wcPeers).map(([topic, peerInfo]) => (
+          <PeerRow key={topic} peerInfo={peerInfo} />
+        ))
+      }
     </VStack>
   );
 };
@@ -48,12 +55,12 @@ export const BeaconPeers = () => {
 /**
  * Component for displaying info about single connected dApp.
  *
- * @param peerInfo - peerInfo provided by beacon Api + computed dAppId.
+ * @param peerInfo - peerInfo provided by wc Api + computed dAppId.
  * @param onRemove - action for deleting dApp connection.
  */
-const PeerRow = ({ peerInfo }: { peerInfo: ExtendedPeerInfo }) => {
+const PeerRow = ({ peerInfo }: { peerInfo: SessionTypes.Struct }) => {
   const color = useColor();
-  const removePeer = useRemoveBeaconPeer();
+  const removeWcPeer = useRemoveWcPeer();
 
   return (
     <Center
@@ -68,12 +75,12 @@ const PeerRow = ({ peerInfo }: { peerInfo: ExtendedPeerInfo }) => {
           <Image
             objectFit="cover"
             fallback={<CodeSandboxIcon width="36px" height="36px" />}
-            src={peerInfo.icon}
+            src={peerInfo.peer.metadata.icons[0]}
           />
         </Center>
         <Center alignItems="flex-start" flexDirection="column" gap="6px">
           <Heading color={color("900")} size="lg">
-            {peerInfo.name}
+            {peerInfo.peer.metadata.name}
           </Heading>
           <StoredPeerInfo peerInfo={peerInfo} />
         </Center>
@@ -82,7 +89,9 @@ const PeerRow = ({ peerInfo }: { peerInfo: ExtendedPeerInfo }) => {
         color={color("500")}
         aria-label="Remove Peer"
         icon={<TrashIcon />}
-        onClick={() => removePeer(peerInfo)}
+        onClick={() =>
+          removeWcPeer({ topic: peerInfo.topic, reason: getSdkError("USER_DISCONNECTED") })
+        }
         variant="iconButtonSolid"
       />
     </Center>
@@ -93,12 +102,12 @@ const PeerRow = ({ peerInfo }: { peerInfo: ExtendedPeerInfo }) => {
  * Component for displaying additional info about connection with a dApp.
  *
  * Displays {@link AddressPill} with a connected account and network type,
- * if information about the connection is stored in {@link beaconSlice}.
+ * if information about the connection is stored in {@link wcSlice}.
  *
- * @param peerInfo - peerInfo provided by beacon Api + computed dAppId.
+ * @param peerInfo - peerInfo provided by wc Api + computed dAppId.
  */
-const StoredPeerInfo = ({ peerInfo }: { peerInfo: ExtendedPeerInfo }) => {
-  const connectionInfo = useGetBeaconConnectionInfo(peerInfo.senderId);
+const StoredPeerInfo = ({ peerInfo }: { peerInfo: SessionTypes.Struct }) => {
+  const connectionInfo = useGetWcConnectionInfo(peerInfo.topic);
 
   if (!connectionInfo) {
     return null;
@@ -112,7 +121,7 @@ const StoredPeerInfo = ({ peerInfo }: { peerInfo: ExtendedPeerInfo }) => {
         Network:
       </Text>
       <Text marginTop="2px" data-testid="dapp-connection-network" size="sm">
-        {capitalize(connectionInfo.networkType)}
+        {capitalize(connectionInfo.networkName)}
       </Text>
     </Flex>
   );
