@@ -108,7 +108,7 @@ export const SetupPassword = ({ mode }: SetupPasswordProps) => {
             <Flex flexDirection="column" gap="24px">
               <PasswordInput
                 inputName="password"
-                isCheckPasswordStrengthEnabled={!isPasswordSet}
+                isStrengthCheckEnabled={!isPasswordSet}
                 label={isPasswordSet ? "Password" : "Set Password"}
                 required="Password is required"
               />
@@ -116,7 +116,6 @@ export const SetupPassword = ({ mode }: SetupPasswordProps) => {
                 <PasswordInput
                   inputName="passwordConfirmation"
                   label="Confirm Password"
-                  minLength={0}
                   required="Password confirmation is required"
                   validate={value => value === getValues("password") || "Passwords do not match"}
                 />

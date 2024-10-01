@@ -34,11 +34,6 @@ describe("<EnterAndConfirmPassword />", () => {
       await checkPasswords(mockPassword, "password1", false);
     });
 
-    test("Not meeting password policy", async () => {
-      render(fixture(false));
-      await checkPasswords("tes", "tes", false);
-    });
-
     test("Form is loading", () => {
       render(fixture(true));
       const submit = screen.getByRole("button", { name: /submit/i });

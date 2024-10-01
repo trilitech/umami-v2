@@ -26,14 +26,6 @@ MockDate.set("2023-03-27T14:15:09.760Z");
 
 jest.mock("./env", () => ({ IS_DEV: false }));
 
-jest.mock("@umami/components", () => ({
-  ...jest.requireActual("@umami/components"),
-  usePasswordValidation: () => ({
-    validatePasswordStrength: () => true,
-    PasswordStrengthBar: <div>PasswordStrengthBar</div>,
-  }),
-}));
-
 beforeEach(() => {
   // Add missing browser APIs
   Object.defineProperties(global, {

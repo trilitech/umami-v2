@@ -66,7 +66,6 @@ export const ChangePasswordForm = () => {
                 data-testid="current-password"
                 inputName="currentPassword"
                 label="Current Password"
-                minLength={0}
                 placeholder="Enter your current password"
                 required="Current password is required"
               />
@@ -81,7 +80,7 @@ export const ChangePasswordForm = () => {
               <PasswordInput
                 data-testid="new-password"
                 inputName="newPassword"
-                isCheckPasswordStrengthEnabled
+                isStrengthCheckEnabled
                 label="New Password"
                 placeholder="Enter new password"
                 required="New password is required"
@@ -101,7 +100,6 @@ export const ChangePasswordForm = () => {
                 data-testid="new-password-confirmation"
                 inputName="newPasswordConfirmation"
                 label="Confirm New Password"
-                minLength={0}
                 placeholder="Confirm new password"
                 required="Confirmation is required"
                 validate={(val: string) =>

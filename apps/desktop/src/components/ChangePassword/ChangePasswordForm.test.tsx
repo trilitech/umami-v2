@@ -55,7 +55,7 @@ describe("ChangePassword Form", () => {
 
       await waitFor(() => {
         expect(screen.getByTestId("new-password-error")).toHaveTextContent(
-          "Your password must be at least 12 characters long"
+          "Password must be at least 12 characters long"
         );
       });
     });
@@ -104,8 +104,8 @@ describe("ChangePassword Form", () => {
       const newPasswordConfirmationInput = screen.getByTestId("new-password-confirmation");
 
       fireEvent.change(currentPasswordInput, { target: { value: "myOldPassword" } });
-      fireEvent.change(newPasswordInput, { target: { value: "myNewPassword" } });
-      fireEvent.change(newPasswordConfirmationInput, { target: { value: "myNewPassword" } });
+      fireEvent.change(newPasswordInput, { target: { value: "myNewPassword123L!" } });
+      fireEvent.change(newPasswordConfirmationInput, { target: { value: "myNewPassword123L!" } });
 
       await waitFor(() => {
         expect(screen.getByRole("button", { name: "Update Password" })).toBeEnabled();

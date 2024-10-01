@@ -24,11 +24,6 @@ describe("<EnterPassword />", () => {
       await checkPasswords(mockPassword, true);
     });
 
-    test("Not meeting password policy", async () => {
-      render(fixture(false));
-      await checkPasswords("tes", false);
-    });
-
     test("Form is loading", () => {
       render(fixture(true));
 

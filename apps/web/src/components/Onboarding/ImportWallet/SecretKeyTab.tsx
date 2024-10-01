@@ -52,7 +52,7 @@ export const SecretKeyTab = () => {
             {errors.secretKey && <FormErrorMessage>{errors.secretKey.message}</FormErrorMessage>}
           </FormControl>
 
-          {isEncrypted && <PasswordInput inputName="secretKeyPassword" minLength={0} />}
+          {isEncrypted && <PasswordInput inputName="secretKeyPassword" />}
 
           <Button width="full" isDisabled={!isValid} type="submit" variant="primary">
             Next

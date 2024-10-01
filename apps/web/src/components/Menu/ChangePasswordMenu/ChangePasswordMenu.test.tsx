@@ -60,7 +60,7 @@ describe("<ChangePasswordMenu />", () => {
 
       await waitFor(() => {
         expect(screen.getByTestId("new-password-error")).toHaveTextContent(
-          "Your password must be at least 12 characters long"
+          "Password must be at least 12 characters long"
         );
       });
     });

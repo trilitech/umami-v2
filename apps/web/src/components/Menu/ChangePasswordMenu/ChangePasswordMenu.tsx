@@ -37,7 +37,6 @@ export const ChangePasswordMenu = () => {
               data-testid="current-password"
               inputName="currentPassword"
               label="Current Password"
-              minLength={0}
               placeholder="Your password"
               required="Current password is required"
             />
@@ -45,7 +44,7 @@ export const ChangePasswordMenu = () => {
             <PasswordInput
               data-testid="new-password"
               inputName="newPassword"
-              isCheckPasswordStrengthEnabled
+              isStrengthCheckEnabled
               label="New Password"
               placeholder="New password"
               required="New password is required"
@@ -57,7 +56,6 @@ export const ChangePasswordMenu = () => {
               data-testid="new-password-confirmation"
               inputName="newPasswordConfirmation"
               label="Confirm password"
-              minLength={0}
               placeholder="Confirm password"
               required="Confirmation is required"
               validate={(val: string) =>

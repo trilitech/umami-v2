@@ -4,15 +4,16 @@ import { usePasswordValidation } from "./usePasswordValidation";
 import { act, render, screen, userEvent } from "../testUtils";
 
 const password = {
-  wrong: "123123",
-  weak: "Qwerty1231231",
-  medium: "Qwerty123123!23",
+  short: "123123",
+  noUppercase: "qwerty1231231",
+  noNumber: "Qwertykgjfdkjk!",
+  noSpecialChar: "Qwerty123123123",
   strong: "Qwerty123123!23vcxz",
 };
 
 const TestComponent = () => {
   const { validatePasswordStrength, PasswordStrengthBar } = usePasswordValidation();
-  const { register } = useFormContext();
+  const { formState, register } = useFormContext();
 
   return (
     <>
@@ -25,6 +26,7 @@ const TestComponent = () => {
         })}
       />
       {PasswordStrengthBar}
+      <span data-testid="password-error">{formState.errors.password?.message as string}</span>
     </>
   );
 };
@@ -53,23 +55,28 @@ describe("usePasswordValidation", () => {
   });
 
   it.each([
-    [password.weak, "Weak"],
-    [password.medium, "Medium"],
-    [password.strong, "Strong"],
+    [password.short, "Password must be at least 12 characters long"],
+    [password.noUppercase, "Password must contain at least one uppercase letter"],
+    [password.noNumber, "Password must contain at least one number"],
+    [password.noSpecialChar, "Password must contain at least one special character"],
   ])("should update PasswordStrengthBar based on score", async (password, text) => {
     const user = userEvent.setup();
     render(<Wrapper />);
 
     await act(() => user.type(screen.getByLabelText("Password"), password));
-    expect(screen.getByTestId(`password-strength-${text}`)).toBeVisible();
+
+    expect(screen.queryByTestId("password-strength-text")).not.toBeInTheDocument();
+    expect(screen.getByTestId("password-error")).toHaveTextContent(text);
   });
 
-  it("should not display password strength text if there is a password error", async () => {
+  it("should display that password is strong if all requirements are met", async () => {
     const user = userEvent.setup();
     render(<Wrapper />);
 
-    await act(() => user.type(screen.getByLabelText("Password"), password.wrong));
+    await act(() => user.type(screen.getByLabelText("Password"), password.strong));
 
-    expect(screen.queryByTestId("password-strength-text")).not.toBeInTheDocument();
+    expect(screen.getByTestId("password-strength-text")).toHaveTextContent(
+      "Your password is strong"
+    );
   });
 });

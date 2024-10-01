@@ -42,7 +42,7 @@ export const EnterAndConfirmPassword = ({
             <PasswordInput
               data-testid="password"
               inputName="password"
-              isCheckPasswordStrengthEnabled
+              isStrengthCheckEnabled
               placeholder="Enter master password"
             />
             {errors.password && <FormErrorMessage>{errors.password.message}</FormErrorMessage>}
@@ -53,7 +53,6 @@ export const EnterAndConfirmPassword = ({
               data-testid="confirmation"
               inputName="confirm"
               label="Confirm Password"
-              minLength={0}
               placeholder="Confirm your password"
               required="Confirmation is required"
               validate={(val: string) =>

@@ -51,7 +51,6 @@ export const MasterPasswordModal = ({ onSubmit }: MasterPasswordModalProps) => {
               data-testid="master-password"
               inputName="password"
               label="Password"
-              minLength={0}
               placeholder="Enter your password"
             />
           </ModalBody>
