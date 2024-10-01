@@ -31,7 +31,7 @@
   "dependencies": {
     "@babel/runtime": "^7.25.6",
     "@taquito/utils": "^20.0.1",
-    "@toruslabs/customauth": "16.0.6"
+    "@toruslabs/customauth": "20.2.3"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
