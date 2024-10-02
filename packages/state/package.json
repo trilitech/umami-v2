@@ -66,7 +66,7 @@
   },
   "dependencies": {
     "@airgap/beacon-wallet": "^4.3.0",
-    "@chakra-ui/react": "^2.8.2",
+    "@chakra-ui/react": "^2.9.2",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@reduxjs/toolkit": "^2.2.7",
