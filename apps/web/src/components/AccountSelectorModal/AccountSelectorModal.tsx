@@ -117,24 +117,26 @@ export const AccountSelectorModal = () => {
                 <Heading color={color("900")} size="sm">
                   {type}
                 </Heading>
-                <Flex gap="12px">
-                  <IconButton
-                    color={color("500")}
-                    aria-label={`Remove ${type} accounts`}
-                    icon={<TrashIcon />}
-                    onClick={() => onRemove(type, accounts)}
-                    size="sm"
-                    variant="ghost"
-                  />
-                  <IconButton
-                    color={color("500")}
-                    aria-label={`Add ${type} account`}
-                    icon={<PlusIcon />}
-                    onClick={() => handleDeriveAccount(accounts[0])}
-                    size="sm"
-                    variant="ghost"
-                  />
-                </Flex>
+                {isVerified && (
+                  <Flex gap="12px">
+                    <IconButton
+                      color={color("500")}
+                      aria-label={`Remove ${type} accounts`}
+                      icon={<TrashIcon />}
+                      onClick={() => onRemove(type, accounts)}
+                      size="sm"
+                      variant="ghost"
+                    />
+                    <IconButton
+                      color={color("500")}
+                      aria-label={`Add ${type} account`}
+                      icon={<PlusIcon />}
+                      onClick={() => handleDeriveAccount(accounts[0])}
+                      size="sm"
+                      variant="ghost"
+                    />
+                  </Flex>
+                )}
               </Center>
               {accounts.map(account => {
                 const address = account.address.pkh;

@@ -79,6 +79,8 @@ export const useRestoreFromMnemonic = () => {
         encryptedMnemonic,
       })
     );
+
+    return accounts;
   };
 };
 
@@ -142,6 +144,8 @@ export const useDeriveMnemonicAccount = () => {
     };
 
     dispatch(accountsActions.addAccount(account));
+
+    return account;
   };
 };
 

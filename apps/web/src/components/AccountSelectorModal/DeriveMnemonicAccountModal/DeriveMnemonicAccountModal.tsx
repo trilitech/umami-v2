@@ -1,7 +1,12 @@
 import { useToast } from "@chakra-ui/react";
 import { useDynamicModalContext } from "@umami/components";
 import { DEFAULT_ACCOUNT_LABEL, type MnemonicAccount } from "@umami/core";
-import { useAsyncActionHandler, useDeriveMnemonicAccount } from "@umami/state";
+import {
+  accountsActions,
+  useAppDispatch,
+  useAsyncActionHandler,
+  useDeriveMnemonicAccount,
+} from "@umami/state";
 
 import { MasterPasswordModal } from "../../MasterPasswordModal";
 import { NameAccountModal } from "../../NameAccountModal";
@@ -11,26 +16,29 @@ type DeriveMnemonicAccountModalProps = {
 };
 
 export const DeriveMnemonicAccountModal = ({ account }: DeriveMnemonicAccountModalProps) => {
-  const { goToIndex, openWith } = useDynamicModalContext();
+  const { onClose, openWith } = useDynamicModalContext();
 
   const { handleAsyncAction } = useAsyncActionHandler();
   const deriveMnemonicAccount = useDeriveMnemonicAccount();
+  const dispatch = useAppDispatch();
   const toast = useToast();
 
   const handleNameSubmit = ({ accountName }: { accountName: string }) => {
     const handlePasswordSubmit = ({ password }: { password: string }) =>
       handleAsyncAction(
         async () => {
-          await deriveMnemonicAccount({
+          const newAccount = await deriveMnemonicAccount({
             fingerPrint: account.seedFingerPrint,
             password,
             label: accountName.trim() || DEFAULT_ACCOUNT_LABEL,
           });
-          goToIndex(0);
 
+          dispatch(accountsActions.setCurrent(newAccount.address.pkh));
           toast({
             description: `New account created! Successfully derived account from ${account.seedFingerPrint}`,
           });
+
+          onClose();
         },
         { title: "Failed to derive new account" }
       );
