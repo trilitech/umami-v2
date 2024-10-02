@@ -161,11 +161,6 @@ function start() {
     console.log(e);
   }
 
-  // Enable experimental to activate Web USB support
-  app.commandLine.appendSwitch("enable-experimental-web-platform-features", true);
-
-  app.commandLine.appendSwitch("disable-features", "OutOfBlinkCors");
-
   if (!app.isDefaultProtocolClient("umami")) {
     // Define custom protocol handler. Deep linking works on packaged versions of the application!
     app.setAsDefaultProtocolClient("umami");
