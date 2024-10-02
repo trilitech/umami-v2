@@ -10,12 +10,12 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
-import { type Curves } from "@taquito/signer";
 import { useMultiForm } from "@umami/components";
 import { useIsPasswordSet } from "@umami/state";
 import { defaultDerivationPathTemplate } from "@umami/tezos";
 import { FormProvider } from "react-hook-form";
 
+import { type FormFields, type Mode } from "./types";
 import { LockIcon, UserIcon } from "../../../assets/icons";
 import { useColor } from "../../../styles/useColor";
 import { ModalBackButton } from "../../BackButton";
@@ -23,21 +23,6 @@ import { ModalCloseButton } from "../../CloseButton";
 import { PasswordInput } from "../../PasswordInput";
 import { AdvancedAccountSettings } from "../AdvancedAccountSettings";
 import { useGetSetupPasswordSubmitHandler } from "./useGetSetupPasswordSubmitHandler";
-
-export type FormFields = {
-  password: string;
-  passwordConfirmation: string;
-  derivationPath: string;
-  curve: Exclude<Curves, "bip25519">;
-};
-
-export type Mode =
-  | "mnemonic"
-  | "secret_key"
-  | "new_mnemonic"
-  | "verification"
-  | "add_account"
-  | "save_backup";
 
 type SetupPasswordProps = {
   mode: Mode;

@@ -15,7 +15,7 @@ import {
 } from "@umami/state";
 import { decryptSecretKey } from "@umami/tezos";
 
-import { type FormFields, type Mode } from "./SetupPassword";
+import { type FormFields, type Mode } from "./types";
 import { ImportantNoticeModal } from "../VerificationFlow/ImportantNoticeModal";
 
 const useGetSecretKeyHandler = () => {
