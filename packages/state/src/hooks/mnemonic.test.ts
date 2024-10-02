@@ -8,8 +8,8 @@ import { mnemonic1 } from "@umami/test-utils";
 import {
   MAINNET,
   defaultDerivationPathTemplate,
+  generateHash,
   getDefaultDerivationPath,
-  getFingerPrint,
   isAccountRevealed,
 } from "@umami/tezos";
 
@@ -21,7 +21,7 @@ import { addTestAccount, fakeIsAccountRevealed, renderHook } from "../testUtils"
 jest.mock("@umami/tezos", () => ({
   ...jest.requireActual("@umami/tezos"),
   isAccountRevealed: jest.fn(),
-  getFingerPrint: jest.fn(),
+  generateHash: jest.fn(),
 }));
 
 let store: UmamiStore;
@@ -75,7 +75,7 @@ const testPublicKeys = {
 };
 
 beforeEach(() => {
-  jest.mocked(getFingerPrint).mockResolvedValue("mockFingerPrint");
+  jest.mocked(generateHash).mockResolvedValue("mockFingerPrint");
 });
 
 describe.each(["ed25519", "secp256k1", "p256"] as const)("with %s curve", curve => {

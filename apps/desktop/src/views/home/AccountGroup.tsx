@@ -69,7 +69,7 @@ export const AccountGroup = ({
   return (
     <Box data-testid={`account-group-${groupLabel}`}>
       <Center justifyContent="space-between" marginTop="24px" marginBottom="16px">
-        <Heading data-testid="account-group-title" size="md">
+        <Heading data-testid="group-title" size="md">
           {groupLabel}
         </Heading>
 

@@ -12,7 +12,7 @@ import { mnemonic1 } from "@umami/test-utils";
 import {
   AVAILABLE_DERIVATION_PATH_TEMPLATES,
   derivePublicKeyPair,
-  getFingerPrint,
+  generateHash,
   isAccountRevealed,
   makeDerivationPath,
 } from "@umami/tezos";
@@ -47,7 +47,7 @@ jest.mock("@umami/crypto", () => ({
 }));
 jest.mock("@umami/tezos", () => ({
   ...jest.requireActual("@umami/tezos"),
-  getFingerPrint: jest.fn(),
+  generateHash: jest.fn(),
   isAccountRevealed: jest.fn(),
 }));
 
@@ -94,7 +94,7 @@ describe.each(["ed25519", "secp256k1", "p256"] as const)(
 
       describe("useRestoreFromMnemonic", () => {
         beforeEach(() => {
-          jest.mocked(getFingerPrint).mockResolvedValue(MOCK_FINGERPRINT);
+          jest.mocked(generateHash).mockResolvedValue(MOCK_FINGERPRINT);
           jest.mocked(encrypt).mockReturnValue(Promise.resolve(MOCK_ENCRYPTED));
         });
 
@@ -118,7 +118,7 @@ describe.each(["ed25519", "secp256k1", "p256"] as const)(
           expect(store.getState().accounts.seedPhrases).toEqual({
             [MOCK_FINGERPRINT]: MOCK_ENCRYPTED,
           });
-          expect(getFingerPrint).toHaveBeenCalledWith(mnemonic1);
+          expect(generateHash).toHaveBeenCalledTimes(1);
           // Encrypts given mnemonic with the given password.
           expect(encrypt).toHaveBeenCalledWith(mnemonic1, PASSWORD);
         });
@@ -159,7 +159,7 @@ describe.each(["ed25519", "secp256k1", "p256"] as const)(
           expect(store.getState().accounts.seedPhrases).toEqual({
             [MOCK_FINGERPRINT]: MOCK_ENCRYPTED,
           });
-          expect(getFingerPrint).toHaveBeenCalledWith(mnemonic1);
+          expect(generateHash).toHaveBeenCalledTimes(1);
           // Encrypts given mnemonic with the given password.
           expect(encrypt).toHaveBeenCalledWith(mnemonic1, PASSWORD);
         });
