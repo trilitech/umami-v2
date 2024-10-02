@@ -47,8 +47,8 @@ importers:
         specifier: ^7.25.6
         version: 7.25.6
       '@chakra-ui/anatomy':
-        specifier: 2.2.2
-        version: 2.2.2
+        specifier: 2.3.1
+        version: 2.3.1
       '@chakra-ui/cli':
         specifier: ^2.5.1
         version: 2.5.1
@@ -465,8 +465,8 @@ importers:
         specifier: ^7.25.6
         version: 7.25.6
       '@chakra-ui/anatomy':
-        specifier: 2.2.2
-        version: 2.2.2
+        specifier: 2.3.1
+        version: 2.3.1
       '@chakra-ui/cli':
         specifier: ^2.5.1
         version: 2.5.1
@@ -598,8 +598,8 @@ importers:
         specifier: ^4.3.0
         version: 4.3.0
       '@chakra-ui/anatomy':
-        specifier: 2.2.2
-        version: 2.2.2
+        specifier: 2.3.1
+        version: 2.3.1
       '@chakra-ui/cli':
         specifier: ^2.5.1
         version: 2.5.1
