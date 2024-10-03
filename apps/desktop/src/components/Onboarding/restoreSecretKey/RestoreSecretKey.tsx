@@ -61,7 +61,7 @@ export const RestoreSecretKey = ({ goToStep }: { goToStep: (step: OnboardingStep
 
           {isEncrypted && (
             <FormControl marginTop="20px" isInvalid={!!errors.password}>
-              <PasswordInput data-testid="password" inputName="password" minLength={0} />
+              <PasswordInput data-testid="password" inputName="password" />
               {errors.password && <FormErrorMessage>{errors.password.message}</FormErrorMessage>}
             </FormControl>
           )}

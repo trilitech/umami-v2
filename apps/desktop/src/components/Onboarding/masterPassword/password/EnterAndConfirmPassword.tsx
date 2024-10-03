@@ -19,7 +19,7 @@ export const EnterAndConfirmPassword = ({
   };
 
   const form = useForm<ConfirmPasswordFormValues>({
-    mode: "onBlur",
+    mode: "onChange",
   });
 
   const {
@@ -42,6 +42,7 @@ export const EnterAndConfirmPassword = ({
             <PasswordInput
               data-testid="password"
               inputName="password"
+              isStrengthCheckEnabled
               placeholder="Enter master password"
             />
             {errors.password && <FormErrorMessage>{errors.password.message}</FormErrorMessage>}

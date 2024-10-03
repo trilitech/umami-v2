@@ -52,7 +52,6 @@ export const MasterPasswordModal = ({ onSubmit }: MasterPasswordModalProps) => {
               inputName="password"
               label="Password"
               placeholder="Enter your password"
-              required="Password is required"
             />
           </ModalBody>
           <ModalFooter>

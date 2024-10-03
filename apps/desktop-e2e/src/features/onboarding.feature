@@ -33,8 +33,8 @@ Feature: User Onboarding
     When I click "Continue" button
     Then I am on "Umami Master Password" onboarding page
 
-    When I fill "Password" with "12345678"
-    And I fill "Confirm Password" with "12345678"
+    When I fill "Password" with "Qwerty123123!23vcxz"
+    And I fill "Confirm Password" with "Qwerty123123!23vcxz"
     And I click "Submit" button
     Then I am on an Accounts page
     And I see a toast "Account successfully created!"
@@ -76,8 +76,8 @@ Feature: User Onboarding
     When I click "Continue" button
     Then I am on "Umami Master Password" onboarding page
 
-    When I fill "Password" with "12345678"
-    And I fill "Confirm Password" with "12345678"
+    When I fill "Password" with "Qwerty123123!23vcxz"
+    And I fill "Confirm Password" with "Qwerty123123!23vcxz"
     And I click "Submit" button
     Then I am on an Accounts page
     And I see a toast "Account successfully created!"
@@ -119,8 +119,8 @@ Feature: User Onboarding
     When I click "Continue" button
     Then I am on "Umami Master Password" onboarding page
 
-    When I fill "Password" with "12345678"
-    And I fill "Confirm Password" with "12345678"
+    When I fill "Password" with "Qwerty123123!23vcxz"
+    And I fill "Confirm Password" with "Qwerty123123!23vcxz"
     And I click "Submit" button
     Then I am on an Accounts page
     And I see a toast "Account successfully created!"
@@ -158,8 +158,8 @@ Feature: User Onboarding
     When I click "Continue" button
     Then I am on "Umami Master Password" onboarding page
 
-    When I fill "Password" with "12345678"
-    And I fill "Confirm Password" with "12345678"
+    When I fill "Password" with "Qwerty123123!23vcxz"
+    And I fill "Confirm Password" with "Qwerty123123!23vcxz"
     And I click "Submit" button
     Then I am on an Accounts page
     And I see a toast "Account successfully created!"

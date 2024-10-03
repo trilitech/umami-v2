@@ -12,7 +12,7 @@ type ChangePasswordMenuValues = {
 };
 
 export const ChangePasswordMenu = () => {
-  const form = useForm<ChangePasswordMenuValues>({ mode: "onBlur" });
+  const form = useForm<ChangePasswordMenuValues>({ mode: "all" });
   const toast = useToast();
   const dispatch = useAppDispatch();
   const { handleAsyncAction, isLoading } = useAsyncActionHandler();
@@ -44,6 +44,7 @@ export const ChangePasswordMenu = () => {
             <PasswordInput
               data-testid="new-password"
               inputName="newPassword"
+              isStrengthCheckEnabled
               label="New Password"
               placeholder="New password"
               required="New password is required"

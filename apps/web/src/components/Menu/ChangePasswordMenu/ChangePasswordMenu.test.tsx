@@ -9,6 +9,9 @@ jest.mock("@umami/state", () => ({
   changeMnemonicPassword: jest.fn(),
 }));
 
+const currentPassword = "Qwerty123123!23vcxz";
+const newPassword = "Qwerty123123!23vcxz32llll";
+
 describe("<ChangePasswordMenu />", () => {
   describe("currentPassword", () => {
     it("is empty by default", async () => {
@@ -47,7 +50,7 @@ describe("<ChangePasswordMenu />", () => {
       });
     });
 
-    it("requires 8 characters", async () => {
+    it("requires 12 characters", async () => {
       const user = userEvent.setup();
       await renderInDrawer(<ChangePasswordMenu />);
 
@@ -57,7 +60,7 @@ describe("<ChangePasswordMenu />", () => {
 
       await waitFor(() => {
         expect(screen.getByTestId("new-password-error")).toHaveTextContent(
-          "Your password must be at least 8 characters long"
+          "Password must be at least 12 characters long"
         );
       });
     });
@@ -108,9 +111,9 @@ describe("<ChangePasswordMenu />", () => {
       const newPasswordInput = screen.getByTestId("new-password");
       const newPasswordConfirmationInput = screen.getByTestId("new-password-confirmation");
 
-      await user.type(currentPasswordInput, "myOldPassword");
-      await user.type(newPasswordInput, "myNewPassword");
-      await user.type(newPasswordConfirmationInput, "myNewPassword");
+      await user.type(currentPasswordInput, currentPassword);
+      await user.type(newPasswordInput, newPassword);
+      await user.type(newPasswordConfirmationInput, newPassword);
 
       expect(screen.getByRole("button", { name: "Update Password" })).toBeEnabled();
     });
@@ -123,15 +126,15 @@ describe("<ChangePasswordMenu />", () => {
       const newPasswordInput = screen.getByTestId("new-password");
       const newPasswordConfirmationInput = screen.getByTestId("new-password-confirmation");
 
-      await user.type(currentPasswordInput, "myOldPassword");
-      await user.type(newPasswordInput, "myNewPassword");
-      await user.type(newPasswordConfirmationInput, "myNewPassword");
+      await user.type(currentPasswordInput, currentPassword);
+      await user.type(newPasswordInput, newPassword);
+      await user.type(newPasswordConfirmationInput, newPassword);
 
       await user.click(screen.getByRole("button", { name: "Update Password" }));
 
       expect(changeMnemonicPassword).toHaveBeenCalledWith({
-        currentPassword: "myOldPassword",
-        newPassword: "myNewPassword",
+        currentPassword: currentPassword,
+        newPassword: newPassword,
       });
     });
   });

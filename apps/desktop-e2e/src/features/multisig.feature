@@ -2,8 +2,8 @@ Feature: Multisig Account Creation
 
   Scenario: User creates a multisig account
     Given I have account
-      | type       | label | secretKey                                              | password |
-      | secret_key | Alice | edsk3QoqBuvdamxouPhin7swCvkQNgq4jP5KZPbwWNnwdZpSpJiEbq | 12345678 |
+      | type       | label | secretKey                                              | password            |
+      | secret_key | Alice | edsk3QoqBuvdamxouPhin7swCvkQNgq4jP5KZPbwWNnwdZpSpJiEbq | Qwerty123123!23vcxz |
     And I am on an Accounts page
 
     When I am creating a multisig account
@@ -25,7 +25,7 @@ Feature: Multisig Account Creation
       | Approvers            | Alice,tz1gUNyn3hmnEWqkusWPzxRaon1cs7ndWh7h |
       | Min No. of approvals | 1                                          |
 
-    When I sign transaction with password "12345678"
+    When I sign transaction with password "Qwerty123123!23vcxz"
     Then I see "Operation Submitted" modal
 
     And I close modal

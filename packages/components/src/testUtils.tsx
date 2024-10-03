@@ -1,7 +1,8 @@
 import * as testLib from "@testing-library/react";
-import { act, PropsWithChildren, ReactNode } from "react";
-import { makeStore, UmamiStore } from "@umami/state";
+import { type UmamiStore, makeStore } from "@umami/state";
+import { type PropsWithChildren, type ReactNode, act } from "react";
 import { Provider } from "react-redux";
+
 import { DynamicModalContext, useDynamicModal } from "./DynamicDisclosure";
 export * from "@testing-library/user-event";
 

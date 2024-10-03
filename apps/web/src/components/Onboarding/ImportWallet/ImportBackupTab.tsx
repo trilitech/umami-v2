@@ -106,7 +106,7 @@ export const ImportBackupTab = () => {
             />
             {errors.file && <FormErrorMessage>{errors.file.message}</FormErrorMessage>}
           </FormControl>
-          <PasswordInput inputName="password" minLength={0} required={false} />
+          <PasswordInput inputName="password" required={false} />
           <Button width="full" isDisabled={!isValid} type="submit" variant="primary">
             Import Wallet
           </Button>

@@ -114,7 +114,7 @@ export const SignButton = ({
                 <Input
                   data-testid="password"
                   type="password"
-                  {...form.register("password", { minLength: 8, required: "Password is required" })}
+                  {...form.register("password", { required: "Password is required" })}
                 />
                 {errors.password && <FormErrorMessage>{errors.password.message}</FormErrorMessage>}
               </FormControl>

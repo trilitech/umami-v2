@@ -6,12 +6,12 @@ import {
   type InputProps,
   InputRightElement,
 } from "@chakra-ui/react";
+import { DEFAULT_MIN_LENGTH, usePasswordValidation } from "@umami/components";
 import { useState } from "react";
 import { type FieldValues, type Path, type RegisterOptions, useFormContext } from "react-hook-form";
 
 import { EyeIcon, EyeSlashIcon } from "../assets/icons";
-
-const MIN_LENGTH = 8;
+import colors from "../style/colors";
 
 // <T extends FieldValues> is needed to be compatible with the useForm's type parameter (FormData)
 // <U extends Path<T>> makes sure that we can pass in only valid inputName that exists in FormData
@@ -19,9 +19,10 @@ type PasswordInputProps<T extends FieldValues, U extends Path<T>> = {
   inputName: U;
   label?: string;
   placeholder?: string;
+  isStrengthCheckEnabled?: boolean;
   required?: string | boolean;
   minLength?: RegisterOptions<T, U>["minLength"];
-  validate?: RegisterOptions<T, U>["validate"];
+  validate?: (val: string) => string | boolean;
 } & InputProps;
 
 // TODO: add an error message and make it nested under FormControl
@@ -30,12 +31,32 @@ export const PasswordInput = <T extends FieldValues, U extends Path<T>>({
   label = "Password",
   placeholder = "Enter your password",
   required = "Password is required",
-  minLength = MIN_LENGTH,
+  isStrengthCheckEnabled = false,
+  minLength = DEFAULT_MIN_LENGTH,
   validate,
   ...rest
 }: PasswordInputProps<T, U>) => {
   const { register } = useFormContext<T>();
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const { validatePasswordStrength, PasswordStrengthBar } = usePasswordValidation({
+    color: colors.gray[500],
+    inputName,
+    minLength,
+  });
+
+  const handleValidate = (val: string) => {
+    if (validate) {
+      const validationResult = validate(val);
+
+      if (isStrengthCheckEnabled && validationResult === true) {
+        return validatePasswordStrength(val);
+      }
+
+      return validationResult;
+    } else if (isStrengthCheckEnabled) {
+      return validatePasswordStrength(val);
+    }
+  };
 
   return (
     <>
@@ -48,14 +69,7 @@ export const PasswordInput = <T extends FieldValues, U extends Path<T>>({
           type={showPassword ? "text" : "password"}
           {...register(inputName, {
             required,
-            minLength:
-              minLength && required
-                ? {
-                    value: minLength,
-                    message: `Your password must be at least ${minLength} characters long`,
-                  }
-                : undefined,
-            validate,
+            validate: handleValidate,
           })}
           {...rest}
         />
@@ -69,6 +83,7 @@ export const PasswordInput = <T extends FieldValues, U extends Path<T>>({
           </Button>
         </InputRightElement>
       </InputGroup>
+      {isStrengthCheckEnabled && PasswordStrengthBar}
     </>
   );
 };

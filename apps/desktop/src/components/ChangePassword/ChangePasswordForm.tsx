@@ -25,7 +25,7 @@ type ChangePasswordFormValues = {
 
 export const ChangePasswordForm = () => {
   const { onClose } = useDynamicModalContext();
-  const form = useForm<ChangePasswordFormValues>({ mode: "onBlur" });
+  const form = useForm<ChangePasswordFormValues>({ mode: "all" });
   const toast = useToast();
   const dispatch = useAppDispatch();
   const { handleAsyncAction, isLoading } = useAsyncActionHandler();
@@ -80,6 +80,7 @@ export const ChangePasswordForm = () => {
               <PasswordInput
                 data-testid="new-password"
                 inputName="newPassword"
+                isStrengthCheckEnabled
                 label="New Password"
                 placeholder="Enter new password"
                 required="New password is required"

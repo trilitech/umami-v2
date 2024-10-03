@@ -22,7 +22,7 @@ export class AccountDrawerPage {
 
     await this.page.getByRole("button", { name: "Preview" }).click();
 
-    await new SignPage(this.page, "12345678").sign();
+    await new SignPage(this.page, "Qwerty123123!23vcxz").sign();
   }
 
   getRoundButton(buttonName: string): Locator {
@@ -46,7 +46,7 @@ export class AccountDrawerPage {
 
     await this.page.getByRole("button", { name: "Preview" }).click();
 
-    await new SignPage(this.page, "12345678").sign();
+    await new SignPage(this.page, "Qwerty123123!23vcxz").sign();
   }
 
   async stake(amount: number): Promise<void> {
@@ -59,7 +59,7 @@ export class AccountDrawerPage {
 
     await this.page.getByLabel("Enter Amount").fill(String(amount));
     await this.page.getByRole("button", { name: "Preview" }).click();
-    await new SignPage(this.page, "12345678").sign();
+    await new SignPage(this.page, "Qwerty123123!23vcxz").sign();
   }
 
   async stakedBalance(): Promise<number> {
