@@ -20,7 +20,8 @@ export const Layout = () => {
         base: '"header" "sidebar" "main" "footer" "nav"',
         md: `"header header" "sidebar nav" "sidebar main" "footer main"`,
       }}
-      height={{ md: "100vh", base: "100dvh" }}
+      height={{ md: "100vh" }}
+      minHeight={{ base: "100dvh" }}
       padding={{ md: "20px 46px 0", base: "54px 0 0" }}
       data-testid="signed-in-layout"
     >

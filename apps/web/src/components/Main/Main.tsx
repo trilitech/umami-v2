@@ -9,7 +9,7 @@ import { Tokens } from "../../views/Tokens";
 export const Main = () => (
   <Box
     overflowY="auto"
-    height={{ md: "calc(100% + 29px)" }}
+    height={{ base: "100%", md: "calc(100% + 29px)" }}
     marginTop={{ md: "-75px" }}
     paddingTop={{ md: "75px" }}
     borderRadius="30px"

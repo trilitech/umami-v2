@@ -1,11 +1,18 @@
 import { Box, Icon } from "@chakra-ui/react";
 
-import { CoinIcon, LockIcon, PyramidIcon, WalletIcon } from "../../assets/icons";
+import { CoinIcon, LockIcon, PercentIcon, PyramidIcon, WalletIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
 import { useIsAccountVerified } from "../Onboarding/VerificationFlow";
 
 type ViewOverlayProps = {
   iconType: "activity" | "earn" | "nfts" | "tokens";
+};
+
+const iconMap = {
+  activity: WalletIcon,
+  earn: PercentIcon,
+  nfts: PyramidIcon,
+  tokens: CoinIcon,
 };
 
 export const ViewOverlay = ({ iconType }: ViewOverlayProps) => {
@@ -15,14 +22,12 @@ export const ViewOverlay = ({ iconType }: ViewOverlayProps) => {
   const getIcon = () => {
     if (!isVerified) {
       return LockIcon;
-    } else if (iconType === "activity") {
-      return WalletIcon;
-    } else if (iconType === "nfts") {
-      return PyramidIcon;
-    } else if (iconType === "tokens") {
-      return CoinIcon;
+    } else {
+      return iconMap[iconType];
     }
   };
+
+  const currentColor = color("50");
 
   return (
     <Box
@@ -41,7 +46,7 @@ export const ViewOverlay = ({ iconType }: ViewOverlayProps) => {
         left="-20%"
         width="50%"
         height="auto"
-        color={color("50")}
+        color={currentColor}
       />
       <Icon
         as={getIcon()}
@@ -50,7 +55,7 @@ export const ViewOverlay = ({ iconType }: ViewOverlayProps) => {
         left="50%"
         width="20%"
         height="auto"
-        color={color("50")}
+        color={currentColor}
       />
       <Icon
         as={getIcon()}
@@ -59,7 +64,7 @@ export const ViewOverlay = ({ iconType }: ViewOverlayProps) => {
         right="5%"
         width="30%"
         height="auto"
-        color={color("50")}
+        color={currentColor}
       />
     </Box>
   );

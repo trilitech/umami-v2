@@ -43,6 +43,7 @@ export { default as MenuIcon } from "./menu.svg";
 export { default as MoonIcon } from "./moon.svg";
 export { default as MultisigIcon } from "./multisig.svg";
 export { default as OutgoingArrowIcon } from "./outgoing-arrow.svg";
+export { default as PercentIcon } from "./percent.svg";
 export { default as PencilIcon } from "./pencil.svg";
 export { default as PlusIcon } from "./plus.svg";
 export { default as PyramidIcon } from "./pyramid.svg";
