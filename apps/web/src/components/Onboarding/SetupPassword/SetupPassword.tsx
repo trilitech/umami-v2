@@ -10,48 +10,19 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
-import { type Curves } from "@taquito/signer";
-import { useDynamicModalContext, useMultiForm } from "@umami/components";
-import { DEFAULT_ACCOUNT_LABEL, type MnemonicAccount } from "@umami/core";
-import {
-  accountsActions,
-  generate24WordMnemonic,
-  useAppDispatch,
-  useAsyncActionHandler,
-  useCurrentAccount,
-  useDownloadBackupFile,
-  useGetDecryptedMnemonic,
-  useGetNextAvailableAccountLabels,
-  useIsPasswordSet,
-  useRestoreFromMnemonic,
-  useRestoreFromSecretKey,
-  useValidateMasterPassword,
-} from "@umami/state";
-import { decryptSecretKey, defaultDerivationPathTemplate } from "@umami/tezos";
+import { useMultiForm } from "@umami/components";
+import { useIsPasswordSet } from "@umami/state";
+import { defaultDerivationPathTemplate } from "@umami/tezos";
 import { FormProvider } from "react-hook-form";
 
+import { type FormFields, type Mode } from "./types";
 import { LockIcon, UserIcon } from "../../../assets/icons";
 import { useColor } from "../../../styles/useColor";
 import { ModalBackButton } from "../../BackButton";
 import { ModalCloseButton } from "../../CloseButton";
 import { PasswordInput } from "../../PasswordInput";
 import { AdvancedAccountSettings } from "../AdvancedAccountSettings";
-import { ImportantNoticeModal } from "../VerificationFlow/ImportantNoticeModal";
-
-type FormFields = {
-  password: string;
-  passwordConfirmation: string;
-  derivationPath: string;
-  curve: Exclude<Curves, "bip25519">;
-};
-
-export type Mode =
-  | "mnemonic"
-  | "secret_key"
-  | "new_mnemonic"
-  | "verification"
-  | "add_account"
-  | "save_backup";
+import { useGetSetupPasswordSubmitHandler } from "./useGetSetupPasswordSubmitHandler";
 
 type SetupPasswordProps = {
   mode: Mode;
@@ -98,18 +69,8 @@ const getModeConfig = (mode: Mode) => {
 
 export const SetupPassword = ({ mode }: SetupPasswordProps) => {
   const color = useColor();
-  const { handleAsyncAction, isLoading } = useAsyncActionHandler();
-  const dispatch = useAppDispatch();
-
-  const { allFormValues, onClose, openWith } = useDynamicModalContext();
-  const restoreFromMnemonic = useRestoreFromMnemonic();
-  const restoreFromSecretKey = useRestoreFromSecretKey();
-  const checkPassword = useValidateMasterPassword();
-  const getNextAvailableAccountLabels = useGetNextAvailableAccountLabels();
+  const { onSubmit, isLoading } = useGetSetupPasswordSubmitHandler(mode);
   const isPasswordSet = useIsPasswordSet();
-  const getDecryptedMnemonic = useGetDecryptedMnemonic();
-  const currentAccount = useCurrentAccount();
-  const downloadBackupFile = useDownloadBackupFile();
 
   const form = useMultiForm<FormFields>({
     mode: "onBlur",
@@ -123,58 +84,6 @@ export const SetupPassword = ({ mode }: SetupPasswordProps) => {
     formState: { isValid },
     getValues,
   } = form;
-
-  const isNewMnemonic = mode === "new_mnemonic" || mode === "add_account";
-
-  const onSubmit = ({ password, curve, derivationPath }: FormFields) =>
-    handleAsyncAction(async () => {
-      const label = getNextAvailableAccountLabels(DEFAULT_ACCOUNT_LABEL)[0];
-
-      await checkPassword?.(password);
-
-      switch (mode) {
-        case "secret_key": {
-          const secretKey = await decryptSecretKey(
-            allFormValues.current?.secretKey,
-            allFormValues.current?.secretKeyPassword
-          );
-          await restoreFromSecretKey(secretKey, password, DEFAULT_ACCOUNT_LABEL);
-          break;
-        }
-        case "mnemonic":
-        case "new_mnemonic":
-        case "add_account": {
-          const mnemonic = isNewMnemonic
-            ? generate24WordMnemonic()
-            : allFormValues.current?.mnemonic.map(({ val }: { val: string }) => val).join(" ");
-
-          await restoreFromMnemonic({
-            mnemonic,
-            password,
-            derivationPathTemplate: derivationPath,
-            label: allFormValues.current?.accountName || label,
-            curve,
-            isVerified: !isNewMnemonic,
-          });
-
-          if (isNewMnemonic) {
-            dispatch(accountsActions.setPassword(password));
-          }
-
-          break;
-        }
-        case "verification": {
-          const mnemonic = await getDecryptedMnemonic(currentAccount as MnemonicAccount, password);
-
-          return openWith(<ImportantNoticeModal mnemonic={mnemonic} />, { size: "xl" });
-        }
-        case "save_backup": {
-          await downloadBackupFile(password);
-        }
-      }
-
-      return onClose();
-    });
 
   const { title, subtitle, buttonLabel, icon } = getModeConfig(mode);
 

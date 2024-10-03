@@ -2,7 +2,14 @@ import { mockMnemonicAccount } from "@umami/core";
 import { type UmamiStore, addTestAccount, makeStore, useDeriveMnemonicAccount } from "@umami/state";
 
 import { DeriveMnemonicAccountModal } from "./DeriveMnemonicAccountModal";
-import { act, renderInModal, screen, userEvent, waitFor } from "../../../testUtils";
+import {
+  act,
+  dynamicModalContextMock,
+  renderInModal,
+  screen,
+  userEvent,
+  waitFor,
+} from "../../../testUtils";
 
 let store: UmamiStore;
 
@@ -48,12 +55,16 @@ describe("<DeriveMnemonicAccountModal />", () => {
   });
 
   it("derives mnemonic account on password submission", async () => {
+    const newAccount = mockMnemonicAccount(1);
+    mockDeriveMnemonicAccount.mockResolvedValue(newAccount);
+
+    const { onClose } = dynamicModalContextMock;
     const user = userEvent.setup();
 
     const account = mockMnemonicAccount(0);
     await renderInModal(<DeriveMnemonicAccountModal account={account} />, store);
 
-    await act(() => user.type(screen.getByLabelText("Account name (Optional)"), "Test Account"));
+    await act(() => user.type(screen.getByLabelText("Account name (Optional)"), newAccount.label));
     await act(() => user.click(screen.getByRole("button", { name: "Continue" })));
     await act(() => user.type(screen.getByLabelText("Password"), "test-password"));
     await act(() => user.click(screen.getByRole("button", { name: "Submit" })));
@@ -61,9 +72,10 @@ describe("<DeriveMnemonicAccountModal />", () => {
     expect(mockDeriveMnemonicAccount).toHaveBeenCalledWith({
       fingerPrint: account.seedFingerPrint,
       password: "test-password",
-      label: "Test Account",
+      label: newAccount.label,
     });
 
-    expect(screen.queryByTestId("master-password-modal")).not.toBeInTheDocument();
+    expect(store.getState().accounts.current).toBe(newAccount.address.pkh);
+    expect(onClose).toHaveBeenCalled();
   });
 });
