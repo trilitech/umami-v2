@@ -293,7 +293,8 @@ const theme = extendTheme({
     },
     Link: {
       baseStyle: {
-        color: "gray.500",
+        color: "gray.600",
+        textUnderlineOffset: "2px",
       },
       variants: {
         dropdownOption: {

@@ -16,6 +16,7 @@ import {
   FormErrorMessage,
   Heading,
   Image,
+  Link,
   ModalBody,
   ModalCloseButton,
   ModalContent,
@@ -77,15 +78,6 @@ export const PermissionRequestModal = ({ request }: { request: PermissionRequest
         <Text marginTop="10px" color={colors.gray[400]} textAlign="center" size="sm">
           {request.appMetadata.name} is requesting permission to sign this operation.
         </Text>
-
-        <Flex alignItems="center" justifyContent="center" marginTop="10px">
-          <Heading marginRight="4px" color={colors.gray[450]} size="sm">
-            Network:
-          </Heading>
-          <Text color={colors.gray[400]} size="sm">
-            {capitalize(request.network.type)}
-          </Text>
-        </Flex>
       </ModalHeader>
       <ModalCloseButton />
       <ModalBody data-testid="beacon-request-body">
@@ -100,6 +92,26 @@ export const PermissionRequestModal = ({ request }: { request: PermissionRequest
             <Image borderRadius="4px" src={request.appMetadata.icon} />
           </AspectRatio>
           <Heading size="sm">{request.appMetadata.name}</Heading>
+        </Flex>
+
+        <Flex alignItems="center" justifyContent="space-between" marginTop="12px">
+          <Flex alignItems="center" gap="4px">
+            <Text size="xs">Suspicious DApp? </Text>
+            <Link
+              fontSize="12px"
+              textDecoration="underline"
+              href="mailto:umami-support@trili.tech"
+              isExternal
+            >
+              Report
+            </Link>
+          </Flex>
+          <Flex alignItems="center" justifyContent="center">
+            <Heading marginRight="4px" color={colors.gray[450]} size="md">
+              Network:
+            </Heading>
+            <Text color={colors.gray[400]}>{capitalize(request.network.type)}</Text>
+          </Flex>
         </Flex>
 
         <Accordion marginTop="16px" allowToggle={true}>
