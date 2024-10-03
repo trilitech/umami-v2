@@ -1,5 +1,6 @@
 import { Box, useColorMode } from "@chakra-ui/react";
 import {
+  type Network,
   type RequestMessage,
   type RequestType,
   toMatchingResponseType,
@@ -14,6 +15,7 @@ import { sendResponse } from "./utils";
 import "./EmbeddedComponent.scss";
 import { useEmbedApp } from "./EmbedAppContext";
 import { useSignPayloadModal } from "./signPayloadModalHooks";
+import { ENVIRONMENT } from "./env";
 
 export function EmbeddedComponent() {
   const { getNetwork, getUserData, setNetwork, setUserData, setLoginOptions, setDAppOrigin } =
@@ -121,9 +123,8 @@ export function EmbeddedComponent() {
 
   const validateClientPermissions = (origin: string, request: RequestMessage): boolean => {
     if (request.type === "config_request") {
-      return true;
+      return checkNetworkEnvironment(request.config.network, request.type);
     }
-
     if (getNetwork() === null) {
       sendResponse({
         type: toMatchingResponseType(request.type),
@@ -132,10 +133,14 @@ export function EmbeddedComponent() {
       });
       return false;
     }
+    // ghostnet checks
     if (getNetwork() === "ghostnet") {
       return true;
     }
-
+    // mainnet checks
+    if (!checkNetworkEnvironment(getNetwork()!, request.type)) {
+      return false;
+    }
     const clientPermissions = getPermissionsForOrigin(origin);
     if (!clientPermissions) {
       console.error(`No permissions for origin (${origin})`);
@@ -194,6 +199,18 @@ export function EmbeddedComponent() {
         type: toMatchingResponseType(requestType),
         error: "no_network_data",
         errorMessage: "Network data is not available. Try restarting the component.",
+      });
+      return false;
+    }
+    return true;
+  };
+
+  const checkNetworkEnvironment = (network: Network, requestType: RequestType) => {
+    if (network === "mainnet" && ENVIRONMENT !== "mainnet") {
+      sendResponse({
+        type: toMatchingResponseType(requestType),
+        error: "invalid_network",
+        errorMessage: "Mainnet is not supported in this environment",
       });
       return false;
     }
