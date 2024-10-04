@@ -9,7 +9,8 @@ import {
   ModalFooter,
   ModalHeader,
 } from "@chakra-ui/react";
-import { useDynamicModalContext } from "@umami/components";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { getNetworkValidationScheme, useDynamicModalContext } from "@umami/components";
 import { networksActions, useAvailableNetworks } from "@umami/state";
 import { type Network } from "@umami/tezos";
 import { useForm } from "react-hook-form";
@@ -30,7 +31,11 @@ export const UpsertNetworkModal = ({ network }: { network?: Network }) => {
     formState: { errors, isValid },
     register,
     handleSubmit,
-  } = useForm<Network>({ mode: "onBlur", defaultValues: network });
+  } = useForm<Network>({
+    mode: "onBlur",
+    defaultValues: network,
+    resolver: zodResolver(getNetworkValidationScheme(availableNetworks, network)),
+  });
 
   const onSubmit = (network: Network) => {
     dispatch(networksActions.upsertNetwork(network));
@@ -51,12 +56,7 @@ export const UpsertNetworkModal = ({ network }: { network?: Network }) => {
               <Input
                 placeholder="mainnet"
                 {...register("name", {
-                  required: "Name is required",
-                  validate: name => {
-                    if (availableNetworks.find(n => n.name === name)) {
-                      return "Network with this name already exists";
-                    }
-                  },
+                  setValueAs: removeTrailingSlashes,
                 })}
               />
               {errors.name && <FormErrorMessage>{errors.name.message}</FormErrorMessage>}
@@ -67,7 +67,6 @@ export const UpsertNetworkModal = ({ network }: { network?: Network }) => {
             <Input
               placeholder="https://prod.tcinfra.net/rpc/mainnet"
               {...register("rpcUrl", {
-                required: "RPC URL is required",
                 setValueAs: removeTrailingSlashes,
               })}
             />
@@ -78,7 +77,6 @@ export const UpsertNetworkModal = ({ network }: { network?: Network }) => {
             <Input
               placeholder="https://api.ghostnet.tzkt.io"
               {...register("tzktApiUrl", {
-                required: "Tzkt API URL is required",
                 setValueAs: removeTrailingSlashes,
               })}
             />
@@ -89,7 +87,6 @@ export const UpsertNetworkModal = ({ network }: { network?: Network }) => {
             <Input
               placeholder="https://ghostnet.tzkt.io"
               {...register("tzktExplorerUrl", {
-                required: "Tzkt Explorer URL is required",
                 setValueAs: removeTrailingSlashes,
               })}
             />
@@ -98,9 +95,10 @@ export const UpsertNetworkModal = ({ network }: { network?: Network }) => {
             )}
           </FormControl>
 
-          <FormControl>
+          <FormControl isInvalid={!!errors.buyTezUrl}>
             <FormLabel>Buy Tez URL</FormLabel>
             <Input placeholder="https://faucet.ghostnet.teztnets.com" {...register("buyTezUrl")} />
+            {errors.buyTezUrl && <FormErrorMessage>{errors.buyTezUrl.message}</FormErrorMessage>}
           </FormControl>
           <ModalFooter>
             <Button width="100%" isDisabled={!isValid} onClick={() => {}} type="submit">

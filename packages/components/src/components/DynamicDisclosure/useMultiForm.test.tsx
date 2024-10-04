@@ -11,7 +11,7 @@ import {
 
 import { useDynamicModalContext } from "./DynamicDisclosure";
 import { useMultiForm } from "./useMultiForm";
-import { act, renderHook, screen, userEvent, waitFor } from "../testUtils";
+import { act, renderHook, screen, userEvent, waitFor } from "../../testUtils";
 
 const Page3 = () => {
   const { goBack, allFormValues } = useDynamicModalContext();

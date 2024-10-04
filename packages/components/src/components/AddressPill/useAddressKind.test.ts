@@ -28,7 +28,7 @@ import {
 import { cloneDeep } from "lodash";
 
 import { useAddressKind } from "./useAddressKind";
-import { renderHook } from "../testUtils";
+import { renderHook } from "../../testUtils";
 
 let store: UmamiStore;
 

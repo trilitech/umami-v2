@@ -3,7 +3,7 @@ import { GHOSTNET, formatPkh, mockImplicitAddress } from "@umami/tezos";
 
 import { AddressPillText } from "./AddressPillText";
 import { mockFA2AddressKind } from "./testUtils";
-import { render, screen } from "../testUtils";
+import { render, screen } from "../../testUtils";
 const { upsert } = contactsActions;
 
 let store: UmamiStore;

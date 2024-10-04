@@ -154,6 +154,7 @@
   },
   "packageManager": "pnpm@9.9.0",
   "dependencies": {
-    "electron-updater": "6.3.9"
+    "electron-updater": "6.3.9",
+    "@hookform/resolvers": "^3.9.0"
   }
 }

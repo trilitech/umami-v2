@@ -1,8 +1,8 @@
-import { makeStore, UmamiStore } from "@umami/state";
+import { type UmamiStore, makeStore } from "@umami/state";
 import { mockImplicitAddress } from "@umami/tezos";
+
 import { useAddressPill } from "./useAddressPill";
-import { act, fireEvent, render, renderHook, screen, waitFor } from "../testUtils";
-import { Box, useDisclosure } from "@chakra-ui/react";
+import { act, renderHook } from "../../testUtils";
 
 let store: UmamiStore;
 

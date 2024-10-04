@@ -79,6 +79,48 @@ describe("<EditNetworkMenu />", () => {
     });
   });
 
+  describe("URL fields validation", () => {
+    const urlFields = [
+      { label: "RPC URL", required: true },
+      { label: "Tzkt API URL", required: true },
+      { label: "Tzkt Explorer URL", required: true },
+      { label: "Buy Tez URL", required: false },
+    ];
+
+    it.each(urlFields)("validates $label field", async ({ label, required }) => {
+      const user = userEvent.setup();
+      await renderInDrawer(<EditNetworkMenu />, store);
+
+      await user.type(screen.getByLabelText(label), "invalid-url");
+      await user.tab();
+
+      await waitFor(() => {
+        expect(screen.getByText(`Enter a valid ${label}`)).toBeVisible();
+      });
+
+      await user.clear(screen.getByLabelText(label));
+      await user.tab();
+
+      if (required) {
+        await waitFor(() => {
+          expect(screen.getByText(`${label} is required`)).toBeVisible();
+        });
+      } else {
+        await waitFor(() => {
+          expect(screen.queryByText(`${label} is required`)).not.toBeInTheDocument();
+        });
+      }
+
+      await user.type(screen.getByLabelText(label), "https://valid-url.com");
+      await user.tab();
+
+      await waitFor(() => {
+        expect(screen.queryByText(`Enter a valid ${label}`)).not.toBeInTheDocument();
+      });
+      expect(screen.queryByText(`${label} is required`)).not.toBeInTheDocument();
+    });
+  });
+
   describe("create mode", () => {
     describe("name field", () => {
       it("validates uniqueness", async () => {
@@ -96,51 +138,6 @@ describe("<EditNetworkMenu />", () => {
         await waitFor(() => {
           expect(screen.getByText("Name is required")).toBeVisible();
         });
-      });
-    });
-
-    describe("URL fields validation", () => {
-      const urlFields = [
-        { label: "RPC URL", required: true },
-        { label: "Tzkt API URL", required: true },
-        { label: "Tzkt Explorer URL", required: true },
-        { label: "Buy Tez URL", required: false },
-      ];
-
-      it.each(urlFields)("validates $label field", async ({ label, required }) => {
-        const user = userEvent.setup();
-        await renderInDrawer(<EditNetworkMenu />, store);
-
-        // Test invalid URL
-        await user.type(screen.getByLabelText(label), "invalid-url");
-        await user.tab(); // Trigger blur event
-
-        await waitFor(() => {
-          expect(screen.getByText(`Enter a valid ${label}`)).toBeVisible();
-        });
-
-        // Test empty field
-        await user.clear(screen.getByLabelText(label));
-        await user.tab(); // Trigger blur event
-
-        if (required) {
-          await waitFor(() => {
-            expect(screen.getByText(`${label} is required`)).toBeVisible();
-          });
-        } else {
-          await waitFor(() => {
-            expect(screen.queryByText(`${label} is required`)).not.toBeInTheDocument();
-          });
-        }
-
-        // Test valid URL
-        await user.type(screen.getByLabelText(label), "https://valid-url.com");
-        await user.tab(); // Trigger blur event
-
-        await waitFor(() => {
-          expect(screen.queryByText(`Enter a valid ${label}`)).not.toBeInTheDocument();
-        });
-        expect(screen.queryByText(`${label} is required`)).not.toBeInTheDocument();
       });
     });
 

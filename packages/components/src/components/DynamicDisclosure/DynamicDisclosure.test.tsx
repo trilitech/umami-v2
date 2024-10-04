@@ -1,5 +1,5 @@
 import { useDynamicDrawer, useDynamicModal, useDynamicModalContext } from "./DynamicDisclosure";
-import { act, render, renderHook, screen } from "../testUtils";
+import { act, render, renderHook, screen } from "../../testUtils";
 
 describe("DynamicDisclosure", () => {
   describe("useDynamicModal", () => {
