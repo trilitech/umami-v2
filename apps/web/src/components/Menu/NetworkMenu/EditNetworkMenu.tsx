@@ -14,16 +14,24 @@ type EditNetworkMenuProps = {
 
 const removeTrailingSlashes = (url: string) => url.replace(/\/+$/g, "");
 
-const networkSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  rpcUrl: z.string().min(1, "RPC URL is required").url("Enter a valid RPC URL"),
-  tzktApiUrl: z.string().min(1, "Tzkt API URL is required").url("Enter a valid Tzkt API URL"),
-  tzktExplorerUrl: z
-    .string()
-    .min(1, "Tzkt Explorer URL is required")
-    .url("Enter a valid Tzkt Explorer URL"),
-  buyTezUrl: z.string().url("Enter a valid Buy Tez URL").or(z.literal("")),
-});
+const getNetworkSchema = (availableNetworks: Network[], network?: Network) =>
+  z.object({
+    name: network
+      ? z.string().optional()
+      : z
+          .string()
+          .min(1, "Name is required")
+          .refine(name => !availableNetworks.find(n => n.name === name), {
+            message: "Network with this name already exists",
+          }),
+    rpcUrl: z.string().min(1, "RPC URL is required").url("Enter a valid RPC URL"),
+    tzktApiUrl: z.string().min(1, "Tzkt API URL is required").url("Enter a valid Tzkt API URL"),
+    tzktExplorerUrl: z
+      .string()
+      .min(1, "Tzkt Explorer URL is required")
+      .url("Enter a valid Tzkt Explorer URL"),
+    buyTezUrl: z.string().url("Enter a valid Buy Tez URL").or(z.literal("")),
+  });
 
 export const EditNetworkMenu = ({ network }: EditNetworkMenuProps) => {
   const { goBack } = useDynamicDrawerContext();
@@ -37,7 +45,7 @@ export const EditNetworkMenu = ({ network }: EditNetworkMenuProps) => {
   } = useForm<Network>({
     mode: "onBlur",
     defaultValues: network,
-    resolver: zodResolver(networkSchema),
+    resolver: zodResolver(getNetworkSchema(availableNetworks, network)),
   });
 
   const onSubmit = (network: Network) => {
@@ -52,16 +60,7 @@ export const EditNetworkMenu = ({ network }: EditNetworkMenuProps) => {
           {!network && (
             <FormControl isInvalid={!!errors.name}>
               <FormLabel>Name</FormLabel>
-              <Input
-                placeholder="mainnet"
-                {...register("name", {
-                  validate: name => {
-                    if (availableNetworks.find(n => n.name === name)) {
-                      return "Network with this name already exists";
-                    }
-                  },
-                })}
-              />
+              <Input placeholder="mainnet" {...register("name")} />
               {errors.name && <FormErrorMessage>{errors.name.message}</FormErrorMessage>}
             </FormControl>
           )}
