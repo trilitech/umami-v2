@@ -1,8 +1,10 @@
 import { Button, FormControl, FormErrorMessage, FormLabel, Input, VStack } from "@chakra-ui/react";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useDynamicDrawerContext } from "@umami/components";
 import { networksActions, useAppDispatch, useAvailableNetworks } from "@umami/state";
 import { type Network } from "@umami/tezos";
 import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 import { DrawerContentWrapper } from "../DrawerContentWrapper";
 
@@ -11,6 +13,17 @@ type EditNetworkMenuProps = {
 };
 
 const removeTrailingSlashes = (url: string) => url.replace(/\/+$/g, "");
+
+const networkSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  rpcUrl: z.string().min(1, "RPC URL is required").url("Enter a valid RPC URL"),
+  tzktApiUrl: z.string().min(1, "Tzkt API URL is required").url("Enter a valid Tzkt API URL"),
+  tzktExplorerUrl: z
+    .string()
+    .min(1, "Tzkt Explorer URL is required")
+    .url("Enter a valid Tzkt Explorer URL"),
+  buyTezUrl: z.string().url("Enter a valid Buy Tez URL").or(z.literal("")),
+});
 
 export const EditNetworkMenu = ({ network }: EditNetworkMenuProps) => {
   const { goBack } = useDynamicDrawerContext();
@@ -21,7 +34,11 @@ export const EditNetworkMenu = ({ network }: EditNetworkMenuProps) => {
     formState: { errors, isValid },
     register,
     handleSubmit,
-  } = useForm<Network>({ mode: "onBlur", defaultValues: network });
+  } = useForm<Network>({
+    mode: "onBlur",
+    defaultValues: network,
+    resolver: zodResolver(networkSchema),
+  });
 
   const onSubmit = (network: Network) => {
     dispatch(networksActions.upsertNetwork(network));
@@ -38,7 +55,6 @@ export const EditNetworkMenu = ({ network }: EditNetworkMenuProps) => {
               <Input
                 placeholder="mainnet"
                 {...register("name", {
-                  required: "Name is required",
                   validate: name => {
                     if (availableNetworks.find(n => n.name === name)) {
                       return "Network with this name already exists";
@@ -54,7 +70,6 @@ export const EditNetworkMenu = ({ network }: EditNetworkMenuProps) => {
             <Input
               placeholder="https://prod.tcinfra.net/rpc/mainnet"
               {...register("rpcUrl", {
-                required: "RPC URL is required",
                 setValueAs: removeTrailingSlashes,
               })}
             />
@@ -65,7 +80,6 @@ export const EditNetworkMenu = ({ network }: EditNetworkMenuProps) => {
             <Input
               placeholder="https://api.ghostnet.tzkt.io"
               {...register("tzktApiUrl", {
-                required: "Tzkt API URL is required",
                 setValueAs: removeTrailingSlashes,
               })}
             />
@@ -76,7 +90,6 @@ export const EditNetworkMenu = ({ network }: EditNetworkMenuProps) => {
             <Input
               placeholder="https://ghostnet.tzkt.io"
               {...register("tzktExplorerUrl", {
-                required: "Tzkt Explorer URL is required",
                 setValueAs: removeTrailingSlashes,
               })}
             />
@@ -85,9 +98,11 @@ export const EditNetworkMenu = ({ network }: EditNetworkMenuProps) => {
             )}
           </FormControl>
 
-          <FormControl>
+          <FormControl isInvalid={!!errors.buyTezUrl}>
             <FormLabel>Buy Tez URL</FormLabel>
             <Input placeholder="https://faucet.ghostnet.teztnets.com" {...register("buyTezUrl")} />
+
+            {errors.buyTezUrl && <FormErrorMessage>{errors.buyTezUrl.message}</FormErrorMessage>}
           </FormControl>
         </VStack>
         <Button width="100%" marginTop="30px" isDisabled={!isValid} type="submit" variant="primary">
