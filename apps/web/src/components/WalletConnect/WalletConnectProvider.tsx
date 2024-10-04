@@ -1,6 +1,7 @@
+import { useToast } from "@chakra-ui/react";
 import { type WalletKitTypes } from "@reown/walletkit";
 import { useDynamicModalContext } from "@umami/components";
-import { createWalletKit, walletKit } from "@umami/state";
+import { createWalletKit, useRemoveWcConnection, useWcPeers, walletKit } from "@umami/state";
 import { formatJsonRpcError } from "@walletconnect/jsonrpc-utils";
 import { getSdkError, parseUri } from "@walletconnect/utils";
 import { type PropsWithChildren, useEffect } from "react";
@@ -11,6 +12,9 @@ export const context = {};
 
 export const WalletConnectProvider = ({ children }: PropsWithChildren) => {
   const { openWith } = useDynamicModalContext();
+  const { refresh } = useWcPeers();
+  const toast = useToast();
+  const removeWcPeer = useRemoveWcConnection();
 
   useEffect(() => {
     const initializeWallet = async () => {
@@ -18,6 +22,7 @@ export const WalletConnectProvider = ({ children }: PropsWithChildren) => {
         await createWalletKit();
         walletKit.on("session_proposal", event => void onSessionProposal(event));
         walletKit.on("session_request", event => void onSessionRequest(event));
+        walletKit.on("session_delete", event => void onSessionDelete(event));
       } catch (error) {
         console.error("Error initializing Web3Wallet:", error);
       }
@@ -45,6 +50,16 @@ export const WalletConnectProvider = ({ children }: PropsWithChildren) => {
     const response = rejectTezosRequest(event);
 
     await walletKit.respondSessionRequest({ topic, response });
+  };
+
+  const onSessionDelete = async (event: WalletKitTypes.SessionDelete) => {
+    const { topic, id } = event;
+    removeWcPeer(topic);
+    toast({
+      description: "Session deleted by dApp",
+      status: "info",
+    });
+    refresh();
   };
 
   const rejectTezosRequest = (event: WalletKitTypes.SessionRequest) => {
