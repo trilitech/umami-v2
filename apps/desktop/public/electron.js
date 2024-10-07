@@ -97,6 +97,13 @@ function createWindow() {
     }
   });
 
+  mainWindow.webContents.session.webRequest.onBeforeRequest((details, callback) => {
+    if (details.url.startsWith("http://")) {
+      return callback({ cancel: true });
+    }
+    callback({});
+  });
+
   protocol.handle(APP_PROTOCOL, async req => {
     try {
       const uri = new URL(decodeURI(req.url));
