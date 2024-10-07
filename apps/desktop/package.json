@@ -150,11 +150,11 @@
     "vite": "^5.4.8",
     "vite-plugin-checker": "^0.8.0",
     "vite-plugin-node-polyfills": "^0.17.0",
-    "zod": "^3.23.8"
+    "zod": "^3.23.8",
+    "@hookform/resolvers": "^3.9.0"
   },
   "packageManager": "pnpm@9.9.0",
   "dependencies": {
-    "electron-updater": "6.3.9",
-    "@hookform/resolvers": "^3.9.0"
+    "electron-updater": "6.3.9"
   }
 }
