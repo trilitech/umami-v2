@@ -1,12 +1,20 @@
 import { useAllContacts } from "./contacts";
 import { useAllAccounts } from "./getAccountData";
 
+export const PROHIBITED_CHARACTERS = `/\\"'<>:{}$#|\`\t\r\n`.split("");
+
 /** Hook for validating name for account or contact. */
 export const useValidateName = (oldName?: string | undefined) => {
   const isUniqueLabel = useIsUniqueLabel();
 
   return (name: string) => {
     const trimmedName = name.trim();
+    if (trimmedName.length > 256) {
+      return "Name should not exceed 256 characters";
+    }
+    if (PROHIBITED_CHARACTERS.some(char => trimmedName.includes(char))) {
+      return "Name contains special character(s)";
+    }
     if (trimmedName.length === 0) {
       return "Name should not be empty";
     }
