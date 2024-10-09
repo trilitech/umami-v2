@@ -9,7 +9,7 @@ import {
 } from "@umami/core";
 import { MAINNET } from "@umami/tezos";
 
-import { useGetNextAvailableAccountLabels, useValidateName } from "./labels";
+import { PROHIBITED_CHARACTERS, useGetNextAvailableAccountLabels, useValidateName } from "./labels";
 import { contactsActions, multisigsActions, networksActions } from "../slices";
 import { type UmamiStore, makeStore } from "../store";
 import { addTestAccounts, renderHook } from "../testUtils";
@@ -22,6 +22,22 @@ beforeEach(() => {
 
 describe("labelsHooks", () => {
   describe("useValidateName", () => {
+    it.each(PROHIBITED_CHARACTERS)("fails if name contains `%s` special character", char => {
+      const {
+        result: { current: validateName },
+      } = renderHook(() => useValidateName(), { store });
+
+      expect(validateName(`Some ${char} name`)).toEqual("Name contains special character(s)");
+    });
+
+    it("fails if name exceeds 256 characters", () => {
+      const {
+        result: { current: validateName },
+      } = renderHook(() => useValidateName(), { store });
+
+      expect(validateName("a".repeat(257))).toEqual("Name should not exceed 256 characters");
+    });
+
     describe.each([
       { testCase: "with trailing whitespaces", withWhitespaces: true },
       { testCase: "without trailing whitespaces", withWhitespaces: false },
