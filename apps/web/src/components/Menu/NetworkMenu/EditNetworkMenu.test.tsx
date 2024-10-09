@@ -13,6 +13,14 @@ beforeEach(() => {
 
 describe("<EditNetworkMenu />", () => {
   describe("edit mode", () => {
+    const updatedNetwork = {
+      ...customNetwork,
+      rpcUrl: "https://rpc.com",
+      tzktApiUrl: "https://tzkt.com",
+      tzktExplorerUrl: "https://explorer.com",
+      buyTezUrl: "",
+    };
+
     beforeEach(() => {
       store.dispatch(networksActions.upsertNetwork(customNetwork));
     });
@@ -27,14 +35,6 @@ describe("<EditNetworkMenu />", () => {
       const user = userEvent.setup();
       await renderInDrawer(<EditNetworkMenu network={customNetwork} />, store);
 
-      const updatedNetwork = {
-        ...customNetwork,
-        rpcUrl: "https://rpc",
-        tzktApiUrl: "https://tzkt",
-        tzktExplorerUrl: "https://explorer",
-        buyTezUrl: "",
-      };
-
       await act(() => user.clear(screen.getByLabelText("RPC URL")));
       await act(() => user.clear(screen.getByLabelText("Tzkt API URL")));
       await act(() => user.clear(screen.getByLabelText("Tzkt Explorer URL")));
@@ -45,7 +45,9 @@ describe("<EditNetworkMenu />", () => {
         user.type(screen.getByLabelText("Tzkt Explorer URL"), updatedNetwork.tzktExplorerUrl)
       );
 
-      expect(screen.getByText("Save changes")).toBeEnabled();
+      await waitFor(() => {
+        expect(screen.getByText("Save changes")).toBeEnabled();
+      });
 
       await act(() => user.click(screen.getByText("Save changes")));
       expect(store.getState().networks.available).toEqual([MAINNET, GHOSTNET, updatedNetwork]);
@@ -54,14 +56,6 @@ describe("<EditNetworkMenu />", () => {
     it("ignores trailing slashes", async () => {
       const user = userEvent.setup();
       await renderInDrawer(<EditNetworkMenu network={customNetwork} />, store);
-
-      const updatedNetwork = {
-        ...customNetwork,
-        rpcUrl: "https://rpc",
-        tzktApiUrl: "https://tzkt",
-        tzktExplorerUrl: "https://explorer",
-        buyTezUrl: "",
-      };
 
       await act(() => user.clear(screen.getByLabelText("RPC URL")));
       await act(() => user.clear(screen.getByLabelText("Tzkt API URL")));
@@ -82,6 +76,48 @@ describe("<EditNetworkMenu />", () => {
 
       await act(() => user.click(screen.getByText("Save changes")));
       expect(store.getState().networks.available).toEqual([MAINNET, GHOSTNET, updatedNetwork]);
+    });
+  });
+
+  describe("URL fields validation", () => {
+    const urlFields = [
+      { label: "RPC URL", required: true },
+      { label: "Tzkt API URL", required: true },
+      { label: "Tzkt Explorer URL", required: true },
+      { label: "Buy Tez URL", required: false },
+    ];
+
+    it.each(urlFields)("validates $label field", async ({ label, required }) => {
+      const user = userEvent.setup();
+      await renderInDrawer(<EditNetworkMenu />, store);
+
+      await user.type(screen.getByLabelText(label), "invalid-url");
+      await user.tab();
+
+      await waitFor(() => {
+        expect(screen.getByText(`Enter a valid ${label}`)).toBeVisible();
+      });
+
+      await user.clear(screen.getByLabelText(label));
+      await user.tab();
+
+      if (required) {
+        await waitFor(() => {
+          expect(screen.getByText(`${label} is required`)).toBeVisible();
+        });
+      } else {
+        await waitFor(() => {
+          expect(screen.queryByText(`${label} is required`)).not.toBeInTheDocument();
+        });
+      }
+
+      await user.type(screen.getByLabelText(label), "https://valid-url.com");
+      await user.tab();
+
+      await waitFor(() => {
+        expect(screen.queryByText(`Enter a valid ${label}`)).not.toBeInTheDocument();
+      });
+      expect(screen.queryByText(`${label} is required`)).not.toBeInTheDocument();
     });
   });
 
