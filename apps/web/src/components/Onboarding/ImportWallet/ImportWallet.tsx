@@ -32,7 +32,7 @@ export const ImportWallet = () => {
       <ModalHeader>
         <ModalCloseButton />
         <Center flexDirection="column" gap="16px">
-          <Icon as={LoginIcon} width="24px" height="24px" color={color("blue")} />
+          <Icon as={LoginIcon} width="24px" height="24px" color={color("400")} />
           <Heading size="xl">Import Wallet</Heading>
         </Center>
       </ModalHeader>

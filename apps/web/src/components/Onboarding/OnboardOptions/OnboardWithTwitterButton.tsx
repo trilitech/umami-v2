@@ -11,10 +11,11 @@ export const OnboardWithTwitterButton = ({
 
   return (
     <IconButton
+      boxSize="full"
       color="black"
       aria-label="Twitter SSO"
       data-testid="login-button-twitter"
-      icon={<TwitterIcon fill="currentColor" />}
+      icon={<TwitterIcon width="24px" height="22px" fill="currentColor" />}
       isLoading={isLoading}
       onClick={onboard}
       variant="socialLogin"

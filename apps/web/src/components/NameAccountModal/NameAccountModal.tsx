@@ -58,7 +58,7 @@ export const NameAccountModal = ({
         <ModalBackButton />
         <ModalCloseButton />
         <Center flexDirection="column" gap="12px">
-          <Icon as={UserIcon} boxSize="24px" marginBottom="4px" color={color("blue")} />
+          <Icon as={UserIcon} boxSize="24px" marginBottom="4px" color={color("400")} />
           <Heading size="xl">{title}</Heading>
           {subtitle && (
             <Text

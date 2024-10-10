@@ -37,7 +37,7 @@ export const MasterPasswordModal = ({ onSubmit }: MasterPasswordModalProps) => {
         <ModalBackButton />
         <ModalCloseButton />
         <Center flexDirection="column" gap="12px">
-          <Icon as={LockIcon} boxSize="24px" marginBottom="4px" color={color("blue")} />
+          <Icon as={LockIcon} boxSize="24px" marginBottom="4px" color={color("400")} />
           <Heading size="xl">Confirm password</Heading>
           <Text width="full" color={color("700")} fontWeight="400" textAlign="center" size="md">
             Enter your master password

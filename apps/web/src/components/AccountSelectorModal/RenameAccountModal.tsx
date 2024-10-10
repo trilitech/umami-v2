@@ -56,7 +56,7 @@ export const RenameAccountPage = ({ account }: RenameAccountPageProps) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <ModalHeader>
           <VStack gap="18px">
-            <EditIcon width="22px" color={color("blue")} />
+            <EditIcon width="22px" color={color("400")} />
             <Heading size="xl">Edit name</Heading>
           </VStack>
         </ModalHeader>

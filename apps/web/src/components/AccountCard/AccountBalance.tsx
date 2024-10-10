@@ -1,7 +1,7 @@
 import { Box, Flex, Link, Text } from "@chakra-ui/react";
 import { useDynamicModalContext } from "@umami/components";
 import { useCurrentAccount, useGetAccountBalance, useGetDollarBalance } from "@umami/state";
-import { prettyTezAmount } from "@umami/tezos";
+import { TEZ, prettyTezAmount } from "@umami/tezos";
 
 import { SendTezButton } from "./SendTezButton";
 import { ArrowDownLeftIcon, WalletIcon } from "../../assets/icons";
@@ -35,16 +35,12 @@ export const AccountBalance = () => {
         >
           Tez Balance
         </Text>
-        {balance !== undefined && (
-          <Text color={color("900")} fontWeight="600" data-testid="tez-balance" size="2xl">
-            {prettyTezAmount(balance)}
-          </Text>
-        )}
-        {usdBalance !== undefined && (
-          <Text color={color("700")} data-testid="usd-balance" size="sm">
-            {`$${usdBalance}`}
-          </Text>
-        )}
+        <Text color={color("900")} fontWeight="600" data-testid="tez-balance" size="2xl">
+          {balance ? prettyTezAmount(balance) : `0 ${TEZ}`}
+        </Text>
+        <Text color={color("700")} data-testid="usd-balance" size="sm">
+          {usdBalance ? `$${usdBalance}` : "$0.00"}
+        </Text>
       </Flex>
       <Flex
         alignItems="center"

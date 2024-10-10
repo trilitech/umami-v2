@@ -79,6 +79,11 @@ export const PasswordInput = <T extends FieldValues, U extends Path<T>>({
       <FormLabel>{label}</FormLabel>
       <InputGroup marginTop="12px">
         <Input
+          color={color("400")}
+          fontSize="18px"
+          _focusWithin={{
+            color: color("900"),
+          }}
           aria-label={label}
           autoComplete="off"
           placeholder={placeholder}
