@@ -45,7 +45,7 @@ export const VerificationInfoModal = () => {
     <ModalContent>
       <ModalHeader>
         <Flex alignItems="center" justifyContent="center" flexDirection="column" gap="16px">
-          <AlertIcon width="22px" color="blue" />
+          <AlertIcon width="22px" color={color("400")} />
           <Heading size="xl">How does Verification Work?</Heading>
         </Flex>
         <ModalCloseButton />

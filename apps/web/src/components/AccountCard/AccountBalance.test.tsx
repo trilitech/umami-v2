@@ -91,8 +91,8 @@ describe("<AccountBalance />", () => {
     it("doesn't render balance if it's not available", () => {
       render(<AccountBalance />, { store });
 
-      expect(screen.queryByTestId("tez-balance")).not.toBeInTheDocument();
-      expect(screen.queryByTestId("usd-balance")).not.toBeInTheDocument();
+      expect(screen.getByTestId("tez-balance")).toHaveTextContent("0 ꜩ");
+      expect(screen.getByTestId("usd-balance")).toHaveTextContent("$0.00");
     });
   });
 

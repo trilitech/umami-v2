@@ -1,7 +1,7 @@
 import { Box, Flex, Link, Text } from "@chakra-ui/react";
 import { useDynamicModalContext } from "@umami/components";
 import { useCurrentAccount, useGetAccountBalance, useGetDollarBalance } from "@umami/state";
-import { prettyTezAmount } from "@umami/tezos";
+import { TEZ, prettyTezAmount } from "@umami/tezos";
 
 import { SendTezButton } from "./SendTezButton";
 import { ArrowDownLeftIcon, WalletIcon } from "../../assets/icons";
@@ -21,6 +21,15 @@ export const AccountBalance = () => {
 
   const buyTezUrl = `https://widget.wert.io/default/widget/?commodity=XTZ&address=${address}&network=tezos&commodity_id=xtz.simple.tezos`;
 
+  const getUsdBalance = () => {
+    if (balance === undefined) {
+      return "$0.00";
+    } else if (usdBalance === undefined) {
+      return;
+    }
+    return `$${usdBalance}`;
+  };
+
   return (
     <Box data-testid="account-balance" paddingX="12px">
       <Flex flexDirection="column" gap="4px">
@@ -35,14 +44,12 @@ export const AccountBalance = () => {
         >
           Tez Balance
         </Text>
-        {balance !== undefined && (
-          <Text color={color("900")} fontWeight="600" data-testid="tez-balance" size="2xl">
-            {prettyTezAmount(balance)}
-          </Text>
-        )}
-        {usdBalance !== undefined && (
+        <Text color={color("900")} fontWeight="600" data-testid="tez-balance" size="2xl">
+          {balance ? prettyTezAmount(balance) : `0 ${TEZ}`}
+        </Text>
+        {getUsdBalance() && (
           <Text color={color("700")} data-testid="usd-balance" size="sm">
-            {`$${usdBalance}`}
+            {getUsdBalance()}
           </Text>
         )}
       </Flex>

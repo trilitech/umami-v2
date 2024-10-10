@@ -42,7 +42,8 @@ const getModeConfig = (mode: Mode) => {
         icon: UserIcon,
         title: "Create Password",
         buttonLabel: "Create Account",
-        subtitle: "Set a password to unlock your wallet. Make sure to store your password safely.",
+        subtitle:
+          "Set a password to unlock your wallet.\n Make sure to store your password safely.",
       };
     case "save_backup":
       return {
@@ -92,9 +93,11 @@ export const SetupPassword = ({ mode }: SetupPasswordProps) => {
       <ModalHeader>
         <ModalBackButton />
         <ModalCloseButton />
-        <Center flexDirection="column" gap="16px">
-          <Icon as={icon} width="24px" height="24px" color={color("blue")} />
-          <Heading size="xl">{title}</Heading>
+        <Center flexDirection="column" gap="12px" whiteSpace="break-spaces">
+          <Icon as={icon} width="24px" height="24px" color={color("400")} />
+          <Heading marginTop="4px" size="xl">
+            {title}
+          </Heading>
           {subtitle && (
             <Text width="full" color={color("700")} fontWeight="400" textAlign="center" size="md">
               {subtitle}

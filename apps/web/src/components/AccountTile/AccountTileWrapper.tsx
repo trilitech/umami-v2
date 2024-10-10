@@ -8,12 +8,13 @@ export const AccountTileWrapper = ({
   children,
   ...props
 }: PropsWithChildren<Omit<SquareProps, "size">> & {
-  size?: "xs" | "sm";
+  size?: "xs" | "sm" | "md";
 }) => {
   const color = useColor();
   const sizes = {
     xs: "30px",
     sm: "48px",
+    md: "60px",
   };
 
   return (

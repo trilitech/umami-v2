@@ -27,7 +27,7 @@ export const ViewOverlay = ({ iconType }: ViewOverlayProps) => {
     }
   };
 
-  const currentColor = color("50");
+  const currentColor = color("400");
 
   return (
     <Box
@@ -37,35 +37,13 @@ export const ViewOverlay = ({ iconType }: ViewOverlayProps) => {
       overflow="hidden"
       width="100%"
       height="100%"
+      color={currentColor}
+      opacity="0.1"
       z-index="0"
     >
-      <Icon
-        as={getIcon()}
-        position="absolute"
-        top="30%"
-        left="-20%"
-        width="50%"
-        height="auto"
-        color={currentColor}
-      />
-      <Icon
-        as={getIcon()}
-        position="absolute"
-        top="5%"
-        left="50%"
-        width="20%"
-        height="auto"
-        color={currentColor}
-      />
-      <Icon
-        as={getIcon()}
-        position="absolute"
-        top="78%"
-        right="5%"
-        width="30%"
-        height="auto"
-        color={currentColor}
-      />
+      <Icon as={getIcon()} position="absolute" top="30%" left="-20%" width="50%" height="auto" />
+      <Icon as={getIcon()} position="absolute" top="5%" left="50%" width="20%" height="auto" />
+      <Icon as={getIcon()} position="absolute" top="78%" right="5%" width="30%" height="auto" />
     </Box>
   );
 };
