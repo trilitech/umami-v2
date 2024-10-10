@@ -1,5 +1,7 @@
 export { default as AddContactIcon } from "./add-contact-s.svg";
 export { default as AlertCircleIcon } from "./alert-circle.svg";
+export { default as AlertTriangleIcon } from "./alert-triangle.svg";
+export { default as AlertOctagonIcon } from "./alert-octagon.svg";
 export { default as AlertIcon } from "./alert.svg";
 export { default as ArrowDownLeftIcon } from "./arrow-down-left.svg";
 export { default as ArrowLeftCircleIcon } from "./arrow-left-circle.svg";

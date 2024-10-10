@@ -3,6 +3,7 @@ import { Global, css } from "@emotion/react";
 import { type PropsWithChildren } from "react";
 import "focus-visible/dist/focus-visible";
 
+import { CustomToast } from "../components/CustomToast/CustomToast";
 import theme from "../styles/theme";
 
 const GlobalStyles = css`
@@ -17,7 +18,14 @@ const GlobalStyles = css`
 `;
 
 export const UmamiTheme = ({ children }: PropsWithChildren) => (
-  <ChakraProvider theme={theme}>
+  <ChakraProvider
+    theme={theme}
+    toastOptions={{
+      defaultOptions: {
+        render: CustomToast,
+      },
+    }}
+  >
     <Global styles={GlobalStyles} />
     <ColorModeScript initialColorMode={theme.config.initialColorMode} />
     {children}

@@ -291,6 +291,36 @@ const theme = extendTheme({
         },
       }),
     },
+    Alert: {
+      baseStyle: (props: StyleFunctionProps) => {
+        let accentColor;
+
+        switch (props.status) {
+          case "success":
+            accentColor = light.green;
+            break;
+          case "warning":
+          case "error":
+            accentColor = light.redDark;
+            break;
+          default:
+            accentColor = light.grey[400];
+        }
+
+        return {
+          container: {
+            borderRadius: "6px",
+            boxShadow: "0px 0px 8px 0px rgba(45, 55, 72, 0.25)",
+            borderLeft: `4px solid ${accentColor}`,
+            color: accentColor,
+            background: light.grey["white"],
+          },
+          description: {
+            color: light.grey[900],
+          },
+        };
+      },
+    },
     Link: {
       baseStyle: {
         color: "gray.600",
