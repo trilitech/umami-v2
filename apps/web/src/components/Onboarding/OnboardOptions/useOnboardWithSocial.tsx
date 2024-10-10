@@ -6,6 +6,11 @@ import { getPublicKeyPairFromSk } from "@umami/tezos";
 import { minutesToMilliseconds } from "date-fns";
 import { useCallback } from "react";
 
+import {
+  trackSocialLoginButtonClick,
+  trackSuccessfulSocialConnection,
+} from "../../../utils/analytics";
+
 const LOGIN_TIMEOUT = minutesToMilliseconds(1);
 
 /**
@@ -24,12 +29,14 @@ export const useOnboardWithSocial = (idp: Auth.IDP, onAuth?: () => void) => {
     () =>
       handleAsyncAction(
         async () => {
+          trackSocialLoginButtonClick("onboarding", idp);
           const { secretKey, name, id, email } = await withTimeout(
             () => Auth.forIDP(idp).getCredentials(),
             LOGIN_TIMEOUT
           );
           const { pk, pkh } = await getPublicKeyPairFromSk(secretKey);
           restoreSocial(pk, pkh, email || name || id, idp);
+          trackSuccessfulSocialConnection("onboarding", idp);
           toast({ description: `Successfully added ${name || id} account`, status: "success" });
           onAuth?.();
         },

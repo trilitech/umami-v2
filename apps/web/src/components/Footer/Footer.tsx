@@ -1,6 +1,7 @@
 import { Flex, Link, Text } from "@chakra-ui/react";
 
 import { useColor } from "../../styles/useColor";
+import { trackButtonClick } from "../../utils/analytics";
 
 export const Footer = () => {
   const color = useColor();
@@ -29,7 +30,11 @@ export const Footer = () => {
       >
         Terms
       </Link>
-      <Link href="https://umamiwallet.com/privacypolicy.html" isExternal>
+      <Link
+        href="https://umamiwallet.com/privacypolicy.html"
+        isExternal
+        onClick={() => trackButtonClick("onboarding", "open_terms_of_use")}
+      >
         Privacy
       </Link>
     </Flex>

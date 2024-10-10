@@ -7,6 +7,7 @@ import { OnboardWithGoogleButton } from "./OnboardWithGoogleButton";
 import { OnboardWithRedditButton } from "./OnboardWithRedditButton";
 import { OnboardWithTwitterButton } from "./OnboardWithTwitterButton";
 import { useColor } from "../../../styles/useColor";
+import { trackButtonClick } from "../../../utils/analytics";
 import { AccountTileWrapper } from "../../AccountTile";
 import { NameAccountModal } from "../../NameAccountModal";
 import { ImportWallet } from "../ImportWallet";
@@ -68,17 +69,26 @@ export const OnboardOptions = ({ children }: PropsWithChildren) => {
         </Center>
 
         <Flex flexDirection="column" gap="12px" width="full">
-          <Button width="full" onClick={handleCreateNewWallet} size="lg" variant="primary">
+          <Button
+            width="full"
+            onClick={() => {
+              trackButtonClick("onboarding", "create_new_wallet");
+              return handleCreateNewWallet();
+            }}
+            size="lg"
+            variant="primary"
+          >
             Create a new wallet
           </Button>
           <Button
             width="full"
-            onClick={() =>
-              openWith(<ImportWallet />, {
+            onClick={() => {
+              trackButtonClick("onboarding", "use_existing_wallet");
+              return openWith(<ImportWallet />, {
                 size: "xl",
                 variant: "onboarding",
-              })
-            }
+              });
+            }}
             size="lg"
             variant="secondary"
           >
