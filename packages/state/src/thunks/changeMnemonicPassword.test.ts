@@ -21,6 +21,7 @@ let fingerPrint2: string;
 
 beforeAll(async () => {
   fingerPrint1 = await generateHash();
+  await new Promise(resolve => setTimeout(resolve, 1000)); // make sure the fingerprints are different
   fingerPrint2 = await generateHash();
 });
 
