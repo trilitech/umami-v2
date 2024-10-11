@@ -99,7 +99,7 @@ export const TabSwitch = ({ options }: { options: string[] }) => {
       data-testid="tab-switch-tabs"
     >
       {options.map(option => (
-        <Tab key={option} width="full" paddingX="5px">
+        <Tab key={option} width="full" fontWeight={600} paddingX="5px">
           {option}
         </Tab>
       ))}
