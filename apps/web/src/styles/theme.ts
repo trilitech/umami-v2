@@ -138,6 +138,9 @@ const theme = extendTheme({
       variants: {
         mnemonic: {
           field: {
+            _focus: {
+              borderColor: "gray.900",
+            },
             borderRadius: "34px",
             height: { md: "48px", base: "34px" },
             border: "1px solid",
