@@ -1,0 +1,16 @@
+{
+  "git": {
+    "deploymentEnabled": true
+  },
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com; script-src 'self'; object-src 'none'; connect-src 'self' https://umamiwallet.com; img-src 'self' data:"
+        }
+      ]
+    }
+  ]
+}
