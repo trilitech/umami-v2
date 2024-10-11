@@ -94,12 +94,19 @@ export const SeedPhraseTab = () => {
         <Flex flexDirection="column" gap="30px">
           <Accordion allowToggle>
             <AccordionItem>
-              <AccordionButton justifyContent="center" gap="10px" color={color("900")}>
+              <AccordionButton
+                justifyContent="center"
+                gap="10px"
+                color={color("900")}
+                borderBottom="1px solid"
+                borderBottomColor={color("300")}
+                _expanded={{ borderBottomColor: "transparent" }}
+              >
                 <Heading size="md">{mnemonicSize} word seed phrase</Heading>
                 <AccordionIcon />
               </AccordionButton>
 
-              <AccordionPanel>
+              <AccordionPanel borderBottom="1px solid" borderBottomColor={color("300")}>
                 <Flex gap="8px">
                   <RadioButtons
                     inputName="mnemonicSize"
