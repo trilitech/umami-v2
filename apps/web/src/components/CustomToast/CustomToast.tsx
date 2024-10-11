@@ -51,9 +51,9 @@ export const CustomToast = (props: CustomToastProps): ReactNode => {
   };
 
   return (
-    <Alert addRole={false} id={ids?.root} status={status}>
+    <Alert alignItems="flex-start" addRole={false} id={ids?.root} status={status}>
       <Icon as={AlertIcon} />
-      <Flex width="full" marginLeft="6px">
+      <Flex flexDirection="column" width="full" marginLeft="6px">
         {title && <AlertTitle id={ids?.title}>{title}</AlertTitle>}
         {description && (
           <AlertDescription marginRight="12px" id={ids?.description}>
