@@ -36,7 +36,7 @@ export const RecordSeedphraseModal = ({ seedPhrase }: CopySeedphraseModalProps) 
         <ModalBackButton />
         <ModalCloseButton />
         <Center flexDirection="column" gap="12px">
-          <Icon as={KeyIcon} boxSize="24px" marginBottom="4px" color={color("blue")} />
+          <Icon as={KeyIcon} boxSize="24px" marginBottom="4px" color={color("400")} />
           <Heading size="xl">Record Seed Phrase</Heading>
           <Text width="full" color={color("700")} fontWeight="400" textAlign="center" size="md">
             Record these 24 words in order to restore your wallet in the future

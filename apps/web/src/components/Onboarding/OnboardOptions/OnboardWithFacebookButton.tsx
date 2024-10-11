@@ -11,9 +11,10 @@ export const OnboardWithFacebookButton = ({
 
   return (
     <IconButton
+      boxSize="full"
       aria-label="Facebook SSO"
       data-testid="login-button-facebook"
-      icon={<FacebookIcon />}
+      icon={<FacebookIcon width="60px" height="60px" />}
       isLoading={isLoading}
       onClick={onboard}
       variant="socialLogin"

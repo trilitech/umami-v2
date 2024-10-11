@@ -224,6 +224,9 @@ const theme = extendTheme({
     },
     Tabs: {
       baseStyle: (props: StyleFunctionProps) => ({
+        tablist: {
+          color: "gray.500",
+        },
         tab: {
           color: "gray.500",
           _selected: {
@@ -323,7 +326,6 @@ const theme = extendTheme({
     },
     Link: {
       baseStyle: {
-        color: "gray.600",
         textUnderlineOffset: "2px",
       },
       variants: {
@@ -418,10 +420,10 @@ const theme = extendTheme({
           },
         },
         primary: {
-          bg: light.blue,
+          bg: light.blueDark,
           color: dark.grey.black,
           _hover: {
-            bg: light.blueDark,
+            bg: light.blue,
           },
         },
         alert: {
@@ -544,6 +546,10 @@ const theme = extendTheme({
         },
       },
       baseStyle: {
+        overlay: {
+          background: "rgba(22, 22, 43, 0.80)",
+          backdropFilter: "blur(5px)",
+        },
         closeButton: {
           bg: "transparent",
           color: "gray.400",
@@ -628,6 +634,9 @@ const theme = extendTheme({
     global: (props: StyleFunctionProps) => ({
       "#root": {
         bg: mode(light.bgGradient, dark.bgGradient)(props),
+      },
+      "#root:has(.welcome-view)": {
+        bg: "radial-gradient(123.02% 70.68% at 50% 49.96%, rgba(22, 22, 43, 0.00) 0%, #10121B 100%)",
       },
       body: {
         color: mode(light.grey[600], dark.grey[600])(props),

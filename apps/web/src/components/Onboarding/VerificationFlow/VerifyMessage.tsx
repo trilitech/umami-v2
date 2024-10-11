@@ -24,7 +24,7 @@ export const VerifyMessage = ({ ...props }: Omit<EmptyMessageProps, "title">) =>
       />
       <Link
         marginTop="16px"
-        color={color("600")}
+        color={color("500")}
         fontSize="12px"
         onClick={() => openWith(<VerificationInfoModal />)}
         textDecor="underline"

@@ -43,19 +43,19 @@ export const OnboardOptions = ({ children }: PropsWithChildren) => {
 
       <Center flexDirection="column" gap="36px" width="full" height="full">
         <Flex gap={{ base: "24px", md: "30px" }} marginTop="30px" color={color("white", "black")}>
-          <AccountTileWrapper>
+          <AccountTileWrapper size="md">
             <OnboardWithGoogleButton />
           </AccountTileWrapper>
 
-          <AccountTileWrapper>
+          <AccountTileWrapper size="md">
             <OnboardWithFacebookButton />
           </AccountTileWrapper>
 
-          <AccountTileWrapper>
+          <AccountTileWrapper size="md">
             <OnboardWithTwitterButton />
           </AccountTileWrapper>
 
-          <AccountTileWrapper>
+          <AccountTileWrapper size="md">
             <OnboardWithRedditButton />
           </AccountTileWrapper>
         </Flex>

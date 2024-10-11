@@ -26,6 +26,7 @@ export const Welcome = () => {
 
   return (
     <Grid
+      className="welcome-view"
       justifyItems="center"
       gridGap={{ base: "36px", md: "60px" }}
       gridTemplateRows={{ base: "130px auto", md: "auto 444px auto" }}
@@ -68,7 +69,9 @@ export const Welcome = () => {
           flexDirection="column"
           width="full"
           height="full"
-          padding={{ base: "36px 12px", md: "36px 42px" }}
+          padding={{ base: "36px", md: "36px 42px" }}
+          color={color("700")}
+          fontSize="14px"
           border="1px solid"
           borderColor={color("100")}
           borderTopRadius="30px"
@@ -78,7 +81,15 @@ export const Welcome = () => {
           <OnboardOptions>
             <Text color={color("700")} size="sm">
               By proceeding, you agree to Umami's{" "}
-              <Link fontWeight="600" href="https://umamiwallet.com/tos.html" isExternal>
+              <Link
+                fontWeight="600"
+                textDecoration="underline"
+                _hover={{
+                  color: color("500"),
+                }}
+                href="https://umamiwallet.com/tos.html"
+                isExternal
+              >
                 Terms of Use
               </Link>
             </Text>
@@ -86,13 +97,12 @@ export const Welcome = () => {
               <>
                 <Flex gap="10px">
                   <TermsLink />
-                  <Divider height="24px" orientation="vertical" />
+                  <Divider height="24px" color={color("300")} orientation="vertical" />
                   <PrivacyLink />
-                  <Divider height="24px" orientation="vertical" />
+                  <Divider height="24px" color={color("300")} orientation="vertical" />
                   <SupportLink />
-                  <Divider height="24px" orientation="vertical" />
+                  <Divider height="24px" color={color("300")} orientation="vertical" />
                   <CommunityLink />
-                  <Divider height="24px" orientation="vertical" />
                 </Flex>
 
                 <Copyright />
@@ -113,18 +123,18 @@ export const Welcome = () => {
             display="flex"
             marginBottom="5px"
             color={color("700")}
+            fontSize="14px"
           >
             <Copyright />
-            <Divider height="24px" orientation="vertical" />
+            <Divider height="24px" color={color("300")} orientation="vertical" />
             <TermsLink />
-            <Divider height="24px" orientation="vertical" />
+            <Divider height="24px" color={color("300")} orientation="vertical" />
             <PrivacyLink />
           </GridItem>
 
           <Logo alignSelf="end" gridArea="tezos-logo" />
 
           <GridItem
-            zIndex={1401}
             justifySelf="end"
             alignSelf="end"
             gap="10px"
@@ -132,11 +142,12 @@ export const Welcome = () => {
             display="flex"
             marginBottom="5px"
             color={color("700")}
+            fontSize="14px"
           >
             <SupportLink />
-            <Divider height="24px" orientation="vertical" />
+            <Divider height="24px" color={color("300")} orientation="vertical" />
             <CommunityLink />
-            <Divider height="24px" orientation="vertical" />
+            <Divider height="24px" color={color("300")} orientation="vertical" />
             <ArticlesLink />
           </GridItem>
         </>

@@ -69,7 +69,7 @@ export const VerifySeedphraseModal = ({ seedPhrase }: VerifySeedphraseModalProps
         <ModalBackButton />
         <ModalCloseButton />
         <Center flexDirection="column" gap="12px">
-          <Icon as={KeyIcon} boxSize="24px" marginBottom="4px" color={color("blue")} />
+          <Icon as={KeyIcon} boxSize="24px" marginBottom="4px" color={color("400")} />
           <Heading size="xl">Verify Seed Phrase</Heading>
           <Text width="full" color={color("700")} fontWeight="400" textAlign="center" size="md">
             To verify, please type in the word that corresponds to each sequence number.

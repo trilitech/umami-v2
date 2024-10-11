@@ -11,9 +11,10 @@ export const OnboardWithRedditButton = ({
 
   return (
     <IconButton
+      boxSize="full"
       aria-label="Reddit SSO"
       data-testid="login-button-reddit"
-      icon={<RedditIcon />}
+      icon={<RedditIcon width="30px" height="30px" />}
       isLoading={isLoading}
       onClick={onboard}
       variant="socialLogin"
