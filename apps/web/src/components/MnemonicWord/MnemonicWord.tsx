@@ -20,7 +20,7 @@ export const MnemonicWord = ({ index, word, autocompleteProps, ...props }: Mnemo
         zIndex={1}
         marginTop={{ md: "11px", base: "8px" }}
         marginLeft={{ md: "16px", base: "10px" }}
-        color={color("300")}
+        color={color("900")}
         textAlign="right"
         size={{ md: "lg", base: "xs" }}
       >
