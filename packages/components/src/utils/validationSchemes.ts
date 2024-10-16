@@ -1,3 +1,4 @@
+import { PROHIBITED_CHARACTERS } from "@umami/state";
 import { type Network } from "@umami/tezos";
 import { z } from "zod";
 
@@ -24,6 +25,10 @@ export const getNetworkValidationScheme = (availableNetworks: Network[], network
       : z
           .string()
           .min(1, "Name is required")
+          .max(256, "Name should not exceed 256 characters")
+          .refine(name => !PROHIBITED_CHARACTERS.some(char => name.includes(char)), {
+            message: "Name contains special character(s)",
+          })
           .refine(name => !availableNetworks.find(n => n.name === name), {
             message: "Network with this name already exists",
           }),
