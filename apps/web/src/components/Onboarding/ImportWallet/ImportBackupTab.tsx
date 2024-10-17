@@ -85,6 +85,9 @@ export const ImportBackupTab = () => {
                 width="full"
                 height="72px"
                 borderRadius="0"
+                _hover={{
+                  bg: color("100"),
+                }}
                 onClick={() => inputRef.current?.click()}
                 rightIcon={<Icon as={FileUploadIcon} color={color("400")} />}
                 variant="ghost"

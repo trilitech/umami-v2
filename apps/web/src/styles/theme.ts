@@ -77,6 +77,7 @@ const theme = extendTheme({
           },
         },
         container: {
+          borderColor: "gray.100",
           _last: {
             borderBottomWidth: 0,
           },
@@ -536,6 +537,10 @@ const theme = extendTheme({
           paddingBottom: "20px",
           paddingX: { base: "12px", md: "30px" },
         },
+        overlay: {
+          background: "rgba(22, 22, 43, 0.80)",
+          backdropFilter: "blur(5px)",
+        },
       },
     },
     Modal: {
@@ -601,13 +606,6 @@ const theme = extendTheme({
           padding: 0,
           justifyContent: "center",
           marginTop: "30px",
-        },
-      },
-      variants: {
-        onboarding: {
-          dialog: {
-            marginBottom: { base: 0, md: "100px" },
-          },
         },
       },
     },

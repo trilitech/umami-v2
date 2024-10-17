@@ -47,6 +47,11 @@ export const SecretKeyTab = () => {
                 required: "Secret Key is required",
                 onChange: event => setIsEncrypted(isEncryptedSecretKeyPrefix(event.target.value)),
               })}
+              _focusVisible={{
+                outline: "none",
+                borderColor: "gray.400",
+                boxShadow: "none",
+              }}
               placeholder="Type here..."
             />
             {errors.secretKey && <FormErrorMessage>{errors.secretKey.message}</FormErrorMessage>}
