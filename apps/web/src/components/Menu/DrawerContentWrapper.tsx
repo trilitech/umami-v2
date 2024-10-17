@@ -19,7 +19,12 @@ export const DrawerContentWrapper = ({
     <>
       <DrawerBackButton />
       <DrawerCloseButton />
-      <DrawerBody as={Flex} flexDirection="column" paddingTop={{ base: "78px", md: "90px" }}>
+      <DrawerBody
+        as={Flex}
+        flexDirection="column"
+        paddingTop={{ base: "66px", md: "90px" }}
+        paddingX={{ base: "24px", md: "40px" }}
+      >
         {title && (
           <Heading color={color("900")} size="2xl">
             {title}

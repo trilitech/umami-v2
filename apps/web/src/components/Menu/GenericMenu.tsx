@@ -18,7 +18,7 @@ export const GenericMenu = ({ title, menuItems }: GenericMenuProps) => (
       spacing="0"
     >
       {menuItems.map((items, index) => (
-        <Box key={index} width="full">
+        <Box key={index} width="full" >
           {items.map(item => (
             <MenuItem key={item.label} {...item} />
           ))}
