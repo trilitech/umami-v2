@@ -1,0 +1,16 @@
+{
+  "git": {
+    "deploymentEnabled": true
+  },
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "@csp"
+        }
+      ]
+    }
+  ]
+}
