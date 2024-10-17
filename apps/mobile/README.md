@@ -6,7 +6,9 @@ This is a new [**React Native**](https://reactnative.dev) project, bootstrapped 
 
 ## Step 0: Install necessary tooling
 
-You'll need to install [Android Studio](https://developer.android.com/studio) & [Xcode](https://apps.apple.com/us/app/xcode/id497799835).
+### Android
+
+You'll need to install [Android Studio](https://developer.android.com/studio)
 
 Also, please install watchman using
 
@@ -26,6 +28,16 @@ You'll also need a specific java version installed locally. [Jabba](https://gith
 jabba install openjdk@17
 jabba alias default openjdk@17
 ```
+
+### iOS
+
+Please install [Xcode](https://apps.apple.com/us/app/xcode/id497799835).
+
+In order to install [CocoaPods](https://cocoapods.org/) you need to run `bundle` inside the `apps/mobile` directory. It'll install all the necessary gems (ruby packages), as well as CocoaPods itself.
+
+After that, open the `ios` folder and run `pod install`. It'll install all iOS dependencies.
+
+### Misc
 
 It's useful to run `npx react-native doctor` and see what else is missing in your system
 
