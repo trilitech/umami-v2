@@ -1,0 +1,16 @@
+{
+  "git": {
+    "deploymentEnabled": true
+  },
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' https://trusted-source.com; object-src 'none';  frame-ancestors 'self' https://kanvas-poa.vercel.app https://kanvas-poa-git-poa-release-trili-tech.vercel.app"
+        }
+      ]
+    }
+  ]
+}
