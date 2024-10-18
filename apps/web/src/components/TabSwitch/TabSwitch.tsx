@@ -66,7 +66,7 @@ export const TabSwitch = ({ options }: { options: string[] }) => {
             borderRadius="30px"
             data-testid="tab-switch-accordion-panel"
           >
-            <Center flexDirection="column" gap="12px">
+            <Center flexDirection="column" gap="10px">
               {options.map((option, index) => (
                 <Button
                   key={option}
@@ -77,6 +77,7 @@ export const TabSwitch = ({ options }: { options: string[] }) => {
                     setSelectedIndex(index);
                     setIsAccordionCollapsed(true);
                   }}
+                  size="md"
                   variant="dropdownOption"
                 >
                   {option}
