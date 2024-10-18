@@ -2,7 +2,7 @@ import { Button, Divider, Text } from "@chakra-ui/react";
 import { useAddPeer } from "@umami/state";
 
 import { BeaconPeers } from "../../beacon";
-import { useOnWalletConnect } from "../../WalletConnect";
+import { WcPeers, useOnWalletConnect } from "../../WalletConnect";
 import { DrawerContentWrapper } from "../DrawerContentWrapper";
 
 export const AppsMenu = () => {
@@ -31,6 +31,7 @@ export const AppsMenu = () => {
       </Button>
       <Divider marginTop={{ base: "36px", md: "40px" }} />
       <BeaconPeers />
+      <WcPeers />
     </DrawerContentWrapper>
   );
 };

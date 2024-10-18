@@ -6,6 +6,7 @@ import {
   createWalletKit,
   useAsyncActionHandler,
   useAvailableNetworks,
+  useRemoveWcConnection,
   useWcPeers,
   walletKit,
 } from "@umami/state";
@@ -90,15 +91,18 @@ const useOnSessionRequest = () => {
 
 const useOnSessionDelete = () => {
   const { handleAsyncAction } = useAsyncActionHandler();
-  const { refresh } = useWcPeers();
+  const { peers, refresh } = useWcPeers();
+  const removeWcPeer = useRemoveWcConnection();
   const toast = useToast();
 
   return (event: WalletKitTypes.SessionDelete) =>
     handleAsyncAction(async () => {
+      const { topic } = event;
       toast({
-        description: "Session deleted by dApp",
+        description: `Session deleted by dApp ${peers[topic].peer.metadata.name}`,
         status: "info",
       });
+      removeWcPeer(topic);
       await refresh();
     });
 };

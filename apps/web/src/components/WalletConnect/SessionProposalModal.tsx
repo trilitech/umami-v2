@@ -16,7 +16,14 @@ import {
 } from "@chakra-ui/react";
 import { type WalletKitTypes } from "@reown/walletkit";
 import { useDynamicModalContext } from "@umami/components";
-import { useAsyncActionHandler, useGetImplicitAccount, walletKit } from "@umami/state";
+import {
+  useAddWcConnection,
+  useAsyncActionHandler,
+  useGetImplicitAccount,
+  walletKit,
+} from "@umami/state";
+import { type NetworkName } from "@umami/tezos";
+import { type SessionTypes } from "@walletconnect/types";
 import { buildApprovedNamespaces, getSdkError } from "@walletconnect/utils";
 import { FormProvider, useForm } from "react-hook-form";
 
@@ -32,6 +39,7 @@ export const SessionProposalModal = ({
   proposal: WalletKitTypes.SessionProposal;
   network: NetworkType;
 }) => {
+  const addConnectionToWcSlice = useAddWcConnection();
   const getAccount = useGetImplicitAccount();
 
   const { onClose } = useDynamicModalContext();
@@ -62,11 +70,12 @@ export const SessionProposalModal = ({
         },
       });
 
-      await walletKit.approveSession({
+      const session: SessionTypes.Struct = await walletKit.approveSession({
         id: proposal.id,
         namespaces,
         sessionProperties: {},
       });
+      addConnectionToWcSlice(session, account.address.pkh, network.split(":")[1] as NetworkName);
       onClose();
     });
 
