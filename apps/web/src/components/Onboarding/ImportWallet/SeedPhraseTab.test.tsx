@@ -6,6 +6,11 @@ import { act, render, screen, userEvent } from "../../../testUtils";
 
 jest.setTimeout(10000);
 
+jest.mock("@chakra-ui/react", () => ({
+  ...jest.requireActual("@chakra-ui/react"),
+  useBreakpointValue: jest.fn(),
+}));
+
 describe("<SeedPhraseTab />", () => {
   it("has 24 words by default", () => {
     render(<SeedPhraseTab />);
