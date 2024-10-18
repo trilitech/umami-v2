@@ -405,9 +405,10 @@ const theme = extendTheme({
           width: "full",
           alignItems: "center",
           gap: "10px",
+          color: "gray.900",
           padding: "12px 16px",
           _hover: {
-            background: "gray.100",
+            background: "gray.200",
           },
           rounded: "full",
         },
