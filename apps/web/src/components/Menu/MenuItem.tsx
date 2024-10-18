@@ -17,7 +17,7 @@ export const MenuItem = ({ label, icon, onClick, rightElement, hasArrow }: TMenu
       color={color("400")}
       data-group
       onClick={onClick}
-      variant="ghost"
+      variant="dropdownOption"
     >
       {icon}
       <Text marginRight="auto" color="gray.900" fontWeight="600" size="lg">

@@ -1,18 +1,16 @@
-import { Card, Icon, SlideFade, useBreakpointValue, useColorMode } from "@chakra-ui/react";
-import { mode } from "@chakra-ui/theme-tools";
+import { Card, Icon, SlideFade, useBreakpointValue } from "@chakra-ui/react";
 import { useDynamicModalContext } from "@umami/components";
 import { useCurrentAccount } from "@umami/state";
 import { useEffect, useState } from "react";
 
 import { Actions } from "./Actions";
-import { LogoDarkIcon, LogoLightIcon } from "../../assets/icons";
+import { LogoLightIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
 import { AccountSelectorModal } from "../AccountSelectorModal";
 import { AccountTile } from "../AccountTile";
 
 export const Header = () => {
   const color = useColor();
-  const colorMode = useColorMode();
   const currentAccount = useCurrentAccount()!;
   const { openWith } = useDynamicModalContext();
 
@@ -59,7 +57,7 @@ export const Header = () => {
         md: "2px 4px 12px 0px rgba(45, 55, 72, 0.05)",
       }}
     >
-      {mode(<Icon as={LogoLightIcon} {...size} />, <Icon as={LogoDarkIcon} {...size} />)(colorMode)}
+      <Icon as={LogoLightIcon} {...size} />
       <SlideFade in={isVisible} offsetY="20px" unmountOnExit>
         <AccountTile
           background={color("100")}

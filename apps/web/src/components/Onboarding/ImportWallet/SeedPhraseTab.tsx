@@ -99,14 +99,14 @@ export const SeedPhraseTab = () => {
                 gap="10px"
                 color={color("900")}
                 borderBottom="1px solid"
-                borderBottomColor={color("300")}
+                borderBottomColor={color("100")}
                 _expanded={{ borderBottomColor: "transparent" }}
               >
                 <Heading size="md">{mnemonicSize} word seed phrase</Heading>
                 <AccordionIcon />
               </AccordionButton>
 
-              <AccordionPanel borderBottom="1px solid" borderBottomColor={color("300")}>
+              <AccordionPanel borderBottom="1px solid" borderBottomColor={color("100")}>
                 <Flex gap="8px">
                   <RadioButtons
                     inputName="mnemonicSize"

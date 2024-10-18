@@ -86,7 +86,6 @@ export const OnboardOptions = ({ children }: PropsWithChildren) => {
               trackButtonClick("onboarding", "use_existing_wallet");
               return openWith(<ImportWallet />, {
                 size: "xl",
-                variant: "onboarding",
               });
             }}
             size="lg"
