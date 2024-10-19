@@ -1,6 +1,8 @@
 import { webcrypto } from "crypto";
 import { TextDecoder, TextEncoder } from "util";
 
+import { mockLocalStorage } from "@umami/test-utils";
+
 import { mockToast } from "./testUtils";
 
 Object.defineProperties(global, {
@@ -20,3 +22,9 @@ jest.mock("./beacon/WalletClient", () => ({
     removePeer: jest.fn(),
   },
 }));
+
+beforeEach(() =>
+  Object.defineProperty(window, "localStorage", {
+    value: mockLocalStorage(),
+  })
+);
