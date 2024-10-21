@@ -10,7 +10,7 @@ import {
   Image,
   Text,
 } from "@chakra-ui/react";
-import { useGetConnectionInfo, usePeers, useRemovePeer } from "@umami/state";
+import { useBeaconPeers, useGetBeaconConnectionInfo, useRemoveBeaconPeer } from "@umami/state";
 import { parsePkh } from "@umami/tezos";
 import capitalize from "lodash/capitalize";
 import { Fragment } from "react";
@@ -22,10 +22,10 @@ import colors from "../../style/colors";
 /**
  * Component displaying a list of connected dApps.
  *
- * Loads dApps data from {@link usePeers} hook & zips it with generated dAppIds.
+ * Loads dApps data from {@link useBeaconPeers} hook & zips it with generated dAppIds.
  */
 export const BeaconPeers = () => {
-  const { peers } = usePeers();
+  const { peers } = useBeaconPeers();
 
   if (peers.length === 0) {
     return (
@@ -57,7 +57,7 @@ export const BeaconPeers = () => {
  * @param onRemove - action for deleting dApp connection.
  */
 const PeerRow = ({ peerInfo }: { peerInfo: ExtendedPeerInfo }) => {
-  const removePeer = useRemovePeer();
+  const removeBeaconPeer = useRemoveBeaconPeer();
 
   return (
     <Flex justifyContent="space-between" height="106px" data-testid="peer-row" paddingY="30px">
@@ -76,7 +76,7 @@ const PeerRow = ({ peerInfo }: { peerInfo: ExtendedPeerInfo }) => {
         <IconButton
           aria-label="Remove Peer"
           icon={<TrashIcon />}
-          onClick={() => removePeer(peerInfo)}
+          onClick={() => removeBeaconPeer(peerInfo)}
           size="xs"
           variant="circle"
         />
@@ -94,7 +94,7 @@ const PeerRow = ({ peerInfo }: { peerInfo: ExtendedPeerInfo }) => {
  * @param peerInfo - peerInfo provided by beacon Api + computed dAppId.
  */
 const StoredPeerInfo = ({ peerInfo }: { peerInfo: ExtendedPeerInfo }) => {
-  const connectionInfo = useGetConnectionInfo(peerInfo.senderId);
+  const connectionInfo = useGetBeaconConnectionInfo(peerInfo.senderId);
 
   if (!connectionInfo) {
     return null;
