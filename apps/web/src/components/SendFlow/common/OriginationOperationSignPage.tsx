@@ -37,7 +37,6 @@ export const OriginationOperationSignPage = ({
 }: SdkSignPageProps & CalculatedSignProps) => {
   const color = useColor();
   const { code, storage } = operation.operations[0] as ContractOrigination;
-
   const form = useForm({ defaultValues: { executeParams: operation.estimates } });
 
   return (
