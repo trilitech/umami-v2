@@ -18,7 +18,7 @@ import {
   useGetOwnedAccount,
   useSelectedNetwork,
 } from "@umami/state";
-import { type ExecuteParams, type RawPkh } from "@umami/tezos";
+import { type ExecuteParams, type Network, type RawPkh } from "@umami/tezos";
 import { repeat } from "lodash";
 import { useState } from "react";
 import { useForm, useFormContext } from "react-hook-form";
@@ -72,7 +72,7 @@ export type SignRequestId =
     };
 
 export type SignHeaderProps = {
-  networkName: string;
+  network: Network;
   appName: string;
   appIcon?: string;
 };

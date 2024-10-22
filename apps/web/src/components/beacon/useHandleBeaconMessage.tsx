@@ -19,7 +19,7 @@ import { PermissionRequestModal } from "./PermissionRequestModal";
 import { SignPayloadRequestModal } from "./SignPayloadRequestModal";
 import { BatchSignPage } from "../../components/SendFlow/sdk/BatchSignPage";
 import { SingleSignPage } from "../../components/SendFlow/sdk/SingleSignPage";
-import { type SdkSignPageProps } from "../SendFlow/utils";
+import { type SdkSignPageProps, type SignHeaderProps } from "../SendFlow/utils";
 
 /**
  * @returns a function that handles a beacon message and opens a modal with the appropriate content
@@ -103,14 +103,14 @@ export const useHandleBeaconMessage = () => {
               });
               throw new Error(`Unknown account: ${message.sourceAddress}`);
             }
+
             const operation = toAccountOperations(
               message.operationDetails,
               signer as ImplicitAccount
             );
             const estimatedOperations = await estimate(operation, network);
-            const headerProps = {
-              requestId: message.id,
-              networkName: message.network.type,
+            const headerProps: SignHeaderProps = {
+              network: network,
               appName: message.appMetadata.name,
               appIcon: message.appMetadata.icon,
             };

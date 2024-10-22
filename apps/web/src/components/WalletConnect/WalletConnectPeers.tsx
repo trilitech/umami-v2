@@ -1,4 +1,4 @@
-import { Center, Divider, Flex, Heading, IconButton, Image, Text, VStack } from "@chakra-ui/react";
+import { Center, Divider, Flex, IconButton, Image, Text, VStack } from "@chakra-ui/react";
 import { useGetWcConnectionInfo, useRemoveWcPeer, useWcPeers } from "@umami/state";
 import { parsePkh } from "@umami/tezos";
 import { type SessionTypes } from "@walletconnect/types";
@@ -79,9 +79,9 @@ const PeerRow = ({ peerInfo }: { peerInfo: SessionTypes.Struct }) => {
           />
         </Center>
         <Center alignItems="flex-start" flexDirection="column" gap="6px">
-          <Heading color={color("900")} size="lg">
+          <Text color={color("900")} size="lg">
             {peerInfo.peer.metadata.name}
-          </Heading>
+          </Text>
           <StoredPeerInfo peerInfo={peerInfo} />
         </Center>
       </Flex>

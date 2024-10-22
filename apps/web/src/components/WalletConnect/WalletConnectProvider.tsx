@@ -6,6 +6,7 @@ import {
   createWalletKit,
   useAsyncActionHandler,
   useAvailableNetworks,
+  useGetAllWcConnectionInfo,
   useRemoveWcConnection,
   useWcPeers,
   walletKit,
@@ -16,6 +17,7 @@ import { getSdkError } from "@walletconnect/utils";
 import { type PropsWithChildren, useEffect } from "react";
 
 import { SessionProposalModal } from "./SessionProposalModal";
+import { useHandleWcRequest } from "./useHandleWcRequest";
 
 export const WalletConnectProvider = ({ children }: PropsWithChildren) => {
   const onSessionProposal = useOnSessionProposal();
@@ -73,18 +75,40 @@ const useOnSessionProposal = () => {
 };
 
 const useOnSessionRequest = () => {
-  const { handleAsyncAction } = useAsyncActionHandler();
+  const { handleAsyncActionUnsafe } = useAsyncActionHandler();
+  const { peers } = useWcPeers();
+  const state = useGetAllWcConnectionInfo();
+  const handleWcRequest = useHandleWcRequest();
+  const toast = useToast();
 
   return (event: WalletKitTypes.SessionRequest) =>
-    handleAsyncAction(async () => {
-      console.log("TODO: Session request received. Handling to be implemented", event);
-
-      const response = formatJsonRpcError(event.id, getSdkError("USER_REJECTED_METHODS").message);
-      await walletKit.respondSessionRequest({ topic: event.topic, response });
-    }).catch(async () => {
+    handleAsyncActionUnsafe(async () => {
+      console.log("Session request and state", event, state, peers);
+      if (event.topic in state) {
+        console.log("Session request from dApp", state[event.topic], peers[event.topic]);
+        toast({
+          description: `Session request from dApp ${peers[event.topic].peer.metadata.name}`,
+          status: "info",
+        });
+      }
+      await handleWcRequest(event);
+    }).catch(async error => {
+      const { id, topic } = event;
+      console.error("WalletConnect session request failed", event, peers, error);
+      if (event.topic in peers) {
+        toast({
+          description: `Session request for dApp ${peers[topic].peer.metadata.name} failed. It was rejected.`,
+          status: "error",
+        });
+      } else {
+        toast({
+          description: `Session request for dApp ${topic} failed. It was rejected. Peer not found by topic.`,
+          status: "error",
+        });
+      }
       // dApp is waiting so we need to notify it
-      const response = formatJsonRpcError(event.id, getSdkError("INVALID_METHOD").message);
-      await walletKit.respondSessionRequest({ topic: event.topic, response });
+      const response = formatJsonRpcError(id, getSdkError("INVALID_METHOD").message);
+      await walletKit.respondSessionRequest({ topic, response });
     });
 };
 

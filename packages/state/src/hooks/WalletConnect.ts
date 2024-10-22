@@ -6,18 +6,8 @@ import { uniq } from "lodash";
 import { useDispatch } from "react-redux";
 
 import { useAppSelector } from "./useAppSelector";
-import { type DAppWcConnectionInfo, wcActions } from "../slices";
+import { type DAppWcConnectionInfo, type State, wcActions } from "../slices";
 import { walletKit } from "../walletConnect";
-
-/**
- * Returns connected account pkh & network by a given topic.
- *
- * @param topic - generated from dApp public key.
- */
-export const useGetWcConnectionInfo = (topic: string): DAppWcConnectionInfo | undefined => {
-  const connections = useAppSelector(s => s.walletconnect);
-  return connections[topic];
-};
 
 export const useGetWcPeersForAccounts = () => {
   const connections = useAppSelector(s => s.walletconnect);
@@ -44,21 +34,34 @@ export const useResetWcConnections = () => {
 export const useAddWcConnection = () => {
   const { refresh } = useWcPeers();
   const dispatch = useDispatch();
-  return (session: SessionTypes.Struct, accountPkh: RawPkh, chain: NetworkName) => {
+  return async (session: SessionTypes.Struct, accountPkh: RawPkh, chain: NetworkName) => {
     console.log("adding WC connection", session.topic, accountPkh, chain);
     dispatch(wcActions.addConnection({ topic: session.topic, accountPkh, networkName: chain }));
-    void refresh();
+    await refresh();
   };
 };
 
-/**
- * Returns function for removing connection from {@link wcSlice}.
- */
+// remove from slice
 export const useRemoveWcConnection = () => {
   const dispatch = useDispatch();
   return (topic: string) => dispatch(wcActions.removeConnection(topic));
 };
 
+// remove from WC and slice
+export const useRemoveWcPeer = () => {
+  const { refresh } = useWcPeers();
+  const removeConnectionFromWcSlice = useRemoveWcConnection();
+
+  return async (params: { topic: string; reason: ErrorResponse }) => {
+    console.log("disconnecting WC session", params);
+    await walletKit
+      .disconnectSession(params)
+      .then(() => removeConnectionFromWcSlice(params.topic))
+      .then(async () => await refresh());
+  };
+};
+
+// read from WC
 export const useWcPeers = () => {
   const query = useQuery<Record<string, SessionTypes.Struct>>({
     queryKey: ["wcPeers"],
@@ -73,15 +76,18 @@ export const useWcPeers = () => {
   return { peers: query.data, refresh: query.refetch };
 };
 
-export const useRemoveWcPeer = () => {
-  const { refresh } = useWcPeers();
-  const removeConnectionFromWcSlice = useRemoveWcConnection();
+// read from slice
+export const useGetAllWcConnectionInfo = (): State => {
+  const connections = useAppSelector(s => s.walletconnect);
+  return connections;
+};
 
-  return (params: { topic: string; reason: ErrorResponse }) => {
-    console.log("disconnecting WC session", params);
-    walletKit
-      .disconnectSession(params)
-      .then(() => removeConnectionFromWcSlice(params.topic))
-      .finally(() => void refresh());
-  };
+/**
+ * Returns connected account pkh & network by a given topic.
+ *
+ * @param topic - generated from dApp public key.
+ */
+export const useGetWcConnectionInfo = (topic: string): DAppWcConnectionInfo | undefined => {
+  const connections = useAppSelector(s => s.walletconnect);
+  return connections[topic];
 };

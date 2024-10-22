@@ -1,4 +1,4 @@
-import { Avatar, Box, Card, Flex, Heading, Icon, Link, Text } from "@chakra-ui/react";
+import { Avatar, Box, Card, Flex, Icon, Link, Text } from "@chakra-ui/react";
 import { type SignClientTypes } from "@walletconnect/types";
 
 import { PencilIcon } from "../../assets/icons";
@@ -20,12 +20,12 @@ export const ProjectInfoCard = ({ metadata, intention }: Props) => {
         <Avatar marginX="auto" size="lg" src={icons[0]} />
       </Box>
       <Box marginTop="16px">
-        <Text data-testid="session-info-card-text">
+        <Card data-testid="session-info-card-text">
           <Text as="span" fontWeight="bold">
             {name}
           </Text>{" "}
-          <Heading size="md">wants to {intention ?? "connect"}</Heading>
-        </Text>
+          <Text size="md">wants to {intention ?? "connect"}</Text>
+        </Card>
       </Box>
       <Box marginTop="16px">
         <Link

@@ -1,14 +1,14 @@
-import { BeaconMessageType, type OperationResponseInput } from "@airgap/beacon-wallet";
 import { type TezosToolkit } from "@taquito/taquito";
 import { useDynamicModalContext } from "@umami/components";
 import { executeOperations, totalFee } from "@umami/core";
-import { WalletClient, useAsyncActionHandler } from "@umami/state";
+import { useAsyncActionHandler, walletKit } from "@umami/state";
+import { formatJsonRpcResult } from "@walletconnect/jsonrpc-utils";
 import { useForm } from "react-hook-form";
 
 import { SuccessStep } from "../SuccessStep";
 import { type CalculatedSignProps, type SdkSignPageProps } from "../utils";
 
-export const useSignWithBeacon = ({
+export const useSignWithWalletConnect = ({
   operation,
   headerProps,
   requestId,
@@ -18,6 +18,16 @@ export const useSignWithBeacon = ({
 
   const form = useForm({ defaultValues: { executeParams: operation.estimates } });
 
+  if (requestId.sdkType !== "walletconnect") {
+    return {
+      fee: 0,
+      isSigning: false,
+      onSign: async () => {},
+      network: null,
+      form,
+    };
+  }
+
   const onSign = async (tezosToolkit: TezosToolkit) =>
     handleAsyncAction(
       async () => {
@@ -26,13 +36,8 @@ export const useSignWithBeacon = ({
           tezosToolkit
         );
 
-        const response: OperationResponseInput = {
-          type: BeaconMessageType.OperationResponse,
-          id: requestId.id.toString(),
-          transactionHash: opHash,
-        };
-        await WalletClient.respond(response);
-
+        const response = formatJsonRpcResult(requestId.id, { hash: opHash });
+        await walletKit.respondSessionRequest({ topic: requestId.topic, response });
         return openWith(<SuccessStep hash={opHash} />);
       },
       error => ({

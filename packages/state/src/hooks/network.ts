@@ -10,8 +10,10 @@ export const useAvailableNetworks = () => useAppSelector(s => s.networks.availab
 export const useFindNetwork = () => {
   const availableNetworks = useAvailableNetworks();
 
-  return (name: string) =>
-    availableNetworks.find(network => network.name.toLowerCase() === name.toLowerCase());
+  return (name: string) => {
+    console.log("availableNetworks", availableNetworks);
+    return availableNetworks.find(network => network.name.toLowerCase() === name.toLowerCase());
+  };
 };
 
 /**

@@ -8,7 +8,7 @@ export type DAppWcConnectionInfo = {
 };
 
 // mapping topic -> connection info
-type State = Record<string, DAppWcConnectionInfo>;
+export type State = Record<string, DAppWcConnectionInfo>;
 
 export const wcInitialState: State = {};
 
@@ -28,6 +28,7 @@ export const wcSlice = createSlice({
       { payload }: { payload: { topic: string; accountPkh: RawPkh; networkName: NetworkName } }
     ) => {
       state[payload.topic] = { accountPkh: payload.accountPkh, networkName: payload.networkName };
+      console.log("added WC connection to slices", payload.topic);
     },
 
     removeConnection: (state, { payload: topic }: { payload: string }) => {

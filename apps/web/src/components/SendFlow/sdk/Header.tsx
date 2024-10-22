@@ -16,7 +16,7 @@ export const Header = ({ headerProps }: { headerProps: SignHeaderProps }) => {
           Network:
         </Heading>
         <Text color={color("700")} fontWeight="400" size="sm">
-          {capitalize(headerProps.networkName)}
+          {capitalize(headerProps.network.name)}
         </Text>
       </Flex>
 
