@@ -19,6 +19,7 @@ import { getSdkError } from "@walletconnect/utils";
 import { type PropsWithChildren, useCallback, useEffect, useRef } from "react";
 
 import { SessionProposalModal } from "./SessionProposalModal";
+import { useHandleWcRequest } from "./useHandleWcRequest";
 
 enum WalletKitState {
   NOT_INITIALIZED,
@@ -35,6 +36,8 @@ export const WalletConnectProvider = ({ children }: PropsWithChildren) => {
   const toast = useToast();
 
   const availableNetworks: Network[] = useAvailableNetworks();
+
+  const handleWcRequest = useHandleWcRequest();
 
   const onSessionProposal = useCallback(
     (proposal: WalletKitTypes.SessionProposal) =>
@@ -87,8 +90,8 @@ export const WalletConnectProvider = ({ children }: PropsWithChildren) => {
   );
 
   const onSessionRequest = useCallback(
-    async (event: WalletKitTypes.SessionRequest) => {
-      try {
+    async (event: WalletKitTypes.SessionRequest) =>
+      handleAsyncActionUnsafe(async () => {
         const activeSessions: Record<string, SessionTypes.Struct> = walletKit.getActiveSessions();
         if (!(event.topic in activeSessions)) {
           console.error("WalletConnect session request failed. Session not found", event);
@@ -101,8 +104,8 @@ export const WalletConnectProvider = ({ children }: PropsWithChildren) => {
           description: `Session request from dApp ${session.peer.metadata.name}`,
           status: "info",
         });
-        throw new CustomError("Not implemented");
-      } catch (error) {
+        await handleWcRequest(event, session);
+      }).catch(async error => {
         const { id, topic } = event;
         const activeSessions: Record<string, SessionTypes.Struct> = walletKit.getActiveSessions();
         console.error("WalletConnect session request failed", event, error);
@@ -121,9 +124,8 @@ export const WalletConnectProvider = ({ children }: PropsWithChildren) => {
         // dApp is waiting so we need to notify it
         const response = formatJsonRpcError(id, getSdkError("INVALID_METHOD").message);
         await walletKit.respondSessionRequest({ topic, response });
-      }
-    },
-    [toast]
+      }),
+    [handleAsyncActionUnsafe, handleWcRequest, toast]
   );
 
   useEffect(() => {

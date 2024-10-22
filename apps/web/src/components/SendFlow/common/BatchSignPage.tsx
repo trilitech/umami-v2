@@ -23,6 +23,7 @@ import { useSignWithBeacon } from "../Beacon/useSignWithBeacon";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
 import { type SdkSignPageProps } from "../utils";
+import { useSignWithWalletConnect } from "../WalletConnect/useSignWithWc";
 
 export const BatchSignPage = (
   signProps: SdkSignPageProps,
@@ -31,7 +32,9 @@ export const BatchSignPage = (
   const color = useColor();
 
   const beaconCalculatedProps = useSignWithBeacon({ ...signProps });
-  const calculatedProps = beaconCalculatedProps;
+  const walletConnectCalculatedProps = useSignWithWalletConnect({ ...signProps });
+  const calculatedProps =
+    signProps.requestId.sdkType === "beacon" ? beaconCalculatedProps : walletConnectCalculatedProps;
 
   const { isSigning, onSign, network, fee } = calculatedProps;
   const { signer, operations } = signProps.operation;
