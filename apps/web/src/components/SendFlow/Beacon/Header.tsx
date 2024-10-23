@@ -1,12 +1,12 @@
-import { type OperationRequestOutput } from "@airgap/beacon-wallet";
 import { AspectRatio, Flex, Heading, Image, Text } from "@chakra-ui/react";
 import { capitalize } from "lodash";
 
 import { CodeSandboxIcon } from "../../../assets/icons";
 import { useColor } from "../../../styles/useColor";
 import { SignPageHeader } from "../SignPageHeader";
+import { type SignHeaderProps } from "../utils";
 
-export const Header = ({ message }: { message: OperationRequestOutput }) => {
+export const Header = ({ headerProps }: { headerProps: SignHeaderProps }) => {
   const color = useColor();
 
   return (
@@ -16,7 +16,7 @@ export const Header = ({ message }: { message: OperationRequestOutput }) => {
           Network:
         </Heading>
         <Text color={color("700")} fontWeight="400" size="sm">
-          {capitalize(message.network.type)}
+          {capitalize(headerProps.network.name)}
         </Text>
       </Flex>
 
@@ -32,10 +32,10 @@ export const Header = ({ message }: { message: OperationRequestOutput }) => {
             borderRadius="4px"
             objectFit="cover"
             fallback={<CodeSandboxIcon width="36px" height="36px" />}
-            src={message.appMetadata.icon}
+            src={headerProps.appIcon}
           />
         </AspectRatio>
-        <Heading size="sm">{message.appMetadata.name}</Heading>
+        <Heading size="sm">{headerProps.appName}</Heading>
       </Flex>
     </SignPageHeader>
   );

@@ -8,16 +8,22 @@ import {
   SigningType,
   TezosOperationType,
 } from "@airgap/beacon-wallet";
-import { estimate, makeAccountOperations, mockImplicitAccount } from "@umami/core";
+import {
+  type EstimatedAccountOperations,
+  estimate,
+  makeAccountOperations,
+  mockImplicitAccount,
+} from "@umami/core";
 import { type UmamiStore, WalletClient, addTestAccount, makeStore, mockToast } from "@umami/state";
 import { executeParams } from "@umami/test-utils";
-import { mockImplicitAddress } from "@umami/tezos";
+import { MAINNET, mockImplicitAddress } from "@umami/tezos";
 import { CustomError } from "@umami/utils";
 
 import { useHandleBeaconMessage } from "./useHandleBeaconMessage";
 import { BatchSignPage } from "../../components/SendFlow/Beacon/BatchSignPage";
-import { BeaconSignPage } from "../../components/SendFlow/Beacon/BeaconSignPage";
+import { SingleSignPage } from "../../components/SendFlow/Beacon/BeaconSignPage";
 import { act, dynamicModalContextMock, renderHook, screen, waitFor } from "../../testUtils";
+import { type SdkSignPageProps, type SignHeaderProps } from "../SendFlow/utils";
 
 jest.mock("@umami/core", () => ({
   ...jest.requireActual("@umami/core"),
@@ -321,7 +327,7 @@ describe("<useHandleBeaconMessage />", () => {
     });
 
     describe("single operation", () => {
-      it("opens a modal with the BeaconSignPage for 1 operation", async () => {
+      it("opens a modal with the SingleSignPage for 1 operation", async () => {
         jest.mocked(estimate).mockResolvedValueOnce({
           ...makeAccountOperations(account, account, [
             { type: "tez", amount: "1", recipient: mockImplicitAddress(2) },
@@ -344,6 +350,22 @@ describe("<useHandleBeaconMessage />", () => {
           appMetadata: { name: "mockDappName", senderId: "mockSenderId" },
           sourceAddress: account.address.pkh,
         };
+        const operation: EstimatedAccountOperations = {
+          ...makeAccountOperations(account, account, [
+            { type: "tez", amount: "1", recipient: mockImplicitAddress(2) },
+          ]),
+          estimates: [executeParams()],
+        };
+        const headerProps: SignHeaderProps = {
+          network: MAINNET,
+          appName: message.appMetadata.name,
+          appIcon: message.appMetadata.icon,
+        };
+        const signProps: SdkSignPageProps = {
+          headerProps: headerProps,
+          operation: operation,
+          requestId: { sdkType: "beacon", id: message.id },
+        };
 
         const {
           result: { current: handleMessage },
@@ -353,15 +375,7 @@ describe("<useHandleBeaconMessage />", () => {
 
         await waitFor(() =>
           expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
-            <BeaconSignPage
-              message={message}
-              operation={{
-                ...makeAccountOperations(account, account, [
-                  { type: "tez", amount: "1", recipient: mockImplicitAddress(2) },
-                ]),
-                estimates: [executeParams()],
-              }}
-            />,
+            <SingleSignPage {...signProps} />,
             { onClose: expect.any(Function) }
           )
         );
@@ -440,6 +454,23 @@ describe("<useHandleBeaconMessage />", () => {
           appMetadata: { name: "mockDappName", senderId: "mockSenderId" },
           sourceAddress: account.address.pkh,
         };
+        const estimatedOperations: EstimatedAccountOperations = {
+          ...makeAccountOperations(account, account, [
+            { type: "tez", amount: "1", recipient: mockImplicitAddress(2) },
+            { type: "tez", amount: "1", recipient: mockImplicitAddress(2) },
+          ]),
+          estimates: [executeParams()],
+        };
+        const headerProps: SignHeaderProps = {
+          network: MAINNET,
+          appName: message.appMetadata.name,
+          appIcon: message.appMetadata.icon,
+        };
+        const signProps: SdkSignPageProps = {
+          headerProps: headerProps,
+          operation: estimatedOperations,
+          requestId: { sdkType: "beacon", id: message.id },
+        };
 
         const {
           result: { current: handleMessage },
@@ -449,16 +480,7 @@ describe("<useHandleBeaconMessage />", () => {
 
         await waitFor(() =>
           expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
-            <BatchSignPage
-              message={message}
-              operation={{
-                ...makeAccountOperations(account, account, [
-                  { type: "tez", amount: "1", recipient: mockImplicitAddress(2) },
-                  { type: "tez", amount: "1", recipient: mockImplicitAddress(2) },
-                ]),
-                estimates: [executeParams()],
-              }}
-            />,
+            <BatchSignPage {...signProps} {...message.operationDetails} />,
             { onClose: expect.any(Function) }
           )
         );

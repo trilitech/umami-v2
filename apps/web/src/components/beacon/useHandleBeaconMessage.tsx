@@ -19,13 +19,14 @@ import { CustomError } from "@umami/utils";
 import { PermissionRequestModal } from "./PermissionRequestModal";
 import { SignPayloadRequestModal } from "./SignPayloadRequestModal";
 import { BatchSignPage } from "../../components/SendFlow/Beacon/BatchSignPage";
-import { BeaconSignPage } from "../../components/SendFlow/Beacon/BeaconSignPage";
+import { SingleSignPage } from "../../components/SendFlow/Beacon/BeaconSignPage";
+import { type SdkSignPageProps, type SignHeaderProps } from "../SendFlow/utils";
 
 /**
  * @returns a function that handles a beacon message and opens a modal with the appropriate content
  *
  * For operation requests it will also try to convert the operation(s) to our {@link Operation} format,
- * estimate the fee and open the BeaconSignPage only if it succeeds
+ * estimate the fee and open the SingleSignPage only if it succeeds
  */
 export const useHandleBeaconMessage = () => {
   const { openWith } = useDynamicModalContext();
@@ -104,16 +105,27 @@ export const useHandleBeaconMessage = () => {
               });
               throw new CustomError(`Unknown account: ${message.sourceAddress}`);
             }
+
             const operation = toAccountOperations(
               message.operationDetails,
               signer as ImplicitAccount
             );
             const estimatedOperations = await estimate(operation, network);
+            const headerProps: SignHeaderProps = {
+              network: network,
+              appName: message.appMetadata.name,
+              appIcon: message.appMetadata.icon,
+            };
+            const signProps: SdkSignPageProps = {
+              headerProps: headerProps,
+              operation: estimatedOperations,
+              requestId: { sdkType: "beacon", id: message.id },
+            };
 
             if (operation.operations.length === 1) {
-              modal = <BeaconSignPage message={message} operation={estimatedOperations} />;
+              modal = <SingleSignPage {...signProps} />;
             } else {
-              modal = <BatchSignPage message={message} operation={estimatedOperations} />;
+              modal = <BatchSignPage {...signProps} {...message.operationDetails} />;
             }
             onClose = () =>
               WalletClient.respond({
