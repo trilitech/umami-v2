@@ -2,25 +2,27 @@ import { Flex, FormLabel, ModalBody, ModalContent, ModalFooter } from "@chakra-u
 import { type TezTransfer } from "@umami/core";
 import { FormProvider } from "react-hook-form";
 
-import { type BeaconSignPageProps } from "./BeaconSignPageProps";
 import { Header } from "./Header";
-import { useSignWithBeacon } from "./useSignWithBeacon";
 import { AddressTile } from "../../AddressTile/AddressTile";
 import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";
 import { TezTile } from "../../AssetTiles/TezTile";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
+import { type CalculatedSignProps, type SdkSignPageProps } from "../utils";
 
-export const TezSignPage = ({ operation, message }: BeaconSignPageProps) => {
+export const TezSignPage = (
+  { operation, headerProps }: SdkSignPageProps,
+  calculatedSignProps: CalculatedSignProps
+) => {
   const { amount: mutezAmount, recipient } = operation.operations[0] as TezTransfer;
 
-  const { isSigning, onSign, network, fee, form } = useSignWithBeacon(operation, message);
+  const { isSigning, onSign, network, fee, form } = calculatedSignProps;
 
   return (
     <FormProvider {...form}>
       <ModalContent>
         <form>
-          <Header message={message} />
+          <Header headerProps={headerProps} />
           <ModalBody>
             <TezTile mutezAmount={mutezAmount} />
 

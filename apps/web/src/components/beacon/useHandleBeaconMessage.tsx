@@ -19,6 +19,7 @@ import { PermissionRequestModal } from "./PermissionRequestModal";
 import { SignPayloadRequestModal } from "./SignPayloadRequestModal";
 import { BatchSignPage } from "../../components/SendFlow/Beacon/BatchSignPage";
 import { BeaconSignPage } from "../../components/SendFlow/Beacon/BeaconSignPage";
+import { type SdkSignPageProps } from "../SendFlow/utils";
 
 /**
  * @returns a function that handles a beacon message and opens a modal with the appropriate content
@@ -107,11 +108,22 @@ export const useHandleBeaconMessage = () => {
               signer as ImplicitAccount
             );
             const estimatedOperations = await estimate(operation, network);
+            const headerProps = {
+              requestId: message.id,
+              networkName: message.network.type,
+              appName: message.appMetadata.name,
+              appIcon: message.appMetadata.icon,
+            };
+            const signProps: SdkSignPageProps = {
+              headerProps: headerProps,
+              operation: estimatedOperations,
+              requestId: { sdkType: "beacon", id: message.id },
+            };
 
             if (operation.operations.length === 1) {
-              modal = <BeaconSignPage message={message} operation={estimatedOperations} />;
+              modal = <BeaconSignPage {...signProps} />;
             } else {
-              modal = <BatchSignPage message={message} operation={estimatedOperations} />;
+              modal = <BatchSignPage {...signProps} {...message.operationDetails} />;
             }
             onClose = () =>
               WalletClient.respond({

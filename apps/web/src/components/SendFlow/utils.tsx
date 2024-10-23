@@ -50,6 +50,39 @@ export type SignPageProps<T = undefined> = {
   data: T;
 };
 
+export type CalculatedSignProps = {
+  fee: number;
+  isSigning: boolean;
+  onSign: (tezosToolkit: TezosToolkit) => Promise<void>;
+  network: any;
+  form: any;
+};
+
+export type sdkType = "beacon" | "walletconnect";
+
+export type SignRequestId =
+  | {
+      sdkType: "beacon";
+      id: string;
+    }
+  | {
+      sdkType: "walletconnect";
+      id: number;
+      topic: string;
+    };
+
+export type SignHeaderProps = {
+  networkName: string;
+  appName: string;
+  appIcon?: string;
+};
+
+export type SdkSignPageProps = {
+  requestId: SignRequestId;
+  operation: EstimatedAccountOperations;
+  headerProps: SignHeaderProps;
+};
+
 export const FormSubmitButton = ({ title = "Preview", ...props }: ButtonProps) => {
   const {
     formState: { isValid },

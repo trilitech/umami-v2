@@ -1,4 +1,3 @@
-import { type BeaconSignPageProps } from "./BeaconSignPageProps";
 import { ContractCallSignPage } from "./ContractCallSignPage";
 import { DelegationSignPage } from "./DelegationSignPage";
 import { FinalizeUnstakeSignPage } from "./FinalizeUnstakeSignPage";
@@ -8,7 +7,7 @@ import { TezSignPage as BeaconTezSignPage } from "./TezSignPage";
 import { UndelegationSignPage } from "./UndelegationSignPage";
 import { UnstakeSignPage } from "./UnstakeSignPage";
 
-export const BeaconSignPage = ({ operation, message }: BeaconSignPageProps) => {
+export const BeaconSignPage = ({ operation, message }: SdkSignPageProps) => {
   const operationType = operation.operations[0].type;
 
   switch (operationType) {

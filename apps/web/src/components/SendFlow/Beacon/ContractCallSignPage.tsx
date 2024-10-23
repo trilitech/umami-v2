@@ -14,9 +14,7 @@ import {
 import { type ContractCall } from "@umami/core";
 import { FormProvider } from "react-hook-form";
 
-import { type BeaconSignPageProps } from "./BeaconSignPageProps";
 import { Header } from "./Header";
-import { useSignWithBeacon } from "./useSignWithBeacon";
 import { useColor } from "../../../styles/useColor";
 import { AddressTile } from "../../AddressTile/AddressTile";
 import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";
@@ -24,22 +22,26 @@ import { TezTile } from "../../AssetTiles/TezTile";
 import { JsValueWrap } from "../../JsValueWrap";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
+import { type CalculatedSignProps, type SdkSignPageProps } from "../utils";
 
-export const ContractCallSignPage = ({ operation, message }: BeaconSignPageProps) => {
+export const ContractCallSignPage = (
+  { operation, headerProps }: SdkSignPageProps,
+  calculatedSignProps: CalculatedSignProps
+) => {
   const {
     amount: mutezAmount,
     contract,
     entrypoint,
     args,
   } = operation.operations[0] as ContractCall;
-  const { isSigning, onSign, network, fee, form } = useSignWithBeacon(operation, message);
   const color = useColor();
+  const { isSigning, onSign, network, fee, form } = calculatedSignProps;
 
   return (
     <FormProvider {...form}>
       <ModalContent>
         <form>
-          <Header message={message} />
+          <Header headerProps={headerProps} />
           <ModalBody>
             <TezTile mutezAmount={mutezAmount} />
 

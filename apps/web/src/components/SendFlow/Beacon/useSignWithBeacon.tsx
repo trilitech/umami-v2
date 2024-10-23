@@ -1,20 +1,18 @@
-import {
-  BeaconMessageType,
-  type OperationRequestOutput,
-  type OperationResponseInput,
-} from "@airgap/beacon-wallet";
+import { BeaconMessageType, type OperationResponseInput } from "@airgap/beacon-wallet";
 import { type TezosToolkit } from "@taquito/taquito";
 import { useDynamicModalContext } from "@umami/components";
-import { type EstimatedAccountOperations, executeOperations, totalFee } from "@umami/core";
+import { executeOperations, totalFee } from "@umami/core";
 import { WalletClient, useAsyncActionHandler, useFindNetwork } from "@umami/state";
 import { useForm } from "react-hook-form";
 
 import { SuccessStep } from "../SuccessStep";
+import { type CalculatedSignProps, type SdkSignPageProps } from "../utils";
 
-export const useSignWithBeacon = (
-  operation: EstimatedAccountOperations,
-  message: OperationRequestOutput
-) => {
+export const useSignWithBeacon = ({
+  operation,
+  headerProps,
+  requestId,
+}: SdkSignPageProps): CalculatedSignProps => {
   const { isLoading: isSigning, handleAsyncAction } = useAsyncActionHandler();
   const { openWith } = useDynamicModalContext();
   const findNetwork = useFindNetwork();
@@ -31,7 +29,7 @@ export const useSignWithBeacon = (
 
         const response: OperationResponseInput = {
           type: BeaconMessageType.OperationResponse,
-          id: message.id,
+          id: requestId.id.toString(),
           transactionHash: opHash,
         };
         await WalletClient.respond(response);
@@ -47,7 +45,7 @@ export const useSignWithBeacon = (
     fee: totalFee(form.watch("executeParams")),
     isSigning,
     onSign,
-    network: findNetwork(message.network.type),
+    network: findNetwork(headerProps.networkName),
     form,
   };
 };

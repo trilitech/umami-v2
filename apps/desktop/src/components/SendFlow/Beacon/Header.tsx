@@ -1,4 +1,3 @@
-import { type OperationRequestOutput } from "@airgap/beacon-wallet";
 import { AspectRatio, Flex, Heading, Image, Text } from "@chakra-ui/react";
 import { type AccountOperations } from "@umami/core";
 import { capitalize } from "lodash";
@@ -6,14 +5,15 @@ import { capitalize } from "lodash";
 import colors from "../../../style/colors";
 import { SignPageHeader } from "../SignPageHeader";
 import { type SignPageMode } from "../utils";
+import { type SignHeaderProps } from "./BeaconSignPageProps";
 
 export const Header = ({
   operation,
-  message,
+  headerProps,
   mode,
 }: {
   operation: AccountOperations;
-  message: OperationRequestOutput;
+  headerProps: SignHeaderProps;
   mode: SignPageMode;
 }) => (
   <SignPageHeader mode={mode} operationsType={operation.type} signer={operation.signer}>
@@ -22,7 +22,7 @@ export const Header = ({
         Network:
       </Heading>
       <Text color={colors.gray[400]} size="sm">
-        {capitalize(message.network.type)}
+        {capitalize(headerProps.networkName)}
       </Text>
     </Flex>
 
@@ -34,9 +34,9 @@ export const Header = ({
       backgroundColor={colors.gray[800]}
     >
       <AspectRatio width="30px" marginRight="12px" ratio={1}>
-        <Image borderRadius="4px" src={message.appMetadata.icon} />
+        <Image borderRadius="4px" src={headerProps.appIcon} />
       </AspectRatio>
-      <Heading size="sm">{message.appMetadata.name}</Heading>
+      <Heading size="sm">{headerProps.appName}</Heading>
     </Flex>
   </SignPageHeader>
 );
