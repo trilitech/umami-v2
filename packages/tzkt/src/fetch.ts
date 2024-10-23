@@ -13,7 +13,8 @@ import {
 } from "@tzkt/sdk-api";
 import * as tzktApi from "@tzkt/sdk-api";
 import { type Network, type RawPkh } from "@umami/tezos";
-import axios from "axios";
+// import axios from "axios";
+const axios = {} as any;
 import { identity, pickBy, sortBy } from "lodash";
 
 import {
@@ -35,7 +36,7 @@ import { withRateLimit } from "./withRateLimit";
 
 export const getAccounts = async (pkhs: string[], network: Network) =>
   withRateLimit(async () => {
-    const { data } = await axios.get<RawTzktAccount[]>(`${network.tzktApiUrl}/v1/accounts`, {
+    const { data } = await axios.get(`${network.tzktApiUrl}/v1/accounts`, {
       params: {
         ["address.in"]: pkhs.join(","),
         ["select.fields"]:
@@ -137,11 +138,10 @@ export const getStakingOperations = async (
       },
       identity
     );
-    const { data } = await axios.get<RawTzktStakingOperation[]>(
-      `${network.tzktApiUrl}/v1/operations/staking`,
-      { params }
+    const { data } = await axios.get(`${network.tzktApiUrl}/v1/operations/staking`, { params });
+    return data.map(
+      (operation: any) => ({ ...operation, type: operation.action }) as StakingOperation
     );
-    return data.map(operation => ({ ...operation, type: operation.action }) as StakingOperation);
   });
 
 // It returns all transactions, delegations, contract originations & token transfers for given addresses
@@ -271,7 +271,7 @@ export const getPendingUnstakeRequests = async (
   addresses: RawPkh[]
 ): Promise<RawTzktUnstakeRequest[]> =>
   withRateLimit(async () => {
-    const { data: requests } = await axios.get<TzktUnstakeRequest[]>(
+    const { data: requests } = await axios.get(
       `${network.tzktApiUrl}/v1/staking/unstake_requests`,
       {
         params: {
@@ -284,7 +284,7 @@ export const getPendingUnstakeRequests = async (
       }
     );
 
-    return requests.map(request => ({
+    return requests.map((request: any) => ({
       cycle: request.cycle,
       amount: request.actualAmount,
       staker: request.staker,

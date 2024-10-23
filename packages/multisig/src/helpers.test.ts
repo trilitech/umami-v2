@@ -6,7 +6,8 @@ import {
   mockContractAddress,
   mockImplicitAddress,
 } from "@umami/tezos";
-import axios from "axios";
+// import axios from "axios";
+const axios = {} as any;
 
 import {
   getNetworksForContracts,

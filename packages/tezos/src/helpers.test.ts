@@ -2,7 +2,8 @@ import TransportWebUSB from "@ledgerhq/hw-transport-webusb";
 import { DerivationType, LedgerSigner } from "@taquito/ledger-signer";
 import { InMemorySigner } from "@taquito/signer";
 import { mnemonic1 } from "@umami/test-utils";
-import axios from "axios";
+// import axios from "axios";
+const axios = {} as any;
 import MockDate from "mockdate";
 
 import { defaultDerivationPathTemplate, getDefaultDerivationPath } from "./derivationPathUtils";

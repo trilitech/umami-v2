@@ -1,6 +1,6 @@
 import { combineReducers } from "@reduxjs/toolkit";
-import { persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage";
+import { persistReducer, type Storage } from "redux-persist";
+import createWebStorage from "redux-persist/lib/storage/createWebStorage";
 
 import { createAsyncMigrate } from "./createAsyncMigrate";
 import { VERSION, accountsMigrations, mainStoreMigrations } from "./migrations";
@@ -16,34 +16,38 @@ import { networksSlice } from "./slices/networks";
 import { protocolSettingsSlice } from "./slices/protocolSettings";
 import { tokensSlice } from "./slices/tokens";
 
-const rootPersistConfig = {
-  key: "root",
-  version: VERSION,
-  storage,
-  blacklist: ["accounts"],
-  migrate: createAsyncMigrate(mainStoreMigrations, { debug: false }),
+export const makeReducer = (storage_: Storage | undefined) => {
+  const storage = storage_ || createWebStorage("local");
+
+  const rootPersistConfig = {
+    key: "root",
+    version: VERSION,
+    storage,
+    blacklist: ["accounts"],
+    migrate: createAsyncMigrate(mainStoreMigrations, { debug: false }),
+  };
+
+  const accountsPersistConfig = {
+    key: "accounts",
+    version: VERSION,
+    storage,
+    migrate: createAsyncMigrate(accountsMigrations, { debug: false }),
+    blacklist: ["password"],
+  };
+
+  const rootReducers = combineReducers({
+    accounts: persistReducer(accountsPersistConfig, accountsSlice.reducer),
+    announcement: announcementSlice.reducer,
+    assets: assetsSlice.reducer,
+    batches: batchesSlice.reducer,
+    beacon: beaconSlice.reducer,
+    contacts: contactsSlice.reducer,
+    errors: errorsSlice.reducer,
+    multisigs: multisigsSlice.reducer,
+    networks: networksSlice.reducer,
+    protocolSettings: protocolSettingsSlice.reducer,
+    tokens: tokensSlice.reducer,
+  });
+
+  return persistReducer(rootPersistConfig, rootReducers);
 };
-
-const accountsPersistConfig = {
-  key: "accounts",
-  version: VERSION,
-  storage,
-  migrate: createAsyncMigrate(accountsMigrations, { debug: false }),
-  blacklist: ["password"],
-};
-
-const rootReducers = combineReducers({
-  accounts: persistReducer(accountsPersistConfig, accountsSlice.reducer),
-  announcement: announcementSlice.reducer,
-  assets: assetsSlice.reducer,
-  batches: batchesSlice.reducer,
-  beacon: beaconSlice.reducer,
-  contacts: contactsSlice.reducer,
-  errors: errorsSlice.reducer,
-  multisigs: multisigsSlice.reducer,
-  networks: networksSlice.reducer,
-  protocolSettings: protocolSettingsSlice.reducer,
-  tokens: tokensSlice.reducer,
-});
-
-export const reducer = persistReducer(rootPersistConfig, rootReducers);
