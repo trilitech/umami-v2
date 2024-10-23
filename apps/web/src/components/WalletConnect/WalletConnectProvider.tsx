@@ -31,8 +31,7 @@ export const WalletConnectProvider = ({ children }: PropsWithChildren) => {
     };
 
     void initializeWallet();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  });
 
   return children;
 };
@@ -89,7 +88,6 @@ const useOnSessionRequest = () => {
     });
 };
 
-// dApp can release WalletConnect session at any time and then the Wallet is notified by the WalletConnect server.
 const useOnSessionDelete = () => {
   const { handleAsyncAction } = useAsyncActionHandler();
   const { peers, refresh } = useWcPeers();
@@ -99,11 +97,17 @@ const useOnSessionDelete = () => {
   return (event: WalletKitTypes.SessionDelete) =>
     handleAsyncAction(async () => {
       const { topic } = event;
-      toast({
-        description: `Session deleted by dApp ${peers[topic].peer.metadata.name}`,
-        status: "info",
-      });
+      if (topic in peers) {
+        toast({
+          description: `Session deleted by dApp ${peers[topic].peer.metadata.name}`,
+          status: "info",
+        });
+      } else {
+        console.error(`Session deleted by dApp but not known locally. Topic: ${topic}`);
+      }
       removeWcPeer(topic);
+
+      // update peer list in the UI
       await refresh();
     });
 };

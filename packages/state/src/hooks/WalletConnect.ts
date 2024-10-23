@@ -45,6 +45,7 @@ export const useAddWcConnection = () => {
   const { refresh } = useWcPeers();
   const dispatch = useDispatch();
   return (session: SessionTypes.Struct, accountPkh: RawPkh, chain: NetworkName) => {
+    console.log("adding WC connection", session.topic, accountPkh, chain);
     dispatch(wcActions.addConnection({ topic: session.topic, accountPkh, networkName: chain }));
     void refresh();
   };
