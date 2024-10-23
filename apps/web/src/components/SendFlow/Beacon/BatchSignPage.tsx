@@ -1,3 +1,4 @@
+import { type PartialTezosOperation } from "@airgap/beacon-wallet";
 import {
   Accordion,
   AccordionButton,
@@ -12,28 +13,36 @@ import {
   ModalFooter,
   Text,
 } from "@chakra-ui/react";
-import { FormProvider } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 
-import { type BeaconSignPageProps } from "./BeaconSignPageProps";
 import { Header } from "./Header";
-import { useSignWithBeacon } from "./useSignWithBeacon";
 import { useColor } from "../../../styles/useColor";
 import { AddressTile } from "../../AddressTile/AddressTile";
 import { JsValueWrap } from "../../JsValueWrap";
+import { useSignWithBeacon } from "../Beacon/useSignWithBeacon";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
+import { type SdkSignPageProps } from "../utils";
 
-export const BatchSignPage = ({ operation, message }: BeaconSignPageProps) => {
-  const { isSigning, onSign, network, fee, form } = useSignWithBeacon(operation, message);
+export const BatchSignPage = (
+  signProps: SdkSignPageProps,
+  operationDetails: PartialTezosOperation[]
+) => {
   const color = useColor();
-  const { signer } = operation;
-  const transactionCount = operation.operations.length;
+
+  const beaconCalculatedProps = useSignWithBeacon({ ...signProps });
+  const calculatedProps = beaconCalculatedProps;
+
+  const { isSigning, onSign, network, fee } = calculatedProps;
+  const { signer, operations } = signProps.operation;
+  const transactionCount = operations.length;
+  const form = useForm({ defaultValues: { executeParams: signProps.operation.estimates } });
 
   return (
     <FormProvider {...form}>
       <ModalContent>
         <form>
-          <Header message={message} />
+          <Header headerProps={signProps.headerProps} />
 
           <ModalBody>
             <Accordion allowToggle>
@@ -45,11 +54,7 @@ export const BatchSignPage = ({ operation, message }: BeaconSignPageProps) => {
                   <AccordionIcon />
                 </AccordionButton>
                 <AccordionPanel>
-                  <JsValueWrap
-                    overflowY="auto"
-                    maxHeight="200px"
-                    value={message.operationDetails}
-                  />
+                  <JsValueWrap overflowY="auto" maxHeight="200px" value={operationDetails} />
                 </AccordionPanel>
               </AccordionItem>
             </Accordion>

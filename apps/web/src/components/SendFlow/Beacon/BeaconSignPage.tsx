@@ -1,39 +1,43 @@
 import { CustomError } from "@umami/utils";
 
-import { type BeaconSignPageProps } from "./BeaconSignPageProps";
+import { type SdkSignPageProps } from "../utils";
 import { ContractCallSignPage } from "./ContractCallSignPage";
 import { DelegationSignPage } from "./DelegationSignPage";
 import { FinalizeUnstakeSignPage } from "./FinalizeUnstakeSignPage";
 import { OriginationOperationSignPage } from "./OriginationOperationSignPage";
 import { StakeSignPage } from "./StakeSignPage";
-import { TezSignPage as BeaconTezSignPage } from "./TezSignPage";
+import { TezSignPage } from "./TezSignPage";
 import { UndelegationSignPage } from "./UndelegationSignPage";
 import { UnstakeSignPage } from "./UnstakeSignPage";
+import { useSignWithBeacon } from "../Beacon/useSignWithBeacon";
 
-export const BeaconSignPage = ({ operation, message }: BeaconSignPageProps) => {
-  const operationType = operation.operations[0].type;
+export const SingleSignPage = (signProps: SdkSignPageProps) => {
+  const operationType = signProps.operation.operations[0].type;
+
+  const beaconCalculatedProps = useSignWithBeacon({ ...signProps });
+  const calculatedProps = beaconCalculatedProps;
 
   switch (operationType) {
     case "tez": {
-      return <BeaconTezSignPage message={message} operation={operation} />;
+      return <TezSignPage {...signProps} {...calculatedProps} />;
     }
     case "contract_call": {
-      return <ContractCallSignPage message={message} operation={operation} />;
+      return <ContractCallSignPage {...signProps} {...calculatedProps} />;
     }
     case "delegation": {
-      return <DelegationSignPage message={message} operation={operation} />;
+      return <DelegationSignPage {...signProps} {...calculatedProps} />;
     }
     case "undelegation": {
-      return <UndelegationSignPage message={message} operation={operation} />;
+      return <UndelegationSignPage {...signProps} {...calculatedProps} />;
     }
     case "contract_origination":
-      return <OriginationOperationSignPage message={message} operation={operation} />;
+      return <OriginationOperationSignPage {...signProps} {...calculatedProps} />;
     case "stake":
-      return <StakeSignPage message={message} operation={operation} />;
+      return <StakeSignPage {...signProps} {...calculatedProps} />;
     case "unstake":
-      return <UnstakeSignPage message={message} operation={operation} />;
+      return <UnstakeSignPage {...signProps} {...calculatedProps} />;
     case "finalize_unstake":
-      return <FinalizeUnstakeSignPage message={message} operation={operation} />;
+      return <FinalizeUnstakeSignPage {...signProps} {...calculatedProps} />;
     /**
      * FA1/2 are impossible to get here because we don't parse them
      * instead we get a generic contract call
