@@ -16,7 +16,7 @@ import {
 } from "../../../testUtils";
 import { SuccessStep } from "../SuccessStep";
 import { type SdkSignPageProps, type SignHeaderProps } from "../utils";
-import { SingleSignPage } from "./BeaconSignPage";
+import { SingleSignPage } from "./SingleSignPage";
 
 const message = {
   id: "messageid",

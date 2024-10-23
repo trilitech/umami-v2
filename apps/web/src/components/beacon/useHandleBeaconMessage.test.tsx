@@ -19,8 +19,8 @@ import { executeParams } from "@umami/test-utils";
 import { MAINNET, mockImplicitAddress } from "@umami/tezos";
 
 import { useHandleBeaconMessage } from "./useHandleBeaconMessage";
-import { BatchSignPage } from "../../components/SendFlow/Beacon/BatchSignPage";
-import { SingleSignPage } from "../../components/SendFlow/Beacon/BeaconSignPage";
+import { BatchSignPage } from "../../components/SendFlow/sdk/BatchSignPage";
+import { SingleSignPage } from "../../components/SendFlow/sdk/SingleSignPage";
 import { act, dynamicModalContextMock, renderHook, screen, waitFor } from "../../testUtils";
 import { type SdkSignPageProps, type SignHeaderProps } from "../SendFlow/utils";
 
