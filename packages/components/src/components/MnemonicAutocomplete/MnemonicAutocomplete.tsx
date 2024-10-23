@@ -59,8 +59,8 @@ export const MnemonicAutocomplete = <T extends FieldValues, U extends Path<T>>({
         <UnorderedList data-testid="suggestions" variant="suggestions" {...listProps}>
           {matching.map(word => (
             <ListItem
-              zIndex={1}
               key={word}
+              zIndex={1}
               paddingTop="2px"
               fontSize="sm"
               fontWeight={600}

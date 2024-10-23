@@ -8,7 +8,6 @@ import {
   ModalBody,
   ModalContent,
   ModalFooter,
-  ModalHeader,
   Text,
   VStack,
 } from "@chakra-ui/react";
@@ -31,7 +30,7 @@ import { groupBy } from "lodash";
 import { useDispatch } from "react-redux";
 
 import { AccountSelectorPopover } from "./AccountSelectorPopover";
-import { PlusIcon, TrashIcon } from "../../assets/icons";
+import { PlusCircleIcon, TrashIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
 import { AccountTile } from "../AccountTile";
 import { ModalCloseButton } from "../CloseButton";
@@ -95,9 +94,7 @@ export const AccountSelectorModal = () => {
 
   return (
     <ModalContent>
-      <ModalHeader>
-        <ModalCloseButton />
-      </ModalHeader>
+      <ModalCloseButton />
       <ModalBody flexDirection="column" gap="18px">
         <VStack
           overflowY="auto"
@@ -114,7 +111,7 @@ export const AccountSelectorModal = () => {
                 paddingRight="17px"
                 paddingLeft="12px"
               >
-                <Heading color={color("900")} size="sm">
+                <Heading color={color("900")} size="md">
                   {type}
                 </Heading>
                 {isVerified && (
@@ -130,7 +127,7 @@ export const AccountSelectorModal = () => {
                     <IconButton
                       color={color("500")}
                       aria-label={`Add ${type} account`}
-                      icon={<PlusIcon />}
+                      icon={<PlusCircleIcon />}
                       onClick={() => handleDeriveAccount(accounts[0])}
                       size="sm"
                       variant="ghost"

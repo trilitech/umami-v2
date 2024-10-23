@@ -16,9 +16,7 @@ export const VerifyMessage = ({ ...props }: Omit<EmptyMessageProps, "title">) =>
       <EmptyMessage
         cta="Verify Now"
         onClick={handleVerify}
-        subtitle={
-          "Please verify your account, to unlock all features\n and keep your account secure."
-        }
+        subtitle="Please verify your account, to unlock all features and keep your account secure."
         title="Verify Your Account"
         {...props}
       />

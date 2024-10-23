@@ -48,6 +48,7 @@ export { default as OutgoingArrowIcon } from "./outgoing-arrow.svg";
 export { default as PercentIcon } from "./percent.svg";
 export { default as PencilIcon } from "./pencil.svg";
 export { default as PlusIcon } from "./plus.svg";
+export { default as PlusCircleIcon } from "./plus-circle.svg";
 export { default as PyramidIcon } from "./pyramid.svg";
 export { default as RadioIcon } from "./radio.svg";
 export { default as RedditIcon } from "./reddit.svg";

@@ -10,6 +10,7 @@ import {
   ModalFooter,
   ModalHeader,
   VStack,
+  useToast,
 } from "@chakra-ui/react";
 import { useDynamicModalContext } from "@umami/components";
 import { type Account } from "@umami/core";
@@ -28,12 +29,8 @@ type RenameAccountPageProps = {
 export const RenameAccountPage = ({ account }: RenameAccountPageProps) => {
   const dispatch = useAppDispatch();
   const color = useColor();
+  const toast = useToast();
   const { goBack } = useDynamicModalContext();
-
-  const onSubmitNewName = ({ name }: { name: string }) => {
-    dispatch(renameAccount(account, name));
-    goBack();
-  };
 
   const {
     handleSubmit,
@@ -45,8 +42,13 @@ export const RenameAccountPage = ({ account }: RenameAccountPageProps) => {
     defaultValues: { name: account.label },
   });
   const onSubmit = ({ name }: { name: string }) => {
-    onSubmitNewName({ name: name.trim() });
+    dispatch(renameAccount(account, name.trim()));
     reset();
+    goBack();
+    toast({
+      description: "Account name successfully updated",
+      status: "success",
+    });
   };
 
   const validateName = useValidateName(account.label);

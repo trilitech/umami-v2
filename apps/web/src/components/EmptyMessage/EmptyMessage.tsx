@@ -35,6 +35,7 @@ export const EmptyMessage = ({
       </Text>
       {subtitle && (
         <Text
+          maxWidth="418px"
           textAlign="center"
           whiteSpace="pre-line"
           size={{

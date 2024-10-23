@@ -43,8 +43,8 @@ export const ErrorLogsMenu = () => {
             divider={<Divider />}
             spacing="0"
           >
-            {errors.map(errorLog => (
-              <Box key={errorLog.timestamp} width="full">
+            {errors.map((errorLog, index) => (
+              <Box key={errorLog.timestamp + index} width="full">
                 <Flex>
                   <Flex flexDirection="column">
                     <Heading color={color("900")} wordBreak="break-all" size="lg">

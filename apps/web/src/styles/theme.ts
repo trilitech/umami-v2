@@ -147,8 +147,8 @@ const theme = extendTheme({
             border: "1px solid",
             background: "none",
             borderColor: "gray.100",
-            fontSize: { md: "14px", base: "12px" },
-            paddingLeft: "32px",
+            fontSize: { md: "18px", base: "12px" },
+            paddingLeft: { base: "32px", md: "46px" },
             paddingRight: "10px",
             _placeholder: {
               color: "gray.400",
@@ -525,6 +525,7 @@ const theme = extendTheme({
         dialog: {
           background: "white",
           width: "100%",
+          boxShadow: "-4px 0px 12px 0px rgba(45, 55, 72, 0.05)",
           minWidth: {
             base: "100%",
             md: "506px",
@@ -548,7 +549,7 @@ const theme = extendTheme({
       sizes: {
         xl: {
           dialog: {
-            minWidth: { base: "100%", md: "536px" },
+            minWidth: { base: "100%", md: "570px" },
             maxWidth: "100%",
             marginX: 0,
           },
@@ -568,6 +569,7 @@ const theme = extendTheme({
           marginTop: "15px",
         },
         dialog: {
+          boxShadow: "2px 4px 12px 0px rgba(45, 55, 72, 0.05)",
           borderTopRightRadius: "30px",
           borderTopLeftRadius: "30px",
           borderBottomRightRadius: { md: "30px", base: 0 },
@@ -639,6 +641,14 @@ const theme = extendTheme({
       },
       "#root:has(.welcome-view)": {
         bg: "radial-gradient(123.02% 70.68% at 50% 49.96%, rgba(22, 22, 43, 0.00) 0%, #10121B 100%)",
+      },
+      "*::-webkit-scrollbar": {
+        width: "6px",
+      },
+      "*::-webkit-scrollbar-thumb": {
+        backgroundColor: mode(light.grey[300], dark.grey[300])(props),
+        borderRadius: "10px",
+        cursor: "pointer",
       },
       body: {
         color: mode(light.grey[600], dark.grey[600])(props),

@@ -102,7 +102,7 @@ export const NetworkMenu = () => {
         marginTop="18px"
         padding="0 24px"
         onClick={() => openWith(<EditNetworkMenu />)}
-        variant="secondary"
+        variant="primary"
       >
         Add New
       </Button>

@@ -42,7 +42,7 @@ describe("<EditContactMenu />", () => {
         await renderInDrawer(modalComponent, store);
 
         expect(screen.getByRole("dialog")).toHaveTextContent("Add Contact");
-        expect(screen.getByTestId("confirmation-button")).toHaveTextContent("Add to Address Book");
+        expect(screen.getByTestId("confirmation-button")).toHaveTextContent("Add Contact");
       });
 
       it("has editable address & name fields", async () => {

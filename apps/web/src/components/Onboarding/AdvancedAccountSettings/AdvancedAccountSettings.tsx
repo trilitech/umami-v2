@@ -36,7 +36,13 @@ export const AdvancedAccountSettings = () => {
   return (
     <Accordion marginTop="6px" allowToggle data-testid="advanced-section">
       <AccordionItem>
-        <AccordionButton justifyContent="center" color={color("900")}>
+        <AccordionButton
+          justifyContent="center"
+          color={color("900")}
+          borderBottom="1px solid"
+          borderBottomColor={color("100")}
+          _expanded={{ borderBottomColor: "transparent" }}
+        >
           <Heading size="md">Advanced</Heading>
           <AccordionIcon />
         </AccordionButton>

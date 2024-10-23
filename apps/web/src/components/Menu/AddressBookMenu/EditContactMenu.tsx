@@ -79,7 +79,7 @@ export const EditContactMenu: FC<{
                 required: "Name is required",
                 validate: validateName,
               })}
-              placeholder="Enter contact's name"
+              placeholder="Contact's name"
             />
             {errors.name && (
               <FormErrorMessage data-testid="name-error">{errors.name.message}</FormErrorMessage>
@@ -94,7 +94,7 @@ export const EditContactMenu: FC<{
                 validate: isEdit ? () => true : validatePkh,
               })}
               disabled={isEdit}
-              placeholder="Enter contact's tz address"
+              placeholder="Contact's tz address"
               variant={isEdit ? "filled" : undefined}
             />
             {errors.pkh && (
@@ -111,7 +111,7 @@ export const EditContactMenu: FC<{
           type="submit"
           variant="primary"
         >
-          {isEdit ? "Update" : "Add to Address Book"}
+          {isEdit ? "Update" : "Add Contact"}
         </Button>
       </form>
     </DrawerContentWrapper>

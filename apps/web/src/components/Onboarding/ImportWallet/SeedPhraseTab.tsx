@@ -123,7 +123,7 @@ export const SeedPhraseTab = () => {
                 <AccordionIcon />
               </AccordionButton>
 
-              <AccordionPanel borderBottom="1px solid" borderBottomColor={color("100")}>
+              <AccordionPanel>
                 <Flex gap="8px">
                   <RadioButtons
                     inputName="mnemonicSize"
