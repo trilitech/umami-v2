@@ -20,6 +20,7 @@ import {
   useAddWcConnection,
   useAsyncActionHandler,
   useGetImplicitAccount,
+  useWcPeers,
   walletKit,
 } from "@umami/state";
 import { type NetworkName } from "@umami/tezos";
@@ -41,6 +42,7 @@ export const SessionProposalModal = ({
 }) => {
   const addConnectionToWcSlice = useAddWcConnection();
   const getAccount = useGetImplicitAccount();
+  const { refresh } = useWcPeers();
 
   const { onClose } = useDynamicModalContext();
   const { isLoading, handleAsyncAction } = useAsyncActionHandler();
@@ -75,7 +77,8 @@ export const SessionProposalModal = ({
         namespaces,
         sessionProperties: {},
       });
-      addConnectionToWcSlice(session, account.address.pkh, network.split(":")[1] as NetworkName);
+      await addConnectionToWcSlice(session, account.address.pkh, network.split(":")[1] as NetworkName);
+      await refresh();
       onClose();
     });
 
