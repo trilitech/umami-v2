@@ -8,7 +8,8 @@ import {
   tokensGetTokenTransfers,
 } from "@tzkt/sdk-api";
 import { DefaultNetworks, mockImplicitAddress } from "@umami/tezos";
-import axios from "axios";
+// import axios from "axios";
+const axios = {} as any;
 import { sortBy } from "lodash";
 
 import {
