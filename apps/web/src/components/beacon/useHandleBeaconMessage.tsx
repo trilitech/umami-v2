@@ -17,15 +17,15 @@ import { type Network } from "@umami/tezos";
 
 import { PermissionRequestModal } from "./PermissionRequestModal";
 import { SignPayloadRequestModal } from "./SignPayloadRequestModal";
-import { BatchSignPage } from "../../components/SendFlow/Beacon/BatchSignPage";
-import { BeaconSignPage } from "../../components/SendFlow/Beacon/BeaconSignPage";
+import { BatchSignPage } from "../../components/SendFlow/sdk/BatchSignPage";
+import { SingleSignPage } from "../../components/SendFlow/sdk/SingleSignPage";
 import { type SdkSignPageProps } from "../SendFlow/utils";
 
 /**
  * @returns a function that handles a beacon message and opens a modal with the appropriate content
  *
  * For operation requests it will also try to convert the operation(s) to our {@link Operation} format,
- * estimate the fee and open the BeaconSignPage only if it succeeds
+ * estimate the fee and open the SingleSignPage only if it succeeds
  */
 export const useHandleBeaconMessage = () => {
   const { openWith } = useDynamicModalContext();
@@ -121,7 +121,7 @@ export const useHandleBeaconMessage = () => {
             };
 
             if (operation.operations.length === 1) {
-              modal = <BeaconSignPage {...signProps} />;
+              modal = <SingleSignPage {...signProps} />;
             } else {
               modal = <BatchSignPage {...signProps} {...message.operationDetails} />;
             }

@@ -19,7 +19,6 @@ import { type ContractOrigination } from "@umami/core";
 import { capitalize } from "lodash";
 import { FormProvider } from "react-hook-form";
 
-import { useSignWithBeacon } from "./useSignWithBeacon";
 import { CodeSandboxIcon } from "../../../assets/icons";
 import { useColor } from "../../../styles/useColor";
 import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";
@@ -32,10 +31,7 @@ export const OriginationOperationSignPage = (
   { operation, headerProps }: SdkSignPageProps,
   calculatedSignProps: CalculatedSignProps
 ) => {
-  const { isSigning, onSign, network, form, fee } = useSignWithBeacon(
-    operation,
-    calculatedSignProps
-  );
+  const { isSigning, onSign, network, form, fee } = calculatedSignProps;
   const color = useColor();
   const { code, storage } = operation.operations[0] as ContractOrigination;
 
