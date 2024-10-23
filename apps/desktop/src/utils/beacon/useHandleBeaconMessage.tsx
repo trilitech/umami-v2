@@ -18,8 +18,8 @@ import { CustomError } from "@umami/utils";
 
 import { PermissionRequestModal } from "./PermissionRequestModal";
 import { SignPayloadRequestModal } from "./SignPayloadRequestModal";
-import { BatchSignPage } from "../../components/SendFlow/Beacon/BatchSignPage";
-import { BeaconSignPage } from "../../components/SendFlow/Beacon/BeaconSignPage";
+import { BatchSignPage } from "../../components/SendFlow/common/BatchSignPage";
+import { BeaconSignPage } from "../../components/SendFlow/common/BeaconSignPage";
 
 /**
  * @returns a function that handles a beacon message and opens a modal with the appropriate content
