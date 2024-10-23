@@ -148,7 +148,7 @@ const theme = extendTheme({
             background: "none",
             borderColor: "gray.100",
             fontSize: { md: "18px", base: "12px" },
-            paddingLeft: { base: "30px", md: "50px" },
+            paddingLeft: { base: "32px", md: "46px" },
             paddingRight: "10px",
             _placeholder: {
               color: "gray.400",

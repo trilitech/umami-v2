@@ -106,7 +106,7 @@ export const SeedPhraseTab = () => {
                 <AccordionIcon />
               </AccordionButton>
 
-              <AccordionPanel borderBottom="1px solid" borderBottomColor={color("100")}>
+              <AccordionPanel>
                 <Flex gap="8px">
                   <RadioButtons
                     inputName="mnemonicSize"
@@ -139,7 +139,7 @@ export const SeedPhraseTab = () => {
               />
             ))}
           </Grid>
-          <Button gap="4px" onClick={clearAll} variant="ghost">
+          <Button gap="4px" marginTop="-14px" onClick={clearAll} variant="ghost">
             <Icon as={CloseIcon} />
             Clear All
           </Button>
