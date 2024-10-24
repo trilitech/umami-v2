@@ -1,4 +1,5 @@
 import { buf2hex, hex2Bytes } from "@taquito/utils";
+import { differenceInMinutes } from "date-fns";
 
 import { AES_MODE } from "./AES_MODE";
 import { derivePasswordBasedKeyV1, derivePasswordBasedKeyV2 } from "./KDF";
@@ -33,6 +34,9 @@ export const encrypt = async (data: string, password: string): Promise<Encrypted
 
 type DecryptMode = "V1" | "V2";
 
+export const TOO_MANY_ATTEMPTS_ERROR =
+  "Too many unsuccessful attempts. Please wait a few minutes before trying again.";
+
 export const decrypt = async (
   data: EncryptedData,
   password: string,
@@ -40,6 +44,15 @@ export const decrypt = async (
 ): Promise<string> => {
   const { iv, salt, data: encrypted } = data;
   try {
+    if (getAttemptsCount() >= 3) {
+      const minutesSinceLastAttempt = differenceInMinutes(
+        new Date(),
+        new Date(localStorage.getItem("failedDecryptTime")!)
+      );
+      if (minutesSinceLastAttempt < 5) {
+        throw new Error(TOO_MANY_ATTEMPTS_ERROR);
+      }
+    }
     const derivedKey =
       mode === "V2"
         ? await derivePasswordBasedKeyV2(password, hex2Bytes(salt))
@@ -52,8 +65,18 @@ export const decrypt = async (
       derivedKey,
       hex2Bytes(encrypted)
     );
+    setAttemptsCount(0);
+    localStorage.removeItem("failedDecryptTime");
     return Buffer.from(decrypted).toString("utf-8");
-  } catch (_) {
+  } catch (err: any) {
+    if (err?.message === TOO_MANY_ATTEMPTS_ERROR) {
+      throw err;
+    }
+    setAttemptsCount(getAttemptsCount() + 1);
+    localStorage.setItem("failedDecryptTime", new Date().toISOString());
     throw new Error("Error decrypting data: Invalid password");
   }
 };
+
+const getAttemptsCount = () => Number(localStorage.getItem("passwordAttempts") || 0);
+const setAttemptsCount = (count: number) => localStorage.setItem("passwordAttempts", String(count));

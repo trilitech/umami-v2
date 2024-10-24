@@ -4,8 +4,8 @@ import type { Config } from "jest";
 const config: Config = {
   ...baseConfig,
 
-  testEnvironment: "node",
   testTimeout: 10000,
   rootDir: "./",
+  setupFilesAfterEnv: ["<rootDir>/src/setupTests.ts"],
 };
 export default config;
