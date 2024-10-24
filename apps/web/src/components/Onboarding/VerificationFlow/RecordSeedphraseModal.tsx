@@ -70,8 +70,15 @@ export const RecordSeedphraseModal = ({ seedPhrase }: CopySeedphraseModalProps) 
             />
           ))}
         </Grid>
-        <CopyButton width="full" marginTop="16px" value={seedPhrase} variant="ghost">
-          <Icon as={CopyIcon} />
+        <CopyButton
+          gap="8px"
+          width="full"
+          marginTop="16px"
+          fontSize="14px"
+          value={seedPhrase}
+          variant="ghost"
+        >
+          <Icon as={CopyIcon} boxSize="18px" color={color("400")} />
           Copy
         </CopyButton>
       </ModalBody>

@@ -11,8 +11,8 @@ export const BaseBackButton = (props: Omit<IconButtonProps, "aria-label">) => (
       md: "18px",
     }}
     left={{
-      base: "12px",
-      md: "18px",
+      base: "7px",
+      md: "13px",
     }}
     padding="0"
     aria-label="Go back"

@@ -524,6 +524,7 @@ const theme = extendTheme({
         dialog: {
           background: "white",
           width: "100%",
+          boxShadow: "-4px 0px 12px 0px rgba(45, 55, 72, 0.05)",
           minWidth: {
             base: "100%",
             md: "506px",
@@ -547,7 +548,7 @@ const theme = extendTheme({
       sizes: {
         xl: {
           dialog: {
-            minWidth: { base: "100%", md: "536px" },
+            minWidth: { base: "100%", md: "570px" },
             maxWidth: "100%",
             marginX: 0,
           },
@@ -567,6 +568,7 @@ const theme = extendTheme({
           marginTop: "15px",
         },
         dialog: {
+          boxShadow: "2px 4px 12px 0px rgba(45, 55, 72, 0.05)",
           borderTopRightRadius: "30px",
           borderTopLeftRadius: "30px",
           borderBottomRightRadius: { md: "30px", base: 0 },

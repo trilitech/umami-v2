@@ -20,12 +20,14 @@ export const ChangePasswordMenu = () => {
     handleSubmit,
     formState: { isValid },
     getValues,
+    reset,
   } = form;
 
   const onSubmit = ({ currentPassword, newPassword }: ChangePasswordMenuValues) =>
     handleAsyncAction(async () => {
       await dispatch(changeMnemonicPassword({ currentPassword, newPassword })).unwrap();
       toast({ description: "Password updated", status: "success" });
+      reset();
     });
 
   return (

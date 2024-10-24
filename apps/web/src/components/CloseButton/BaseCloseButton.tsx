@@ -11,8 +11,8 @@ export const BaseCloseButton = (props: Omit<IconButtonProps, "aria-label">) => (
       md: "18px",
     }}
     right={{
-      base: "12px",
-      md: "18px",
+      base: "7px",
+      md: "13px",
     }}
     padding="0"
     icon={<CloseIcon width="24px" height="24px" />}
