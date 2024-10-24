@@ -1,6 +1,7 @@
 import { decrypt } from "@umami/crypto";
 import v21Backup from "@umami/test-utils/backups/V21Backup.json";
-import axios from "axios";
+// import axios from "axios";
+const axios = {} as any;
 import MockDate from "mockdate";
 
 import { useDownloadBackupFile, useRestoreBackup } from "./backup";

@@ -1,6 +1,7 @@
 import * as api from "@tzkt/sdk-api";
 import { DefaultNetworks, GHOSTNET, mockImplicitAddress } from "@umami/tezos";
-import axios from "axios";
+// import axios from "axios";
+const axios = {} as any;
 import range from "lodash/range";
 
 import {
