@@ -2,11 +2,12 @@ import { Button, Divider, Text } from "@chakra-ui/react";
 import { useAddPeer } from "@umami/state";
 
 import { BeaconPeers } from "../../beacon";
+import { useOnWalletConnect } from "../../WalletConnect";
 import { DrawerContentWrapper } from "../DrawerContentWrapper";
-import { onWalletConnect } from "../../WalletConnect";
 
 export const AppsMenu = () => {
   const onBeaconConnect = useAddPeer();
+  const onWalletConnect = useOnWalletConnect();
 
   return (
     <DrawerContentWrapper title="Apps">

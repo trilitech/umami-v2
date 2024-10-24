@@ -20,12 +20,12 @@ export const ProjectInfoCard = ({ metadata, intention }: Props) => {
         <Avatar marginX="auto" size="lg" src={icons[0]} />
       </Box>
       <Box marginTop="16px">
-        <Text data-testid="session-info-card-text">
+        <Card data-testid="session-info-card-text">
           <Text as="span" fontWeight="bold">
             {name}
           </Text>{" "}
           <Heading size="md">wants to {intention ?? "connect"}</Heading>
-        </Text>
+        </Card>
       </Box>
       <Box marginTop="16px">
         <Link
