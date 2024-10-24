@@ -15,6 +15,15 @@ const clientPermissions: Record<string, Permissions> = {
     operations: false,
     signPayload: false,
   },
+  localhost: {
+    origins: [
+      "http://localhost:3000",
+    ],
+    login: true,
+    operations: true,
+    signPayload: true,
+
+  },
 };
 
 export const getPermissionsForOrigin = (origin: string): Permissions | null => {
