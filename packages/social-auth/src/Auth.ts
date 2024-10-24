@@ -22,7 +22,7 @@ export abstract class Auth {
   protected async getTorusClient(): Promise<CustomAuth> {
     const torus = new CustomAuth({
       web3AuthClientId: WEB3_AUTH_CLIENT_ID,
-      baseUrl: "https://umamiwallet.com/auth/v2.2.0/",
+      baseUrl: "https://umami-v2-oauth-git-test-embed-csp-7-trili-tech.vercel.app/",
       redirectPathName: "redirect.html",
       // Hack to enable reusing of the single redirect.html across different surfaces (e.g., desktop, mobile, embed).
       // The 'redirectToOpener' is originally designed to accept a boolean value to control redirect behavior.
