@@ -98,17 +98,20 @@ export const AddressBookMenu = () => {
   const contacts = useSortedContacts();
 
   return (
-    <DrawerContentWrapper title="Address book">
-      <Button
-        width="fit-content"
-        marginTop="18px"
-        padding="0 24px"
-        onClick={() => openWith(<EditContactMenu />)}
-        variant="primary"
-      >
-        Add Contact
-      </Button>
-      <Divider marginTop={{ base: "36px", md: "40px" }} />
+    <DrawerContentWrapper
+      actions={
+        <Button
+          width="fit-content"
+          marginTop="18px"
+          padding="0 24px"
+          onClick={() => openWith(<EditContactMenu />)}
+          variant="primary"
+        >
+          Add Contact
+        </Button>
+      }
+      title="Address book"
+    >
       {contacts.length ? (
         <VStack
           alignItems="flex-start"

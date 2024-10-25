@@ -612,6 +612,11 @@ const theme = extendTheme({
         },
       },
     },
+    Divider: {
+      baseStyle: {
+        borderColor: "gray.100",
+      },
+    },
     Checkbox: {
       baseStyle: {
         label: {
