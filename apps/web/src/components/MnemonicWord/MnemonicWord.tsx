@@ -1,4 +1,4 @@
-import { GridItem, type GridItemProps, Text } from "@chakra-ui/react";
+import { GridItem, type GridItemProps, Text, type TextProps } from "@chakra-ui/react";
 import { MnemonicAutocomplete } from "@umami/components";
 import { type ComponentProps } from "react";
 
@@ -7,10 +7,17 @@ import { useColor } from "../../styles/useColor";
 type MnemonicWordProps = {
   index: number;
   word?: string;
+  indexProps?: TextProps;
   autocompleteProps?: ComponentProps<typeof MnemonicAutocomplete>;
 } & GridItemProps;
 
-export const MnemonicWord = ({ index, word, autocompleteProps, ...props }: MnemonicWordProps) => {
+export const MnemonicWord = ({
+  index,
+  word,
+  autocompleteProps,
+  indexProps,
+  ...props
+}: MnemonicWordProps) => {
   const color = useColor();
 
   return (
@@ -23,6 +30,7 @@ export const MnemonicWord = ({ index, word, autocompleteProps, ...props }: Mnemo
         color={color("900")}
         textAlign="right"
         size={{ md: "lg", base: "xs" }}
+        {...indexProps}
       >
         {String(index + 1).padStart(2, "0")}.
       </Text>

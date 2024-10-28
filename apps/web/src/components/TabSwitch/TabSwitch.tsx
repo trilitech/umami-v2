@@ -61,12 +61,20 @@ export const TabSwitch = ({ options }: { options: string[] }) => {
 
           <AccordionPanel
             marginTop="12px"
+            padding="5px"
             border="1.5px solid"
             borderColor={color("100")}
             borderRadius="30px"
             data-testid="tab-switch-accordion-panel"
           >
-            <Center flexDirection="column" gap="12px">
+            <Center
+              flexDirection="column"
+              gap="10px"
+              background={color("100")}
+              borderRadius="24px"
+              paddingX="12px"
+              paddingY="18px"
+            >
               {options.map((option, index) => (
                 <Button
                   key={option}
@@ -77,6 +85,7 @@ export const TabSwitch = ({ options }: { options: string[] }) => {
                     setSelectedIndex(index);
                     setIsAccordionCollapsed(true);
                   }}
+                  size="md"
                   variant="dropdownOption"
                 >
                   {option}

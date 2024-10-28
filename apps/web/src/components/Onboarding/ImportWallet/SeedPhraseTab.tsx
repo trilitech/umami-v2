@@ -5,10 +5,13 @@ import {
   AccordionItem,
   AccordionPanel,
   Button,
+  Center,
   Flex,
   Grid,
   Heading,
   Icon,
+  type InputProps,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import { useDynamicModalContext, useMultiForm } from "@umami/components";
 import { useAsyncActionHandler } from "@umami/state";
@@ -88,10 +91,24 @@ export const SeedPhraseTab = () => {
       range(mnemonicSize).map(() => ({ val: "" }))
     );
 
+  const lastRowSize = useBreakpointValue({ md: fields.length % 4 }) || 0;
+
+  const onPaste: InputProps["onPaste"] = event => {
+    event.preventDefault();
+    void pasteMnemonic(event.clipboardData.getData("text/plain"));
+    return;
+  };
+
+  const indexProps = {
+    size: "sm",
+    marginTop: { base: "8px", md: "8px" },
+    marginLeft: { md: "10px", base: "10px" },
+  };
+
   return (
     <FormProvider {...form}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Flex flexDirection="column" gap="30px">
+        <Flex flexDirection="column">
           <Accordion allowToggle>
             <AccordionItem>
               <AccordionButton
@@ -118,32 +135,77 @@ export const SeedPhraseTab = () => {
             </AccordionItem>
           </Accordion>
 
-          <Grid gridRowGap="16px" gridColumnGap="12px" gridTemplateColumns="repeat(3, 1fr)">
-            {fields.map((field, index) => (
+          <Grid
+            gridRowGap="16px"
+            gridColumnGap="8px"
+            gridTemplateColumns={{ base: "repeat(3, 1fr)", md: "repeat(4, 1fr)" }}
+            marginTop="36px"
+          >
+            {fields.slice(0, fields.length - lastRowSize).map((field, index) => (
               <MnemonicWord
                 key={field.id}
                 autocompleteProps={{
                   inputName: `mnemonic.${index}.val`,
                   inputProps: {
                     ...register(`mnemonic.${index}.val`, { required: true }),
-                    // eslint-disable-next-line @typescript-eslint/no-misused-promises
-                    onPaste: async e => {
-                      e.preventDefault();
-                      return pasteMnemonic(e.clipboardData.getData("text/plain"));
-                    },
+                    onPaste,
                     variant: "mnemonic",
                     placeholder: `word #${index + 1}`,
                   },
                 }}
                 index={index}
+                indexProps={indexProps}
               />
             ))}
           </Grid>
-          <Button gap="4px" onClick={clearAll} variant="ghost">
-            <Icon as={CloseIcon} />
-            Clear All
-          </Button>
-          <Button isDisabled={!isValid} isLoading={isLoading} type="submit" variant="primary">
+
+          <Center gap="8px" marginTop="16px">
+            {fields.slice(fields.length - lastRowSize).map((field, offsetIndex) => {
+              const index = fields.length - lastRowSize + offsetIndex;
+
+              return (
+                <MnemonicWord
+                  key={field.id}
+                  maxWidth="106px"
+                  autocompleteProps={{
+                    inputName: `mnemonic.${index}.val`,
+                    inputProps: {
+                      ...register(`mnemonic.${index}.val`, { required: true }),
+                      onPaste,
+                      variant: "mnemonic",
+                      placeholder: `word #${index + 1}`,
+                    },
+                  }}
+                  index={index}
+                  indexProps={indexProps}
+                />
+              );
+            })}
+          </Center>
+
+          <Center>
+            <Button
+              gap="4px"
+              width="fit-content"
+              height="48px"
+              marginTop="16px"
+              padding="24px"
+              onClick={clearAll}
+              size="sm"
+              variant="ghost"
+            >
+              <Icon as={CloseIcon} color={color("400")} />
+              Clear All
+            </Button>
+          </Center>
+
+          <Button
+            marginTop="30px"
+            isDisabled={!isValid}
+            isLoading={isLoading}
+            type="submit"
+            variant="primary"
+          >
             Next
           </Button>
         </Flex>
