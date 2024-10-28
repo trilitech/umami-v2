@@ -66,10 +66,10 @@ export const DrawerContentWrapper = ({
           flexDirection="column"
           margin="0 -40px"
           padding="0 40px"
-          paddingTop={{ base: "66px", md: "90px" }}
+          paddingTop={{ base: "78px", md: "90px" }}
           background={color("white")}
           boxShadow={scrollDirection ? "0px 4px 10px 0px rgba(0, 0, 0, 0.15)" : "none"}
-          transform={showHeader ? "translateY(0)" : "translateY(-73%)"}
+          transform={showHeader ? "translateY(0)" : "translateY(-75%)"}
           transition="all 0.2s ease-in"
         >
           {title && (

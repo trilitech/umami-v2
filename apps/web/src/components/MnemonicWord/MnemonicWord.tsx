@@ -31,6 +31,7 @@ export const MnemonicWord = ({
         marginLeft={word ? 0 : { base: "12px", md: "16px" }}
         color={color("400")}
         fontSize={{ base: "12px", md: word ? "14px" : "18px" }}
+        {...indexProps}
       >
         {String(index + 1).padStart(2, "0")}.
       </Text>
