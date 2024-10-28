@@ -1,11 +1,10 @@
-import { Box, Center, Divider, Flex, Image } from "@chakra-ui/react";
+import { Box, Center, Divider, Flex, Image, Spinner } from "@chakra-ui/react";
 import { type Account } from "@umami/core";
 import { useGetOperations } from "@umami/data-polling";
 import { useCurrentAccount } from "@umami/state";
 import { type UIEvent, useRef } from "react";
 
 import loadingDots from "../../assets/loading-dots.gif";
-import loadingWheel from "../../assets/loading-wheel.gif";
 import { EmptyMessage } from "../../components/EmptyMessage";
 import { VerifyMessage, useIsAccountVerified } from "../../components/Onboarding/VerificationFlow";
 import { OperationTile } from "../../components/OperationTile";
@@ -18,9 +17,10 @@ export const Activity = () => {
   const color = useColor();
   const currentAccount = useCurrentAccount();
 
-  const { operations, loadMore, hasMore, isLoading, isFirstLoad } = useGetOperations([
-    currentAccount ?? ({} as Account),
-  ]);
+  const { operations, loadMore, hasMore, isLoading, isFirstLoad } = useGetOperations(
+    [currentAccount ?? ({} as Account)],
+    isVerified
+  );
 
   const buyTezUrl = `https://widget.wert.io/default/widget/?commodity=XTZ&address=${currentAccount?.address.pkh}&network=tezos&commodity_id=xtz.simple.tezos`;
 
@@ -48,9 +48,11 @@ export const Activity = () => {
   return (
     <>
       <Flex zIndex={1} flexDirection="column" flexGrow={1}>
-        <Center display={isLoading && isFirstLoad ? "flex" : "none"} height="100%">
-          <Image width="150px" height="75px" marginBottom="136px" src={loadingWheel} />
-        </Center>
+        {isLoading && isFirstLoad && (
+          <Center display="flex" height="100%" minHeight="136px">
+            <Spinner />
+          </Center>
+        )}
 
         {isVerified ? (
           isEmpty && (
