@@ -70,10 +70,10 @@ export const TabSwitch = ({ options }: { options: string[] }) => {
             <Center
               flexDirection="column"
               gap="10px"
-              paddingX="12px"
-              paddingY="18px"
               background={color("100")}
               borderRadius="24px"
+              paddingX="12px"
+              paddingY="18px"
             >
               {options.map((option, index) => (
                 <Button
