@@ -3,7 +3,7 @@ import { type Network } from "@umami/tezos";
 import { z } from "zod";
 
 const URL_REGEX =
-  /^(https?:\/\/)?(www\.)?([a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+)(\/[a-zA-Z0-9_-]+)*(\?[a-zA-Z0-9_-]+(=[a-zA-Z0-9_-]*)?(&[a-zA-Z0-9_-]+(=[a-zA-Z0-9_-]*)?)*)?(#[a-zA-Z0-9_-]+)?$/;
+  /^(https?:\/\/)?(www\.)?([a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+)(\/[a-zA-Z0-9_-]+)*(\/?|\?[a-zA-Z0-9_-]+=?[a-zA-Z0-9_-]*(&[a-zA-Z0-9_-]+=?[a-zA-Z0-9_-]*)*)?(#[a-zA-Z0-9_-]+)?$/;
 
 const urlScheme = (urlType: string) =>
   z
