@@ -2,14 +2,8 @@ import { PROHIBITED_CHARACTERS } from "@umami/state";
 import { type Network } from "@umami/tezos";
 import { z } from "zod";
 
-const URL_REGEX = new RegExp(
-  "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
-    "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR IP (v4) address
-    "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
-    "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
-    "(\\#[-a-z\\d_]*)?$",
-  "i"
-);
+const URL_REGEX =
+  /^(https?:\/\/)?(www\.)?([a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+)(\/[a-zA-Z0-9_-]+)*(\/?|\?[a-zA-Z0-9_-]+=?[a-zA-Z0-9_-]*(&[a-zA-Z0-9_-]+=?[a-zA-Z0-9_-]*)*)?(#[a-zA-Z0-9_-]+)?$/;
 
 const urlScheme = (urlType: string) =>
   z

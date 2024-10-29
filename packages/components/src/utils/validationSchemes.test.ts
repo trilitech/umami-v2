@@ -58,7 +58,7 @@ describe("getNetworkValidationScheme", () => {
         expect.objectContaining({ message: "RPC URL must be secure and start with 'https://'" }),
         expect.objectContaining({ message: "Enter a valid Tzkt API URL" }),
         expect.objectContaining({
-          message: "Tzkt Explorer URL must be secure and start with 'https://'",
+          message: "Enter a valid Tzkt Explorer URL",
         }),
       ])
     );

@@ -55,6 +55,7 @@ export const DrawerContentWrapper = ({
         as={Flex}
         position="relative"
         flexDirection="column"
+        overflowX="hidden"
         onScroll={handleScroll}
         paddingX={{ base: "24px", md: "40px" }}
       >
