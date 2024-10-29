@@ -96,17 +96,20 @@ export const NetworkMenu = () => {
   const availableNetworks = useAvailableNetworks();
 
   return (
-    <DrawerContentWrapper title="Network">
-      <Button
-        width="fit-content"
-        marginTop="18px"
-        padding="0 24px"
-        onClick={() => openWith(<EditNetworkMenu />)}
-        variant="secondary"
-      >
-        Add New
-      </Button>
-      <Divider marginTop={{ base: "36px", md: "40px" }} />
+    <DrawerContentWrapper
+      actions={
+        <Button
+          width="fit-content"
+          marginTop="18px"
+          padding="0 24px"
+          onClick={() => openWith(<EditNetworkMenu />)}
+          variant="primary"
+        >
+          Add New
+        </Button>
+      }
+      title="Network"
+    >
       <RadioGroup onChange={selectNetwork} value={currentNetwork.name}>
         <VStack
           alignItems="flex-start"

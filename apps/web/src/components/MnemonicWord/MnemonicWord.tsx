@@ -21,15 +21,16 @@ export const MnemonicWord = ({
   const color = useColor();
 
   return (
-    <GridItem {...props}>
+    <GridItem {...props} position="relative">
       <Text
         position="absolute"
         zIndex={1}
-        marginTop={{ md: "11px", base: "8px" }}
-        marginLeft={{ md: "16px", base: "10px" }}
-        color={color("900")}
-        textAlign="right"
-        size={{ md: "lg", base: "xs" }}
+        alignItems="center"
+        display="flex"
+        height="100%"
+        marginLeft={word ? 0 : { base: "12px", md: "16px" }}
+        color={color("400")}
+        fontSize={{ base: "12px", md: word ? "14px" : "18px" }}
         {...indexProps}
       >
         {String(index + 1).padStart(2, "0")}.
@@ -37,10 +38,8 @@ export const MnemonicWord = ({
       {autocompleteProps && <MnemonicAutocomplete {...autocompleteProps} />}
       {word && (
         <Text
-          alignSelf="center"
-          paddingRight="10px"
-          paddingLeft={{ base: "30px", md: "48px" }}
-          fontSize={{ base: "xs", md: "lg" }}
+          paddingLeft={{ base: "22px", md: "26px" }}
+          fontSize={{ base: "12px", md: "14px" }}
           fontWeight="medium"
         >
           {word}

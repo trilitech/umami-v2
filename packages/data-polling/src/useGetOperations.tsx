@@ -1,5 +1,5 @@
 /* istanbul ignore file */
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { type InfiniteQueryObserverBaseResult, useInfiniteQuery } from "@tanstack/react-query";
 import { type Account } from "@umami/core";
 import {
   type AppDispatch,
@@ -17,8 +17,9 @@ import {
 } from "@umami/tzkt";
 import { maxBy } from "lodash";
 import { useEffect } from "react";
-import { useRefetchTrigger } from "./useRefetchTrigger";
+
 import { useReactQueryErrorHandler } from "./useReactQueryErrorHandler";
+import { useRefetchTrigger } from "./useRefetchTrigger";
 
 type QueryParams =
   | {
@@ -27,6 +28,14 @@ type QueryParams =
       sort?: "asc" | "desc";
     }
   | undefined;
+
+type UseGetOperationsResult = {
+  operations: TzktCombinedOperation[];
+  isFirstLoad: boolean;
+  isLoading: boolean;
+  hasMore: boolean;
+  loadMore: InfiniteQueryObserverBaseResult["fetchNextPage"];
+};
 
 /**
  * Hook to fetch operations for given addresses.
@@ -40,6 +49,7 @@ type QueryParams =
  * If the refresh button is clicked then it will trigger this behaviour immediately.
  *
  * @param accounts - list of accounts to fetch operations related to
+ * @param isEnabled - whether to fetch operations or not
  * @returns
  *   operations - operations ordered by id in descending order
  *   isFirstLoad - true if the first load is in progress
@@ -47,7 +57,7 @@ type QueryParams =
  *   hasMore - true if there are more operations to fetch
  *   loadMore - function to load more operations (older ones)
  */
-export const useGetOperations = (accounts: Account[]) => {
+export const useGetOperations = (accounts: Account[], isEnabled = true): UseGetOperationsResult => {
   const network = useSelectedNetwork();
   const dispatch = useAppDispatch();
   const refetchTrigger = useRefetchTrigger();
@@ -66,6 +76,7 @@ export const useGetOperations = (accounts: Account[]) => {
       fetchOperationsAndUpdateTokensInfo(dispatch, network, accounts, pageParam),
     queryKey: ["operations", accounts, dispatch, network],
     initialPageParam: {} as QueryParams,
+    enabled: isEnabled,
     retry: 3,
     retryDelay: retryCount => retryCount * 2000,
     gcTime: 0,
@@ -82,7 +93,6 @@ export const useGetOperations = (accounts: Account[]) => {
       const lastId = lastPage[lastPage.length - 1].id;
       return { lastId };
     },
-
     getPreviousPageParam: (_, pages) => {
       const lastId = maxBy(pages.flat(), "id")?.id;
 
@@ -99,14 +109,24 @@ export const useGetOperations = (accounts: Account[]) => {
   handleError(error);
 
   useEffect(() => {
-    const interval = setInterval(() => void fetchPreviousPage(), BLOCK_TIME);
+    if (!isEnabled) {
+      return;
+    }
+
+    const interval = setInterval(() => {
+      void fetchPreviousPage();
+    }, BLOCK_TIME);
 
     return () => clearInterval(interval);
-  }, [fetchPreviousPage]);
+  }, [fetchPreviousPage, isEnabled]);
 
   useEffect(() => {
+    if (!isEnabled) {
+      return;
+    }
+
     void fetchPreviousPage();
-  }, [refetchTrigger, fetchPreviousPage]);
+  }, [refetchTrigger, fetchPreviousPage, isEnabled]);
 
   return {
     operations: operations || [],

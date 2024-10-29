@@ -46,28 +46,39 @@ export const RecordSeedphraseModal = ({ seedPhrase }: CopySeedphraseModalProps) 
 
       <ModalBody>
         <Grid
-          gridRowGap="16px"
+          gridRowGap={{ base: "12px", md: "18px" }}
           gridColumnGap={{ base: "8px", md: "12px" }}
-          gridTemplateColumns="repeat(3, 1fr)"
+          gridTemplateColumns={{ base: "repeat(3, 1fr)", md: "repeat(4, 1fr)" }}
         >
           {words.map((word, index) => (
             <MnemonicWord
               key={index}
               as={Flex}
+              alignItems="center"
+              gap="7px"
               height={{ md: "48px", base: "34px" }}
+              padding={{ base: "10px 12px", md: "10px 14px" }}
               color="black"
+              fontSize="14px"
               border="1px solid"
               borderWidth="1.5px"
               borderStyle="dashed"
-              borderColor={color("300")}
+              borderColor={color("100")}
               borderRadius="full"
               index={index}
               word={word}
             />
           ))}
         </Grid>
-        <CopyButton width="full" marginTop="16px" value={seedPhrase} variant="ghost">
-          <Icon as={CopyIcon} />
+        <CopyButton
+          gap="8px"
+          width="full"
+          marginTop="16px"
+          fontSize="14px"
+          value={seedPhrase}
+          variant="ghost"
+        >
+          <Icon as={CopyIcon} boxSize="18px" color={color("400")} />
           Copy
         </CopyButton>
       </ModalBody>

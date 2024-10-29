@@ -13,6 +13,7 @@ import { type Account } from "@umami/core";
 import { QRCode } from "react-qrcode-logo";
 
 import { CopyIcon } from "../../assets/icons";
+import { light } from "../../styles/colors";
 import { useColor } from "../../styles/useColor";
 import { ModalBackButton } from "../BackButton";
 import { ModalCloseButton } from "../CloseButton";
@@ -41,7 +42,7 @@ export const AccountInfoModal = ({ account }: AccountInfoModalProps) => {
         <VStack gap="30px">
           <Box
             padding="30px"
-            background="white"
+            background={light.grey.white}
             borderWidth="1.5px"
             borderColor={color("100")}
             borderRadius="30px"

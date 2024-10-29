@@ -13,27 +13,32 @@ export const ErrorLogsMenu = () => {
   const clearErrors = () => dispatch(errorsActions.reset());
 
   return (
-    <DrawerContentWrapper title="Error Logs">
-      {Boolean(errors.length) && (
-        <Flex gap="15px" marginTop="18px">
-          <Button
-            as={Link}
-            width="auto"
-            padding="0 24px"
-            download="UmamiErrorLogs.json"
-            href={`data:application/json;charset=utf-8,${encodeURIComponent(
-              JSON.stringify(errors)
-            )}`}
-            variant="primary"
-          >
-            Download
-          </Button>
-          <Button width="auto" padding="0 24px" onClick={clearErrors} variant="tertiary">
-            Clear All
-          </Button>
+    <DrawerContentWrapper
+      actions={
+        <Flex>
+          {Boolean(errors.length) && (
+            <Flex gap="15px" marginTop="18px">
+              <Button
+                as={Link}
+                width="auto"
+                padding="0 24px"
+                download="UmamiErrorLogs.json"
+                href={`data:application/json;charset=utf-8,${encodeURIComponent(
+                  JSON.stringify(errors)
+                )}`}
+                variant="primary"
+              >
+                Download
+              </Button>
+              <Button width="auto" padding="0 24px" onClick={clearErrors} variant="tertiary">
+                Clear All
+              </Button>
+            </Flex>
+          )}
         </Flex>
-      )}
-      <Divider marginTop={{ base: "36px", md: "40px" }} />
+      }
+      title="Error Logs"
+    >
       {errors.length ? (
         <Box overflowY="auto">
           <VStack
@@ -43,8 +48,8 @@ export const ErrorLogsMenu = () => {
             divider={<Divider />}
             spacing="0"
           >
-            {errors.map(errorLog => (
-              <Box key={errorLog.timestamp} width="full">
+            {errors.map((errorLog, index) => (
+              <Box key={errorLog.timestamp + index} width="full">
                 <Flex>
                   <Flex flexDirection="column">
                     <Heading color={color("900")} wordBreak="break-all" size="lg">

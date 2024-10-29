@@ -41,9 +41,30 @@ export const ViewOverlay = ({ iconType }: ViewOverlayProps) => {
       opacity="0.1"
       z-index="0"
     >
-      <Icon as={getIcon()} position="absolute" top="30%" left="-20%" width="50%" height="auto" />
-      <Icon as={getIcon()} position="absolute" top="5%" left="50%" width="20%" height="auto" />
-      <Icon as={getIcon()} position="absolute" top="78%" right="5%" width="30%" height="auto" />
+      <Icon
+        as={getIcon()}
+        position="absolute"
+        top="20%"
+        left="-25%"
+        width="clamp(100px, 50%, 487px)"
+        height="auto"
+      />
+      <Icon
+        as={getIcon()}
+        position="absolute"
+        top="5%"
+        left="50%"
+        width="clamp(100px, 20%, 180px)"
+        height="auto"
+      />
+      <Icon
+        as={getIcon()}
+        position="absolute"
+        top="69%"
+        right="5%"
+        width="clamp(100px, 30%, 352px)"
+        height="auto"
+      />
     </Box>
   );
 };

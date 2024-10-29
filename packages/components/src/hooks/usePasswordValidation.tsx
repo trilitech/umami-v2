@@ -80,15 +80,18 @@ export const usePasswordValidation = ({
   minLength = DEFAULT_MIN_LENGTH,
 }: UsePasswordValidationProps = {}) => {
   const [passwordScore, setPasswordScore] = useState(DEFAULT_SCORE);
-  const form = useFormContext();
+  const {
+    formState: { errors, isDirty },
+  } = useFormContext();
 
-  const passwordError = form.formState.errors[inputName];
+  const passwordError = errors[inputName];
 
   useEffect(() => {
-    if (passwordError?.type === "required") {
+    // Set password score to default if the field is empty or the form was reset
+    if (passwordError?.type === "required" || !isDirty) {
       setPasswordScore(DEFAULT_SCORE);
     }
-  }, [passwordError]);
+  }, [isDirty, passwordError]);
 
   const validatePasswordStrength = (value: string) => {
     const result = zxcvbn(value);

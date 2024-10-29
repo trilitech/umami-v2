@@ -35,7 +35,7 @@ const ContactItem = ({ contact }: ContactItemProps) => {
   const isLongAddress = useBreakpointValue({ base: false, md: true });
 
   const actions = (
-    <Box>
+    <Box fontSize="16px">
       <Button
         data-testid="edit-network"
         onClick={e => {
@@ -82,8 +82,10 @@ const ContactItem = ({ contact }: ContactItemProps) => {
       <ActionsDropdown actions={actions}>
         <IconButton
           color={color("500")}
+          transform="rotate(90deg)"
           aria-label="Remove Peer"
           icon={<ThreeDotsIcon />}
+          title="Remove Peer"
           variant="iconButtonSolid"
         />
       </ActionsDropdown>
@@ -96,17 +98,20 @@ export const AddressBookMenu = () => {
   const contacts = useSortedContacts();
 
   return (
-    <DrawerContentWrapper title="Address book">
-      <Button
-        width="fit-content"
-        marginTop="18px"
-        padding="0 24px"
-        onClick={() => openWith(<EditContactMenu />)}
-        variant="secondary"
-      >
-        Add Contact
-      </Button>
-      <Divider marginTop={{ base: "36px", md: "40px" }} />
+    <DrawerContentWrapper
+      actions={
+        <Button
+          width="fit-content"
+          marginTop="18px"
+          padding="0 24px"
+          onClick={() => openWith(<EditContactMenu />)}
+          variant="primary"
+        >
+          Add Contact
+        </Button>
+      }
+      title="Address book"
+    >
       {contacts.length ? (
         <VStack
           alignItems="flex-start"

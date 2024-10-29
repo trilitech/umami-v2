@@ -100,9 +100,7 @@ export const SeedPhraseTab = () => {
   };
 
   const indexProps = {
-    size: "sm",
-    marginTop: { base: "8px", md: "8px" },
-    marginLeft: { md: "10px", base: "10px" },
+    fontSize: { base: "12px", md: "14px" },
   };
 
   return (
@@ -123,7 +121,7 @@ export const SeedPhraseTab = () => {
                 <AccordionIcon />
               </AccordionButton>
 
-              <AccordionPanel borderBottom="1px solid" borderBottomColor={color("100")}>
+              <AccordionPanel>
                 <Flex gap="8px">
                   <RadioButtons
                     inputName="mnemonicSize"
@@ -151,6 +149,7 @@ export const SeedPhraseTab = () => {
                     onPaste,
                     variant: "mnemonic",
                     placeholder: `word #${index + 1}`,
+                    height: "40px",
                   },
                 }}
                 index={index}
@@ -166,7 +165,7 @@ export const SeedPhraseTab = () => {
               return (
                 <MnemonicWord
                   key={field.id}
-                  maxWidth="106px"
+                  maxWidth="114px"
                   autocompleteProps={{
                     inputName: `mnemonic.${index}.val`,
                     inputProps: {
@@ -174,6 +173,7 @@ export const SeedPhraseTab = () => {
                       onPaste,
                       variant: "mnemonic",
                       placeholder: `word #${index + 1}`,
+                      height: "40px",
                     },
                   }}
                   index={index}
@@ -185,16 +185,14 @@ export const SeedPhraseTab = () => {
 
           <Center>
             <Button
-              gap="4px"
-              width="fit-content"
-              height="48px"
+              gap="8px"
+              width="full"
               marginTop="16px"
-              padding="24px"
+              fontSize="14px"
               onClick={clearAll}
-              size="sm"
               variant="ghost"
             >
-              <Icon as={CloseIcon} color={color("400")} />
+              <Icon as={CloseIcon} boxSize="18px" color={color("400")} />
               Clear All
             </Button>
           </Center>
