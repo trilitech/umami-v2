@@ -5,6 +5,14 @@ interface Permissions {
   signPayload: boolean;
 }
 
+/**
+ * Client-specific permissions for the mainnet environment.
+ *
+ * This configuration defines which permissions each client is granted. It only applies to the mainnet.
+ *
+ * Note: When adding a new origin, ensure it is also added to the `frame-ancestors`
+ * directive in the Content Security Policy (CSP) within `embed-iframe-mainnet/vercel.json`.
+ */
 const clientPermissions: Record<string, Permissions> = {
   kanvas: {
     origins: [
