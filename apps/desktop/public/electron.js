@@ -145,6 +145,15 @@ function createWindow() {
     }
   });
 
+  mainWindow.webContents.setWindowOpenHandler(details => {
+    if (details.url.startsWith("https://") || details.url.startsWith("mailto:")) {
+      shell.openExternal(details.url);
+      return { action: "deny" };
+    } else {
+      return { action: "allow" };
+    }
+  });
+
   // Emitted when the window is closed.
   mainWindow.on("closed", () => {
     // Dereference the window object, usually you would store windows
