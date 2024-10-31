@@ -51,6 +51,7 @@ beforeEach(() => {
     isFirstLoad: false,
     isLoading: false,
     loadMore: jest.fn(),
+    triggerRef: { current: null },
   });
   store.dispatch(networksActions.setCurrent(MAINNET));
   addTestAccount(store, selectedAccount);
@@ -300,6 +301,7 @@ describe("<AccountDrawerDisplay />", () => {
         isFirstLoad: false,
         isLoading: false,
         loadMore: jest.fn(),
+        triggerRef: { current: null },
       });
       multisigsFixture.forEach(account => addTestAccount(store, account));
     });

@@ -24,6 +24,22 @@ import {
 
 MockDate.set("2023-03-27T14:15:09.760Z");
 
+const mockIntersectionObserver = class MockIntersectionObserver {
+  callback: jest.Mock;
+  options: jest.Mock;
+  observe: jest.Mock;
+  unobserve: jest.Mock;
+  disconnect: jest.Mock;
+
+  constructor(callback: jest.Mock, options: jest.Mock) {
+    this.callback = callback;
+    this.options = options;
+    this.observe = jest.fn();
+    this.unobserve = jest.fn();
+    this.disconnect = jest.fn();
+  }
+};
+
 jest.mock("./env", () => ({ IS_DEV: false }));
 
 beforeEach(() => {
@@ -32,6 +48,7 @@ beforeEach(() => {
     crypto: { value: webcrypto, writable: true },
     TextDecoder: { value: TextDecoder, writable: true },
     TextEncoder: { value: TextEncoder, writable: true },
+    IntersectionObserver: { value: mockIntersectionObserver, writable: true, configurable: true },
     scrollTo: { value: jest.fn(), writable: true },
 
     // taken from https://jestjs.io/docs/manual-mocks#mocking-methods-which-are-not-implemented-in-jsdom
