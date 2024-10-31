@@ -6,10 +6,21 @@ import { mockToast } from "@umami/state";
 import { mockLocalStorage } from "@umami/test-utils";
 import { setupJestCanvasMock } from "jest-canvas-mock";
 
-const intersectionObserverMock = () => ({
-  observe: jest.fn(),
-  unobserve: jest.fn(),
-});
+const mockIntersectionObserver = class MockIntersectionObserver {
+  callback: jest.Mock;
+  options: jest.Mock;
+  observe: jest.Mock;
+  unobserve: jest.Mock;
+  disconnect: jest.Mock;
+
+  constructor(callback: jest.Mock, options: jest.Mock) {
+    this.callback = callback;
+    this.options = options;
+    this.observe = jest.fn();
+    this.unobserve = jest.fn();
+    this.disconnect = jest.fn();
+  }
+};
 
 jest.mock("./env", () => ({ IS_DEV: false }));
 
@@ -23,7 +34,7 @@ Object.defineProperties(global, {
   crypto: { value: webcrypto, writable: true },
   TextDecoder: { value: TextDecoder, writable: true },
   TextEncoder: { value: TextEncoder, writable: true },
-  IntersectionObserver: { value: intersectionObserverMock, writable: true, configurable: true },
+  IntersectionObserver: { value: mockIntersectionObserver, writable: true, configurable: true },
 });
 
 jest.mock("./utils/persistor", () => ({

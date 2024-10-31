@@ -1,6 +1,5 @@
 import { Box, Center, Divider, Flex, Image } from "@chakra-ui/react";
 import { useGetOperations } from "@umami/data-polling";
-import { type UIEvent, useRef } from "react";
 
 import { NoOperations } from "../../components/NoItems";
 import { OperationTile, OperationTileContext } from "../../components/OperationTile";
@@ -10,26 +9,7 @@ import colors from "../../style/colors";
 
 export const OperationsView = () => {
   const { accountsFilter, selectedAccounts } = useAccountsFilter();
-  const { operations, loadMore, hasMore, isLoading, isFirstLoad } =
-    useGetOperations(selectedAccounts);
-  // used to run loadMore only once when the user scrolls to the bottom
-  // otherwise it might be called multiple times which would trigger multiple fetches
-  const skipLoadMore = useRef<boolean>(false);
-
-  const onScroll = (e: UIEvent<HTMLDivElement>) => {
-    if (skipLoadMore.current || !hasMore || isLoading) {
-      return;
-    }
-    const element = e.target as HTMLDivElement;
-
-    // start loading earlier than we reached the end of the list
-    if (element.scrollHeight - element.scrollTop - element.clientHeight < 100) {
-      skipLoadMore.current = true;
-      return loadMore().finally(() => {
-        skipLoadMore.current = false;
-      });
-    }
-  };
+  const { operations, isLoading, isFirstLoad, triggerRef } = useGetOperations(selectedAccounts);
 
   return (
     <Flex flexDirection="column" height="100%">
@@ -52,7 +32,6 @@ export const OperationsView = () => {
           marginBottom="20px"
           background={colors.gray[900]}
           borderRadius="8px"
-          onScroll={onScroll}
           paddingX="20px"
         >
           <OperationTileContext.Provider value={{ mode: "page" }}>
@@ -75,6 +54,7 @@ export const OperationsView = () => {
               );
             })}
           </OperationTileContext.Provider>
+          <Box ref={triggerRef} />
           <Center flexDirection="column" display={isLoading && !isFirstLoad ? "flex" : "none"}>
             <Divider />
             <Image width="100px" height="50px" src="./static/media/loading-dots.gif" />

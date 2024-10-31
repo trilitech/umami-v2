@@ -2,7 +2,6 @@ import { Box, Center, Divider, Flex, Image, Spinner } from "@chakra-ui/react";
 import { type Account } from "@umami/core";
 import { useGetOperations } from "@umami/data-polling";
 import { useCurrentAccount } from "@umami/state";
-import { type UIEvent, useRef } from "react";
 
 import loadingDots from "../../assets/loading-dots.gif";
 import { EmptyMessage } from "../../components/EmptyMessage";
@@ -17,33 +16,14 @@ export const Activity = () => {
   const color = useColor();
   const currentAccount = useCurrentAccount();
 
-  const { operations, loadMore, hasMore, isLoading, isFirstLoad } = useGetOperations(
+  const { operations, isLoading, isFirstLoad, triggerRef } = useGetOperations(
     [currentAccount ?? ({} as Account)],
     isVerified
   );
 
   const buyTezUrl = `https://widget.wert.io/default/widget/?commodity=XTZ&address=${currentAccount?.address.pkh}&network=tezos&commodity_id=xtz.simple.tezos`;
 
-  // used to run loadMore only once when the user scrolls to the bottom
-  // otherwise it might be called multiple times which would trigger multiple fetches
-  const skipLoadMore = useRef<boolean>(false);
-
   const isEmpty = operations.length === 0 && !isLoading;
-
-  const onScroll = (e: UIEvent<HTMLDivElement>) => {
-    if (skipLoadMore.current || !hasMore || isLoading) {
-      return;
-    }
-    const element = e.target as HTMLDivElement;
-
-    // start loading earlier than we reached the end of the list
-    if (element.scrollHeight - element.scrollTop - element.clientHeight < 100) {
-      skipLoadMore.current = true;
-      return loadMore().finally(() => {
-        skipLoadMore.current = false;
-      });
-    }
-  };
 
   return (
     <>
@@ -68,7 +48,7 @@ export const Activity = () => {
           <VerifyMessage />
         )}
         {operations.length > 0 && (
-          <Box borderRadius="8px" onScroll={onScroll}>
+          <Box borderRadius="8px">
             {operations.map((operation, i) => {
               const isFirst = i === 0;
               const isLast = i === operations.length - 1;
@@ -84,6 +64,8 @@ export const Activity = () => {
                 />
               );
             })}
+            {/* trigger for loading more operations */}
+            <Box ref={triggerRef} />
             <Center flexDirection="column" display={isLoading && !isFirstLoad ? "flex" : "none"}>
               <Divider />
               <Image width="100px" height="50px" src={loadingDots} />

@@ -16,7 +16,7 @@ import {
   getRelatedTokenTransfers,
 } from "@umami/tzkt";
 import { maxBy } from "lodash";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 import { useReactQueryErrorHandler } from "./useReactQueryErrorHandler";
 import { useRefetchTrigger } from "./useRefetchTrigger";
@@ -34,6 +34,7 @@ type UseGetOperationsResult = {
   isFirstLoad: boolean;
   isLoading: boolean;
   hasMore: boolean;
+  triggerRef: React.RefObject<HTMLDivElement>;
   loadMore: InfiniteQueryObserverBaseResult["fetchNextPage"];
 };
 
@@ -62,6 +63,8 @@ export const useGetOperations = (accounts: Account[], isEnabled = true): UseGetO
   const dispatch = useAppDispatch();
   const refetchTrigger = useRefetchTrigger();
   const handleError = useReactQueryErrorHandler();
+
+  const triggerRef = useRef<HTMLDivElement>(null);
 
   const {
     isFetching,
@@ -128,12 +131,36 @@ export const useGetOperations = (accounts: Account[], isEnabled = true): UseGetO
     void fetchPreviousPage();
   }, [refetchTrigger, fetchPreviousPage, isEnabled]);
 
+  useEffect(() => {
+    if (!isEnabled || !triggerRef.current) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      entries => {
+        if (entries[0].isIntersecting && hasNextPage && !isLoading) {
+          void fetchNextPage();
+        }
+      },
+      {
+        root: null,
+        rootMargin: "100px",
+        threshold: 0,
+      }
+    );
+
+    observer.observe(triggerRef.current);
+
+    return () => observer.disconnect();
+  }, [hasNextPage, isLoading, fetchNextPage, isEnabled]);
+
   return {
+    hasMore: hasNextPage,
     operations: operations || [],
     isFirstLoad: isLoading,
     isLoading: isFetching,
-    hasMore: hasNextPage,
     loadMore: fetchNextPage,
+    triggerRef,
   };
 };
 
