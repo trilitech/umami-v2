@@ -29,7 +29,12 @@ export type ImplicitAddress = {
   pkh: RawPkh;
 };
 
-export type Address = ContractAddress | ImplicitAddress;
+export type SmartRollupAddress = {
+  type: "smart_rollup";
+  pkh: RawPkh;
+};
+
+export type Address = ContractAddress | ImplicitAddress | SmartRollupAddress;
 
 export type Estimation = {
   storageLimit: number;

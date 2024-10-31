@@ -1,6 +1,11 @@
 import { ValidationResult, validateAddress } from "@taquito/utils";
 
-import { type Address, type ContractAddress, type ImplicitAddress } from "./types";
+import {
+  type Address,
+  type ContractAddress,
+  type ImplicitAddress,
+  type SmartRollupAddress,
+} from "./types";
 
 export const parsePkh = (pkh: string): Address => {
   if (isValidContractPkh(pkh)) {
@@ -8,6 +13,9 @@ export const parsePkh = (pkh: string): Address => {
   }
   if (isValidImplicitPkh(pkh)) {
     return parseImplicitPkh(pkh);
+  }
+  if (isValidSmartRollupPkh(pkh)) {
+    return parseSmartRollupPkh(pkh);
   }
   throw new Error(`Cannot parse address type: ${pkh}`);
 };
@@ -17,6 +25,8 @@ export const isAddressValid = (pkh: string) => validateAddress(pkh) === Validati
 export const isValidContractPkh = (pkh: string) => isAddressValid(pkh) && pkh.match(/^KT1\w+/);
 
 export const isValidImplicitPkh = (pkh: string) => isAddressValid(pkh) && pkh.match(/^tz[1234]\w+/);
+
+export const isValidSmartRollupPkh = (pkh: string) => isAddressValid(pkh) && pkh.match(/^sr1\w+/);
 
 export const parseContractPkh = (pkh: string): ContractAddress => {
   if (isValidContractPkh(pkh)) {
@@ -30,4 +40,11 @@ export const parseImplicitPkh = (pkh: string): ImplicitAddress => {
     return { type: "implicit", pkh };
   }
   throw new Error(`Invalid implicit address: ${pkh}`);
+};
+
+export const parseSmartRollupPkh = (pkh: string): SmartRollupAddress => {
+  if (isValidSmartRollupPkh(pkh)) {
+    return { type: "smart_rollup", pkh };
+  }
+  throw new Error(`Invalid smart rollup address: ${pkh}`);
 };
