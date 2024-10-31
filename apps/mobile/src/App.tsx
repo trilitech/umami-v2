@@ -1,11 +1,11 @@
 import { config } from "@tamagui/config/v3";
 import { TamaguiProvider, createTamagui } from "@tamagui/core";
-import { store } from "./store";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 
 import { NetworkList } from "./NetworkList";
 import { persistor } from "./persistor";
+import { store } from "./store";
 
 // you usually export this from a tamagui.config.ts file
 const tamaguiConfig = createTamagui(config);
@@ -16,14 +16,12 @@ const tamaguiConfig = createTamagui(config);
 //   interface TamaguiCustomConfig extends Conf {}
 // }
 
-export default () => {
-  return (
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <TamaguiProvider config={tamaguiConfig}>
-          <NetworkList />
-        </TamaguiProvider>
-      </PersistGate>
-    </Provider>
-  );
-};
+export default () => (
+  <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
+      <TamaguiProvider config={tamaguiConfig}>
+        <NetworkList />
+      </TamaguiProvider>
+    </PersistGate>
+  </Provider>
+);

@@ -13,16 +13,12 @@ import {
 } from "@tzkt/sdk-api";
 import * as tzktApi from "@tzkt/sdk-api";
 import { type Network, type RawPkh } from "@umami/tezos";
-// import axios from "axios";
-const axios = {} as any;
 import { identity, pickBy, sortBy } from "lodash";
 
 import {
   type DelegationOperation,
   type OriginationOperation,
-  type RawTzktAccount,
   type RawTzktBlock,
-  type RawTzktStakingOperation,
   type RawTzktTokenBalance,
   type RawTzktTokenTransfer,
   type RawTzktUnstakeRequest,
@@ -30,21 +26,19 @@ import {
   type TokenTransferOperation,
   type TransactionOperation,
   type TzktCombinedOperation,
-  type TzktUnstakeRequest,
 } from "./types";
 import { withRateLimit } from "./withRateLimit";
 
 export const getAccounts = async (pkhs: string[], network: Network) =>
-  withRateLimit(async () => {
-    const { data } = await axios.get(`${network.tzktApiUrl}/v1/accounts`, {
-      params: {
+  withRateLimit(() =>
+    fetch(
+      `${network.tzktApiUrl}/v1/accounts?${new URLSearchParams({
         ["address.in"]: pkhs.join(","),
         ["select.fields"]:
           "address,balance,delegate,stakedBalance,unstakedBalance,rollupBonds,smartRollupBonds",
-      },
-    });
-    return data;
-  });
+      })}`
+    ).then(res => res.json())
+  );
 
 export const getTokenBalances = async (pkhs: string[], network: Network) =>
   withRateLimit(() =>
@@ -138,7 +132,10 @@ export const getStakingOperations = async (
       },
       identity
     );
-    const { data } = await axios.get(`${network.tzktApiUrl}/v1/operations/staking`, { params });
+    const response = await fetch(
+      `${network.tzktApiUrl}/v1/operations/staking?${new URLSearchParams(params as any)}`
+    );
+    const data = await response.json();
     return data.map(
       (operation: any) => ({ ...operation, type: operation.action }) as StakingOperation
     );
@@ -271,18 +268,15 @@ export const getPendingUnstakeRequests = async (
   addresses: RawPkh[]
 ): Promise<RawTzktUnstakeRequest[]> =>
   withRateLimit(async () => {
-    const { data: requests } = await axios.get(
-      `${network.tzktApiUrl}/v1/staking/unstake_requests`,
-      {
-        params: {
-          limit: 10000,
-          "staker.in": addresses.join(","),
-          type: "unstake",
-          ["status.ne"]: "finalized",
-          "select.fields": "cycle,actualAmount,staker,status",
-        },
-      }
-    );
+    const requests = await fetch(
+      `${network.tzktApiUrl}/v1/staking/unstake_requests?${new URLSearchParams({
+        limit: "10000",
+        "staker.in": addresses.join(","),
+        type: "unstake",
+        "status.ne": "finalized",
+        "select.fields": "cycle,actualAmount,staker,status",
+      })}`
+    ).then(res => res.json());
 
     return requests.map((request: any) => ({
       cycle: request.cycle,

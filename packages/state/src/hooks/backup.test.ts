@@ -1,7 +1,5 @@
 import { decrypt } from "@umami/crypto";
 import v21Backup from "@umami/test-utils/backups/V21Backup.json";
-// import axios from "axios";
-const axios = {} as any;
 import MockDate from "mockdate";
 
 import { useDownloadBackupFile, useRestoreBackup } from "./backup";
@@ -54,7 +52,9 @@ describe("<RestoreBackupFile />", () => {
 
   describe("v1 backups", () => {
     it("restores from a v1 backup file", async () => {
-      jest.spyOn(axios, "get").mockResolvedValue({ data: { type: "user", revealed: false } });
+      jest.spyOn(global, "fetch").mockResolvedValue({
+        json: () => Promise.resolve({ type: "user", revealed: false }),
+      } as Response);
 
       const {
         result: { current: restoreBackup },
@@ -64,7 +64,7 @@ describe("<RestoreBackupFile />", () => {
 
       expect(store.getState().accounts.items).toHaveLength(1);
 
-      expect(axios.get).toHaveBeenCalledTimes(1);
+      expect(fetch).toHaveBeenCalledTimes(1);
     });
 
     it("throws is the password is invalid", async () => {

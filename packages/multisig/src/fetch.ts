@@ -1,8 +1,6 @@
 import { contractsGet, contractsGetCount } from "@tzkt/sdk-api";
 import { type Network, type RawPkh } from "@umami/tezos";
 import { withRateLimit } from "@umami/tzkt";
-// import axios from "axios";
-const axios = {} as any;
 import range from "lodash/range";
 import sortBy from "lodash/sortBy";
 
@@ -77,6 +75,5 @@ export const getPendingOperationsForMultisigs = async (
     const url = `${network.tzktApiUrl}/v1/bigmaps/keys?active=true&bigmap.in=${bigMaps.join(
       ","
     )}&limit=10000`;
-    const { data } = await axios.get(url);
-    return data;
+    return fetch(url).then(res => res.json());
   });

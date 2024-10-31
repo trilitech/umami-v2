@@ -1,6 +1,5 @@
 import { Alert, AlertDescription, Center, CloseButton, Flex } from "@chakra-ui/react";
 import { announcementActions, useAppDispatch, useAppSelector } from "@umami/state";
-import axios from "axios";
 import { useEffect } from "react";
 
 import { MaintenanceIcon } from "../assets/icons";
@@ -21,9 +20,9 @@ export const AnnouncementBanner = () => {
 
   useEffect(() => {
     const updateCurrentAnnouncement = () => {
-      axios
-        .get(ANNOUNCEMENT_FILE_URL)
-        .then(response => dispatch(announcementActions.setCurrent(response.data)))
+      fetch(ANNOUNCEMENT_FILE_URL)
+        .then(response => response.text())
+        .then(data => dispatch(announcementActions.setCurrent(data)))
         .catch(_ => {
           // if we can't fetch the announcement (whether it's 404 or network error)
           // we just don't do anything

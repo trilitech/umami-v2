@@ -2,7 +2,7 @@ import { WalletClient as WalletClientClass } from "@airgap/beacon-wallet";
 import { type Persistor } from "redux-persist";
 
 export const WalletClient =
-  typeof window?.localStorage === "undefined" // cucumber or react-native, stub it
+  typeof window === "undefined" || typeof window.localStorage === "undefined" // cucumber or react-native, stub it
     ? ({} as any as WalletClientClass)
     : new WalletClientClass({
         // production

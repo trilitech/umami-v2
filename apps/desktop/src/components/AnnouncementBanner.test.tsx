@@ -1,12 +1,9 @@
 import { type UmamiStore, announcementActions, makeStore } from "@umami/state";
-import axios from "axios";
 
 import { AnnouncementBanner } from "./AnnouncementBanner";
 import { act, render, screen, userEvent, waitFor } from "../mocks/testUtils";
 
-jest.mock("axios");
-
-const mockedAxios = jest.mocked(axios);
+const mockedFetch = jest.spyOn(global, "fetch");
 
 let store: UmamiStore;
 
@@ -16,7 +13,7 @@ beforeEach(() => {
 
 describe("<AnnouncementBanner />", () => {
   it("doesn't show up if there's no announcement", () => {
-    mockedAxios.get.mockResolvedValue({ data: "" });
+    mockedFetch.mockResolvedValue({ json: () => Promise.resolve("") } as Response);
 
     render(<AnnouncementBanner />, { store });
 
@@ -24,7 +21,7 @@ describe("<AnnouncementBanner />", () => {
   });
 
   it("doesn't show up if the message has been already seen", () => {
-    mockedAxios.get.mockResolvedValue({ data: "" });
+    mockedFetch.mockResolvedValue({ json: () => Promise.resolve("") } as Response);
 
     render(<AnnouncementBanner />, { store });
 
@@ -32,7 +29,7 @@ describe("<AnnouncementBanner />", () => {
   });
 
   it("shows up if there's an announcement and it hasn't been seen", async () => {
-    mockedAxios.get.mockResolvedValue({ data: "" });
+    mockedFetch.mockResolvedValue({ json: () => Promise.resolve("") } as Response);
     store.dispatch(announcementActions.setCurrent("announcement-text"));
 
     render(<AnnouncementBanner />, { store });
@@ -44,7 +41,7 @@ describe("<AnnouncementBanner />", () => {
 
   it("hides the announcement when the close button is clicked", async () => {
     const user = userEvent.setup();
-    mockedAxios.get.mockResolvedValue({ data: "test" });
+    mockedFetch.mockResolvedValue({ json: () => Promise.resolve("test") } as Response);
     store.dispatch(announcementActions.setCurrent("announcement-text"));
 
     render(<AnnouncementBanner />, { store });
@@ -59,7 +56,9 @@ describe("<AnnouncementBanner />", () => {
   });
 
   it("replaces the announcement when the new one is fetched", async () => {
-    mockedAxios.get.mockResolvedValue({ data: "another-announcement" });
+    mockedFetch.mockResolvedValue({
+      json: () => Promise.resolve("another-announcement"),
+    } as Response);
     store.dispatch(announcementActions.setCurrent("announcement-text"));
 
     render(<AnnouncementBanner />, { store });

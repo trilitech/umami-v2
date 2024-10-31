@@ -93,6 +93,15 @@ You've successfully run and modified your React Native App. :partying_face:
 
 If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
 
+Sometimes it might help to clean everything up. From the project's root run:
+
+```shell
+rm -rf node_modules apps/**/node_modules packages/**/node_modules
+pnpm install
+cd apps/mobile
+p start --reset-cache
+```
+
 # Learn More
 
 To learn more about React Native, take a look at the following resources:

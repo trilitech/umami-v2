@@ -1,5 +1,5 @@
-import { Text, Stack } from "tamagui";
 import { useAvailableNetworks } from "@umami/state";
+import { Stack, Text } from "tamagui";
 
 export const NetworkList = () => {
   const networks = useAvailableNetworks();

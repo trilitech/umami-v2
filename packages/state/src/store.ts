@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { type Storage } from "redux-persist";
 
 import { makeReducer } from "./reducer";
-import { type Storage } from "redux-persist";
 
 export type UmamiStore = ReturnType<typeof makeStore>;
 

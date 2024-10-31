@@ -26,7 +26,6 @@
     "@umami/jest-config": "workspace:^",
     "@umami/test-utils": "workspace:^",
     "@umami/typescript-config": "workspace:^",
-    "axios": "^1.7.7",
     "babel-jest": "^29.7.0",
     "bignumber.js": "^9.1.2",
     "depcheck": "^1.4.7",

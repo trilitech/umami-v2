@@ -1,5 +1,5 @@
 import { combineReducers } from "@reduxjs/toolkit";
-import { persistReducer, type Storage } from "redux-persist";
+import { type Storage, persistReducer } from "redux-persist";
 import createWebStorage from "redux-persist/lib/storage/createWebStorage";
 
 import { createAsyncMigrate } from "./createAsyncMigrate";
@@ -16,8 +16,14 @@ import { networksSlice } from "./slices/networks";
 import { protocolSettingsSlice } from "./slices/protocolSettings";
 import { tokensSlice } from "./slices/tokens";
 
+const TEST_STORAGE =
+  process.env.NODE_ENV === "test" || process.env.CUCUMBER_WORKER_ID
+    ? // eslint-disable-next-line @typescript-eslint/no-require-imports
+      (() => require("redux-persist/lib/storage"))()
+    : undefined;
+
 export const makeReducer = (storage_: Storage | undefined) => {
-  const storage = storage_ || createWebStorage("local");
+  const storage = storage_ || TEST_STORAGE || createWebStorage("local");
 
   const rootPersistConfig = {
     key: "root",
