@@ -22,11 +22,12 @@ export const parsePkh = (pkh: string): Address => {
 
 export const isAddressValid = (pkh: string) => validateAddress(pkh) === ValidationResult.VALID;
 
-export const isValidContractPkh = (pkh: string) => isAddressValid(pkh) && pkh.match(/^KT1\w+/);
+export const isValidContractPkh = (pkh: string) => isAddressValid(pkh) && !!pkh.match(/^KT1\w+/);
 
-export const isValidImplicitPkh = (pkh: string) => isAddressValid(pkh) && pkh.match(/^tz[1234]\w+/);
+export const isValidImplicitPkh = (pkh: string) =>
+  isAddressValid(pkh) && !!pkh.match(/^tz[1234]\w+/);
 
-export const isValidSmartRollupPkh = (pkh: string) => isAddressValid(pkh) && pkh.match(/^sr1\w+/);
+export const isValidSmartRollupPkh = (pkh: string) => isAddressValid(pkh) && !!pkh.match(/^sr1\w+/);
 
 export const parseContractPkh = (pkh: string): ContractAddress => {
   if (isValidContractPkh(pkh)) {

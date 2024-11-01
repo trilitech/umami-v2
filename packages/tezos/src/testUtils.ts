@@ -1,4 +1,11 @@
-import { type ContractAddress, type ImplicitAddress } from "./types";
+import { type ContractAddress, type ImplicitAddress, type SmartRollupAddress } from "./types";
+
+const validSmartRollupAddresses = ["sr1Ghq66tYK9y3r8CC1Tf8i8m5nxh8nTvZEf"];
+
+export const mockSmartRollupAddress = (index: number): SmartRollupAddress => ({
+  type: "smart_rollup",
+  pkh: validSmartRollupAddresses[index],
+});
 
 const validContractAddresses = [
   "KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG",
