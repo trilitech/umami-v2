@@ -68,6 +68,9 @@ describe("<ImportBackupTab />", () => {
   });
 
   it("restores the backup", async () => {
+    jest.mocked(global.fetch).mockResolvedValueOnce({
+      json: () => Promise.resolve({ type: "empty" }),
+    } as Response);
     const user = userEvent.setup();
 
     const { store } = render(<ImportBackupTab />);
@@ -78,8 +81,6 @@ describe("<ImportBackupTab />", () => {
     await act(() => user.type(screen.getByLabelText("Password"), password));
     await act(() => user.click(screen.getByText("Import Wallet")));
 
-    await waitFor(() => expect(store.getState().accounts.items.length).toEqual(1), {
-      timeout: 10000,
-    });
+    await waitFor(() => expect(store.getState().accounts.items.length).toEqual(1));
   });
 });

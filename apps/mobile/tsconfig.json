@@ -1,4 +1,7 @@
 {
   "extends": "@react-native/typescript-config/tsconfig.json",
-  "include": ["src"]
+  "include": ["index.js", "src", "babel.config.cjs", "metro.config.cjs", "jest.config.ts"],
+  "compilerOptions": {
+    "jsx": "react-native"
+  }
 }
