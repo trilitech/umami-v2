@@ -4,6 +4,7 @@ import react from "@vitejs/plugin-react";
 import { defineConfig, loadEnv } from "vite";
 import { checker } from "vite-plugin-checker";
 import { nodePolyfills } from "vite-plugin-node-polyfills";
+import sri from "vite-plugin-sri";
 
 // eslint-disable-next-line import/no-unused-modules
 export default ({ mode }: { mode: "development" | "production" }) => {
@@ -39,6 +40,7 @@ export default ({ mode }: { mode: "development" | "production" }) => {
             useFlatConfig: false,
           },
         }),
+      sri({ algorithm: "sha384" }),
     ].filter(Boolean),
     build: {
       outDir: "build",

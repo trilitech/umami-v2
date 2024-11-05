@@ -12,3 +12,5 @@ declare namespace NodeJS {
     readonly PUBLIC_URL: string;
   }
 }
+
+declare module 'vite-plugin-sri';
