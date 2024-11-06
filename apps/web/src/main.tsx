@@ -8,12 +8,12 @@ import { BrowserRouter } from "react-router-dom";
 import { PersistGate } from "redux-persist/integration/react";
 
 import { App } from "./components/App";
+import { ErrorPage } from "./components/ErrorPage/ErrorPage";
 import { ReactQueryProvider } from "./providers/ReactQueryProvider";
 import { ReduxStore } from "./providers/ReduxStore";
 import { UmamiTheme } from "./providers/UmamiTheme";
 import { persistor } from "./utils/persistor";
 import { store } from "./utils/store";
-import { ErrorPage } from "./views/ErrorPage/ErrorPage";
 
 import "./index.scss";
 
