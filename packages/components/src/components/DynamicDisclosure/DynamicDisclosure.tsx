@@ -23,7 +23,6 @@ interface DynamicDisclosureContextType {
     content: ReactElement,
     props?: ThemingProps & {
       onClose?: () => void | Promise<void>;
-      closeOnEsc?: boolean;
     }
   ) => Promise<void>;
   onClose: () => void;
@@ -61,10 +60,7 @@ export const useDynamicDrawerContext = () => useContext(DynamicDrawerContext);
 
 type DisclosureStackItem = {
   content: ReactElement;
-  props: ThemingProps & {
-    onClose: () => void | Promise<void>;
-    closeOnEsc?: boolean;
-  };
+  props: ThemingProps & { onClose: () => void | Promise<void> };
   formValues: Record<string, any>;
 };
 

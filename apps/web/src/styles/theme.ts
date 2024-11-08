@@ -568,8 +568,6 @@ const theme = extendTheme({
           marginTop: "15px",
         },
         dialog: {
-          transition:
-            "width 0.2s ease-in-out, min-width 0.2s ease-in-out, max-width 0.2s ease-in-out",
           boxShadow: "2px 4px 12px 0px rgba(45, 55, 72, 0.05)",
           borderTopRightRadius: "30px",
           borderTopLeftRadius: "30px",
