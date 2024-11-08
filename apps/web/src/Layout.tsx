@@ -15,7 +15,7 @@ export const Layout = () => {
   const { openWith } = useDynamicModalContext();
 
   useEffect(() => {
-    const isInformed = localStorage.getItem("user:isInformed");
+    const isInformed = localStorage.getItem("user:isExtensionsWarningShown");
 
     if (!isInformed || !JSON.parse(isInformed)) {
       // Trick to ensure the modal is rendered after the initial render

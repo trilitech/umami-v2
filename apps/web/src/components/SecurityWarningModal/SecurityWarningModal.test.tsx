@@ -1,4 +1,4 @@
-import { SecurityWarningModal, accordionItems } from "./SecurityWarningModal";
+import { SecurityWarningModal } from "./SecurityWarningModal";
 import {
   act,
   dynamicModalContextMock,
@@ -30,7 +30,15 @@ describe("<SecurityWarningModal />", () => {
   it("renders all accordion items", async () => {
     await renderInModal(<SecurityWarningModal />);
 
-    accordionItems.forEach(({ title }) => {
+    const expectedTitles = [
+      "Install extensions only from trusted sources",
+      "Review permissions and ratings",
+      "Maintain a separate browser for financial activities",
+      "Keep your browser updated",
+      "Stay alert to social engineering risks",
+    ];
+
+    expectedTitles.forEach(title => {
       expect(screen.getByText(title)).toBeVisible();
     });
   });
@@ -69,7 +77,7 @@ describe("<SecurityWarningModal />", () => {
     await act(() => user.click(gotItButton));
 
     await waitFor(() => {
-      expect(localStorage.getItem("user:isInformed")).toBe("true");
+      expect(localStorage.getItem("user:isExtensionsWarningShown")).toBe("true");
     });
 
     expect(onClose).toHaveBeenCalled();

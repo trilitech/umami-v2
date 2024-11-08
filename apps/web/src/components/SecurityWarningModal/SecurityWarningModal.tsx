@@ -27,7 +27,7 @@ import {
 } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
 
-export const accordionItems = [
+const accordionItems = [
   {
     icon: CheckmarkIcon,
     title: "Install extensions only from trusted sources",
@@ -66,7 +66,7 @@ export const SecurityWarningModal = () => {
   const [openedAccordionItems, setOpenedAccordionItems] = useState<Set<number>>(new Set());
 
   const handleInform = () => {
-    localStorage.setItem("user:isInformed", "true");
+    localStorage.setItem("user:isExtensionsWarningShown", "true");
     onClose();
   };
 
