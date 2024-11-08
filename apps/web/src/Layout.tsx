@@ -18,7 +18,10 @@ export const Layout = () => {
     const isInformed = localStorage.getItem("user:isInformed");
 
     if (!isInformed || !JSON.parse(isInformed)) {
-      void openWith(<SecurityWarningModal />, { closeOnEsc: false, size: "xl" });
+      // Trick to ensure the modal is rendered after the initial render
+      setTimeout(() => {
+        void openWith(<SecurityWarningModal />, { closeOnEsc: false, size: "xl" });
+      }, 500);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

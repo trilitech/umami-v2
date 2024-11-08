@@ -27,34 +27,34 @@ import {
 } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
 
-const accordionItems = [
+export const accordionItems = [
   {
     icon: CheckmarkIcon,
-    title: "Install Extensions Only from Trusted Sources",
+    title: "Install extensions only from trusted sources",
     content:
       "Use only official platforms like the Chrome Web Store or Firefox Add-ons, as these include security reviews. Avoid third-party websites and direct download links.",
   },
   {
     icon: ThumbsUpIcon,
-    title: "Review Permissions and Ratings",
+    title: "Review permissions and ratings",
     content:
       "Before installing, check extension reviews, download counts, and requested permissions. Extensions that ask for access to sensitive data (like local storage or clipboard) should be trusted and necessary.",
   },
   {
     icon: LockIcon,
-    title: "Maintain a Separate Browser for Financial Activities",
+    title: "Maintain a separate browser for financial activities",
     content:
       "Use a dedicated browser with no extensions installed. This minimizes risk by isolating financial activities from other browsing.",
   },
   {
     icon: RefreshIcon,
-    title: "Keep Your Browser Updated",
+    title: "Keep your browser updated",
     content:
       "Regularly update your browser and extensions to ensure you have the latest security features and bug fixes.",
   },
   {
     icon: AlertCircleIcon,
-    title: "Stay Alert to Social Engineering Risks",
+    title: "Stay alert to social engineering risks",
     content:
       "Avoid installing extensions prompted by emails, ads, or pop-ups, as these may use deceptive methods to gain access. Reliable services generally don’t push extensions, so question any unexpected installation requests.",
   },
