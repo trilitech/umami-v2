@@ -1,14 +1,30 @@
 import { Grid, GridItem } from "@chakra-ui/react";
+import { useDynamicModalContext } from "@umami/components";
 import { useDataPolling } from "@umami/data-polling";
+import { useEffect } from "react";
 
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
 import { Main } from "./components/Main";
 import { Navbar } from "./components/Navbar";
+import { SecurityWarningModal } from "./components/SecurityWarningModal";
 import { Sidebar } from "./components/Sidebar";
 
 export const Layout = () => {
   useDataPolling();
+  const { openWith } = useDynamicModalContext();
+
+  useEffect(() => {
+    const isInformed = localStorage.getItem("user:isExtensionsWarningShown");
+
+    if (!isInformed || !JSON.parse(isInformed)) {
+      // Trick to ensure the modal is rendered after the initial render
+      setTimeout(() => {
+        void openWith(<SecurityWarningModal />, { closeOnEsc: false, size: "xl" });
+      }, 500);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Grid
