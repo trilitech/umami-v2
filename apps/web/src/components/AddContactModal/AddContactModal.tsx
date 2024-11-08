@@ -28,7 +28,7 @@ import { useForm } from "react-hook-form";
 import { ModalCloseButton } from "../CloseButton";
 
 export const AddContactModal: FC<{
-  pkh?: string;
+  pkh: string;
 }> = ({ pkh }) => {
   const { handleAsyncAction } = useAsyncActionHandler();
   const dispatch = useAppDispatch();
