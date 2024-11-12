@@ -1,0 +1,4 @@
+Contact: mailto:umami-support@trili.tech
+Expires: 2028-08-12T07:01:00.000Z
+Preferred-Languages: en
+Canonical: https://app.umamiwallet.com/.well-known/security.txt
