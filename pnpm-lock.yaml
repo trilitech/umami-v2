@@ -131,8 +131,8 @@ importers:
         specifier: 14.5.2
         version: 14.5.2(@testing-library/dom@10.4.0)
       '@toruslabs/customauth':
-        specifier: 16.0.6
-        version: 16.0.6(@babel/runtime@7.25.7)
+        specifier: 20.3.1
+        version: 20.3.1(@babel/runtime@7.25.7)
       '@types/babel__core':
         specifier: ^7.20.5
         version: 7.20.5
@@ -522,8 +522,8 @@ importers:
         specifier: 14.5.2
         version: 14.5.2(@testing-library/dom@10.4.0)
       '@toruslabs/customauth':
-        specifier: 16.0.6
-        version: 16.0.6(@babel/runtime@7.25.7)
+        specifier: 20.3.1
+        version: 20.3.1(@babel/runtime@7.25.7)
       '@trilitech-umami/umami-embed':
         specifier: ^0.3.0
         version: 0.3.0
@@ -1683,8 +1683,8 @@ importers:
         specifier: ^20.0.1
         version: 20.0.1
       '@toruslabs/customauth':
-        specifier: 16.0.6
-        version: 16.0.6(@babel/runtime@7.25.7)
+        specifier: 20.3.1
+        version: 20.3.1(@babel/runtime@7.25.7)
     devDependencies:
       '@babel/core':
         specifier: ^7.25.7
@@ -5486,74 +5486,71 @@ packages:
     resolution: {integrity: sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==}
     engines: {node: '>= 10'}
 
-  '@toruslabs/broadcast-channel@8.0.0':
-    resolution: {integrity: sha512-qCyWsHVL4Xtx1J6k1+acD7TJKCelJWyUy5Q5zyiWMPxMGFxTv1XdRyqpzV+VgwbcslIqgFN0GewOry2l1jlUQQ==}
+  '@toruslabs/broadcast-channel@11.0.0':
+    resolution: {integrity: sha512-nnM5yjQGzmCiie37G4Ks+5VsPjMrcY/81tga5ASb/u5TbZhSPQUw0CSW42Q9uBtR8sZbsHU06cPZ8j0z6LeAUg==}
     engines: {node: '>=18.x', npm: '>=9.x'}
 
-  '@toruslabs/constants@13.4.0':
-    resolution: {integrity: sha512-CjmnMQ5Oj0bqSBGkhv7Xm3LciGJDHwe4AJ1LF6mijlP+QcCnUM5I6kVp60j7zZ/r0DT7nIEiuHHHczGpCZor0A==}
+  '@toruslabs/bs58@1.0.0':
+    resolution: {integrity: sha512-osqIgm1MzEB6+fkaQeEUg4tuZXmhhXTn+K7+nZU7xDBcy+8Yr3eGNqJcQ4jds82g+dhkk2cBkge9sffv38iDQQ==}
     engines: {node: '>=18.x', npm: '>=9.x'}
     peerDependencies:
       '@babel/runtime': 7.x
 
-  '@toruslabs/customauth@16.0.6':
-    resolution: {integrity: sha512-4+Cxbxz3fxm750MMaMqMoJS0x8RZdD0y1tHLa/2T+b993cjRoQRixddTa3rWNYdbWsg2rgcmGkpXxywq3aLzwA==}
+  '@toruslabs/constants@14.1.1':
+    resolution: {integrity: sha512-+/ur6lXjMto4FdJR5Y6HqFiEX/8hea9usgwt99neV3IT46auC5NyVdiG6qmohuy67ThLt7IMCIyuJY78eC875g==}
     engines: {node: '>=18.x', npm: '>=9.x'}
-    deprecated: Not supported. Pls upgrade
+    peerDependencies:
+      '@babel/runtime': 7.x
+
+  '@toruslabs/customauth@20.3.1':
+    resolution: {integrity: sha512-oqzJh0WFf4rSwnXshEfh8c1ZqPhVjEvGuzI6LIUlot1OSrNituPLHWhzNW3OYw29+69jgolDBcOuSCN/Tq//Sw==}
+    engines: {node: '>=18.x', npm: '>=9.x'}
     peerDependencies:
       '@babel/runtime': ^7.x
-      '@sentry/types': ^7.x
+      '@sentry/types': ^8.x
     peerDependenciesMeta:
       '@sentry/types':
         optional: true
 
-  '@toruslabs/eccrypto@4.0.0':
-    resolution: {integrity: sha512-Z3EINkbsgJx1t6jCDVIJjLSUEGUtNIeDjhMWmeDGOWcP/+v/yQ1hEvd1wfxEz4q5WqIHhevacmPiVxiJ4DljGQ==}
+  '@toruslabs/eccrypto@5.0.4':
+    resolution: {integrity: sha512-5PrSe2sn5Ed0u/2oRFtKaGOYpXJS+rJQXlYqxzy7Tbe2wLPCJh5/hZ3yStLfZmrYjHlWYwUx3AIpL/pUOOSU4w==}
     engines: {node: '>=18.x', npm: '>=9.x'}
 
-  '@toruslabs/fetch-node-details@13.4.0':
-    resolution: {integrity: sha512-WTfI47Q5sldlz4nh8kNPI95PXm3hjm3IEDnYRY3rlcCrs9sVwdQItKf4D0i5s9sRmwLIpG3po+IpEcdO82CIuA==}
-    engines: {node: '>=18.x', npm: '>=9.x'}
-    deprecated: Not supported. Pls upgrade
-    peerDependencies:
-      '@babel/runtime': 7.x
-
-  '@toruslabs/fnd-base@13.4.0':
-    resolution: {integrity: sha512-Fc3uFj5ZfDmR4uWAMRyLVvBsSLXJWBHQoHOsucVqvxXpNeLSrFEQIxqlXsgjRfQPOSKtpljSl1MaXibhb5/hfA==}
+  '@toruslabs/fetch-node-details@14.1.1':
+    resolution: {integrity: sha512-xCbd720u6/OhNKH+9zc1+3mpmtLogfFgq5cbCaUCcaog/9vAmRkH2cxrKF2MGFtUcNW36sy5ndaGSxwJ/czbwg==}
     engines: {node: '>=18.x', npm: '>=9.x'}
     peerDependencies:
       '@babel/runtime': 7.x
 
-  '@toruslabs/http-helpers@5.0.0':
-    resolution: {integrity: sha512-GmezWz9JeF6YyhjLSm+9XDF4YaeICEckY0Jbo43i86SjhfJYgRWqEi63VSiNsaqc/z810Q0FQvEk1TnBRX2tgA==}
+  '@toruslabs/fnd-base@14.1.1':
+    resolution: {integrity: sha512-DWQtBHlunCnNMQnAlsDZ0tzwf9YkWRY91rrVuVahuiJ7L7hjDanB+KfiwyHRaCzFvnPbj5PHlwBQ0+VxVEjO8w==}
+    engines: {node: '>=18.x', npm: '>=9.x'}
+    peerDependencies:
+      '@babel/runtime': 7.x
+
+  '@toruslabs/http-helpers@7.0.0':
+    resolution: {integrity: sha512-U79uCCA1EAManPmgIn+0YpCrKUxj9C7GYlGt7Ftnd3soYCsAXVqWgck+R5knrNvTSOPmot8QYkTl+ncP44Vg/A==}
     engines: {node: '>=18.x', npm: '>=9.x'}
     peerDependencies:
       '@babel/runtime': ^7.x
-      '@sentry/types': ^7.x
+      '@sentry/types': ^8.x
     peerDependenciesMeta:
       '@sentry/types':
         optional: true
 
-  '@toruslabs/http-helpers@6.1.1':
-    resolution: {integrity: sha512-bJYOaltRzklzObhRdutT1wau17vXyrCCBKJOeN46F1t99MUXi5udQNeErFOcr9qBsvrq2q67eVBkU5XOeBMX5A==}
-    engines: {node: '>=18.x', npm: '>=9.x'}
-    peerDependencies:
-      '@babel/runtime': ^7.x
-      '@sentry/types': ^7.x
-    peerDependenciesMeta:
-      '@sentry/types':
-        optional: true
-
-  '@toruslabs/metadata-helpers@5.1.0':
-    resolution: {integrity: sha512-7fdqKuWUaJT/ng+PlqrA4XKkn8Dij4JJozfv/4gHTi0f/6JFncpzIces09jTV70hCf0JIsTCvIDlzKOdJ+aeZg==}
+  '@toruslabs/metadata-helpers@6.0.0':
+    resolution: {integrity: sha512-WHmCpvmZHJtkhiAi13GVeLgpfh6dTm7Z1ugCwRmtTq60rSVYO/euVJxzLRgEnWFMlyM1KFOPJXvd68dWuiYXTA==}
     engines: {node: '>=18.x', npm: '>=9.x'}
     peerDependencies:
       '@babel/runtime': 7.x
 
-  '@toruslabs/torus.js@11.0.6':
-    resolution: {integrity: sha512-l+Ba/DX1L2cLngiL08r8zZmRQ/A3MJ4pl20MaTzQuwxS2OfOXSReKld4YOWHwo5NEd36PHZdZ43qbh0NrzrwVQ==}
+  '@toruslabs/session-manager@3.2.0':
+    resolution: {integrity: sha512-t+EGFZhn8pxZ5Gjhxr99qNmK20zZD/RYEMRROBuwsETyy/QU17H6dKhqIb306GjmwUPkz2VKKTtJcOg9Ifijuw==}
     engines: {node: '>=18.x', npm: '>=9.x'}
-    deprecated: Not supported. Pls upgrade
+
+  '@toruslabs/torus.js@15.1.1':
+    resolution: {integrity: sha512-sLaXA1/R8KTTjU4t+teL3PPaJr2+j01QLYn5IY/t5uTD+1G2nzzfVWpkMDYrk9EfQYw0u4aKJ1lT7j9uKafMlg==}
+    engines: {node: '>=18.x', npm: '>=9.x'}
     peerDependencies:
       '@babel/runtime': 7.x
 
@@ -6513,6 +6510,7 @@ packages:
 
   boolean@3.2.0:
     resolution: {integrity: sha512-d0II/GO9uf9lfUHH2BQsjxzRJZBdsjgsBiW4BvhWk/3qoKwQFjIDVN19PfX8F2D/r9PCMTtLWjYVCFrpeYUzsw==}
+    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
 
   bowser@2.11.0:
     resolution: {integrity: sha512-AlcaJBi/pqqJBIQ8U9Mcpc9i8Aqxn88Skv5d+xBX006BY5u8N3mGLHa5Lgppa7L/HfwgwLgZ6NYs+Ag6uUmJRA==}
@@ -9266,9 +9264,6 @@ packages:
     resolution: {integrity: sha512-ZZow9HBI5O6EPgSJLUb8n2NKgmVWTwCvHGwFuJlMjvLFqlGG6pjirPhtdsseaLZjSibD8eegzmYpUZwoIlj2cQ==}
     engines: {node: '>=4.0'}
 
-  jwt-decode@3.1.2:
-    resolution: {integrity: sha512-UfpWE/VZn0iP50d8cz9NrZLM9lSWhcJ+0Gt/nm4by88UL+J1SiKN8/5dkjMmbEzwL2CAe+67GsegCbIKtbp75A==}
-
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
 
@@ -9454,8 +9449,8 @@ packages:
     resolution: {integrity: sha512-/3ER20CTTbahrCrpYfPn7Xavv9diBROZpoXGVZDWMw4b/X4uuUwAC0ki85tgsdMRONURyIJbcOvS94QsUBYPbQ==}
     hasBin: true
 
-  loglevel@1.9.1:
-    resolution: {integrity: sha512-hP3I3kCrDIMuRwAwHltphhDM1r8i55H33GgqjXbrisuJhF4kRhW1dNuxsRklp4bXl8DSdLaNLuiL4A/LWRfxvg==}
+  loglevel@1.9.2:
+    resolution: {integrity: sha512-HgMmCqIJSAKqo68l0rS2AanEWfkxaZ5wNiEFb5ggm08lDs9Xl2KxBlX3PTcaD2chBM1gXAYf491/M2Rv8Jwayg==}
     engines: {node: '>= 0.6.0'}
 
   loose-envify@1.4.0:
@@ -10047,9 +10042,6 @@ packages:
   object.values@1.2.0:
     resolution: {integrity: sha512-yBYjY9QX2hnRmZHAjG/f13MzmBzxzYgQhFrke06TTyKY5zSTEqkOeukBzIdVA3j3ulu8Qa3MbVFShV7T2RmGtQ==}
     engines: {node: '>= 0.4'}
-
-  oblivious-set@1.1.1:
-    resolution: {integrity: sha512-Oh+8fK09mgGmAshFdH6hSVco6KZmd1tTwNFWj35OvzdmJTMZtAkbn05zar2iG3v6sDs1JLEtOiBGNb6BHwkb2w==}
 
   oblivious-set@1.4.0:
     resolution: {integrity: sha512-szyd0ou0T8nsAqHtprRcP3WidfsN1TnAR5yWXf2mFCEr5ek3LEOkT6EZ/92Xfs74HIdyhG5WkGxIssMU0jBaeg==}
@@ -15852,9 +15844,7 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - '@babel/preset-env'
-      - bufferutil
       - supports-color
-      - utf-8-validate
 
   '@react-native/normalize-color@2.1.0': {}
 
@@ -17590,14 +17580,13 @@ snapshots:
 
   '@tootallnate/once@2.0.0': {}
 
-  '@toruslabs/broadcast-channel@8.0.0':
+  '@toruslabs/broadcast-channel@11.0.0':
     dependencies:
       '@babel/runtime': 7.25.7
-      '@toruslabs/eccrypto': 4.0.0
-      '@toruslabs/metadata-helpers': 5.1.0(@babel/runtime@7.25.7)
-      bowser: 2.11.0
-      loglevel: 1.9.1
-      oblivious-set: 1.1.1
+      '@toruslabs/eccrypto': 5.0.4
+      '@toruslabs/metadata-helpers': 6.0.0(@babel/runtime@7.25.7)
+      loglevel: 1.9.2
+      oblivious-set: 1.4.0
       socket.io-client: 4.7.5
       unload: 2.4.1
     transitivePeerDependencies:
@@ -17606,85 +17595,96 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@toruslabs/constants@13.4.0(@babel/runtime@7.25.7)':
+  '@toruslabs/bs58@1.0.0(@babel/runtime@7.25.7)':
     dependencies:
       '@babel/runtime': 7.25.7
 
-  '@toruslabs/customauth@16.0.6(@babel/runtime@7.25.7)':
+  '@toruslabs/constants@14.1.1(@babel/runtime@7.25.7)':
+    dependencies:
+      '@babel/runtime': 7.25.7
+
+  '@toruslabs/customauth@20.3.1(@babel/runtime@7.25.7)':
     dependencies:
       '@babel/runtime': 7.25.7
       '@chaitanyapotti/register-service-worker': 1.7.4
-      '@toruslabs/broadcast-channel': 8.0.0
-      '@toruslabs/constants': 13.4.0(@babel/runtime@7.25.7)
-      '@toruslabs/eccrypto': 4.0.0
-      '@toruslabs/fetch-node-details': 13.4.0(@babel/runtime@7.25.7)
-      '@toruslabs/http-helpers': 5.0.0(@babel/runtime@7.25.7)
-      '@toruslabs/metadata-helpers': 5.1.0(@babel/runtime@7.25.7)
-      '@toruslabs/torus.js': 11.0.6(@babel/runtime@7.25.7)
+      '@toruslabs/broadcast-channel': 11.0.0
+      '@toruslabs/constants': 14.1.1(@babel/runtime@7.25.7)
+      '@toruslabs/eccrypto': 5.0.4
+      '@toruslabs/fetch-node-details': 14.1.1(@babel/runtime@7.25.7)
+      '@toruslabs/http-helpers': 7.0.0(@babel/runtime@7.25.7)
+      '@toruslabs/metadata-helpers': 6.0.0(@babel/runtime@7.25.7)
+      '@toruslabs/session-manager': 3.2.0(@babel/runtime@7.25.7)
+      '@toruslabs/torus.js': 15.1.1(@babel/runtime@7.25.7)
       base64url: 3.0.1
       bowser: 2.11.0
+      deepmerge: 4.3.1
       events: 3.3.0
-      jwt-decode: 3.1.2
-      lodash.merge: 4.6.2
-      loglevel: 1.9.1
+      loglevel: 1.9.2
     transitivePeerDependencies:
       - bufferutil
       - supports-color
       - utf-8-validate
 
-  '@toruslabs/eccrypto@4.0.0':
+  '@toruslabs/eccrypto@5.0.4':
     dependencies:
       elliptic: 6.6.1
 
-  '@toruslabs/fetch-node-details@13.4.0(@babel/runtime@7.25.7)':
+  '@toruslabs/fetch-node-details@14.1.1(@babel/runtime@7.25.7)':
     dependencies:
       '@babel/runtime': 7.25.7
-      '@toruslabs/constants': 13.4.0(@babel/runtime@7.25.7)
-      '@toruslabs/fnd-base': 13.4.0(@babel/runtime@7.25.7)
-      '@toruslabs/http-helpers': 6.1.1(@babel/runtime@7.25.7)
-      loglevel: 1.9.1
+      '@toruslabs/constants': 14.1.1(@babel/runtime@7.25.7)
+      '@toruslabs/fnd-base': 14.1.1(@babel/runtime@7.25.7)
+      '@toruslabs/http-helpers': 7.0.0(@babel/runtime@7.25.7)
+      loglevel: 1.9.2
     transitivePeerDependencies:
       - '@sentry/types'
 
-  '@toruslabs/fnd-base@13.4.0(@babel/runtime@7.25.7)':
+  '@toruslabs/fnd-base@14.1.1(@babel/runtime@7.25.7)':
     dependencies:
       '@babel/runtime': 7.25.7
-      '@toruslabs/constants': 13.4.0(@babel/runtime@7.25.7)
+      '@toruslabs/constants': 14.1.1(@babel/runtime@7.25.7)
 
-  '@toruslabs/http-helpers@5.0.0(@babel/runtime@7.25.7)':
+  '@toruslabs/http-helpers@7.0.0(@babel/runtime@7.25.7)':
     dependencies:
       '@babel/runtime': 7.25.7
-      lodash.merge: 4.6.2
-      loglevel: 1.9.1
+      deepmerge: 4.3.1
+      loglevel: 1.9.2
 
-  '@toruslabs/http-helpers@6.1.1(@babel/runtime@7.25.7)':
+  '@toruslabs/metadata-helpers@6.0.0(@babel/runtime@7.25.7)':
     dependencies:
       '@babel/runtime': 7.25.7
-      lodash.merge: 4.6.2
-      loglevel: 1.9.1
-
-  '@toruslabs/metadata-helpers@5.1.0(@babel/runtime@7.25.7)':
-    dependencies:
-      '@babel/runtime': 7.25.7
-      '@toruslabs/eccrypto': 4.0.0
-      '@toruslabs/http-helpers': 6.1.1(@babel/runtime@7.25.7)
+      '@toruslabs/eccrypto': 5.0.4
+      '@toruslabs/http-helpers': 7.0.0(@babel/runtime@7.25.7)
       elliptic: 6.6.1
       ethereum-cryptography: 2.2.1
       json-stable-stringify: 1.1.1
     transitivePeerDependencies:
       - '@sentry/types'
 
-  '@toruslabs/torus.js@11.0.6(@babel/runtime@7.25.7)':
+  '@toruslabs/session-manager@3.2.0(@babel/runtime@7.25.7)':
+    dependencies:
+      '@toruslabs/constants': 14.1.1(@babel/runtime@7.25.7)
+      '@toruslabs/eccrypto': 5.0.4
+      '@toruslabs/http-helpers': 7.0.0(@babel/runtime@7.25.7)
+      '@toruslabs/metadata-helpers': 6.0.0(@babel/runtime@7.25.7)
+    optionalDependencies:
+      '@rollup/rollup-linux-x64-gnu': 4.26.0
+    transitivePeerDependencies:
+      - '@babel/runtime'
+      - '@sentry/types'
+
+  '@toruslabs/torus.js@15.1.1(@babel/runtime@7.25.7)':
     dependencies:
       '@babel/runtime': 7.25.7
-      '@toruslabs/constants': 13.4.0(@babel/runtime@7.25.7)
-      '@toruslabs/eccrypto': 4.0.0
-      '@toruslabs/http-helpers': 5.0.0(@babel/runtime@7.25.7)
+      '@toruslabs/bs58': 1.0.0(@babel/runtime@7.25.7)
+      '@toruslabs/constants': 14.1.1(@babel/runtime@7.25.7)
+      '@toruslabs/eccrypto': 5.0.4
+      '@toruslabs/http-helpers': 7.0.0(@babel/runtime@7.25.7)
       bn.js: 5.2.1
       elliptic: 6.6.1
       ethereum-cryptography: 2.2.1
       json-stable-stringify: 1.1.1
-      loglevel: 1.9.1
+      loglevel: 1.9.2
     transitivePeerDependencies:
       - '@sentry/types'
 
@@ -22486,8 +22486,6 @@ snapshots:
       object.assign: 4.1.5
       object.values: 1.2.0
 
-  jwt-decode@3.1.2: {}
-
   keyv@4.5.4:
     dependencies:
       json-buffer: 3.0.1
@@ -22660,7 +22658,7 @@ snapshots:
       dayjs: 1.11.13
       yargs: 15.4.1
 
-  loglevel@1.9.1: {}
+  loglevel@1.9.2: {}
 
   loose-envify@1.4.0:
     dependencies:
@@ -23430,8 +23428,6 @@ snapshots:
       call-bind: 1.0.7
       define-properties: 1.2.1
       es-object-atoms: 1.0.0
-
-  oblivious-set@1.1.1: {}
 
   oblivious-set@1.4.0: {}
 
