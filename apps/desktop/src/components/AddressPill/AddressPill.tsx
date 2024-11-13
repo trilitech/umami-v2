@@ -35,6 +35,7 @@ export const AddressPill = memo(
       showIcons,
       addressKind,
       addressAlias,
+      address,
       onClick,
       elementRef,
       isMouseHover,
@@ -109,7 +110,7 @@ export const AddressPill = memo(
               </PopoverBody>
             </PopoverContent>
           </Popover>
-          {showIcons && (
+          {showIcons && address.type !== "smart_rollup" && (
             <RightIcon
               marginRight="4px"
               stroke={colors.gray[300]}

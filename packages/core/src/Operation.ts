@@ -137,6 +137,8 @@ export const toLambda = (operation: Operation): MichelsonV1Expression[] => {
             operation.recipient.pkh,
             Number(operation.amount)
           );
+        default:
+          throw new Error(`${operation.recipient.type} is not supported yet`);
       }
     // eslint-disable-next-line no-fallthrough
     case "fa1.2":
