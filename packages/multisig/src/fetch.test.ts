@@ -1,6 +1,5 @@
 import * as api from "@tzkt/sdk-api";
 import { DefaultNetworks, GHOSTNET, mockImplicitAddress } from "@umami/tezos";
-import axios from "axios";
 import range from "lodash/range";
 
 import {
@@ -10,8 +9,6 @@ import {
   getExistingContracts,
   getPendingOperationsForMultisigs,
 } from "./fetch";
-
-const mockedAxios = jest.spyOn(axios, "get");
 
 const mockedContractsGet = jest.spyOn(api, "contractsGet");
 const mockedContractsGetCount = jest.spyOn(api, "contractsGetCount");
@@ -266,19 +263,20 @@ describe("multisig fetch", () => {
 
   describe("getPendingOperations", () => {
     it("fetches pending operation", async () => {
-      mockedAxios.mockResolvedValue({
-        data: [
-          {
-            bigmap: 1,
-            active: true,
-            key: "2",
-            value: { actions: "action2", approvals: [mockImplicitAddress(0).pkh] },
-          },
-        ],
-      });
+      jest.spyOn(global, "fetch").mockResolvedValue({
+        json: () =>
+          Promise.resolve([
+            {
+              bigmap: 1,
+              active: true,
+              key: "2",
+              value: { actions: "action2", approvals: [mockImplicitAddress(0).pkh] },
+            },
+          ]),
+      } as Response);
 
       const result = await getPendingOperationsForMultisigs([1], GHOSTNET);
-      expect(mockedAxios).toHaveBeenCalledWith(
+      expect(fetch).toHaveBeenCalledWith(
         `${GHOSTNET.tzktApiUrl}/v1/bigmaps/keys?active=true&bigmap.in=1&limit=10000`
       );
       expect(result).toEqual([
@@ -293,7 +291,7 @@ describe("multisig fetch", () => {
 
     it("handles empty bigMaps", async () => {
       const result = await getPendingOperationsForMultisigs([], GHOSTNET);
-      expect(mockedAxios).toHaveBeenCalledTimes(0);
+      expect(fetch).toHaveBeenCalledTimes(0);
       expect(result).toEqual([]);
     });
   });

@@ -1,9 +1,8 @@
 import { WalletClient as WalletClientClass } from "@airgap/beacon-wallet";
 import { type Persistor } from "redux-persist";
 
-// TODO: check this
 export const WalletClient =
-  typeof window === "undefined" // cucumber
+  typeof window === "undefined" || typeof window.localStorage === "undefined" // cucumber or react-native, stub it
     ? ({} as any as WalletClientClass)
     : new WalletClientClass({
         // production
@@ -17,6 +16,6 @@ export const logout = (persistor: Persistor) =>
     .catch(() => {})
     .finally(() => {
       persistor.pause();
-      localStorage.clear();
-      window.location.replace("/");
+      localStorage.clear(); // TODO: fix for react-native
+      window.location.replace("/"); // TODO: fix for react-native
     });

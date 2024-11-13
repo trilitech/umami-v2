@@ -8,6 +8,7 @@ import { webcrypto } from "crypto";
 import { TextDecoder, TextEncoder } from "util";
 
 import { mockToast } from "@umami/state";
+import { mockLocalStorage } from "@umami/test-utils";
 import { setupJestCanvasMock } from "jest-canvas-mock";
 import MockDate from "mockdate";
 
@@ -42,14 +43,22 @@ const mockIntersectionObserver = class MockIntersectionObserver {
 
 jest.mock("./env", () => ({ IS_DEV: false }));
 
+Object.defineProperties(global, {
+  crypto: { value: webcrypto, writable: true },
+  TextDecoder: { value: TextDecoder, writable: true },
+  TextEncoder: { value: TextEncoder, writable: true },
+  scrollTo: { value: jest.fn(), writable: true },
+  fetch: { value: jest.fn(), writable: true },
+});
+
+Object.defineProperty(window, "localStorage", {
+  value: mockLocalStorage(),
+});
+
 beforeEach(() => {
   // Add missing browser APIs
   Object.defineProperties(global, {
-    crypto: { value: webcrypto, writable: true },
-    TextDecoder: { value: TextDecoder, writable: true },
-    TextEncoder: { value: TextEncoder, writable: true },
     IntersectionObserver: { value: mockIntersectionObserver, writable: true, configurable: true },
-    scrollTo: { value: jest.fn(), writable: true },
 
     // taken from https://jestjs.io/docs/manual-mocks#mocking-methods-which-are-not-implemented-in-jsdom
     matchMedia: {
@@ -93,11 +102,6 @@ jest.mock("@popperjs/core", () => ({
     destroy: () => {},
     setOptions: () => {},
   }),
-}));
-
-jest.mock("redux-persist", () => ({
-  ...jest.requireActual("redux-persist"),
-  persistReducer: jest.fn().mockImplementation((_config, reducers) => reducers),
 }));
 
 // TODO: fix act warnings

@@ -2,7 +2,6 @@ import TransportWebUSB from "@ledgerhq/hw-transport-webusb";
 import { DerivationType, LedgerSigner } from "@taquito/ledger-signer";
 import { InMemorySigner } from "@taquito/signer";
 import { mnemonic1 } from "@umami/test-utils";
-import axios from "axios";
 import MockDate from "mockdate";
 
 import { defaultDerivationPathTemplate, getDefaultDerivationPath } from "./derivationPathUtils";
@@ -34,14 +33,14 @@ describe("helpers", () => {
   describe("isAccountRevealed", () => {
     it("returns true for a revealed account", async () => {
       const mockResponse = {
-        data: {
-          type: "user",
-          revealed: true,
-        },
+        type: "user",
+        revealed: true,
       };
-      jest.spyOn(axios, "get").mockResolvedValue(mockResponse);
+      jest.spyOn(global, "fetch").mockResolvedValue({
+        json: () => Promise.resolve(mockResponse),
+      } as Response);
       const result = await isAccountRevealed(mockImplicitAddress(0).pkh, MAINNET);
-      expect(axios.get).toHaveBeenCalledWith(
+      expect(fetch).toHaveBeenCalledWith(
         `${MAINNET.tzktApiUrl}/v1/accounts/${mockImplicitAddress(0).pkh}?select.fields=type,revealed`
       );
       expect(result).toEqual(true);
@@ -49,28 +48,26 @@ describe("helpers", () => {
 
     it("returns false for unrevealed account", async () => {
       const mockResponse = {
-        data: {
-          type: "user",
-          revealed: false,
-        },
+        type: "user",
+        revealed: false,
       };
-      jest.spyOn(axios, "get").mockResolvedValue(mockResponse);
+      jest.spyOn(global, "fetch").mockResolvedValue({
+        json: () => Promise.resolve(mockResponse),
+      } as Response);
       const result = await isAccountRevealed(mockImplicitAddress(0).pkh, MAINNET);
-      expect(axios.get).toHaveBeenCalledWith(
+      expect(fetch).toHaveBeenCalledWith(
         `${MAINNET.tzktApiUrl}/v1/accounts/${mockImplicitAddress(0).pkh}?select.fields=type,revealed`
       );
       expect(result).toEqual(false);
     });
 
     it("returns false for empty response", async () => {
-      const mockResponse = {
-        data: {
-          type: "empty",
-        },
-      };
-      jest.spyOn(axios, "get").mockResolvedValue(mockResponse);
+      const mockResponse = { type: "empty" };
+      jest.spyOn(global, "fetch").mockResolvedValue({
+        json: () => Promise.resolve(mockResponse),
+      } as Response);
       const result = await isAccountRevealed(mockImplicitAddress(0).pkh, MAINNET);
-      expect(axios.get).toHaveBeenCalledWith(
+      expect(fetch).toHaveBeenCalledWith(
         `${MAINNET.tzktApiUrl}/v1/accounts/${mockImplicitAddress(0).pkh}?select.fields=type,revealed`
       );
       expect(result).toEqual(false);

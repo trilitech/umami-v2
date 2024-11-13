@@ -6,7 +6,6 @@ import {
   mockContractAddress,
   mockImplicitAddress,
 } from "@umami/tezos";
-import axios from "axios";
 
 import {
   getNetworksForContracts,
@@ -14,8 +13,6 @@ import {
   getRelevantMultisigContracts,
   parseMultisig,
 } from "./helpers";
-
-const mockedAxios = jest.spyOn(axios, "get");
 
 const mockedContractsGet = jest.spyOn(api, "contractsGet");
 const mockedContractsGetCount = jest.spyOn(api, "contractsGetCount");
@@ -60,36 +57,38 @@ describe("multisig helpers", () => {
 
     describe("getPendingOperations", () => {
       it("handles empty multisigs", async () => {
+        jest.spyOn(global, "fetch");
         const result = await getPendingOperations([], network);
 
-        expect(mockedAxios).toHaveBeenCalledTimes(0);
+        expect(fetch).toHaveBeenCalledTimes(0);
         expect(result).toEqual([]);
       });
 
       it("fetches pending operations for multisigs", async () => {
-        mockedAxios.mockResolvedValueOnce({
-          data: [
-            {
-              bigmap: 0,
-              active: true,
-              key: "1",
-              value: { actions: "action1", approvals: [mockImplicitAddress(1).pkh] },
-            },
-            {
-              bigmap: 1,
-              active: true,
-              key: "2",
-              value: { actions: "action2", approvals: [mockImplicitAddress(2).pkh] },
-            },
-          ],
-        });
+        jest.spyOn(global, "fetch").mockResolvedValueOnce({
+          json: () =>
+            Promise.resolve([
+              {
+                bigmap: 0,
+                active: true,
+                key: "1",
+                value: { actions: "action1", approvals: [mockImplicitAddress(1).pkh] },
+              },
+              {
+                bigmap: 1,
+                active: true,
+                key: "2",
+                value: { actions: "action2", approvals: [mockImplicitAddress(2).pkh] },
+              },
+            ]),
+        } as Response);
 
         const result = await getPendingOperations(
           tzktGetSameMultisigsResponse.map(parseMultisig),
           network
         );
 
-        expect(mockedAxios).toHaveBeenCalledWith(
+        expect(fetch).toHaveBeenCalledWith(
           `${network.tzktApiUrl}/v1/bigmaps/keys?active=true&bigmap.in=0,1&limit=10000`
         );
         expect(result).toEqual([

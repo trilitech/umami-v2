@@ -19,7 +19,7 @@ export const RemoveAccountModal = ({ account }: RemoveAccountModalProps) => {
 
     if (isLastImplicitAccount) {
       onClose();
-      window.location.replace("/");
+      window.location.replace("/"); // TODO: fix for react-native
     } else {
       goBack();
     }

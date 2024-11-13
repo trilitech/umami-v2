@@ -108,7 +108,7 @@ describe("useDataPolling", () => {
         hookMock.mockReturnValue({
           isFetching: false,
           dataUpdatedAt: hookMock === mock ? 1000 : 1,
-        });
+        } as any);
       });
 
       renderHook(() => useDataPolling(), { store });
@@ -141,7 +141,7 @@ describe("useDataPolling", () => {
         hookMock.mockReturnValue({
           isFetching: hookMock === mock,
           dataUpdatedAt: 1000,
-        });
+        } as any);
       });
 
       renderHook(() => useDataPolling(), { store });

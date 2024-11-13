@@ -35,6 +35,7 @@ Object.defineProperties(global, {
   TextDecoder: { value: TextDecoder, writable: true },
   TextEncoder: { value: TextEncoder, writable: true },
   IntersectionObserver: { value: mockIntersectionObserver, writable: true, configurable: true },
+  fetch: { value: jest.fn(), writable: true },
 });
 
 jest.mock("./utils/persistor", () => ({

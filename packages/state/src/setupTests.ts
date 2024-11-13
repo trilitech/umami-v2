@@ -9,6 +9,7 @@ Object.defineProperties(global, {
   crypto: { value: webcrypto, writable: true },
   TextDecoder: { value: TextDecoder, writable: true },
   TextEncoder: { value: TextEncoder, writable: true },
+  fetch: { value: jest.fn(), writable: true },
 });
 
 jest.mock("@chakra-ui/react", () => ({
