@@ -58,7 +58,7 @@
     ]
   },
   "dependencies": {
-    "@taquito/utils": "^20.0.1",
+    "@taquito/utils": "^20.1.0",
     "date-fns": "^4.1.0"
   }
 }
