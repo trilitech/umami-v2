@@ -23,7 +23,7 @@
     "@types/eslint": "^8",
     "@types/lodash": "^4",
     "@types/md5": "^2.3.5",
-    "@types/react": "18.3.11",
+    "@types/react": "18.3.12",
     "@types/react-dom": "18.3.0",
     "@types/zxcvbn": "^4.4.5",
     "@umami/eslint-config": "workspace:^",
