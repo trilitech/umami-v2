@@ -592,8 +592,8 @@ importers:
         specifier: ^0.0.2
         version: 0.0.2(encoding@0.1.13)
       vite-plugin-svgr:
-        specifier: ^4.2.0
-        version: 4.2.0(rollup@4.26.0)(typescript@5.5.4)(vite@5.4.8(@types/node@22.1.0)(lightningcss@1.22.0)(sass@1.79.4)(terser@5.36.0))
+        specifier: ^4.3.0
+        version: 4.3.0(rollup@4.26.0)(typescript@5.5.4)(vite@5.4.8(@types/node@22.1.0)(lightningcss@1.22.0)(sass@1.79.4)(terser@5.36.0))
 
   apps/embed-iframe-mainnet:
     dependencies:
@@ -650,8 +650,8 @@ importers:
         specifier: ^0.0.2
         version: 0.0.2(encoding@0.1.13)
       vite-plugin-svgr:
-        specifier: ^4.2.0
-        version: 4.2.0(rollup@4.26.0)(typescript@5.5.4)(vite@5.4.8(@types/node@22.1.0)(lightningcss@1.22.0)(sass@1.79.4)(terser@5.36.0))
+        specifier: ^4.3.0
+        version: 4.3.0(rollup@4.26.0)(typescript@5.5.4)(vite@5.4.8(@types/node@22.1.0)(lightningcss@1.22.0)(sass@1.79.4)(terser@5.36.0))
 
   apps/mobile:
     dependencies:
@@ -1102,8 +1102,8 @@ importers:
         specifier: ^0.0.2
         version: 0.0.2(encoding@0.1.13)
       vite-plugin-svgr:
-        specifier: ^4.2.0
-        version: 4.2.0(rollup@4.26.0)(typescript@5.5.4)(vite@5.4.8(@types/node@20.14.11)(lightningcss@1.22.0)(sass@1.79.4)(terser@5.36.0))
+        specifier: ^4.3.0
+        version: 4.3.0(rollup@4.26.0)(typescript@5.5.4)(vite@5.4.8(@types/node@20.14.11)(lightningcss@1.22.0)(sass@1.79.4)(terser@5.36.0))
 
   packages/components:
     dependencies:
@@ -4518,6 +4518,15 @@ packages:
 
   '@rollup/pluginutils@5.1.0':
     resolution: {integrity: sha512-XTIWOPPcpvyKI6L1NHo0lFlCyznUEyPmPY1mc3KpPVDYulHSTvyeLNVW00QTLIAFNhR3kYnJTQHeGqU4M3n09g==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      rollup: ^4.22.4
+    peerDependenciesMeta:
+      rollup:
+        optional: true
+
+  '@rollup/pluginutils@5.1.3':
+    resolution: {integrity: sha512-Pnsb6f32CD2W3uCaLZIzDmeFyQ2b8UWMFI7xtwUezpcGBDVDW6y9XgAWIlARiGAo6eNF5FK5aQTr0LFyNyqq5A==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
       rollup: ^4.22.4
@@ -12269,10 +12278,10 @@ packages:
   vite-plugin-sri@0.0.2:
     resolution: {integrity: sha512-oTpYWvS9xmwee3kK39cr8p2KbQ+/HzOG0bxo0dzMogJ4lR11favOzrapwb2eASVt5rX3LEzG25bEqoSY4CUniA==}
 
-  vite-plugin-svgr@4.2.0:
-    resolution: {integrity: sha512-SC7+FfVtNQk7So0XMjrrtLAbEC8qjFPifyD7+fs/E6aaNdVde6umlVVh0QuwDLdOMu7vp5RiGFsB70nj5yo0XA==}
+  vite-plugin-svgr@4.3.0:
+    resolution: {integrity: sha512-Jy9qLB2/PyWklpYy0xk0UU3TlU0t2UMpJXZvf+hWII1lAmRHrOUKi11Uw8N3rxoNk7atZNYO3pR3vI1f7oi+6w==}
     peerDependencies:
-      vite: ^2.6.0 || 3 || 4 || 5
+      vite: '>=2.6.0'
 
   vite@5.4.8:
     resolution: {integrity: sha512-FqrItQ4DT1NC4zCUqMB4c4AZORMKIa0m8/URVCZ77OZ/QSNeJ54bU1vrFADbDsuwfIPcgknRkmqakQcgnL4GiQ==}
@@ -16103,9 +16112,7 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - '@babel/preset-env'
-      - bufferutil
       - supports-color
-      - utf-8-validate
 
   '@react-native/normalize-color@2.1.0': {}
 
@@ -16147,6 +16154,14 @@ snapshots:
       '@types/estree': 1.0.6
       estree-walker: 2.0.2
       picomatch: 2.3.1
+    optionalDependencies:
+      rollup: 4.26.0
+
+  '@rollup/pluginutils@5.1.3(rollup@4.26.0)':
+    dependencies:
+      '@types/estree': 1.0.6
+      estree-walker: 2.0.2
+      picomatch: 4.0.2
     optionalDependencies:
       rollup: 4.26.0
 
@@ -25969,9 +25984,9 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  vite-plugin-svgr@4.2.0(rollup@4.26.0)(typescript@5.5.4)(vite@5.4.8(@types/node@20.14.11)(lightningcss@1.22.0)(sass@1.79.4)(terser@5.36.0)):
+  vite-plugin-svgr@4.3.0(rollup@4.26.0)(typescript@5.5.4)(vite@5.4.8(@types/node@20.14.11)(lightningcss@1.22.0)(sass@1.79.4)(terser@5.36.0)):
     dependencies:
-      '@rollup/pluginutils': 5.1.0(rollup@4.26.0)
+      '@rollup/pluginutils': 5.1.3(rollup@4.26.0)
       '@svgr/core': 8.1.0(typescript@5.5.4)
       '@svgr/plugin-jsx': 8.1.0(@svgr/core@8.1.0(typescript@5.5.4))
       vite: 5.4.8(@types/node@20.14.11)(lightningcss@1.22.0)(sass@1.79.4)(terser@5.36.0)
@@ -25980,9 +25995,9 @@ snapshots:
       - supports-color
       - typescript
 
-  vite-plugin-svgr@4.2.0(rollup@4.26.0)(typescript@5.5.4)(vite@5.4.8(@types/node@22.1.0)(lightningcss@1.22.0)(sass@1.79.4)(terser@5.36.0)):
+  vite-plugin-svgr@4.3.0(rollup@4.26.0)(typescript@5.5.4)(vite@5.4.8(@types/node@22.1.0)(lightningcss@1.22.0)(sass@1.79.4)(terser@5.36.0)):
     dependencies:
-      '@rollup/pluginutils': 5.1.0(rollup@4.26.0)
+      '@rollup/pluginutils': 5.1.3(rollup@4.26.0)
       '@svgr/core': 8.1.0(typescript@5.5.4)
       '@svgr/plugin-jsx': 8.1.0(@svgr/core@8.1.0(typescript@5.5.4))
       vite: 5.4.8(@types/node@22.1.0)(lightningcss@1.22.0)(sass@1.79.4)(terser@5.36.0)
