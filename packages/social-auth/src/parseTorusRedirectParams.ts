@@ -8,8 +8,11 @@
  * https://github.com/torusresearch/CustomAuth/blob/master/serviceworker/redirect.html
  */
 
+// @ts-ignore
+import { unzipurl } from "zipurl";
+
 export const parseTorusRedirectParams = (url: string) => {
-  const params = new URLSearchParams(url.replace("umami://auth/", ""));
+  const params = new URLSearchParams(unzipurl(url.replace("umami://auth/", "")));
   const instanceParams = {
     instanceId: params.get("instanceId"),
     verifier: params.get("verifier"),

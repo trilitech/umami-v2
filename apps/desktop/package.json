@@ -23,6 +23,7 @@
     "docs": "typedoc",
     "electron:package:linux": "electron-builder -l",
     "electron:package:mac:debug": "DEBUG=true pnpm build --mode dev && sed -i='' 's@devTools: false@devTools: true@g' build/electron.js && pnpm electron:package:mac -c electron-builder.dev.yml && rm -rf build",
+    "electron:package:win:debug": "$env:DEBUG = 'true'; pnpm build --mode dev; (Get-Content -Path build\\electron.js) -replace 'devTools: false', 'devTools: true' | Set-Content -Path build\\electron.js; pnpm run electron:package:win",
     "electron:package:mac": "electron-builder -m",
     "electron:package:win": "electron-builder -w",
     "electron:start": "electronmon .",
