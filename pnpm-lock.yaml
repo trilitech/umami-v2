@@ -525,8 +525,8 @@ importers:
         specifier: 16.0.6
         version: 16.0.6(@babel/runtime@7.25.7)
       '@trilitech-umami/umami-embed':
-        specifier: ^0.3.0
-        version: 0.3.0
+        specifier: ^0.3.1
+        version: 0.3.1
       '@umami/core':
         specifier: workspace:^
         version: link:../../packages/core
@@ -5674,8 +5674,8 @@ packages:
     peerDependencies:
       '@babel/runtime': 7.x
 
-  '@trilitech-umami/umami-embed@0.3.0':
-    resolution: {integrity: sha512-E6Cap8xPP+L0gWdjIjgROmshzvB1h654HM8Y/o8nL952O7XVhNSW9xjEMEfWdZ30YNJAV6W2WHam7wXy4D0AnA==}
+  '@trilitech-umami/umami-embed@0.3.1':
+    resolution: {integrity: sha512-JIssa533n6kjNCsJjHTdZdZPZzB51jc8taPwS7J/zPVSI5fahbwzwRenljkbC4ugIHEg+/+SIAfVA8odi/9nTw==}
 
   '@trysound/sax@0.2.0':
     resolution: {integrity: sha512-L7z9BgrNEcYyUYtF+HaEfiS5ebkh9jXqbszz7pC0hRBPaatV0XjSD3+eHrpqFemQfgwiFF0QPIarnIihIDn7OA==}
@@ -15957,9 +15957,7 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - '@babel/preset-env'
-      - bufferutil
       - supports-color
-      - utf-8-validate
 
   '@react-native/normalize-color@2.1.0': {}
 
@@ -17756,7 +17754,7 @@ snapshots:
     transitivePeerDependencies:
       - '@sentry/types'
 
-  '@trilitech-umami/umami-embed@0.3.0':
+  '@trilitech-umami/umami-embed@0.3.1':
     dependencies:
       '@airgap/beacon-types': 4.3.0
       async-mutex: 0.5.0
