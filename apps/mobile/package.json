@@ -16,7 +16,7 @@
   "dependencies": {
     "@react-native-async-storage/async-storage": "^2.0.0",
     "@reduxjs/toolkit": "^2.3.0",
-    "@tamagui/config": "^1.114.2",
+    "@tamagui/config": "^1.116.14",
     "@umami/state": "workspace:^",
     "browserify-zlib": "^0.2.0",
     "buffer": "^6.0.3",
