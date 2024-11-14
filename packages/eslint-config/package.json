@@ -8,7 +8,7 @@
   ],
   "dependencies": {
     "@stylistic/eslint-plugin": "^2.8.0",
-    "@tanstack/eslint-plugin-query": "^5.58.1",
+    "@tanstack/eslint-plugin-query": "^5.60.1",
     "@typescript-eslint/eslint-plugin": "^8.8.0",
     "@typescript-eslint/parser": "^8.8.0",
     "@umami/typescript-config": "workspace:^",
