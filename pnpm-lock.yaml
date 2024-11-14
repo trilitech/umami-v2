@@ -98,11 +98,11 @@ importers:
         specifier: ^2.3.0
         version: 2.3.0(react-redux@9.1.2(@types/react@18.3.12)(react@18.3.1)(redux@5.0.1))(react@18.3.1)
       '@tanstack/react-query':
-        specifier: ^5.59.20
-        version: 5.59.20(react@18.3.1)
+        specifier: ^5.60.2
+        version: 5.60.2(react@18.3.1)
       '@tanstack/react-query-devtools':
-        specifier: ^5.59.20
-        version: 5.59.20(@tanstack/react-query@5.59.20(react@18.3.1))(react@18.3.1)
+        specifier: ^5.60.2
+        version: 5.60.2(@tanstack/react-query@5.60.2(react@18.3.1))(react@18.3.1)
       '@taquito/ledger-signer':
         specifier: ^20.1.0
         version: 20.1.0(encoding@0.1.13)
@@ -828,8 +828,8 @@ importers:
         specifier: ^2.3.0
         version: 2.3.0(react-redux@9.1.2(@types/react@18.3.12)(react@18.3.1)(redux@5.0.1))(react@18.3.1)
       '@tanstack/react-query':
-        specifier: ^5.59.20
-        version: 5.59.20(react@18.3.1)
+        specifier: ^5.60.2
+        version: 5.60.2(react@18.3.1)
       '@taquito/beacon-wallet':
         specifier: ^20.1.0
         version: 20.1.0(encoding@0.1.13)
@@ -1414,8 +1414,8 @@ importers:
         specifier: ^11.13.0
         version: 11.13.0(@emotion/react@11.13.3(@types/react@18.3.12)(react@18.3.1))(@types/react@18.3.12)(react@18.3.1)
       '@tanstack/react-query':
-        specifier: ^5.59.20
-        version: 5.59.20(react@18.3.1)
+        specifier: ^5.60.2
+        version: 5.60.2(react@18.3.1)
       '@taquito/rpc':
         specifier: ^20.1.0
         version: 20.1.0(encoding@0.1.13)
@@ -1750,8 +1750,8 @@ importers:
         specifier: ^2.3.0
         version: 2.3.0(react-redux@9.1.2(@types/react@18.3.12)(react@18.3.1)(redux@5.0.1))(react@18.3.1)
       '@tanstack/react-query':
-        specifier: ^5.59.20
-        version: 5.59.20(react@18.3.1)
+        specifier: ^5.60.2
+        version: 5.60.2(react@18.3.1)
       '@taquito/signer':
         specifier: ^20.1.0
         version: 20.1.0(encoding@0.1.13)
@@ -5500,14 +5500,14 @@ packages:
   '@tanstack/query-devtools@5.59.20':
     resolution: {integrity: sha512-vxhuQ+8VV4YWQSFxQLsuM+dnEKRY7VeRzpNabFXdhEwsBYLrjXlF1pM38A8WyKNLqZy8JjyRO8oP4Wd/oKHwuQ==}
 
-  '@tanstack/react-query-devtools@5.59.20':
-    resolution: {integrity: sha512-AL/eQS1NFZhwwzq2Bq9Gd8wTTH+XhPNOJlDFpzPMu9NC5CQVgA0J8lWrte/sXpdWNo5KA4hgHnEdImZsF4h6Lw==}
+  '@tanstack/react-query-devtools@5.60.2':
+    resolution: {integrity: sha512-h+4/KwgUuAu4fcfrlSnD9K4gxR9Glbi3SbQUWBl2iF9Nt94aVcmCwAACGHWqqKhDPz1KOiRe9bIq2KZ4UsZMEA==}
     peerDependencies:
-      '@tanstack/react-query': ^5.59.20
+      '@tanstack/react-query': ^5.60.2
       react: ^18 || ^19
 
-  '@tanstack/react-query@5.59.20':
-    resolution: {integrity: sha512-Zly0egsK0tFdfSbh5/mapSa+Zfc3Et0Zkar7Wo5sQkFzWyB3p3uZWOHR2wrlAEEV2L953eLuDBtbgFvMYiLvUw==}
+  '@tanstack/react-query@5.60.2':
+    resolution: {integrity: sha512-JhpJNxIAPuE0YCpP1Py4zAsgx+zY0V531McRMtQbwVlJF8+mlZwcOPrzGmPV248K8IP+mPbsfxXToVNMNwjUcw==}
     peerDependencies:
       react: ^18 || ^19
 
@@ -17471,13 +17471,13 @@ snapshots:
 
   '@tanstack/query-devtools@5.59.20': {}
 
-  '@tanstack/react-query-devtools@5.59.20(@tanstack/react-query@5.59.20(react@18.3.1))(react@18.3.1)':
+  '@tanstack/react-query-devtools@5.60.2(@tanstack/react-query@5.60.2(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@tanstack/query-devtools': 5.59.20
-      '@tanstack/react-query': 5.59.20(react@18.3.1)
+      '@tanstack/react-query': 5.60.2(react@18.3.1)
       react: 18.3.1
 
-  '@tanstack/react-query@5.59.20(react@18.3.1)':
+  '@tanstack/react-query@5.60.2(react@18.3.1)':
     dependencies:
       '@tanstack/query-core': 5.59.20
       react: 18.3.1
