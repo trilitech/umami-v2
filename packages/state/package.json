@@ -34,7 +34,7 @@
     "madge": "^8.0.0",
     "mockdate": "^3.0.5",
     "mockstate": "^0.0.7",
-    "prettier": "^3.3.2",
+    "prettier": "^3.3.3",
     "rimraf": "^6.0.1",
     "tsup": "^8.3.5",
     "typescript": "^5.5.4"
