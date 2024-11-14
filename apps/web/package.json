@@ -120,7 +120,7 @@
     "jest-canvas-mock": "^2.5.2",
     "jest-transformer-svg": "^2.0.2",
     "madge": "^8.0.0",
-    "prettier": "^3.3.2",
+    "prettier": "^3.3.3",
     "rimraf": "^6.0.1",
     "storybook": "^8.4.3",
     "typescript": "^5.5.4",
