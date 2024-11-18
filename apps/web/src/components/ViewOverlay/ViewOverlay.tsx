@@ -45,7 +45,7 @@ export const ViewOverlay = ({ iconType }: ViewOverlayProps) => {
         as={getIcon()}
         position="absolute"
         top="20%"
-        left="-25%"
+        left="-15%"
         width="clamp(100px, 50%, 487px)"
         height="auto"
       />
