@@ -23,7 +23,7 @@
     "docs": "typedoc",
     "electron:package:linux": "electron-builder -l",
     "electron:package:mac:debug": "DEBUG=true pnpm build --mode dev && sed -i='' 's@devTools: false@devTools: true@g' build/electron.js && pnpm electron:package:mac -c electron-builder.dev.yml && rm -rf build",
-    "electron:package:mac": "electron-builder -m",
+    "electron:package:mac": "APPLE_TEAM_ID=JHLP96SU5D electron-builder -m",
     "electron:package:win": "electron-builder -w",
     "electron:start": "electronmon .",
     "format:ci": "prettier --ignore-path ../../.gitignore --check .",
