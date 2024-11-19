@@ -125,6 +125,7 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
         >
           <Center
             justifyContent="space-between"
+            height="100%"
             cursor="pointer"
             data-testid="clear-selected-button"
           >
@@ -133,7 +134,7 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
               background="transparent"
               address={parsePkh(currentRealValue)}
               paddingX="16px"
-              paddingY={{ base: "2px", md: "8px" }}
+              paddingY={{ base: "3px", md: "8px" }}
               size="xs"
             />
             {keepValid ? (
