@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@airgap/beacon-wallet": "^4.3.0",
-    "@chakra-ui/anatomy": "2.3.3",
+    "@chakra-ui/anatomy": "2.3.4",
     "@chakra-ui/cli": "^3.1.1",
     "@chakra-ui/icons": "^2.2.4",
     "@chakra-ui/react": "^2.8.2",
