@@ -43,7 +43,7 @@
     "@babel/preset-react": "^7.25.9",
     "@babel/preset-typescript": "^7.26.0",
     "@babel/runtime": "^7.25.7",
-    "@chakra-ui/anatomy": "2.3.3",
+    "@chakra-ui/anatomy": "2.3.4",
     "@chakra-ui/cli": "^3.1.1",
     "@chakra-ui/icons": "^2.2.4",
     "@chakra-ui/react": "^2.8.2",
