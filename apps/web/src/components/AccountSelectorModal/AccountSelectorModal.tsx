@@ -69,7 +69,7 @@ export const AccountSelectorModal = () => {
   const description = (isLast: boolean, type: string) =>
     isLast
       ? "Removing all your accounts will off-board you from Umami. This will remove or reset all customized settings to their defaults. Personal data (including saved contacts, password and accounts) won't be affected."
-      : `Are you sure you want to remove all of your ${type}?`;
+      : `Are you sure you want to remove all accounts derived from the ${type}? You will need to manually import them again.`;
 
   const onRemove = (type: string, accounts: Account[]) => {
     const account = accounts[0];

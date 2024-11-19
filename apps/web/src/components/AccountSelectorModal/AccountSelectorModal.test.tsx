@@ -83,7 +83,9 @@ describe("<AccountSelectorModal />", () => {
 
         await waitFor(() =>
           expect(
-            screen.getByText(`Are you sure you want to remove all of your ${accountLabel}?`)
+            screen.getByText(
+              `Are you sure you want to remove all accounts derived from the ${accountLabel}? You will need to manually import them again.`
+            )
           ).toBeVisible()
         );
       }
