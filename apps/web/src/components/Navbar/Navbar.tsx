@@ -1,6 +1,6 @@
-import { Card, TabList, Tabs, useColorMode } from "@chakra-ui/react";
-import { mode } from "@chakra-ui/theme-tools";
+import { Card, TabList, Tabs } from "@chakra-ui/react";
 
+import { useColor } from "../../styles/useColor";
 import { Tab } from "../Tab";
 
 const tabs = [
@@ -23,13 +23,13 @@ const tabs = [
 ];
 
 export const Navbar = () => {
-  const colorMode = useColorMode();
+  const color = useColor();
 
   return (
     <Card
       zIndex={1}
       padding={{ base: "6px 12px", md: "10px" }}
-      background={mode("rgba(255, 255, 255, 0.90)", "rgba(34, 34, 63, 0.90)")(colorMode)}
+      background={color("rgba(255, 255, 255, 0.90)", "rgba(34, 34, 63, 0.90)")}
       borderRadius={{ base: 0, md: "100px" }}
       boxShadow={{
         base: "-2px -4px 10px 0px rgba(45, 55, 72, 0.06)",

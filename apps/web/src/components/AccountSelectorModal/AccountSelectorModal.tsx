@@ -27,6 +27,7 @@ import {
 } from "@umami/state";
 import { prettyTezAmount } from "@umami/tezos";
 import { groupBy } from "lodash";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { AccountSelectorPopover } from "./AccountSelectorPopover";
@@ -47,6 +48,26 @@ export const AccountSelectorModal = () => {
   const removeMnemonic = useRemoveMnemonic();
   const removeNonMnemonic = useRemoveNonMnemonic();
   const { openWith, goBack, onClose } = useDynamicModalContext();
+
+  const lastItemRef = useRef<HTMLDivElement>(null);
+  const [showShadow, setShowShadow] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setShowShadow(!entry.isIntersecting);
+      },
+      {
+        threshold: 1,
+      }
+    );
+
+    if (lastItemRef.current) {
+      observer.observe(lastItemRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   const dispatch = useDispatch();
 
@@ -95,12 +116,12 @@ export const AccountSelectorModal = () => {
   return (
     <ModalContent>
       <ModalCloseButton />
-      <ModalBody flexDirection="column" gap="18px">
+      <ModalBody flexDirection="column">
         <VStack
           overflowY="auto"
           width="100%"
           maxHeight="400px"
-          divider={<Divider />}
+          divider={<Divider _last={{ display: "none" }} />}
           spacing="18px"
         >
           {Object.entries(groupedAccounts).map(([type, accounts]) => (
@@ -156,9 +177,24 @@ export const AccountSelectorModal = () => {
               })}
             </Flex>
           ))}
+
+          {/* This is a hack to toggle the shadow on the footer button*/}
+          <div ref={lastItemRef} />
         </VStack>
       </ModalBody>
-      <ModalFooter>
+      <ModalFooter
+        padding="8px"
+        borderRadius="30px"
+        boxShadow={
+          showShadow
+            ? color(
+                "0px -4px 10px 0px rgba(45, 55, 72, 0.10)",
+                "0px -4px 10px 0px rgba(0, 0, 0, 0.20)"
+              )
+            : "transparent"
+        }
+        transition="box-shadow 0.2s ease-in"
+      >
         {isVerified && (
           <Button width="full" onClick={() => openWith(<OnboardOptionsModal />)} variant="primary">
             Add Account

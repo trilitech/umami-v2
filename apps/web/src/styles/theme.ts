@@ -656,6 +656,10 @@ const theme = extendTheme({
         borderRadius: "10px",
         cursor: "pointer",
       },
+      "*": {
+        scrollbarWidth: "thin",
+        scrollbarColor: `${mode(light.grey[300], dark.grey[300])(props)} transparent`,
+      },
       body: {
         color: mode(light.grey[600], dark.grey[600])(props),
         bg: mode(light.bg, dark.bg)(props),
