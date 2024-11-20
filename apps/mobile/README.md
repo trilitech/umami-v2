@@ -102,6 +102,16 @@ cd apps/mobile
 p start --reset-cache
 ```
 
+## iOS Archive fails validation
+
+If you see this error:
+
+```
+The archive did not include a dSYM for the hermes.framework with the UUIDs [18BF9B62-6D75-343D-8101-DCDCAD648622]. Ensure that the archive's dSYM folder includes a DWARF file for hermes.framework with the expected UUIDs.
+```
+
+then download the dSYM files from [here](https://github.com/facebook/react-native/releases/tag/v0.75.4) (Please use the correct version of react-native), and follow [this guide](https://github.com/facebook/react-native/issues/46243#issuecomment-2402818940).
+
 # Learn More
 
 To learn more about React Native, take a look at the following resources:
