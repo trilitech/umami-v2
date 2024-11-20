@@ -71,7 +71,7 @@ describe("<AccountSelectorModal />", () => {
       ["social", mockSocialAccount(2)],
     ])(
       "opens confirmation modal when clicking remove button for %s accounts",
-      async (_, account) => {
+      async (type, account) => {
         const user = userEvent.setup();
         await renderInModal(<AccountSelectorModal />, store);
         const accountLabel = getAccountGroupLabel(account);
@@ -81,11 +81,12 @@ describe("<AccountSelectorModal />", () => {
 
         expect(screen.getByText("Remove All Accounts")).toBeInTheDocument();
 
-        await waitFor(() =>
-          expect(
-            screen.getByText(`Are you sure you want to remove all of your ${accountLabel}?`)
-          ).toBeVisible()
-        );
+        const expectedMessage =
+          type === "mnemonic"
+            ? `Are you sure you want to remove all accounts derived from the ${accountLabel}? You will need to manually import them again.`
+            : `Are you sure you want to remove all of your ${accountLabel} accounts? You will need to manually import them again.`;
+
+        await waitFor(() => expect(screen.getByText(expectedMessage)).toBeVisible());
       }
     );
 

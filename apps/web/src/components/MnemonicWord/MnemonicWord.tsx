@@ -29,6 +29,7 @@ export const MnemonicWord = ({
         display="flex"
         height="100%"
         marginLeft={word ? 0 : { base: "12px", md: "16px" }}
+        paddingTop={{ md: "0.5px" }}
         color={color("400")}
         fontSize={{ base: "12px", md: word ? "14px" : "18px" }}
         {...indexProps}

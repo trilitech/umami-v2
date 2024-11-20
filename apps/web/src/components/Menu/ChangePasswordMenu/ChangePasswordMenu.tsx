@@ -1,5 +1,11 @@
 import { Button, Divider, VStack, useToast } from "@chakra-ui/react";
-import { changeMnemonicPassword, useAppDispatch, useAsyncActionHandler } from "@umami/state";
+import {
+  accountsActions,
+  changeMnemonicPassword,
+  useAppDispatch,
+  useAppSelector,
+  useAsyncActionHandler,
+} from "@umami/state";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { PasswordInput } from "../../PasswordInput";
@@ -15,6 +21,7 @@ export const ChangePasswordMenu = () => {
   const form = useForm<ChangePasswordMenuValues>({ mode: "all" });
   const toast = useToast();
   const dispatch = useAppDispatch();
+  const accounts = useAppSelector(state => state.accounts);
   const { handleAsyncAction, isLoading } = useAsyncActionHandler();
   const {
     handleSubmit,
@@ -26,6 +33,11 @@ export const ChangePasswordMenu = () => {
   const onSubmit = ({ currentPassword, newPassword }: ChangePasswordMenuValues) =>
     handleAsyncAction(async () => {
       await dispatch(changeMnemonicPassword({ currentPassword, newPassword })).unwrap();
+
+      if (accounts.password) {
+        dispatch(accountsActions.setPassword(newPassword));
+      }
+
       toast({ description: "Password updated", status: "success" });
       reset();
     });
