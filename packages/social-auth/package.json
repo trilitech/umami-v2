@@ -29,7 +29,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@babel/runtime": "^7.25.7",
+    "@babel/runtime": "^7.26.0",
     "@taquito/utils": "^20.1.0",
     "@toruslabs/customauth": "16.0.6"
   },
