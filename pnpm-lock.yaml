@@ -735,8 +735,8 @@ importers:
         specifier: 0.76.2
         version: 0.76.2(eslint@8.57.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(prettier@3.3.3)(typescript@5.5.4)
       '@react-native/gradle-plugin':
-        specifier: ^0.75.4
-        version: 0.75.4
+        specifier: ^0.76.2
+        version: 0.76.2
       '@react-native/metro-config':
         specifier: 0.75.4
         version: 0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))
@@ -4532,6 +4532,10 @@ packages:
 
   '@react-native/gradle-plugin@0.75.4':
     resolution: {integrity: sha512-kKTmw7cF7p1raT30DC0L6N+xiVXN7dlRy0J+hYPiCRRVHplwgvyS7pszjxfzwXmHFqOxwpxQVI3du8opsma1Mg==}
+    engines: {node: '>=18'}
+
+  '@react-native/gradle-plugin@0.76.2':
+    resolution: {integrity: sha512-KC5/uAeLoeD1dOjymx6gnNFHGGLB22xNYjrjrJNK5r0bw2O2KXp4rpB5VCT/2H5B48cVC0xPB7RIKOFrDHr5bQ==}
     engines: {node: '>=18'}
 
   '@react-native/js-polyfills@0.75.4':
@@ -16095,6 +16099,8 @@ snapshots:
   '@react-native/eslint-plugin@0.76.2': {}
 
   '@react-native/gradle-plugin@0.75.4': {}
+
+  '@react-native/gradle-plugin@0.76.2': {}
 
   '@react-native/js-polyfills@0.75.4': {}
 
