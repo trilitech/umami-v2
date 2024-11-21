@@ -1,0 +1,56 @@
+name: release-dekstop-app
+on:
+  push:
+     tags:
+       - 'v*.*.*'
+jobs:
+  create-release-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Install GitHub CLI
+        run: sudo apt-get install gh
+
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9.9.0
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.18.0
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build
+        run: pnpm build
+
+      - name: Create Draft Release
+        run: gh release create ${{ github.ref }} --draft --title "Release ${{ github.ref }}" --notes-from-tag
+
+      - name: Enter desktop app directory
+        run: cd apps/desktop
+
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE }}
+          fingerprint: ${{secrets.GPG_KEY_ID }}
+          git_user_signingkey: true
+
+      - name: Generate deb and rpm files
+        run: pnpm run electron:package:linux
+
+      - name: Sign the deb and rpm files using dpkg-sig and rpm-sign
+        run: |
+          sudo apt install -y dpkg-sig
+          dpkg-sig --sign builder -k ${{ secrets.GPG_KEY_ID }} ./dist/*.deb
+          rpm --addsign ./dist/*.rpm
+
+      - name: Upload deb and rpm files
+        run: gh release upload ${{ github.ref }} ./dist/*.deb ./dist/*.rpm
