@@ -43,38 +43,38 @@ describe("<SecurityWarningModal />", () => {
     });
   });
 
-  it("disables 'Got it' button when not all items are opened", async () => {
+  it("disables 'Continue' button when checkbox is not checked", async () => {
     await renderInModal(<SecurityWarningModal />);
 
-    const button = screen.getByRole("button", { name: "Got it" });
+    const button = screen.getByRole("button", { name: "Continue" });
     expect(button).toBeDisabled();
   });
 
-  it("enables 'Got it' button when all items are opened", async () => {
+  it("enables 'Continue' button when checkbox is checked", async () => {
     const user = userEvent.setup();
     await renderInModal(<SecurityWarningModal />);
 
-    const accordionButtons = screen.getAllByTestId("accordion-button");
-    for (const button of accordionButtons) {
-      await act(() => user.click(button));
-    }
+    const checkbox = screen.getByRole("checkbox", {
+      name: "I have read and understood all security guidelines",
+    });
+    await act(() => user.click(checkbox));
 
-    const gotItButton = screen.getByRole("button", { name: "Got it" });
-    expect(gotItButton).toBeEnabled();
+    const continueButton = screen.getByRole("button", { name: "Continue" });
+    expect(continueButton).toBeEnabled();
   });
 
-  it("sets localStorage and closes modal when 'Got it' is clicked", async () => {
+  it("sets localStorage and closes modal when 'Continue' is clicked", async () => {
     const { onClose } = dynamicModalContextMock;
     const user = userEvent.setup();
     await renderInModal(<SecurityWarningModal />);
 
-    const accordionButtons = screen.getAllByTestId("accordion-button");
-    for (const button of accordionButtons) {
-      await act(() => user.click(button));
-    }
+    const checkbox = screen.getByRole("checkbox", {
+      name: "I have read and understood all security guidelines",
+    });
+    await act(() => user.click(checkbox));
 
-    const gotItButton = screen.getByRole("button", { name: "Got it" });
-    await act(() => user.click(gotItButton));
+    const continueButton = screen.getByRole("button", { name: "Continue" });
+    await act(() => user.click(continueButton));
 
     await waitFor(() => {
       expect(localStorage.getItem("user:isExtensionsWarningShown")).toBe("true");
