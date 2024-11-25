@@ -12,7 +12,7 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v3
+      - uses: pnpm/action-setup@v4
         with:
           version: 9.9.0
 
@@ -63,7 +63,7 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v3
+      - uses: pnpm/action-setup@v4
         with:
           version: 9.9.0
 
@@ -126,7 +126,7 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
 
-      - uses: pnpm/action-setup@v3
+      - uses: pnpm/action-setup@v4
         with:
           version: 9.9.0
 
