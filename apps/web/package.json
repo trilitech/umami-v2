@@ -30,7 +30,7 @@
     "@chakra-ui/styled-system": "2.12.0",
     "@chakra-ui/system": "^2.6.2",
     "@chakra-ui/theme-tools": "^2.2.3",
-    "@emotion/react": "^11.13.3",
+    "@emotion/react": "^11.13.5",
     "@emotion/styled": "^11.13.0",
     "@hookform/resolvers": "^3.9.1",
     "@reduxjs/toolkit": "^2.3.0",
