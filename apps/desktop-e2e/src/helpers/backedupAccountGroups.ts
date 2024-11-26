@@ -3,26 +3,6 @@ import { DEFAULT_DERIVATION_PATH_TEMPLATE } from "@umami/tezos";
 
 import { type AccountGroup, AccountGroupBuilder } from "./AccountGroup";
 
-export const v1BackedupAccountGroups = async () => {
-  const expectedGroups: AccountGroup[] = [];
-
-  let accountGroupBuilder = new AccountGroupBuilder("mnemonic", 1);
-  accountGroupBuilder.setAllAccountNames("Account");
-  accountGroupBuilder.setSeedPhrase(mnemonic1.split(" "));
-  accountGroupBuilder.setDerivationPathTemplate(DEFAULT_DERIVATION_PATH_TEMPLATE.value);
-  expectedGroups.push(await accountGroupBuilder.build());
-
-  const mnemonic =
-    "top skirt fan helmet ankle pave original ivory push song bridge broom hawk food parade nation involve sunny rely security ladder beach gown imitate";
-  accountGroupBuilder = new AccountGroupBuilder("mnemonic", 1);
-  accountGroupBuilder.setAllAccountNames("Account");
-  accountGroupBuilder.setSeedPhrase(mnemonic.split(" "));
-  accountGroupBuilder.setDerivationPathTemplate(DEFAULT_DERIVATION_PATH_TEMPLATE.value);
-  expectedGroups.push(await accountGroupBuilder.build());
-  // TODO: add related multisig accounts.
-  return expectedGroups;
-};
-
 export const v2BackedupAccountGroups = async () => {
   const expectedGroups: AccountGroup[] = [];
   // Seedphrase 5fd091e1

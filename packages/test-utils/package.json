@@ -6,7 +6,6 @@
   "main": "./dist/index.cjs",
   "types": "./dist/index.d.ts",
   "files": [
-    "src/fixtures/backups/V1Backup.json",
     "src/fixtures/backups/V2Backup.json",
     "src/fixtures/backups/V21Backup.json"
   ],
