@@ -1,3 +1,5 @@
+import type EventEmitter from "events";
+
 import { type NetworkType } from "@airgap/beacon-wallet";
 import { useToast } from "@chakra-ui/react";
 import { type WalletKitTypes } from "@reown/walletkit";
@@ -16,8 +18,15 @@ import { type PropsWithChildren, useCallback, useEffect, useRef } from "react";
 
 import { SessionProposalModal } from "./SessionProposalModal";
 
+enum WalletKitState {
+  NOT_INITIALIZED,
+  INITIALIZING,
+  READY,
+}
+
 export const WalletConnectProvider = ({ children }: PropsWithChildren) => {
-  const isWalletKitCreated = useRef(false);
+  const walletKitState = useRef<WalletKitState>(WalletKitState.NOT_INITIALIZED);
+  const eventEmitters = useRef<EventEmitter[]>([]);
   const { handleAsyncActionUnsafe } = useAsyncActionHandler();
   const { openWith } = useDynamicModalContext();
   const toast = useToast();
@@ -117,24 +126,47 @@ export const WalletConnectProvider = ({ children }: PropsWithChildren) => {
   );
 
   useEffect(() => {
+    const session_proposal_listener = (event: WalletKitTypes.SessionProposal) =>
+      void onSessionProposal(event);
+    const session_request_listener = (event: WalletKitTypes.SessionRequest) =>
+      void onSessionRequest(event);
+    const session_delete_listener = (event: WalletKitTypes.SessionDelete) =>
+      void onSessionDelete(event);
+
+    const addListeners = () => {
+      const emitters = [
+        walletKit.on("session_proposal", session_proposal_listener),
+        walletKit.on("session_request", session_request_listener),
+        walletKit.on("session_delete", session_delete_listener),
+      ].filter(Boolean) as EventEmitter[];
+      eventEmitters.current.push(...emitters);
+    };
+    const removeListeners = () => {
+      eventEmitters.current.forEach(emitter => {
+        emitter.removeAllListeners();
+      });
+      eventEmitters.current = [];
+    };
+
     const initializeWallet = async () => {
       // create the wallet just once
-      if (!isWalletKitCreated.current) {
+      if (walletKitState.current === WalletKitState.NOT_INITIALIZED) {
+        // setting the flag now prevents subsequent render cycles from triggering
+        // another createWalletKit call during the first execution
+        walletKitState.current = WalletKitState.INITIALIZING;
         await createWalletKit();
-        isWalletKitCreated.current = true;
+        walletKitState.current = WalletKitState.READY;
+      }
+      if (walletKitState.current === WalletKitState.READY) {
+        addListeners();
       }
       // subscribe after the wallet is created
-      walletKit.on("session_proposal", event => void onSessionProposal(event));
-      walletKit.on("session_request", event => void onSessionRequest(event));
-      walletKit.on("session_delete", event => void onSessionDelete(event));
     };
     void initializeWallet();
 
     return () => {
-      if (isWalletKitCreated.current) {
-        walletKit.off("session_proposal", event => void onSessionProposal(event));
-        walletKit.off("session_request", event => void onSessionRequest(event));
-        walletKit.off("session_delete", event => void onSessionDelete(event));
+      if (walletKitState.current === WalletKitState.READY) {
+        removeListeners();
       }
     };
   }, [onSessionProposal, onSessionRequest, onSessionDelete]);
