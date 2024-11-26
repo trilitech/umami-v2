@@ -459,8 +459,8 @@ importers:
   apps/embed-iframe:
     dependencies:
       '@airgap/beacon-types':
-        specifier: ^4.3.0
-        version: 4.3.0
+        specifier: ^4.3.1
+        version: 4.3.1
       '@babel/core':
         specifier: ^7.26.0
         version: 7.26.0
@@ -2141,6 +2141,9 @@ packages:
 
   '@airgap/beacon-types@4.3.0':
     resolution: {integrity: sha512-mHhjt9BM1I05zBiQ2+xv0gAn0eYI+by1YeVDGRoznE5YRpUGYNr307oYF08pQ7KfPlNbCSDPq295uOHHFuYPfA==}
+
+  '@airgap/beacon-types@4.3.1':
+    resolution: {integrity: sha512-XYLZRQFRtfO33q/ZBSdssRIQHNXuRtoJhsnsmwwnbBssJKtiKEPfC0D+cf7BeBKoOObjigCIh9NixrPk+YyNeA==}
 
   '@airgap/beacon-ui@4.2.2':
     resolution: {integrity: sha512-iuVH8ZgyejRo61vwZP4gTju+FfRxtEvA+Y9CanizlkJY3UcPa2ATx9Bmz8fGOeo5bkohxS1Ny36WEQ81z5cpIw==}
@@ -12660,6 +12663,10 @@ snapshots:
     dependencies:
       '@types/chrome': 0.0.246
 
+  '@airgap/beacon-types@4.3.1':
+    dependencies:
+      '@types/chrome': 0.0.246
+
   '@airgap/beacon-ui@4.2.2':
     dependencies:
       '@airgap/beacon-core': 4.2.2
@@ -18019,7 +18026,7 @@ snapshots:
 
   '@trilitech-umami/umami-embed@0.3.1':
     dependencies:
-      '@airgap/beacon-types': 4.3.0
+      '@airgap/beacon-types': 4.3.1
       async-mutex: 0.5.0
 
   '@trysound/sax@0.2.0': {}
