@@ -12,7 +12,7 @@
     "lint": "eslint src --ext .ts --fix"
   },
   "dependencies": {
-    "@airgap/beacon-types": "^4.3.0",
+    "@airgap/beacon-types": "^4.3.1",
     "@babel/core": "^7.26.0",
     "@babel/preset-env": "^7.26.0",
     "@babel/preset-react": "^7.25.9",
