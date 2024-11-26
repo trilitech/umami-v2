@@ -2,6 +2,9 @@ appId: com.trilitech.umami
 productName: Umami
 files:
   - build/**
+extraResources:
+  - from: "public/security.txt"
+    to: "security.txt"
 directories:
   buildResources: public
 protocols:
