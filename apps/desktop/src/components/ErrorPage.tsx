@@ -36,38 +36,6 @@ export const ErrorPage = () => {
           title="Oops! Something went wrong!"
         >
           <VStack width="100%" spacing="16px">
-            <Button width="100%" borderRadius="4px" onClick={saveBackup} size="lg">
-              Save Backup
-            </Button>
-
-            <Button
-              width="100%"
-              borderRadius="4px"
-              onClick={onOpenOffboardingModal}
-              size="lg"
-              variant="warning"
-            >
-              Off-board Wallet
-            </Button>
-
-            <Button
-              width="100%"
-              borderColor={colors.gray[600]}
-              borderRadius="4px"
-              size="lg"
-              variant="tertiary"
-            >
-              <Link
-                width="100%"
-                _hover={{ textDecoration: "none" }}
-                href={`mailto:umami-support@trili.tech?subject=Umami V2 feedback&body=${feedbackEmailBodyTemplate}`}
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                Report Error
-              </Link>
-            </Button>
-
             <Link
               display="block"
               marginTop="14px"
@@ -83,6 +51,39 @@ export const ErrorPage = () => {
                 </Heading>
               </Center>
             </Link>
+
+            <Button
+              width="100%"
+              borderColor={colors.gray[600]}
+              borderRadius="4px"
+              onClick={saveBackup}
+              size="lg"
+              variant="tertiary"
+            >
+              Save Backup
+            </Button>
+
+            <Button width="100%" borderRadius="4px" size="lg">
+              <Link
+                width="100%"
+                _hover={{ textDecoration: "none" }}
+                href={`mailto:umami-support@trili.tech?subject=Umami V2 feedback&body=${feedbackEmailBodyTemplate}`}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Report Error
+              </Link>
+            </Button>
+
+            <Button
+              width="100%"
+              borderRadius="4px"
+              onClick={onOpenOffboardingModal}
+              size="lg"
+              variant="warning"
+            >
+              Off-board Wallet
+            </Button>
           </VStack>
         </ModalContentWrapper>
       </Box>
