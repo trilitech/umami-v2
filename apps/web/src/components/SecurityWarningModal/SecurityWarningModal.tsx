@@ -5,6 +5,7 @@ import {
   AccordionItem,
   AccordionPanel,
   Button,
+  Checkbox,
   Flex,
   Heading,
   Icon,
@@ -63,7 +64,7 @@ const accordionItems = [
 export const SecurityWarningModal = () => {
   const { onClose } = useDynamicModalContext();
   const color = useColor();
-  const [openedAccordionItems, setOpenedAccordionItems] = useState<Set<number>>(new Set());
+  const [isAgreed, setIsAgreed] = useState(false);
 
   const handleInform = () => {
     localStorage.setItem("user:isExtensionsWarningShown", "true");
@@ -90,18 +91,8 @@ export const SecurityWarningModal = () => {
         </Flex>
       </ModalHeader>
       <ModalBody>
-        <Accordion
-          as={Flex}
-          flexDirection="column"
-          gap="12px"
-          allowToggle
-          onChange={e =>
-            setOpenedAccordionItems(
-              prev => new Set([...prev, e as number].filter(item => item > -1))
-            )
-          }
-        >
-          {accordionItems.map(({ title, content, icon }, index) => (
+        <Accordion as={Flex} flexDirection="column" gap="12px" allowToggle>
+          {accordionItems.map(({ title, content, icon }) => (
             <AccordionItem key={title} border="none">
               <AccordionButton
                 gap="16px"
@@ -118,11 +109,7 @@ export const SecurityWarningModal = () => {
                 cursor="pointer"
                 data-testid="accordion-button"
               >
-                <Icon
-                  as={icon}
-                  boxSize="24px"
-                  color={openedAccordionItems.has(index) ? color("greenDark") : color("400")}
-                />
+                <Icon as={icon} boxSize="24px" color={color("400")} />
                 <Heading width="100%" color={color("900")} size="md">
                   {title}
                 </Heading>
@@ -134,15 +121,19 @@ export const SecurityWarningModal = () => {
             </AccordionItem>
           ))}
         </Accordion>
-      </ModalBody>
-      <ModalFooter>
-        <Button
-          width="full"
-          isDisabled={openedAccordionItems.size !== accordionItems.length}
-          onClick={handleInform}
-          variant="primary"
+        <Checkbox
+          marginTop="16px"
+          color={color("700")}
+          isChecked={isAgreed}
+          marginX="auto"
+          onChange={e => setIsAgreed(e.target.checked)}
         >
-          Got it
+          <Text whiteSpace="break-spaces">I have read and understood all security guidelines</Text>
+        </Checkbox>
+      </ModalBody>
+      <ModalFooter flexDirection="column" gap="16px">
+        <Button width="full" isDisabled={!isAgreed} onClick={handleInform} variant="primary">
+          Continue
         </Button>
       </ModalFooter>
     </ModalContent>
