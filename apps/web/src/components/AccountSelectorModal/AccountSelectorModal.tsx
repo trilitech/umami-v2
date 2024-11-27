@@ -81,7 +81,9 @@ export const AccountSelectorModal = () => {
     switch (account.type) {
       case "mnemonic":
         return openWith(<DeriveMnemonicAccountModal account={account as MnemonicAccount} />);
-      default:
+      case "social":
+      case "ledger":
+      case "secret_key":
         return openWith(<OnboardOptionsModal />);
     }
   };
