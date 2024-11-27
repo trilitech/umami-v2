@@ -57,7 +57,7 @@ Then("I see {string} modal", async function (this: CustomWorld, modalTitle) {
 
   if (modalTitle === "Operation Submitted") {
     const lastOperationHash = await this.modal
-      .getByRole("link", { name: "View in Tzkt" })
+      .getByRole("link", { name: "View in TzKT" })
       .getAttribute("href");
     this.lastOperationHash = lastOperationHash!.split("/").reverse()[0];
   }

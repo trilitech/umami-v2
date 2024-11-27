@@ -49,7 +49,7 @@ export const SuccessStep = ({ hash }: { hash: string }) => {
         <Link rel="noopener noreferrer" target="_blank" to={tzktUrl}>
           <Flex alignItems="center" marginTop="24px">
             <Button variant="CTAWithIcon">
-              <Text marginRight="4px">View in Tzkt</Text>
+              <Text marginRight="4px">View in TzKT</Text>
               <WindowLinkIcon stroke="currentcolor" />
             </Button>
           </Flex>
