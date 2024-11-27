@@ -95,7 +95,7 @@ export const AssetsPanel = ({
         <ExternalLink href={`${network.tzktExplorerUrl}/${account.address.pkh}`}>
           <Button padding="0" variant="CTAWithIcon">
             <Text marginRight="7px" size="sm">
-              View on Tzkt
+              View on TzKT
             </Text>
             <ExternalLinkIcon stroke="inherit" />
           </Button>
