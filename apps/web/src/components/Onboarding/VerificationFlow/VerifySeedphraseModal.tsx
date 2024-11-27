@@ -79,7 +79,7 @@ export const VerifySeedphraseModal = ({ seedPhrase }: VerifySeedphraseModalProps
       <FormProvider {...form}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <ModalBody>
-            <Flex gap={{ base: "6px", md: "12px" }}>
+            <Flex gap={{ base: "6px", md: "12px" }} userSelect="none">
               {randomElements.map(({ index, value }) => {
                 const inputName = `word${index + 1}`;
                 const error = errors[inputName as keyof typeof errors];
@@ -94,6 +94,7 @@ export const VerifySeedphraseModal = ({ seedPhrase }: VerifySeedphraseModalProps
                           placeholder: `word #${index + 1}`,
                           fontSize: { base: "12px", md: "18px" },
                           paddingLeft: { base: "36px", md: "46px" },
+                          height: "48px",
                         },
                         listProps: {
                           marginTop: "6px",

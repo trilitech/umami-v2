@@ -42,7 +42,6 @@ export const MnemonicAutocomplete = <T extends FieldValues, U extends Path<T>>({
 }: MnemonicAutocompleteProps<T, U>) => {
   const [hidden, setHidden] = useState(true);
   const [showMnemonic, setShowMnemonic] = useState(false);
-  const componentRef = useRef<HTMLDivElement>(null);
   const timerRef = useRef<NodeJS.Timeout>();
 
   const { register, setValue, watch } = useFormContext<T>();
@@ -74,21 +73,11 @@ export const MnemonicAutocomplete = <T extends FieldValues, U extends Path<T>>({
     };
   }, [showMnemonic, resetShowMnemonic]);
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (componentRef.current && !componentRef.current.contains(event.target as Node)) {
-        setHidden(true);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
   return (
-    <div ref={componentRef}>
-      <InputGroup>
+    <>
+      <InputGroup height="full">
         <Input
+          height="full"
           autoComplete="off"
           data-testid="mnemonic-input"
           onFocus={() => setHidden(false)}
@@ -102,7 +91,7 @@ export const MnemonicAutocomplete = <T extends FieldValues, U extends Path<T>>({
           {...inputProps}
         />
         {value && (
-          <InputRightElement height="full">
+          <InputRightElement width="fit-content" height="full">
             <Button
               minWidth="fit-content"
               height="full"
@@ -111,9 +100,9 @@ export const MnemonicAutocomplete = <T extends FieldValues, U extends Path<T>>({
               variant="unstyled"
             >
               {showMnemonic ? (
-                <EyeSlashIcon color="gray.400" data-testid="eye-slash-icon" />
+                <EyeSlashIcon color="currentColor" data-testid="eye-slash-icon" />
               ) : (
-                <EyeIcon width="16.5px" color="gray.400" data-testid="eye-icon" />
+                <EyeIcon width="16.5px" color="currentColor" data-testid="eye-icon" />
               )}
             </Button>
           </InputRightElement>
@@ -137,6 +126,6 @@ export const MnemonicAutocomplete = <T extends FieldValues, U extends Path<T>>({
           ))}
         </UnorderedList>
       )}
-    </div>
+    </>
   );
 };
