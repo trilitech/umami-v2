@@ -45,7 +45,8 @@ export const CustomToast = (props: CustomToastProps): ReactNode => {
         return <AlertTriangleIcon />;
       case "warning":
         return <AlertOctagonIcon />;
-      default:
+      case "loading":
+      case undefined:
         return null;
     }
   };

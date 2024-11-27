@@ -65,6 +65,7 @@ export const useHandleBeaconMessage = () => {
         let modal;
         let onClose;
 
+        // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
         switch (message.type) {
           case BeaconMessageType.PermissionRequest: {
             checkNetwork(message);
