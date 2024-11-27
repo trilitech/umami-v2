@@ -37,7 +37,7 @@ describe("<VerifySeedphrase />", () => {
 
     render(fixture());
 
-    const inputFields = screen.getAllByRole("textbox");
+    const inputFields = screen.getAllByTestId("mnemonic-input");
     for (const input of inputFields) {
       await act(() => user.type(input, "test"));
     }
@@ -47,7 +47,7 @@ describe("<VerifySeedphrase />", () => {
 
   test("validation is working with all invalid", async () => {
     render(fixture());
-    const inputFields = screen.getAllByRole("textbox");
+    const inputFields = screen.getAllByTestId("mnemonic-input");
     inputFields.forEach(input => {
       fireEvent.change(input, { target: { value: "test" } });
       fireEvent.blur(input);
@@ -60,7 +60,7 @@ describe("<VerifySeedphrase />", () => {
 
   test("validation is working with some invalid", async () => {
     render(fixture());
-    const inputFields = screen.getAllByRole("textbox");
+    const inputFields = screen.getAllByTestId("mnemonic-input");
 
     // Enter correct value
     fireEvent.change(inputFields[0], {
@@ -80,7 +80,7 @@ describe("<VerifySeedphrase />", () => {
 
   test("validation is working with all valid", async () => {
     render(fixture());
-    const inputFields = screen.getAllByRole("textbox");
+    const inputFields = screen.getAllByTestId("mnemonic-input");
 
     // Enter correct value
     const splitted = mnemonic1.split(" ");

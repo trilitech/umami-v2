@@ -128,6 +128,7 @@ export const RestoreMnemonic = ({ goToStep }: { goToStep: (step: OnboardingStep)
                       <MnemonicAutocomplete
                         inputName={inputName}
                         inputProps={{
+                          paddingLeft: "2px",
                           // eslint-disable-next-line @typescript-eslint/no-misused-promises
                           onPaste: async e => {
                             e.preventDefault();
@@ -135,6 +136,13 @@ export const RestoreMnemonic = ({ goToStep }: { goToStep: (step: OnboardingStep)
                             return pasteMnemonic(mnemonic);
                           },
                           border: "none",
+                          paddingRight: "36px",
+                          _placeholderShown: {
+                            paddingRight: "0",
+                          },
+                          _placeholder: {
+                            fontSize: "sm",
+                          },
                           size: "xsmall",
                         }}
                         listProps={{

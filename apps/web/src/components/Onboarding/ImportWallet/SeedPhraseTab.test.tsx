@@ -16,7 +16,7 @@ describe("<SeedPhraseTab />", () => {
     render(<SeedPhraseTab />);
 
     expect(screen.getByText("24 word seed phrase")).toBeVisible();
-    expect(screen.getAllByRole("textbox")).toHaveLength(24);
+    expect(screen.getAllByTestId("mnemonic-input")).toHaveLength(24);
   });
 
   it("can change the number of words", async () => {
@@ -29,7 +29,7 @@ describe("<SeedPhraseTab />", () => {
 
     expect(screen.queryByText("24 word seed phrase")).not.toBeInTheDocument();
     expect(screen.getByText("12 word seed phrase")).toBeVisible();
-    expect(screen.getAllByRole("textbox")).toHaveLength(12);
+    expect(screen.getAllByTestId("mnemonic-input")).toHaveLength(12);
 
     const changeTo15Button = await screen.findByRole("button", { name: "15" });
     await act(() => user.click(changeTo15Button));
@@ -37,7 +37,7 @@ describe("<SeedPhraseTab />", () => {
     expect(screen.queryByText("24 word seed phrase")).not.toBeInTheDocument();
     expect(screen.queryByText("12 word seed phrase")).not.toBeInTheDocument();
     expect(screen.getByText("15 word seed phrase")).toBeVisible();
-    expect(screen.getAllByRole("textbox")).toHaveLength(15);
+    expect(screen.getAllByTestId("mnemonic-input")).toHaveLength(15);
   });
 
   it("validates the presence of the words", async () => {
@@ -48,7 +48,7 @@ describe("<SeedPhraseTab />", () => {
 
     for (let i = 0; i < 24; i++) {
       expect(submitButton).toBeDisabled();
-      await act(() => user.type(screen.getAllByRole("textbox")[i], `word${i}`));
+      await act(() => user.type(screen.getAllByTestId("mnemonic-input")[i], `word${i}`));
     }
     expect(submitButton).toBeEnabled();
   });
@@ -58,7 +58,7 @@ describe("<SeedPhraseTab />", () => {
       const user = userEvent.setup();
       render(<SeedPhraseTab />);
 
-      const textbox = screen.getAllByRole("textbox")[0];
+      const textbox = screen.getAllByTestId("mnemonic-input")[0];
       await act(() => user.click(textbox));
       await act(() => user.paste("asd lasd"));
 
@@ -73,12 +73,12 @@ describe("<SeedPhraseTab />", () => {
       const user = userEvent.setup({});
       render(<SeedPhraseTab />);
 
-      const textbox = screen.getAllByRole("textbox")[0];
+      const textbox = screen.getAllByTestId("mnemonic-input")[0];
       await act(() => user.click(textbox));
 
       await act(() => user.paste(mnemonic1));
 
-      screen.getAllByRole("textbox").forEach((textbox, i) => {
+      screen.getAllByTestId("mnemonic-input").forEach((textbox, i) => {
         expect(textbox).toHaveValue(mnemonic1.split(" ")[i]);
       });
     });
@@ -90,7 +90,7 @@ describe("<SeedPhraseTab />", () => {
 
       render(<SeedPhraseTab />);
 
-      const textboxes = screen.getAllByRole("textbox");
+      const textboxes = screen.getAllByTestId("mnemonic-input");
 
       const textbox1 = textboxes[0];
       const textbox2 = textboxes[15];
@@ -105,7 +105,7 @@ describe("<SeedPhraseTab />", () => {
       expect(textbox1).toHaveValue(undefined);
       expect(textbox2).toHaveValue(undefined);
 
-      expect(screen.getAllByRole("textbox")).toHaveLength(24);
+      expect(screen.getAllByTestId("mnemonic-input")).toHaveLength(24);
     });
 
     it("clears all the words when changing the number of words", async () => {
@@ -116,11 +116,11 @@ describe("<SeedPhraseTab />", () => {
       await act(() => user.click(screen.getByText("24 word seed phrase")));
       const changeTo12Button = await screen.findByRole("button", { name: "12" });
       await act(() => user.click(changeTo12Button));
-      expect(screen.getAllByRole("textbox")).toHaveLength(12);
+      expect(screen.getAllByTestId("mnemonic-input")).toHaveLength(12);
 
       await act(() => user.click(screen.getByRole("button", { name: "Clear All" })));
 
-      expect(screen.getAllByRole("textbox")).toHaveLength(12);
+      expect(screen.getAllByTestId("mnemonic-input")).toHaveLength(12);
     });
   });
 });

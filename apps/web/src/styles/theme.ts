@@ -142,12 +142,15 @@ const theme = extendTheme({
             _focus: {
               borderColor: "gray.900",
             },
+            ":not(:placeholder-shown)": {
+              paddingRight: "32px",
+            },
             borderRadius: "34px",
             border: "1px solid",
             background: "none",
             borderColor: "gray.100",
             fontSize: { md: "14px", base: "12px" },
-            paddingLeft: { base: "32px", md: "42px" },
+            paddingLeft: { base: "32px", md: "38px" },
             paddingRight: "10px",
             _placeholder: {
               color: "gray.400",

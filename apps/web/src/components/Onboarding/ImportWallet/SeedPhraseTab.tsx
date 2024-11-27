@@ -11,12 +11,14 @@ import {
   Heading,
   Icon,
   type InputProps,
+  Text,
   useBreakpointValue,
 } from "@chakra-ui/react";
 import { useDynamicModalContext, useMultiForm } from "@umami/components";
 import { useAsyncActionHandler } from "@umami/state";
 import { validateMnemonic } from "bip39";
 import { range } from "lodash";
+import { useState } from "react";
 import { FormProvider, useFieldArray } from "react-hook-form";
 
 import { CloseIcon } from "../../../assets/icons";
@@ -43,6 +45,7 @@ export const SeedPhraseTab = () => {
     },
   });
   const { openWith } = useDynamicModalContext();
+  const [showBlur, setShowBlur] = useState(true);
 
   const {
     handleSubmit,
@@ -134,11 +137,36 @@ export const SeedPhraseTab = () => {
           </Accordion>
 
           <Grid
+            position="relative"
             gridRowGap="16px"
             gridColumnGap="8px"
             gridTemplateColumns={{ base: "repeat(3, 1fr)", md: "repeat(4, 1fr)" }}
             marginTop="36px"
           >
+            {showBlur && (
+              <Flex
+                position="absolute"
+                zIndex={2}
+                alignItems="center"
+                justifyContent="center"
+                flexDirection="column"
+                justifySelf="center"
+                alignSelf="center"
+                gap="4px"
+                width="105%"
+                height="105%"
+                cursor="pointer"
+                backdropFilter="blur(5px)"
+                onClick={() => setShowBlur(false)}
+              >
+                <Text color={color("900")} fontSize="16px">
+                  Be sure no one is looking
+                </Text>
+                <Text color={color("700")} fontSize="14px">
+                  Click to proceed
+                </Text>
+              </Flex>
+            )}
             {fields.slice(0, fields.length - lastRowSize).map((field, index) => (
               <MnemonicWord
                 key={field.id}
