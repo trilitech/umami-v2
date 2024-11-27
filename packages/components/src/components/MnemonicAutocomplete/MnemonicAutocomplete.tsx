@@ -12,8 +12,7 @@ import { wordlists } from "bip39";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { type FieldValues, type Path, type RegisterOptions, useFormContext } from "react-hook-form";
 
-import { EyeSlashIcon } from "../../../../../apps/desktop/src/assets/icons";
-import { EyeIcon } from "../../../../../apps/desktop/src/assets/icons/Eye";
+import { EyeIcon, EyeSlashIcon } from "../../../../../apps/desktop/src/assets/icons";
 
 const MNEMONIC_VISIBILITY_TIMEOUT = 60000;
 
@@ -51,7 +50,10 @@ export const MnemonicAutocomplete = <T extends FieldValues, U extends Path<T>>({
   const matching = wordlists.EN.filter(word => value && word.startsWith(value)).sort();
 
   const showSuggestions =
-    !hidden && matching.length > 0 && (matching.length > 1 || matching[0] !== value);
+    !hidden &&
+    matching.length > 0 &&
+    // if we found a single match there is no need in the suggestions
+    (matching.length > 1 || matching[0] !== value);
 
   const resetShowMnemonic = useCallback(() => {
     setShowMnemonic(false);
@@ -87,6 +89,7 @@ export const MnemonicAutocomplete = <T extends FieldValues, U extends Path<T>>({
             required: "Required",
             validate,
             onChange: () => setHidden(false),
+            onBlur: () => setHidden(true),
           })}
           {...inputProps}
         />

@@ -39,7 +39,7 @@ describe("<VerifySeedphraseModal />", () => {
 
     await renderInModal(fixture(), store);
 
-    const inputFields = screen.getAllByRole("textbox");
+    const inputFields = screen.getAllByTestId("mnemonic-input");
 
     for (const input of inputFields) {
       await act(() => user.type(input, "test"));
@@ -50,7 +50,7 @@ describe("<VerifySeedphraseModal />", () => {
 
   test("validation is working with all invalid", async () => {
     await renderInModal(fixture(), store);
-    const inputFields = screen.getAllByRole("textbox");
+    const inputFields = screen.getAllByTestId("mnemonic-input");
 
     inputFields.forEach(input => {
       fireEvent.change(input, { target: { value: "test" } });
@@ -64,7 +64,7 @@ describe("<VerifySeedphraseModal />", () => {
 
   test("validation is working with some invalid", async () => {
     await renderInModal(fixture(), store);
-    const inputFields = screen.getAllByRole("textbox");
+    const inputFields = screen.getAllByTestId("mnemonic-input");
 
     fireEvent.change(inputFields[0], {
       target: { value: mnemonic1.split(" ")[0] },
@@ -82,7 +82,7 @@ describe("<VerifySeedphraseModal />", () => {
 
   test("validation is working with all valid", async () => {
     await renderInModal(fixture(), store);
-    const inputFields = screen.getAllByRole("textbox");
+    const inputFields = screen.getAllByTestId("mnemonic-input");
     const splitted = mnemonic1.split(" ");
 
     inputFields.forEach((input, index) => {
