@@ -26,7 +26,7 @@
     "@chakra-ui/system": "^2.6.2",
     "@chakra-ui/theme-tools": "^2.2.6",
     "@emotion/react": "^11.13.5",
-    "@emotion/styled": "^11.13.0",
+    "@emotion/styled": "^11.13.5",
     "@taquito/signer": "^20.1.0",
     "@taquito/taquito": "20.1.0",
     "@testing-library/dom": "^10.4.0",
