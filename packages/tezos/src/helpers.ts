@@ -9,6 +9,7 @@ import { type PublicKeyPair, type SignerConfig } from "./types";
 
 export const generateHash = async (): Promise<string> => {
   const utf8 = new TextEncoder().encode(Date.now().toString());
+  // TODO: replace with md5 or anything else so that it doesn't rely on the crypto global
   const hashBuffer = await crypto.subtle.digest("SHA-256", utf8);
   const hashArray = Array.from(new Uint8Array(hashBuffer));
   const hashHex = hashArray

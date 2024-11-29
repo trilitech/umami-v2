@@ -102,7 +102,18 @@ cd apps/mobile
 p start --reset-cache
 ```
 
-## iOS Archive fails validation
+## iOS
+
+### Missing header files
+
+Try to install the pods once again.
+
+```shell
+cd ios
+pod install
+```
+
+### Archive fails validation
 
 If you see this error:
 
