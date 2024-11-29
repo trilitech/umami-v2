@@ -21,6 +21,7 @@ module.exports = mergeConfig(getDefaultConfig(projectRoot),
         util: require.resolve("util"),
         vm: require.resolve("vm-browserify"),
         zlib: require.resolve("browserify-zlib"),
+        "@umami/crypto": path.resolve(monorepoRoot, "packages/crypto-react-native"),
       },
       unstable_enablePackageExports: true,
       unstable_enableSymlinks: true
