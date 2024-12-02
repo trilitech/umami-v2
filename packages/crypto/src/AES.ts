@@ -32,6 +32,7 @@ export const encrypt = async (data: string, password: string): Promise<Encrypted
   };
 };
 
+//  V1 - for backup/local storage , V2 - for transactions
 type DecryptMode = "V1" | "V2";
 
 export const TOO_MANY_ATTEMPTS_ERROR =

@@ -1,4 +1,5 @@
-import { WalletClient as WalletClientClass } from "@airgap/beacon-wallet";
+import { WalletClient as WalletClientClass } from "@airgap/beacon-sdk";
+import { EncryptedBeaconStorage } from "./storage";
 import { type Persistor } from "redux-persist";
 
 export const WalletClient =
@@ -9,6 +10,7 @@ export const WalletClient =
         name: "Umami",
         iconUrl: "",
         appUrl: "https://umamiwallet.com/",
+        storage: new EncryptedBeaconStorage(),
       });
 
 export const logout = (persistor: Persistor) =>
