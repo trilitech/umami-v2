@@ -5,7 +5,7 @@ import { fromPairs, identity } from "lodash";
 
 import { announcementInitialState as announcementsInitialState } from "./slices/announcement";
 
-export const VERSION = 8;
+export const VERSION = 9;
 
 export const mainStoreMigrations = {
   0: (state: any) =>
@@ -65,6 +65,18 @@ export const mainStoreMigrations = {
       delete draft.assets["delegationLevels"];
     }),
   8: identity,
+  9: (state: any) =>
+    produce(state, (draft: any) => {
+      if (draft.networks.current.name === "mainnet") {
+        draft.networks.current.rpcUrl = "https://mainnet.ecadinfra.com";
+      }
+      for (const network of draft.networks.available) {
+        if (network.name === "mainnet") {
+          network.rpcUrl = "https://mainnet.ecadinfra.com";
+          break;
+        }
+      }
+    }),
 } as any;
 
 export const accountsMigrations = {
@@ -104,4 +116,5 @@ export const accountsMigrations = {
         }
       });
     }),
+  9: identity,
 } as any;
