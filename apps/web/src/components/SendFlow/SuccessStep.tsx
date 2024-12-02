@@ -60,7 +60,7 @@ export const SuccessStep = ({ hash }: { hash: string }) => {
         </Button>
         <Button as={Link} gap="10px" width="full" href={tzktUrl} isExternal variant="ghost">
           <ExternalLinkIcon color={color("400")} />
-          <Text marginRight="4px">View in Tzkt</Text>
+          <Text marginRight="4px">View in TzKT</Text>
         </Button>
       </ModalBody>
     </ModalContent>

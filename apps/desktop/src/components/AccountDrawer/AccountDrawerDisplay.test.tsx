@@ -89,7 +89,7 @@ describe("<AccountDrawerDisplay />", () => {
       await waitFor(() => expect(screen.getByTestId("asset-panel-tablist")).toBeVisible());
 
       const tzktLink = within(screen.getByTestId("asset-panel-tablist")).getByRole("link", {
-        name: "View on Tzkt",
+        name: "View on TzKT",
       });
       expect(tzktLink).toBeVisible();
     });
@@ -99,7 +99,7 @@ describe("<AccountDrawerDisplay />", () => {
       await waitFor(() => expect(screen.getByTestId("asset-panel-tablist")).toBeVisible());
 
       const tzktLink = within(screen.getByTestId("asset-panel-tablist")).getByRole("link", {
-        name: "View on Tzkt",
+        name: "View on TzKT",
       });
       const expectedLink = "https://ghostnet.tzkt.io/" + pkh;
       expect(tzktLink).toHaveProperty("href", expectedLink);
@@ -112,7 +112,7 @@ describe("<AccountDrawerDisplay />", () => {
       await act(() => store.dispatch(networksActions.setCurrent(MAINNET)));
 
       const tzktLink = within(screen.getByTestId("asset-panel-tablist")).getByRole("link", {
-        name: "View on Tzkt",
+        name: "View on TzKT",
       });
       const expectedLink = "https://tzkt.io/" + pkh;
       expect(tzktLink).toHaveProperty("href", expectedLink);

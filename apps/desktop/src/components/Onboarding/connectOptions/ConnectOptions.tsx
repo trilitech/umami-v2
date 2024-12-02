@@ -37,7 +37,7 @@ export const ConnectOptions = ({ goToStep }: { goToStep: (step: OnboardingStep) 
           size="lg"
           variant="tertiary"
         >
-          Connect ledger
+          Connect Ledger
         </Button>
       </VStack>
     </ModalContentWrapper>

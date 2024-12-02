@@ -129,6 +129,7 @@ export const headlessLambda = (lambda: MichelsonV1Expression[]): MichelsonV1Expr
 export const toLambda = (operation: Operation): MichelsonV1Expression[] => {
   switch (operation.type) {
     case "tez":
+      // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
       switch (operation.recipient.type) {
         case "implicit":
           return MANAGER_LAMBDA.transferImplicit(operation.recipient.pkh, Number(operation.amount));

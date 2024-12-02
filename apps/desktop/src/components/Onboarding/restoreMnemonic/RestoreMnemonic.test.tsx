@@ -41,7 +41,7 @@ describe("<RestoreMnemonic />", () => {
       render(fixture());
 
       const confirmBtn = screen.getByRole("button", { name: "Continue" });
-      const inputFields = screen.getAllByRole("textbox");
+      const inputFields = screen.getAllByTestId("mnemonic-input");
 
       for (const input of inputFields) {
         await act(() => user.type(input, "test"));
@@ -61,7 +61,7 @@ describe("<RestoreMnemonic />", () => {
       const user = userEvent.setup();
       render(fixture());
 
-      await act(() => user.click(screen.getAllByRole("textbox")[0]));
+      await act(() => user.click(screen.getAllByTestId("mnemonic-input")[0]));
       await act(() => user.paste("test test"));
 
       expect(mockToast).toHaveBeenCalledWith({
@@ -77,7 +77,7 @@ describe("<RestoreMnemonic />", () => {
 
       const confirmBtn = screen.getByRole("button", { name: "Continue" });
       const splitted = mnemonic1.split(" ");
-      const inputFields = screen.getAllByRole("textbox");
+      const inputFields = screen.getAllByTestId("mnemonic-input");
 
       for (const [i, input] of inputFields.entries()) {
         await act(() => user.type(input, splitted[i]));

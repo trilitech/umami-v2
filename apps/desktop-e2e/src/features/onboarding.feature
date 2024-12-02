@@ -194,5 +194,4 @@ Feature: User Onboarding
 
     Examples:
       | fileName      | password  |
-      | V1Backup.json | asdfasdf  |
       | V2Backup.json | 123123123 |

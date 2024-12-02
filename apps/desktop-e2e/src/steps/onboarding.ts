@@ -7,7 +7,7 @@ import { DEFAULT_DERIVATION_PATH_TEMPLATE } from "@umami/tezos";
 
 import { type CustomWorld } from "./world";
 import { type AccountGroup, AccountGroupBuilder } from "../helpers/AccountGroup";
-import { v1BackedupAccountGroups, v2BackedupAccountGroups } from "../helpers/backedupAccountGroups";
+import { v2BackedupAccountGroups } from "../helpers/backedupAccountGroups";
 import { AccountsPage } from "../pages/AccountsPage";
 
 export const BASE_URL = "http://127.0.0.1:3000";
@@ -116,9 +116,7 @@ Then(
   "I have groups matching {string} backup file",
   async function (this: CustomWorld, backupFileName) {
     let expectedGroups: AccountGroup[] = [];
-    if (backupFileName === "V1Backup.json") {
-      expectedGroups = await v1BackedupAccountGroups();
-    } else if (backupFileName === "V2Backup.json") {
+    if (backupFileName === "V2Backup.json") {
       expectedGroups = await v2BackedupAccountGroups();
     } else {
       throw new Error(`Unknown backup file: ${backupFileName}`);

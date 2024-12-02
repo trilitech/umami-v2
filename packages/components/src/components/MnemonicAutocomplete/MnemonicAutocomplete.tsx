@@ -1,7 +1,20 @@
-import { Input, type InputProps, ListItem, type ListProps, UnorderedList } from "@chakra-ui/react";
+import {
+  Button,
+  Input,
+  InputGroup,
+  type InputProps,
+  InputRightElement,
+  ListItem,
+  type ListProps,
+  UnorderedList,
+} from "@chakra-ui/react";
 import { wordlists } from "bip39";
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { type FieldValues, type Path, type RegisterOptions, useFormContext } from "react-hook-form";
+
+import { EyeIcon, EyeSlashIcon } from "../../../../../apps/desktop/src/assets/icons";
+
+const MNEMONIC_VISIBILITY_TIMEOUT = 60000;
 
 type MnemonicAutocompleteProps<T extends FieldValues, U extends Path<T>> = {
   inputName: U;
@@ -27,6 +40,8 @@ export const MnemonicAutocomplete = <T extends FieldValues, U extends Path<T>>({
   listProps,
 }: MnemonicAutocompleteProps<T, U>) => {
   const [hidden, setHidden] = useState(true);
+  const [showMnemonic, setShowMnemonic] = useState(false);
+  const timerRef = useRef<NodeJS.Timeout>();
 
   const { register, setValue, watch } = useFormContext<T>();
 
@@ -40,21 +55,62 @@ export const MnemonicAutocomplete = <T extends FieldValues, U extends Path<T>>({
     // if we found a single match there is no need in the suggestions
     (matching.length > 1 || matching[0] !== value);
 
+  const resetShowMnemonic = useCallback(() => {
+    setShowMnemonic(false);
+  }, []);
+
+  useEffect(() => {
+    if (showMnemonic) {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+
+      timerRef.current = setTimeout(resetShowMnemonic, MNEMONIC_VISIBILITY_TIMEOUT);
+    }
+
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  }, [showMnemonic, resetShowMnemonic]);
+
   return (
     <>
-      <Input
-        autoComplete="off"
-        data-testid="mnemonic-input"
-        onFocus={() => setHidden(false)}
-        placeholder="Type here..."
-        {...register(inputName, {
-          required: "Required",
-          validate,
-          onChange: () => setHidden(false),
-          onBlur: () => setHidden(true),
-        })}
-        {...inputProps}
-      />
+      <InputGroup height="full">
+        <Input
+          height="full"
+          autoComplete="off"
+          data-testid="mnemonic-input"
+          onFocus={() => setHidden(false)}
+          placeholder="Type here..."
+          type={showMnemonic ? "text" : "password"}
+          {...register(inputName, {
+            required: "Required",
+            validate,
+            onChange: () => setHidden(false),
+            onBlur: () => setHidden(true),
+          })}
+          {...inputProps}
+        />
+        {value && (
+          <InputRightElement width="fit-content" height="full">
+            <Button
+              minWidth="fit-content"
+              height="full"
+              paddingRight="12px"
+              onClick={() => setShowMnemonic(val => !val)}
+              variant="unstyled"
+            >
+              {showMnemonic ? (
+                <EyeSlashIcon color="currentColor" data-testid="eye-slash-icon" />
+              ) : (
+                <EyeIcon width="16.5px" color="currentColor" data-testid="eye-icon" />
+              )}
+            </Button>
+          </InputRightElement>
+        )}
+      </InputGroup>
       {showSuggestions && (
         <UnorderedList data-testid="suggestions" variant="suggestions" {...listProps}>
           {matching.map(word => (

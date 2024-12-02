@@ -46,6 +46,7 @@ export const partialOperationToOperation = (
   partialOperation: PartialTezosOperation,
   signer: ImplicitAccount
 ): Operation => {
+  // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
   switch (partialOperation.kind) {
     case TezosOperationType.TRANSACTION: {
       const { destination, amount, parameters } = partialOperation;

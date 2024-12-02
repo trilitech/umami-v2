@@ -73,7 +73,7 @@ describe("<ConnectOptions />", () => {
 
     await user.click(
       screen.getByRole("button", {
-        name: "Connect ledger",
+        name: "Connect Ledger",
       })
     );
 
