@@ -76,7 +76,7 @@
     "react-redux": "^9.1.2",
     "react-remove-scroll": "^2.6.0",
     "react-responsive-carousel": "^3.2.23",
-    "react-router": "^6.26.1",
+    "react-router": "^7.0.1",
     "react-router-dom": "^6.26.1",
     "react-test-renderer": "^18.3.1",
     "redux": "^5.0.1",
