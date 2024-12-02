@@ -27,6 +27,8 @@ mac:
       arch:
         - arm64
         - x64
+  entitlements: entitlements.mac.plist
+  entitlementsInherit: entitlements.mac.plist
 win:
   icon: icons/512x512.png
   target: appx
