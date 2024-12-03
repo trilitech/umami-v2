@@ -123,14 +123,18 @@ export const useSignPageHelpers = (
     ).catch(() => setEstimationFailed(true));
 
   const onSign = async (tezosToolkit: TezosToolkit) =>
-    handleAsyncAction(async () => {
-      const operation = await executeOperations(
-        { ...operations, estimates: form.watch("executeParams") },
-        tezosToolkit
-      );
-      await openWith(<SuccessStep hash={operation.opHash} />);
-      return operation;
-    });
+    handleAsyncAction(
+      async () => {
+        const operation = await executeOperations(
+          { ...operations, estimates: form.watch("executeParams") },
+          tezosToolkit
+        );
+        await openWith(<SuccessStep hash={operation.opHash} />);
+        return operation;
+      },
+      // Here we should show a generic error message, keeping the original error for errors list
+      { description: "Something went wrong, please try again." }
+    );
 
   return {
     fee: totalFee(form.watch("executeParams")),
