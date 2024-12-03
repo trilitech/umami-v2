@@ -1,5 +1,6 @@
 import { Box, Button, Center, Heading, Link, Text, VStack } from "@chakra-ui/react";
 import { useDynamicModalContext } from "@umami/components";
+import { useImplicitAccounts } from "@umami/state";
 
 import { AlertCircleIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
@@ -13,6 +14,8 @@ export const ErrorPage = () => {
   const { openWith: openModal } = useDynamicModalContext();
   const color = useColor();
   const saveBackup = useSaveBackup();
+
+  const isLoggedIn = useImplicitAccounts().length > 0;
 
   return (
     <Center height="100vh" padding="60px" backgroundSize="cover">
@@ -45,9 +48,11 @@ export const ErrorPage = () => {
           </Center>
 
           <VStack width="100%" spacing="16px">
-            <Button width="100%" onClick={saveBackup} size="lg" variant="primary">
-              Save Backup
-            </Button>
+            {isLoggedIn && (
+              <Button width="100%" onClick={saveBackup} size="lg" variant="primary">
+                Save Backup
+              </Button>
+            )}
 
             <Button width="full" size="lg" variant="secondary">
               <Link
@@ -61,14 +66,16 @@ export const ErrorPage = () => {
               </Link>
             </Button>
 
-            <Button
-              width="full"
-              onClick={() => openModal(<LogoutModal />)}
-              size="lg"
-              variant="alert"
-            >
-              Logout
-            </Button>
+            {isLoggedIn && (
+              <Button
+                width="full"
+                onClick={() => openModal(<LogoutModal />)}
+                size="lg"
+                variant="alert"
+              >
+                Logout
+              </Button>
+            )}
           </VStack>
         </VStack>
       </Box>
