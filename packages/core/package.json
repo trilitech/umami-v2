@@ -14,7 +14,7 @@
     }
   },
   "devDependencies": {
-    "@airgap/beacon-wallet": "^4.3.0",
+    "@airgap/beacon-wallet": "^4.3.1",
     "@babel/core": "^7.26.0",
     "@types/babel__core": "^7.20.5",
     "@types/eslint": "^8",
@@ -60,7 +60,7 @@
     ]
   },
   "dependencies": {
-    "@airgap/beacon-wallet": "^4.3.0",
+    "@airgap/beacon-wallet": "^4.3.1",
     "@taquito/local-forging": "^20.1.0",
     "@taquito/michel-codec": "^20.1.0",
     "@taquito/rpc": "^20.1.0",
