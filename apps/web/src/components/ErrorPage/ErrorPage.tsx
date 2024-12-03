@@ -67,7 +67,7 @@ export const ErrorPage = () => {
               size="lg"
               variant="alert"
             >
-              Off-board Wallet
+              Logout
             </Button>
           </VStack>
         </VStack>

@@ -23,23 +23,23 @@ describe("ErrorPage", () => {
   it("renders the error message and buttons", () => {
     render(<ErrorPage />);
 
-    expect(screen.getByText("Oops! Something went wrong!")).toBeInTheDocument();
+    expect(screen.getByText("Oops! Something went wrong!")).toBeVisible();
     expect(
       screen.getByText("Please refresh the app or use one of the following options:")
-    ).toBeInTheDocument();
+    ).toBeVisible();
     // Refresh link
-    expect(screen.getByRole("heading", { name: /Refresh/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Refresh" })).toBeVisible();
     // Action buttons
-    expect(screen.getByRole("button", { name: /Report Error/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /Save Backup/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /Off-board Wallet/i })).toBeInTheDocument();
+    const actionButtons = screen.getAllByRole("button");
+    expect(actionButtons.map(button => button.textContent)).toEqual(["Save Backup", "Report Error", "Off-board Wallet"]);
+    actionButtons.forEach(button => expect(button).toBeVisible());
   });
 
   it("calls saveBackup function when 'Save Backup' button is clicked", async () => {
     const user = userEvent.setup();
     render(<ErrorPage />);
 
-    const saveBackupButton = screen.getByRole("button", { name: /Save Backup/i });
+    const saveBackupButton = screen.getByRole("button", { name: "Save Backup" });
     await act(() => user.click(saveBackupButton));
 
     expect(mockSaveBackup).toHaveBeenCalledTimes(1);
@@ -49,7 +49,7 @@ describe("ErrorPage", () => {
     const user = userEvent.setup();
     render(<ErrorPage />);
 
-    const offboardButton = screen.getByRole("button", { name: /Off-board Wallet/i });
+    const offboardButton = screen.getByRole("button", { name: "Off-board Wallet" });
     await act(() => user.click(offboardButton));
 
     expect(mockOnOpenOffboarding).toHaveBeenCalledTimes(1);
@@ -58,7 +58,7 @@ describe("ErrorPage", () => {
   it("renders the feedback email link correctly", () => {
     render(<ErrorPage />);
 
-    const emailLink = screen.getByRole("link", { name: /Report Error/i });
+    const emailLink = screen.getByRole("link", { name: "Report Error" });
     expect(emailLink).toHaveAttribute(
       "href",
       expect.stringContaining("mailto:umami-support@trili.tech")
@@ -72,7 +72,7 @@ describe("ErrorPage", () => {
 
     render(<ErrorPage />);
 
-    const refreshLink = screen.getByRole("heading", { name: /Refresh/i });
+    const refreshLink = screen.getByRole("heading", { name: "Refresh" });
     await act(() => user.click(refreshLink));
 
     expect(window.location.href).toBe("/");
