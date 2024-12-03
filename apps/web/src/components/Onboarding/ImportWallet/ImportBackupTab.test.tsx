@@ -57,7 +57,10 @@ describe("<ImportBackupTab />", () => {
 
     await act(() => user.upload(screen.getByTestId("file-input"), file));
     await act(() => user.type(screen.getByLabelText("Password"), "wrong password"));
-    await act(() => user.click(screen.getByRole("button", { name: "Import Wallet" })));
+
+    await waitFor(async () => {
+      await act(() => user.click(screen.getByRole("button", { name: "Import Wallet" })));
+    });
 
     await waitFor(() => expect(mockToast).toHaveBeenCalledTimes(1));
     expect(mockToast).toHaveBeenCalledWith({

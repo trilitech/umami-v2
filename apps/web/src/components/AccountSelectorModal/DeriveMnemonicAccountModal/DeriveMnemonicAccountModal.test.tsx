@@ -67,7 +67,9 @@ describe("<DeriveMnemonicAccountModal />", () => {
     await act(() => user.type(screen.getByLabelText("Account name (Optional)"), newAccount.label));
     await act(() => user.click(screen.getByRole("button", { name: "Continue" })));
     await act(() => user.type(screen.getByLabelText("Password"), "test-password"));
-    await act(() => user.click(screen.getByRole("button", { name: "Submit" })));
+    await waitFor(async () => {
+      await act(() => user.click(screen.getByRole("button", { name: "Submit" })));
+    });
 
     expect(mockDeriveMnemonicAccount).toHaveBeenCalledWith({
       fingerPrint: account.seedFingerPrint,
