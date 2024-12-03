@@ -1,4 +1,5 @@
 import { Box, Button, Center, Heading, Link, VStack } from "@chakra-ui/react";
+import { useImplicitAccounts } from "@umami/state";
 
 import { useOffboardingModal } from "./Offboarding/useOffboardingModal";
 import { ModalContentWrapper } from "./Onboarding/ModalContentWrapper";
@@ -17,6 +18,8 @@ const refresh = () => {
 export const ErrorPage = () => {
   const { modalElement: OffboardingModal, onOpen: onOpenOffboardingModal } = useOffboardingModal();
   const { content: saveBackupModal, onOpen: saveBackup } = useSaveBackup();
+
+  const isLoggedIn = useImplicitAccounts().length > 0;
 
   return (
     <Center height="100vh" padding="60px" backgroundImage={BackgroundImage} backgroundSize="cover">
@@ -52,16 +55,18 @@ export const ErrorPage = () => {
               </Center>
             </Link>
 
-            <Button
-              width="100%"
-              borderColor={colors.gray[600]}
-              borderRadius="4px"
-              onClick={saveBackup}
-              size="lg"
-              variant="tertiary"
-            >
-              Save Backup
-            </Button>
+            {isLoggedIn && (
+              <Button
+                width="100%"
+                borderColor={colors.gray[600]}
+                borderRadius="4px"
+                onClick={saveBackup}
+                size="lg"
+                variant="tertiary"
+              >
+                Save Backup
+              </Button>
+            )}
 
             <Button width="100%" borderRadius="4px" size="lg">
               <Link
@@ -75,15 +80,17 @@ export const ErrorPage = () => {
               </Link>
             </Button>
 
-            <Button
-              width="100%"
-              borderRadius="4px"
-              onClick={onOpenOffboardingModal}
-              size="lg"
-              variant="warning"
-            >
-              Off-board Wallet
-            </Button>
+            {isLoggedIn && (
+              <Button
+                width="100%"
+                borderRadius="4px"
+                onClick={onOpenOffboardingModal}
+                size="lg"
+                variant="warning"
+              >
+                Off-board Wallet
+              </Button>
+            )}
           </VStack>
         </ModalContentWrapper>
       </Box>

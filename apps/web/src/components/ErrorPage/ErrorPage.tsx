@@ -1,10 +1,12 @@
 import { Box, Button, Center, Heading, Link, Text, VStack } from "@chakra-ui/react";
 import { useDynamicModalContext } from "@umami/components";
+import { useImplicitAccounts } from "@umami/state";
 
 import { AlertCircleIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
 import { LogoutModal } from "../Menu/LogoutModal";
 import { useSaveBackup } from "../Menu/useSaveBackup";
+import { useHasVerifiedAccounts } from "../Onboarding/VerificationFlow";
 
 const feedbackEmailBodyTemplate =
   "What is it about? (if a bug report please consider including your account address) %0A PLEASE FILL %0A%0A What is the feedback? %0A PLEASE FILL";
@@ -13,6 +15,9 @@ export const ErrorPage = () => {
   const { openWith: openModal } = useDynamicModalContext();
   const color = useColor();
   const saveBackup = useSaveBackup();
+
+  const isLoggedIn = useImplicitAccounts().length > 0;
+  const isVerified = useHasVerifiedAccounts();
 
   return (
     <Center height="100vh" padding="60px" backgroundSize="cover">
@@ -45,9 +50,11 @@ export const ErrorPage = () => {
           </Center>
 
           <VStack width="100%" spacing="16px">
-            <Button width="100%" onClick={saveBackup} size="lg" variant="primary">
-              Save Backup
-            </Button>
+            {isVerified && (
+              <Button width="100%" onClick={saveBackup} size="lg" variant="primary">
+                Save Backup
+              </Button>
+            )}
 
             <Button width="full" size="lg" variant="secondary">
               <Link
@@ -61,14 +68,16 @@ export const ErrorPage = () => {
               </Link>
             </Button>
 
-            <Button
-              width="full"
-              onClick={() => openModal(<LogoutModal />)}
-              size="lg"
-              variant="alert"
-            >
-              Logout
-            </Button>
+            {isLoggedIn && (
+              <Button
+                width="full"
+                onClick={() => openModal(<LogoutModal />)}
+                size="lg"
+                variant="alert"
+              >
+                Logout
+              </Button>
+            )}
           </VStack>
         </VStack>
       </Box>

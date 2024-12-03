@@ -8,7 +8,7 @@ import { BrowserRouter } from "react-router-dom";
 import { PersistGate } from "redux-persist/integration/react";
 
 import { App } from "./components/App";
-import { ErrorPage } from "./components/ErrorPage/ErrorPage";
+import { ErrorPage } from "./components/ErrorPage";
 import { ReactQueryProvider } from "./providers/ReactQueryProvider";
 import { ReduxStore } from "./providers/ReduxStore";
 import { UmamiTheme } from "./providers/UmamiTheme";
