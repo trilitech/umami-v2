@@ -68,12 +68,15 @@ export const mainStoreMigrations = {
   9: (state: any) =>
     produce(state, (draft: any) => {
       if (draft.networks.current.name === "mainnet") {
-        draft.networks.current.rpcUrl = "https://mainnet.ecadinfra.com";
+        draft.networks.current.rpcUrl = "https://mainnet.tezos.ecadinfra.com";
+      } else if (draft.networks.current.name === "ghostnet") {
+        draft.networks.current.rpcUrl = "https://ghostnet.tezos.ecadinfra.com";
       }
       for (const network of draft.networks.available) {
         if (network.name === "mainnet") {
-          network.rpcUrl = "https://mainnet.ecadinfra.com";
-          break;
+          network.rpcUrl = "https://mainnet.tezos.ecadinfra.com";
+        } else if (network.name === "ghostnet") {
+          network.rpcUrl = "https://ghostnet.tezos.ecadinfra.com";
         }
       }
     }),

@@ -1,5 +1,6 @@
 import { mockLedgerAccount, mockMnemonicAccount, mockSecretKeyAccount } from "@umami/core";
 import { mockImplicitAddress } from "@umami/tezos";
+import { produce } from "immer";
 
 import { accountsMigrations, mainStoreMigrations } from "./migrations";
 
@@ -95,6 +96,66 @@ describe("migrations", () => {
       };
       expect(mainStoreMigrations[7](initialState)).toEqual({
         assets: { accountStates: {}, block: { level: 5 } },
+      });
+    });
+
+    describe("9", () => {
+      const migration = mainStoreMigrations[9];
+
+      it("should update rpcUrl for mainnet", () => {
+        const initialState = {
+          networks: {
+            current: { name: "mainnet", rpcUrl: "" },
+            available: [
+              { name: "mainnet", rpcUrl: "" },
+              { name: "ghostnet", rpcUrl: "" },
+              { name: "testnet", rpcUrl: "" },
+            ],
+          },
+        };
+
+        const expectedState = {
+          networks: {
+            current: { name: "mainnet", rpcUrl: "https://mainnet.tezos.ecadinfra.com" },
+            available: [
+              { name: "mainnet", rpcUrl: "https://mainnet.tezos.ecadinfra.com" },
+              { name: "ghostnet", rpcUrl: "https://ghostnet.tezos.ecadinfra.com" },
+              { name: "testnet", rpcUrl: "" }, // Unchanged
+            ],
+          },
+        };
+
+        const migratedState = produce(initialState, (draft: any) => migration(draft));
+
+        expect(migratedState).toEqual(expectedState);
+      });
+
+      it("should update rpcUrl for ghostnet", () => {
+        const initialState = {
+          networks: {
+            current: { name: "ghostnet", rpcUrl: "" },
+            available: [
+              { name: "mainnet", rpcUrl: "" },
+              { name: "ghostnet", rpcUrl: "" },
+              { name: "testnet", rpcUrl: "" },
+            ],
+          },
+        };
+
+        const expectedState = {
+          networks: {
+            current: { name: "ghostnet", rpcUrl: "https://ghostnet.tezos.ecadinfra.com" },
+            available: [
+              { name: "mainnet", rpcUrl: "https://mainnet.tezos.ecadinfra.com" },
+              { name: "ghostnet", rpcUrl: "https://ghostnet.tezos.ecadinfra.com" },
+              { name: "testnet", rpcUrl: "" }, // Unchanged
+            ],
+          },
+        };
+
+        const migratedState = produce(initialState, (draft: any) => migration(draft));
+
+        expect(migratedState).toEqual(expectedState);
       });
     });
   });
