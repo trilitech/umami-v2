@@ -1,5 +1,5 @@
 import { CopyButton } from "./CopyButton";
-import { act, render, screen, userEvent } from "../../testUtils";
+import { act, render, screen, userEvent, waitFor } from "../../testUtils";
 
 describe("<CopyButton />", () => {
   it("copies the value to the clipboard", async () => {
@@ -8,7 +8,9 @@ describe("<CopyButton />", () => {
 
     render(<CopyButton value="hello">Copy</CopyButton>);
 
-    await act(() => user.click(screen.getByTestId("copy-button")));
+    await waitFor(async () => {
+      await act(() => user.click(screen.getByTestId("copy-button")));
+    });
 
     expect(navigator.clipboard.writeText).toHaveBeenCalledWith("hello");
   });

@@ -4,7 +4,7 @@ import {
   type PermissionRequestOutput,
   PermissionScope,
 } from "@airgap/beacon-wallet";
-import { fireEvent } from "@testing-library/react";
+import { fireEvent, waitFor } from "@testing-library/react";
 import { mockMnemonicAccount } from "@umami/core";
 import { type UmamiStore, WalletClient, addTestAccounts, makeStore } from "@umami/state";
 
@@ -85,7 +85,9 @@ describe("<PermissionRequestModal />", () => {
     // grant permission
     const grantButton = screen.getByRole("button", { name: "Allow" });
     expect(grantButton).toBeEnabled();
-    await act(() => user.click(grantButton));
+    await waitFor(async () => {
+      await act(() => user.click(grantButton));
+    });
 
     expect(store.getState().beacon).toEqual({
       [SENDER_ID]: {

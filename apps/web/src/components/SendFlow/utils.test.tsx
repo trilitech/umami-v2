@@ -58,7 +58,11 @@ describe("SendFlow utils", () => {
       render(<TestComponent onSubmit={mockSingle} />);
 
       await waitFor(() => expect(screen.getByText("Preview")).toBeEnabled());
-      await act(() => user.click(screen.getByText("Preview")));
+
+      await waitFor(async () => {
+        await act(() => user.click(screen.getByText("Preview")));
+      });
+
       expect(mockSingle).toHaveBeenCalled();
     });
   });

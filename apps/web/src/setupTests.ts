@@ -6,6 +6,45 @@ import { mockToast } from "@umami/state";
 import { mockLocalStorage } from "@umami/test-utils";
 import { setupJestCanvasMock } from "jest-canvas-mock";
 
+const writeText = jest.fn();
+
+Object.assign(navigator, {
+  clipboard: {
+    writeText,
+  },
+});
+
+const XMLHttpRequestMock = jest.fn(() => ({
+  open: jest.fn(),
+  send: jest.fn(),
+  setRequestHeader: jest.fn(),
+  readyState: 4,
+  status: 200,
+  responseText: "",
+  onload: jest.fn(),
+  onerror: jest.fn(),
+  ontimeout: jest.fn(),
+  upload: {
+    onprogress: jest.fn(),
+  },
+}));
+
+Object.defineProperties(XMLHttpRequestMock, {
+  UNSENT: { value: 0 },
+  OPENED: { value: 1 },
+  HEADERS_RECEIVED: { value: 2 },
+  LOADING: { value: 3 },
+  DONE: { value: 4 },
+});
+
+XMLHttpRequestMock.prototype = {
+  open: jest.fn(),
+  send: jest.fn(),
+  setRequestHeader: jest.fn(),
+};
+
+global.XMLHttpRequest = XMLHttpRequestMock as unknown as typeof XMLHttpRequest;
+
 const mockIntersectionObserver = class MockIntersectionObserver {
   callback: jest.Mock;
   options: jest.Mock;
@@ -30,14 +69,6 @@ jest.doMock("@chakra-ui/react", () => ({
   useColorMode: () => ({ colorMode: "light", toggleColorMode: jest.fn() }),
 }));
 
-Object.defineProperties(global, {
-  crypto: { value: webcrypto, writable: true },
-  TextDecoder: { value: TextDecoder, writable: true },
-  TextEncoder: { value: TextEncoder, writable: true },
-  IntersectionObserver: { value: mockIntersectionObserver, writable: true, configurable: true },
-  fetch: { value: jest.fn(), writable: true },
-});
-
 jest.mock("./utils/persistor", () => ({
   pause: jest.fn(),
 }));
@@ -48,6 +79,18 @@ beforeEach(() => {
   Object.defineProperty(window, "localStorage", {
     value: mockLocalStorage(),
   });
+
+  Object.defineProperties(global, {
+    crypto: { value: webcrypto, writable: true },
+    TextDecoder: { value: TextDecoder, writable: true },
+    TextEncoder: { value: TextEncoder, writable: true },
+    IntersectionObserver: { value: mockIntersectionObserver, writable: true, configurable: true },
+    fetch: { value: jest.fn(), writable: true },
+  });
+});
+
+afterEach(() => {
+  jest.clearAllMocks();
 });
 
 // TODO: fix act warnings
