@@ -8,6 +8,7 @@ import {
   ModalContent,
   ModalFooter,
   Text,
+  useBreakpointValue,
   VStack,
 } from "@chakra-ui/react";
 import { type EstimatedAccountOperations, type FA2Transfer, type NFTBalance } from "@umami/core";
@@ -27,6 +28,7 @@ export const SignPage = (props: { nft: NFTBalance; operations: EstimatedAccountO
   const { fee, operations, estimationFailed, isLoading, form, signer, onSign } =
     useSignPageHelpers(initialOperations);
   const color = useColor();
+  const hideBalance = useBreakpointValue({ base: true, md: false });
 
   const { recipient, amount } = operations.operations[0] as FA2Transfer;
 
@@ -52,11 +54,11 @@ export const SignPage = (props: { nft: NFTBalance; operations: EstimatedAccountO
               <Divider />
               <FormControl>
                 <FormLabel>From</FormLabel>
-                <AddressTile address={operations.sender.address} />
+                <AddressTile address={operations.sender.address} hideBalance={hideBalance} />
               </FormControl>
               <FormControl>
                 <FormLabel>To</FormLabel>
-                <AddressTile address={recipient} />
+                <AddressTile address={recipient} hideBalance={hideBalance} />
               </FormControl>
             </VStack>
           </ModalBody>
