@@ -12,18 +12,21 @@ import { useDispatch } from "react-redux";
 
 import { useAppSelector } from "./useAppSelector";
 import { WalletClient, parsePeerInfo } from "../beacon";
-import { type DAppConnectionInfo, beaconActions } from "../slices";
+import { type DAppBeaconConnectionInfo, beaconActions } from "../slices";
+
 /**
  * Returns connected account pkh & network by a given dAppId.
  *
  * @param dAppId - generated from dApp public key.
  */
-export const useGetConnectionInfo = (dAppId: string): DAppConnectionInfo | undefined => {
+export const useGetBeaconConnectionInfo = (
+  dAppId: string
+): DAppBeaconConnectionInfo | undefined => {
   const beaconConnections = useAppSelector(s => s.beacon);
   return beaconConnections[dAppId];
 };
 
-export const useGetPeersForAccounts = () => {
+export const useGetBeaconPeersForAccounts = () => {
   const beaconConnections = useAppSelector(s => s.beacon);
 
   return (pkhs: RawPkh[]) =>
@@ -37,7 +40,7 @@ export const useGetPeersForAccounts = () => {
 /**
  * Returns function for removing all connections from {@link beaconSlice}.
  */
-export const useResetConnections = () => {
+export const useResetBeaconConnections = () => {
   const dispatch = useDispatch();
   return () => dispatch(beaconActions.reset());
 };
@@ -45,7 +48,7 @@ export const useResetConnections = () => {
 /**
  * Returns function for adding connection info to {@link beaconSlice}.
  */
-export const useAddConnection = () => {
+export const useAddBeaconConnection = () => {
   const dispatch = useDispatch();
   return (dAppId: string, accountPkh: RawPkh, networkType: NetworkType) =>
     dispatch(beaconActions.addConnection({ dAppId, accountPkh, networkType }));
@@ -54,17 +57,17 @@ export const useAddConnection = () => {
 /**
  * Returns function for removing connection from {@link beaconSlice}.
  */
-export const useRemoveConnection = () => {
+export const useRemoveBeaconConnection = () => {
   const dispatch = useDispatch();
   return (dAppId: string) => dispatch(beaconActions.removeConnection(dAppId));
 };
 
-export const usePeers = () => {
+export const useBeaconPeers = () => {
   const query = useQuery({
     queryKey: ["beaconPeers"],
     queryFn: async () => {
-      const peers = await WalletClient.getPeers();
-      return peers as ExtendedPeerInfo[];
+      const beaconPeers: ExtendedPeerInfo[] = (await WalletClient.getPeers()) as ExtendedPeerInfo[];
+      return beaconPeers;
     },
     initialData: [],
   });
@@ -72,9 +75,9 @@ export const usePeers = () => {
   return { peers: query.data, refresh: query.refetch };
 };
 
-export const useRemovePeer = () => {
-  const { refresh } = usePeers();
-  const removeConnectionFromBeaconSlice = useRemoveConnection();
+export const useRemoveBeaconPeer = () => {
+  const { refresh } = useBeaconPeers();
+  const removeConnectionFromBeaconSlice = useRemoveBeaconConnection();
 
   return (peerInfo: ExtendedPeerInfo) =>
     WalletClient.removePeer(peerInfo as ExtendedP2PPairingResponse, true)
@@ -82,23 +85,23 @@ export const useRemovePeer = () => {
       .finally(() => void refresh());
 };
 
-export const useRemovePeerBySenderId = () => {
-  const { peers } = usePeers();
-  const removePeer = useRemovePeer();
+export const useRemoveBeaconPeerBySenderId = () => {
+  const { peers } = useBeaconPeers();
+  const removePeer = useRemoveBeaconPeer();
 
   return (senderId: string) =>
     Promise.all(peers.filter(peerInfo => senderId === peerInfo.senderId).map(removePeer));
 };
 
-export const useRemovePeersByAccounts = () => {
-  const getPeersForAccounts = useGetPeersForAccounts();
-  const removePeerBySenderId = useRemovePeerBySenderId();
+export const useRemoveBeaconPeersByAccounts = () => {
+  const getPeersForAccounts = useGetBeaconPeersForAccounts();
+  const removePeerBySenderId = useRemoveBeaconPeerBySenderId();
 
   return (pkhs: RawPkh[]) => Promise.all(getPeersForAccounts(pkhs).map(removePeerBySenderId));
 };
 
 export const useAddPeer = () => {
-  const { refresh } = usePeers();
+  const { refresh } = useBeaconPeers();
   const toast = useToast();
 
   return (payload: string) =>

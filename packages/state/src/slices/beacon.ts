@@ -3,12 +3,12 @@ import { createSlice } from "@reduxjs/toolkit";
 import { type RawPkh } from "@umami/tezos";
 import { fromPairs } from "lodash";
 
-export type DAppConnectionInfo = {
+export type DAppBeaconConnectionInfo = {
   accountPkh: RawPkh;
   networkType: NetworkType;
 };
 
-type State = Record<string, DAppConnectionInfo>;
+type State = Record<string, DAppBeaconConnectionInfo>;
 
 export const beaconInitialState: State = {};
 

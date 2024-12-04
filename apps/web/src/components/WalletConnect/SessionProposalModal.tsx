@@ -16,7 +16,12 @@ import {
 } from "@chakra-ui/react";
 import { type WalletKitTypes } from "@reown/walletkit";
 import { useDynamicModalContext } from "@umami/components";
-import { useAsyncActionHandler, useGetImplicitAccount, walletKit } from "@umami/state";
+import {
+  useAsyncActionHandler,
+  useGetImplicitAccount,
+  useToggleWcPeerListUpdated,
+  walletKit,
+} from "@umami/state";
 import { type SessionTypes } from "@walletconnect/types";
 import { buildApprovedNamespaces, getSdkError } from "@walletconnect/utils";
 import { FormProvider, useForm } from "react-hook-form";
@@ -35,6 +40,7 @@ export const SessionProposalModal = ({
   network: NetworkType;
 }) => {
   const getAccount = useGetImplicitAccount();
+  const toggleWcPeerListUpdated = useToggleWcPeerListUpdated();
   const color = useColor();
 
   const { onClose } = useDynamicModalContext();
@@ -71,6 +77,7 @@ export const SessionProposalModal = ({
         sessionProperties: {},
       });
       console.log("WC session approved", session);
+      toggleWcPeerListUpdated();
       onClose();
     });
 

@@ -6,6 +6,7 @@ import {
   addTestAccount,
   makeStore,
   useDownloadBackupFile,
+  walletKit,
 } from "@umami/state";
 
 import { AddressBookMenu } from "./AddressBookMenu/AddressBookMenu";
@@ -30,6 +31,17 @@ jest.mock("@chakra-ui/system", () => ({
 jest.mock("@umami/state", () => ({
   ...jest.requireActual("@umami/state"),
   useDownloadBackupFile: jest.fn(),
+  walletKit: {
+    core: {},
+    metadata: {
+      name: "AppMenu test",
+      description: "Umami Wallet with WalletConnect",
+      url: "https://umamiwallet.com",
+      icons: ["https://umamiwallet.com/assets/favicon-32-45gq0g6M.png"],
+    },
+    getActiveSessions: jest.fn(),
+  },
+  createWalletKit: jest.fn(),
 }));
 
 let store: UmamiStore;
@@ -71,6 +83,7 @@ describe("<Menu />", () => {
     ])("opens %label menu correctly", async (label, Component) => {
       const user = userEvent.setup();
       const { openWith } = dynamicDrawerContextMock;
+      jest.spyOn(walletKit, "getActiveSessions").mockImplementation(() => ({}));
 
       await renderInDrawer(<Menu />, store);
 
