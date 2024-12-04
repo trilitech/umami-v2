@@ -1,7 +1,7 @@
 /* istanbul ignore file */
 import { DynamicModalContext, useDynamicModal } from "@umami/components";
 import { useDataPolling } from "@umami/data-polling";
-import { WalletClient, useImplicitAccounts, useResetConnections } from "@umami/state";
+import { WalletClient, useImplicitAccounts, useResetBeaconConnections } from "@umami/state";
 import { noop } from "lodash";
 import { useEffect } from "react";
 import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
@@ -59,7 +59,7 @@ const LoggedInRouterWithPolling = () => {
 };
 
 const LoggedOutRouter = () => {
-  const resetBeaconConnections = useResetConnections();
+  const resetBeaconConnections = useResetBeaconConnections();
 
   useEffect(() => {
     WalletClient.destroy().then(resetBeaconConnections).catch(noop);

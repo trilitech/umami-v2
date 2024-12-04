@@ -8,7 +8,7 @@
       "headers": [
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com; script-src 'self'; object-src 'none'; connect-src 'self' https://umamiwallet.com https://www.googleapis.com https://graph.facebook.com https://kukai.eu.auth0.com https://fnd.web3auth.io https://*.node.web3auth.io https://*.tor.us https://prod.tcinfra.net https://api.mainnet.tzkt.io https://vitals.vercel-insights.com; img-src 'self' data:; frame-ancestors 'self' https://kanvas-poa.vercel.app https://kanvas-poa-git-poa-release-trili-tech.vercel.app"
+          "value": "default-src 'self'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com; script-src 'self'; object-src 'none'; connect-src 'self' https://umamiwallet.com https://www.googleapis.com https://graph.facebook.com https://mainnet.tezos.ecadinfra.com https://kukai.eu.auth0.com https://fnd.web3auth.io https://*.node.web3auth.io https://*.tor.us https://prod.tcinfra.net https://api.mainnet.tzkt.io https://vitals.vercel-insights.com; img-src 'self' data:; frame-ancestors 'self' https://kanvas-poa.vercel.app https://kanvas-poa-git-poa-release-trili-tech.vercel.app"
         }
       ]
     }

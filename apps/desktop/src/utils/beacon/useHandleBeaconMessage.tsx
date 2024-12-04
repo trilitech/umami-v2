@@ -11,7 +11,7 @@ import {
   useAsyncActionHandler,
   useFindNetwork,
   useGetOwnedAccountSafe,
-  useRemovePeerBySenderId,
+  useRemoveBeaconPeerBySenderId,
 } from "@umami/state";
 import { type Network } from "@umami/tezos";
 
@@ -23,7 +23,7 @@ import { BeaconSignPage } from "../../components/SendFlow/Beacon/BeaconSignPage"
 /**
  * @returns a function that handles a beacon message and opens a modal with the appropriate content
  *
- * For operation requests it will also try to convert the operation(s) to our {@link Operation} format,
+ * For operation requests it will also try to convert the operation(s)n to our {@link Operation} format,
  * estimate the fee and open the BeaconSignPage only if it succeeds
  */
 export const useHandleBeaconMessage = () => {
@@ -31,7 +31,7 @@ export const useHandleBeaconMessage = () => {
   const { handleAsyncAction } = useAsyncActionHandler();
   const getAccount = useGetOwnedAccountSafe();
   const findNetwork = useFindNetwork();
-  const removePeer = useRemovePeerBySenderId();
+  const removePeer = useRemoveBeaconPeerBySenderId();
 
   // we should confirm that we support the network that the beacon request is coming from
   const checkNetwork = ({

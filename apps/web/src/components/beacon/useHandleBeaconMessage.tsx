@@ -11,7 +11,7 @@ import {
   useAsyncActionHandler,
   useFindNetwork,
   useGetOwnedAccountSafe,
-  useRemovePeerBySenderId,
+  useRemoveBeaconPeerBySenderId,
 } from "@umami/state";
 import { type Network } from "@umami/tezos";
 
@@ -31,7 +31,7 @@ export const useHandleBeaconMessage = () => {
   const { handleAsyncAction } = useAsyncActionHandler();
   const getAccount = useGetOwnedAccountSafe();
   const findNetwork = useFindNetwork();
-  const removePeer = useRemovePeerBySenderId();
+  const removePeer = useRemoveBeaconPeerBySenderId();
 
   // we should confirm that we support the network that the beacon request is coming from
   const checkNetwork = ({

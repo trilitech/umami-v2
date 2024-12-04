@@ -2,7 +2,7 @@ import { type Network } from "./types";
 
 export const MAINNET: Network = {
   name: "mainnet",
-  rpcUrl: "https://prod.tcinfra.net/rpc/mainnet/",
+  rpcUrl: "https://mainnet.tezos.ecadinfra.com",
   tzktApiUrl: "https://api.mainnet.tzkt.io",
   tzktExplorerUrl: "https://tzkt.io",
   buyTezUrl: "https://widget.wert.io",
@@ -10,7 +10,7 @@ export const MAINNET: Network = {
 
 export const GHOSTNET: Network = {
   name: "ghostnet",
-  rpcUrl: "https://ghostnet.ecadinfra.com",
+  rpcUrl: "https://ghostnet.tezos.ecadinfra.com",
   tzktApiUrl: "https://api.ghostnet.tzkt.io",
   tzktExplorerUrl: "https://ghostnet.tzkt.io",
   buyTezUrl: "https://faucet.ghostnet.teztnets.com/",

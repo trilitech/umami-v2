@@ -45,7 +45,9 @@ describe("<AccountBalance />", () => {
 
     expect(button).toBeVisible();
 
-    await act(() => user.click(button));
+    await waitFor(async () => {
+      await act(() => user.click(button));
+    });
 
     await waitFor(() =>
       expect(

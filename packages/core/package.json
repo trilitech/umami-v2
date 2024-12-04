@@ -14,7 +14,7 @@
     }
   },
   "devDependencies": {
-    "@airgap/beacon-wallet": "^4.3.0",
+    "@airgap/beacon-wallet": "^4.3.1",
     "@babel/core": "^7.26.0",
     "@types/babel__core": "^7.20.5",
     "@types/eslint": "^8",
@@ -32,7 +32,7 @@
     "prettier": "^3.3.3",
     "rimraf": "^6.0.1",
     "tsup": "^8.3.5",
-    "typescript": "^5.5.4"
+    "typescript": "^5.7.2"
   },
   "scripts": {
     "build": "tsup-node --dts",
@@ -60,7 +60,7 @@
     ]
   },
   "dependencies": {
-    "@airgap/beacon-wallet": "^4.3.0",
+    "@airgap/beacon-wallet": "^4.3.1",
     "@taquito/local-forging": "^20.1.0",
     "@taquito/michel-codec": "^20.1.0",
     "@taquito/rpc": "^20.1.0",

@@ -1,6 +1,6 @@
 import { type Account, type ImplicitAccount } from "@umami/core";
 
-import { useRemovePeersByAccounts } from "./beacon";
+import { useRemoveBeaconPeersByAccounts } from "./beacon";
 import { useCurrentAccount, useImplicitAccounts } from "./getAccountData";
 import { useMultisigAccounts } from "./multisig";
 import { useAppDispatch } from "./useAppDispatch";
@@ -45,7 +45,7 @@ export const useRemoveDependenciesAndMultisigs = () => {
  */
 const useRemoveAccountsDependencies = () => {
   const dispatch = useAppDispatch();
-  const removePeersByAccounts = useRemovePeersByAccounts();
+  const removePeersByAccounts = useRemoveBeaconPeersByAccounts();
   const currentAccount = useCurrentAccount();
   const implicitAccounts = useImplicitAccounts();
 

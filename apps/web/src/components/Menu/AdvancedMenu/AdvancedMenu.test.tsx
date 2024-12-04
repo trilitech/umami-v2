@@ -2,7 +2,13 @@ import { mockImplicitAccount } from "@umami/core";
 import { type UmamiStore, accountsActions, addTestAccount, makeStore } from "@umami/state";
 
 import { AdvancedMenu } from "./AdvancedMenu";
-import { dynamicDrawerContextMock, renderInDrawer, screen, userEvent } from "../../../testUtils";
+import {
+  dynamicDrawerContextMock,
+  renderInDrawer,
+  screen,
+  userEvent,
+  waitFor,
+} from "../../../testUtils";
 import { ChangePasswordMenu } from "../ChangePasswordMenu/ChangePasswordMenu";
 import { ErrorLogsMenu } from "../ErrorLogsMenu/ErrorLogsMenu";
 import { NetworkMenu } from "../NetworkMenu/NetworkMenu";
@@ -35,7 +41,9 @@ describe("<AdvancedMenu />", () => {
 
       await renderInDrawer(<AdvancedMenu />, store);
 
-      await userEvent.click(screen.getByText(label));
+      await waitFor(async () => {
+        await userEvent.click(screen.getByText(label));
+      });
       expect(openWith).toHaveBeenCalledWith(<Component />);
     });
   });
