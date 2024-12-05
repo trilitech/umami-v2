@@ -1,3 +1,7 @@
 packages:
   - "packages/**"
   - "apps/**"
+never-hoist:
+  - react
+  - react-native
+  - expo
