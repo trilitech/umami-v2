@@ -24,7 +24,12 @@ describe("Errors reducer", () => {
   test("errors rotate after 100", () => {
     for (let i = 0; i <= 100; i++) {
       store.dispatch(
-        add({ timestamp: "timestamp", description: `error ${i}`, stacktrace: "stacktrace" })
+        add({
+          timestamp: "timestamp",
+          description: `error ${i}`,
+          stacktrace: "stacktrace",
+          technicalDetails: "technicalDetails",
+        })
       );
     }
 

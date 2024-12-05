@@ -58,9 +58,11 @@ export const ErrorLogsMenu = () => {
                     <Text color={color("700")} size="sm">
                       {errorLog.timestamp}
                     </Text>
-                    <Text marginTop="12px" color={color("700")} size="sm">
-                      {errorLog.technicalDetails}
-                    </Text>
+                    {errorLog.technicalDetails && (
+                      <Text marginTop="12px" color={color("700")} size="sm">
+                        {errorLog.technicalDetails}
+                      </Text>
+                    )}
                   </Flex>
                 </Flex>
               </Box>

@@ -34,21 +34,33 @@ describe("estimate", () => {
       );
     });
 
-    it("catches subtraction_underflow", () => {
-      const res = handleTezError(new Error("subtraction_underflow"));
-      expect(res).toEqual("Insufficient balance, please make sure you have enough funds.");
-    });
+    describe("handleTezError", () => {
+      it("catches subtraction_underflow", () => {
+        const res = handleTezError(new Error("subtraction_underflow"));
+        expect(res).toBe("Insufficient balance, please make sure you have enough funds.");
+      });
 
-    it("catches non_existing_contract", () => {
-      const res = handleTezError(new Error("contract.non_existing_contract"));
-      expect(res).toEqual(
-        "Contract does not exist, please check if the correct network is selected."
-      );
-    });
+      it("catches non_existing_contract", () => {
+        const res = handleTezError(new Error("contract.non_existing_contract"));
+        expect(res).toBe(
+          "Contract does not exist, please check if the correct network is selected."
+        );
+      });
 
-    it("returns the original error if not known", () => {
-      const err = new Error("unknown error");
-      expect(handleTezError(err)).toEqual("unknown error");
+      it("catches staking_to_delegate_that_refuses_external_staking", () => {
+        const res = handleTezError(new Error("staking_to_delegate_that_refuses_external_staking"));
+        expect(res).toBe("The baker you are trying to stake to does not accept external staking.");
+      });
+
+      it("catches empty_implicit_delegated_contract", () => {
+        const res = handleTezError(new Error("empty_implicit_delegated_contract"));
+        expect(res).toBe("Emptying an implicit delegated account is not allowed.");
+      });
+
+      it("returns undefined for unknown errors", () => {
+        const err = new Error("unknown error");
+        expect(handleTezError(err)).toBeUndefined();
+      });
     });
   });
 

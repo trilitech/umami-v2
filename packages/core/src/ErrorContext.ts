@@ -8,7 +8,6 @@ export type ErrorContext = {
 };
 
 export const getErrorContext = (error: any): ErrorContext => {
-  console.log({ error });
   let description =
     "Something went wrong. Please try again or contact support if the issue persists.";
   let technicalDetails;

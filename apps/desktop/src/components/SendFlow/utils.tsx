@@ -157,22 +157,17 @@ export const useSignPageHelpers = (
     ).catch(() => setEstimationFailed(true));
 
   const onSign = async (tezosToolkit: TezosToolkit) =>
-    handleAsyncAction(
-      async () => {
-        const operation = await executeOperations(
-          { ...operations, estimates: form.watch("executeParams") },
-          tezosToolkit
-        );
-        if (mode === "batch") {
-          clearBatch(operations.sender);
-        }
-        await openWith(<SuccessStep hash={operation.opHash} />);
-        return operation;
-      },
-      {
-        description: "Something went wrong, please try again.",
+    handleAsyncAction(async () => {
+      const operation = await executeOperations(
+        { ...operations, estimates: form.watch("executeParams") },
+        tezosToolkit
+      );
+      if (mode === "batch") {
+        clearBatch(operations.sender);
       }
-    );
+      await openWith(<SuccessStep hash={operation.opHash} />);
+      return operation;
+    });
 
   return {
     fee: totalFee(form.watch("executeParams")),
