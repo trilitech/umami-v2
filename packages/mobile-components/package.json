@@ -11,8 +11,10 @@
   ],
   "exports": {
     ".": {
-      "@umami/source": "./src/index.ts"
-    }
+      "default": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./*": "./dist/*"
   },
   "scripts": {
     "build": "tsc",
