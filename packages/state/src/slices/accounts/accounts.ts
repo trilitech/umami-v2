@@ -9,6 +9,7 @@ import {
 } from "@umami/core";
 import { type EncryptedData } from "@umami/crypto";
 import { type RawPkh } from "@umami/tezos";
+import { CustomError } from "@umami/utils";
 import { remove } from "lodash";
 
 import { type AccountsState } from "./State";
@@ -81,10 +82,10 @@ export const accountsSlice = createSlice({
     ) => {
       const { account, newName } = payload;
       if (newName.length === 0) {
-        throw new Error("Cannot rename account to an empty name.");
+        throw new CustomError("Cannot rename account to an empty name.");
       }
       if (state.items.find(a => a.label === newName)) {
-        throw new Error(
+        throw new CustomError(
           `Cannot rename account ${account.address.pkh} to ${newName} since the name already exists.`
         );
       }
@@ -153,7 +154,7 @@ const concatUnique = (existingAccounts: ImplicitAccount[], newAccounts: Implicit
         existingAccount => existingAccount.address.pkh === newAccount.address.pkh
       )
     ) {
-      throw new Error(
+      throw new CustomError(
         `Can't add account with address ${newAccount.address.pkh} because it already exists.`
       );
     }

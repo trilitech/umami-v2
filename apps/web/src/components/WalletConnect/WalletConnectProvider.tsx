@@ -12,6 +12,7 @@ import {
   walletKit,
 } from "@umami/state";
 import { type Network } from "@umami/tezos";
+import { CustomError } from "@umami/utils";
 import { formatJsonRpcError } from "@walletconnect/jsonrpc-utils";
 import { type SessionTypes } from "@walletconnect/types";
 import { getSdkError } from "@walletconnect/utils";
@@ -47,7 +48,7 @@ export const WalletConnectProvider = ({ children }: PropsWithChildren) => {
           .filter(Boolean);
 
         if (requiredNetworks.length !== 1) {
-          throw new Error(
+          throw new CustomError(
             `Umami supports only one network per request, got required networks: ${requiredNetworks}`
           );
         }
@@ -55,7 +56,7 @@ export const WalletConnectProvider = ({ children }: PropsWithChildren) => {
         const availablenetworks = availableNetworks.map(network => network.name);
         // the network contains a namespace, e.g. tezos:mainnet
         if (!availablenetworks.includes(network.split(":")[1])) {
-          throw new Error(
+          throw new CustomError(
             `The requested required network "${network}" is not supported. Available: ${availablenetworks}`
           );
         }
@@ -91,7 +92,7 @@ export const WalletConnectProvider = ({ children }: PropsWithChildren) => {
         const activeSessions: Record<string, SessionTypes.Struct> = walletKit.getActiveSessions();
         if (!(event.topic in activeSessions)) {
           console.error("WalletConnect session request failed. Session not found", event);
-          throw new Error("WalletConnect session request failed. Session not found");
+          throw new CustomError("WalletConnect session request failed. Session not found");
         }
 
         const session = activeSessions[event.topic];
@@ -100,7 +101,7 @@ export const WalletConnectProvider = ({ children }: PropsWithChildren) => {
           description: `Session request from dApp ${session.peer.metadata.name}`,
           status: "info",
         });
-        throw new Error("Not implemented");
+        throw new CustomError("Not implemented");
       } catch (error) {
         const { id, topic } = event;
         const activeSessions: Record<string, SessionTypes.Struct> = walletKit.getActiveSessions();

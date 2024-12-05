@@ -9,6 +9,7 @@ import {
   makeDerivationPath,
   parseImplicitPkh,
 } from "@umami/tezos";
+import { CustomError } from "@umami/utils";
 import { useForm } from "react-hook-form";
 
 import { ModalContentWrapper } from "./ModalContentWrapper";
@@ -26,7 +27,7 @@ export const FakeAccount = ({ onClose }: { onClose: () => void }) => {
   const onSubmit = async ({ pkh, name, idp }: { pkh: string; name: string; idp?: IDP }) => {
     if (idp && idp.length > 0) {
       if (!["google", "facebook", "twitter", "reddit", "email"].includes(idp)) {
-        throw new Error("Invalid IDP");
+        throw new CustomError("Invalid IDP");
       }
     }
     const rpc = new RpcClient(GHOSTNET.rpcUrl);

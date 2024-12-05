@@ -1,3 +1,5 @@
+import { CustomError } from "@umami/utils";
+
 import { type BeaconSignPageProps } from "./BeaconSignPageProps";
 import { ContractCallSignPage } from "./ContractCallSignPage";
 import { DelegationSignPage } from "./DelegationSignPage";
@@ -40,6 +42,6 @@ export const BeaconSignPage = ({ operation, message }: BeaconSignPageProps) => {
      */
     case "fa1.2":
     case "fa2":
-      throw new Error("Unsupported operation type");
+      throw new CustomError("Unsupported operation type");
   }
 };

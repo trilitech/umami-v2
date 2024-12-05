@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { type ErrorContext } from "@umami/core";
+import { type ErrorContext } from "@umami/utils";
 
 type State = ErrorContext[];
 

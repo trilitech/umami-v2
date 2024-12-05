@@ -1,5 +1,5 @@
 import { type UseToastOptions, useToast } from "@chakra-ui/react";
-import { getErrorContext } from "@umami/core";
+import { getErrorContext } from "@umami/utils";
 import { useCallback, useRef, useState } from "react";
 
 import { useAppDispatch } from "./useAppDispatch";
@@ -38,6 +38,7 @@ export const useAsyncActionHandler = () => {
       try {
         return await fn();
       } catch (error: any) {
+        console.log("error", error);
         const errorContext = getErrorContext(error);
 
         toast({

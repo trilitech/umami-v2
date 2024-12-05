@@ -3,6 +3,7 @@ import { BigNumber } from "bignumber.js";
 
 import { type Account, type ImplicitAccount, type MultisigAccount } from "./Account";
 import { type Operation } from "./Operation";
+import { CustomError } from "../../utils/src/ErrorContext";
 
 type ProposalOperations = {
   type: "proposal";
@@ -43,7 +44,7 @@ export const makeAccountOperations = (
     case "social":
     case "secret_key":
       if (sender.address.pkh !== signer.address.pkh) {
-        throw new Error("Sender and Signer must be the same");
+        throw new CustomError("Sender and Signer must be the same");
       }
       return {
         type: "implicit",

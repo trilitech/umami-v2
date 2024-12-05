@@ -3,6 +3,8 @@ import { CODEC, type ProtocolsHash, Uint8ArrayConsumer, getCodec } from "@taquit
 import { DefaultProtocol, unpackData } from "@taquito/michel-codec";
 import { hex2buf } from "@taquito/utils";
 
+import { CustomError } from "../../utils/src/ErrorContext";
+
 /**
  * Decodes a sign request payload string.
  *
@@ -43,12 +45,12 @@ export const decodeBeaconPayload = (
         break;
       }
       default: {
-        throw new Error(`Unsupported signing type: ${signingType}`);
+        throw new CustomError(`Unsupported signing type: ${signingType}`);
       }
     }
 
     if (!isValidASCII(result)) {
-      throw new Error("Invalid payload. Only ASCII characters are supported.");
+      throw new CustomError("Invalid payload. Only ASCII characters are supported.");
     }
 
     return { result };

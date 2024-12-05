@@ -1,6 +1,6 @@
 import { useToast } from "@chakra-ui/react";
-import { getErrorContext } from "@umami/core";
 import { errorsActions, useAppDispatch } from "@umami/state";
+import { getErrorContext } from "@umami/utils";
 import { useCallback } from "react";
 
 export const useReactQueryErrorHandler = () => {

@@ -12,8 +12,8 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { nanoid } from "@reduxjs/toolkit";
-import { type ErrorContext } from "@umami/core";
 import { errorsActions, useAppSelector } from "@umami/state";
+import { type ErrorContext } from "@umami/utils";
 import { useDispatch } from "react-redux";
 
 import { OutlineExclamationCircleIcon } from "../../assets/icons";

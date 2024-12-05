@@ -4,6 +4,7 @@ import { Given, Then, When } from "@cucumber/cucumber";
 import { expect } from "@playwright/test";
 import { mnemonic1 as existingSeedphrase } from "@umami/test-utils";
 import { DEFAULT_DERIVATION_PATH_TEMPLATE } from "@umami/tezos";
+import { CustomError } from "@umami/utils";
 
 import { type CustomWorld } from "./world";
 import { type AccountGroup, AccountGroupBuilder } from "../helpers/AccountGroup";
@@ -119,7 +120,7 @@ Then(
     if (backupFileName === "V2Backup.json") {
       expectedGroups = await v2BackedupAccountGroups();
     } else {
-      throw new Error(`Unknown backup file: ${backupFileName}`);
+      throw new CustomError(`Unknown backup file: ${backupFileName}`);
     }
 
     // TODO: check for groups amount once all type of groups are supported by the tests

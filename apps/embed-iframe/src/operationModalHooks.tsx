@@ -11,7 +11,8 @@ import {
 } from "./utils";
 import { useOperationModalContext } from "./OperationModalContext";
 import { ModalLoadingOverlay } from "./ModalLoadingOverlay";
-import { estimate, getErrorContext, toAccountOperations } from "@umami/core";
+import { estimate, toAccountOperations } from "@umami/core";
+import { getErrorContext } from "@umami/utils";
 import { useEmbedApp } from "./EmbedAppContext";
 
 export const useOperationModal = () => {

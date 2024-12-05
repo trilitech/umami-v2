@@ -25,6 +25,7 @@ import {
   useSelectedNetwork,
 } from "@umami/state";
 import { type RawPkh } from "@umami/tezos";
+import { CustomError } from "@umami/utils";
 import Papa, { type ParseResult } from "papaparse";
 import { FormProvider, useForm } from "react-hook-form";
 
@@ -63,7 +64,9 @@ export const CSVFileUploadForm = () => {
         Papa.parse(file[0], { skipEmptyLines: true, complete: resolve });
       });
       if (rows.errors.length > 0) {
-        throw new Error("Error loading csv file: " + rows.errors.map(e => e.message).join(", "));
+        throw new CustomError(
+          "Error loading csv file: " + rows.errors.map(e => e.message).join(", ")
+        );
       }
 
       const operations: Operation[] = [];
@@ -72,7 +75,7 @@ export const CSVFileUploadForm = () => {
         try {
           operations.push(parseOperation(senderAccount.address, row, getToken));
         } catch (error: any) {
-          throw new Error(`Error at row #${i + 1}: ${error?.message}`);
+          throw new CustomError(`Error at row #${i + 1}: ${error?.message}`);
         }
       }
 

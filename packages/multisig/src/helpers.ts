@@ -5,6 +5,7 @@ import {
   parseContractPkh,
   parseImplicitPkh,
 } from "@umami/tezos";
+import { CustomError } from "@umami/utils";
 import { compact, every } from "lodash";
 
 import {
@@ -75,7 +76,7 @@ export const getNetworksForContracts = async (
 const parseMultisigOperation = (raw: RawTzktMultisigBigMap): MultisigOperation => {
   const { bigmap, key, value } = raw;
   if (key === null || value === null) {
-    throw new Error("parseMultisigOperation failed");
+    throw new CustomError("parseMultisigOperation failed");
   }
 
   return {

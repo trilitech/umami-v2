@@ -2,6 +2,7 @@ import { type Curves } from "@taquito/signer";
 import { Prefix } from "@taquito/utils";
 import { encrypt } from "@umami/crypto";
 import { getPublicKeyPairFromSk, parseImplicitPkh } from "@umami/tezos";
+import { CustomError } from "@umami/utils";
 
 import { accountsActions } from "../slices/accounts";
 import { type AppDispatch } from "../store";
@@ -16,7 +17,7 @@ export const getCurve = (secretKey: string): Curves => {
   if (secretKey.startsWith(Prefix.P2ESK) || secretKey.startsWith(Prefix.P2SK)) {
     return "p256";
   }
-  throw new Error("Invalid secret key");
+  throw new CustomError("Invalid secret key");
 };
 
 export const isEncryptedSecretKeyPrefix = (secretKeyPrefix: string) =>

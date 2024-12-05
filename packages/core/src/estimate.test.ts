@@ -1,7 +1,7 @@
 import { GHOSTNET, isAccountRevealed, makeToolkit } from "@umami/tezos";
 
 import { makeAccountOperations } from "./AccountOperations";
-import { estimate, handleTezError } from "./estimate";
+import { estimate } from "./estimate";
 import { mockImplicitAccount, mockTezOperation } from "./testUtils";
 import { executeParams } from "../../test-utils/src/executeParams";
 
@@ -32,35 +32,6 @@ describe("estimate", () => {
       await expect(() => estimate(accountOperations, GHOSTNET)).rejects.toThrow(
         "Signer address is not revealed on the ghostnet."
       );
-    });
-
-    describe("handleTezError", () => {
-      it("catches subtraction_underflow", () => {
-        const res = handleTezError(new Error("subtraction_underflow"));
-        expect(res).toBe("Insufficient balance, please make sure you have enough funds.");
-      });
-
-      it("catches non_existing_contract", () => {
-        const res = handleTezError(new Error("contract.non_existing_contract"));
-        expect(res).toBe(
-          "Contract does not exist, please check if the correct network is selected."
-        );
-      });
-
-      it("catches staking_to_delegate_that_refuses_external_staking", () => {
-        const res = handleTezError(new Error("staking_to_delegate_that_refuses_external_staking"));
-        expect(res).toBe("The baker you are trying to stake to does not accept external staking.");
-      });
-
-      it("catches empty_implicit_delegated_contract", () => {
-        const res = handleTezError(new Error("empty_implicit_delegated_contract"));
-        expect(res).toBe("Emptying an implicit delegated account is not allowed.");
-      });
-
-      it("returns undefined for unknown errors", () => {
-        const err = new Error("unknown error");
-        expect(handleTezError(err)).toBeUndefined();
-      });
     });
   });
 

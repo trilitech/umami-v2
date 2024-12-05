@@ -214,6 +214,9 @@ importers:
       '@umami/tzkt':
         specifier: workspace:^
         version: link:../../packages/tzkt
+      '@umami/utils':
+        specifier: workspace:^
+        version: link:../../packages/utils
       '@vitejs/plugin-react':
         specifier: ^4.3.4
         version: 4.3.4(vite@5.4.11(@types/node@22.10.1)(lightningcss@1.22.0)(sass@1.82.0)(terser@5.36.0))
@@ -412,6 +415,9 @@ importers:
       '@umami/tzkt':
         specifier: workspace:^
         version: link:../../packages/tzkt
+      '@umami/utils':
+        specifier: workspace:^
+        version: link:../../packages/utils
       date-fns:
         specifier: ^4.1.0
         version: 4.1.0
@@ -558,6 +564,9 @@ importers:
       '@umami/typescript-config':
         specifier: workspace:^
         version: link:../../packages/typescript-config
+      '@umami/utils':
+        specifier: workspace:^
+        version: link:../../packages/utils
       '@vitejs/plugin-react':
         specifier: ^4.3.4
         version: 4.3.4(vite@5.4.11(@types/node@22.10.1)(lightningcss@1.22.0)(sass@1.82.0)(terser@5.36.0))
@@ -878,6 +887,9 @@ importers:
       '@umami/tzkt':
         specifier: workspace:^
         version: link:../../packages/tzkt
+      '@umami/utils':
+        specifier: workspace:^
+        version: link:../../packages/utils
       '@walletconnect/jsonrpc-utils':
         specifier: ^1.0.8
         version: 1.0.8
@@ -1291,6 +1303,9 @@ importers:
       '@umami/tzkt':
         specifier: workspace:^
         version: link:../tzkt
+      '@umami/utils':
+        specifier: workspace:^
+        version: link:../utils
       bignumber.js:
         specifier: ^9.1.2
         version: 9.1.2
@@ -1386,6 +1401,9 @@ importers:
       '@umami/typescript-config':
         specifier: workspace:^
         version: link:../typescript-config
+      '@umami/utils':
+        specifier: workspace:^
+        version: link:../utils
       babel-jest:
         specifier: ^29.7.0
         version: 29.7.0(@babel/core@7.26.0)
@@ -1501,6 +1519,9 @@ importers:
       '@umami/typescript-config':
         specifier: workspace:^
         version: link:../typescript-config
+      '@umami/utils':
+        specifier: workspace:^
+        version: link:../utils
       babel-jest:
         specifier: ^29.7.0
         version: 29.7.0(@babel/core@7.26.0)
@@ -1658,6 +1679,9 @@ importers:
       '@umami/typescript-config':
         specifier: workspace:^
         version: link:../typescript-config
+      '@umami/utils':
+        specifier: workspace:^
+        version: link:../utils
       babel-jest:
         specifier: ^29.7.0
         version: 29.7.0(@babel/core@7.26.0)
@@ -1876,6 +1900,9 @@ importers:
       '@umami/typescript-config':
         specifier: workspace:^
         version: link:../typescript-config
+      '@umami/utils':
+        specifier: workspace:^
+        version: link:../utils
       babel-jest:
         specifier: ^29.7.0
         version: 29.7.0(@babel/core@7.26.0)
@@ -1994,6 +2021,9 @@ importers:
       '@taquito/utils':
         specifier: ^20.1.0
         version: 20.1.0
+      '@umami/utils':
+        specifier: workspace:^
+        version: link:../utils
       bignumber.js:
         specifier: ^9.1.2
         version: 9.1.2
@@ -2100,6 +2130,73 @@ importers:
       '@umami/jest-config':
         specifier: workspace:^
         version: link:../jest-config
+      '@umami/typescript-config':
+        specifier: workspace:^
+        version: link:../typescript-config
+      '@umami/utils':
+        specifier: workspace:^
+        version: link:../utils
+      babel-jest:
+        specifier: ^29.7.0
+        version: 29.7.0(@babel/core@7.26.0)
+      depcheck:
+        specifier: ^1.4.7
+        version: 1.4.7
+      eslint:
+        specifier: ^8.57.0
+        version: 8.57.0
+      jest:
+        specifier: ^29.7.0
+        version: 29.7.0(@types/node@22.10.1)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@swc/core@1.7.36(@swc/helpers@0.5.13))(@types/node@22.10.1)(typescript@5.7.2))
+      madge:
+        specifier: ^8.0.0
+        version: 8.0.0(typescript@5.7.2)
+      prettier:
+        specifier: ^3.3.3
+        version: 3.3.3
+      rimraf:
+        specifier: ^6.0.1
+        version: 6.0.1
+      tsup:
+        specifier: ^8.3.5
+        version: 8.3.5(@swc/core@1.7.36(@swc/helpers@0.5.13))(jiti@1.21.6)(postcss@8.4.47)(typescript@5.7.2)(yaml@2.5.1)
+      typescript:
+        specifier: ^5.7.2
+        version: 5.7.2
+
+  packages/utils:
+    dependencies:
+      bignumber.js:
+        specifier: ^9.1.2
+        version: 9.1.2
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
+    devDependencies:
+      '@babel/core':
+        specifier: ^7.26.0
+        version: 7.26.0
+      '@types/babel__core':
+        specifier: ^7.20.5
+        version: 7.20.5
+      '@types/eslint':
+        specifier: ^8
+        version: 8.56.11
+      '@types/jest':
+        specifier: ^29.5.14
+        version: 29.5.14
+      '@types/lodash':
+        specifier: ^4
+        version: 4.17.7
+      '@umami/eslint-config':
+        specifier: workspace:^
+        version: link:../eslint-config
+      '@umami/jest-config':
+        specifier: workspace:^
+        version: link:../jest-config
+      '@umami/test-utils':
+        specifier: workspace:^
+        version: link:../test-utils
       '@umami/typescript-config':
         specifier: workspace:^
         version: link:../typescript-config

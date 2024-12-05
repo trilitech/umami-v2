@@ -59,6 +59,7 @@
     ]
   },
   "dependencies": {
+    "@umami/utils": "workspace:^",
     "@ledgerhq/hw-transport-webusb": "^6.29.4",
     "@taquito/ledger-signer": "^20.1.0",
     "@taquito/michel-codec": "^20.1.0",

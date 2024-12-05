@@ -14,6 +14,7 @@ import {
   useRemoveBeaconPeerBySenderId,
 } from "@umami/state";
 import { type Network } from "@umami/tezos";
+import { CustomError } from "@umami/utils";
 
 import { PermissionRequestModal } from "./PermissionRequestModal";
 import { SignPayloadRequestModal } from "./SignPayloadRequestModal";
@@ -49,7 +50,7 @@ export const useHandleBeaconMessage = () => {
         type: BeaconMessageType.Error,
         errorType: BeaconErrorType.NETWORK_NOT_SUPPORTED,
       });
-      throw new Error(
+      throw new CustomError(
         `Got Beacon request from an unknown network: ${JSON.stringify(
           beaconNetwork
         )}. Please add it to the networks list and retry.`
@@ -101,7 +102,7 @@ export const useHandleBeaconMessage = () => {
                 type: BeaconMessageType.Error,
                 errorType: BeaconErrorType.NO_PRIVATE_KEY_FOUND_ERROR,
               });
-              throw new Error(`Unknown account: ${message.sourceAddress}`);
+              throw new CustomError(`Unknown account: ${message.sourceAddress}`);
             }
             const operation = toAccountOperations(
               message.operationDetails,
@@ -132,7 +133,7 @@ export const useHandleBeaconMessage = () => {
               errorType: BeaconErrorType.UNKNOWN_ERROR,
             });
 
-            throw new Error(`Unknown Beacon message type: ${message.type}`);
+            throw new CustomError(`Unknown Beacon message type: ${message.type}`);
           }
         }
 

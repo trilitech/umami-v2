@@ -26,6 +26,7 @@
     "@types/babel__core": "^7.20.5",
     "@types/eslint": "^8",
     "@types/jest": "^29.5.14",
+    "@umami/utils": "workspace:^",
     "@types/lodash": "^4",
     "@types/promise-retry": "^1.1.6",
     "@umami/eslint-config": "workspace:^",
