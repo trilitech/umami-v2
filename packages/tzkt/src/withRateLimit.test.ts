@@ -1,3 +1,5 @@
+import { CustomError } from "@umami/utils";
+
 import { withRateLimit } from "./withRateLimit";
 
 class HTTPErrorMock extends Error {
@@ -17,7 +19,7 @@ describe("withRateLimit", () => {
       const fn = async () => {
         counter++;
         if (counter < 4) {
-          throw new Error("Some error");
+          throw new CustomError("Some error");
         }
         return Promise.resolve("success");
       };
@@ -30,7 +32,7 @@ describe("withRateLimit", () => {
       const fn = async () => {
         counter++;
         if (counter < 5) {
-          throw new Error("Some error");
+          throw new CustomError("Some error");
         }
         return Promise.resolve("success");
       };

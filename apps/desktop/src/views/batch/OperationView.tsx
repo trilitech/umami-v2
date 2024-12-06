@@ -2,6 +2,7 @@ import { AspectRatio, Flex, Heading, Image, Link, Tooltip } from "@chakra-ui/rea
 import { type Operation, thumbnailUri, tokenNameSafe, tokenUri } from "@umami/core";
 import { useGetToken, useSelectedNetwork } from "@umami/state";
 import { getIPFSurl, prettyTezAmount } from "@umami/tezos";
+import { CustomError } from "@umami/utils";
 
 import { tokenTitle } from "./tokenTitle";
 import { BakerIcon, OutgoingArrow } from "../../assets/icons";
@@ -105,6 +106,6 @@ export const OperationView = ({ operation }: { operation: Operation }) => {
       );
     case "contract_origination":
     case "contract_call":
-      throw new Error(`${operation.type} is not supported yet`);
+      throw new CustomError(`${operation.type} is not supported yet`);
   }
 };

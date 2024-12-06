@@ -1,10 +1,10 @@
 import { buf2hex, hex2Bytes } from "@taquito/utils";
+import { CustomError } from "@umami/utils";
 import { differenceInMinutes } from "date-fns";
 
 import { AES_MODE } from "./AES_MODE";
 import { derivePasswordBasedKeyV1, derivePasswordBasedKeyV2 } from "./KDF";
 import { type EncryptedData } from "./types";
-
 // NIST recommends a salt size of at least 128 bits (16 bytes)
 // https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-132.pdf
 const SALT_SIZE = 32;
@@ -50,7 +50,7 @@ export const decrypt = async (
         new Date(localStorage.getItem("failedDecryptTime")!)
       );
       if (minutesSinceLastAttempt < 5) {
-        throw new Error(TOO_MANY_ATTEMPTS_ERROR);
+        throw new CustomError(TOO_MANY_ATTEMPTS_ERROR);
       }
     }
     const derivedKey =
@@ -74,7 +74,7 @@ export const decrypt = async (
     }
     setAttemptsCount(getAttemptsCount() + 1);
     localStorage.setItem("failedDecryptTime", new Date().toISOString());
-    throw new Error("Error decrypting data: Invalid password");
+    throw new CustomError("Error decrypting data: Invalid password");
   }
 };
 

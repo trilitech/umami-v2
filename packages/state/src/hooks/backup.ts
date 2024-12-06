@@ -1,5 +1,6 @@
 import { DEFAULT_ACCOUNT_LABEL } from "@umami/core";
 import { type EncryptedData, decrypt, encrypt } from "@umami/crypto";
+import { CustomError } from "@umami/utils";
 import { type Persistor } from "redux-persist";
 
 import { useValidateMasterPassword } from "./getAccountData";
@@ -24,7 +25,7 @@ export const useRestoreBackup = () => {
     if (isV21Backup(backup)) {
       return restoreV21BackupFile(backup, password, persistor);
     }
-    throw new Error("Invalid backup file.");
+    throw new CustomError("Invalid backup file.");
   };
 };
 
@@ -65,7 +66,7 @@ export const restoreV2BackupFile = async (
 ) => {
   const accountsInString: string = backup["persist:accounts"];
   if (!accountsInString) {
-    throw new Error("Invalid backup file.");
+    throw new CustomError("Invalid backup file.");
   }
 
   const accounts: { seedPhrases: string } = JSON.parse(accountsInString);

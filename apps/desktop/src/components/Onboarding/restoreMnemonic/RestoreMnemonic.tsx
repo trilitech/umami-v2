@@ -3,6 +3,7 @@ import { Box, Button, Grid, GridItem, Heading, Select, VStack } from "@chakra-ui
 import { MnemonicAutocomplete } from "@umami/components";
 import { useAsyncActionHandler } from "@umami/state";
 import { mnemonic1 } from "@umami/test-utils";
+import { CustomError } from "@umami/utils";
 import { validateMnemonic } from "bip39";
 import { range } from "lodash";
 import { useState } from "react";
@@ -53,7 +54,7 @@ export const RestoreMnemonic = ({ goToStep }: { goToStep: (step: OnboardingStep)
     handleAsyncAction(async () => {
       const words = mnemonic.split(" ");
       if (!mnemonicSizes.includes(words.length)) {
-        throw new Error(`the mnemonic must be ${mnemonicSizes.join(", ")} words long`);
+        throw new CustomError(`the mnemonic must be ${mnemonicSizes.join(", ")} words long`);
       }
       words.slice(0, mnemonicSize).forEach((word, i) => {
         setValue(`word${i}`, word);
@@ -65,7 +66,7 @@ export const RestoreMnemonic = ({ goToStep }: { goToStep: (step: OnboardingStep)
     handleAsyncAction(async () => {
       const mnemonic = Object.values(data).join(" ").trim();
       if (!validateMnemonic(mnemonic)) {
-        throw new Error("Invalid Mnemonic");
+        throw new CustomError("Invalid Mnemonic");
       }
       goToStep({
         type: "nameAccount",

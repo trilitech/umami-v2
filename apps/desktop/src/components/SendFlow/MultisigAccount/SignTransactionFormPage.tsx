@@ -12,6 +12,7 @@ import {
 import { type TezosToolkit } from "@taquito/taquito";
 import { multisigsActions, useAppDispatch, useAsyncActionHandler } from "@umami/state";
 import { parsePkh } from "@umami/tezos";
+import { CustomError } from "@umami/utils";
 import { FormProvider } from "react-hook-form";
 
 import { type FormValues } from "./FormValues";
@@ -63,7 +64,7 @@ export const SignTransactionFormPage = (props: SignPageProps<FormValues>) => {
          * fetch the contract address, we won't assign the provided label and
          * the contract will appear with a default label
          */
-        throw new Error("An error occurred during contract origination");
+        throw new CustomError("An error occurred during contract origination");
       }
 
       const pkh = (await operation.getOriginatedContractAddresses())[0];

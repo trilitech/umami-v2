@@ -70,6 +70,7 @@
     "@tzkt/sdk-api": "^2.2.1",
     "@umami/social-auth": "workspace:^",
     "@umami/tezos": "workspace:^",
+    "@umami/utils": "workspace:^",
     "@umami/tzkt": "workspace:^",
     "bignumber.js": "^9.1.2",
     "lodash": "^4.17.21"

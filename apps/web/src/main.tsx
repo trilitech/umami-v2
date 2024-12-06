@@ -1,6 +1,6 @@
 import { DynamicDisclosureProvider } from "@umami/components";
-import { getErrorContext } from "@umami/core";
 import { errorsActions } from "@umami/state";
+import { getErrorContext } from "@umami/utils";
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import { ErrorBoundary } from "react-error-boundary";

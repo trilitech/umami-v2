@@ -1,5 +1,6 @@
 import { InMemorySigner } from "@taquito/signer";
 import { type RawPkh, derivePublicKeyPair, makeDerivationPath } from "@umami/tezos";
+import { CustomError } from "@umami/utils";
 import lodash from "lodash";
 
 export type AccountGroup = {
@@ -41,14 +42,14 @@ export class AccountGroupBuilder {
 
   setDerivationPathTemplate(derivationPathTemplate: string): void {
     if (this.accountGroup.type !== "mnemonic") {
-      throw new Error(`Derivation path is not used for ${this.accountGroup.type} accounts}`);
+      throw new CustomError(`Derivation path is not used for ${this.accountGroup.type} accounts}`);
     }
     this.derivationPathTemplate = derivationPathTemplate;
   }
 
   setSeedPhrase(seedPhrase: string[]): void {
     if (this.accountGroup.type !== "mnemonic") {
-      throw new Error(`Seed phrase is not used for ${this.accountGroup.type} accounts}`);
+      throw new CustomError(`Seed phrase is not used for ${this.accountGroup.type} accounts}`);
     }
     this.seedPhrase = seedPhrase;
   }
@@ -57,7 +58,7 @@ export class AccountGroupBuilder {
 
   async setSecretKey(secretKey: string, accountIndex = 0): Promise<void> {
     if (this.accountGroup.type !== "secret_key") {
-      throw new Error(`Secret key is not used for ${this.accountGroup.type} accounts}`);
+      throw new CustomError(`Secret key is not used for ${this.accountGroup.type} accounts}`);
     }
     this.accountGroup.accounts[accountIndex].pkh = await (
       await InMemorySigner.fromSecretKey(secretKey)
@@ -84,10 +85,10 @@ export class AccountGroupBuilder {
 
   private async setMnemonicPkhs() {
     if (this.seedPhrase.length === 0) {
-      throw new Error("Seed phrase is not set");
+      throw new CustomError("Seed phrase is not set");
     }
     if (this.derivationPathTemplate === "") {
-      throw new Error("Derivation path is not set");
+      throw new CustomError("Derivation path is not set");
     }
     for (let i = 0; i < this.accountGroup.accounts.length; i++) {
       const keyPair = await derivePublicKeyPair(

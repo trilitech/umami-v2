@@ -50,6 +50,7 @@
     "@umami/social-auth": "workspace:^",
     "@umami/state": "workspace:^",
     "@umami/tezos": "workspace:^",
+    "@umami/utils": "workspace:^",
     "@umami/tzkt": "workspace:^",
     "@walletconnect/jsonrpc-utils": "^1.0.8",
     "@walletconnect/types": "^2.16.2",

@@ -11,6 +11,7 @@ import {
   useValidateNewContactPkh,
 } from "@umami/state";
 import { isValidContractPkh } from "@umami/tezos";
+import { CustomError } from "@umami/utils";
 import { type FC } from "react";
 import { useForm } from "react-hook-form";
 
@@ -46,7 +47,7 @@ export const EditContactMenu: FC<{
         network = contractsWithNetworks.get(newContact.pkh);
 
         if (!network) {
-          throw new Error(`Network not found for contract ${newContact.pkh}`);
+          throw new CustomError(`Network not found for contract ${newContact.pkh}`);
         }
       }
 

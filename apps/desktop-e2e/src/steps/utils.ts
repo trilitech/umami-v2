@@ -4,6 +4,7 @@ import { type Account } from "@umami/core";
 import { type AccountsState, makeSecretKeyAccount } from "@umami/state";
 import { BLOCK_TIME } from "@umami/tezos";
 import { getOperationsByHash } from "@umami/tzkt";
+import { CustomError } from "@umami/utils";
 import { minutesToMilliseconds } from "date-fns";
 import { some } from "lodash";
 
@@ -28,7 +29,7 @@ Given(/I have accounts?/, async function (this: CustomWorld, table: DataTable) {
       accounts.items.push(account);
       accounts.secretKeys[account.address.pkh] = encryptedSecretKey;
     } else {
-      throw new Error(`${data.type} account is not supported yet`);
+      throw new CustomError(`${data.type} account is not supported yet`);
     }
   }
   this.setReduxState({ accounts });
@@ -105,7 +106,7 @@ When(
           return matches[1];
         }
       }
-      throw new Error("TZKT sync last applied block not found");
+      throw new CustomError("TZKT sync last applied block not found");
     };
 
     for (let i = 0; i < 2; i++) {

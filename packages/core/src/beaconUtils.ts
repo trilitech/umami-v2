@@ -4,6 +4,7 @@ import { isValidImplicitPkh, parseImplicitPkh, parsePkh } from "@umami/tezos";
 import { type ImplicitAccount } from "./Account";
 import { type ImplicitOperations } from "./AccountOperations";
 import { type ContractOrigination, type Operation } from "./Operation";
+import { CustomError } from "../../utils/src/ErrorContext";
 
 /**
  * takes a list of {@link PartialTezosOperation} which come from Beacon
@@ -18,7 +19,7 @@ export const toAccountOperations = (
   signer: ImplicitAccount
 ): ImplicitOperations => {
   if (operationDetails.length === 0) {
-    throw new Error("Empty operation details!");
+    throw new CustomError("Empty operation details!");
   }
 
   const operations = operationDetails.map(operation =>
@@ -105,6 +106,6 @@ export const partialOperationToOperation = (
       };
     }
     default:
-      throw new Error(`Unsupported operation kind: ${partialOperation.kind}`);
+      throw new CustomError(`Unsupported operation kind: ${partialOperation.kind}`);
   }
 };

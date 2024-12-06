@@ -47,6 +47,7 @@
   "devDependencies": {
     "@umami/eslint-config": "workspace:^",
     "@umami/typescript-config": "workspace:^",
+    "@umami/utils": "workspace:^",
     "@vitejs/plugin-react": "^4.3.4",
     "depcheck": "^1.4.7",
     "eslint": "^8.57.0",

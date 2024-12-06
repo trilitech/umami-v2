@@ -118,7 +118,8 @@ describe("<Form />", () => {
 
     expect(estimateMock).toHaveBeenCalledTimes(1);
     expect(mockToast).toHaveBeenCalledWith({
-      description: "Some error occurred",
+      description:
+        "Something went wrong. Please try again or contact support if the issue persists.",
       status: "error",
       isClosable: true,
     });

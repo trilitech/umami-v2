@@ -11,6 +11,7 @@ import {
   useSelectedNetwork,
 } from "@umami/state";
 import { TEZ } from "@umami/tezos";
+import { CustomError } from "@umami/utils";
 import pluralize from "pluralize";
 import { useEffect, useState } from "react";
 
@@ -76,7 +77,7 @@ const prettyOperationType = (operation: Operation) => {
       return "Finalize Unstake";
     case "contract_origination":
     case "contract_call":
-      throw new Error(`${operation.type} is not supported yet`);
+      throw new CustomError(`${operation.type} is not supported yet`);
   }
 };
 

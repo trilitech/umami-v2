@@ -8,6 +8,7 @@ import {
   parsePkh,
   tezToMutez,
 } from "@umami/tezos";
+import { CustomError } from "@umami/utils";
 
 import { validateNonNegativeNumber } from "../../utils/helpers";
 
@@ -19,16 +20,16 @@ export const parseOperation = (
   const filteredRow = row.filter(col => col.length > 0);
   const len = filteredRow.length;
   if (len < 2 || 4 < len) {
-    throw new Error("Invalid csv format");
+    throw new CustomError("Invalid csv format");
   }
   const [recipientPkh, prettyAmount, contractPkh] = filteredRow;
   if (!isAddressValid(recipientPkh)) {
-    throw new Error("Invalid csv value: recipient");
+    throw new CustomError("Invalid csv value: recipient");
   }
   const recipient = parsePkh(recipientPkh);
 
   if (validateNonNegativeNumber(prettyAmount) === null) {
-    throw new Error("Invalid csv value: amount");
+    throw new CustomError("Invalid csv value: amount");
   }
 
   if (len === 2) {
@@ -40,18 +41,18 @@ export const parseOperation = (
   }
 
   if (!isValidContractPkh(contractPkh)) {
-    throw new Error("Invalid csv value: contract address");
+    throw new CustomError("Invalid csv value: contract address");
   }
 
   const contract = parseContractPkh(contractPkh);
   const tokenId = filteredRow[3] || "0";
   if (validateNonNegativeNumber(tokenId) === null) {
-    throw new Error("Invalid csv value: tokenId");
+    throw new CustomError("Invalid csv value: tokenId");
   }
 
   const token = getToken(contractPkh, tokenId);
   if (!token) {
-    throw new Error(`Unknown token ${contractPkh} ${tokenId}`);
+    throw new CustomError(`Unknown token ${contractPkh} ${tokenId}`);
   }
   const amount = getRealAmount(token, prettyAmount);
 

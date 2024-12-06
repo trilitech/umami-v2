@@ -22,6 +22,7 @@ import {
   useValidateNewContactPkh,
 } from "@umami/state";
 import { isValidContractPkh } from "@umami/tezos";
+import { CustomError } from "@umami/utils";
 import { type FC } from "react";
 import { useForm } from "react-hook-form";
 
@@ -42,7 +43,7 @@ export const AddContactModal: FC<{
           newContact.pkh,
         ]);
         if (!contractsWithNetworks.has(newContact.pkh)) {
-          throw new Error(`Network not found for contract ${newContact.pkh}`);
+          throw new CustomError(`Network not found for contract ${newContact.pkh}`);
         }
         dispatch(
           contactsActions.upsert({
