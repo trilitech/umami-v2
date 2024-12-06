@@ -23,7 +23,7 @@ export const FinalizeUnstakeSignPage = ({
   );
   return (
     <FormProvider {...form}>
-      <ModalContent>
+      <ModalContent data-testid="FinalizeUnstakeSignPage">
         <form>
           <Header headerProps={headerProps} />
           <ModalBody>
