@@ -167,7 +167,12 @@ describe("<Form />", () => {
       const submitButton = screen.getByText("Preview");
       await waitFor(() => expect(submitButton).toBeEnabled());
       const estimateMock = jest.mocked(estimate);
-      estimateMock.mockRejectedValue(new Error("Some error occurred"));
+      expect(mockToast).toHaveBeenCalledWith({
+        description:
+          "Something went wrong. Please try again or contact support if the issue persists.",
+        status: "error",
+        isClosable: true,
+      });
 
       await act(() => user.click(submitButton));
 

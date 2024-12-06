@@ -93,7 +93,12 @@ describe("<Form />", () => {
       );
 
       const estimateMock = jest.mocked(estimate);
-      estimateMock.mockRejectedValue(new Error("Some error occurred"));
+      expect(mockToast).toHaveBeenCalledWith({
+        description:
+          "Something went wrong. Please try again or contact support if the issue persists.",
+        status: "error",
+        isClosable: true,
+      });
 
       const submitButton = screen.getByText("Preview");
       await waitFor(() => expect(submitButton).toBeEnabled());
@@ -101,7 +106,8 @@ describe("<Form />", () => {
 
       expect(estimateMock).toHaveBeenCalledTimes(1);
       expect(mockToast).toHaveBeenCalledWith({
-        description: "Some error occurred",
+        description:
+          "Something went wrong. Please try again or contact support if the issue persists.",
         status: "error",
         isClosable: true,
       });
