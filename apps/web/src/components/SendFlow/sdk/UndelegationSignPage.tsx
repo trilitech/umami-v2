@@ -20,7 +20,7 @@ export const UndelegationSignPage = ({
 
   return (
     <FormProvider {...form}>
-      <ModalContent>
+      <ModalContent data-testid="UndelegationSignPage">
         <form>
           <Header headerProps={headerProps} />
           <ModalBody>
