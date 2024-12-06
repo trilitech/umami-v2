@@ -73,7 +73,9 @@ describe("handleTezError", () => {
 
   it("catches empty_implicit_delegated_contract", () => {
     const res = handleTezError(new Error("empty_implicit_delegated_contract"));
-    expect(res).toBe("Emptying an implicit delegated account is not allowed.");
+    expect(res).toBe(
+      "Emptying an implicit delegated account is not allowed. End delegation before trying again."
+    );
   });
 
   it("returns undefined for unknown errors", () => {

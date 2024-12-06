@@ -21,7 +21,7 @@ export const handleTezError = (err: Error): string | undefined => {
   } else if (err.message.includes("staking_to_delegate_that_refuses_external_staking")) {
     return "The baker you are trying to stake to does not accept external staking.";
   } else if (err.message.includes("empty_implicit_delegated_contract")) {
-    return "Emptying an implicit delegated account is not allowed.";
+    return "Emptying an implicit delegated account is not allowed. End delegation before trying again.";
   }
 };
 
