@@ -23,7 +23,7 @@ export const DelegationSignPage = ({
 
   return (
     <FormProvider {...form}>
-      <ModalContent>
+      <ModalContent data-testid="DelegationSignPage">
         <form>
           <Header headerProps={headerProps} />
           <ModalBody>

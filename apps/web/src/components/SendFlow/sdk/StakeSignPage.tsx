@@ -23,7 +23,7 @@ export const StakeSignPage = ({
 
   return (
     <FormProvider {...form}>
-      <ModalContent>
+      <ModalContent data-testid="StakeSignPage">
         <form>
           <Header headerProps={headerProps} />
           <ModalBody>

@@ -42,7 +42,7 @@ export const OriginationOperationSignPage = ({
 
   return (
     <FormProvider {...form}>
-      <ModalContent>
+      <ModalContent data-testid="OriginationOperationSignPage">
         <form>
           <ModalHeader marginBottom="24px">
             <Flex alignItems="center" justifyContent="center">
