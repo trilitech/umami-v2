@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Center,
   Divider,
@@ -129,7 +130,7 @@ export const AccountSelectorModal = () => {
         <VStack
           overflowY="auto"
           width="100%"
-          maxHeight="400px"
+          maxHeight="430px"
           divider={<Divider _last={{ display: "none" }} />}
           spacing="18px"
         >
@@ -188,26 +189,43 @@ export const AccountSelectorModal = () => {
           ))}
 
           {/* This is a hack to toggle the shadow on the footer button*/}
-          <div ref={lastItemRef} />
+          <Box ref={lastItemRef} paddingBottom="40px" />
         </VStack>
       </ModalBody>
       <ModalFooter
-        padding="8px"
-        borderRadius="30px"
-        boxShadow={
-          showShadow
-            ? color(
-                "0px -4px 10px 0px rgba(45, 55, 72, 0.10)",
-                "0px -4px 10px 0px rgba(0, 0, 0, 0.20)"
-              )
-            : "transparent"
-        }
-        transition="box-shadow 0.2s ease-in"
+        position="relative"
+        height="23px"
+        margin="0"
+        paddingX={{ base: "32px", md: "42px" }}
       >
         {isVerified && (
-          <Button width="full" onClick={() => openWith(<OnboardOptionsModal />)} variant="primary">
-            Add Account
-          </Button>
+          <Flex
+            position="absolute"
+            top="-25px"
+            justifyContent="center"
+            width="full"
+            padding="8px"
+            background="white"
+            borderRadius="100px"
+            boxShadow={
+              showShadow
+                ? color(
+                    "0px -4px 10px 0px rgba(45, 55, 72, 0.10)",
+                    "0px -4px 10px 0px rgba(0, 0, 0, 0.20)"
+                  )
+                : "transparent"
+            }
+            transition="box-shadow 0.2s ease-in"
+            backdropFilter="blur(40px)"
+          >
+            <Button
+              width="full"
+              onClick={() => openWith(<OnboardOptionsModal />)}
+              variant="primary"
+            >
+              Add Account
+            </Button>
+          </Flex>
         )}
       </ModalFooter>
     </ModalContent>
