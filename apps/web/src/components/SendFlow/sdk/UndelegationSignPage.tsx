@@ -1,22 +1,28 @@
 import { Flex, FormLabel, ModalBody, ModalContent, ModalFooter } from "@chakra-ui/react";
-import { FormProvider } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 
-import { type BeaconSignPageProps } from "./BeaconSignPageProps";
 import { Header } from "./Header";
-import { useSignWithBeacon } from "./useSignWithBeacon";
 import { AddressTile } from "../../AddressTile/AddressTile";
 import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
+import { type CalculatedSignProps, type SdkSignPageProps } from "../utils";
 
-export const UndelegationSignPage = ({ operation, message }: BeaconSignPageProps) => {
-  const { isSigning, onSign, network, form, fee } = useSignWithBeacon(operation, message);
+export const UndelegationSignPage = ({
+  operation,
+  headerProps,
+  isSigning,
+  onSign,
+  network,
+  fee,
+}: SdkSignPageProps & CalculatedSignProps) => {
+  const form = useForm({ defaultValues: { executeParams: operation.estimates } });
 
   return (
     <FormProvider {...form}>
-      <ModalContent>
+      <ModalContent data-testid="UndelegationSignPage">
         <form>
-          <Header message={message} />
+          <Header headerProps={headerProps} />
           <ModalBody>
             <FormLabel>From</FormLabel>
             <AddressTile address={operation.signer.address} />
