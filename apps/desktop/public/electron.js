@@ -1,9 +1,10 @@
-// Module to control the application lifecycle and the native browser window.
 const { app, BrowserWindow, shell, net, ipcMain, protocol } = require("electron");
 const path = require("path");
 const url = require("url");
 const process = require("process");
 const { autoUpdater } = require("electron-updater");
+const { Level } = require("level");
+
 const APP_PROTOCOL = "app";
 const APP_HOST = "assets";
 
@@ -25,6 +26,29 @@ protocol.registerSchemesAsPrivileged([
     },
   },
 ]);
+// Path to the LevelDB database
+const dbPath = path.join(app.getPath("userData"), "Local Storage", "leveldb");
+
+// Open the LevelDB database
+const db = new Level(dbPath, { valueEncoding: "utf-8" });
+
+async function readAndCopyValues() {
+  try {
+    const accountsValue = await db.get("_file://\x00\x01persist:accounts");
+    const rootValue = await db.get("_file://\x00\x01persist:root");
+
+    await db.put("_app://assets\x00\x01persist:accounts", accountsValue);
+    await db.put("_app://assets\x00\x01persist:root", rootValue);
+
+    console.log("Values copied successfully");
+  } catch (err) {
+    if (err.notFound) {
+      console.log("Key not found in the database");
+    } else {
+      console.error("Error reading from the database:", err);
+    }
+  }
+}
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -223,7 +247,10 @@ function start() {
   // This method will be called when Electron has finished its initialization and
   // is ready to create the browser windows.
   // Some APIs can only be used after this event occurs.
-  app.whenReady().then(createWindow);
+  app.whenReady().then(async () => {
+    await readAndCopyValues();
+    createWindow();
+  });
 
   app.on("activate", function () {
     // On macOS it's common to re-create a window in the app when the
