@@ -17,21 +17,28 @@ import {
 } from "@chakra-ui/react";
 import { type ContractOrigination } from "@umami/core";
 import { capitalize } from "lodash";
-import { FormProvider } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 
-import { type BeaconSignPageProps } from "./BeaconSignPageProps";
-import { useSignWithBeacon } from "./useSignWithBeacon";
 import { CodeSandboxIcon } from "../../../assets/icons";
 import { useColor } from "../../../styles/useColor";
 import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";
 import { JsValueWrap } from "../../JsValueWrap";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
+import { type CalculatedSignProps, type SdkSignPageProps } from "../utils";
 
-export const OriginationOperationSignPage = ({ operation, message }: BeaconSignPageProps) => {
-  const { isSigning, onSign, network, form, fee } = useSignWithBeacon(operation, message);
+export const OriginationOperationSignPage = ({
+  operation,
+  headerProps,
+  isSigning,
+  onSign,
+  network,
+  fee,
+}: SdkSignPageProps & CalculatedSignProps) => {
   const color = useColor();
   const { code, storage } = operation.operations[0] as ContractOrigination;
+
+  const form = useForm({ defaultValues: { executeParams: operation.estimates } });
 
   return (
     <FormProvider {...form}>
@@ -46,7 +53,7 @@ export const OriginationOperationSignPage = ({ operation, message }: BeaconSignP
                 Network:
               </Heading>
               <Text color={color("700")} fontWeight="400" size="sm">
-                {capitalize(message.network.type)}
+                {capitalize(headerProps.network.name)}
               </Text>
             </Flex>
           </ModalHeader>
@@ -64,10 +71,10 @@ export const OriginationOperationSignPage = ({ operation, message }: BeaconSignP
                   borderRadius="4px"
                   objectFit="cover"
                   fallback={<CodeSandboxIcon width="36px" height="36px" />}
-                  src={message.appMetadata.icon}
+                  src={headerProps.appIcon}
                 />
               </AspectRatio>
-              <Heading size="sm">{message.appMetadata.name}</Heading>
+              <Heading size="sm">{headerProps.appName}</Heading>
             </Flex>
 
             <Flex alignItems="center" justifyContent="end" marginTop="12px">
