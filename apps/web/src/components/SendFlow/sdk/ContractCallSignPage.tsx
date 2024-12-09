@@ -43,7 +43,7 @@ export const ContractCallSignPage = ({
 
   return (
     <FormProvider {...form}>
-      <ModalContent>
+      <ModalContent data-testid="ContractCallSignPage">
         <form>
           <Header headerProps={headerProps} />
           <ModalBody>
