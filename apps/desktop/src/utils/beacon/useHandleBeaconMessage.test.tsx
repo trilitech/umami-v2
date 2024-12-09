@@ -15,8 +15,8 @@ import { mockImplicitAddress } from "@umami/tezos";
 import { CustomError } from "@umami/utils";
 
 import { useHandleBeaconMessage } from "./useHandleBeaconMessage";
-import { BatchSignPage } from "../../components/SendFlow/Beacon/BatchSignPage";
-import { BeaconSignPage } from "../../components/SendFlow/Beacon/BeaconSignPage";
+import { BatchSignPage } from "../../components/SendFlow/common/BatchSignPage";
+import { BeaconSignPage } from "../../components/SendFlow/common/BeaconSignPage";
 import { act, dynamicModalContextMock, renderHook, screen, waitFor } from "../../mocks/testUtils";
 
 jest.mock("@umami/core", () => ({
