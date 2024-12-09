@@ -8,8 +8,8 @@ import {
   ModalContent,
   ModalFooter,
   Text,
-  useBreakpointValue,
   VStack,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import { type EstimatedAccountOperations, type FA2Transfer, type NFTBalance } from "@umami/core";
 import { FormProvider } from "react-hook-form";
