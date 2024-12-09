@@ -15,6 +15,8 @@ describe("<ShowSeedphrase />", () => {
     const user = userEvent.setup();
     render(fixture());
 
+    await act(() => user.click(screen.getByTestId("show-seedphrase-button")));
+
     mnemonic1.split(" ").forEach(word => {
       expect(screen.getByText(word)).toBeInTheDocument();
     });

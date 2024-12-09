@@ -29,6 +29,8 @@ Then("I am on {string} onboarding page", async function (this: CustomWorld, moda
 });
 
 Then("I record generated seedphrase", async function (this: CustomWorld) {
+  await this.page.getByRole("button", { name: "Show seed phrase" }).click();
+
   const words: string[] = [];
   for (let i = 0; i < 24; i++) {
     words.push(await this.page.getByTestId(`mnemonic-word-${i}`).innerText());
