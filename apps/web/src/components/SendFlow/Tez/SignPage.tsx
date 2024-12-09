@@ -5,6 +5,7 @@ import {
   ModalBody,
   ModalContent,
   ModalFooter,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import { type TezTransfer } from "@umami/core";
 import { FormProvider } from "react-hook-form";
@@ -21,6 +22,7 @@ export const SignPage = (props: SignPageProps) => {
   const { operations: initialOperations } = props;
   const { fee, operations, estimationFailed, isLoading, form, signer, onSign } =
     useSignPageHelpers(initialOperations);
+  const hideBalance = useBreakpointValue({ base: true, md: false });
 
   const { amount: mutezAmount, recipient } = operations.operations[0] as TezTransfer;
 
@@ -39,11 +41,11 @@ export const SignPage = (props: SignPageProps) => {
             </FormControl>
             <FormControl>
               <FormLabel width="full">From</FormLabel>
-              <AddressTile address={operations.sender.address} />
+              <AddressTile address={operations.sender.address} hideBalance={hideBalance} />
             </FormControl>
             <FormControl>
               <FormLabel width="full">To</FormLabel>
-              <AddressTile address={recipient} />
+              <AddressTile address={recipient} hideBalance={hideBalance} />
             </FormControl>
             <AdvancedSettingsAccordion />
           </ModalBody>
