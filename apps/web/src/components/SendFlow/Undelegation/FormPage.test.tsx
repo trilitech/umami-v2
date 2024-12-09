@@ -14,6 +14,7 @@ import {
 } from "@umami/state";
 import { executeParams } from "@umami/test-utils";
 import { mockImplicitAddress } from "@umami/tezos";
+import { CustomError } from "@umami/utils";
 
 import { FormPage, type FormValues } from "./FormPage";
 import { SignPage } from "./SignPage";
@@ -93,7 +94,7 @@ describe("<Form />", () => {
       );
 
       const estimateMock = jest.mocked(estimate);
-      estimateMock.mockRejectedValue(new Error("Some error occurred"));
+      estimateMock.mockRejectedValue(new CustomError("Some error occurred"));
 
       const submitButton = screen.getByText("Preview");
       await waitFor(() => expect(submitButton).toBeEnabled());

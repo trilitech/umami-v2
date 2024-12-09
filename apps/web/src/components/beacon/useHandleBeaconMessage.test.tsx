@@ -12,6 +12,7 @@ import { estimate, makeAccountOperations, mockImplicitAccount } from "@umami/cor
 import { type UmamiStore, WalletClient, addTestAccount, makeStore, mockToast } from "@umami/state";
 import { executeParams } from "@umami/test-utils";
 import { mockImplicitAddress } from "@umami/tezos";
+import { CustomError } from "@umami/utils";
 
 import { useHandleBeaconMessage } from "./useHandleBeaconMessage";
 import { BatchSignPage } from "../../components/SendFlow/Beacon/BatchSignPage";
@@ -251,7 +252,7 @@ describe("<useHandleBeaconMessage />", () => {
     });
 
     it("doesn't open a modal on an error while estimating the fee", async () => {
-      jest.mocked(estimate).mockRejectedValueOnce(new Error("Something went very wrong!"));
+      jest.mocked(estimate).mockRejectedValueOnce(new CustomError("Something went very wrong!"));
 
       const message: BeaconRequestOutputMessage = {
         type: BeaconMessageType.OperationRequest,

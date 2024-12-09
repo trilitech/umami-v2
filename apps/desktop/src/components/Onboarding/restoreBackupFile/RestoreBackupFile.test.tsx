@@ -1,5 +1,6 @@
 import { mockToast, useRestoreBackup } from "@umami/state";
 import { fileUploadMock, umamiBackup } from "@umami/test-utils";
+import { CustomError } from "@umami/utils";
 
 import { RestoreBackupFile } from "./RestoreBackupFile";
 import {
@@ -41,7 +42,9 @@ describe("<RestoreBackupFile />", () => {
   it("shows error for wrong backup file format", async () => {
     jest
       .mocked(useRestoreBackup)
-      .mockImplementation(() => jest.fn(() => Promise.reject("Invalid backup file.")));
+      .mockImplementation(() =>
+        jest.fn(() => Promise.reject(new CustomError("Invalid backup file.")))
+      );
     const user = userEvent.setup();
 
     render(<RestoreBackupFile />);

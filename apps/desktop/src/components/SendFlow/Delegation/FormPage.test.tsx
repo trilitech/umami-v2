@@ -8,6 +8,7 @@ import {
 } from "@umami/core";
 import { type UmamiStore, addTestAccount, assetsActions, makeStore, mockToast } from "@umami/state";
 import { executeParams } from "@umami/test-utils";
+import { CustomError } from "@umami/utils";
 
 import { FormPage, type FormValues } from "./FormPage";
 import { SignPage } from "./SignPage";
@@ -158,7 +159,7 @@ describe("<Form />", () => {
       });
 
       const estimateMock = jest.mocked(estimate);
-      estimateMock.mockRejectedValue(new Error("Some error occurred"));
+      estimateMock.mockRejectedValue(new CustomError("Some error occurred"));
 
       await act(() => user.click(submitButton));
 

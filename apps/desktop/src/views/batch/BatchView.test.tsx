@@ -9,6 +9,7 @@ import {
 } from "@umami/core";
 import { type UmamiStore, addTestAccount, makeStore, mockToast } from "@umami/state";
 import { executeParams } from "@umami/test-utils";
+import { CustomError } from "@umami/utils";
 
 import { BatchView } from "./BatchView";
 import { act, render, screen, userEvent, within } from "../../mocks/testUtils";
@@ -85,7 +86,7 @@ describe("<BatchView />", () => {
 
     it("doesn't show up if the estimation fails with an unknown error", async () => {
       const user = userEvent.setup();
-      jest.mocked(estimate).mockRejectedValue(new Error("something went wrong"));
+      jest.mocked(estimate).mockRejectedValue(new CustomError("something went wrong"));
 
       render(<BatchView operations={operations} />, { store });
 
