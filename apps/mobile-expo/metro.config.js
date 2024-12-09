@@ -2,16 +2,13 @@
 const { getDefaultConfig } = require("expo/metro-config");
 const path = require("path");
 
-// Find the project and workspace directories
 const projectRoot = __dirname;
 const workspaceRoot = path.resolve(projectRoot, "../..");
 
-// Get the default configuration
 const defaultConfig = getDefaultConfig(projectRoot);
 
-// Extend the default configuration
 defaultConfig.watchFolders = [
-  workspaceRoot, // Add workspace root for monorepo compatibility
+  workspaceRoot,
 ];
 
 defaultConfig.resolver = {
@@ -28,15 +25,12 @@ defaultConfig.resolver = {
     buffer: require.resolve("buffer"),
     util: require.resolve("util"),
     vm: require.resolve("vm-browserify"),
-    // zlib: require.resolve("browserify-zlib"),
+    zlib: require.resolve("pako"), // Replace zlib with pako
     process: require.resolve("process"),
-    "@tamagui/web": path.resolve(__dirname, "node_modules/@tamagui/web"),
-    "@tamagui/core": path.resolve(__dirname, "node_modules/@tamagui/core"),
-    zlib: require.resolve("pako"),
   },
   disableHierarchicalLookup: true,
-  unstable_enablePackageExports: true,
   unstable_enableSymlinks: true,
+  unstable_enablePackageExports: true,
 };
 
 module.exports = defaultConfig;
