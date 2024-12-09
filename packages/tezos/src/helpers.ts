@@ -130,6 +130,6 @@ export const decryptSecretKey = async (secretKey: string, password: string) => {
       throw new CustomError("Invalid secret key: checksum doesn't match");
     }
 
-    throw error;
+    throw new CustomError(error.message);
   }
 };

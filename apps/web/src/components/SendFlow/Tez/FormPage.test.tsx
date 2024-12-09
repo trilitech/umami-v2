@@ -7,6 +7,7 @@ import {
 } from "@umami/core";
 import { type UmamiStore, addTestAccount, makeStore, mockToast } from "@umami/state";
 import { executeParams } from "@umami/test-utils";
+import { CustomError } from "@umami/utils";
 
 import { FormPage } from "./FormPage";
 import { SignPage } from "./SignPage";
@@ -167,19 +168,13 @@ describe("<Form />", () => {
       const submitButton = screen.getByText("Preview");
       await waitFor(() => expect(submitButton).toBeEnabled());
       const estimateMock = jest.mocked(estimate);
-      expect(mockToast).toHaveBeenCalledWith({
-        description:
-          "Something went wrong. Please try again or contact support if the issue persists.",
-        status: "error",
-        isClosable: true,
-      });
+      estimateMock.mockRejectedValue(new CustomError("Some error occurred"));
 
       await act(() => user.click(submitButton));
 
       expect(estimateMock).toHaveBeenCalledTimes(1);
       expect(mockToast).toHaveBeenCalledWith({
-        description:
-          "Something went wrong. Please try again or contact support if the issue persists.",
+        description: "Some error occurred",
         status: "error",
         isClosable: true,
       });
