@@ -13,12 +13,21 @@ import { type MouseEvent, type PropsWithChildren } from "react";
 
 import { useColor } from "../../styles/useColor";
 
+const COPY_TIMEOUT = 30_000;
+
+type CopyButtonProps = {
+  value: string;
+  isCopyDisabled?: boolean;
+  isDisposable?: boolean;
+} & ButtonProps;
+
 export const CopyButton = ({
   value,
   children,
   isCopyDisabled = false,
+  isDisposable = false,
   ...props
-}: PropsWithChildren<{ value: string; isCopyDisabled?: boolean } & ButtonProps>) => {
+}: PropsWithChildren<CopyButtonProps>) => {
   const color = useColor();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -30,7 +39,18 @@ export const CopyButton = ({
 
     event.stopPropagation();
     setTimeout(onClose, 1000);
-    return navigator.clipboard.writeText(value);
+
+    return navigator.clipboard.writeText(value).then(() => {
+      if (isDisposable) {
+        setTimeout(() => {
+          try {
+            void navigator.clipboard.writeText("");
+          } catch (error: unknown) {
+            console.error("Failed to clear clipboard", error);
+          }
+        }, COPY_TIMEOUT);
+      }
+    });
   };
 
   return (

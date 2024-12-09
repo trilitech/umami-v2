@@ -38,7 +38,6 @@ export const useAsyncActionHandler = () => {
       try {
         return await fn();
       } catch (error: any) {
-        console.log("error", error);
         const errorContext = getErrorContext(error);
 
         toast({

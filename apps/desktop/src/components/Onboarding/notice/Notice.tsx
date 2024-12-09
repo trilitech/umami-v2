@@ -14,7 +14,7 @@ export const Notice = ({ goToStep }: { goToStep: (step: OnboardingStep) => void 
       content: "Make sure there is no one around you or looking over your shoulder.",
     },
     {
-      content: "Do not copy and paste the Seed Phrase or store it on your device.",
+      content: "Do not store Seed Phrase on your device.",
     },
     {
       content: "Do not take a screenshot of your Seed Phrase.",
