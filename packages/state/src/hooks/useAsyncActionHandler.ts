@@ -1,4 +1,4 @@
-import { type UseToastOptions, useToast } from "@chakra-ui/react";
+import { type UseToastOptions } from "@chakra-ui/react";
 import { getErrorContext } from "@umami/core";
 import { useCallback, useRef, useState } from "react";
 
@@ -22,7 +22,7 @@ import { mockToast } from "../testUtils";
 export const useAsyncActionHandler = () => {
   const [isLoading, setIsLoading] = useState(false);
   const isLoadingRef = useRef(isLoading);
-  const toast = useToast();
+  const toast: any = undefined; // useToast();
   const dispatch = useAppDispatch();
 
   const handleAsyncActionUnsafe = useCallback(

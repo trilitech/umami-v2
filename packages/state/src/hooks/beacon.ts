@@ -4,7 +4,7 @@ import {
   type NetworkType,
   Serializer,
 } from "@airgap/beacon-wallet";
-import { useToast } from "@chakra-ui/react";
+// import { useToast } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { type RawPkh } from "@umami/tezos";
 import { uniq } from "lodash";
@@ -102,7 +102,7 @@ export const useRemoveBeaconPeersByAccounts = () => {
 
 export const useAddPeer = () => {
   const { refresh } = useBeaconPeers();
-  const toast = useToast();
+  const toast: any = undefined; //useToast();
 
   return (payload: string) =>
     new Serializer()
