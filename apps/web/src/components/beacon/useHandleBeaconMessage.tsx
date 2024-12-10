@@ -18,8 +18,8 @@ import { CustomError } from "@umami/utils";
 
 import { PermissionRequestModal } from "./PermissionRequestModal";
 import { SignPayloadRequestModal } from "./SignPayloadRequestModal";
-import { BatchSignPage } from "../../components/SendFlow/Beacon/BatchSignPage";
-import { SingleSignPage } from "../../components/SendFlow/Beacon/BeaconSignPage";
+import { BatchSignPage } from "../SendFlow/Beacon/BatchSignPage";
+import { SingleSignPage } from "../SendFlow/Beacon/BeaconSignPage";
 import { type SdkSignPageProps, type SignHeaderProps } from "../SendFlow/utils";
 
 /**

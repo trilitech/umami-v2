@@ -24,8 +24,8 @@ import { WalletClient, useGetImplicitAccount } from "@umami/state";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
-import { SignButton } from "../../components/SendFlow/SignButton";
 import { useColor } from "../../styles/useColor";
+import { SignButton } from "../SendFlow/SignButton";
 
 export const SignPayloadRequestModal = ({ request }: { request: SignPayloadRequestOutput }) => {
   const { onClose } = useDynamicModalContext();

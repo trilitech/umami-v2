@@ -9,7 +9,7 @@ import { StakeSignPage } from "./StakeSignPage";
 import { TezSignPage } from "./TezSignPage";
 import { UndelegationSignPage } from "./UndelegationSignPage";
 import { UnstakeSignPage } from "./UnstakeSignPage";
-import { useSignWithBeacon } from "../Beacon/useSignWithBeacon";
+import { useSignWithBeacon } from "./useSignWithBeacon";
 
 export const SingleSignPage = (signProps: SdkSignPageProps) => {
   const operationType = signProps.operation.operations[0].type;

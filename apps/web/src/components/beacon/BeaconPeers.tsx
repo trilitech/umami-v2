@@ -5,8 +5,8 @@ import { parsePkh } from "@umami/tezos";
 import capitalize from "lodash/capitalize";
 
 import { CodeSandboxIcon, StubIcon as TrashIcon } from "../../assets/icons";
-import { AddressPill } from "../../components/AddressPill/AddressPill";
 import { useColor } from "../../styles/useColor";
+import { AddressPill } from "../AddressPill/AddressPill";
 import { EmptyMessage } from "../EmptyMessage";
 
 /**
