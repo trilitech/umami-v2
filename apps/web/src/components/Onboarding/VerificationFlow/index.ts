@@ -1,2 +1,2 @@
 export { VerifyMessage } from "./VerifyMessage";
-export { useIsAccountVerified } from "./useIsAccountVerified";
+export { useIsAccountVerified, useHasVerifiedAccounts } from "./useIsAccountVerified";
