@@ -1,6 +1,7 @@
 import { Grid, GridItem } from "@chakra-ui/react";
 import { useDynamicModalContext } from "@umami/components";
 import { useDataPolling } from "@umami/data-polling";
+import { useCurrentAccount } from "@umami/state";
 import { useEffect } from "react";
 
 import { Footer } from "./components/Footer";
@@ -9,20 +10,53 @@ import { Main } from "./components/Main";
 import { Navbar } from "./components/Navbar";
 import { SecurityWarningModal } from "./components/SecurityWarningModal";
 import { Sidebar } from "./components/Sidebar";
+import { SocialLoginWarningModal } from "./components/SocialLoginWarningModal/SocialLoginWarningModal";
 
 export const Layout = () => {
   useDataPolling();
   const { openWith } = useDynamicModalContext();
+  const currentUser = useCurrentAccount();
 
   useEffect(() => {
-    const isInformed = localStorage.getItem("user:isExtensionsWarningShown");
+    const warnings = [
+      {
+        key: "user:isExtensionsWarningShown",
+        component: <SecurityWarningModal />,
+        options: { closeOnEsc: false, size: "xl" },
+        isEnabled: () => true,
+      },
+      {
+        key: "user:isSocialLoginWarningShown",
+        component: <SocialLoginWarningModal />,
+        isEnabled: () => currentUser?.type === "social",
+      },
+    ];
 
-    if (!isInformed || !JSON.parse(isInformed)) {
-      // Trick to ensure the modal is rendered after the initial render
-      setTimeout(() => {
-        void openWith(<SecurityWarningModal />, { closeOnEsc: false, size: "xl" });
-      }, 500);
-    }
+    const warningsToShow = warnings.filter(warning => {
+      const isInformed = localStorage.getItem(warning.key);
+      return (!isInformed || !JSON.parse(isInformed)) && warning.isEnabled();
+    });
+
+    const showWarnings = async () => {
+      for (let i = 0; i < warningsToShow.length; i++) {
+        const warning = warningsToShow[i];
+        await new Promise(resolve => {
+          const showModal = () =>
+            void openWith(warning.component, {
+              ...warning.options,
+              onClose: () => resolve(true),
+            });
+
+          if (i === 0) {
+            setTimeout(showModal, 500);
+          } else {
+            showModal();
+          }
+        });
+      }
+    };
+
+    void showWarnings();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

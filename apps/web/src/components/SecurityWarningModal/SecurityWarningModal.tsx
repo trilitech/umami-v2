@@ -131,7 +131,7 @@ export const SecurityWarningModal = () => {
           <Text whiteSpace="break-spaces">I have read and understood all security guidelines</Text>
         </Checkbox>
       </ModalBody>
-      <ModalFooter flexDirection="column" gap="16px">
+      <ModalFooter>
         <Button width="full" isDisabled={!isAgreed} onClick={handleInform} variant="primary">
           Continue
         </Button>
