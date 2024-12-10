@@ -10,7 +10,7 @@ import {
 import { formatPkh } from "@umami/tezos";
 
 import { BeaconPeers } from "./BeaconPeers";
-import { act, render, screen, userEvent, waitFor, within } from "../../testUtils";
+import { act, render, screen, userEvent, within } from "../../testUtils";
 
 const peersData: ExtendedPeerInfo[] = [
   {
@@ -58,20 +58,11 @@ describe("<BeaconPeers />", () => {
   };
 
   describe("list of paired dApps", () => {
-    it("shows empty state message when no paired dApps", async () => {
+    it("shows empty list when no paired dApps", () => {
       jest.spyOn(WalletClient, "getPeers").mockResolvedValue([]);
       render(<BeaconPeers />, { store });
 
-      await waitFor(() => {
-        expect(screen.getByText("Your Apps will appear here...")).toBeInTheDocument();
-      });
       expect(screen.queryByTestId("peer-row")).not.toBeInTheDocument();
-    });
-
-    it("hides empty state message when paired dApps are present", async () => {
-      await getPeerRows();
-
-      expect(screen.queryByText("Your dApps will appear here")).not.toBeInTheDocument();
     });
 
     it("contains dApp names", async () => {

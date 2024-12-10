@@ -9,7 +9,6 @@ import { useEffect, useState } from "react";
 import { CodeSandboxIcon, StubIcon as TrashIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
 import { AddressPill } from "../AddressPill";
-import { EmptyMessage } from "../EmptyMessage";
 
 /**
  * Component displaying a list of connected dApps.
@@ -26,15 +25,7 @@ export const WcPeers = () => {
   }, [isUpdated]);
 
   if (!Object.keys(sessions).length) {
-    return (
-      <EmptyMessage
-        alignItems="flex-start"
-        marginTop="40px"
-        data-testid="wc-peers-empty"
-        subtitle="No WalletConnect Apps to show"
-        title="Your WalletConnect Apps will appear here..."
-      />
-    );
+    return <></>;
   }
 
   return (
