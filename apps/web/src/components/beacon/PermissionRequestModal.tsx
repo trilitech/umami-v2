@@ -34,8 +34,8 @@ import { capitalize } from "lodash";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { CodeSandboxIcon } from "../../assets/icons";
-import { OwnedImplicitAccountsAutocomplete } from "../../components/AddressAutocomplete";
 import { useColor } from "../../styles/useColor";
+import { OwnedImplicitAccountsAutocomplete } from "../AddressAutocomplete";
 import { ModalCloseButton } from "../CloseButton";
 import { JsValueWrap } from "../JsValueWrap";
 

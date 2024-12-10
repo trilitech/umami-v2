@@ -20,9 +20,9 @@ import { MAINNET, mockImplicitAddress } from "@umami/tezos";
 import { CustomError } from "@umami/utils";
 
 import { useHandleBeaconMessage } from "./useHandleBeaconMessage";
-import { BatchSignPage } from "../../components/SendFlow/Beacon/BatchSignPage";
-import { SingleSignPage } from "../../components/SendFlow/Beacon/BeaconSignPage";
 import { act, dynamicModalContextMock, renderHook, screen, waitFor } from "../../testUtils";
+import { BatchSignPage } from "../SendFlow/Beacon/BatchSignPage";
+import { SingleSignPage } from "../SendFlow/Beacon/BeaconSignPage";
 import { type SdkSignPageProps, type SignHeaderProps } from "../SendFlow/utils";
 
 jest.mock("@umami/core", () => ({
