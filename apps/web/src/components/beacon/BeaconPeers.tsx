@@ -7,7 +7,6 @@ import capitalize from "lodash/capitalize";
 import { CodeSandboxIcon, StubIcon as TrashIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
 import { AddressPill } from "../AddressPill/AddressPill";
-import { EmptyMessage } from "../EmptyMessage";
 
 /**
  * Component displaying a list of connected dApps.
@@ -18,15 +17,7 @@ export const BeaconPeers = () => {
   const { peers } = useBeaconPeers();
 
   if (peers.length === 0) {
-    return (
-      <EmptyMessage
-        alignItems="flex-start"
-        marginTop="40px"
-        data-testid="beacon-peers-empty"
-        subtitle="No Apps to show"
-        title="Your Apps will appear here..."
-      />
-    );
+    return <></>;
   }
 
   return (
