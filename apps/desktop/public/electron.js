@@ -1,5 +1,5 @@
 // Module to control the application lifecycle and the native browser window.
-const { app, BrowserWindow, shell, net, ipcMain, protocol } = require("electron");
+const { app, BrowserWindow, shell, net, ipcMain, protocol, clipboard } = require("electron");
 const path = require("path");
 const url = require("url");
 const process = require("process");
@@ -242,6 +242,14 @@ function start() {
 
   // Listen to install-app-update event from UI, start update on getting the event.
   ipcMain.on("install-app-update", () => autoUpdater.quitAndInstall());
+
+  ipcMain.on("clipboard-write", (_, text) => {
+    clipboard.writeText(text);
+  });
+
+  ipcMain.on("clipboard-clear", () => {
+    clipboard.clear();
+  });
 }
 
 start();

@@ -12,9 +12,10 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useDynamicModalContext } from "@umami/components";
+import { useState } from "react";
 
 import { VerifySeedphraseModal } from "./VerifySeedphraseModal";
-import { CopyIcon, KeyIcon } from "../../../assets/icons";
+import { CopyIcon, EyeIcon, EyeOffIcon, KeyIcon } from "../../../assets/icons";
 import { useColor } from "../../../styles/useColor";
 import { ModalBackButton } from "../../BackButton";
 import { ModalCloseButton } from "../../CloseButton";
@@ -29,6 +30,7 @@ export const RecordSeedphraseModal = ({ seedPhrase }: CopySeedphraseModalProps) 
   const color = useColor();
   const { openWith } = useDynamicModalContext();
   const words = seedPhrase.split(" ");
+  const [isHidden, setIsHidden] = useState(true);
 
   return (
     <ModalContent>
@@ -49,6 +51,7 @@ export const RecordSeedphraseModal = ({ seedPhrase }: CopySeedphraseModalProps) 
           gridRowGap={{ base: "12px", md: "18px" }}
           gridColumnGap={{ base: "8px", md: "12px" }}
           gridTemplateColumns={{ base: "repeat(3, 1fr)", md: "repeat(4, 1fr)" }}
+          userSelect="none"
         >
           {words.map((word, index) => (
             <MnemonicWord
@@ -66,21 +69,38 @@ export const RecordSeedphraseModal = ({ seedPhrase }: CopySeedphraseModalProps) 
               borderColor={color("100")}
               borderRadius="full"
               index={index}
+              isHidden={isHidden}
               word={word}
             />
           ))}
         </Grid>
-        <CopyButton
-          gap="8px"
-          width="full"
-          marginTop="16px"
-          fontSize="14px"
-          value={seedPhrase}
-          variant="ghost"
-        >
-          <Icon as={CopyIcon} boxSize="18px" color={color("400")} />
-          Copy
-        </CopyButton>
+        <Flex gap="16px" width="100%" marginTop="16px">
+          <Button
+            gap="4px"
+            display="flex"
+            width="full"
+            fontSize="14px"
+            fontWeight="400"
+            leftIcon={
+              <Icon as={isHidden ? EyeOffIcon : EyeIcon} boxSize="18px" color={color("400")} />
+            }
+            onClick={() => setIsHidden(!isHidden)}
+            variant="ghost"
+          >
+            {isHidden ? "Show" : "Hide"} seed phrase
+          </Button>
+          <CopyButton
+            gap="8px"
+            width="full"
+            fontSize="14px"
+            isDisposable
+            value={seedPhrase}
+            variant="ghost"
+          >
+            <Icon as={CopyIcon} boxSize="18px" color={color("400")} />
+            Copy
+          </CopyButton>
+        </Flex>
       </ModalBody>
       <ModalFooter>
         <Button
