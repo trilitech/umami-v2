@@ -72,7 +72,7 @@
     "@emotion/styled": "^11.13.5",
     "@reduxjs/toolkit": "^2.3.0",
     "@reown/walletkit": "^1.0.1",
-    "@tanstack/react-query": "^5.62.2",
+    "@tanstack/react-query": "^5.62.3",
     "@taquito/signer": "^20.1.0",
     "@taquito/utils": "^20.1.0",
     "@types/jest": "^29.5.14",
