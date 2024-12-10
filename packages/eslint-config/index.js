@@ -78,6 +78,7 @@ module.exports = {
     "import/no-cycle": "warn",
     "import/no-self-import": "warn",
     "import/no-duplicates": ["warn", { "prefer-inline": true }],
+    "import/no-useless-path-segments": ["warn", { noUselessIndex: true, commonjs: true }],
     "import/order": [
       "warn",
       {
