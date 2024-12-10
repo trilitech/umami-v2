@@ -16,10 +16,10 @@ import {
 import { FormProvider, useForm } from "react-hook-form";
 
 import { Header } from "./Header";
-import { useSignWithBeacon } from "./useSignWithBeacon";
 import { useColor } from "../../../styles/useColor";
 import { AddressTile } from "../../AddressTile/AddressTile";
 import { JsValueWrap } from "../../JsValueWrap";
+import { useSignWithBeacon } from "../Beacon/useSignWithBeacon";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
 import { type SdkSignPageProps } from "../utils";
