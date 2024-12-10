@@ -20,18 +20,16 @@ describe("<SecurityWarningModal />", () => {
     ).toBeVisible();
   });
 
-  it("renders all accordion items", async () => {
+  it.each([
+    "Install extensions only from trusted sources",
+    "Review permissions and ratings",
+    "Maintain a separate browser for financial activities",
+    "Keep your browser updated",
+    "Stay alert to social engineering risks",
+  ])("renders %s accordion item", async title => {
     await renderInModal(<SecurityWarningModal />);
 
-    const expectedTitles = [
-      "Install extensions only from trusted sources",
-      "Review permissions and ratings",
-      "Maintain a separate browser for financial activities",
-      "Keep your browser updated",
-      "Stay alert to social engineering risks",
-    ];
-
-    expectedTitles.forEach(title => {
+    await waitFor(() => {
       expect(screen.getByText(title)).toBeVisible();
     });
   });
