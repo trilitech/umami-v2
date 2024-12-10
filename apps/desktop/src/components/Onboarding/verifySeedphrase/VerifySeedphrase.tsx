@@ -62,6 +62,7 @@ export const VerifySeedphrase = ({
                       inputProps={{
                         paddingLeft: "36px",
                         size: "md",
+                        height: "48px",
                       }}
                       listProps={{
                         marginTop: "6px",
