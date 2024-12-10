@@ -3,6 +3,7 @@ import {
   Checkbox,
   Flex,
   Heading,
+  Icon,
   ModalBody,
   ModalContent,
   ModalFooter,
@@ -12,39 +13,48 @@ import {
 import { useDynamicModalContext } from "@umami/components";
 import { useState } from "react";
 
-import { AlertIcon } from "../../assets/icons";
-import { useColor } from "../../styles/useColor";
+import { WarningIcon } from "../../assets/icons";
+import colors from "../../style/colors";
 
 export const SocialLoginWarningModal = () => {
   const { onClose } = useDynamicModalContext();
-  const color = useColor();
   const [isAgreed, setIsAgreed] = useState(false);
 
   const handleInform = () => {
+    localStorage.setItem("user:isSocialLoginWarningShown", "true");
     onClose();
   };
 
   return (
-    <ModalContent maxWidth="440px">
+    <ModalContent>
       <ModalHeader>
-        <Flex alignItems="center" justifyContent="center" flexDirection="column" gap="16px">
-          <AlertIcon width="22px" color={color("400")} />
+        <Flex
+          alignItems="center"
+          justifyContent="center"
+          flexDirection="column"
+          gap="16px"
+          textAlign="center"
+        >
+          <Icon as={WarningIcon} width="22px" stroke={colors.gray[450]} />
           <Heading size="xl">Important notice about your social account wallet</Heading>
         </Flex>
       </ModalHeader>
-      <ModalBody>
+      <ModalBody marginTop="24px">
         <Flex alignItems="center" flexDirection="column" gap="16px" textAlign="center">
-          <Text color={color("700")} fontSize="md">
+          <Text color={colors.gray[400]} fontSize="md">
             Wallets created with social accounts depend on those accounts to function. Losing access
             to this social account will result in loosing the wallet. Enable two-factor
             authentication to protect your social accounts.
           </Text>
           <Checkbox
-            color={color("700")}
+            marginTop="16px"
+            color={colors.gray[400]}
             isChecked={isAgreed}
             onChange={e => setIsAgreed(e.target.checked)}
           >
-            <Text fontWeight="bold">I understand and accept the risks.</Text>
+            <Text fontSize="sm" fontWeight="bold">
+              I understand and accept the risks.
+            </Text>
           </Checkbox>
         </Flex>
       </ModalBody>

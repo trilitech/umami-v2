@@ -1,12 +1,18 @@
 /* istanbul ignore file */
 import { DynamicModalContext, useDynamicModal } from "@umami/components";
 import { useDataPolling } from "@umami/data-polling";
-import { WalletClient, useImplicitAccounts, useResetBeaconConnections } from "@umami/state";
+import {
+  WalletClient,
+  useCurrentAccount,
+  useImplicitAccounts,
+  useResetBeaconConnections,
+} from "@umami/state";
 import { noop } from "lodash";
 import { useEffect } from "react";
 import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
 
 import { AnnouncementBanner } from "./components/AnnouncementBanner";
+import { SocialLoginWarningModal } from "./components/SocialLoginWarningModal/SocialLoginWarningModal";
 import { BeaconProvider } from "./utils/beacon/BeaconProvider";
 import { useDeeplinkHandler } from "./utils/useDeeplinkHandler";
 import { AddressBookView } from "./views/addressBook/AddressBookView";
@@ -33,6 +39,18 @@ export const Router = () => {
 const LoggedInRouterWithPolling = () => {
   useDataPolling();
   const modalDisclosure = useDynamicModal();
+  const currentUser = useCurrentAccount();
+
+  useEffect(() => {
+    if (currentUser?.type === "social") {
+      const isInformed = localStorage.getItem("user:isSocialLoginWarningShown");
+
+      if (!isInformed || !JSON.parse(isInformed)) {
+        void modalDisclosure.openWith(<SocialLoginWarningModal />, { closeOnEsc: false });
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentUser]);
 
   return (
     <HashRouter>

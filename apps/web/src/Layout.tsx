@@ -18,17 +18,20 @@ export const Layout = () => {
   const currentUser = useCurrentAccount();
 
   useEffect(() => {
+    const CLOSING_DELAY = 300;
+
     const warnings = [
+      {
+        key: "user:isSocialLoginWarningShown",
+        component: <SocialLoginWarningModal />,
+        options: { closeOnEsc: false },
+        isEnabled: () => currentUser?.type === "social",
+      },
       {
         key: "user:isExtensionsWarningShown",
         component: <SecurityWarningModal />,
         options: { closeOnEsc: false, size: "xl" },
         isEnabled: () => true,
-      },
-      {
-        key: "user:isSocialLoginWarningShown",
-        component: <SocialLoginWarningModal />,
-        isEnabled: () => currentUser?.type === "social",
       },
     ];
 
@@ -38,27 +41,29 @@ export const Layout = () => {
     });
 
     const showWarnings = async () => {
-      for (let i = 0; i < warningsToShow.length; i++) {
-        const warning = warningsToShow[i];
-        await new Promise(resolve => {
-          const showModal = () =>
+      for (const warning of warningsToShow) {
+        await new Promise(
+          resolve =>
             void openWith(warning.component, {
               ...warning.options,
-              onClose: () => resolve(true),
-            });
+              onClose: () => {
+                localStorage.setItem(warning.key, "true");
+                resolve(true);
+              },
+            })
+        );
 
-          if (i === 0) {
-            setTimeout(showModal, 500);
-          } else {
-            showModal();
-          }
-        });
+        // Setting a delay to ensure the modal is properly closed before the next one is opened
+        await new Promise(resolve => setTimeout(resolve, CLOSING_DELAY));
       }
     };
 
-    void showWarnings();
+    if (warningsToShow.length > 0) {
+      // Immediate opening of the first modal causes freezes
+      setTimeout(() => void showWarnings(), 500);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [currentUser]);
 
   return (
     <Grid

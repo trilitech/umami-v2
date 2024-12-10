@@ -51,10 +51,6 @@ Object.defineProperties(global, {
   fetch: { value: jest.fn(), writable: true },
 });
 
-Object.defineProperty(window, "localStorage", {
-  value: mockLocalStorage(),
-});
-
 beforeEach(() => {
   // Add missing browser APIs
   Object.defineProperties(global, {
@@ -78,6 +74,10 @@ beforeEach(() => {
 
   // Hack for testing HashRouter: clears URL between tests.
   window.location.hash = "";
+
+  Object.defineProperty(window, "localStorage", {
+    value: mockLocalStorage(),
+  });
 
   setupJestCanvasMock();
 });

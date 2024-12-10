@@ -1,12 +1,5 @@
 import { SecurityWarningModal } from "./SecurityWarningModal";
-import {
-  act,
-  dynamicModalContextMock,
-  renderInModal,
-  screen,
-  userEvent,
-  waitFor,
-} from "../../testUtils";
+import { act, renderInModal, screen, userEvent, waitFor } from "../../testUtils";
 
 beforeEach(() => {
   localStorage.clear();
@@ -55,31 +48,11 @@ describe("<SecurityWarningModal />", () => {
     await renderInModal(<SecurityWarningModal />);
 
     const checkbox = screen.getByRole("checkbox", {
-      name: "I have read and understood all security guidelines",
+      name: "I understand and accept the risks.",
     });
     await act(() => user.click(checkbox));
 
     const continueButton = screen.getByRole("button", { name: "Continue" });
     expect(continueButton).toBeEnabled();
-  });
-
-  it("sets localStorage and closes modal when 'Continue' is clicked", async () => {
-    const { onClose } = dynamicModalContextMock;
-    const user = userEvent.setup();
-    await renderInModal(<SecurityWarningModal />);
-
-    const checkbox = screen.getByRole("checkbox", {
-      name: "I have read and understood all security guidelines",
-    });
-    await act(() => user.click(checkbox));
-
-    const continueButton = screen.getByRole("button", { name: "Continue" });
-    await act(() => user.click(continueButton));
-
-    await waitFor(() => {
-      expect(localStorage.getItem("user:isExtensionsWarningShown")).toBe("true");
-    });
-
-    expect(onClose).toHaveBeenCalled();
   });
 });
