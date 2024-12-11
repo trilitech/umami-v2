@@ -71,7 +71,7 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@reduxjs/toolkit": "^2.5.0",
-    "@reown/walletkit": "^1.0.1",
+    "@reown/walletkit": "^1.1.1",
     "@tanstack/react-query": "^5.62.8",
     "@taquito/signer": "^20.1.2",
     "@taquito/utils": "^20.1.2",
