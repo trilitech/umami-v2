@@ -54,7 +54,7 @@
     "@umami/tzkt": "workspace:^",
     "@walletconnect/jsonrpc-utils": "^1.0.8",
     "@walletconnect/types": "^2.16.2",
-    "@walletconnect/utils": "^2.16.2",
+    "@walletconnect/utils": "^2.17.2",
     "bignumber.js": "^9.1.2",
     "bip39": "^3.1.0",
     "cross-env": "^7.0.3",
