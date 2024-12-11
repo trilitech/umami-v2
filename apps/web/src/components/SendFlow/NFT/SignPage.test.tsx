@@ -11,6 +11,11 @@ import { TEZ, parseContractPkh } from "@umami/tezos";
 import { SignPage } from "./SignPage";
 import { renderInModal, screen, waitFor } from "../../../testUtils";
 
+jest.mock("@chakra-ui/react", () => ({
+  ...jest.requireActual("@chakra-ui/react"),
+  useBreakpointValue: jest.fn(),
+}));
+
 let store: UmamiStore;
 
 beforeEach(() => {

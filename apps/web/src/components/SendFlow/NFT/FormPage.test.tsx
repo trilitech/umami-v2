@@ -26,6 +26,11 @@ jest.mock("@umami/core", () => ({
   estimate: jest.fn(),
 }));
 
+jest.mock("@chakra-ui/react", () => ({
+  ...jest.requireActual("@chakra-ui/react"),
+  useBreakpointValue: jest.fn(),
+}));
+
 const sender = mockImplicitAccount(0);
 const nft = mockNFTBalance(1, { balance: "1" });
 
