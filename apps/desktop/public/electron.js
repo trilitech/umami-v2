@@ -4,8 +4,13 @@ const path = require("path");
 const url = require("url");
 const process = require("process");
 const { autoUpdater } = require("electron-updater");
+const { Level } = require("level");
+const log = require('electron-log');
+const fs = require('fs');
+
 const APP_PROTOCOL = "app";
 const APP_HOST = "assets";
+// create in memory store of the leveldb database of previous version which had file:// protocol
 
 const appURL = app.isPackaged
   ? url.format({
@@ -26,6 +31,57 @@ protocol.registerSchemesAsPrivileged([
   },
 ]);
 
+// Configure electron-log
+log.transports.file.file = path.join(app.getPath('userData'), 'Local Storage', 'umami-desktop.log');
+
+async function readAndCopyValues() {
+  // Path to the LevelDB database
+  const dbPath = path.join(app.getPath("userData"), "Local Storage", "leveldb");
+
+  // Check if the LevelDB database exists
+  if (!fs.existsSync(dbPath)) {
+    log.info("LevelDB database not found at path. Code:EM01", dbPath);
+    return;
+  }
+  // check if backup file exists
+  if (fs.existsSync(path.join(app.getPath("userData"), "Local Storage", "backup_leveldb.json"))) {
+    log.info("Backup file already exists. Code:EM02");
+    return;
+  }
+
+  // Open the LevelDB database
+  const db = new Level(dbPath, { valueEncoding: "utf-8" });
+  await db.open();
+  try {
+    const accountsValue = await db.get("_file://\x00\x01persist:accounts");
+    let rootValue = await db.get("_file://\x00\x01persist:root");
+    if ( !accountsValue || !rootValue) {
+      log.info("No data found in the database. Code:EM03");
+      return;
+    }
+    console.log(accountsValue);
+    console.log(rootValue.length);
+      const storage  = {
+        "persist:accounts": {accountsValue},
+        "persist:root": {rootValue},
+      };
+      const rawBackup = JSON.stringify(storage);
+      try{
+      fs.appendFileSync(path.join(app.getPath("userData"), "Local Storage", "backup_leveldb.json"), rawBackup);
+      }
+      catch(err){
+        console.log("Error during leveldb backup creation Code:EM2.", err);
+      }
+    console.log("Migration done successfully");
+}
+  catch (err) {
+    log.error("Error during key migration Code:EM4.", err);
+  } finally {
+    db.close().catch((err) => {
+      log.error("Error closing the database. Code: EM5", err);
+    });
+  }
+}
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
@@ -169,12 +225,13 @@ function start() {
     app.quit();
     return;
   }
+  let waitForMigration = true;
 
   // Check for app updates, download and notify UI if update is available to be installed.
   try {
     autoUpdater.checkForUpdatesAndNotify();
   } catch (e) {
-    console.log(e);
+    log.error(e);
   }
 
   if (!app.isDefaultProtocolClient("umami")) {
@@ -223,7 +280,11 @@ function start() {
   // This method will be called when Electron has finished its initialization and
   // is ready to create the browser windows.
   // Some APIs can only be used after this event occurs.
-  app.whenReady().then(createWindow);
+  app.whenReady().then(async () => {
+  // Execute readAndCopyValues at the beginning
+    await readAndCopyValues();
+    createWindow();
+  });
 
   app.on("activate", function () {
     // On macOS it's common to re-create a window in the app when the
@@ -236,7 +297,7 @@ function start() {
   // Send event to UI when app update is ready to be installed.
   // If the update installation won't be triggered by the user, it will be applied the next time the app starts.
   autoUpdater.on("update-downloaded", event => {
-    console.log(`Umami update ${event.version} downloaded and ready to be installed`, url);
+    log.info(`Umami update ${event.version} downloaded and ready to be installed`, url);
     return mainWindow.webContents.send("app-update-downloaded");
   });
 
