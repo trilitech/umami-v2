@@ -15,6 +15,11 @@ import { SignPage } from "./SignPage";
 import { render, screen, waitFor } from "../../../testUtils";
 import { type SignPageProps } from "../utils";
 
+jest.mock("@chakra-ui/react", () => ({
+  ...jest.requireActual("@chakra-ui/react"),
+  useBreakpointValue: jest.fn(),
+}));
+
 const fixture = (props: SignPageProps<{ token: FA12TokenBalance | FA2TokenBalance }>) => (
   <Modal isOpen={true} onClose={() => {}}>
     <SignPage {...props} />
