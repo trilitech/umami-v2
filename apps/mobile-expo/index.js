@@ -1,8 +1,10 @@
 import { registerRootComponent } from "expo";
 import { ExpoRoot } from "expo-router";
 import { Buffer } from 'buffer';
+import process from 'process';
 
 global.Buffer = Buffer;
+global.process = process;
 
 // Must be exported or Fast Refresh won't update the context
 export function App() {
