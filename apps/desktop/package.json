@@ -93,9 +93,9 @@
     "@umami/state": "workspace:^",
     "@umami/test-utils": "workspace:^",
     "@umami/tezos": "workspace:^",
-    "@umami/utils": "workspace:^",
     "@umami/typescript-config": "workspace:^",
     "@umami/tzkt": "workspace:^",
+    "@umami/utils": "workspace:^",
     "@vitejs/plugin-react": "^4.3.4",
     "babel-jest": "^29.7.0",
     "bignumber.js": "^9.1.2",
@@ -151,11 +151,14 @@
     "vite-plugin-checker": "^0.8.0",
     "vite-plugin-node-polyfills": "^0.17.0",
     "vite-plugin-sri": "^0.0.2",
-    "zod": "^3.23.8",
-    "@hookform/resolvers": "^3.9.1"
+    "zod": "^3.23.8"
   },
   "packageManager": "pnpm@9.9.0",
   "dependencies": {
-    "electron-updater": "6.3.9"
+    "electron-log": "^5.2.4",
+    "electron-updater": "6.3.9",
+    "level": "^9.0.0",
+    "level-supports": "^6.0.0",
+    "level-transcoder": "^1.0.1"
   }
 }
