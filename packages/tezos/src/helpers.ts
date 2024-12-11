@@ -3,6 +3,7 @@ import { DerivationType, LedgerSigner } from "@taquito/ledger-signer";
 import { Parser } from "@taquito/michel-codec";
 import { type Curves, InMemorySigner } from "@taquito/signer";
 import { TezosToolkit } from "@taquito/taquito";
+import { CustomError } from "@umami/utils";
 
 import { FakeSigner } from "./fakeSigner";
 import { type PublicKeyPair, type SignerConfig } from "./types";
@@ -27,7 +28,7 @@ export const curveToDerivationType = (curve: Curves): DerivationType => {
     case "p256":
       return DerivationType.P256;
     case "bip25519":
-      throw new Error("bip25519 is not supported in Tezos");
+      throw new CustomError("bip25519 is not supported in Tezos");
   }
 };
 
@@ -122,13 +123,13 @@ export const decryptSecretKey = async (secretKey: string, password: string) => {
 
     // if the password doesn't match taquito throws this error
     if (message.includes("Cannot read properties of null")) {
-      throw new Error("Key-password pair is invalid");
+      throw new CustomError("Key-password pair is invalid");
     }
 
     if (message.includes("Invalid checksum")) {
-      throw new Error("Invalid secret key: checksum doesn't match");
+      throw new CustomError("Invalid secret key: checksum doesn't match");
     }
 
-    throw error;
+    throw new CustomError(error.message);
   }
 };

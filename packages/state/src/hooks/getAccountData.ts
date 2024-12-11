@@ -7,6 +7,7 @@ import {
 } from "@umami/core";
 import { decrypt } from "@umami/crypto";
 import { type RawPkh, deriveSecretKey } from "@umami/tezos";
+import { CustomError } from "@umami/utils";
 import { maxBy } from "lodash";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
@@ -35,7 +36,7 @@ export const useGetImplicitAccount = () => {
   return (pkh: RawPkh) => {
     const account = getAccount(pkh);
     if (!account) {
-      throw new Error(`Unknown account: ${pkh}`);
+      throw new CustomError(`Unknown account: ${pkh}`);
     }
     return account;
   };
@@ -76,7 +77,7 @@ export const useGetOwnedAccount = () => {
   return (pkh: string): Account => {
     const account = getOwnedAccount(pkh);
     if (!account) {
-      throw new Error(`Unknown account: ${pkh}`);
+      throw new CustomError(`Unknown account: ${pkh}`);
     }
     return account;
   };
@@ -172,7 +173,7 @@ export const useGetSecretKey = () => {
     if (account.type === "secret_key") {
       const encryptedSecretKey = encryptedSecretKeys[account.address.pkh];
       if (!encryptedSecretKey) {
-        throw new Error(`Missing secret key for account ${account.address.pkh}`);
+        throw new CustomError(`Missing secret key for account ${account.address.pkh}`);
       }
 
       return decrypt(encryptedSecretKey, password);
@@ -208,7 +209,7 @@ export const useGetDecryptedMnemonic = () => {
     const encryptedMnemonic = seedPhrases[account.seedFingerPrint];
 
     if (!encryptedMnemonic) {
-      throw new Error(`Missing seedphrase for account ${account.address.pkh}`);
+      throw new CustomError(`Missing seedphrase for account ${account.address.pkh}`);
     }
 
     return decrypt(encryptedMnemonic, password);

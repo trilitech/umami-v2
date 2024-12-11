@@ -14,17 +14,19 @@ import {
   useRemoveBeaconPeerBySenderId,
 } from "@umami/state";
 import { type Network } from "@umami/tezos";
+import { CustomError } from "@umami/utils";
 
 import { PermissionRequestModal } from "./PermissionRequestModal";
 import { SignPayloadRequestModal } from "./SignPayloadRequestModal";
-import { BatchSignPage } from "../../components/SendFlow/Beacon/BatchSignPage";
-import { BeaconSignPage } from "../../components/SendFlow/Beacon/BeaconSignPage";
+import { BatchSignPage } from "../SendFlow/common/BatchSignPage";
+import { SingleSignPage } from "../SendFlow/common/SingleSignPage";
+import { type SdkSignPageProps, type SignHeaderProps } from "../SendFlow/utils";
 
 /**
  * @returns a function that handles a beacon message and opens a modal with the appropriate content
  *
  * For operation requests it will also try to convert the operation(s) to our {@link Operation} format,
- * estimate the fee and open the BeaconSignPage only if it succeeds
+ * estimate the fee and open the SingleSignPage only if it succeeds
  */
 export const useHandleBeaconMessage = () => {
   const { openWith } = useDynamicModalContext();
@@ -49,7 +51,7 @@ export const useHandleBeaconMessage = () => {
         type: BeaconMessageType.Error,
         errorType: BeaconErrorType.NETWORK_NOT_SUPPORTED,
       });
-      throw new Error(
+      throw new CustomError(
         `Got Beacon request from an unknown network: ${JSON.stringify(
           beaconNetwork
         )}. Please add it to the networks list and retry.`
@@ -101,18 +103,29 @@ export const useHandleBeaconMessage = () => {
                 type: BeaconMessageType.Error,
                 errorType: BeaconErrorType.NO_PRIVATE_KEY_FOUND_ERROR,
               });
-              throw new Error(`Unknown account: ${message.sourceAddress}`);
+              throw new CustomError(`Unknown account: ${message.sourceAddress}`);
             }
+
             const operation = toAccountOperations(
               message.operationDetails,
               signer as ImplicitAccount
             );
             const estimatedOperations = await estimate(operation, network);
+            const headerProps: SignHeaderProps = {
+              network: network,
+              appName: message.appMetadata.name,
+              appIcon: message.appMetadata.icon,
+            };
+            const signProps: SdkSignPageProps = {
+              headerProps: headerProps,
+              operation: estimatedOperations,
+              requestId: { sdkType: "beacon", id: message.id },
+            };
 
             if (operation.operations.length === 1) {
-              modal = <BeaconSignPage message={message} operation={estimatedOperations} />;
+              modal = <SingleSignPage {...signProps} />;
             } else {
-              modal = <BatchSignPage message={message} operation={estimatedOperations} />;
+              modal = <BatchSignPage {...signProps} {...message.operationDetails} />;
             }
             onClose = () =>
               WalletClient.respond({
@@ -132,7 +145,7 @@ export const useHandleBeaconMessage = () => {
               errorType: BeaconErrorType.UNKNOWN_ERROR,
             });
 
-            throw new Error(`Unknown Beacon message type: ${message.type}`);
+            throw new CustomError(`Unknown Beacon message type: ${message.type}`);
           }
         }
 

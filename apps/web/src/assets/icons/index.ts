@@ -53,6 +53,7 @@ export { default as PyramidIcon } from "./pyramid.svg";
 export { default as RefreshIcon } from "./refresh.svg";
 export { default as RadioIcon } from "./radio.svg";
 export { default as RedditIcon } from "./reddit.svg";
+export { default as ReloadIcon } from "./reload.svg";
 export { default as ScanIcon } from "./scan.svg";
 export { default as SearchIcon } from "./search.svg";
 export { default as SelectorIcon } from "./selector.svg";

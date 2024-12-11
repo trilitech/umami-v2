@@ -2,6 +2,7 @@ import { Box, Flex, Text } from "@chakra-ui/react";
 import { type Operation, tokenNameSafe, tokenPrettyAmount } from "@umami/core";
 import { useGetToken } from "@umami/state";
 import { prettyTezAmount } from "@umami/tezos";
+import { CustomError } from "@umami/utils";
 
 import { OutgoingArrow } from "../../../../assets/icons";
 import colors from "../../../../style/colors";
@@ -45,7 +46,7 @@ export const MultisigDecodedOperation = ({ operation }: { operation: Operation }
     case "stake":
     case "unstake":
     case "finalize_unstake":
-      throw new Error(`${operation.type} is not supported yet`);
+      throw new CustomError(`${operation.type} is not supported yet`);
   }
 };
 

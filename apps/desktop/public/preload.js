@@ -17,4 +17,7 @@ contextBridge.exposeInMainWorld("electronAPI", {
 
   // Notify Electron that app update should be installed.
   installAppUpdateAndQuit: () => ipcRenderer.send("install-app-update"),
+
+  clipboardWriteText: text => ipcRenderer.send("clipboard-write", text),
+  clipboardClear: () => ipcRenderer.send("clipboard-clear"),
 });

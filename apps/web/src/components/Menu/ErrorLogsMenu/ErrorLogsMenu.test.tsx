@@ -1,5 +1,5 @@
-import { type ErrorContext } from "@umami/core";
 import { type UmamiStore, errorsActions, makeStore } from "@umami/state";
+import { type ErrorContext } from "@umami/utils";
 
 import { ErrorLogsMenu } from "./ErrorLogsMenu";
 import { renderInDrawer, screen, userEvent } from "../../../testUtils";

@@ -3,7 +3,6 @@ export * from "./AccountOperations";
 export * from "./Contact";
 export * from "./decodeBeaconPayload";
 export * from "./Delegate";
-export * from "./ErrorContext";
 export * from "./estimate";
 export * from "./execute";
 export * from "./helpers";

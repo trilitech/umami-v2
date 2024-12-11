@@ -1,4 +1,5 @@
 import { Box, Button, Center, Heading, Link, VStack } from "@chakra-ui/react";
+import { useImplicitAccounts } from "@umami/state";
 
 import { useOffboardingModal } from "./Offboarding/useOffboardingModal";
 import { ModalContentWrapper } from "./Onboarding/ModalContentWrapper";
@@ -18,6 +19,8 @@ export const ErrorPage = () => {
   const { modalElement: OffboardingModal, onOpen: onOpenOffboardingModal } = useOffboardingModal();
   const { content: saveBackupModal, onOpen: saveBackup } = useSaveBackup();
 
+  const isLoggedIn = useImplicitAccounts().length > 0;
+
   return (
     <Center height="100vh" padding="60px" backgroundImage={BackgroundImage} backgroundSize="cover">
       {saveBackupModal}
@@ -36,38 +39,6 @@ export const ErrorPage = () => {
           title="Oops! Something went wrong!"
         >
           <VStack width="100%" spacing="16px">
-            <Button width="100%" borderRadius="4px" onClick={saveBackup} size="lg">
-              Save Backup
-            </Button>
-
-            <Button
-              width="100%"
-              borderRadius="4px"
-              onClick={onOpenOffboardingModal}
-              size="lg"
-              variant="warning"
-            >
-              Off-board Wallet
-            </Button>
-
-            <Button
-              width="100%"
-              borderColor={colors.gray[600]}
-              borderRadius="4px"
-              size="lg"
-              variant="tertiary"
-            >
-              <Link
-                width="100%"
-                _hover={{ textDecoration: "none" }}
-                href={`mailto:umami-support@trili.tech?subject=Umami V2 feedback&body=${feedbackEmailBodyTemplate}`}
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                Report Error
-              </Link>
-            </Button>
-
             <Link
               display="block"
               marginTop="14px"
@@ -83,6 +54,43 @@ export const ErrorPage = () => {
                 </Heading>
               </Center>
             </Link>
+
+            {isLoggedIn && (
+              <Button
+                width="100%"
+                borderColor={colors.gray[600]}
+                borderRadius="4px"
+                onClick={saveBackup}
+                size="lg"
+                variant="tertiary"
+              >
+                Save Backup
+              </Button>
+            )}
+
+            <Button width="100%" borderRadius="4px" size="lg">
+              <Link
+                width="100%"
+                _hover={{ textDecoration: "none" }}
+                href={`mailto:umami-support@trili.tech?subject=Umami V2 feedback&body=${feedbackEmailBodyTemplate}`}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Report Error
+              </Link>
+            </Button>
+
+            {isLoggedIn && (
+              <Button
+                width="100%"
+                borderRadius="4px"
+                onClick={onOpenOffboardingModal}
+                size="lg"
+                variant="warning"
+              >
+                Off-board Wallet
+              </Button>
+            )}
           </VStack>
         </ModalContentWrapper>
       </Box>

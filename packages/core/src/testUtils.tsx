@@ -40,12 +40,16 @@ import {
 import { type StoredContactInfo } from "./Contact";
 import { type Delegate } from "./Delegate";
 import {
+  type ContractCall,
   type ContractOrigination,
   type Delegation,
   type FA12Transfer,
   type FA2Transfer,
+  type FinalizeUnstake,
+  type Stake,
   type TezTransfer,
   type Undelegation,
+  type Unstake,
 } from "./Operation";
 import {
   type FA12TokenBalance,
@@ -392,6 +396,34 @@ export const mockContractOrigination = (
   type: "contract_origination",
   storage: storage,
   code: code,
+  sender: mockImplicitAddress(index),
+});
+
+export const mockContractCall = (
+  index: number,
+  code: MichelsonV1Expression = []
+): ContractCall => ({
+  type: "contract_call",
+  entrypoint: "test-entrypoint",
+  amount: String(index),
+  contract: mockContractAddress(index),
+  args: code,
+});
+
+export const mockStakeOperation = (index: number): Stake => ({
+  type: "stake",
+  amount: String(index),
+  sender: mockImplicitAddress(index),
+});
+
+export const mockUnstakeOperation = (index: number): Unstake => ({
+  type: "unstake",
+  amount: String(index),
+  sender: mockImplicitAddress(index),
+});
+
+export const mockFinalizeUnstakeOperation = (index: number): FinalizeUnstake => ({
+  type: "finalize_unstake",
   sender: mockImplicitAddress(index),
 });
 

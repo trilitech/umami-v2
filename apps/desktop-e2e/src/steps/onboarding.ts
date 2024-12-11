@@ -4,6 +4,7 @@ import { Given, Then, When } from "@cucumber/cucumber";
 import { expect } from "@playwright/test";
 import { mnemonic1 as existingSeedphrase } from "@umami/test-utils";
 import { DEFAULT_DERIVATION_PATH_TEMPLATE } from "@umami/tezos";
+import { CustomError } from "@umami/utils";
 
 import { type CustomWorld } from "./world";
 import { type AccountGroup, AccountGroupBuilder } from "../helpers/AccountGroup";
@@ -28,6 +29,8 @@ Then("I am on {string} onboarding page", async function (this: CustomWorld, moda
 });
 
 Then("I record generated seedphrase", async function (this: CustomWorld) {
+  await this.page.getByRole("button", { name: "Show seed phrase" }).click();
+
   const words: string[] = [];
   for (let i = 0; i < 24; i++) {
     words.push(await this.page.getByTestId(`mnemonic-word-${i}`).innerText());
@@ -119,7 +122,7 @@ Then(
     if (backupFileName === "V2Backup.json") {
       expectedGroups = await v2BackedupAccountGroups();
     } else {
-      throw new Error(`Unknown backup file: ${backupFileName}`);
+      throw new CustomError(`Unknown backup file: ${backupFileName}`);
     }
 
     // TODO: check for groups amount once all type of groups are supported by the tests

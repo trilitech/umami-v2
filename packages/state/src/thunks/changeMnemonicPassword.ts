@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { type EncryptedData, decrypt, encrypt } from "@umami/crypto";
+import { CustomError } from "@umami/utils";
 import { fromPairs } from "lodash";
 
 import { type AccountsState } from "../slices/accounts/State";
@@ -15,19 +16,19 @@ export const changeMnemonicPassword = createAsyncThunk<
   { state: { accounts: AccountsState } }
 >("accounts/changeMnemonicPassword", async ({ currentPassword, newPassword }, { getState }) => {
   if (currentPassword === newPassword) {
-    throw new Error("New password must be different from the current password");
+    throw new CustomError("New password must be different from the current password");
   }
 
   const { items: accounts, seedPhrases } = getState().accounts;
 
   if (accounts.filter(account => account.type === "mnemonic").length === 0) {
-    throw new Error("No mnemonic accounts found");
+    throw new CustomError("No mnemonic accounts found");
   }
 
   const newEncryptedMnemonics = await Promise.all(
     Object.entries(seedPhrases).map(async ([fingerprint, currentEncryptedMnemonic]) => {
       if (!currentEncryptedMnemonic) {
-        throw new Error("No encrypted mnemonic found");
+        throw new CustomError("No encrypted mnemonic found");
       }
       try {
         // Re-encrypt mnemonic with new password
@@ -36,7 +37,7 @@ export const changeMnemonicPassword = createAsyncThunk<
 
         return [fingerprint, newEncryptedMnemonic];
       } catch (err: any) {
-        throw new Error(err.message);
+        throw new CustomError(err.message);
       }
     })
   );

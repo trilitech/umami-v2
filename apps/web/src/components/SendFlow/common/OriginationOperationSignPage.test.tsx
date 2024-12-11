@@ -6,7 +6,6 @@ import { WalletClient, useGetSecretKey } from "@umami/state";
 import { executeParams } from "@umami/test-utils";
 import { GHOSTNET, makeToolkit, prettyTezAmount } from "@umami/tezos";
 
-import { OriginationOperationSignPage } from "./OriginationOperationSignPage";
 import {
   act,
   dynamicModalContextMock,
@@ -16,6 +15,8 @@ import {
   waitFor,
 } from "../../../testUtils";
 import { SuccessStep } from "../SuccessStep";
+import { type SdkSignPageProps, type SignHeaderProps } from "../utils";
+import { SingleSignPage } from "./SingleSignPage";
 
 const message = {
   id: "messageid",
@@ -29,6 +30,16 @@ const operation = {
   signer: mockImplicitAccount(0),
   operations: [mockContractOrigination(0)],
   estimates: [executeParams({ fee: 123 })],
+};
+const headerProps: SignHeaderProps = {
+  network: GHOSTNET,
+  appName: message.appMetadata.name,
+  appIcon: message.appMetadata.icon,
+};
+const signProps: SdkSignPageProps = {
+  headerProps: headerProps,
+  operation: operation,
+  requestId: { sdkType: "beacon", id: message.id },
 };
 
 jest.mock("@umami/core", () => ({
@@ -48,7 +59,7 @@ jest.mock("@umami/state", () => ({
 
 describe("<OriginationOperationSignPage />", () => {
   it("renders fee", async () => {
-    await renderInModal(<OriginationOperationSignPage message={message} operation={operation} />);
+    await renderInModal(<SingleSignPage {...signProps} />);
 
     await waitFor(() => expect(screen.getByText(prettyTezAmount(123))).toBeVisible());
   });
@@ -62,13 +73,15 @@ describe("<OriginationOperationSignPage />", () => {
     jest.mocked(executeOperations).mockResolvedValue({ opHash: "ophash" } as BatchWalletOperation);
     jest.spyOn(WalletClient, "respond").mockResolvedValue();
 
-    await renderInModal(<OriginationOperationSignPage message={message} operation={operation} />);
-
-    await act(() => user.type(screen.getByLabelText("Password"), "Password"));
+    await renderInModal(<SingleSignPage {...signProps} />);
 
     const signButton = screen.getByRole("button", {
       name: "Confirm Transaction",
     });
+    await waitFor(() => expect(signButton).toBeDisabled());
+
+    await act(() => user.type(screen.getByLabelText("Password"), "ThisIsAPassword"));
+
     await waitFor(() => expect(signButton).toBeEnabled());
     await act(() => user.click(signButton));
 

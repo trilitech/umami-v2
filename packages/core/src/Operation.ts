@@ -3,6 +3,8 @@ import { MANAGER_LAMBDA } from "@taquito/taquito";
 import { type Address, type ContractAddress, type ImplicitAddress } from "@umami/tezos";
 import { isEqual } from "lodash";
 
+import { CustomError } from "../../utils/src/ErrorContext";
+
 export type TezTransfer = {
   type: "tez";
   recipient: Address;
@@ -63,7 +65,7 @@ export type Unstake = {
   amount: string;
 };
 
-type FinalizeUnstake = {
+export type FinalizeUnstake = {
   type: "finalize_unstake";
   sender: Address;
 };
@@ -139,7 +141,7 @@ export const toLambda = (operation: Operation): MichelsonV1Expression[] => {
             Number(operation.amount)
           );
         default:
-          throw new Error(`${operation.recipient.type} is not supported yet`);
+          throw new CustomError(`${operation.recipient.type} is not supported yet`);
       }
     // eslint-disable-next-line no-fallthrough
     case "fa1.2":
@@ -164,7 +166,7 @@ export const toLambda = (operation: Operation): MichelsonV1Expression[] => {
     case "stake":
     case "unstake":
     case "finalize_unstake":
-      throw new Error(`${operation.type} is not supported yet`);
+      throw new CustomError(`${operation.type} is not supported yet`);
   }
 };
 

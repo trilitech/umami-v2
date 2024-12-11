@@ -6,6 +6,7 @@ import {
   useRestoreFromSecretKey,
   useValidateMasterPassword,
 } from "@umami/state";
+import { CustomError } from "@umami/utils";
 
 import { type MasterPasswordStep } from "../OnboardingStep";
 import { EnterAndConfirmPassword } from "./password/EnterAndConfirmPassword";
@@ -37,7 +38,7 @@ export const MasterPassword = ({
       }
 
       if (!account) {
-        throw new Error("No account data provided.");
+        throw new CustomError("No account data provided.");
       }
 
       switch (account.type) {

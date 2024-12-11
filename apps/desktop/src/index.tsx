@@ -1,8 +1,8 @@
 /* istanbul ignore file */
 import "./index.css";
 
-import { getErrorContext } from "@umami/core";
 import { errorsActions } from "@umami/state";
+import { getErrorContext } from "@umami/utils";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { ErrorBoundary } from "react-error-boundary";

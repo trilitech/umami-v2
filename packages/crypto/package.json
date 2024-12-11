@@ -23,6 +23,7 @@
     "@umami/test-utils": "workspace:^",
     "@umami/typescript-config": "workspace:^",
     "babel-jest": "^29.7.0",
+    "@umami/utils": "workspace:^",
     "depcheck": "^1.4.7",
     "eslint": "^8.57.0",
     "jest": "^29.7.0",

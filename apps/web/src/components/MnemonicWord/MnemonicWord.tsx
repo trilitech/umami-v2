@@ -7,6 +7,7 @@ import { useColor } from "../../styles/useColor";
 type MnemonicWordProps = {
   index: number;
   word?: string;
+  isHidden?: boolean;
   indexProps?: TextProps;
   autocompleteProps?: ComponentProps<typeof MnemonicAutocomplete>;
 } & GridItemProps;
@@ -14,6 +15,7 @@ type MnemonicWordProps = {
 export const MnemonicWord = ({
   index,
   word,
+  isHidden,
   autocompleteProps,
   indexProps,
   ...props
@@ -39,11 +41,14 @@ export const MnemonicWord = ({
       {autocompleteProps && <MnemonicAutocomplete {...autocompleteProps} />}
       {word && (
         <Text
+          sx={{
+            WebkitTextSecurity: isHidden ? "disc" : "none",
+          }}
           paddingLeft={{ base: "22px", md: "26px" }}
           fontSize={{ base: "12px", md: "14px" }}
           fontWeight="medium"
         >
-          {word}
+          {isHidden ? "*******" : word}
         </Text>
       )}
     </GridItem>

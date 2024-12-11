@@ -16,6 +16,7 @@ import {
 } from "@chakra-ui/react";
 import { useDynamicModalContext, useMultiForm } from "@umami/components";
 import { useAsyncActionHandler } from "@umami/state";
+import { CustomError } from "@umami/utils";
 import { validateMnemonic } from "bip39";
 import { range } from "lodash";
 import { useState } from "react";
@@ -74,7 +75,9 @@ export const SeedPhraseTab = () => {
     handleAsyncAction(async () => {
       const words = mnemonic.split(" ");
       if (!MNEMONIC_SIZE_OPTIONS.includes(words.length)) {
-        throw new Error(`the mnemonic must be ${MNEMONIC_SIZE_OPTIONS.join(", ")} words long`);
+        throw new CustomError(
+          `the mnemonic must be ${MNEMONIC_SIZE_OPTIONS.join(", ")} words long`
+        );
       }
       words.slice(0, mnemonicSize).forEach((word, i) => update(i, { val: word }));
       return Promise.resolve();
@@ -83,7 +86,7 @@ export const SeedPhraseTab = () => {
   const onSubmit = ({ mnemonic }: FormValues) =>
     handleAsyncAction(async () => {
       if (!validateMnemonic(mnemonic.map(({ val }) => val).join(" "))) {
-        throw new Error("Invalid Mnemonic");
+        throw new CustomError("Invalid Mnemonic");
       }
       return openWith(<SetupPassword mode="mnemonic" />);
     });

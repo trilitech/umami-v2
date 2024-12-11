@@ -2,6 +2,7 @@ import { Box, Center, Heading } from "@chakra-ui/react";
 import { useDynamicModalContext } from "@umami/components";
 import { type Account, getAccountGroupLabel } from "@umami/core";
 import { useImplicitAccounts, useRemoveMnemonic, useRemoveNonMnemonic } from "@umami/state";
+import { CustomError } from "@umami/utils";
 
 import { AccountGroupPopover } from "./AccountGroupPopover";
 import { DeriveMnemonicAccountModal } from "./DeriveMnemonicAccountModal";
@@ -59,7 +60,7 @@ export const AccountGroup = ({
 
   const onDerive = () => {
     if (!isMnemonic) {
-      throw new Error("Can't derive a non mnemonic account!");
+      throw new CustomError("Can't derive a non mnemonic account!");
     }
     return openWith(
       <DeriveMnemonicAccountModal fingerPrint={first.seedFingerPrint} onDone={onClose} />

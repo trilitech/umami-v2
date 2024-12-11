@@ -9,6 +9,7 @@ import {
 import { decrypt, encrypt } from "@umami/crypto";
 import { type IDP } from "@umami/social-auth";
 import { derivePublicKeyPair, makeDerivationPath } from "@umami/tezos";
+import { CustomError } from "@umami/utils";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 
@@ -113,7 +114,7 @@ export const useDeriveMnemonicAccount = () => {
   }) => {
     const encryptedSeedphrase = encryptedMnemonics[fingerPrint];
     if (!encryptedSeedphrase) {
-      throw new Error(`No seedphrase found with fingerprint: ${fingerPrint}`);
+      throw new CustomError(`No seedphrase found with fingerprint: ${fingerPrint}`);
     }
     const seedphrase = await decrypt(encryptedSeedphrase, password);
 

@@ -1,4 +1,5 @@
 import Semaphore from "@chriscdn/promise-semaphore";
+import { CustomError } from "@umami/utils";
 import promiseRetry from "promise-retry";
 
 const tzktRateLimiter = new Semaphore(10);
@@ -11,7 +12,9 @@ export const withRateLimit = <T>(fn: () => Promise<T>) =>
       // tzkt throws HttpError, but doesn't export it
       // default behaviour just shows Error: 504 which isn't very helpful for the user
       if ("status" in error && "data" in error) {
-        throw new Error(`Fetching data from tzkt failed with: ${error.status}, ${error.data}`);
+        throw new CustomError(
+          `Fetching data from tzkt failed with: ${error.status}, ${error.data}`
+        );
       }
       throw error;
     })

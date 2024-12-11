@@ -88,6 +88,7 @@ export const useDynamicDisclosure = () => {
     content: ReactElement,
     props: ThemingProps & {
       onClose?: () => void | Promise<void>;
+      closeOnEsc?: boolean;
     } = {}
   ) => {
     const onClose = () => {

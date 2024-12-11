@@ -9,6 +9,7 @@ import {
 import { type MultisigOperation, parseRawMichelson } from "@umami/multisig";
 import { useAsyncActionHandler, useGetImplicitAccountSafe, useSelectedNetwork } from "@umami/state";
 import { type ImplicitAddress } from "@umami/tezos";
+import { CustomError } from "@umami/utils";
 
 import { MultisigActionButton, type MultisigSignerState } from "./MultisigActionButton";
 import colors from "../../../../style/colors";
@@ -40,7 +41,7 @@ export const MultisigSignerTile = ({
   const approveOrExecute = () =>
     handleAsyncAction(async () => {
       if (!signer) {
-        throw new Error("Can't approve or execute with an account you don't own");
+        throw new CustomError("Can't approve or execute with an account you don't own");
       }
 
       const actionType = operationIsExecutable ? "execute" : "approve";

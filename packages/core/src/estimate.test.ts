@@ -1,7 +1,7 @@
 import { GHOSTNET, isAccountRevealed, makeToolkit } from "@umami/tezos";
 
 import { makeAccountOperations } from "./AccountOperations";
-import { estimate, handleTezError } from "./estimate";
+import { estimate } from "./estimate";
 import { mockImplicitAccount, mockTezOperation } from "./testUtils";
 import { executeParams } from "../../test-utils/src/executeParams";
 
@@ -32,23 +32,6 @@ describe("estimate", () => {
       await expect(() => estimate(accountOperations, GHOSTNET)).rejects.toThrow(
         "Signer address is not revealed on the ghostnet."
       );
-    });
-
-    it("catches subtraction_underflow", () => {
-      const res = handleTezError(new Error("subtraction_underflow"));
-      expect(res).toEqual("Insufficient balance, please make sure you have enough funds.");
-    });
-
-    it("catches non_existing_contract", () => {
-      const res = handleTezError(new Error("contract.non_existing_contract"));
-      expect(res).toEqual(
-        "Contract does not exist, please check if the correct network is selected."
-      );
-    });
-
-    it("returns the original error if not known", () => {
-      const err = new Error("unknown error");
-      expect(handleTezError(err)).toEqual("unknown error");
     });
   });
 

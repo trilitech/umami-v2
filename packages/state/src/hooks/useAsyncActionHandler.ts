@@ -1,5 +1,5 @@
 import { type UseToastOptions } from "@chakra-ui/react";
-import { getErrorContext } from "@umami/core";
+import { getErrorContext } from "@umami/utils";
 import { useCallback, useRef, useState } from "react";
 
 import { useAppDispatch } from "./useAppDispatch";

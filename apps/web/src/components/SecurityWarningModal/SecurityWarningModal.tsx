@@ -67,7 +67,6 @@ export const SecurityWarningModal = () => {
   const [isAgreed, setIsAgreed] = useState(false);
 
   const handleInform = () => {
-    localStorage.setItem("user:isExtensionsWarningShown", "true");
     onClose();
   };
 
@@ -128,10 +127,12 @@ export const SecurityWarningModal = () => {
           marginX="auto"
           onChange={e => setIsAgreed(e.target.checked)}
         >
-          <Text whiteSpace="break-spaces">I have read and understood all security guidelines</Text>
+          <Text fontWeight="bold" whiteSpace="break-spaces">
+            I understand and accept the risks.
+          </Text>
         </Checkbox>
       </ModalBody>
-      <ModalFooter flexDirection="column" gap="16px">
+      <ModalFooter>
         <Button width="full" isDisabled={!isAgreed} onClick={handleInform} variant="primary">
           Continue
         </Button>
