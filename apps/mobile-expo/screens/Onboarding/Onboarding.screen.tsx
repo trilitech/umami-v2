@@ -19,7 +19,11 @@ import {
   StyledImage,
   SecondaryButton,
   SocialButtonsWrapper,
-  SocialIconWrapper, FacebookRedditImage, TwitterImage, AppleImage, ButtonsWrapper,
+  SocialIconWrapper,
+  FacebookRedditImage,
+  TwitterImage,
+  AppleImage,
+  ButtonsWrapper,
 } from "./onboarding.styles";
 import { images } from "../../assets/images";
 import { useOnboardingData } from "./useOnboardingData";

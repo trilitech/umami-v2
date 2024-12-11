@@ -1,15 +1,17 @@
 import { Image, SafeAreaView } from "react-native";
 import styled from "styled-components/native";
+import { styled as tamaStyled } from '@tamagui/core';
+import { View as TamaView } from 'tamagui';
 
 export const MainContainer = styled(SafeAreaView)`
   flex: 1;
 `;
 
-export const ContentWrapper = styled.View`
-  flex: 1;
-  padding-horizontal: 20px;
-  justify-content: space-between;
-`;
+export const ContentWrapper = tamaStyled(TamaView, {
+  flex: 1,
+  paddingHorizontal: 20,
+  justifyContent: 'space-between'
+});
 
 export const StyledImage = styled.Image`
   width: 100%;

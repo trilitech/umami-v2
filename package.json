@@ -24,7 +24,8 @@
     "dev:web": "turbo dev --filter=@umami/web",
     "dev:mobile": "turbo dev --filter=@umami/mobile-expo",
     "storybook": "turbo dev --filter=@umami/storybook",
-    "start:mobile": "pnpm --filter=@umami/mobile-expo start"
+    "start:mobile": "pnpm --filter=@umami/mobile-expo start",
+    "postinstall": "patch-package"
   },
   "devDependencies": {
     "jest": "^29.7.0",
@@ -43,5 +44,19 @@
     "micromatch": "^4.0.8",
     "cookie": "^0.7.2",
     "elliptic": "^6.6.1"
+  },
+  "overrides": {
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-native": "0.76.3",
+    "expo": "~52.0.11"
+  },
+  "dependencies": {
+    "patch-package": "^8.0.0"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "@tamagui/constants": "patches/@tamagui__constants.patch"
+    }
   }
 }

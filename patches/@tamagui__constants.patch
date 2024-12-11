@@ -1,0 +1,58 @@
+diff --git a/dist/cjs/constants.cjs b/dist/cjs/constants.cjs
+index 31b13c8bbb4966cd2a71cb6fa5323a4e7478ea56..4ded0ba1c48b710b63a205f3f9252b9441c72619 100644
+--- a/dist/cjs/constants.cjs
++++ b/dist/cjs/constants.cjs
+@@ -45,7 +45,7 @@ __export(constants_exports, {
+ });
+ module.exports = __toCommonJS(constants_exports);
+ var import_react = __toESM(require("react"));
+-const isWeb = !0,
++const isWeb = !1,
+   isWindowDefined = typeof window < "u",
+   isServer = isWeb && !isWindowDefined,
+   isClient = isWeb && isWindowDefined,
+diff --git a/dist/cjs/constants.js b/dist/cjs/constants.js
+index ee19f267e9ac5fecf5c41f94af0a18eccf285a8c..dbca520a97e5ce9394cbbec766f07feaead53f09 100644
+--- a/dist/cjs/constants.js
++++ b/dist/cjs/constants.js
+@@ -36,5 +36,5 @@ __export(constants_exports, {
+ });
+ module.exports = __toCommonJS(constants_exports);
+ var import_react = __toESM(require("react"));
+-const isWeb = !0, isWindowDefined = typeof window < "u", isServer = isWeb && !isWindowDefined, isClient = isWeb && isWindowDefined, useIsomorphicLayoutEffect = isServer ? import_react.default.useEffect : import_react.default.useLayoutEffect, isChrome = typeof navigator < "u" && /Chrome/.test(navigator.userAgent || ""), isWebTouchable = isClient && ("ontouchstart" in window || navigator.maxTouchPoints > 0), isTouchable = !isWeb || isWebTouchable, isAndroid = !1, isIos = process.env.TEST_NATIVE_PLATFORM === "ios", currentPlatform = "web";
++const isWeb = !1, isWindowDefined = typeof window < "u", isServer = isWeb && !isWindowDefined, isClient = isWeb && isWindowDefined, useIsomorphicLayoutEffect = isServer ? import_react.default.useEffect : import_react.default.useLayoutEffect, isChrome = typeof navigator < "u" && /Chrome/.test(navigator.userAgent || ""), isWebTouchable = isClient && ("ontouchstart" in window || navigator.maxTouchPoints > 0), isTouchable = !isWeb || isWebTouchable, isAndroid = !1, isIos = process.env.TEST_NATIVE_PLATFORM === "ios", currentPlatform = "web";
+ //# sourceMappingURL=constants.js.map
+diff --git a/dist/esm/constants.js b/dist/esm/constants.js
+index 54d0d04156a397a4cf5a5fb3fbb7dcd2908e9740..6de6889839c3f50cbf3e908dea91bbffcd63b55c 100644
+--- a/dist/esm/constants.js
++++ b/dist/esm/constants.js
+@@ -1,5 +1,5 @@
+ import React from "react";
+-const isWeb = !0, isWindowDefined = typeof window < "u", isServer = isWeb && !isWindowDefined, isClient = isWeb && isWindowDefined, useIsomorphicLayoutEffect = isServer ? React.useEffect : React.useLayoutEffect, isChrome = typeof navigator < "u" && /Chrome/.test(navigator.userAgent || ""), isWebTouchable = isClient && ("ontouchstart" in window || navigator.maxTouchPoints > 0), isTouchable = !isWeb || isWebTouchable, isAndroid = !1, isIos = process.env.TEST_NATIVE_PLATFORM === "ios", currentPlatform = "web";
++const isWeb = !1, isWindowDefined = typeof window < "u", isServer = isWeb && !isWindowDefined, isClient = isWeb && isWindowDefined, useIsomorphicLayoutEffect = isServer ? React.useEffect : React.useLayoutEffect, isChrome = typeof navigator < "u" && /Chrome/.test(navigator.userAgent || ""), isWebTouchable = isClient && ("ontouchstart" in window || navigator.maxTouchPoints > 0), isTouchable = !isWeb || isWebTouchable, isAndroid = !1, isIos = process.env.TEST_NATIVE_PLATFORM === "ios", currentPlatform = "web";
+ export {
+   currentPlatform,
+   isAndroid,
+diff --git a/dist/esm/constants.mjs b/dist/esm/constants.mjs
+index 8b71ef612b3b4e3f4933e6c2eea703d147cba0de..9e0bd71ff1f63aa739e1eb8e64836e1303363d2f 100644
+--- a/dist/esm/constants.mjs
++++ b/dist/esm/constants.mjs
+@@ -1,5 +1,5 @@
+ import React from "react";
+-const isWeb = !0,
++const isWeb = !1,
+   isWindowDefined = typeof window < "u",
+   isServer = isWeb && !isWindowDefined,
+   isClient = isWeb && isWindowDefined,
+diff --git a/src/constants.ts b/src/constants.ts
+index 7e54caf6be3332f1f5f69b5f3fe66cc75a518fa5..d75553543cc6c44f0ad7c0ba0a270240b775c65c 100644
+--- a/src/constants.ts
++++ b/src/constants.ts
+@@ -1,6 +1,6 @@
+ import React from 'react'
+ 
+-export const isWeb: boolean = true
++export const isWeb: boolean = false
+ export const isWindowDefined = typeof window !== 'undefined'
+ export const isServer = isWeb && !isWindowDefined
+ export const isClient = isWeb && isWindowDefined
