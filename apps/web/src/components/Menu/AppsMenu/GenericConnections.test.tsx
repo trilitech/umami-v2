@@ -6,11 +6,36 @@ import {
   addTestAccounts,
   beaconActions,
   makeStore,
+  walletKit,
 } from "@umami/state";
 import { formatPkh } from "@umami/tezos";
+import { type SessionTypes } from "@walletconnect/types";
 
-import { BeaconPeers } from "./BeaconPeers";
-import { act, render, screen, userEvent, within } from "../../testUtils";
+import { GenericConnections } from "./GenericConnections";
+import { act, render, screen, userEvent, within } from "../../../testUtils";
+
+const mockDisconnectWalletConnectPeer = jest.fn();
+
+jest.mock("@walletconnect/utils", () => ({
+  getSdkError: jest.fn(),
+}));
+
+jest.mock("@umami/state", () => ({
+  ...jest.requireActual("@umami/state"),
+  useDisconnectWalletConnectPeer: () => mockDisconnectWalletConnectPeer,
+  walletKit: {
+    core: {},
+    metadata: {
+      name: "AppMenu test",
+      description: "Umami Wallet with WalletConnect",
+      url: "https://umamiwallet.com",
+      icons: ["https://umamiwallet.com/assets/favicon-32-45gq0g6M.png"],
+    },
+    getActiveSessions: jest.fn(),
+    disconnectSession: jest.fn(),
+  },
+  createWalletKit: jest.fn(),
+}));
 
 const peersData: ExtendedPeerInfo[] = [
   {
@@ -39,44 +64,60 @@ const peersData: ExtendedPeerInfo[] = [
   },
 ];
 
+const mockWcSession = {
+  topic: "wc-topic-1",
+  peer: {
+    metadata: {
+      name: "WC dApp",
+      icons: ["https://example.com/icon.png"],
+    },
+  },
+  namespaces: {
+    tezos: {
+      accounts: [`tezos:mainnet:${mockMnemonicAccount(1).address.pkh}`],
+      chains: ["tezos:mainnet"],
+    },
+  },
+} as unknown as SessionTypes.Struct;
+
 let store: UmamiStore;
 
 beforeEach(() => {
   store = makeStore();
   addTestAccounts(store, [mockMnemonicAccount(1), mockMnemonicAccount(2)]);
   jest.spyOn(WalletClient, "getPeers").mockResolvedValue(peersData);
+  jest.spyOn(walletKit, "getActiveSessions").mockReturnValue({
+    "wc-topic-1": mockWcSession,
+  });
 });
 
-describe("<BeaconPeers />", () => {
-  const getPeerRows = async (): Promise<HTMLElement[]> => {
-    render(<BeaconPeers />, { store });
-
-    const rows = await screen.findAllByTestId("peer-row");
-    expect(rows).toHaveLength(3);
-
-    return rows;
-  };
-
+describe("<GenericConnections />", () => {
   describe("list of paired dApps", () => {
     it("shows empty list when no paired dApps", () => {
       jest.spyOn(WalletClient, "getPeers").mockResolvedValue([]);
-      render(<BeaconPeers />, { store });
+      jest.spyOn(walletKit, "getActiveSessions").mockReturnValue({});
+
+      render(<GenericConnections />, { store });
 
       expect(screen.queryByTestId("peer-row")).not.toBeInTheDocument();
     });
 
     it("contains dApp names", async () => {
-      const peerRows = await getPeerRows();
+      render(<GenericConnections />, { store });
 
+      const peerRows = await screen.findAllByTestId("peer-row");
+
+      expect(peerRows).toHaveLength(4);
       expect(peerRows[0]).toHaveTextContent("dApp-1");
       expect(peerRows[1]).toHaveTextContent("dApp-2");
       expect(peerRows[2]).toHaveTextContent("dApp-3");
+      expect(peerRows[3]).toHaveTextContent("WC dApp");
     });
 
-    // TODO: shows icons / placeholder icons
-
     it("shows enabled delete button for each dApp", async () => {
-      const peerRows = await getPeerRows();
+      render(<GenericConnections />, { store });
+
+      const peerRows = await screen.findAllByTestId("peer-row");
 
       for (const peerRow of peerRows) {
         const deleteButton = within(peerRow).getByRole("button", { name: "Remove Peer" });
@@ -94,7 +135,8 @@ describe("<BeaconPeers />", () => {
           })
         );
 
-        const peerRows = await getPeerRows();
+        render(<GenericConnections />, { store });
+        const peerRows = await screen.findAllByTestId("peer-row");
 
         const addressPill = within(peerRows[1]).getByTestId("address-pill-text");
         expect(addressPill).toHaveTextContent(mockMnemonicAccount(1).label);
@@ -109,7 +151,8 @@ describe("<BeaconPeers />", () => {
           })
         );
 
-        const peerRows = await getPeerRows();
+        render(<GenericConnections />, { store });
+        const peerRows = await screen.findAllByTestId("peer-row");
 
         const addressPill = within(peerRows[1]).getByTestId("address-pill-text");
         expect(addressPill).toHaveTextContent(formatPkh(mockMnemonicAccount(5).address.pkh));
@@ -124,7 +167,8 @@ describe("<BeaconPeers />", () => {
           })
         );
 
-        const peerRows = await getPeerRows();
+        render(<GenericConnections />, { store });
+        const peerRows = await screen.findAllByTestId("peer-row");
 
         const network = within(peerRows[2]).getByTestId("dapp-connection-network");
         expect(network).toHaveTextContent("Oxfordnet");
@@ -133,18 +177,71 @@ describe("<BeaconPeers />", () => {
 
     describe("for connections without saved info", () => {
       it("hides address pill", async () => {
-        const peerRows = await getPeerRows();
+        render(<GenericConnections />, { store });
+
+        const peerRows = await screen.findAllByTestId("peer-row");
 
         expect(within(peerRows[0]).queryByTestId("address-pill")).not.toBeInTheDocument();
       });
 
       it("hides network", async () => {
-        const peerRows = await getPeerRows();
+        render(<GenericConnections />, { store });
+
+        const peerRows = await screen.findAllByTestId("peer-row");
 
         expect(
           within(peerRows[0]).queryByTestId("dapp-connection-network")
         ).not.toBeInTheDocument();
       });
+    });
+  });
+
+  describe("WalletConnect peers", () => {
+    beforeEach(() => {
+      mockDisconnectWalletConnectPeer.mockReset();
+
+      jest.spyOn(WalletClient, "getPeers").mockResolvedValue([]);
+      jest.spyOn(walletKit, "getActiveSessions").mockReturnValue({
+        "wc-topic-1": mockWcSession,
+      });
+    });
+
+    it("displays WalletConnect peer info", async () => {
+      render(<GenericConnections />, { store });
+
+      const peerRows = await screen.findByTestId("peer-row");
+      expect(peerRows).toHaveTextContent("WC dApp");
+
+      const addressPill = within(peerRows).getByTestId("address-pill-text");
+      expect(addressPill).toHaveTextContent(mockMnemonicAccount(1).label);
+
+      const network = within(peerRows).getByTestId("dapp-connection-network");
+      expect(network).toHaveTextContent("Mainnet");
+    });
+
+    it("handles WalletConnect peer disconnection", async () => {
+      const user = userEvent.setup();
+
+      render(<GenericConnections />, { store });
+
+      const deleteButton = await screen.findByRole("button", { name: "Remove Peer" });
+      await act(() => user.click(deleteButton));
+
+      expect(mockDisconnectWalletConnectPeer).toHaveBeenCalledWith({
+        topic: "wc-topic-1",
+      });
+    });
+  });
+
+  describe("empty state", () => {
+    it("shows empty message when no peers are connected", async () => {
+      jest.spyOn(WalletClient, "getPeers").mockResolvedValue([]);
+      jest.spyOn(walletKit, "getActiveSessions").mockReturnValue({});
+
+      render(<GenericConnections />, { store });
+
+      expect(await screen.findByTestId("beacon-peers-empty")).toBeInTheDocument();
+      expect(screen.queryByTestId("peer-row")).not.toBeInTheDocument();
     });
   });
 
@@ -155,7 +252,9 @@ describe("<BeaconPeers />", () => {
 
     it("sends a delete request through the beacon api", async () => {
       const user = userEvent.setup();
-      const peerRows = await getPeerRows();
+      render(<GenericConnections />, { store });
+
+      const peerRows = await screen.findAllByTestId("peer-row");
 
       const deleteButton = within(peerRows[1]).getByRole("button", { name: "Remove Peer" });
       await act(() => user.click(deleteButton));
@@ -184,7 +283,9 @@ describe("<BeaconPeers />", () => {
       ].forEach(connection => {
         store.dispatch(beaconActions.addConnection(connection));
       });
-      const peerRows = await getPeerRows();
+      render(<GenericConnections />, { store });
+
+      const peerRows = await screen.findAllByTestId("peer-row");
 
       const deleteButton = within(peerRows[1]).getByRole("button", {
         name: "Remove Peer",
