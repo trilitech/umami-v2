@@ -15,7 +15,7 @@
     "@airgap/beacon-types": "^4.3.1",
     "@babel/core": "^7.26.0",
     "@babel/preset-env": "^7.26.0",
-    "@babel/preset-react": "^7.25.9",
+    "@babel/preset-react": "^7.26.3",
     "@babel/preset-typescript": "^7.26.0",
     "@babel/runtime": "^7.26.0",
     "@chakra-ui/anatomy": "2.3.4",
