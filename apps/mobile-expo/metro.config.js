@@ -25,7 +25,7 @@ defaultConfig.resolver = {
     buffer: require.resolve("buffer"),
     util: require.resolve("util"),
     vm: require.resolve("vm-browserify"),
-    zlib: require.resolve("pako"), // Replace zlib with pako
+    zlib: require.resolve("pako"),
     process: require.resolve("process"),
   },
   disableHierarchicalLookup: true,
