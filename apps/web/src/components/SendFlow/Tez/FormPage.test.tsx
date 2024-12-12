@@ -26,6 +26,11 @@ jest.mock("@umami/core", () => ({
   estimate: jest.fn(),
 }));
 
+jest.mock("@chakra-ui/react", () => ({
+  ...jest.requireActual("@chakra-ui/react"),
+  useBreakpointValue: jest.fn(),
+}));
+
 let store: UmamiStore;
 
 beforeEach(() => {

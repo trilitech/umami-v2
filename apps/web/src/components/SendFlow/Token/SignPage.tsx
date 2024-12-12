@@ -5,6 +5,7 @@ import {
   ModalBody,
   ModalContent,
   ModalFooter,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import { type FA12TokenBalance, type FA2TokenBalance, type TokenTransfer } from "@umami/core";
 import { FormProvider } from "react-hook-form";
@@ -24,7 +25,7 @@ export const SignPage = (props: SignPageProps<{ token: FA12TokenBalance | FA2Tok
   } = props;
   const { fee, operations, estimationFailed, isLoading, form, signer, onSign } =
     useSignPageHelpers(initialOperations);
-
+  const hideBalance = useBreakpointValue({ base: true, md: false });
   const { amount, recipient } = operations.operations[0] as TokenTransfer;
 
   return (
@@ -42,11 +43,11 @@ export const SignPage = (props: SignPageProps<{ token: FA12TokenBalance | FA2Tok
             </FormControl>
             <FormControl>
               <FormLabel width="full">From</FormLabel>
-              <AddressTile address={operations.sender.address} />
+              <AddressTile address={operations.sender.address} hideBalance={hideBalance} />
             </FormControl>
             <FormControl>
               <FormLabel width="full">To</FormLabel>
-              <AddressTile address={recipient} />
+              <AddressTile address={recipient} hideBalance={hideBalance} />
             </FormControl>
             <AdvancedSettingsAccordion />
           </ModalBody>
