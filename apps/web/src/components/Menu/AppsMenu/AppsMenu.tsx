@@ -1,9 +1,9 @@
 import { Button, Text } from "@chakra-ui/react";
 import { useAddPeer } from "@umami/state";
 
-import { BeaconPeers } from "../../beacon";
-import { WcPeers, useOnWalletConnect } from "../../WalletConnect";
+import { useOnWalletConnect } from "../../WalletConnect";
 import { DrawerContentWrapper } from "../DrawerContentWrapper";
+import { GenericConnections } from "./GenericConnections";
 
 export const AppsMenu = () => {
   const onBeaconConnect = useAddPeer();
@@ -14,7 +14,7 @@ export const AppsMenu = () => {
       actions={
         <>
           <Text marginTop="12px" size="lg">
-            Connect with Pairing Request for Beacon or WalletConnect
+            Connect with DApps using a Pairing Request via Beacon or WalletConnect.
           </Text>
           <Button
             width="fit-content"
@@ -35,8 +35,7 @@ export const AppsMenu = () => {
       }
       title="Apps"
     >
-      <BeaconPeers />
-      <WcPeers />
+      <GenericConnections />
     </DrawerContentWrapper>
   );
 };
