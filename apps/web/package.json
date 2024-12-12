@@ -82,7 +82,7 @@
     "react-test-renderer": "^18.3.1",
     "redux": "^5.0.1",
     "redux-persist": "^6.0.0",
-    "zod": "^3.23.8"
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@chakra-ui/storybook-addon": "^5.2.5",

@@ -66,6 +66,6 @@
     "@umami/tezos": "workspace:^",
     "@umami/tzkt": "workspace:^",
     "lodash": "^4.17.21",
-    "zod": "^3.23.8"
+    "zod": "^3.24.1"
   }
 }
