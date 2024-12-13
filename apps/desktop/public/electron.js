@@ -12,6 +12,7 @@ const APP_PROTOCOL = "app";
 const APP_HOST = "assets";
 // create in memory store of the leveldb database of previous version which had file:// protocol
 
+let backupData;
 const appURL = app.isPackaged
   ? url.format({
       pathname: `${APP_HOST}/index.html`,
@@ -65,9 +66,9 @@ async function readAndCopyValues() {
         "persist:accounts": {accountsValue},
         "persist:root": {rootValue},
       };
-      const rawBackup = JSON.stringify(storage);
+      backupData = JSON.stringify(storage);
       try{
-      fs.appendFileSync(path.join(app.getPath("userData"), "Local Storage", "backup_leveldb.json"), rawBackup);
+      fs.appendFileSync(path.join(app.getPath("userData"), "Local Storage", "backup_leveldb.json"), backupData);
       }
       catch(err){
         console.log("Error during leveldb backup creation Code:EM2.", err);
@@ -185,8 +186,14 @@ function createWindow() {
   });
 
   mainWindow.loadURL(appURL);
-  mainWindow.once("ready-to-show", () => {
+
+    mainWindow.once("ready-to-show", () => {
+   
     mainWindow.show();
+     if(backupData !== undefined){
+      mainWindow.webContents.send("backupData", backupData);
+      }
+  
 
     if (deeplinkURL) {
       mainWindow.webContents.send("deeplinkURL", deeplinkURL);
