@@ -15,6 +15,9 @@ contextBridge.exposeInMainWorld("electronAPI", {
   // Notify UI if app update is available to be installed.
   onAppUpdateDownloaded: callback => ipcRenderer.on("app-update-downloaded", callback),
 
+  // handle the backupData send in electron.js
+  onBackupData: callback => ipcRenderer.on("backupData", callback),
+
   // Notify Electron that app update should be installed.
   installAppUpdateAndQuit: () => ipcRenderer.send("install-app-update"),
 
