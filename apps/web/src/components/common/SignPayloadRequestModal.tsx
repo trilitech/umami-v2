@@ -1,8 +1,4 @@
-import {
-  BeaconMessageType,
-  type SignPayloadRequestOutput,
-  type SignPayloadResponseInput,
-} from "@airgap/beacon-wallet";
+import { BeaconMessageType, type SignPayloadResponseInput } from "@airgap/beacon-wallet";
 import { WarningIcon } from "@chakra-ui/icons";
 import {
   Box,
@@ -20,41 +16,45 @@ import {
 import { type TezosToolkit } from "@taquito/taquito";
 import { useDynamicModalContext } from "@umami/components";
 import { decodeBeaconPayload } from "@umami/core";
-import { WalletClient, useGetImplicitAccount } from "@umami/state";
+import { WalletClient, walletKit } from "@umami/state";
+import { formatJsonRpcResult } from "@walletconnect/jsonrpc-utils";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { useColor } from "../../styles/useColor";
 import { SignButton } from "../SendFlow/SignButton";
+import { type SignPayloadProps } from "../SendFlow/utils";
 
-export const SignPayloadRequestModal = ({ request }: { request: SignPayloadRequestOutput }) => {
+export const SignPayloadRequestModal = ({ opts }: { opts: SignPayloadProps }) => {
   const { goBack } = useDynamicModalContext();
-  const getAccount = useGetImplicitAccount();
-  const signerAccount = getAccount(request.sourceAddress);
   const toast = useToast();
   const form = useForm();
   const color = useColor();
   const [showRaw, setShowRaw] = useState(false);
 
   const { result: parsedPayload, error: parsingError } = decodeBeaconPayload(
-    request.payload,
-    request.signingType
+    opts.payload,
+    opts.signingType
   );
 
   const sign = async (tezosToolkit: TezosToolkit) => {
-    const result = await tezosToolkit.signer.sign(request.payload);
+    const result = await tezosToolkit.signer.sign(opts.payload);
 
-    const response: SignPayloadResponseInput = {
-      type: BeaconMessageType.SignPayloadResponse,
-      id: request.id,
-      signingType: request.signingType,
-      signature: result.prefixSig,
-    };
-
-    await WalletClient.respond(response);
+    if (opts.requestId.sdkType === "beacon") {
+      const response: SignPayloadResponseInput = {
+        type: BeaconMessageType.SignPayloadResponse,
+        id: opts.requestId.id.toString(),
+        signingType: opts.signingType,
+        signature: result.prefixSig,
+      };
+      await WalletClient.respond(response);
+    } else {
+      const response = formatJsonRpcResult(opts.requestId.id, { signature: result.prefixSig });
+      await walletKit.respondSessionRequest({ topic: opts.requestId.topic, response });
+    }
 
     toast({
-      description: "Successfully submitted Beacon operation",
+      description: "Successfully signed the payload",
       status: "success",
     });
     goBack();
@@ -64,7 +64,7 @@ export const SignPayloadRequestModal = ({ request }: { request: SignPayloadReque
     <FormProvider {...form}>
       <ModalContent>
         <ModalHeader marginBottom="32px" textAlign="center">
-          {`${request.appMetadata.name}/dApp Pairing Request`}
+          {`Sign Payload Request from ${opts.appName}`}
         </ModalHeader>
         <ModalCloseButton />
 
@@ -90,7 +90,7 @@ export const SignPayloadRequestModal = ({ request }: { request: SignPayloadReque
             backgroundColor={color("100")}
           >
             <Text color={color("600")} size="md">
-              {showRaw ? request.payload : parsedPayload.trim()}
+              {showRaw ? opts.payload : parsedPayload.trim()}
             </Text>
           </Box>
 
@@ -105,7 +105,7 @@ export const SignPayloadRequestModal = ({ request }: { request: SignPayloadReque
         </ModalBody>
 
         <ModalFooter justifyContent="center" display="flex" padding="16px 0 0 0">
-          <SignButton onSubmit={sign} signer={signerAccount} text="Sign" />
+          <SignButton onSubmit={sign} signer={opts.signer} text="Sign" />
         </ModalFooter>
       </ModalContent>
     </FormProvider>
