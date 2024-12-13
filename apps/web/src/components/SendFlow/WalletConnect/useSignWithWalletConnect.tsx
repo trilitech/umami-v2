@@ -40,7 +40,7 @@ export const useSignWithWalletConnect = ({
         return openWith(<SuccessStep hash={opHash} />);
       },
       error => ({
-        description: `Failed to confirm Beacon operation: ${error.message}`,
+        description: `Failed to confirm WalletConnect operation: ${error.message}`,
       })
     );
 

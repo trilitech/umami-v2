@@ -23,7 +23,7 @@ import { useSignWithBeacon } from "../Beacon/useSignWithBeacon";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
 import { type SdkSignPageProps } from "../utils";
-import { useSignWithWalletConnect } from "../WalletConnect/useSignWithWc";
+import { useSignWithWalletConnect } from "../WalletConnect/useSignWithWalletConnect";
 
 export const BatchSignPage = (
   signProps: SdkSignPageProps,

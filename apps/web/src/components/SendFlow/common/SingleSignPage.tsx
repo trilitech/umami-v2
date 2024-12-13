@@ -10,7 +10,7 @@ import { TezSignPage } from "./TezSignPage";
 import { UndelegationSignPage } from "./UndelegationSignPage";
 import { UnstakeSignPage } from "./UnstakeSignPage";
 import { useSignWithBeacon } from "../Beacon/useSignWithBeacon";
-import { useSignWithWalletConnect } from "../WalletConnect/useSignWithWc";
+import { useSignWithWalletConnect } from "../WalletConnect/useSignWithWalletConnect";
 
 export const SingleSignPage = (signProps: SdkSignPageProps) => {
   const operationType = signProps.operation.operations[0].type;
