@@ -5,8 +5,8 @@ const url = require("url");
 const process = require("process");
 const { autoUpdater } = require("electron-updater");
 const { Level } = require("level");
-const log = require('electron-log');
-const fs = require('fs');
+const log = require("electron-log");
+const fs = require("fs");
 
 const APP_PROTOCOL = "app";
 const APP_HOST = "assets";
@@ -33,7 +33,7 @@ protocol.registerSchemesAsPrivileged([
 ]);
 
 // Configure electron-log
-log.transports.file.file = path.join(app.getPath('userData'), 'Local Storage', 'umami-desktop.log');
+log.transports.file.file = path.join(app.getPath("userData"), "Local Storage", "umami-desktop.log");
 
 async function readAndCopyValues() {
   // Path to the LevelDB database
@@ -56,29 +56,30 @@ async function readAndCopyValues() {
   try {
     const accountsValue = await db.get("_file://\x00\x01persist:accounts");
     let rootValue = await db.get("_file://\x00\x01persist:root");
-    if ( !accountsValue || !rootValue) {
+    if (!accountsValue || !rootValue) {
       log.info("No data found in the database. Code:EM03");
       return;
     }
     console.log(accountsValue);
     console.log(rootValue.length);
-      const storage  = {
-        "persist:accounts": {accountsValue},
-        "persist:root": {rootValue},
-      };
-      backupData = JSON.stringify(storage);
-      try{
-      fs.appendFileSync(path.join(app.getPath("userData"), "Local Storage", "backup_leveldb.json"), backupData);
-      }
-      catch(err){
-        console.log("Error during leveldb backup creation Code:EM2.", err);
-      }
+    const storage = {
+      "persist:accounts": { accountsValue },
+      "persist:root": { rootValue },
+    };
+    backupData = JSON.stringify(storage);
+    try {
+      fs.appendFileSync(
+        path.join(app.getPath("userData"), "Local Storage", "backup_leveldb.json"),
+        backupData
+      );
+    } catch (err) {
+      console.log("Error during leveldb backup creation Code:EM2.", err);
+    }
     console.log("Migration done successfully");
-}
-  catch (err) {
+  } catch (err) {
     log.error("Error during key migration Code:EM4.", err);
   } finally {
-    db.close().catch((err) => {
+    db.close().catch(err => {
       log.error("Error closing the database. Code: EM5", err);
     });
   }
@@ -187,13 +188,8 @@ function createWindow() {
 
   mainWindow.loadURL(appURL);
 
-    mainWindow.once("ready-to-show", () => {
-   
+  mainWindow.once("ready-to-show", () => {
     mainWindow.show();
-     if(backupData !== undefined){
-      mainWindow.webContents.send("backupData", backupData);
-      }
-  
 
     if (deeplinkURL) {
       mainWindow.webContents.send("deeplinkURL", deeplinkURL);
@@ -288,7 +284,7 @@ function start() {
   // is ready to create the browser windows.
   // Some APIs can only be used after this event occurs.
   app.whenReady().then(async () => {
-  // Execute readAndCopyValues at the beginning
+    // Execute readAndCopyValues at the beginning
     await readAndCopyValues();
     createWindow();
   });
@@ -310,6 +306,10 @@ function start() {
 
   // Listen to install-app-update event from UI, start update on getting the event.
   ipcMain.on("install-app-update", () => autoUpdater.quitAndInstall());
+
+  ipcMain.on("sendBackupData", (_, backupData) => {
+    mainWindow.webContents.send("backupData", backupData);
+  });
 
   ipcMain.on("clipboard-write", (_, text) => {
     clipboard.writeText(text);

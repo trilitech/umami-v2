@@ -25,7 +25,6 @@ import { SettingsView } from "./views/settings/SettingsView";
 import { TokensPage } from "./views/tokens/TokensPage";
 import { withSideMenu } from "./views/withSideMenu";
 import { WelcomeScreen } from "./WelcomeScreen";
-import { persistor } from "./utils/persistor";
 
 // Hash router is required for electron prod build:
 // https://stackoverflow.com/a/75648956/6797267
@@ -33,24 +32,6 @@ import { persistor } from "./utils/persistor";
 export const Router = () => {
   useDeeplinkHandler();
   const isLoggedIn = useImplicitAccounts().length > 0;
-
-  useEffect(() => {
-    window.electronAPI.onBackupData((event, backupData) => {
-      // Restore the backup data
-      console.log("Backup data received: ", backupData);
-            
-      if(localStorage.getItem("isBackupLoaded") !== "true") {
-
-      persistor.pause();
-      localStorage.clear();
-      localStorage.setItem("persist:accounts", backupData["persist:accounts"]);
-      localStorage.setItem("persist:root", backupData["persist:root"]);
-      localStorage.setItem("isBackupLoaded", "true");
-      console.log("Backup data loaded");
-    window.location.reload();
-    }}
-  );
-  }, []);
 
   return isLoggedIn ? <LoggedInRouterWithPolling /> : <LoggedOutRouter />;
 };
