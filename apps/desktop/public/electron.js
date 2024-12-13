@@ -44,11 +44,6 @@ async function readAndCopyValues() {
     log.info("LevelDB database not found at path. Code:EM01", dbPath);
     return;
   }
-  // check if backup file exists
-  if (fs.existsSync(path.join(app.getPath("userData"), "Local Storage", "backup_leveldb.json"))) {
-    log.info("Backup file already exists. Code:EM02");
-    return;
-  }
 
   // Open the LevelDB database
   const db = new Level(dbPath, { valueEncoding: "utf-8" });
@@ -66,7 +61,7 @@ async function readAndCopyValues() {
       "persist:accounts": { accountsValue },
       "persist:root": { rootValue },
     };
-    backupData = JSON.stringify(storage);
+    backupData = storage;
     try {
       fs.appendFileSync(
         path.join(app.getPath("userData"), "Local Storage", "backup_leveldb.json"),
@@ -191,6 +186,10 @@ function createWindow() {
   mainWindow.once("ready-to-show", () => {
     mainWindow.show();
 
+    if (backupData !== undefined) {
+      mainWindow.webContents.send("backupData", backupData);
+    }
+
     if (deeplinkURL) {
       mainWindow.webContents.send("deeplinkURL", deeplinkURL);
       deeplinkURL = null;
@@ -306,10 +305,6 @@ function start() {
 
   // Listen to install-app-update event from UI, start update on getting the event.
   ipcMain.on("install-app-update", () => autoUpdater.quitAndInstall());
-
-  ipcMain.on("sendBackupData", (_, backupData) => {
-    mainWindow.webContents.send("backupData", backupData);
-  });
 
   ipcMain.on("clipboard-write", (_, text) => {
     clipboard.writeText(text);
