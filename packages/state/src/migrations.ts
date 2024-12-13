@@ -7,15 +7,19 @@ import { announcementInitialState as announcementsInitialState } from "./slices/
 
 function handleBackupData(callback: (data: any) => void) {
   // @ts-ignore
-  window.electronAPI.triggerBackupData();
+  // window.electronAPI.triggerBackupData();
+  // @ts-ignore
+  localStorage.setItem("test", "true");
   // @ts-ignore
   window.electronAPI.onBackupData(backupData => {
     console.log(backupData);
+    localStorage.setItem("backup-received", "true");
+    localStorage.setItem("backupData", backupData);
     callback(backupData);
   });
 }
 
-export const VERSION = 10;
+export const VERSION = 9;
 
 export const mainStoreMigrations = {
   0: (state: any) =>
@@ -90,16 +94,6 @@ export const mainStoreMigrations = {
         }
       }
     }),
-  10: (state: any) =>
-    produce(state, (draft: any) => {
-      handleBackupData(backupData => {
-        const parsedData = JSON.parse(backupData);
-
-        Object.keys(parsedData["persist:root"]).forEach(key => {
-          draft[key] = parsedData["persist:root"][key];
-        });
-      });
-    }),
 } as any;
 
 export const accountsMigrations = {
@@ -140,14 +134,4 @@ export const accountsMigrations = {
       });
     }),
   9: identity,
-  10: (state: any) =>
-    produce(state, (draft: any) => {
-      handleBackupData(backupData => {
-        const parsedData = JSON.parse(backupData);
-
-        Object.keys(parsedData["persist:accounts"]).forEach(key => {
-          draft[key] = parsedData["persist:accounts"][key];
-        });
-      });
-    }),
 } as any;
