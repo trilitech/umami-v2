@@ -8,13 +8,12 @@ import {
   useResetBeaconConnections,
 } from "@umami/state";
 import { noop } from "lodash";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
 
 import { AnnouncementBanner } from "./components/AnnouncementBanner";
 import { SocialLoginWarningModal } from "./components/SocialLoginWarningModal/SocialLoginWarningModal";
 import { BeaconProvider } from "./utils/beacon/BeaconProvider";
-import { persistor } from "./utils/persistor";
 import { useDeeplinkHandler } from "./utils/useDeeplinkHandler";
 import { AddressBookView } from "./views/addressBook/AddressBookView";
 import { BatchPage } from "./views/batch/BatchPage";
@@ -33,51 +32,6 @@ import { WelcomeScreen } from "./WelcomeScreen";
 export const Router = () => {
   useDeeplinkHandler();
   const isLoggedIn = useImplicitAccounts().length > 0;
-
-  const [backupData, setBackupData] = useState({});
-
-  useEffect(() => {
-    // @ts-ignore
-    window.electronAPI.onBackupData((_, backupData) => {
-      console.log(backupData);
-      setBackupData(backupData);
-    });
-  }, []);
-
-  useEffect(() => {
-    if (Object.keys(backupData).length > 0) {
-      try {
-        const accountsValue = backupData["persist:accounts"].accountsValue.slice(1); // Remove the \u0001 prefix
-        const rootValue = backupData["persist:root"].rootValue.slice(1); // Remove the \u0001 prefix
-        // Step 2: Parse the outer JSON string
-        const parsedAccounts = JSON.parse(accountsValue);
-        const sanitizedRootValue = backupData["persist:root"].rootValue.replaceAll(
-          /[\u0000-\u001F\u007F-\u009F]/g,
-          ""
-        );
-        const parsedRootValue = JSON.parse(sanitizedRootValue);
-
-        // Step 3: Parse the inner strings as needed
-        parsedAccounts.items = JSON.parse(parsedAccounts.items);
-        parsedAccounts.seedPhrases = JSON.parse(parsedAccounts.seedPhrases);
-        parsedAccounts.secretKeys = JSON.parse(parsedAccounts.secretKeys);
-        parsedAccounts._persist = JSON.parse(parsedAccounts._persist);
-        parsedAccounts.current = JSON.parse(parsedAccounts.current);
-
-
-        console.log(parsedAccounts, "parsedAccounts");
-        console.log(parsedRootValue, "parsedRootValue");
-
-        persistor.pause();
-        // localStorage.clear();
-        localStorage.setItem("persist:accounts", JSON.stringify(parsedAccounts));
-        localStorage.setItem("persist:root", JSON.stringify(parsedRootValue));
-        // window.location.reload();
-      } catch (error) {
-        console.error("Error during backup restoration", error);
-      }
-    }
-  }, [backupData]);
 
   return isLoggedIn ? <LoggedInRouterWithPolling /> : <LoggedOutRouter />;
 };
