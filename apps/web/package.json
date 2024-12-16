@@ -31,7 +31,7 @@
     "@chakra-ui/system": "^2.6.2",
     "@chakra-ui/theme-tools": "^2.2.6",
     "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.13.5",
+    "@emotion/styled": "^11.14.0",
     "@hookform/resolvers": "^3.9.1",
     "@reduxjs/toolkit": "^2.5.0",
     "@reown/walletkit": "^1.0.1",
