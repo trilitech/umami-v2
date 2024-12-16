@@ -96,7 +96,7 @@ importers:
         version: 3.9.1(react-hook-form@7.52.2(react@18.3.1))
       '@reduxjs/toolkit':
         specifier: ^2.5.0
-        version: 2.5.0(react-redux@9.1.2(@types/react@18.3.12)(react@18.3.1)(redux@5.0.1))(react@18.3.1)
+        version: 2.5.0(react-redux@9.2.0(@types/react@18.3.12)(react@18.3.1)(redux@5.0.1))(react@18.3.1)
       '@tanstack/react-query':
         specifier: ^5.62.7
         version: 5.62.7(react@18.3.1)
@@ -332,8 +332,8 @@ importers:
         specifier: ^3.0.0
         version: 3.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-redux:
-        specifier: 9.1.2
-        version: 9.1.2(@types/react@18.3.12)(react@18.3.1)(redux@5.0.1)
+        specifier: 9.2.0
+        version: 9.2.0(@types/react@18.3.12)(react@18.3.1)(redux@5.0.1)
       react-refresh:
         specifier: ^0.14.2
         version: 0.14.2
@@ -669,7 +669,7 @@ importers:
         version: 2.1.0(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.12)(encoding@0.1.13)(react@18.3.1)(typescript@5.7.2))
       '@reduxjs/toolkit':
         specifier: ^2.5.0
-        version: 2.5.0(react-redux@9.1.2(@types/react@18.3.12)(react@18.3.1)(redux@5.0.1))(react@18.3.1)
+        version: 2.5.0(react-redux@9.2.0(@types/react@18.3.12)(react@18.3.1)(redux@5.0.1))(react@18.3.1)
       '@tamagui/config':
         specifier: ^1.120.1
         version: 1.120.1(react-dom@18.3.1(react@18.3.1))(react-native-reanimated@3.15.5(@babel/core@7.26.0)(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.12)(encoding@0.1.13)(react@18.3.1)(typescript@5.7.2))(react@18.3.1))(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.12)(encoding@0.1.13)(react@18.3.1)(typescript@5.7.2))(react@18.3.1)
@@ -698,8 +698,8 @@ importers:
         specifier: 0.75.4
         version: 0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.12)(encoding@0.1.13)(react@18.3.1)(typescript@5.7.2)
       react-redux:
-        specifier: ^9.1.2
-        version: 9.1.2(@types/react@18.3.12)(react@18.3.1)(redux@5.0.1)
+        specifier: ^9.2.0
+        version: 9.2.0(@types/react@18.3.12)(react@18.3.1)(redux@5.0.1)
       redux:
         specifier: ^5.0.1
         version: 5.0.1
@@ -835,7 +835,7 @@ importers:
         version: 3.9.1(react-hook-form@7.52.2(react@18.3.1))
       '@reduxjs/toolkit':
         specifier: ^2.5.0
-        version: 2.5.0(react-redux@9.1.2(@types/react@18.3.12)(react@18.3.1)(redux@5.0.1))(react@18.3.1)
+        version: 2.5.0(react-redux@9.2.0(@types/react@18.3.12)(react@18.3.1)(redux@5.0.1))(react@18.3.1)
       '@reown/walletkit':
         specifier: ^1.0.1
         version: 1.0.1
@@ -957,8 +957,8 @@ importers:
         specifier: ^3.0.0
         version: 3.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-redux:
-        specifier: ^9.1.2
-        version: 9.1.2(@types/react@18.3.12)(react@18.3.1)(redux@5.0.1)
+        specifier: ^9.2.0
+        version: 9.2.0(@types/react@18.3.12)(react@18.3.1)(redux@5.0.1)
       react-remove-scroll:
         specifier: ^2.6.0
         version: 2.6.0(@types/react@18.3.12)(react@18.3.1)
@@ -1256,8 +1256,8 @@ importers:
         specifier: ^3.4.2
         version: 3.4.2
       react-redux:
-        specifier: ^9.1.2
-        version: 9.1.2(@types/react@18.3.12)(react@18.3.1)(redux@5.0.1)
+        specifier: ^9.2.0
+        version: 9.2.0(@types/react@18.3.12)(react@18.3.1)(redux@5.0.1)
       rimraf:
         specifier: ^6.0.1
         version: 6.0.1
@@ -1480,8 +1480,8 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
       react-redux:
-        specifier: ^9.1.2
-        version: 9.1.2(@types/react@18.3.12)(react@18.3.1)(redux@5.0.1)
+        specifier: ^9.2.0
+        version: 9.2.0(@types/react@18.3.12)(react@18.3.1)(redux@5.0.1)
     devDependencies:
       '@babel/core':
         specifier: ^7.26.0
@@ -1784,7 +1784,7 @@ importers:
         version: 11.13.5(@emotion/react@11.14.0(@types/react@18.3.12)(react@18.3.1))(@types/react@18.3.12)(react@18.3.1)
       '@reduxjs/toolkit':
         specifier: ^2.5.0
-        version: 2.5.0(react-redux@9.1.2(@types/react@18.3.12)(react@18.3.1)(redux@5.0.1))(react@18.3.1)
+        version: 2.5.0(react-redux@9.2.0(@types/react@18.3.12)(react@18.3.1)(redux@5.0.1))(react@18.3.1)
       '@reown/walletkit':
         specifier: ^1.0.1
         version: 1.0.1
@@ -1849,8 +1849,8 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
       react-redux:
-        specifier: ^9.1.2
-        version: 9.1.2(@types/react@18.3.12)(react@18.3.1)(redux@5.0.1)
+        specifier: ^9.2.0
+        version: 9.2.0(@types/react@18.3.12)(react@18.3.1)(redux@5.0.1)
       redux:
         specifier: ^5.0.1
         version: 5.0.1
@@ -6186,8 +6186,8 @@ packages:
   '@types/unist@3.0.2':
     resolution: {integrity: sha512-dqId9J8K/vGi5Zr7oo212BGii5m3q5Hxlkwy3WpYuKPklmBEvsbMYYyLxAQpSffdLl/gdW0XUpKWFvYmyoWCoQ==}
 
-  '@types/use-sync-external-store@0.0.3':
-    resolution: {integrity: sha512-EwmlvuaxPNej9+T4v5AuBPJa2x2UOJVdjCtDHgcDqitUeOtjnJKJ+apYjVcAoBEMjKW1VVFGZLUb5+qqa09XFA==}
+  '@types/use-sync-external-store@0.0.6':
+    resolution: {integrity: sha512-zFDAD+tlpf2r4asuHEj0XH6pY6i0g5NeAHPn+15wk3BV6JA69eERFXC1gyGThDkVa1zCyKr5jox1+2LbV/AMLg==}
 
   '@types/uuid@9.0.1':
     resolution: {integrity: sha512-rFT3ak0/2trgvp4yYZo5iKFEPsET7vKydKF+VRCxlQ9bpheehyAJH89dAkaLEq/j/RZXJIqcgsmPJKUP1Z28HA==}
@@ -10885,11 +10885,11 @@ packages:
       react: '>=18.0.0'
       react-dom: '>=18.0.0'
 
-  react-redux@9.1.2:
-    resolution: {integrity: sha512-0OA4dhM1W48l3uzmv6B7TXPCGmokUU4p1M44DGN2/D9a1FjVPukVjER1PcPX97jIg6aUeLq1XJo1IpfbgULn0w==}
+  react-redux@9.2.0:
+    resolution: {integrity: sha512-ROY9fvHhwOD9ySfrF0wmvu//bKCQ6AeZZq1nJNtbDC+kk5DuSuNX/n6YWYF/SYy7bSba4D4FSz8DJeKY/S/r+g==}
     peerDependencies:
-      '@types/react': ^18.2.25
-      react: ^18.0
+      '@types/react': ^18.2.25 || ^19
+      react: ^18.0 || ^19
       redux: ^5.0.0
     peerDependenciesMeta:
       '@types/react':
@@ -11685,6 +11685,7 @@ packages:
 
   sudo-prompt@9.2.1:
     resolution: {integrity: sha512-Mu7R0g4ig9TUuGSxJavny5Rv0egCEtpZRNMrZaYS1vxkiIxGiGUwoezU3LazIQ+KE04hTrTfNPgxU5gzi7F5Pw==}
+    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
 
   sumchecker@3.0.1:
     resolution: {integrity: sha512-MvjXzkz/BOfyVDkG0oFOtBxHX2u3gKbMHIF/dXblZsgD3BWOFLmHovIpZY7BykJdAjcqRCBi1WYBNdEC9yI7vg==}
@@ -12239,10 +12240,10 @@ packages:
       '@types/react':
         optional: true
 
-  use-sync-external-store@1.2.2:
-    resolution: {integrity: sha512-PElTlVMwpblvbNqQ82d2n6RjStvdSoNe9FG28kNfz3WiXilJm4DdNkEzRhCZuIDwY8U08WVihhGR5iRqAwfDiw==}
+  use-sync-external-store@1.4.0:
+    resolution: {integrity: sha512-9WXSPC5fMv61vaupRkCKCxsPxBocVnwakBEkMIHHpkTTg6icbJtg6jzgtLDm4bl3cSHAca52rYWih0k4K3PfHw==}
     peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
   utf8-byte-length@1.0.5:
     resolution: {integrity: sha512-Xn0w3MtiQ6zoz2vFyUVruaCL53O/DwUvkEeOvj+uulMm0BkUGYWmBYVyElqZaSLhY6ZD0ulfU3aBra2aVT4xfA==}
@@ -16392,7 +16393,7 @@ snapshots:
     optionalDependencies:
       '@types/react': 18.3.12
 
-  '@reduxjs/toolkit@2.5.0(react-redux@9.1.2(@types/react@18.3.12)(react@18.3.1)(redux@5.0.1))(react@18.3.1)':
+  '@reduxjs/toolkit@2.5.0(react-redux@9.2.0(@types/react@18.3.12)(react@18.3.1)(redux@5.0.1))(react@18.3.1)':
     dependencies:
       immer: 10.1.1
       redux: 5.0.1
@@ -16400,7 +16401,7 @@ snapshots:
       reselect: 5.1.1
     optionalDependencies:
       react: 18.3.1
-      react-redux: 9.1.2(@types/react@18.3.12)(react@18.3.1)(redux@5.0.1)
+      react-redux: 9.2.0(@types/react@18.3.12)(react@18.3.1)(redux@5.0.1)
 
   '@remix-run/router@1.19.1': {}
 
@@ -18515,7 +18516,7 @@ snapshots:
 
   '@types/unist@3.0.2': {}
 
-  '@types/use-sync-external-store@0.0.3': {}
+  '@types/use-sync-external-store@0.0.6': {}
 
   '@types/uuid@9.0.1': {}
 
@@ -24647,11 +24648,11 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  react-redux@9.1.2(@types/react@18.3.12)(react@18.3.1)(redux@5.0.1):
+  react-redux@9.2.0(@types/react@18.3.12)(react@18.3.1)(redux@5.0.1):
     dependencies:
-      '@types/use-sync-external-store': 0.0.3
+      '@types/use-sync-external-store': 0.0.6
       react: 18.3.1
-      use-sync-external-store: 1.2.2(react@18.3.1)
+      use-sync-external-store: 1.4.0(react@18.3.1)
     optionalDependencies:
       '@types/react': 18.3.12
       redux: 5.0.1
@@ -26114,7 +26115,7 @@ snapshots:
     optionalDependencies:
       '@types/react': 18.3.12
 
-  use-sync-external-store@1.2.2(react@18.3.1):
+  use-sync-external-store@1.4.0(react@18.3.1):
     dependencies:
       react: 18.3.1
 
