@@ -1,5 +1,11 @@
 import { combineReducers } from "@reduxjs/toolkit";
-import { type Storage, persistReducer } from "redux-persist";
+import {
+  type PersistConfig,
+  type PersistedState,
+  type Storage,
+  getStoredState,
+  persistReducer,
+} from "redux-persist";
 import createWebStorage from "redux-persist/lib/storage/createWebStorage";
 
 import { createAsyncMigrate } from "./createAsyncMigrate";
@@ -32,14 +38,89 @@ const getTestStorage = () => {
     : TEST_STORAGE;
 };
 
+export const processMigrationData = (backupData: any) => {
+  try {
+    const processedData: { accounts: any; root: any } = {
+      accounts: null,
+      root: null,
+    };
+
+    console.log(backupData, "backupData");
+
+    if (backupData["persist:accounts"]?.accountsValue) {
+      const accountsValue = backupData["persist:accounts"].accountsValue.slice(1);
+      processedData.accounts = JSON.parse(accountsValue);
+
+      for (const item in processedData.accounts) {
+        processedData.accounts[item] = JSON.parse(processedData.accounts[item]);
+      }
+    }
+
+    if (backupData["persist:root"]?.rootValue) {
+      const sanitizedRootValue = backupData["persist:root"].rootValue.replaceAll(
+        // eslint-disable-next-line no-control-regex
+        /[\u0000-\u001F\u007F-\u009F]/g,
+        ""
+      );
+
+      processedData.root = JSON.parse(sanitizedRootValue);
+
+      for (const item in processedData.root) {
+        processedData.root[item] = JSON.parse(processedData.root[item]);
+      }
+    }
+
+    return processedData;
+  } catch (error) {
+    console.error("Error processing backup data:", error);
+    return null;
+  }
+};
+
 export const makeReducer = (storage_: Storage | undefined) => {
   const storage = storage_ || getTestStorage() || createWebStorage("local");
+
+  // Custom getStoredState function to handle migration
+  const customGetStoredState = async (config: PersistConfig<any>): Promise<PersistedState> => {
+    try {
+      // First try to get state from current storage
+      const state = (await getStoredState(config)) as PersistedState;
+      console.log(state, "state");
+      if (state) {
+        return state;
+      }
+
+      // If no state, check if we have backup data
+      // @ts-ignore
+      if (window.electronAPI) {
+        return new Promise(resolve => {
+          // @ts-ignore
+          window.electronAPI.onBackupData((_, data) => {
+            if (data) {
+              const processed = processMigrationData(data);
+              console.log(processed, "processed");
+              if (processed) {
+                // Return the processed state based on config key
+                // @ts-ignore
+                return resolve(config.key === "root" ? processed.root : processed.accounts);
+              }
+            }
+            resolve(undefined);
+          });
+        });
+      }
+    } catch (err) {
+      console.error("Error getting stored state:", err);
+      return undefined;
+    }
+  };
 
   const rootPersistConfig = {
     key: "root",
     version: VERSION,
     storage,
     blacklist: ["accounts"],
+    getStoredState: customGetStoredState,
     migrate: createAsyncMigrate(mainStoreMigrations, { debug: false }),
   };
 
@@ -47,6 +128,7 @@ export const makeReducer = (storage_: Storage | undefined) => {
     key: "accounts",
     version: VERSION,
     storage,
+    getStoredState: customGetStoredState,
     migrate: createAsyncMigrate(accountsMigrations, { debug: false }),
     blacklist: ["password"],
   };
