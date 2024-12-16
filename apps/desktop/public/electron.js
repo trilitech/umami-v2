@@ -46,39 +46,76 @@ async function readAndCopyValues() {
   }
 
   // Open the LevelDB database
-  const db = new Level(dbPath, { valueEncoding: "utf-8" });
+  const db = new Level(dbPath);
   await db.open();
+
   try {
-    const accountsValue = await db.get("_file://\x00\x01persist:accounts");
-    let rootValue = await db.get("_file://\x00\x01persist:root");
-    if (!accountsValue || !rootValue) {
-      log.info("No data found in the database. Code:EM03");
-      return;
+    const storage = {};
+
+    // Function to clean up the string (removing non-printable chars)
+    function cleanString(str) {
+      // Remove non-printable characters like \x00 and \x01
+      str = str.replace(/[\x00\x01\x17\x10\x0f]/g, ""); // Removing some common control chars
+
+      // Optionally, you could try Base64 decoding here if you're suspecting such encoding
+      // Example: if(str.includes("base64")) { str = Buffer.from(str, 'base64').toString(); }
+      return str;
     }
-    console.log(accountsValue);
-    console.log(rootValue.length);
-    const storage = {
-      "persist:accounts": { accountsValue },
-      "persist:root": { rootValue },
-    };
-    backupData = storage;
+
+    // Function to check if a string is valid JSON
+    function isValidJSON(str) {
+      try {
+        JSON.parse(str);
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    for await (const [key, value] of db.iterator()) {
+      if (
+        !key.includes("_file://\x00\x01persist:accounts") ||
+        !key.includes("_file://\x00\x01persist:root")
+      ) {
+        continue;
+      }
+
+      // Clean the value string before storing
+      let cleanedValue = cleanString(value);
+
+      // Try parsing the cleaned string as JSON
+      if (isValidJSON(cleanedValue)) {
+        try {
+          storage[key.includes("accounts") ? "persist:accounts" : "persist:root"] =
+            JSON.parse(cleanedValue);
+        } catch (error) {
+          console.error(`Error parsing JSON for key: ${key}, value: ${cleanedValue}`);
+          storage[key] = cleanedValue; // Store as raw value if JSON parsing fails
+        }
+      } else {
+        // If not valid JSON, store the raw cleaned string
+        storage[key] = cleanedValue;
+      }
+    }
+
+    // Write storage object to JSON file
+    const backupPath = path.join(app.getPath("userData"), "Local Storage", "backup_leveldb.json");
     try {
-      fs.appendFileSync(
-        path.join(app.getPath("userData"), "Local Storage", "backup_leveldb.json"),
-        backupData
-      );
+      fs.writeFileSync(backupPath, JSON.stringify(storage, null, 2), "utf-8");
+      log.info("Backup successfully created at:", backupPath);
     } catch (err) {
-      console.log("Error during leveldb backup creation Code:EM2.", err);
+      log.error("Error during LevelDB backup creation. Code:EM2.", err);
     }
-    console.log("Migration done successfully");
   } catch (err) {
-    log.error("Error during key migration Code:EM4.", err);
+    log.error("Error during key migration. Code:EM4.", err);
   } finally {
+    // Close the database
     db.close().catch(err => {
-      log.error("Error closing the database. Code: EM5", err);
+      log.error("Error closing the database. Code:EM5", err);
     });
   }
 }
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
