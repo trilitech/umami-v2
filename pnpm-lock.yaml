@@ -335,8 +335,8 @@ importers:
         specifier: 9.2.0
         version: 9.2.0(@types/react@18.3.12)(react@18.3.1)(redux@5.0.1)
       react-refresh:
-        specifier: ^0.14.2
-        version: 0.14.2
+        specifier: ^0.16.0
+        version: 0.16.0
       react-remove-scroll:
         specifier: ^2.6.0
         version: 2.6.0(@types/react@18.3.12)(react@18.3.1)
@@ -10894,6 +10894,10 @@ packages:
 
   react-refresh@0.14.2:
     resolution: {integrity: sha512-jCvmsr+1IUSMUyzOkRcvnVbX3ZYC6g9TDrDbFuFmRDq7PD4yaGbLKNQL6k2jnArV8hjYxh7hVhAZB6s9HDGpZA==}
+    engines: {node: '>=0.10.0'}
+
+  react-refresh@0.16.0:
+    resolution: {integrity: sha512-FPvF2XxTSikpJxcr+bHut2H4gJ17+18Uy20D5/F+SKzFap62R3cM5wH6b8WN3LyGSYeQilLEcJcR1fjBSI2S1A==}
     engines: {node: '>=0.10.0'}
 
   react-remove-scroll-bar@2.3.6:
@@ -24649,6 +24653,8 @@ snapshots:
       redux: 5.0.1
 
   react-refresh@0.14.2: {}
+
+  react-refresh@0.16.0: {}
 
   react-remove-scroll-bar@2.3.6(@types/react@18.3.12)(react@18.3.1):
     dependencies:
