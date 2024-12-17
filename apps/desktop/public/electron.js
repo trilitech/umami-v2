@@ -10,9 +10,10 @@ const fs = require("fs");
 
 const APP_PROTOCOL = "app";
 const APP_HOST = "assets";
-// create in memory store of the leveldb database of previous version which had file:// protocol
 
+// backupData is used to store the backup data from the previous version of the app
 let backupData;
+
 const appURL = app.isPackaged
   ? url.format({
       pathname: `${APP_HOST}/index.html`,
@@ -35,17 +36,20 @@ protocol.registerSchemesAsPrivileged([
 // Configure electron-log
 log.transports.file.file = path.join(app.getPath("userData"), "Local Storage", "umami-desktop.log");
 
-async function readAndCopyValues() {
-  // Path to the LevelDB database
+async function createBackupFromPrevDB() {
   const dbPath = path.join(app.getPath("userData"), "Local Storage", "leveldb");
+  const backupPath = path.join(app.getPath("userData"), "Local Storage", "backup_leveldb.json");
 
-  // Check if the LevelDB database exists
+  if (fs.existsSync(backupPath)) {
+    console.log("Backup file already exists. Skipping migration.");
+    return;
+  }
+
   if (!fs.existsSync(dbPath)) {
     log.info("LevelDB database not found at path. Code:EM01", dbPath);
     return;
   }
 
-  // Open the LevelDB database
   const db = new Level(dbPath);
   await db.open();
 
@@ -54,54 +58,70 @@ async function readAndCopyValues() {
 
     // Function to clean up the string (removing non-printable chars)
     function cleanString(str) {
-      // Remove non-printable characters like \x00 and \x01
-      str = str.replace(/[\x00\x01\x17\x10\x0f]/g, ""); // Removing some common control chars
+      str = str.replace(/[\x00\x01\x17\x10\x0f]/g, "");
 
-      // Optionally, you could try Base64 decoding here if you're suspecting such encoding
-      // Example: if(str.includes("base64")) { str = Buffer.from(str, 'base64').toString(); }
       return str;
     }
 
-    // Function to check if a string is valid JSON
-    function isValidJSON(str) {
-      try {
-        JSON.parse(str);
-        return true;
-      } catch (e) {
-        return false;
-      }
-    }
+    const KEYS_TO_MIGRATE = ["_file://\x00\x01persist:accounts", "_file://\x00\x01persist:root"];
+    const ROOT_KEYS_TO_MIGRATE = [
+      "batches",
+      "beacon",
+      "networks",
+      "contacts",
+      "errors",
+      "protocolSettings",
+      "_persist",
+    ];
 
-    for await (const [key, value] of db.iterator()) {
-      if (
-        !key.includes("_file://\x00\x01persist:accounts") ||
-        !key.includes("_file://\x00\x01persist:root")
-      ) {
-        continue;
-      }
+    const extractKeys = json => {
+      const regexp = /"([^"]+)":("[^"\\]*(?:\\.[^"\\]*)*"|{[^}]+})/g;
 
-      // Clean the value string before storing
-      let cleanedValue = cleanString(value);
+      const result = {};
+      const matches = json.matchAll(regexp);
 
-      // Try parsing the cleaned string as JSON
-      if (isValidJSON(cleanedValue)) {
-        try {
-          storage[key.includes("accounts") ? "persist:accounts" : "persist:root"] =
-            JSON.parse(cleanedValue);
-        } catch (error) {
-          console.error(`Error parsing JSON for key: ${key}, value: ${cleanedValue}`);
-          storage[key] = cleanedValue; // Store as raw value if JSON parsing fails
+      for (const [_, key, value] of matches) {
+        if (ROOT_KEYS_TO_MIGRATE.includes(key)) {
+          try {
+            // Try to parse the value if it's a valid JSON
+            result[key] = JSON.parse(value);
+          } catch {
+            // If parsing fails, store as raw string
+            result[key] = value.replace(/^"|"$/g, "");
+          }
         }
-      } else {
-        // If not valid JSON, store the raw cleaned string
-        storage[key] = cleanedValue;
+      }
+
+      return result;
+    };
+
+    for await (const [_key, value] of db.iterator()) {
+      if (KEYS_TO_MIGRATE.includes(_key)) {
+        let cleanedValue = cleanString(value);
+
+        const key = _key.includes("_file://\x00\x01persist:root")
+          ? "persist:root"
+          : "persist:accounts";
+
+        try {
+          storage[key] = JSON.parse(cleanedValue);
+        } catch (_) {
+          // Store as raw value if JSON parsing fails
+          storage[key] = cleanedValue;
+        }
       }
     }
+
+    const preparedStorage = {
+      ...storage,
+      "persist:root": extractKeys(storage["persist:root"]),
+    };
+
+    backupData = preparedStorage;
 
     // Write storage object to JSON file
-    const backupPath = path.join(app.getPath("userData"), "Local Storage", "backup_leveldb.json");
     try {
-      fs.writeFileSync(backupPath, JSON.stringify(storage, null, 2), "utf-8");
+      fs.writeFileSync(backupPath, JSON.stringify(preparedStorage, null, 2), "utf-8");
       log.info("Backup successfully created at:", backupPath);
     } catch (err) {
       log.error("Error during LevelDB backup creation. Code:EM2.", err);
@@ -109,7 +129,6 @@ async function readAndCopyValues() {
   } catch (err) {
     log.error("Error during key migration. Code:EM4.", err);
   } finally {
-    // Close the database
     db.close().catch(err => {
       log.error("Error closing the database. Code:EM5", err);
     });
@@ -264,7 +283,6 @@ function start() {
     app.quit();
     return;
   }
-  let waitForMigration = true;
 
   // Check for app updates, download and notify UI if update is available to be installed.
   try {
@@ -320,8 +338,8 @@ function start() {
   // is ready to create the browser windows.
   // Some APIs can only be used after this event occurs.
   app.whenReady().then(async () => {
-    // Execute readAndCopyValues at the beginning
-    await readAndCopyValues();
+    // Execute createBackupFromPrevDB at the beginning
+    await createBackupFromPrevDB();
     createWindow();
   });
 
