@@ -56,8 +56,8 @@
     ]
   },
   "dependencies": {
-    "@taquito/rpc": "^20.1.0",
-    "@taquito/utils": "^20.1.0",
+    "@taquito/rpc": "^20.1.1",
+    "@taquito/utils": "^20.1.1",
     "@umami/jest-config": "workspace:^",
     "jest": "^29.7.0",
     "@types/jest": "^29.5.14",
