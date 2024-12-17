@@ -50,7 +50,7 @@
     "@umami/utils": "workspace:^",
     "@vitejs/plugin-react": "^4.3.4",
     "depcheck": "^1.4.7",
-    "eslint": "^8.57.0",
+    "eslint": "^9.17.0",
     "madge": "^8.0.0",
     "prettier": "^3.4.2",
     "rimraf": "^6.0.1",
