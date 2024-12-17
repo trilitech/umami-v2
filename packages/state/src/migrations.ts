@@ -5,20 +5,6 @@ import { fromPairs, identity } from "lodash";
 
 import { announcementInitialState as announcementsInitialState } from "./slices/announcement";
 
-function handleBackupData(callback: (data: any) => void) {
-  // @ts-ignore
-  // window.electronAPI.triggerBackupData();
-  // @ts-ignore
-  localStorage.setItem("test", "true");
-  // @ts-ignore
-  window.electronAPI.onBackupData(backupData => {
-    console.log(backupData);
-    localStorage.setItem("backup-received", "true");
-    localStorage.setItem("backupData", backupData);
-    callback(backupData);
-  });
-}
-
 export const VERSION = 9;
 
 export const mainStoreMigrations = {
