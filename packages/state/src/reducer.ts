@@ -38,7 +38,7 @@ const getTestStorage = () => {
     : TEST_STORAGE;
 };
 
-export const processMigrationData = (backupData: any) => {
+const processMigrationData = (backupData: any) => {
   try {
     const processedData: { accounts: any; root: any } = {
       accounts: {},
