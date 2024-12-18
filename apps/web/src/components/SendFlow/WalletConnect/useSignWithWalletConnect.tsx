@@ -35,7 +35,7 @@ export const useSignWithWalletConnect = ({
           tezosToolkit
         );
 
-        const response = formatJsonRpcResult(requestId.id, { hash: opHash });
+        const response = formatJsonRpcResult(requestId.id, { hash: opHash, operationHash: opHash });
         await walletKit.respondSessionRequest({ topic: requestId.topic, response });
         return openWith(<SuccessStep hash={opHash} />);
       },
