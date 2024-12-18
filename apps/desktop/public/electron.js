@@ -69,7 +69,6 @@ async function createBackupFromPrevDB() {
       "beacon",
       "networks",
       "contacts",
-      "errors",
       "protocolSettings",
       "_persist",
     ];
