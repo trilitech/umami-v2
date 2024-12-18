@@ -1,4 +1,4 @@
-import { CustomError, getErrorContext, handleTezError } from "./ErrorContext";
+import { CustomError, WalletConnectError, getErrorContext, handleTezError } from "./ErrorContext";
 
 describe("getErrorContext", () => {
   it("should handle error object with message and stack", () => {
@@ -53,6 +53,16 @@ describe("getErrorContext", () => {
     expect(context.stacktrace).toBeDefined();
     expect(context.timestamp).toBeDefined();
   });
+  it("should handle WalletConnectError instances", () => {
+    const error = new WalletConnectError("Custom WC error message", "UNSUPPORTED_EVENTS", null);
+
+    const context = getErrorContext(error);
+
+    expect(context.technicalDetails).toBe("");
+    expect(context.description).toBe("Custom WC error message");
+    expect(context.stacktrace).toBeDefined();
+    expect(context.timestamp).toBeDefined();
+  });
 });
 
 describe("handleTezError", () => {
@@ -76,6 +86,11 @@ describe("handleTezError", () => {
     expect(res).toBe(
       "Emptying an implicit delegated account is not allowed. End delegation before trying again."
     );
+  });
+
+  it("catches delegate.unchanged", () => {
+    const res = handleTezError(new Error("delegate.unchanged"));
+    expect(res).toBe("The delegate is unchanged. Delegation to this address is already done.");
   });
 
   it("returns undefined for unknown errors", () => {

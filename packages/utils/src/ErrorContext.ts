@@ -1,3 +1,5 @@
+import { type SessionTypes } from "@walletconnect/types";
+import { type SdkErrorKey } from "@walletconnect/utils";
 export type ErrorContext = {
   timestamp: string;
   description: string;
@@ -12,6 +14,16 @@ export class CustomError extends Error {
   }
 }
 
+export class WalletConnectError extends CustomError {
+  sdkError: SdkErrorKey;
+  constructor(message: string, sdkError: SdkErrorKey, session: SessionTypes.Struct | null) {
+    const dappName = session?.peer.metadata.name ?? "unknown";
+    super(session ? `Request from ${dappName} is rejected. ${message}` : message);
+    this.name = "WalletConnectError";
+    this.sdkError = sdkError;
+  }
+}
+
 // Converts a known L1 error message to a more user-friendly one
 export const handleTezError = (err: Error): string | undefined => {
   if (err.message.includes("subtraction_underflow")) {
@@ -22,6 +34,8 @@ export const handleTezError = (err: Error): string | undefined => {
     return "The baker you are trying to stake to does not accept external staking.";
   } else if (err.message.includes("empty_implicit_delegated_contract")) {
     return "Emptying an implicit delegated account is not allowed. End delegation before trying again.";
+  } else if (err.message.includes("delegate.unchanged")) {
+    return "The delegate is unchanged. Delegation to this address is already done.";
   }
 };
 
@@ -41,7 +55,7 @@ export const getErrorContext = (error: any): ErrorContext => {
     technicalDetails = error;
   }
 
-  if (error.name === "CustomError") {
+  if (error instanceof CustomError) {
     description = error.message;
     technicalDetails = "";
   } else if (error instanceof Error) {
