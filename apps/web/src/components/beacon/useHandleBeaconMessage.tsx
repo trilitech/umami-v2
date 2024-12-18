@@ -17,7 +17,7 @@ import { type Network } from "@umami/tezos";
 import { CustomError } from "@umami/utils";
 
 import { PermissionRequestModal } from "./PermissionRequestModal";
-import { SignPayloadRequestModal } from "./SignPayloadRequestModal";
+import { SignPayloadRequestModal } from "../common/SignPayloadRequestModal";
 import { BatchSignPage } from "../SendFlow/common/BatchSignPage";
 import { SingleSignPage } from "../SendFlow/common/SingleSignPage";
 import { type SdkSignPageProps, type SignHeaderProps } from "../SendFlow/utils";
