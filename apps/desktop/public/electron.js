@@ -34,11 +34,13 @@ protocol.registerSchemesAsPrivileged([
 ]);
 
 // Configure electron-log
-log.transports.file.file = path.join(app.getPath("userData"), "Local Storage", "umami-desktop.log");
+log.transports.file.resolvePathFn = () => path.join(app.getPath("userData"), "umami-desktop.log");
 
 async function createBackupFromPrevDB() {
-  const dbPath = path.join(app.getPath("userData"), "Local Storage", "leveldb");
-  const backupPath = path.join(app.getPath("userData"), "Local Storage", "backup_leveldb.json");
+  const dbPath = path.normalize(path.join(app.getPath("userData"), "Local Storage", "leveldb"));
+  const backupPath = path.normalize(
+    path.join(app.getPath("userData"), "Local Storage", "backup_leveldb.json")
+  );
 
   if (fs.existsSync(backupPath)) {
     console.log("Backup file already exists. Skipping migration.");
@@ -311,7 +313,7 @@ function start() {
       }
       mainWindow.focus();
       // Protocol handler for win32
-      // argv: An array of the second instance’s (command line / deep linked) arguments
+      // argv: An array of the second instance's (command line / deep linked) arguments
       if (process.platform === "win32" || process.platform === "linux") {
         // Protocol handler for windows & linux
         const index = argv.findIndex(arg => arg.startsWith("umami://"));
@@ -338,8 +340,12 @@ function start() {
   // Some APIs can only be used after this event occurs.
   app.whenReady().then(async () => {
     // Execute createBackupFromPrevDB at the beginning
-    await createBackupFromPrevDB();
-    createWindow();
+    try {
+      await createBackupFromPrevDB();
+      createWindow();
+    } catch (error) {
+      log.error("Error has occured while initialising the app", error);
+    }
   });
 
   app.on("activate", function () {
