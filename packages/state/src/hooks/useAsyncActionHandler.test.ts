@@ -1,3 +1,5 @@
+import { CustomError } from "@umami/utils";
+
 import { useAsyncActionHandler } from "./useAsyncActionHandler";
 import { act, mockToast, renderHook, waitFor } from "../testUtils";
 
@@ -144,12 +146,12 @@ describe("useAsyncActionHandler", () => {
   describe("handleAsyncActionUnsafe", () => {
     it("returns the result of the computation", async () => {
       const view = fixture();
-
       const result = await act(() =>
         view.result.current.handleAsyncActionUnsafe(() => Promise.resolve(42))
       );
 
       expect(result).toBe(42);
+      expect(mockToast).toHaveBeenCalledTimes(0);
     });
 
     it("throws when the computation fails", async () => {
@@ -160,6 +162,41 @@ describe("useAsyncActionHandler", () => {
           view.result.current.handleAsyncActionUnsafe(() => Promise.reject(new Error("test error")))
         )
       ).rejects.toThrow("test error");
+      expect(mockToast).toHaveBeenCalledTimes(2);
+    });
+
+    it("Unsafe propagates the error and shows the toast once on first handling", async () => {
+      const view = fixture();
+
+      expect(mockToast).toHaveBeenCalledTimes(0);
+
+      const error: any = new CustomError("test nested error handling");
+      await expect(
+        act(() => view.result.current.handleAsyncActionUnsafe(() => Promise.reject(error)))
+      ).rejects.toThrow("test nested error handling");
+      // check that error.processed is set to true
+      expect(error.processed).toBe(true);
+      expect(mockToast).toHaveBeenCalledWith({
+        description: "test nested error handling",
+        status: "error",
+        isClosable: true,
+      });
+      expect(mockToast).toHaveBeenCalledTimes(2);
+    });
+
+    it("Unsafe propagates the error and shows no toast on second handling", async () => {
+      const view = fixture();
+
+      expect(mockToast).toHaveBeenCalledTimes(0);
+
+      const error: any = new CustomError("test nested error handling");
+      error.processed = true;
+      await expect(
+        act(() => view.result.current.handleAsyncActionUnsafe(() => Promise.reject(error)))
+      ).rejects.toThrow("test nested error handling");
+      // check that error.processed is still true
+      expect(error.processed).toBe(true);
+      expect(mockToast).toHaveBeenCalledTimes(0);
     });
   });
 });
