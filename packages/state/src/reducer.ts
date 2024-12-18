@@ -76,11 +76,13 @@ export const makeReducer = (storage_: Storage | undefined) => {
     try {
       const state = (await getStoredState(config)) as PersistedState;
 
-      if (state) {
+      const MIGRATION_KEY = "migration_2_3_3_to_2_3_4_completed";
+      const isMigrationCompleted = localStorage.getItem(MIGRATION_KEY);
+
+      if (isMigrationCompleted && state) {
         return state;
       }
 
-      // If no state, check if we have backup data and migrate it to the new state
       if (window.electronAPI) {
         return new Promise(resolve => {
           window.electronAPI?.onBackupData((_, data) => {
@@ -88,6 +90,7 @@ export const makeReducer = (storage_: Storage | undefined) => {
               const processed = processMigrationData(data);
 
               if (processed) {
+                localStorage.setItem(MIGRATION_KEY, "true");
                 return resolve(processed[config.key as keyof typeof processed]);
               }
             }
