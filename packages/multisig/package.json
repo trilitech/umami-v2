@@ -60,8 +60,8 @@
     ]
   },
   "dependencies": {
-    "@taquito/rpc": "^20.1.0",
-    "@taquito/utils": "^20.1.0",
+    "@taquito/rpc": "^20.1.2",
+    "@taquito/utils": "^20.1.2",
     "@tzkt/sdk-api": "^2.2.1",
     "@umami/tezos": "workspace:^",
     "@umami/tzkt": "workspace:^",
