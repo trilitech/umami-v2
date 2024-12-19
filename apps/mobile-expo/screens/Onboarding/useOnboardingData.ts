@@ -1,136 +1,120 @@
-import { useEffect, useState } from "react";
-import * as AuthSession from "expo-auth-session";
+import { useCallback, useEffect } from "react";
 import * as WebBrowser from "expo-web-browser";
+import Web3Auth, {
+  LOGIN_PROVIDER,
+  WEB3AUTH_NETWORK,
+  ChainNamespace,
+  LOGIN_PROVIDER_TYPE,
+} from "@web3auth/react-native-sdk";
+import { CommonPrivateKeyProvider } from "@web3auth/base-provider";
+import * as SecureStore from "expo-secure-store";
 
 WebBrowser.maybeCompleteAuthSession();
 
-export const useOnboardingData = () => {
-  const strings = {
-    continueWith: 'Continue with:',
-    loginWith: 'Login with Auth0',
-    logout: 'Logout',
-    or: 'or',
-    createWallet: 'Create a new wallet',
-    alreadyHaveWallet: 'I already have a wallet',
-    byProceeding: "By proceeding, you agree to Umami's",
-    terms: 'Terms of Use',
-    and: 'and',
-    privacyPolicy: 'Privacy Policy',
-  }
+const WEB3_AUTH_CLIENT_ID =
+  "BBQoFIabI50S1-0QsGHGTM4qID_FDjja0ZxIxKPyFqc0El--M-EG0c2giaBYVTVVE6RC9WCUzCJyW24aJrR_Lzc";
 
-  const [userInfo, setUserInfo] = useState<{params?: {code: string}, name?: string;} | null>(null);
-  const [accessToken, setAccessToken] = useState<string>();
+const STRINGS = {
+  continueWith: "Continue with:",
+  loginWith: "Login with Auth0",
+  logout: "Logout",
+  or: "or",
+  createWallet: "Create a new wallet",
+  alreadyHaveWallet: "I already have a wallet",
+  byProceeding: "By proceeding, you agree to Umami's",
+  terms: "Terms of Use",
+  and: "and",
+  privacyPolicy: "Privacy Policy",
+};
 
-  const discovery = {
-    authorizationEndpoint: "https://dev-42dxj5lb7kap5fte.uk.auth0.com/authorize",
-    tokenEndpoint: "https://dev-42dxj5lb7kap5fte.uk.auth0.com/oauth/token",
-    revocationEndpoint: "https://dev-42dxj5lb7kap5fte.uk.auth0.com/oauth/revoke",
-  };
-  const redirectUri = AuthSession.makeRedirectUri({ preferLocalhost: true
+const CHAIN_CONFIG = {
+  chainNamespace: ChainNamespace.EIP155,
+  chainId: "0x1",
+  rpcTarget: "https://rpc.tzbeta.net/",
+  displayName: "Tezos Mainnet",
+  blockExplorerUrl: "https://tzstats.com",
+  ticker: "XTZ",
+  tickerName: "Tezos",
+};
+
+const createWeb3AuthInstance = () => {
+  const privateKeyProvider = new CommonPrivateKeyProvider({ config: { chainConfig: CHAIN_CONFIG } });
+
+  return new Web3Auth(WebBrowser, SecureStore, {
+    clientId: WEB3_AUTH_CLIENT_ID,
+    network: WEB3AUTH_NETWORK.MAINNET,
+    privateKeyProvider,
+    // TODO: set the proper value for the redirectUrl
+    redirectUrl: "redirect.html",
   });
-  const [request, response, promptAsync] = AuthSession.useAuthRequest(
-    {
-      clientId: "CQmr09K34i2z756hLjrVXAqTVBj9TNhH",
-      scopes: ["openid", "profile", "email"],
-      redirectUri,
-    },
-    discovery
-  );
+};
+
+export const useOnboardingData = () => {
+  const web3auth = createWeb3AuthInstance();
 
   useEffect(() => {
-    if(userInfo?.params?.code){
-      void fetchToken(userInfo?.params.code, request?.codeVerifier ?? '')
+    const initializeWeb3Auth = async () => {
+      try {
+        await web3auth.init();
+      } catch (error) {
+        console.error("Error initializing Web3Auth:", error);
+      }
+    };
+
+    initializeWeb3Auth();
+  }, [web3auth]);
+
+  const login = useCallback(
+    async (loginProvider: LOGIN_PROVIDER_TYPE) => {
+      if (!web3auth.ready) {
+        console.error("Web3Auth is not initialized.");
+        return;
+      }
+
+      try {
+        await web3auth.login({ loginProvider });
+
+        if (web3auth.connected) {
+          // TODO: trigger navigation
+        }
+      } catch (error: any) {
+        console.error("Login error:", error.message);
+      }
+    },
+    [web3auth]
+  );
+
+  const createLoginHandler = (provider: LOGIN_PROVIDER_TYPE) =>
+    useCallback(() => login(provider), [login]);
+
+  const onGoogleLogin = createLoginHandler(LOGIN_PROVIDER.GOOGLE);
+  const onFacebookLogin = createLoginHandler(LOGIN_PROVIDER.FACEBOOK);
+  const onXLogin = createLoginHandler(LOGIN_PROVIDER.TWITTER);
+  const onRedditLogin = createLoginHandler(LOGIN_PROVIDER.REDDIT);
+  const onAppleLogin = createLoginHandler(LOGIN_PROVIDER.APPLE);
+
+  const openBrowser = useCallback(async (link: string) => {
+    try {
+      await WebBrowser.openBrowserAsync(link);
+    } catch (error) {
+      console.error("Error opening browser:", error);
     }
   }, []);
 
-  const fetchToken = async (code: string, codeVerifier: string) => {
-    const tokenResponse = await fetch("https://dev-42dxj5lb7kap5fte.uk.auth0.com/oauth/token", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        client_id: "CQmr09K34i2z756hLjrVXAqTVBj9TNhH",
-        redirect_uri: redirectUri,
-        code,
-        code_verifier: codeVerifier,
-        grant_type: "authorization_code",
-      }),
-    });
-
-    const tokenData = await tokenResponse.json();
-
-    if (tokenData.error) {
-      console.error("Token exchange failed:", tokenData);
-      return;
-    }
-
-    console.log("Access Token:", tokenData.access_token);
-  };
-
-  useEffect(() => {
-    if (response?.type === "success") {
-      const { code } = response.params;
-
-      // Exchange the authorization code for an access token
-      fetch("https://dev-42dxj5lb7kap5fte.uk.auth0.com/oauth/token", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          client_id: "CQmr09K34i2z756hLjrVXAqTVBj9TNhH",
-          redirect_uri: redirectUri,
-          code,
-          code_verifier: request?.codeVerifier,
-          grant_type: "authorization_code",
-        }),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          const accessToken = data.access_token;
-          setAccessToken(accessToken);
-
-          fetch("https://dev-42dxj5lb7kap5fte.uk.auth0.com/userinfo", {
-            headers: { Authorization: `Bearer ${accessToken}` },
-          })
-            .then((response) => response.json())
-            .then((user) => setUserInfo(user));
-        });
-    }
-  }, [response]);
-
-  const logout = async () => {
-    try {
-      const logoutUrl = `https://dev-42dxj5lb7kap5fte.uk.auth0.com/v2/logout?client_id=CQmr09K34i2z756hLjrVXAqTVBj9TNhH&returnTo=${encodeURIComponent(
-        redirectUri
-      )}`;
-
-      const result = await WebBrowser.openAuthSessionAsync(logoutUrl);
-
-      if (result.type === "dismiss" || result.type === "success") {
-        console.log("Logout successful");
-        setUserInfo(null); // Clear local user state
-      } else {
-        console.error("Logout failed:", result);
-      }
-    } catch (error) {
-      console.error("Logout error:", error);
-    }
-  };
-
-  const openBrowser = async (link: string) => {
-    const result = await WebBrowser.openBrowserAsync(link);
-    console.log(result);
-  };
-
-  const openTerms = () => openBrowser('https://umamiwallet.com/tos.html');
-
-  const openPrivacy = () => openBrowser('https://umamiwallet.com/privacypolicy.html')
+  const openTerms = useCallback(() => openBrowser("https://umamiwallet.com/tos.html"), [openBrowser]);
+  const openPrivacy = useCallback(
+    () => openBrowser("https://umamiwallet.com/privacypolicy.html"),
+    [openBrowser]
+  );
 
   return {
-    accessToken,
-    strings,
-    userInfo,
+    strings: STRINGS,
     openTerms,
     openPrivacy,
-    logout,
-    promptAsync
-  }
-}
+    onGoogleLogin,
+    onFacebookLogin,
+    onXLogin,
+    onRedditLogin,
+    onAppleLogin,
+  };
+};
