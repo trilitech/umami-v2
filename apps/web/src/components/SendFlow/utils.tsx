@@ -76,6 +76,8 @@ export type SignHeaderProps = {
   network: Network;
   appName: string;
   appIcon?: string;
+  isScam?: boolean;
+  validationStatus?: "VALID" | "INVALID" | "UNKNOWN";
   requestId: SignRequestId;
 };
 
@@ -89,6 +91,8 @@ export type SignPayloadProps = {
   appName: string;
   appIcon?: string;
   payload: string;
+  isScam?: boolean;
+  validationStatus?: "VALID" | "INVALID" | "UNKNOWN";
   signer: ImplicitAccount;
   signingType: SigningType;
 };

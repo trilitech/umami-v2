@@ -1,7 +1,5 @@
-import { Avatar, Box, Card, Flex, Icon, Link, Text } from "@chakra-ui/react";
+import { Avatar, Box, Card, Link, Text } from "@chakra-ui/react";
 import { type SignClientTypes } from "@walletconnect/types";
-
-import { PencilIcon } from "../../assets/icons";
 
 type Props = {
   metadata: SignClientTypes.Metadata;
@@ -38,10 +36,6 @@ export const ProjectInfoCard = ({ metadata, intention }: Props) => {
           {url}
         </Link>
       </Box>
-      <Flex alignItems="center" justifyContent="center" marginTop="16px">
-        <Icon as={PencilIcon} verticalAlign="bottom" />
-        <Card marginLeft="8px">Cannot Verify: to be implemented</Card>
-      </Flex>
     </Box>
   );
 };

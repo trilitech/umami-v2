@@ -73,6 +73,8 @@ describe("<TezSignPage />", () => {
     expect(screen.getByText("Ghostnet")).toBeInTheDocument();
     expect(screen.queryByText("Mainnet")).not.toBeInTheDocument();
 
+    expect(screen.queryByText("verifyinfobox")).not.toBeInTheDocument();
+
     const signButton = screen.getByRole("button", {
       name: "Confirm Transaction",
     });
