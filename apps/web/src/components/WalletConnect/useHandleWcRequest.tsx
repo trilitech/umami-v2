@@ -59,11 +59,7 @@ export const useHandleWcRequest = () => {
         case "tezos_getAccounts": {
           const wcPeers = walletKit.getActiveSessions();
           if (!(topic in wcPeers)) {
-            throw new WalletConnectError(
-              `Unknown session ${topic}`,
-              "UNAUTHORIZED_EVENT",
-              null
-            );
+            throw new WalletConnectError(`Unknown session ${topic}`, "UNAUTHORIZED_EVENT", null);
           }
           const session = wcPeers[topic];
           const accountPkh = session.namespaces.tezos.accounts[0].split(":")[2];

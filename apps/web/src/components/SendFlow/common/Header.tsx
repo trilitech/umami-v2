@@ -3,6 +3,7 @@ import { capitalize } from "lodash";
 
 import { CodeSandboxIcon } from "../../../assets/icons";
 import { useColor } from "../../../styles/useColor";
+import { VerifyInfobox } from "../../WalletConnect/VerifyInfobox";
 import { SignPageHeader } from "../SignPageHeader";
 import { type SignHeaderProps } from "../utils";
 
@@ -37,6 +38,10 @@ export const Header = ({ headerProps }: { headerProps: SignHeaderProps }) => {
         </AspectRatio>
         <Heading size="sm">{headerProps.appName}</Heading>
       </Flex>
+      <VerifyInfobox
+        isScam={headerProps.isScam ?? false}
+        validationStatus={headerProps.validationStatus ?? "UNKNOWN"}
+      />
     </SignPageHeader>
   );
 };

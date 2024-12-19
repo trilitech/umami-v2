@@ -76,6 +76,8 @@ export type SignHeaderProps = {
   network: Network;
   appName: string;
   appIcon?: string;
+  isScam?: boolean;
+  validationStatus?: "VALID" | "INVALID" | "UNKNOWN";
 };
 
 export type SdkSignPageProps = {
