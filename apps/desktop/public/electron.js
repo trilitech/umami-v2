@@ -116,6 +116,11 @@ async function createBackupFromPrevDB() {
       }
     }
 
+    if (Object.keys(storage).length === 0) {
+      log.info("No data found to migrate. Code:EM02");
+      return;
+    }
+
     const preparedStorage = {
       ...storage,
       "persist:root": extractKeys(storage["persist:root"]),
@@ -334,6 +339,8 @@ function start() {
   // is ready to create the browser windows.
   // Some APIs can only be used after this event occurs.
   app.whenReady().then(async () => {
+    createWindow();
+
     // Execute createBackupFromPrevDB at the beginning
     try {
       await createBackupFromPrevDB();
@@ -341,7 +348,6 @@ function start() {
       log.error("Error has occured while migrating the app", error);
     }
 
-    createWindow();
   });
 
   app.on("activate", function () {
