@@ -1,3 +1,4 @@
+import { type SigningType } from "@airgap/beacon-wallet";
 import { Button, type ButtonProps } from "@chakra-ui/react";
 import { type TezosToolkit } from "@taquito/taquito";
 import { useDynamicModalContext } from "@umami/components";
@@ -5,6 +6,7 @@ import {
   type Account,
   type AccountOperations,
   type EstimatedAccountOperations,
+  type ImplicitAccount,
   type Operation,
   estimate,
   executeOperations,
@@ -80,6 +82,15 @@ export type SdkSignPageProps = {
   requestId: SignRequestId;
   operation: EstimatedAccountOperations;
   headerProps: SignHeaderProps;
+};
+
+export type SignPayloadProps = {
+  requestId: SignRequestId;
+  appName: string;
+  appIcon?: string;
+  payload: string;
+  signer: ImplicitAccount;
+  signingType: SigningType;
 };
 
 export const FormSubmitButton = ({ title = "Preview", ...props }: ButtonProps) => {
