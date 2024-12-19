@@ -38,22 +38,23 @@ log.transports.file.resolvePathFn = () => path.join(app.getPath("userData"), "um
 
 async function createBackupFromPrevDB() {
   const dbPath = path.normalize(path.join(app.getPath("userData"), "Local Storage", "leveldb"));
-  const backupPath = path.normalize(
-    path.join(app.getPath("userData"), "Local Storage", "backup_leveldb.json")
+
+  const db = new Level(dbPath);
+  await db.open();
+
+  const isMigrationCompleted = await db.get(
+    "_app://assets\x00\x01migration_2_3_3_to_2_3_4_completed"
   );
 
-  if (fs.existsSync(backupPath)) {
-    console.log("Backup file already exists. Skipping migration.");
-    return;
+  if (isMigrationCompleted) {
+    log.info("Migration already completed. Skipping migration.");
+    return await db.close();
   }
 
   if (!fs.existsSync(dbPath)) {
     log.info("LevelDB database not found at path. Code:EM01", dbPath);
     return;
   }
-
-  const db = new Level(dbPath);
-  await db.open();
 
   try {
     const storage = {};
@@ -119,14 +120,6 @@ async function createBackupFromPrevDB() {
     };
 
     backupData = preparedStorage;
-
-    // Write storage object to JSON file
-    try {
-      fs.writeFileSync(backupPath, JSON.stringify(preparedStorage, null, 2), "utf-8");
-      log.info("Backup successfully created at:", backupPath);
-    } catch (err) {
-      log.error("Error during LevelDB backup creation. Code:EM2.", err);
-    }
   } catch (err) {
     log.error("Error during key migration. Code:EM4.", err);
   } finally {
@@ -342,10 +335,11 @@ function start() {
     // Execute createBackupFromPrevDB at the beginning
     try {
       await createBackupFromPrevDB();
-      createWindow();
     } catch (error) {
-      log.error("Error has occured while initialising the app", error);
+      log.error("Error has occured while migrating the app", error);
     }
+
+    createWindow();
   });
 
   app.on("activate", function () {

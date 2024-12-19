@@ -77,9 +77,16 @@ export const restoreV2BackupFile = async (
     await decrypt(encrypted, password, "V2");
   }
 
-  persistor.pause();
+  // check if migration from desktop v2.3.3 to v2.3.4 is completed
+  // TODO: remove this once all users have upgraded to v2.3.4
+  const isMigrationCompleted = localStorage.getItem("migration_2_3_3_to_2_3_4_completed");
 
+  persistor.pause();
   localStorage.clear();
+
+  if (isMigrationCompleted) {
+    localStorage.setItem("migration_2_3_3_to_2_3_4_completed", "true");
+  }
   localStorage.setItem("persist:accounts", accountsInString);
   localStorage.setItem("persist:root", backup["persist:root"]);
 
