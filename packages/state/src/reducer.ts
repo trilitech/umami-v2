@@ -1,5 +1,11 @@
 import { combineReducers } from "@reduxjs/toolkit";
-import { type Storage, persistReducer } from "redux-persist";
+import {
+  type PersistConfig,
+  type PersistedState,
+  type Storage,
+  getStoredState,
+  persistReducer,
+} from "redux-persist";
 import createWebStorage from "redux-persist/lib/storage/createWebStorage";
 
 import { createAsyncMigrate } from "./createAsyncMigrate";
@@ -32,14 +38,78 @@ const getTestStorage = () => {
     : TEST_STORAGE;
 };
 
+const processMigrationData = (backupData: any) => {
+  try {
+    const processedData: { accounts: any; root: any } = {
+      accounts: {},
+      root: {},
+    };
+
+    if (backupData["persist:accounts"]) {
+      const accounts = backupData["persist:accounts"];
+
+      for (const item in accounts) {
+        processedData.accounts[item] = JSON.parse(accounts[item]);
+      }
+    }
+
+    if (backupData["persist:root"]) {
+      const root = backupData["persist:root"];
+
+      for (const item in root) {
+        processedData.root[item] = JSON.parse(root[item]);
+      }
+    }
+
+    return processedData;
+  } catch (error) {
+    console.error("Error processing backup data:", error);
+    return null;
+  }
+};
+
 export const makeReducer = (storage_: Storage | undefined) => {
   const storage = storage_ || getTestStorage() || createWebStorage("local");
+
+  // Custom getStoredState function to handle migration from desktop v2.3.3 to v2.3.4
+  const customGetStoredState = async (config: PersistConfig<any>): Promise<PersistedState> => {
+    try {
+      const state = (await getStoredState(config)) as PersistedState;
+
+      const MIGRATION_KEY = "migration_2_3_3_to_2_3_4_completed";
+      const isMigrationCompleted = localStorage.getItem(MIGRATION_KEY);
+
+      if (isMigrationCompleted && state) {
+        return state;
+      }
+
+      if (window.electronAPI) {
+        return new Promise(resolve => {
+          window.electronAPI?.onBackupData((_, data) => {
+            if (data) {
+              const processed = processMigrationData(data);
+
+              if (processed) {
+                localStorage.setItem(MIGRATION_KEY, "true");
+                return resolve(processed[config.key as keyof typeof processed]);
+              }
+            }
+            resolve(undefined);
+          });
+        });
+      }
+    } catch (err) {
+      console.error("Error getting stored state:", err);
+      return;
+    }
+  };
 
   const rootPersistConfig = {
     key: "root",
     version: VERSION,
     storage,
     blacklist: ["accounts"],
+    getStoredState: customGetStoredState,
     migrate: createAsyncMigrate(mainStoreMigrations, { debug: false }),
   };
 
@@ -47,6 +117,7 @@ export const makeReducer = (storage_: Storage | undefined) => {
     key: "accounts",
     version: VERSION,
     storage,
+    getStoredState: customGetStoredState,
     migrate: createAsyncMigrate(accountsMigrations, { debug: false }),
     blacklist: ["password"],
   };

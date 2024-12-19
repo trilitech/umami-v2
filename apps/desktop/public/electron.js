@@ -4,8 +4,15 @@ const path = require("path");
 const url = require("url");
 const process = require("process");
 const { autoUpdater } = require("electron-updater");
+const { Level } = require("level");
+const log = require("electron-log");
+const fs = require("fs");
+
 const APP_PROTOCOL = "app";
 const APP_HOST = "assets";
+
+// backupData is used to store the backup data from the previous version of the app
+let backupData;
 
 const appURL = app.isPackaged
   ? url.format({
@@ -25,6 +32,104 @@ protocol.registerSchemesAsPrivileged([
     },
   },
 ]);
+
+// Configure electron-log
+log.transports.file.resolvePathFn = () => path.join(app.getPath("userData"), "umami-desktop.log");
+
+async function createBackupFromPrevDB() {
+  const dbPath = path.normalize(path.join(app.getPath("userData"), "Local Storage", "leveldb"));
+
+  if (!fs.existsSync(dbPath)) {
+    log.error("LevelDB database not found at path. Code:EM01", dbPath);
+    return;
+  }
+
+  const db = new Level(dbPath);
+  log.info("Opening the db")
+  await db.open();
+  log.info("DB is opened")
+
+  const isMigrationCompleted = await db.get(
+    "_app://assets\x00\x01migration_2_3_3_to_2_3_4_completed"
+  );
+
+  if (isMigrationCompleted) {
+    log.info("Migration already completed. Skipping migration.");
+    return db.close().then(()=>log.info("Closed the DB as migration is already complete."));
+  }
+
+  try {
+    const storage = {};
+
+    // Function to clean up the string (removing non-printable chars)
+    function cleanString(str) {
+      str = str.replace(/[\x00\x01\x17\x10\x0f]/g, "");
+
+      return str;
+    }
+
+    const KEYS_TO_MIGRATE = ["_file://\x00\x01persist:accounts", "_file://\x00\x01persist:root"];
+    const ROOT_KEYS_TO_MIGRATE = [
+      "batches",
+      "beacon",
+      "networks",
+      "contacts",
+      "protocolSettings",
+      "_persist",
+    ];
+
+    const extractKeys = json => {
+      const regexp = /"([^"]+)":("[^"\\]*(?:\\.[^"\\]*)*"|{[^}]+})/g;
+
+      const result = {};
+      const matches = json.matchAll(regexp);
+
+      for (const [_, key, value] of matches) {
+        if (ROOT_KEYS_TO_MIGRATE.includes(key)) {
+          try {
+            // Try to parse the value if it's a valid JSON
+            result[key] = JSON.parse(value);
+          } catch {
+            // If parsing fails, store as raw string
+            result[key] = value.replace(/^"|"$/g, "");
+          }
+        }
+      }
+
+      return result;
+    };
+
+    for await (const [_key, value] of db.iterator()) {
+      if (KEYS_TO_MIGRATE.includes(_key)) {
+        let cleanedValue = cleanString(value);
+
+        const key = _key.includes("_file://\x00\x01persist:root")
+          ? "persist:root"
+          : "persist:accounts";
+
+        try {
+          storage[key] = JSON.parse(cleanedValue);
+        } catch (_) {
+          // Store as raw value if JSON parsing fails
+          storage[key] = cleanedValue;
+        }
+      }
+    }
+
+    const preparedStorage = {
+      ...storage,
+      "persist:root": extractKeys(storage["persist:root"]),
+    };
+
+    backupData = preparedStorage;
+  } catch (err) {
+    log.error("Error during key migration. Code:EM4.", err);
+  } finally {
+    db.close().catch(err => {
+      log.error("Error closing the database. Code:EM5", err);
+    });
+  }
+}
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -129,8 +234,13 @@ function createWindow() {
   });
 
   mainWindow.loadURL(appURL);
+
   mainWindow.once("ready-to-show", () => {
     mainWindow.show();
+
+    if (backupData !== undefined) {
+      mainWindow.webContents.send("backupData", backupData);
+    }
 
     if (deeplinkURL) {
       mainWindow.webContents.send("deeplinkURL", deeplinkURL);
@@ -174,7 +284,7 @@ function start() {
   try {
     autoUpdater.checkForUpdatesAndNotify();
   } catch (e) {
-    console.log(e);
+    log.error(e);
   }
 
   if (!app.isDefaultProtocolClient("umami")) {
@@ -198,7 +308,7 @@ function start() {
       }
       mainWindow.focus();
       // Protocol handler for win32
-      // argv: An array of the second instance’s (command line / deep linked) arguments
+      // argv: An array of the second instance's (command line / deep linked) arguments
       if (process.platform === "win32" || process.platform === "linux") {
         // Protocol handler for windows & linux
         const index = argv.findIndex(arg => arg.startsWith("umami://"));
@@ -223,7 +333,16 @@ function start() {
   // This method will be called when Electron has finished its initialization and
   // is ready to create the browser windows.
   // Some APIs can only be used after this event occurs.
-  app.whenReady().then(createWindow);
+  app.whenReady().then(async () => {
+    // Execute createBackupFromPrevDB at the beginning
+    try {
+      await createBackupFromPrevDB();
+    } catch (error) {
+      log.error("Error has occured while migrating the app", error);
+    }
+
+    createWindow();
+  });
 
   app.on("activate", function () {
     // On macOS it's common to re-create a window in the app when the
@@ -236,7 +355,7 @@ function start() {
   // Send event to UI when app update is ready to be installed.
   // If the update installation won't be triggered by the user, it will be applied the next time the app starts.
   autoUpdater.on("update-downloaded", event => {
-    console.log(`Umami update ${event.version} downloaded and ready to be installed`, url);
+    log.info(`Umami update ${event.version} downloaded and ready to be installed`, url);
     return mainWindow.webContents.send("app-update-downloaded");
   });
 
