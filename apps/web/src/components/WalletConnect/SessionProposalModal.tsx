@@ -22,7 +22,7 @@ import {
   useToggleWcPeerListUpdated,
   walletKit,
 } from "@umami/state";
-import { type SessionTypes } from "@walletconnect/types";
+import { type SessionTypes, type Verify } from "@walletconnect/types";
 import { buildApprovedNamespaces, getSdkError } from "@walletconnect/utils";
 import { FormProvider, useForm } from "react-hook-form";
 
@@ -45,6 +45,10 @@ export const SessionProposalModal = ({
 
   const { onClose } = useDynamicModalContext();
   const { isLoading, handleAsyncAction } = useAsyncActionHandler();
+
+  const verifyContext: Verify.Context = proposal.verifyContext;
+  const isScam = verifyContext.verified.isScam ?? false;
+  const validationStatus = verifyContext.verified.validation;
 
   const form = useForm<{ address: string }>({
     mode: "onBlur",
@@ -97,6 +101,7 @@ export const SessionProposalModal = ({
         <ModalBody>
           <Card>
             <ProjectInfoCard metadata={proposal.params.proposer.metadata} />
+            <VerifyInfobox isScam={isScam} validationStatus={validationStatus} />
             <Divider />
             <Box marginBottom="16px" fontSize="xl" fontWeight="semibold">
               Requested permissions
@@ -132,7 +137,6 @@ export const SessionProposalModal = ({
               <Text marginLeft="8px">{network}</Text>
             </Box>
             <Divider />
-            <VerifyInfobox />
           </Card>
         </ModalBody>
         <ModalFooter>
@@ -141,7 +145,7 @@ export const SessionProposalModal = ({
           </Button>
           <Button
             width="100%"
-            isDisabled={!isValid}
+            isDisabled={!isValid || isScam}
             isLoading={isLoading}
             loadingText="Approving..."
             onClick={onApprove}

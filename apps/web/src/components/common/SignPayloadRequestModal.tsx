@@ -24,6 +24,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { useColor } from "../../styles/useColor";
 import { SignButton } from "../SendFlow/SignButton";
 import { type SignPayloadProps } from "../SendFlow/utils";
+import { VerifyInfobox } from "../WalletConnect/VerifyInfobox";
 
 export const SignPayloadRequestModal = ({ opts }: { opts: SignPayloadProps }) => {
   const { goBack } = useDynamicModalContext();
@@ -66,6 +67,13 @@ export const SignPayloadRequestModal = ({ opts }: { opts: SignPayloadProps }) =>
         <ModalHeader marginBottom="32px" textAlign="center">
           {`Sign Payload Request from ${opts.appName}`}
         </ModalHeader>
+        {opts.requestId.sdkType === "walletconnect" ? (
+          <VerifyInfobox
+            isScam={opts.isScam ?? false}
+            validationStatus={opts.validationStatus ?? "UNKNOWN"}
+          />
+        ) : null}
+
         <ModalCloseButton />
 
         <ModalBody>
