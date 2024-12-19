@@ -1,83 +1,80 @@
 import React from "react";
-import { Button, Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 
 import {
-  MainContainer,
-  FooterLinkLabel,
-  FooterLabel,
-  GoogleImage,
+  AppleImage,
+  ButtonLabel,
+  ButtonsWrapper,
+  ContentWrapper,
   ContinueLabel,
   DividerLabel,
   DividerLine,
   DividerWrapper,
+  FacebookRedditImage,
+  FooterLinkLabel,
+  FooterLabel,
+  GoogleImage,
   LinksWrapper,
-  ContentWrapper,
-  WelcomeWrapper,
-  PrimaryButtonLabel,
+  MainContainer,
   PrimaryButton,
-  StyledLink,
-  StyledImage,
+  PrimaryButtonLabel,
   SecondaryButton,
   SocialButtonsWrapper,
-  SocialIconWrapper, FacebookRedditImage, TwitterImage, AppleImage, ButtonsWrapper,
+  SocialIconWrapper,
+  StyledImage,
+  StyledLink,
+  TwitterImage,
 } from "./onboarding.styles";
 import { images } from "../../assets/images";
 import { useOnboardingData } from "./useOnboardingData";
 
 export const OnboardingScreen: React.FC = () => {
   const {
-    userInfo,
-    logout,
-    promptAsync,
+    onGoogleLogin,
+    onFacebookLogin,
+    onXLogin,
+    onRedditLogin,
+    onAppleLogin,
     openTerms,
     openPrivacy,
     strings,
-    accessToken,
   } = useOnboardingData();
 
   return (
     <MainContainer>
       <ContentWrapper>
-        <View style={{ flex: 1 }}>
+        <MainContainer>
+          {/*TODO: change image*/}
           <StyledImage source={images.tezos} />
           <ContinueLabel>{strings.continueWith}</ContinueLabel>
-          {!userInfo && (
             <SocialButtonsWrapper>
-              <TouchableOpacity onPress={() => promptAsync()}>
+              <TouchableOpacity onPress={onGoogleLogin}>
                 <SocialIconWrapper>
                   <GoogleImage source={images.google} />
                 </SocialIconWrapper>
               </TouchableOpacity>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={onFacebookLogin}>
                 <SocialIconWrapper>
                   <FacebookRedditImage source={images.facebook} />
                 </SocialIconWrapper>
               </TouchableOpacity>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={onXLogin}>
                 <SocialIconWrapper>
                   <TwitterImage source={images.twitter} />
                 </SocialIconWrapper>
               </TouchableOpacity>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={onRedditLogin}>
                 <SocialIconWrapper>
                   <FacebookRedditImage source={images.reddit} />
                 </SocialIconWrapper>
               </TouchableOpacity>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={onAppleLogin}>
                 <SocialIconWrapper>
                   <AppleImage source={images.apple} />
                 </SocialIconWrapper>
               </TouchableOpacity>
             </SocialButtonsWrapper>
 
-          )}
-          {userInfo && (
-            <WelcomeWrapper>
-              <Text>Welcome, {userInfo?.name}</Text>
-              <Text>Access token: {accessToken?.substring(0, 40)}...</Text>
-              <Button title={strings.logout} onPress={logout} />
-            </WelcomeWrapper>
-          )}
           <DividerWrapper>
             <DividerLine />
             <DividerLabel>{strings.or}</DividerLabel>
@@ -90,10 +87,10 @@ export const OnboardingScreen: React.FC = () => {
             </PrimaryButton>
 
             <SecondaryButton>
-              <Text>{strings.alreadyHaveWallet}</Text>
+              <ButtonLabel>{strings.alreadyHaveWallet}</ButtonLabel>
             </SecondaryButton>
           </ButtonsWrapper>
-        </View>
+        </MainContainer>
         <View style={{ alignItems: "center" }}>
           <FooterLabel>{strings.byProceeding}</FooterLabel>
           <LinksWrapper>

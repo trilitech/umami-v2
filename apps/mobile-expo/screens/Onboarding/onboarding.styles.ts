@@ -13,18 +13,16 @@ export const ContentWrapper = styled.View`
 
 export const StyledImage = styled.Image`
   width: 100%;
-  height: 400px;
+  height: 350px;
   resize-mode: cover;
   border-radius: 15px;
 `;
 
 export const ContinueLabel = styled.Text`
-  margin-top: 20px;
+  margin-top: 35px;
   align-self: center;
-`;
-
-export const WelcomeWrapper = styled.View`
-  margin-top: 20px;
+  font-weight: 600;
+  font-size: 16px;
 `;
 
 export const DividerWrapper = styled.View`
@@ -40,11 +38,13 @@ export const DividerLine = styled.View`
 
 export const DividerLabel = styled.Text`
   margin-horizontal: 10px;
+  font-weight: 600;
+  font-size: 16px;
 `;
 
 
 const StyledButton = styled.TouchableOpacity`
-  border-radius: 20px;
+  border-radius: 100px;
   width: 100%;
   align-items: center;
   justify-content: center;
@@ -53,7 +53,7 @@ const StyledButton = styled.TouchableOpacity`
 `;
 
 export const ButtonsWrapper = styled.View`
- margin-top: 10px;
+ margin-top: 20px;
 `;
 
 export const PrimaryButton = styled(StyledButton)`
@@ -61,10 +61,15 @@ export const PrimaryButton = styled(StyledButton)`
 `;
 
 export const SecondaryButton = styled(StyledButton)`
-  background-color: #E1E1EF
+  background-color: #E1E1EF;
 `;
 
-export const PrimaryButtonLabel = styled.Text`
+export const ButtonLabel = styled.Text`
+  font-size: 16px;
+  font-weight: 600;
+`;
+
+export const PrimaryButtonLabel = styled(ButtonLabel)`
   color: white;
 `;
 
@@ -83,6 +88,9 @@ export const StyledLink = styled.Text`
 
 export const FooterLinkLabel = styled.Text`
   margin-horizontal: 10px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
 `;
 
 export const SocialButtonsWrapper = styled.View`
@@ -90,13 +98,13 @@ export const SocialButtonsWrapper = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  margin-vertical: 20px;
+  margin-vertical: 30px;
 `;
 
 export const SocialIconWrapper = styled.View`
-  width: 40px;
-  height: 40px;
-  border-radius: 20px;
+  width: 48px;
+  height: 48px;
+  border-radius: 24px;
   border-width: 1px;
   align-items: center;
   justify-content: center;

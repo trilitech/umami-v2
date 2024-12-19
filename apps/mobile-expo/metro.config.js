@@ -18,7 +18,6 @@ defaultConfig.resolver = {
     path.resolve(workspaceRoot, "node_modules"),
   ],
   extraNodeModules: {
-    crypto: require.resolve("crypto-browserify"),
     http: require.resolve("stream-http"),
     https: require.resolve("https-browserify"),
     stream: require.resolve("stream-browserify"),
