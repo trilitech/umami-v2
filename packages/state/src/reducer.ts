@@ -75,11 +75,7 @@ export const makeReducer = (storage_: Storage | undefined) => {
   const customGetStoredState = async (config: PersistConfig<any>): Promise<PersistedState> => {
     try {
       const state = (await getStoredState(config)) as PersistedState;
-
-      const MIGRATION_KEY = "migration_2_3_3_to_2_3_4_completed";
-      const isMigrationCompleted = localStorage.getItem(MIGRATION_KEY);
-
-      if (isMigrationCompleted && state) {
+      if (state) {
         return state;
       }
 
@@ -90,11 +86,10 @@ export const makeReducer = (storage_: Storage | undefined) => {
               const processed = processMigrationData(data);
 
               if (processed) {
-                localStorage.setItem(MIGRATION_KEY, "true");
                 return resolve(processed[config.key as keyof typeof processed]);
               }
             }
-            resolve(undefined);
+            resolve(state);
           });
         });
       }

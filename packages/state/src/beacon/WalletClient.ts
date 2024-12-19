@@ -15,16 +15,8 @@ export const logout = (persistor: Persistor) =>
   WalletClient.destroy()
     .catch(() => {})
     .finally(() => {
-      // check if migration from desktop v2.3.3 to v2.3.4 is completed
-      // TODO: remove this once all users have upgraded to v2.3.4
-      const isMigrationCompleted = localStorage.getItem("migration_2_3_3_to_2_3_4_completed");
-
       persistor.pause();
       localStorage.clear(); // TODO: fix for react-native
-
-      if (isMigrationCompleted) {
-        localStorage.setItem("migration_2_3_3_to_2_3_4_completed", "true");
-      }
 
       window.location.replace("/"); // TODO: fix for react-native
     });
