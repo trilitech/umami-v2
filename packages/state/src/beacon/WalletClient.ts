@@ -17,5 +17,6 @@ export const logout = (persistor: Persistor) =>
     .finally(() => {
       persistor.pause();
       localStorage.clear(); // TODO: fix for react-native
+
       window.location.replace("/"); // TODO: fix for react-native
     });
