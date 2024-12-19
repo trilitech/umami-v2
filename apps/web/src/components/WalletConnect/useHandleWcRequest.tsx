@@ -1,12 +1,26 @@
+import { SigningType } from "@airgap/beacon-wallet";
 import { useDynamicModalContext } from "@umami/components";
 import { type ImplicitAccount, estimate, toAccountOperations } from "@umami/core";
-import { useAsyncActionHandler, useFindNetwork, useGetOwnedAccountSafe } from "@umami/state";
+import {
+  useAsyncActionHandler,
+  useFindNetwork,
+  useGetImplicitAccount,
+  useGetOwnedAccountSafe,
+  walletKit,
+} from "@umami/state";
 import { WalletConnectError } from "@umami/utils";
+import { formatJsonRpcError } from "@walletconnect/jsonrpc-utils";
 import { type SessionTypes, type SignClientTypes, type Verify } from "@walletconnect/types";
+import { type SdkErrorKey, getSdkError } from "@walletconnect/utils";
 
+import { SignPayloadRequestModal } from "../common/SignPayloadRequestModal";
 import { BatchSignPage } from "../SendFlow/common/BatchSignPage";
 import { SingleSignPage } from "../SendFlow/common/SingleSignPage";
-import { type SdkSignPageProps, type SignHeaderProps } from "../SendFlow/utils";
+import {
+  type SdkSignPageProps,
+  type SignHeaderProps,
+  type SignPayloadProps,
+} from "../SendFlow/utils";
 
 /**
  * @returns a function that handles a beacon message and opens a modal with the appropriate content
@@ -18,6 +32,7 @@ export const useHandleWcRequest = () => {
   const { openWith } = useDynamicModalContext();
   const { handleAsyncActionUnsafe } = useAsyncActionHandler();
   const getAccount = useGetOwnedAccountSafe();
+  const getImplicitAccount = useGetImplicitAccount();
   const findNetwork = useFindNetwork();
 
   return async (
@@ -50,11 +65,36 @@ export const useHandleWcRequest = () => {
         }
 
         case "tezos_sign": {
-          throw new WalletConnectError(
-            "Sign is not supported yet",
-            "WC_METHOD_UNSUPPORTED",
-            session
-          );
+          if (!request.params.account) {
+            throw new WalletConnectError("Missing account in request", "INVALID_EVENT", session);
+          }
+          const signer = getImplicitAccount(request.params.account);
+          const network = findNetwork(chainId.split(":")[1]);
+          if (!network) {
+            throw new WalletConnectError(
+              `Unsupported network ${chainId}`,
+              "UNSUPPORTED_CHAINS",
+              session
+            );
+          }
+          const signPayloadProps: SignPayloadProps = {
+            appName: session.peer.metadata.name,
+            appIcon: session.peer.metadata.icons[0],
+            payload: request.params.payload,
+            signer: signer,
+            signingType: SigningType.RAW,
+            requestId: { sdkType: "walletconnect", id: id, topic },
+          };
+
+          modal = <SignPayloadRequestModal opts={signPayloadProps} />;
+          onClose = () => {
+            const sdkErrorKey: SdkErrorKey = "USER_REJECTED";
+            console.info("WC request rejected by user", sdkErrorKey, event);
+            // dApp is waiting so we need to notify it
+            const response = formatJsonRpcError(id, getSdkError(sdkErrorKey).message);
+            void walletKit.respondSessionRequest({ topic, response });
+          };
+          return openWith(modal, { onClose });
         }
 
         case "tezos_send": {
