@@ -105,7 +105,6 @@ export const useHandleBeaconMessage = () => {
                 type: BeaconMessageType.Error,
                 errorType: BeaconErrorType.ABORTED_ERROR,
               });
-              await removePeer(message.senderId);
             };
             break;
           }
