@@ -39,8 +39,15 @@ log.transports.file.resolvePathFn = () => path.join(app.getPath("userData"), "um
 async function createBackupFromPrevDB() {
   const dbPath = path.normalize(path.join(app.getPath("userData"), "Local Storage", "leveldb"));
 
+  if (!fs.existsSync(dbPath)) {
+    log.error("LevelDB database not found at path. Code:EM01", dbPath);
+    return;
+  }
+
   const db = new Level(dbPath);
+  log.info("Opening the db")
   await db.open();
+  log.info("DB is opened")
 
   const isMigrationCompleted = await db.get(
     "_app://assets\x00\x01migration_2_3_3_to_2_3_4_completed"
@@ -48,12 +55,7 @@ async function createBackupFromPrevDB() {
 
   if (isMigrationCompleted) {
     log.info("Migration already completed. Skipping migration.");
-    return await db.close();
-  }
-
-  if (!fs.existsSync(dbPath)) {
-    log.info("LevelDB database not found at path. Code:EM01", dbPath);
-    return;
+    return db.close().then(()=>log.info("Closed the DB as migration is already complete."));
   }
 
   try {
