@@ -38,27 +38,27 @@ log.transports.file.resolvePathFn = () => path.join(app.getPath("userData"), "um
 
 async function createBackupFromPrevDB() {
   const dbPath = path.normalize(path.join(app.getPath("userData"), "Local Storage", "leveldb"));
+  const backupPath = path.normalize(
+    path.join(app.getPath("userData"), "Local Storage", "backup_leveldb.json")
+  );
 
   if (!fs.existsSync(dbPath)) {
     log.error("LevelDB database not found at path. Code:EM01", dbPath);
     return;
   }
 
-  const db = new Level(dbPath);
-  log.info("Opening the db")
-  await db.open();
-  log.info("DB is opened")
-
-  const isMigrationCompleted = await db.get(
-    "_app://assets\x00\x01migration_2_3_3_to_2_3_4_completed"
-  );
-
-  if (isMigrationCompleted) {
-    log.info("Migration already completed. Skipping migration.");
-    return db.close().then(()=>log.info("Closed the DB as migration is already complete."));
+  if (fs.existsSync(backupPath)) {
+    log.info("Backup file already exists. Skipping migration.");
+    return;
   }
 
+  const db = new Level(dbPath);
+
   try {
+    log.info("Opening the db");
+    await db.open();
+    log.info("DB is opened");
+
     const storage = {};
 
     // Function to clean up the string (removing non-printable chars)
@@ -127,6 +127,14 @@ async function createBackupFromPrevDB() {
     };
 
     backupData = preparedStorage;
+
+    // Write storage object to JSON file
+    try {
+      fs.writeFileSync(backupPath, JSON.stringify(preparedStorage, null, 2), "utf-8");
+      log.info("Backup successfully created at:", backupPath);
+    } catch (err) {
+      log.error("Error during LevelDB backup creation. Code:EM2.", err);
+    }
   } catch (err) {
     log.error("Error during key migration. Code:EM4.", err);
   } finally {
@@ -243,9 +251,7 @@ function createWindow() {
   mainWindow.once("ready-to-show", () => {
     mainWindow.show();
 
-    if (backupData !== undefined) {
-      mainWindow.webContents.send("backupData", backupData);
-    }
+    mainWindow.webContents.send("backupData", backupData);
 
     if (deeplinkURL) {
       mainWindow.webContents.send("deeplinkURL", deeplinkURL);
@@ -339,8 +345,6 @@ function start() {
   // is ready to create the browser windows.
   // Some APIs can only be used after this event occurs.
   app.whenReady().then(async () => {
-    createWindow();
-
     // Execute createBackupFromPrevDB at the beginning
     try {
       await createBackupFromPrevDB();
@@ -348,6 +352,7 @@ function start() {
       log.error("Error has occured while migrating the app", error);
     }
 
+    createWindow();
   });
 
   app.on("activate", function () {
