@@ -28,7 +28,7 @@ import { SignButton } from "../../components/SendFlow/SignButton";
 import colors from "../../style/colors";
 
 export const SignPayloadRequestModal = ({ request }: { request: SignPayloadRequestOutput }) => {
-  const { onClose } = useDynamicModalContext();
+  const { goBack } = useDynamicModalContext();
   const getAccount = useGetImplicitAccount();
   const signerAccount = getAccount(request.sourceAddress);
   const toast = useToast();
@@ -56,7 +56,7 @@ export const SignPayloadRequestModal = ({ request }: { request: SignPayloadReque
       description: "Successfully submitted Beacon operation",
       status: "success",
     });
-    onClose();
+    goBack();
   };
 
   return (
