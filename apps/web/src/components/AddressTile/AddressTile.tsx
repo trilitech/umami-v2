@@ -21,8 +21,9 @@ import { CopyAddressButton } from "../CopyAddressButton";
 export const AddressTile = ({
   size = "sm",
   address,
+  hideBalance = false,
   ...flexProps
-}: { address: Address; size?: "xs" | "sm" } & FlexProps) => {
+}: { address: Address; size?: "xs" | "sm"; hideBalance?: boolean } & FlexProps) => {
   const addressKind = useAddressKind(address);
   const color = useColor();
 
@@ -71,7 +72,9 @@ export const AddressTile = ({
               isLong={addressKind.type === "unknown"}
               variant={isSmall ? "unstyled" : "ghost"}
             />
-            <Text size="sm">{balance !== undefined && prettyTezAmount(balance)}</Text>
+            {!hideBalance && (
+              <Text size="sm">{balance !== undefined && prettyTezAmount(balance)}</Text>
+            )}
           </Flex>
         </Flex>
       </Flex>

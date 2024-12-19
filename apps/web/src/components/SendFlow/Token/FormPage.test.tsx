@@ -30,6 +30,11 @@ jest.mock("@umami/core", () => ({
   estimate: jest.fn(),
 }));
 
+jest.mock("@chakra-ui/react", () => ({
+  ...jest.requireActual("@chakra-ui/react"),
+  useBreakpointValue: jest.fn(),
+}));
+
 const mockAccount = mockMnemonicAccount(0);
 const mockTokenRaw = mockFA2TokenRaw(0, mockAccount.address.pkh);
 const mockToken = mockFA2Token(0, mockAccount);
