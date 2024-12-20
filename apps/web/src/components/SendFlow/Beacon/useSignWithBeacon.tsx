@@ -11,7 +11,6 @@ import { type CalculatedSignProps, type SdkSignPageProps } from "../utils";
 export const useSignWithBeacon = ({
   operation,
   headerProps,
-  requestId,
 }: SdkSignPageProps): CalculatedSignProps => {
   const { isLoading: isSigning, handleAsyncAction } = useAsyncActionHandler();
   const { openWith } = useDynamicModalContext();
@@ -28,7 +27,7 @@ export const useSignWithBeacon = ({
 
         const response: OperationResponseInput = {
           type: BeaconMessageType.OperationResponse,
-          id: requestId.id.toString(),
+          id: headerProps.requestId.id.toString(),
           transactionHash: opHash,
         };
         await WalletClient.respond(response);

@@ -55,11 +55,11 @@ describe("<TezSignPage />", () => {
       network: GHOSTNET,
       appName: message.appMetadata.name,
       appIcon: message.appMetadata.icon,
+      requestId: { sdkType: "beacon", id: message.id },
     };
     const signProps: SdkSignPageProps = {
       headerProps: headerProps,
       operation: operation,
-      requestId: { sdkType: "beacon", id: message.id },
     };
 
     store.dispatch(networksActions.setCurrent(GHOSTNET));
@@ -72,6 +72,8 @@ describe("<TezSignPage />", () => {
 
     expect(screen.getByText("Ghostnet")).toBeInTheDocument();
     expect(screen.queryByText("Mainnet")).not.toBeInTheDocument();
+
+    expect(screen.queryByText("verifyinfobox")).not.toBeInTheDocument();
 
     const signButton = screen.getByRole("button", {
       name: "Confirm Transaction",

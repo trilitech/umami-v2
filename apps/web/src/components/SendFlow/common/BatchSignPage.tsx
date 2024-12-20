@@ -34,7 +34,9 @@ export const BatchSignPage = (
   const beaconCalculatedProps = useSignWithBeacon({ ...signProps });
   const walletConnectCalculatedProps = useSignWithWalletConnect({ ...signProps });
   const calculatedProps =
-    signProps.requestId.sdkType === "beacon" ? beaconCalculatedProps : walletConnectCalculatedProps;
+    signProps.headerProps.requestId.sdkType === "beacon"
+      ? beaconCalculatedProps
+      : walletConnectCalculatedProps;
 
   const { isSigning, onSign, network, fee } = calculatedProps;
   const { signer, operations } = signProps.operation;
