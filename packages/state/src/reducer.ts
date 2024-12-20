@@ -1,11 +1,5 @@
 import { combineReducers } from "@reduxjs/toolkit";
-import {
-  type PersistConfig,
-  type PersistedState,
-  type Storage,
-  getStoredState,
-  persistReducer,
-} from "redux-persist";
+import { type Storage, persistReducer } from "redux-persist";
 import createWebStorage from "redux-persist/lib/storage/createWebStorage";
 
 import { createAsyncMigrate } from "./createAsyncMigrate";
@@ -38,66 +32,8 @@ const getTestStorage = () => {
     : TEST_STORAGE;
 };
 
-const processMigrationData = (backupData: any) => {
-  try {
-    const processedData: { accounts: any; root: any } = {
-      accounts: {},
-      root: {},
-    };
-
-    if (backupData["persist:accounts"]) {
-      const accounts = backupData["persist:accounts"];
-
-      for (const item in accounts) {
-        processedData.accounts[item] = JSON.parse(accounts[item]);
-      }
-    }
-
-    if (backupData["persist:root"]) {
-      const root = backupData["persist:root"];
-
-      for (const item in root) {
-        processedData.root[item] = JSON.parse(root[item]);
-      }
-    }
-
-    return processedData;
-  } catch (error) {
-    console.error("Error processing backup data:", error);
-    return null;
-  }
-};
-
 export const makeReducer = (storage_: Storage | undefined) => {
   const storage = storage_ || getTestStorage() || createWebStorage("local");
-
-  // Custom getStoredState function to handle migration from desktop v2.3.3 to v2.3.4
-  const customGetStoredState = async (config: PersistConfig<any>): Promise<PersistedState> => {
-    try {
-      const state = (await getStoredState(config)) as PersistedState;
-      if (state) {
-        return state;
-      }
-
-      if (window.electronAPI) {
-        return new Promise(resolve => {
-          window.electronAPI?.onBackupData((_, data) => {
-            if (data) {
-              const processed = processMigrationData(data);
-
-              if (processed) {
-                return resolve(processed[config.key as keyof typeof processed]);
-              }
-            }
-            resolve(state);
-          });
-        });
-      }
-    } catch (err) {
-      console.error("Error getting stored state:", err);
-      return;
-    }
-  };
 
   const rootPersistConfig = {
     key: "root",
