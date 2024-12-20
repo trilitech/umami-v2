@@ -4,6 +4,7 @@ import { useDataPolling } from "@umami/data-polling";
 import {
   WalletClient,
   useCurrentAccount,
+  useGetUserAlerts,
   useImplicitAccounts,
   useResetBeaconConnections,
 } from "@umami/state";
@@ -42,12 +43,13 @@ const LoggedInRouterWithPolling = () => {
   useDataPolling();
   const modalDisclosure = useDynamicModal();
   const currentUser = useCurrentAccount();
+  const getUserAlerts = useGetUserAlerts();
 
   useEffect(() => {
     if (currentUser?.type === "social") {
-      const isInformed = localStorage.getItem("user:isSocialLoginWarningShown");
+      const isInformed = getUserAlerts("isSocialLoginWarningShown");
 
-      if (!isInformed || !JSON.parse(isInformed)) {
+      if (!isInformed) {
         void modalDisclosure.openWith(<SocialLoginWarningModal />, { closeOnEsc: false });
       }
     }
