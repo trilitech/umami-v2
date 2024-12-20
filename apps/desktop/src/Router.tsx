@@ -96,24 +96,44 @@ const LoggedOutRouter = () => {
 
     persistor.pause();
 
-    if (window.electronAPI) {
-      window.electronAPI.onBackupData((_, data) => {
-        if (data) {
-          setTimeout(() => {
-            localStorage.clear();
+    const getBackupData = async () => {
+      const backupData = await window.electronAPI.getBackupData();
 
-            localStorage.setItem("migration_2_3_3_to_2_3_4_completed", "true");
-            localStorage.setItem("persist:accounts", JSON.stringify(data["persist:accounts"]));
-            localStorage.setItem("persist:root", JSON.stringify(data["persist:root"]));
+      if (!backupData) {
+        setIsDataLoading(false);
+        localStorage.setItem("migration_2_3_3_to_2_3_4_completed", "true");
+        return;
+      }
 
-            window.location.reload();
-          }, 3000);
-        } else {
-          setIsDataLoading(false);
-          localStorage.setItem("migration_2_3_3_to_2_3_4_completed", "true");
-        }
-      });
-    }
+      localStorage.clear();
+
+      localStorage.setItem("migration_2_3_3_to_2_3_4_completed", "true");
+      localStorage.setItem("persist:accounts", JSON.stringify(backupData["persist:accounts"]));
+      localStorage.setItem("persist:root", JSON.stringify(backupData["persist:root"]));
+
+      window.location.reload();
+    };
+
+    getBackupData();
+
+    // if (window.electronAPI) {
+    //   window.electronAPI.onBackupData((_, data) => {
+    //     if (data) {
+    //       setTimeout(() => {
+    //         localStorage.clear();
+
+    //         localStorage.setItem("migration_2_3_3_to_2_3_4_completed", "true");
+    //         localStorage.setItem("persist:accounts", JSON.stringify(data["persist:accounts"]));
+    //         localStorage.setItem("persist:root", JSON.stringify(data["persist:root"]));
+
+    //         window.location.reload();
+    //       }, 3000);
+    //     } else {
+    //       setIsDataLoading(false);
+    //       localStorage.setItem("migration_2_3_3_to_2_3_4_completed", "true");
+    //     }
+    //   });
+    // }
   }, []);
 
   return (

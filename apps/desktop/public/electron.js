@@ -36,6 +36,20 @@ protocol.registerSchemesAsPrivileged([
 // Configure electron-log
 log.transports.file.resolvePathFn = () => path.join(app.getPath("userData"), "umami-desktop.log");
 
+ipcMain.handle("getBackupData", () => {
+  const backupPath = path.normalize(
+    path.join(app.getPath("userData"), "Local Storage", "backup_leveldb.json")
+  );
+
+  if (!fs.existsSync(backupPath)) {
+    return;
+  }
+
+  const backupData = JSON.parse(fs.readFileSync(backupPath, "utf-8"));
+
+  return backupData;
+});
+
 async function createBackupFromPrevDB() {
   const dbPath = path.normalize(path.join(app.getPath("userData"), "Local Storage", "leveldb"));
   const backupPath = path.normalize(
