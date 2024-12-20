@@ -251,9 +251,7 @@ function createWindow() {
   mainWindow.once("ready-to-show", () => {
     mainWindow.show();
 
-    if (backupData) {
-      mainWindow.webContents.send("backupData", backupData);
-    }
+    mainWindow.webContents.send("backupData", backupData);
 
     if (deeplinkURL) {
       mainWindow.webContents.send("deeplinkURL", deeplinkURL);

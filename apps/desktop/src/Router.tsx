@@ -1,5 +1,4 @@
 /* istanbul ignore file */
-import { Flex, Spinner } from "@chakra-ui/react";
 import { DynamicModalContext, useDynamicModal } from "@umami/components";
 import { useDataPolling } from "@umami/data-polling";
 import {
@@ -13,6 +12,7 @@ import { useEffect, useState } from "react";
 import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
 
 import { AnnouncementBanner } from "./components/AnnouncementBanner";
+import { Loader } from "./components/Loader/Loader";
 import { SocialLoginWarningModal } from "./components/SocialLoginWarningModal/SocialLoginWarningModal";
 import { BeaconProvider } from "./utils/beacon/BeaconProvider";
 import { persistor } from "./utils/persistor";
@@ -85,7 +85,7 @@ const LoggedOutRouter = () => {
     WalletClient.destroy().then(resetBeaconConnections).catch(noop);
   }, [resetBeaconConnections]);
 
-  const [isDataLoading] = useState(
+  const [isDataLoading, setIsDataLoading] = useState(
     () => !localStorage.getItem("migration_2_3_3_to_2_3_4_completed")
   );
 
@@ -98,8 +98,6 @@ const LoggedOutRouter = () => {
 
     if (window.electronAPI) {
       window.electronAPI.onBackupData((_, data) => {
-        console.log("1. Received backup data:", data);
-
         if (data) {
           setTimeout(() => {
             localStorage.clear();
@@ -110,6 +108,9 @@ const LoggedOutRouter = () => {
 
             window.location.reload();
           }, 3000);
+        } else {
+          setIsDataLoading(false);
+          localStorage.setItem("migration_2_3_3_to_2_3_4_completed", "true");
         }
       });
     }
@@ -117,22 +118,7 @@ const LoggedOutRouter = () => {
 
   return (
     <>
-      {isDataLoading && (
-        <Flex
-          position="absolute"
-          zIndex="9999"
-          top="0"
-          left="0"
-          alignItems="center"
-          justifyContent="center"
-          width="full"
-          height="100vh"
-          backdropFilter="blur(10px)"
-          backgroundColor="rgba(0, 0, 0, 0.2)"
-        >
-          <Spinner />
-        </Flex>
-      )}
+      {isDataLoading && <Loader />}
       <HashRouter>
         <Routes>
           <Route element={<Navigate to="/welcome" />} path="/*" />
