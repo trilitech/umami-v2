@@ -1,4 +1,5 @@
 /* istanbul ignore file */
+import { Flex, Spinner } from "@chakra-ui/react";
 import { DynamicModalContext, useDynamicModal } from "@umami/components";
 import { useDataPolling } from "@umami/data-polling";
 import {
@@ -8,12 +9,13 @@ import {
   useResetBeaconConnections,
 } from "@umami/state";
 import { noop } from "lodash";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
 
 import { AnnouncementBanner } from "./components/AnnouncementBanner";
 import { SocialLoginWarningModal } from "./components/SocialLoginWarningModal/SocialLoginWarningModal";
 import { BeaconProvider } from "./utils/beacon/BeaconProvider";
+import { persistor } from "./utils/persistor";
 import { useDeeplinkHandler } from "./utils/useDeeplinkHandler";
 import { AddressBookView } from "./views/addressBook/AddressBookView";
 import { BatchPage } from "./views/batch/BatchPage";
@@ -83,12 +85,60 @@ const LoggedOutRouter = () => {
     WalletClient.destroy().then(resetBeaconConnections).catch(noop);
   }, [resetBeaconConnections]);
 
+  const [isDataLoading] = useState(
+    () => !localStorage.getItem("migration_2_3_3_to_2_3_4_completed")
+  );
+
+  useEffect(() => {
+    if (localStorage.getItem("migration_2_3_3_to_2_3_4_completed")) {
+      return;
+    }
+
+    persistor.pause();
+
+    if (window.electronAPI) {
+      window.electronAPI.onBackupData((_, data) => {
+        console.log("1. Received backup data:", data);
+
+        if (data) {
+          setTimeout(() => {
+            localStorage.clear();
+
+            localStorage.setItem("migration_2_3_3_to_2_3_4_completed", "true");
+            localStorage.setItem("persist:accounts", JSON.stringify(data["persist:accounts"]));
+            localStorage.setItem("persist:root", JSON.stringify(data["persist:root"]));
+
+            window.location.reload();
+          }, 3000);
+        }
+      });
+    }
+  }, []);
+
   return (
-    <HashRouter>
-      <Routes>
-        <Route element={<Navigate to="/welcome" />} path="/*" />
-        <Route element={<WelcomeScreen />} path="/welcome" />
-      </Routes>
-    </HashRouter>
+    <>
+      {isDataLoading && (
+        <Flex
+          position="absolute"
+          zIndex="9999"
+          top="0"
+          left="0"
+          alignItems="center"
+          justifyContent="center"
+          width="full"
+          height="100vh"
+          backdropFilter="blur(10px)"
+          backgroundColor="rgba(0, 0, 0, 0.2)"
+        >
+          <Spinner />
+        </Flex>
+      )}
+      <HashRouter>
+        <Routes>
+          <Route element={<Navigate to="/welcome" />} path="/*" />
+          <Route element={<WelcomeScreen />} path="/welcome" />
+        </Routes>
+      </HashRouter>
+    </>
   );
 };

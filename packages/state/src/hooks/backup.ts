@@ -78,7 +78,14 @@ export const restoreV2BackupFile = async (
   }
 
   persistor.pause();
+
+  const migrationCompleted = localStorage.getItem("migration_2_3_3_to_2_3_4_completed");
+
   localStorage.clear();
+
+  if (migrationCompleted) {
+    localStorage.setItem("migration_2_3_3_to_2_3_4_completed", "true");
+  }
 
   localStorage.setItem("persist:accounts", accountsInString);
   localStorage.setItem("persist:root", backup["persist:root"]);
