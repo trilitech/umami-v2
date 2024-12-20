@@ -1,3 +1,5 @@
+import { type UmamiStore, makeStore } from "@umami/state";
+
 import { SocialLoginWarningModal } from "./SocialLoginWarningModal";
 import {
   act,
@@ -8,13 +10,15 @@ import {
   waitFor,
 } from "../../mocks/testUtils";
 
+let store: UmamiStore;
+
 beforeEach(() => {
-  localStorage.clear();
+  store = makeStore();
 });
 
 describe("<SocialLoginWarningModal />", () => {
   it("renders the modal with correct title and content", async () => {
-    render(<SocialLoginWarningModal />);
+    render(<SocialLoginWarningModal />, { store });
 
     await waitFor(() => {
       expect(screen.getByText("Important notice about your social account wallet")).toBeVisible();
@@ -28,7 +32,7 @@ describe("<SocialLoginWarningModal />", () => {
   });
 
   it("disables 'Continue' button when checkbox is not checked", () => {
-    render(<SocialLoginWarningModal />);
+    render(<SocialLoginWarningModal />, { store });
 
     const button = screen.getByRole("button", { name: "Continue" });
     expect(button).toBeDisabled();
@@ -36,7 +40,7 @@ describe("<SocialLoginWarningModal />", () => {
 
   it("enables 'Continue' button when checkbox is checked", async () => {
     const user = userEvent.setup();
-    render(<SocialLoginWarningModal />);
+    render(<SocialLoginWarningModal />, { store });
 
     const checkbox = screen.getByRole("checkbox", {
       name: "I understand and accept the risks.",
@@ -50,7 +54,7 @@ describe("<SocialLoginWarningModal />", () => {
   it("sets localStorage and closes modal when 'Continue' is clicked", async () => {
     const { onClose } = dynamicModalContextMock;
     const user = userEvent.setup();
-    render(<SocialLoginWarningModal />);
+    render(<SocialLoginWarningModal />, { store });
 
     const checkbox = screen.getByRole("checkbox", {
       name: "I understand and accept the risks.",
@@ -61,7 +65,7 @@ describe("<SocialLoginWarningModal />", () => {
     await act(() => user.click(continueButton));
 
     await waitFor(() => {
-      expect(localStorage.getItem("user:isSocialLoginWarningShown")).toBe("true");
+      expect(store.getState().accounts.alerts.isSocialLoginWarningShown).toBe(true);
     });
 
     expect(onClose).toHaveBeenCalled();
@@ -69,7 +73,7 @@ describe("<SocialLoginWarningModal />", () => {
 
   it("toggles checkbox state correctly", async () => {
     const user = userEvent.setup();
-    render(<SocialLoginWarningModal />);
+    render(<SocialLoginWarningModal />, { store });
 
     const checkbox = screen.getByRole("checkbox", {
       name: "I understand and accept the risks.",

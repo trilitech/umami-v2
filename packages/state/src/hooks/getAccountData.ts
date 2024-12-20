@@ -15,7 +15,7 @@ import { useDispatch } from "react-redux";
 import { useGetAccountBalance } from "./assets";
 import { useMultisigAccounts } from "./multisig";
 import { useAppSelector } from "./useAppSelector";
-import { accountsActions } from "../slices";
+import { type AccountsState, accountsActions } from "../slices";
 
 export const useSeedPhrases = () => useAppSelector(s => s.accounts.seedPhrases);
 
@@ -214,4 +214,10 @@ export const useGetDecryptedMnemonic = () => {
 
     return decrypt(encryptedMnemonic, password);
   };
+};
+
+export const useGetUserAlerts = () => {
+  const alerts = useAppSelector(s => s.accounts.alerts);
+
+  return (key: keyof AccountsState["alerts"]) => alerts[key];
 };

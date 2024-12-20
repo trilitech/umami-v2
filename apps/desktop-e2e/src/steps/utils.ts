@@ -20,6 +20,10 @@ Given(/I have accounts?/, async function (this: CustomWorld, table: DataTable) {
     items: [],
     seedPhrases: {},
     secretKeys: {},
+    alerts: {
+      isSocialLoginWarningShown: false,
+      isExtensionsWarningShown: false,
+    },
   };
 
   for (const data of table.hashes() as any[]) {
