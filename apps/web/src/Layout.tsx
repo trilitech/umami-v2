@@ -1,7 +1,7 @@
 import { Grid, GridItem } from "@chakra-ui/react";
 import { useDynamicModalContext } from "@umami/components";
 import { useDataPolling } from "@umami/data-polling";
-import { useCurrentAccount } from "@umami/state";
+import { accountsActions, useAppDispatch, useCurrentAccount, useGetUserAlerts } from "@umami/state";
 import { useEffect } from "react";
 
 import { Footer } from "./components/Footer";
@@ -16,28 +16,30 @@ export const Layout = () => {
   useDataPolling();
   const { openWith } = useDynamicModalContext();
   const currentUser = useCurrentAccount();
+  const getUserAlerts = useGetUserAlerts();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const CLOSING_DELAY = 300;
 
     const warnings = [
       {
-        key: "user:isSocialLoginWarningShown",
+        key: "isSocialLoginWarningShown",
         component: <SocialLoginWarningModal />,
         options: { closeOnEsc: false },
         isEnabled: () => currentUser?.type === "social",
       },
       {
-        key: "user:isExtensionsWarningShown",
+        key: "isExtensionsWarningShown",
         component: <SecurityWarningModal />,
         options: { closeOnEsc: false, size: "xl" },
         isEnabled: () => true,
       },
-    ];
+    ] as const;
 
     const warningsToShow = warnings.filter(warning => {
-      const isInformed = localStorage.getItem(warning.key);
-      return (!isInformed || !JSON.parse(isInformed)) && warning.isEnabled();
+      const isInformed = getUserAlerts(warning.key);
+      return !isInformed && warning.isEnabled();
     });
 
     const showWarnings = async () => {
@@ -47,7 +49,7 @@ export const Layout = () => {
             void openWith(warning.component, {
               ...warning.options,
               onClose: () => {
-                localStorage.setItem(warning.key, "true");
+                dispatch(accountsActions.setAlerts({ key: warning.key, value: true }));
                 resolve(true);
               },
             })
