@@ -17,8 +17,7 @@
     "preserveSymlinks": true
   },
   "ts-node": {
-    "esm": true,
-    "files": true
+    "esm": true
   },
   "include": ["src", ".eslintrc.cjs", "cucumber.cjs"]
 }
