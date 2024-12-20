@@ -16,7 +16,13 @@ export const logout = (persistor: Persistor) =>
     .catch(() => {})
     .finally(() => {
       persistor.pause();
+      const migrationCompleted = localStorage.getItem("migration_2_3_3_to_2_3_4_completed");
+
       localStorage.clear(); // TODO: fix for react-native
+
+      if (migrationCompleted) {
+        localStorage.setItem("migration_2_3_3_to_2_3_4_completed", "true");
+      }
 
       window.location.replace("/"); // TODO: fix for react-native
     });
