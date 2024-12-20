@@ -11,12 +11,12 @@ import { type CalculatedSignProps, type SdkSignPageProps } from "../utils";
 export const useSignWithWalletConnect = ({
   operation,
   headerProps,
-  requestId,
 }: SdkSignPageProps): CalculatedSignProps => {
   const { isLoading: isSigning, handleAsyncAction } = useAsyncActionHandler();
   const { openWith } = useDynamicModalContext();
 
   const form = useForm({ defaultValues: { executeParams: operation.estimates } });
+  const requestId = headerProps.requestId;
 
   if (requestId.sdkType !== "walletconnect") {
     return {

@@ -126,11 +126,11 @@ export const useHandleWcRequest = () => {
             network,
             appName: session.peer.metadata.name,
             appIcon: session.peer.metadata.icons[0],
+            requestId: { sdkType: "walletconnect", id: id, topic },
           };
           const signProps: SdkSignPageProps = {
             headerProps: headerProps,
             operation: estimatedOperations,
-            requestId: { sdkType: "walletconnect", id: id, topic },
           };
 
           if (operation.operations.length === 1) {

@@ -55,11 +55,11 @@ describe("<TezSignPage />", () => {
       network: GHOSTNET,
       appName: message.appMetadata.name,
       appIcon: message.appMetadata.icon,
+      requestId: { sdkType: "beacon", id: message.id },
     };
     const signProps: SdkSignPageProps = {
       headerProps: headerProps,
       operation: operation,
-      requestId: { sdkType: "beacon", id: message.id },
     };
 
     store.dispatch(networksActions.setCurrent(GHOSTNET));
