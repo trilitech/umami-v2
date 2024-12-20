@@ -10,6 +10,7 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 
 import { ErrorPage } from "./components/ErrorPage";
+import { Loader } from "./components/Loader/Loader";
 import { ReactQueryProvider } from "./providers/ReactQueryProvider";
 import { UmamiTheme } from "./providers/UmamiTheme";
 import { Router } from "./Router";
@@ -29,7 +30,7 @@ root.render(
   <StrictMode>
     <UmamiTheme>
       <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
+        <PersistGate loading={<Loader />} persistor={persistor}>
           <ErrorBoundary fallback={<ErrorPage />} onError={logError}>
             <ReactQueryProvider>
               <Router />
