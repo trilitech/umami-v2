@@ -104,7 +104,6 @@ export const makeReducer = (storage_: Storage | undefined) => {
     version: VERSION,
     storage,
     blacklist: ["accounts"],
-    getStoredState: customGetStoredState,
     migrate: createAsyncMigrate(mainStoreMigrations, { debug: false }),
   };
 
@@ -112,7 +111,6 @@ export const makeReducer = (storage_: Storage | undefined) => {
     key: "accounts",
     version: VERSION,
     storage,
-    getStoredState: customGetStoredState,
     migrate: createAsyncMigrate(accountsMigrations, { debug: false }),
     blacklist: ["password"],
   };
