@@ -360,11 +360,11 @@ describe("<useHandleBeaconMessage />", () => {
           network: MAINNET,
           appName: message.appMetadata.name,
           appIcon: message.appMetadata.icon,
+          requestId: { sdkType: "beacon", id: message.id },
         };
         const signProps: SdkSignPageProps = {
           headerProps: headerProps,
           operation: operation,
-          requestId: { sdkType: "beacon", id: message.id },
         };
 
         const {
@@ -465,11 +465,11 @@ describe("<useHandleBeaconMessage />", () => {
           network: MAINNET,
           appName: message.appMetadata.name,
           appIcon: message.appMetadata.icon,
+          requestId: { sdkType: "beacon", id: message.id },
         };
         const signProps: SdkSignPageProps = {
           headerProps: headerProps,
           operation: estimatedOperations,
-          requestId: { sdkType: "beacon", id: message.id },
         };
 
         const {

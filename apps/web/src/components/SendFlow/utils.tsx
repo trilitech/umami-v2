@@ -76,10 +76,10 @@ export type SignHeaderProps = {
   network: Network;
   appName: string;
   appIcon?: string;
+  requestId: SignRequestId;
 };
 
 export type SdkSignPageProps = {
-  requestId: SignRequestId;
   operation: EstimatedAccountOperations;
   headerProps: SignHeaderProps;
 };

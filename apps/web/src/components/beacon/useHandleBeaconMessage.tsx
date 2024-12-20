@@ -129,11 +129,11 @@ export const useHandleBeaconMessage = () => {
               network: network,
               appName: message.appMetadata.name,
               appIcon: message.appMetadata.icon,
+              requestId: { sdkType: "beacon", id: message.id },
             };
             const signProps: SdkSignPageProps = {
               headerProps: headerProps,
               operation: estimatedOperations,
-              requestId: { sdkType: "beacon", id: message.id },
             };
 
             if (operation.operations.length === 1) {

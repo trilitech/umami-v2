@@ -35,11 +35,11 @@ const headerProps: SignHeaderProps = {
   network: GHOSTNET,
   appName: message.appMetadata.name,
   appIcon: message.appMetadata.icon,
+  requestId: { sdkType: "beacon", id: message.id },
 };
 const signProps: SdkSignPageProps = {
   headerProps: headerProps,
   operation: operation,
-  requestId: { sdkType: "beacon", id: message.id },
 };
 
 jest.mock("@umami/core", () => ({
