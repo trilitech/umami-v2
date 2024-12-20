@@ -13,10 +13,12 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "customConditions": ["@umami/source"]
+    "customConditions": ["@umami/source"],
+    "preserveSymlinks": true
   },
   "ts-node": {
-    "esm": true
+    "esm": true,
+    "files": true
   },
   "include": ["src", ".eslintrc.cjs", "cucumber.cjs"]
 }
