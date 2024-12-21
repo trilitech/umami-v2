@@ -20,6 +20,10 @@ export const accountsInitialState: AccountsState = {
   seedPhrases: {},
   secretKeys: {},
   password: "",
+  alerts: {
+    isSocialLoginWarningShown: false,
+    isExtensionsWarningShown: false,
+  },
 };
 
 /**
@@ -143,6 +147,15 @@ export const accountsSlice = createSlice({
     },
     setPassword: (state, { payload }: { payload: string }) => {
       state.password = payload;
+    },
+    setAlerts: (
+      state,
+      { payload }: { payload: { key: keyof AccountsState["alerts"]; value: boolean } }
+    ) => {
+      state.alerts = {
+        ...state.alerts,
+        [payload.key]: payload.value,
+      };
     },
   },
 });
