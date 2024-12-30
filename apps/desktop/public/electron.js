@@ -55,18 +55,25 @@ async function createBackupFromPrevDB() {
   const backupPath = path.normalize(
     path.join(app.getPath("userData"), "Local Storage", "backup_leveldb.json")
   );
+  const dbBackupPath = path.normalize(
+    path.join(app.getPath("userData"), "Local Storage", "leveldb_backup")
+  );
 
   if (!fs.existsSync(dbPath)) {
     log.error("LevelDB database not found at path. Code:EM01", dbPath);
     return;
   }
 
+  // Copy the database to not lose original data
+  fs.cpSync(dbPath, dbBackupPath, { recursive: true });
+
+
   if (fs.existsSync(backupPath)) {
     log.info("Backup file already exists. Skipping migration.");
     return;
   }
 
-  const db = new Level(dbPath);
+  const db = new Level(dbBackupPath);
 
   // Retry logic for opening the database
   const maxRetries = 3;
