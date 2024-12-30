@@ -68,9 +68,31 @@ async function createBackupFromPrevDB() {
 
   const db = new Level(dbPath);
 
+  // Retry logic for opening the database
+  const maxRetries = 3;
+  const retryDelay = 1000; // 1 second
+
+  const tryOpenDb = async retriesLeft => {
+    try {
+      log.info(`Attempting to open DB. Retries left: ${retriesLeft}`);
+      await db.open();
+      log.info("DB opened successfully");
+      return;
+    } catch (error) {
+      if (retriesLeft <= 0) {
+        log.error("Failed to open DB after all retries", error);
+        await db.close();
+        throw error;
+      }
+
+      log.warn(`Failed to open DB. Retrying in ${retryDelay}ms...`, error);
+      await new Promise(resolve => setTimeout(resolve, retryDelay));
+      return tryOpenDb(retriesLeft - 1);
+    }
+  };
+
   try {
-    log.info("Opening the db");
-    await db.open();
+    await tryOpenDb(maxRetries);
     log.info("DB is opened");
 
     const storage = {};
@@ -359,14 +381,14 @@ function start() {
   // is ready to create the browser windows.
   // Some APIs can only be used after this event occurs.
   app.whenReady().then(async () => {
-    createWindow();
-
     // Execute createBackupFromPrevDB at the beginning
     try {
       await createBackupFromPrevDB();
     } catch (error) {
       log.error("Error has occured while migrating the app", error);
     }
+
+    createWindow();
   });
 
   app.on("activate", function () {
