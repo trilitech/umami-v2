@@ -1,4 +1,5 @@
 {
+  "extends": "@umami/typescript-config/tsconfig.json",
   "compilerOptions": {
     "target": "esnext",
     "allowJs": true,
@@ -14,10 +15,13 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "customConditions": ["@umami/source"],
-    "preserveSymlinks": true
+    "preserveSymlinks": true,
+    "types": ["node", "jest"]
   },
   "ts-node": {
-    "esm": true
+    "esm": true,
+    "transpileOnly": true,
+    "files": true
   },
-  "include": ["src", ".eslintrc.cjs", "cucumber.cjs"]
+  "include": ["src", ".eslintrc.cjs", "cucumber.cjs", "src/global.d.ts"]
 }
