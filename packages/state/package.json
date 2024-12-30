@@ -84,7 +84,7 @@
     "@umami/tzkt": "workspace:^",
     "@walletconnect/core": "^2.16.2",
     "@walletconnect/jsonrpc-utils": "^1.0.8",
-    "@walletconnect/types": "^2.16.2",
+    "@walletconnect/types": "^2.17.3",
     "@walletconnect/utils": "^2.17.2",
     "bip39": "^3.1.0",
     "framer-motion": "^11.15.0",
