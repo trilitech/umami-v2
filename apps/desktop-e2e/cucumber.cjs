@@ -14,7 +14,7 @@ const config = {
     failFast: true,
     paths: ["src/features/*"],
     require: ["src/**/*.ts"],
-    requireModule: ["ts-node/register/transpile-only", "tsconfig-paths/register"],
+    requireModule: ["ts-node/register"],
     format: ["html:test-results/cucumber-report.html", "json:test-results/cucumber-report.json"],
   },
 };

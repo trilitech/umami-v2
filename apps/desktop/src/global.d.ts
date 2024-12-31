@@ -8,7 +8,6 @@ declare global {
       onDeeplink: (callback: (url: string) => void) => void;
       onAppUpdateDownloaded: (callback: () => void) => void;
       installAppUpdateAndQuit: () => void;
-      onBackupData: (fn: (event: any, data?: Record<string, string>) => void) => void;
       getBackupData: () => Promise<Record<string, string> | undefined>;
     };
   }

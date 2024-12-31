@@ -9,11 +9,10 @@ import {
   useResetBeaconConnections,
 } from "@umami/state";
 import { noop } from "lodash";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
 
 import { AnnouncementBanner } from "./components/AnnouncementBanner";
-import { Loader } from "./components/Loader/Loader";
 import { SocialLoginWarningModal } from "./components/SocialLoginWarningModal/SocialLoginWarningModal";
 import { BeaconProvider } from "./utils/beacon/BeaconProvider";
 import { persistor } from "./utils/persistor";
@@ -87,26 +86,20 @@ const LoggedOutRouter = () => {
     WalletClient.destroy().then(resetBeaconConnections).catch(noop);
   }, [resetBeaconConnections]);
 
-  const [isDataLoading, setIsDataLoading] = useState(
-    () => !localStorage.getItem("migration_2_3_3_to_2_3_4_completed")
-  );
-
   useEffect(() => {
     if (localStorage.getItem("migration_2_3_3_to_2_3_4_completed")) {
       return;
     }
 
     const getBackupData = async () => {
-      persistor.pause();
-
       const backupData = await window.electronAPI.getBackupData();
 
       if (!backupData) {
-        setIsDataLoading(false);
         localStorage.setItem("migration_2_3_3_to_2_3_4_completed", "true");
-        persistor.persist();
         return;
       }
+
+      persistor.pause();
 
       await persistor.flush();
       localStorage.clear();
@@ -124,14 +117,11 @@ const LoggedOutRouter = () => {
   }, []);
 
   return (
-    <>
-      {isDataLoading && <Loader />}
-      <HashRouter>
-        <Routes>
-          <Route element={<Navigate to="/welcome" />} path="/*" />
-          <Route element={<WelcomeScreen />} path="/welcome" />
-        </Routes>
-      </HashRouter>
-    </>
+    <HashRouter>
+      <Routes>
+        <Route element={<Navigate to="/welcome" />} path="/*" />
+        <Route element={<WelcomeScreen />} path="/welcome" />
+      </Routes>
+    </HashRouter>
   );
 };

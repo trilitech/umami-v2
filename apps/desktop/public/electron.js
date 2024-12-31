@@ -11,9 +11,6 @@ const fs = require("fs");
 const APP_PROTOCOL = "app";
 const APP_HOST = "assets";
 
-// backupData is used to store the backup data from the previous version of the app
-let backupData;
-
 const appURL = app.isPackaged
   ? url.format({
       pathname: `${APP_HOST}/index.html`,
@@ -64,20 +61,19 @@ async function createBackupFromPrevDB() {
     return;
   }
 
-  // Copy the database to not lose original data
-  fs.cpSync(dbPath, dbBackupPath, { recursive: true });
-
-
   if (fs.existsSync(backupPath)) {
     log.info("Backup file already exists. Skipping migration.");
     return;
   }
 
+  // Copy the database to not lose original data
+  fs.cpSync(dbPath, dbBackupPath, { recursive: true });
+
   const db = new Level(dbBackupPath);
 
   // Retry logic for opening the database
   const maxRetries = 3;
-  const retryDelay = 1000; // 1 second
+  const retryDelay = 1000;
 
   const tryOpenDb = async retriesLeft => {
     try {
@@ -88,7 +84,6 @@ async function createBackupFromPrevDB() {
     } catch (error) {
       if (retriesLeft <= 0) {
         log.error("Failed to open DB after all retries", error);
-        await db.close();
         throw error;
       }
 
@@ -100,7 +95,6 @@ async function createBackupFromPrevDB() {
 
   try {
     await tryOpenDb(maxRetries);
-    log.info("DB is opened");
 
     const storage = {};
 
@@ -169,9 +163,7 @@ async function createBackupFromPrevDB() {
       "persist:root": extractKeys(storage["persist:root"]),
     };
 
-    backupData = preparedStorage;
-
-    // Write storage object to JSON file
+    // Write preparedStorage to JSON file
     try {
       fs.writeFileSync(backupPath, JSON.stringify(preparedStorage, null, 2), "utf-8");
       log.info("Backup successfully created at:", backupPath);
@@ -293,8 +285,6 @@ function createWindow() {
 
   mainWindow.once("ready-to-show", () => {
     mainWindow.show();
-
-    mainWindow.webContents.send("backupData", backupData);
 
     if (deeplinkURL) {
       mainWindow.webContents.send("deeplinkURL", deeplinkURL);
