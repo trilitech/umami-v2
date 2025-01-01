@@ -30,7 +30,7 @@
     "redux-persist": "^6.0.0",
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0",
-    "tamagui": "^1.120.1",
+    "tamagui": "^1.121.4",
     "text-encoding": "^0.7.0",
     "util": "^0.12.5",
     "vm-browserify": "^1.1.2"
