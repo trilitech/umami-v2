@@ -1,12 +1,13 @@
 import { SigningType } from "@airgap/beacon-wallet";
 
-import { decodeBeaconPayload } from "./decodeBeaconPayload";
+import { decodeBeaconPayload, getSigningTypeFromPayload } from "./decodeBeaconPayload";
 
 describe("decodeBeaconPayload", () => {
   it("returns an error message if the payload is not a valid utf8", () => {
     const payload =
       "05010000004354657a6f73205369676e6564204d6573736167653a20496e76616c696420555446383a20c380c2afc3bfc3bec3bd3b204e6f6e7072696e7461626c653a20000115073b";
 
+    expect(getSigningTypeFromPayload(payload)).toEqual(SigningType.MICHELINE);
     expect(decodeBeaconPayload(payload, SigningType.MICHELINE)).toEqual({
       result: payload,
       error: "Cannot parse Beacon payload",
@@ -18,6 +19,7 @@ describe("decodeBeaconPayload", () => {
       "05010000004254657a6f73205369676e6564204d6573736167653a206d79646170702e636f6d20323032312d30312d31345431353a31363a30345a2048656c6c6f20776f726c6421";
     const expected = "Tezos Signed Message: mydapp.com 2021-01-14T15:16:04Z Hello world!";
 
+    expect(getSigningTypeFromPayload(payload)).toEqual(SigningType.MICHELINE);
     expect(decodeBeaconPayload(payload, SigningType.MICHELINE)).toEqual({ result: expected });
   });
 
@@ -41,6 +43,7 @@ describe("decodeBeaconPayload", () => {
     const expected = {
       result: "Tezos Signed Message: mydapp.com 2021-01-14T15:16:04Z Hello world!",
     };
+    expect(getSigningTypeFromPayload(payload)).toEqual(SigningType.RAW);
     expect(decodeBeaconPayload(payload, SigningType.RAW)).toEqual(expected);
   });
 
@@ -63,6 +66,7 @@ describe("decodeBeaconPayload", () => {
       ],
     });
 
+    expect(getSigningTypeFromPayload(raw)).toEqual(SigningType.RAW);
     expect(decodeBeaconPayload(raw, SigningType.RAW)).toEqual({ result });
   });
 
@@ -83,16 +87,26 @@ describe("decodeBeaconPayload", () => {
 
   it("handles an empty payload", () => {
     const emptyPayload = "";
+    expect(getSigningTypeFromPayload(emptyPayload)).toEqual(SigningType.RAW);
     expect(decodeBeaconPayload(emptyPayload, SigningType.RAW)).toEqual({
-      result: "",
+      result: emptyPayload,
     });
   });
 
   it("handles a payload with non-hex characters", () => {
-    const nonHexPayload = "0501ZZZZ";
-    expect(decodeBeaconPayload(nonHexPayload, SigningType.RAW)).toEqual({
+    const nonHexPayload = "0301ZZZZ";
+    expect(getSigningTypeFromPayload(nonHexPayload)).toEqual(SigningType.OPERATION);
+    expect(decodeBeaconPayload(nonHexPayload, SigningType.OPERATION)).toEqual({
       error: "Cannot parse Beacon payload",
-      result: "0501ZZZZ",
+      result: nonHexPayload,
+    });
+  });
+
+  it("handles OPERATION payload", () => {
+    const emptyPayload = "";
+    expect(getSigningTypeFromPayload(emptyPayload)).toEqual(SigningType.RAW);
+    expect(decodeBeaconPayload(emptyPayload, SigningType.RAW)).toEqual({
+      result: "",
     });
   });
 });
