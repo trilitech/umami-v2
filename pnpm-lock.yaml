@@ -98,11 +98,11 @@ importers:
         specifier: ^2.5.0
         version: 2.5.0(react-redux@9.2.0(@types/react@18.3.12)(react@18.3.1)(redux@5.0.1))(react@18.3.1)
       '@tanstack/react-query':
-        specifier: ^5.62.8
-        version: 5.62.8(react@18.3.1)
+        specifier: ^5.62.11
+        version: 5.62.11(react@18.3.1)
       '@tanstack/react-query-devtools':
-        specifier: ^5.62.8
-        version: 5.62.8(@tanstack/react-query@5.62.8(react@18.3.1))(react@18.3.1)
+        specifier: ^5.62.11
+        version: 5.62.11(@tanstack/react-query@5.62.11(react@18.3.1))(react@18.3.1)
       '@taquito/ledger-signer':
         specifier: ^20.1.2
         version: 20.1.2(encoding@0.1.13)
@@ -840,8 +840,8 @@ importers:
         specifier: ^1.0.1
         version: 1.0.1
       '@tanstack/react-query':
-        specifier: ^5.62.8
-        version: 5.62.8(react@18.3.1)
+        specifier: ^5.62.11
+        version: 5.62.11(react@18.3.1)
       '@taquito/beacon-wallet':
         specifier: ^20.1.2
         version: 20.1.2(@testing-library/dom@10.4.0)(@types/react-dom@18.3.1)(@types/react@18.3.12)(encoding@0.1.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -1444,8 +1444,8 @@ importers:
         specifier: ^11.14.0
         version: 11.14.0(@emotion/react@11.14.0(@types/react@18.3.12)(react@18.3.1))(@types/react@18.3.12)(react@18.3.1)
       '@tanstack/react-query':
-        specifier: ^5.62.8
-        version: 5.62.8(react@18.3.1)
+        specifier: ^5.62.11
+        version: 5.62.11(react@18.3.1)
       '@taquito/rpc':
         specifier: ^20.1.2
         version: 20.1.2(encoding@0.1.13)
@@ -1556,8 +1556,8 @@ importers:
         specifier: ^2.12.1
         version: 2.12.1(eslint@8.57.0)(typescript@5.7.2)
       '@tanstack/eslint-plugin-query':
-        specifier: ^5.62.1
-        version: 5.62.1(eslint@8.57.0)(typescript@5.7.2)
+        specifier: ^5.62.9
+        version: 5.62.9(eslint@8.57.0)(typescript@5.7.2)
       '@typescript-eslint/eslint-plugin':
         specifier: ^8.18.1
         version: 8.18.1(@typescript-eslint/parser@8.19.0(eslint@8.57.0)(typescript@5.7.2))(eslint@8.57.0)(typescript@5.7.2)
@@ -1789,8 +1789,8 @@ importers:
         specifier: ^1.0.1
         version: 1.0.1
       '@tanstack/react-query':
-        specifier: ^5.62.8
-        version: 5.62.8(react@18.3.1)
+        specifier: ^5.62.11
+        version: 5.62.11(react@18.3.1)
       '@taquito/signer':
         specifier: ^20.1.2
         version: 20.1.2(encoding@0.1.13)
@@ -5761,25 +5761,25 @@ packages:
       react: '*'
       react-dom: '*'
 
-  '@tanstack/eslint-plugin-query@5.62.1':
-    resolution: {integrity: sha512-1886D5U+re1TW0wSH4/kUGG36yIoW5Wkz4twVEzlk3ZWmjF3XkRSWgB+Sc7n+Lyzt8usNV8ZqkZE6DA7IC47fQ==}
+  '@tanstack/eslint-plugin-query@5.62.9':
+    resolution: {integrity: sha512-F3onhTcpBj7zQDo0NVtZwZQKRFx8BwpSabMJybl9no3+dFHUurvNMrH5M/6KNpkdDCf3zyHWadruZL6636B8Fw==}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
 
-  '@tanstack/query-core@5.62.8':
-    resolution: {integrity: sha512-4fV31vDsUyvNGrKIOUNPrZztoyL187bThnoQOvAXEVlZbSiuPONpfx53634MKKdvsDir5NyOGm80ShFaoHS/mw==}
+  '@tanstack/query-core@5.62.9':
+    resolution: {integrity: sha512-lwePd8hNYhyQ4nM/iRQ+Wz2cDtspGeZZHFZmCzHJ7mfKXt+9S301fULiY2IR2byJYY6Z03T427E5PoVfMexHjw==}
 
-  '@tanstack/query-devtools@5.61.4':
-    resolution: {integrity: sha512-21Tw+u8E3IJJj4A/Bct4H0uBaDTEu7zBrR79FeSyY+mS2gx5/m316oDtJiKkILc819VSTYt+sFzODoJNcpPqZQ==}
+  '@tanstack/query-devtools@5.62.9':
+    resolution: {integrity: sha512-b1NZzDLVf6laJsB1Cfm3ieuYzM+WqoO8qpm9v+3Etwd+Ph4zkhUMiT+wcWj5AhEPsXiRodKYiiW048VDNdBxNg==}
 
-  '@tanstack/react-query-devtools@5.62.8':
-    resolution: {integrity: sha512-SwjXjQTRONd9WPeKVQQ9framG7YNqPV8PS+EGNVNXAyz2XThulMRCvZnh2+3DggnjcYM7YcpnuoZ4RH7q13p0g==}
+  '@tanstack/react-query-devtools@5.62.11':
+    resolution: {integrity: sha512-i0vKgdM4ORRzqduz7UeUF52UhLrvRp4sNY/DnLsd5NqNyiKct3a0bLQMWE2fqjF5tEExQ0d0xY60ILXW/T62xA==}
     peerDependencies:
-      '@tanstack/react-query': ^5.62.8
+      '@tanstack/react-query': ^5.62.11
       react: ^18 || ^19
 
-  '@tanstack/react-query@5.62.8':
-    resolution: {integrity: sha512-8TUstKxF/fysHonZsWg/hnlDVgasTdHx6Q+f1/s/oPKJBJbKUWPZEHwLTMOZgrZuroLMiqYKJ9w69Abm8mWP0Q==}
+  '@tanstack/react-query@5.62.11':
+    resolution: {integrity: sha512-Xb1nw0cYMdtFmwkvH9+y5yYFhXvLRCnXoqlzSw7UkqtCVFq3cG8q+rHZ2Yz1XrC+/ysUaTqbLKJqk95mCgC1oQ==}
     peerDependencies:
       react: ^18 || ^19
 
@@ -17931,7 +17931,7 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  '@tanstack/eslint-plugin-query@5.62.1(eslint@8.57.0)(typescript@5.7.2)':
+  '@tanstack/eslint-plugin-query@5.62.9(eslint@8.57.0)(typescript@5.7.2)':
     dependencies:
       '@typescript-eslint/utils': 7.18.0(eslint@8.57.0)(typescript@5.7.2)
       eslint: 8.57.0
@@ -17939,19 +17939,19 @@ snapshots:
       - supports-color
       - typescript
 
-  '@tanstack/query-core@5.62.8': {}
+  '@tanstack/query-core@5.62.9': {}
 
-  '@tanstack/query-devtools@5.61.4': {}
+  '@tanstack/query-devtools@5.62.9': {}
 
-  '@tanstack/react-query-devtools@5.62.8(@tanstack/react-query@5.62.8(react@18.3.1))(react@18.3.1)':
+  '@tanstack/react-query-devtools@5.62.11(@tanstack/react-query@5.62.11(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@tanstack/query-devtools': 5.61.4
-      '@tanstack/react-query': 5.62.8(react@18.3.1)
+      '@tanstack/query-devtools': 5.62.9
+      '@tanstack/react-query': 5.62.11(react@18.3.1)
       react: 18.3.1
 
-  '@tanstack/react-query@5.62.8(react@18.3.1)':
+  '@tanstack/react-query@5.62.11(react@18.3.1)':
     dependencies:
-      '@tanstack/query-core': 5.62.8
+      '@tanstack/query-core': 5.62.9
       react: 18.3.1
 
   '@taquito/beacon-wallet@20.1.2(@testing-library/dom@10.4.0)(@types/react-dom@18.3.1)(@types/react@18.3.12)(encoding@0.1.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
