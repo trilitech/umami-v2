@@ -20,4 +20,6 @@ contextBridge.exposeInMainWorld("electronAPI", {
 
   clipboardWriteText: text => ipcRenderer.send("clipboard-write", text),
   clipboardClear: () => ipcRenderer.send("clipboard-clear"),
+
+  getBackupData: () => ipcRenderer.invoke("getBackupData"),
 });

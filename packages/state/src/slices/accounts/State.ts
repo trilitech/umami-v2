@@ -9,4 +9,8 @@ export type AccountsState = {
   secretKeys: Record<RawPkh, EncryptedData | undefined>;
   current?: RawPkh | undefined;
   password?: string | undefined;
+  alerts: {
+    isSocialLoginWarningShown: boolean;
+    isExtensionsWarningShown: boolean;
+  };
 };
