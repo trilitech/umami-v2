@@ -362,11 +362,11 @@ importers:
         specifier: ^10.9.2
         version: 10.9.2(@swc/core@1.7.36(@swc/helpers@0.5.13))(@types/node@22.10.2)(typescript@5.7.2)
       typedoc:
-        specifier: ^0.27.5
-        version: 0.27.5(typescript@5.7.2)
+        specifier: ^0.27.6
+        version: 0.27.6(typescript@5.7.2)
       typedoc-plugin-missing-exports:
         specifier: ^3.1.0
-        version: 3.1.0(typedoc@0.27.5(typescript@5.7.2))
+        version: 3.1.0(typedoc@0.27.6(typescript@5.7.2))
       typescript:
         specifier: 5.7.2
         version: 5.7.2
@@ -12018,8 +12018,8 @@ packages:
     peerDependencies:
       typedoc: 0.26.x || 0.27.x
 
-  typedoc@0.27.5:
-    resolution: {integrity: sha512-x+fhKJtTg4ozXwKayh/ek4wxZQI/+2hmZUdO2i2NGDBRUflDble70z+ewHod3d4gRpXSO6fnlnjbDTnJk7HlkQ==}
+  typedoc@0.27.6:
+    resolution: {integrity: sha512-oBFRoh2Px6jFx366db0lLlihcalq/JzyCVp7Vaq1yphL/tbgx2e+bkpkCgJPunaPvPwoTOXSwasfklWHm7GfAw==}
     engines: {node: '>= 18'}
     hasBin: true
     peerDependencies:
@@ -16311,7 +16311,9 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - '@babel/preset-env'
+      - bufferutil
       - supports-color
+      - utf-8-validate
 
   '@react-native/normalize-color@2.1.0': {}
 
@@ -25879,11 +25881,11 @@ snapshots:
 
   typedarray-to-buffer@4.0.0: {}
 
-  typedoc-plugin-missing-exports@3.1.0(typedoc@0.27.5(typescript@5.7.2)):
+  typedoc-plugin-missing-exports@3.1.0(typedoc@0.27.6(typescript@5.7.2)):
     dependencies:
-      typedoc: 0.27.5(typescript@5.7.2)
+      typedoc: 0.27.6(typescript@5.7.2)
 
-  typedoc@0.27.5(typescript@5.7.2):
+  typedoc@0.27.6(typescript@5.7.2):
     dependencies:
       '@gerrit0/mini-shiki': 1.24.1
       lunr: 2.3.9
