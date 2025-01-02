@@ -43,6 +43,19 @@ describe("getErrorContext", () => {
     expect(context.timestamp).toBeDefined();
   });
 
+  it("should handle Error instances with unknown Tezos-specific errors", () => {
+    const error = new Error("protocol.unknown.error");
+
+    const context = getErrorContext(error);
+
+    expect(context.technicalDetails).toBe("protocol.unknown.error");
+    expect(context.description).toBe(
+      "Tezos blockchain rejected the transaction: protocol.unknown.error. Please try again or contact support if the issue persists."
+    );
+    expect(context.stacktrace).toBeDefined();
+    expect(context.timestamp).toBeDefined();
+  });
+
   it("should handle CustomError instances", () => {
     const error = new CustomError("Custom error message");
 
@@ -91,6 +104,13 @@ describe("handleTezError", () => {
   it("catches delegate.unchanged", () => {
     const res = handleTezError(new Error("delegate.unchanged"));
     expect(res).toBe("The delegate is unchanged. Delegation to this address is already done.");
+  });
+
+  it("catches contract.manager.unregistered_delegate", () => {
+    const res = handleTezError(new Error("contract.manager.unregistered_delegate"));
+    expect(res).toBe(
+      "The provided delegate address is not registered as a delegate. Verify the delegate address and ensure it is active."
+    );
   });
 
   it("returns undefined for unknown errors", () => {

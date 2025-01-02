@@ -36,6 +36,8 @@ export const handleTezError = (err: Error): string | undefined => {
     return "Emptying an implicit delegated account is not allowed. End delegation before trying again.";
   } else if (err.message.includes("delegate.unchanged")) {
     return "The delegate is unchanged. Delegation to this address is already done.";
+  } else if (err.message.includes("contract.manager.unregistered_delegate")) {
+    return "The provided delegate address is not registered as a delegate. Verify the delegate address and ensure it is active.";
   }
 };
 
@@ -59,7 +61,9 @@ export const getErrorContext = (error: any): ErrorContext => {
     description = error.message;
     technicalDetails = "";
   } else if (error instanceof Error) {
-    description = handleTezError(error) ?? description;
+    description =
+      handleTezError(error) ||
+      `Tezos blockchain rejected the transaction: ${error.message}. Please try again or contact support if the issue persists.`;
   }
 
   return {
