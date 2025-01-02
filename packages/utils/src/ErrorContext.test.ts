@@ -101,6 +101,13 @@ describe("explainTezError", () => {
     expect(res).toBe("The delegate is unchanged. Delegation to this address is already done.");
   });
 
+  it("catches contract.manager.unregistered_delegate", () => {
+    const res = explainTezError("contract.manager.unregistered_delegate");
+    expect(res).toBe(
+      "The provided delegate address is not registered as a delegate. Verify the delegate address and ensure it is active."
+    );
+  });
+
   it("returns undefined for unknown errors", () => {
     const err = "unknown error";
     expect(explainTezError(err)).toBeUndefined();

@@ -75,6 +75,8 @@ export const explainTezError = (err: string): string | undefined => {
     return "Emptying an implicit delegated account is not allowed. End delegation before trying again.";
   } else if (err.includes("delegate.unchanged")) {
     return "The delegate is unchanged. Delegation to this address is already done.";
+  } else if (err.includes("contract.manager.unregistered_delegate")) {
+    return "The provided delegate address is not registered as a delegate. Verify the delegate address and ensure it is active.";
   } else if (err.includes("michelson_v1.script_rejected")) {
     return "The contract code failed to run. Please check the contract.";
   }
