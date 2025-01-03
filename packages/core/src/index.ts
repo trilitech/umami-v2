@@ -5,6 +5,7 @@ export * from "./decodeBeaconPayload";
 export * from "./Delegate";
 export * from "./estimate";
 export * from "./execute";
+export * from "./getPublicKeyAndCurve";
 export * from "./helpers";
 export * from "./Operation";
 export * from "./testUtils";
