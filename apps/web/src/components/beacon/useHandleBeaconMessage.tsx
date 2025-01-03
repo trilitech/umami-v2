@@ -10,6 +10,7 @@ import {
   WalletClient,
   useAsyncActionHandler,
   useFindNetwork,
+  useGetImplicitAccount,
   useGetOwnedAccountSafe,
   useRemoveBeaconPeerBySenderId,
 } from "@umami/state";
@@ -17,10 +18,14 @@ import { type Network } from "@umami/tezos";
 import { CustomError } from "@umami/utils";
 
 import { PermissionRequestModal } from "./PermissionRequestModal";
-import { SignPayloadRequestModal } from "./SignPayloadRequestModal";
+import { SignPayloadRequestModal } from "../common/SignPayloadRequestModal";
 import { BatchSignPage } from "../SendFlow/common/BatchSignPage";
 import { SingleSignPage } from "../SendFlow/common/SingleSignPage";
-import { type SdkSignPageProps, type SignHeaderProps } from "../SendFlow/utils";
+import {
+  type SdkSignPageProps,
+  type SignHeaderProps,
+  type SignPayloadProps,
+} from "../SendFlow/utils";
 
 /**
  * @returns a function that handles a beacon message and opens a modal with the appropriate content
@@ -32,6 +37,7 @@ export const useHandleBeaconMessage = () => {
   const { openWith } = useDynamicModalContext();
   const { handleAsyncAction } = useAsyncActionHandler();
   const getAccount = useGetOwnedAccountSafe();
+  const getImplicitAccount = useGetImplicitAccount();
   const findNetwork = useFindNetwork();
   const removePeer = useRemoveBeaconPeerBySenderId();
 
@@ -83,7 +89,16 @@ export const useHandleBeaconMessage = () => {
             break;
           }
           case BeaconMessageType.SignPayloadRequest: {
-            modal = <SignPayloadRequestModal request={message} />;
+            const signer = getImplicitAccount(message.sourceAddress);
+            const signPayloadProps: SignPayloadProps = {
+              appName: message.appMetadata.name,
+              appIcon: message.appMetadata.icon,
+              payload: message.payload,
+              signer: signer,
+              signingType: message.signingType,
+              requestId: { sdkType: "beacon", id: message.id },
+            };
+            modal = <SignPayloadRequestModal opts={signPayloadProps} />;
             onClose = async () => {
               await WalletClient.respond({
                 id: message.id,
