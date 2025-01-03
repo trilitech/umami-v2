@@ -81,6 +81,8 @@ export const useHandleWcRequest = () => {
             appName: session.peer.metadata.name,
             appIcon: session.peer.metadata.icons[0],
             payload: request.params.payload,
+            isScam: event.verifyContext.verified.isScam,
+            validationStatus: event.verifyContext.verified.validation,
             signer: signer,
             signingType: SigningType.RAW,
             requestId: { sdkType: "walletconnect", id: id, topic },
@@ -126,11 +128,13 @@ export const useHandleWcRequest = () => {
             network,
             appName: session.peer.metadata.name,
             appIcon: session.peer.metadata.icons[0],
+            isScam: event.verifyContext.verified.isScam,
+            validationStatus: event.verifyContext.verified.validation,
+            requestId: { sdkType: "walletconnect", id: id, topic },
           };
           const signProps: SdkSignPageProps = {
             headerProps: headerProps,
             operation: estimatedOperations,
-            requestId: { sdkType: "walletconnect", id: id, topic },
           };
 
           if (operation.operations.length === 1) {

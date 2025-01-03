@@ -18,7 +18,9 @@ export const SingleSignPage = (signProps: SdkSignPageProps) => {
   const beaconCalculatedProps = useSignWithBeacon({ ...signProps });
   const walletConnectCalculatedProps = useSignWithWalletConnect({ ...signProps });
   const calculatedProps =
-    signProps.requestId.sdkType === "beacon" ? beaconCalculatedProps : walletConnectCalculatedProps;
+    signProps.headerProps.requestId.sdkType === "beacon"
+      ? beaconCalculatedProps
+      : walletConnectCalculatedProps;
 
   switch (operationType) {
     case "tez": {

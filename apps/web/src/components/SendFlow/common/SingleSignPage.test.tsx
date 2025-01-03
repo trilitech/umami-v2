@@ -81,6 +81,7 @@ describe("<SingleSignPage />", () => {
       network: GHOSTNET,
       appName: message.appMetadata.name,
       appIcon: message.appMetadata.icon,
+      requestId: { sdkType: "beacon", id: message.id },
     };
     store.dispatch(networksActions.setCurrent(GHOSTNET));
 
@@ -89,7 +90,6 @@ describe("<SingleSignPage />", () => {
       const signProps: SdkSignPageProps = {
         headerProps: headerProps,
         operation: operation,
-        requestId: { sdkType: "beacon", id: message.id },
       };
 
       jest.mocked(useGetSecretKey).mockImplementation(() => () => Promise.resolve("secretKey"));
