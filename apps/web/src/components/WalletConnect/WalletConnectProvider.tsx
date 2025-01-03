@@ -12,7 +12,7 @@ import {
   walletKit,
 } from "@umami/state";
 import { type Network } from "@umami/tezos";
-import { CustomError, WalletConnectError } from "@umami/utils";
+import { WalletConnectError } from "@umami/utils";
 import { formatJsonRpcError } from "@walletconnect/jsonrpc-utils";
 import { type SessionTypes } from "@walletconnect/types";
 import { type SdkErrorKey, getSdkError } from "@walletconnect/utils";
@@ -49,27 +49,39 @@ export const WalletConnectProvider = ({ children }: PropsWithChildren) => {
           .map(([key, values]) => (key.includes(":") ? key : (values.chains ?? [])))
           .flat()
           .filter(Boolean);
+        const optionalNetworks = Object.entries(proposal.params.optionalNamespaces)
+          .map(([key, values]) => (key.includes(":") ? key : (values.chains ?? [])))
+          .flat()
+          .filter(Boolean);
 
         if (requiredNetworks.length !== 1) {
-          throw new CustomError(
-            `Umami supports only one network per request, got required networks: ${requiredNetworks}`
+          throw new WalletConnectError(
+            `Umami supports only one network per request, got required networks: ${requiredNetworks}, optional networks: ${optionalNetworks}`,
+            "UNSUPPORTED_CHAINS",
+            null
           );
         }
         const network = requiredNetworks[0] as NetworkType;
         const availablenetworks = availableNetworks.map(network => network.name);
         // the network contains a namespace, e.g. tezos:mainnet
         if (!availablenetworks.includes(network.split(":")[1])) {
-          throw new CustomError(
-            `The requested required network "${network}" is not supported. Available: ${availablenetworks}`
+          const availableNetworkNames = availableNetworks.map(network => `tezos:${network.name}`);
+          throw new WalletConnectError(
+            `The requested required network "${network}" is not supported. Available: ${availableNetworkNames}`,
+            "UNSUPPORTED_CHAINS",
+            null
           );
         }
 
         await openWith(<SessionProposalModal network={network} proposal={proposal} />, {});
-      }).catch(async () => {
+      }).catch(async error => {
+        const sdkErrorKey: SdkErrorKey =
+          error instanceof WalletConnectError ? error.sdkError : "SESSION_SETTLEMENT_FAILED";
+        console.warn("WC session proposal failed", sdkErrorKey, error, proposal);
         // dApp is waiting so we need to notify it
         await walletKit.rejectSession({
           id: proposal.id,
-          reason: getSdkError("UNSUPPORTED_CHAINS"),
+          reason: getSdkError(sdkErrorKey),
         });
       }),
     [availableNetworks, openWith, handleAsyncActionUnsafe]
