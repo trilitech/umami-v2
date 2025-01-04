@@ -1,14 +1,14 @@
-import { BeaconMessageType, type OperationResponseInput } from "@airgap/beacon-wallet";
 import { type TezosToolkit } from "@taquito/taquito";
 import { useDynamicModalContext } from "@umami/components";
 import { executeOperations, totalFee } from "@umami/core";
-import { WalletClient, useAsyncActionHandler } from "@umami/state";
+import { useAsyncActionHandler, walletKit } from "@umami/state";
+import { formatJsonRpcResult } from "@walletconnect/jsonrpc-utils";
 import { useForm } from "react-hook-form";
 
 import { SuccessStep } from "../SuccessStep";
 import { type CalculatedSignProps, type SdkSignPageProps } from "../utils";
 
-export const useSignWithBeacon = ({
+export const useSignWithWalletConnect = ({
   operation,
   headerProps,
 }: SdkSignPageProps): CalculatedSignProps => {
@@ -16,6 +16,16 @@ export const useSignWithBeacon = ({
   const { openWith } = useDynamicModalContext();
 
   const form = useForm({ defaultValues: { executeParams: operation.estimates } });
+  const requestId = headerProps.requestId;
+
+  if (requestId.sdkType !== "walletconnect") {
+    return {
+      fee: 0,
+      isSigning: false,
+      onSign: async () => {},
+      network: null,
+    };
+  }
 
   const onSign = async (tezosToolkit: TezosToolkit) =>
     handleAsyncAction(
@@ -25,17 +35,12 @@ export const useSignWithBeacon = ({
           tezosToolkit
         );
 
-        const response: OperationResponseInput = {
-          type: BeaconMessageType.OperationResponse,
-          id: headerProps.requestId.id.toString(),
-          transactionHash: opHash,
-        };
-        await WalletClient.respond(response);
-
+        const response = formatJsonRpcResult(requestId.id, { hash: opHash, operationHash: opHash });
+        await walletKit.respondSessionRequest({ topic: requestId.topic, response });
         return openWith(<SuccessStep hash={opHash} />);
       },
       error => ({
-        description: `Failed to confirm Beacon operation: ${error.message}`,
+        description: `Failed to confirm WalletConnect operation: ${error.message}`,
       })
     );
 

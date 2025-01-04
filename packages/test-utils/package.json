@@ -25,7 +25,7 @@
     "depcheck": "^1.4.7",
     "eslint": "^8.57.0",
     "madge": "^8.0.0",
-    "prettier": "^3.3.3",
+    "prettier": "^3.4.2",
     "rimraf": "^6.0.1",
     "tsup": "^8.3.5",
     "typescript": "^5.7.2"
@@ -56,13 +56,13 @@
     ]
   },
   "dependencies": {
-    "@taquito/rpc": "^20.1.0",
-    "@taquito/utils": "^20.1.0",
+    "@taquito/rpc": "^20.1.2",
+    "@taquito/utils": "^20.1.2",
     "@umami/jest-config": "workspace:^",
     "jest": "^29.7.0",
     "@types/jest": "^29.5.14",
     "@tzkt/sdk-api": "^2.2.1",
     "lodash": "^4.17.21",
-    "zod": "^3.23.8"
+    "zod": "^3.24.1"
   }
 }

@@ -1,7 +1,7 @@
 import { useAllContacts } from "./contacts";
 import { useAllAccounts } from "./getAccountData";
 
-export const PROHIBITED_CHARACTERS = `/\\"'<>:{}$#|\`\t\r\n`.split("");
+export const PROHIBITED_CHARACTERS = "/\\\"'<>:{}$#|`\t\r\n".split("");
 
 /** Hook for validating name for account or contact. */
 export const useValidateName = (oldName?: string | undefined) => {

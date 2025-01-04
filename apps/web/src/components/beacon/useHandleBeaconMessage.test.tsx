@@ -113,7 +113,7 @@ describe("<useHandleBeaconMessage />", () => {
 
       act(() => handleMessage(message));
 
-      await screen.findByText("mockDappName/dApp Pairing Request");
+      await screen.findByText("Sign Payload Request from mockDappName");
     });
 
     it("sends an error response to the dapp on close", async () => {
@@ -134,7 +134,7 @@ describe("<useHandleBeaconMessage />", () => {
 
       act(() => handleMessage(message));
 
-      await screen.findByText("mockDappName/dApp Pairing Request");
+      await screen.findByText("Sign Payload Request from mockDappName");
 
       act(() => screen.getByRole("button", { name: "Close" }).click());
 
@@ -360,11 +360,11 @@ describe("<useHandleBeaconMessage />", () => {
           network: MAINNET,
           appName: message.appMetadata.name,
           appIcon: message.appMetadata.icon,
+          requestId: { sdkType: "beacon", id: message.id },
         };
         const signProps: SdkSignPageProps = {
           headerProps: headerProps,
           operation: operation,
-          requestId: { sdkType: "beacon", id: message.id },
         };
 
         const {
@@ -465,11 +465,11 @@ describe("<useHandleBeaconMessage />", () => {
           network: MAINNET,
           appName: message.appMetadata.name,
           appIcon: message.appMetadata.icon,
+          requestId: { sdkType: "beacon", id: message.id },
         };
         const signProps: SdkSignPageProps = {
           headerProps: headerProps,
           operation: estimatedOperations,
-          requestId: { sdkType: "beacon", id: message.id },
         };
 
         const {

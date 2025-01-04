@@ -73,7 +73,7 @@ export const Layout = () => {
       gridTemplateColumns={{ base: "1fr", md: "340px minmax(min-content, 1060px)" }}
       gridTemplateAreas={{
         base: '"header" "sidebar" "main" "footer" "nav"',
-        md: `"header header" "sidebar nav" "sidebar main" "footer main"`,
+        md: '"header header" "sidebar nav" "sidebar main" "footer main"',
       }}
       height={{ md: "100vh" }}
       minHeight={{ base: "100dvh" }}

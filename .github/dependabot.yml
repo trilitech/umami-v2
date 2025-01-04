@@ -4,7 +4,9 @@ updates:
     directory: "/"
     open-pull-requests-limit: 20
     schedule:
-      interval: "daily"
+      interval: "monthly"
+      day: "saturday"   # Runs the update on the first Saturday of the month
+      time: "08:00"     # at 08:00 UTC
     groups:
       taquito:
         patterns:

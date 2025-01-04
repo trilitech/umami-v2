@@ -10,12 +10,17 @@ import { TezSignPage } from "./TezSignPage";
 import { UndelegationSignPage } from "./UndelegationSignPage";
 import { UnstakeSignPage } from "./UnstakeSignPage";
 import { useSignWithBeacon } from "../Beacon/useSignWithBeacon";
+import { useSignWithWalletConnect } from "../WalletConnect/useSignWithWalletConnect";
 
 export const SingleSignPage = (signProps: SdkSignPageProps) => {
   const operationType = signProps.operation.operations[0].type;
 
   const beaconCalculatedProps = useSignWithBeacon({ ...signProps });
-  const calculatedProps = beaconCalculatedProps;
+  const walletConnectCalculatedProps = useSignWithWalletConnect({ ...signProps });
+  const calculatedProps =
+    signProps.headerProps.requestId.sdkType === "beacon"
+      ? beaconCalculatedProps
+      : walletConnectCalculatedProps;
 
   switch (operationType) {
     case "tez": {

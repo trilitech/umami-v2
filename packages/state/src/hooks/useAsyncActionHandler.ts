@@ -40,22 +40,29 @@ export const useAsyncActionHandler = () => {
       } catch (error: any) {
         const errorContext = getErrorContext(error);
 
-        toast({
-          description: errorContext.description,
-          status: "error",
-          isClosable: true,
-          ...(typeof toastOptions === "function" ? toastOptions(error) : toastOptions),
-        });
+        // Prevent double toast and record of the same error if case of nested handleAsyncActionUnsafe calls.
+        // Still we need to re-throw the error to propagate it to the caller.
+        // There is no problem with handleAsyncAction calls as they stop the propagation of the error.
+        if (!error.processed) {
+          error.processed = true;
 
-        // TODO: fix this dirty hack
-        mockToast({
-          description: errorContext.description,
-          status: "error",
-          isClosable: true,
-          ...(typeof toastOptions === "function" ? toastOptions(error) : toastOptions),
-        });
+          toast({
+            description: errorContext.description,
+            status: "error",
+            isClosable: true,
+            ...(typeof toastOptions === "function" ? toastOptions(error) : toastOptions),
+          });
 
-        dispatch(errorsActions.add(errorContext));
+          // TODO: fix this dirty hack
+          mockToast({
+            description: errorContext.description,
+            status: "error",
+            isClosable: true,
+            ...(typeof toastOptions === "function" ? toastOptions(error) : toastOptions),
+          });
+
+          dispatch(errorsActions.add(errorContext));
+        }
         throw error;
       } finally {
         isLoadingRef.current = false;

@@ -24,12 +24,13 @@
     "dev:web": "turbo dev --filter=@umami/web",
     "dev:mobile": "turbo dev --filter=@umami/mobile-expo",
     "storybook": "turbo dev --filter=@umami/storybook",
-    "start:mobile": "pnpm --filter=@umami/mobile-expo start"
+    "start:mobile": "pnpm --filter=@umami/mobile-expo start",
+    "postinstall": "patch-package"
   },
   "devDependencies": {
     "jest": "^29.7.0",
     "rimraf": "^6.0.1",
-    "turbo": "^2.3.2"
+    "turbo": "^2.3.3"
   },
   "resolutions": {
     "@typescript-eslint/utils": "^7.15.0",
