@@ -6,7 +6,6 @@ import process from 'process';
 
 global.Buffer = Buffer;
 global.process = process;
-global.crypto = Crypto;
 
 // Must be exported or Fast Refresh won't update the context
 export function App() {
