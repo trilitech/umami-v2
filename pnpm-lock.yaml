@@ -344,8 +344,8 @@ importers:
         specifier: ^3.2.23
         version: 3.2.23
       react-router-dom:
-        specifier: ^6.26.1
-        version: 6.26.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^6.28.1
+        version: 6.28.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-test-renderer:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
@@ -555,8 +555,8 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
       react-router-dom:
-        specifier: ^6.26.1
-        version: 6.26.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^6.28.1
+        version: 6.28.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
     devDependencies:
       '@umami/eslint-config':
         specifier: workspace:^
@@ -616,8 +616,8 @@ importers:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
       react-router-dom:
-        specifier: ^6.26.1
-        version: 6.26.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^6.28.1
+        version: 6.28.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
     devDependencies:
       '@umami/eslint-config':
         specifier: workspace:^
@@ -966,11 +966,11 @@ importers:
         specifier: ^3.2.23
         version: 3.2.23
       react-router:
-        specifier: ^6.26.1
-        version: 6.26.1(react@18.3.1)
+        specifier: ^6.28.1
+        version: 6.28.1(react@18.3.1)
       react-router-dom:
-        specifier: ^6.26.1
-        version: 6.26.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^6.28.1
+        version: 6.28.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-test-renderer:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
@@ -4752,8 +4752,8 @@ packages:
       react-redux:
         optional: true
 
-  '@remix-run/router@1.19.1':
-    resolution: {integrity: sha512-S45oynt/WH19bHbIXjtli6QmwNYvaz+vtnubvNpNDvUOoA/OWh6j1OikIP3G+v5GHdxyC6EXoChG3HgYGEUfcg==}
+  '@remix-run/router@1.21.0':
+    resolution: {integrity: sha512-xfSkCAchbdG5PnbrKqFWwia4Bi61nH+wm8wLEqfHDyp7Y3dZzgqS2itV8i4gAq9pC2HsTpwyBC6Ds8VHZ96JlA==}
     engines: {node: '>=14.0.0'}
 
   '@reown/walletkit@1.0.1':
@@ -11068,15 +11068,15 @@ packages:
   react-responsive-carousel@3.2.23:
     resolution: {integrity: sha512-pqJLsBaKHWJhw/ItODgbVoziR2z4lpcJg+YwmRlSk4rKH32VE633mAtZZ9kDXjy4wFO+pgUZmDKPsPe1fPmHCg==}
 
-  react-router-dom@6.26.1:
-    resolution: {integrity: sha512-veut7m41S1fLql4pLhxeSW3jlqs+4MtjRLj0xvuCEXsxusJCbs6I8yn9BxzzDX2XDgafrccY6hwjmd/bL54tFw==}
+  react-router-dom@6.28.1:
+    resolution: {integrity: sha512-YraE27C/RdjcZwl5UCqF/ffXnZDxpJdk9Q6jw38SZHjXs7NNdpViq2l2c7fO7+4uWaEfcwfGCv3RSg4e1By/fQ==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
       react: '>=16.8'
       react-dom: '>=16.8'
 
-  react-router@6.26.1:
-    resolution: {integrity: sha512-kIwJveZNwp7teQRI5QmwWo39A5bXRyqpH0COKKmPnyD2vBvDwgFXSqDUYtt1h+FEyfnE8eXr7oe0MxRzVwCcvQ==}
+  react-router@6.28.1:
+    resolution: {integrity: sha512-2omQTA3rkMljmrvvo6WtewGdVh45SpL9hGiCI9uUrwGGfNFDIvGK4gYJsKlJoNVi6AQZcopSCballL+QGOm7fA==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
       react: '>=16.8'
@@ -16588,7 +16588,7 @@ snapshots:
       react: 18.3.1
       react-redux: 9.2.0(@types/react@18.3.12)(react@18.3.1)(redux@5.0.1)
 
-  '@remix-run/router@1.19.1': {}
+  '@remix-run/router@1.21.0': {}
 
   '@reown/walletkit@1.0.1':
     dependencies:
@@ -25170,16 +25170,16 @@ snapshots:
       prop-types: 15.8.1
       react-easy-swipe: 0.0.21
 
-  react-router-dom@6.26.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+  react-router-dom@6.28.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
-      '@remix-run/router': 1.19.1
+      '@remix-run/router': 1.21.0
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
-      react-router: 6.26.1(react@18.3.1)
+      react-router: 6.28.1(react@18.3.1)
 
-  react-router@6.26.1(react@18.3.1):
+  react-router@6.28.1(react@18.3.1):
     dependencies:
-      '@remix-run/router': 1.19.1
+      '@remix-run/router': 1.21.0
       react: 18.3.1
 
   react-shallow-renderer@16.15.0(react@18.3.1):
