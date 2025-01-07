@@ -1,6 +1,5 @@
 import { Box, Button, Divider, Flex, Heading, Link, Text, VStack } from "@chakra-ui/react";
 import { errorsActions, useAppDispatch, useAppSelector } from "@umami/state";
-import { handleTezError } from "@umami/utils";
 
 import { useColor } from "../../../styles/useColor";
 import { EmptyMessage } from "../../EmptyMessage";
@@ -61,8 +60,7 @@ export const ErrorLogsMenu = () => {
                     </Text>
                     {errorLog.technicalDetails && (
                       <Text marginTop="12px" color={color("700")} size="sm">
-                        {handleTezError({ name: "unknown", message: errorLog.technicalDetails }) ??
-                          ""}
+                        {JSON.stringify(errorLog.technicalDetails)}
                       </Text>
                     )}
                   </Flex>

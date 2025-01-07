@@ -14,11 +14,12 @@ export const useReactQueryErrorHandler = () => {
         return;
       }
       dispatch(errorsActions.add(getErrorContext(error)));
+      const context = getErrorContext(error);
 
       if (!toast.isActive(toastId)) {
         toast({
           id: toastId,
-          description: `Data fetching error: ${error.message}`,
+          description: `Data fetching error: ${context.description}`,
           status: "error",
           isClosable: true,
           duration: 10000,
