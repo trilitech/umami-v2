@@ -79,12 +79,7 @@ const makeWrapper =
     });
 
     return (
-      <BrowserRouter
-        future={{
-          v7_relativeSplatPath: true,
-          v7_startTransition: true,
-        }}
-      >
+      <BrowserRouter>
         <QueryClientProvider client={new QueryClient()}>
           <Provider store={store}>
             <DynamicModalContext.Provider value={dynamicModal}>

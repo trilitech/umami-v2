@@ -1,5 +1,7 @@
 import "@testing-library/jest-dom";
 
+import { TextDecoder, TextEncoder } from "node:util";
+
 const writeText = jest.fn();
 
 Object.assign(navigator, {
@@ -19,3 +21,11 @@ jest.mock("@reown/walletkit", () => ({
 jest.mock("@walletconnect/utils", () => ({
   WalletConnect: jest.fn(),
 }));
+
+if (
+  typeof globalThis.TextEncoder === "undefined" ||
+  typeof globalThis.TextDecoder === "undefined"
+) {
+  globalThis.TextEncoder = TextEncoder as typeof globalThis.TextEncoder;
+  globalThis.TextDecoder = TextDecoder as typeof globalThis.TextDecoder;
+}
