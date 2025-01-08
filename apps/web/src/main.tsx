@@ -30,7 +30,12 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <PersistGate loading={<div>loading</div>} persistor={persistor}>
           <ErrorBoundary fallback={<ErrorPage />} onError={logError}>
             <ReactQueryProvider>
-              <BrowserRouter>
+              <BrowserRouter
+                future={{
+                  v7_relativeSplatPath: true,
+                  v7_startTransition: true,
+                }}
+              >
                 <DynamicDisclosureProvider>
                   <App />
                 </DynamicDisclosureProvider>
