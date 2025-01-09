@@ -8,7 +8,7 @@ import { ViewOverlay } from "../../components/ViewOverlay/ViewOverlay";
 export const Earn = () => {
   const isVerified = useIsAccountVerified();
 
-  const buyTezUrl = "https://stake.tezos.com/";
+  const stakeTezosUrl = "https://stake.tezos.com/";
 
   return (
     <>
@@ -16,7 +16,7 @@ export const Earn = () => {
         {isVerified ? (
           <EmptyMessage
             cta="Start Earning"
-            ctaUrl={buyTezUrl}
+            ctaUrl={stakeTezosUrl}
             subtitle={"Maximize your tez with staking.com.\nSecure, efficient, and simple."}
             title="Boost your rewards"
           />

@@ -1,9 +1,21 @@
+import { MAINNET } from "@umami/tezos";
 import { useDispatch } from "react-redux";
 
 import { useAppSelector } from "./useAppSelector";
 import { assetsActions, networksActions } from "../slices";
 
 export const useSelectedNetwork = () => useAppSelector(s => s.networks.current);
+
+export const useBuyTezUrl = (pkh?: string) => {
+  const network = useSelectedNetwork();
+  let buyTezUrl = network.buyTezUrl;
+
+  if (buyTezUrl && network === MAINNET) {
+    buyTezUrl += `/default/widget/?commodity=XTZ&address=${pkh}&network=tezos&commodity_id=xtz.simple.tezos`;
+  }
+
+  return buyTezUrl;
+};
 
 export const useAvailableNetworks = () => useAppSelector(s => s.networks.available);
 

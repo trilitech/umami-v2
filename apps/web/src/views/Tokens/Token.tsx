@@ -43,6 +43,7 @@ export const Token = ({ token }: TokenProps) => {
       _notLast={{
         borderBottom: `1px solid ${color("100")}`,
       }}
+      data-testid="token-card"
       paddingY={{ base: "18px", md: "30px" }}
     >
       <Flex alignItems="center" flex="1" gridArea="token">

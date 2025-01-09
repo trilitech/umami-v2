@@ -1,6 +1,6 @@
 import { Flex, VStack } from "@chakra-ui/react";
 import { fullId } from "@umami/core";
-import { useCurrentAccount, useGetAccountAllTokens } from "@umami/state";
+import { useBuyTezUrl, useCurrentAccount, useGetAccountAllTokens } from "@umami/state";
 
 import { Token } from "./Token";
 import { EmptyMessage } from "../../components/EmptyMessage";
@@ -13,7 +13,7 @@ export const Tokens = () => {
   const currentAccount = useCurrentAccount()!;
   const availableTokens = useGetAccountAllTokens()(currentAccount.address.pkh);
 
-  const buyTezUrl = `https://widget.wert.io/default/widget/?commodity=XTZ&address=${currentAccount.address.pkh}&network=tezos&commodity_id=xtz.simple.tezos`;
+  const buyTezUrl = useBuyTezUrl(currentAccount.address.pkh);
 
   return (
     <>
