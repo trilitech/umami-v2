@@ -80,7 +80,7 @@ export const restoreV2BackupFile = async (
   persistor.pause();
 
   localStorage.clear();
-  localStorage.setItem("migration_2_3_3_to_2_3_4_completed", "true");
+  localStorage.setItem("migration_to_2_3_5_completed", "true");
   localStorage.setItem("persist:accounts", accountsInString);
   localStorage.setItem("persist:root", backup["persist:root"]);
 

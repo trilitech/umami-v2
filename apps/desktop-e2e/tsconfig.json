@@ -13,8 +13,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "customConditions": ["@umami/source"],
-    "preserveSymlinks": true
+    "customConditions": ["@umami/source"]
   },
   "ts-node": {
     "esm": true

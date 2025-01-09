@@ -87,7 +87,7 @@ const LoggedOutRouter = () => {
   }, [resetBeaconConnections]);
 
   useEffect(() => {
-    if (localStorage.getItem("migration_2_3_3_to_2_3_4_completed")) {
+    if (localStorage.getItem("migration_to_2_3_5_completed")) {
       return;
     }
 
@@ -95,7 +95,7 @@ const LoggedOutRouter = () => {
       const backupData = await window.electronAPI.getBackupData();
 
       if (!backupData) {
-        localStorage.setItem("migration_2_3_3_to_2_3_4_completed", "true");
+        localStorage.setItem("migration_to_2_3_5_completed", "true");
         return;
       }
 
@@ -104,7 +104,7 @@ const LoggedOutRouter = () => {
       await persistor.flush();
       localStorage.clear();
 
-      localStorage.setItem("migration_2_3_3_to_2_3_4_completed", "true");
+      localStorage.setItem("migration_to_2_3_5_completed", "true");
       localStorage.setItem("persist:accounts", JSON.stringify(backupData["persist:accounts"]));
       localStorage.setItem("persist:root", JSON.stringify(backupData["persist:root"]));
 
