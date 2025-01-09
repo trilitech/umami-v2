@@ -11,6 +11,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useDynamicModalContext } from "@umami/components";
+import { accountsActions, useAppDispatch } from "@umami/state";
 import { useState } from "react";
 
 import { WarningIcon } from "../../assets/icons";
@@ -19,9 +20,10 @@ import colors from "../../style/colors";
 export const SocialLoginWarningModal = () => {
   const { onClose } = useDynamicModalContext();
   const [isAgreed, setIsAgreed] = useState(false);
+  const dispatch = useAppDispatch();
 
   const handleInform = () => {
-    localStorage.setItem("user:isSocialLoginWarningShown", "true");
+    dispatch(accountsActions.setAlerts({ key: "isSocialLoginWarningShown", value: true }));
     onClose();
   };
 
