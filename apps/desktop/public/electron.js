@@ -116,6 +116,11 @@ async function createBackupFromPrevDB() {
     ];
 
     const extractKeys = json => {
+      // if json is not a string, it's already a valid object
+      if (typeof json !== "string") {
+        return json;
+      }
+
       const regexp = /"([^"]+)":("[^"\\]*(?:\\.[^"\\]*)*"|{[^}]+})/g;
 
       const result = {};
