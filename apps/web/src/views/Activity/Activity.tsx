@@ -1,7 +1,7 @@
 import { Box, Center, Divider, Flex, Image, Spinner } from "@chakra-ui/react";
 import { type Account } from "@umami/core";
 import { useGetOperations } from "@umami/data-polling";
-import { useCurrentAccount } from "@umami/state";
+import { useBuyTezUrl, useCurrentAccount } from "@umami/state";
 
 import loadingDots from "../../assets/loading-dots.gif";
 import { EmptyMessage } from "../../components/EmptyMessage";
@@ -21,7 +21,7 @@ export const Activity = () => {
     isVerified
   );
 
-  const buyTezUrl = `https://widget.wert.io/default/widget/?commodity=XTZ&address=${currentAccount?.address.pkh}&network=tezos&commodity_id=xtz.simple.tezos`;
+  const buyTezUrl = useBuyTezUrl(currentAccount?.address.pkh);
 
   const isEmpty = operations.length === 0 && !isLoading;
 

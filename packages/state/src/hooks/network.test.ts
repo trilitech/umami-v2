@@ -3,6 +3,7 @@ import { GHOSTNET, MAINNET, mockImplicitAddress } from "@umami/tezos";
 
 import {
   useAvailableNetworks,
+  useBuyTezUrl,
   useFindNetwork,
   useSelectNetwork,
   useSelectedNetwork,
@@ -32,6 +33,28 @@ describe("networkHooks", () => {
         result: { current },
       } = renderHook(() => useSelectedNetwork(), { store });
       expect(current.name).toEqual("ghostnet");
+    });
+  });
+
+  describe("useBuyTezUrl", () => {
+    it("for mainnet - returns customized mainnet url", () => {
+      store.dispatch(networksActions.setCurrent(MAINNET));
+
+      const {
+        result: { current },
+      } = renderHook(() => useBuyTezUrl("pkh123"), { store });
+      expect(current).toEqual(
+        `${MAINNET.buyTezUrl}/default/widget/?commodity=XTZ&address=pkh123&network=tezos&commodity_id=xtz.simple.tezos`
+      );
+    });
+
+    it("for others - returns url from network setting", () => {
+      store.dispatch(networksActions.setCurrent(GHOSTNET));
+
+      const {
+        result: { current },
+      } = renderHook(() => useBuyTezUrl("pkh123"), { store });
+      expect(current).toEqual(GHOSTNET.buyTezUrl);
     });
   });
 

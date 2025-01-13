@@ -1,6 +1,11 @@
 import { Box, Flex, Link, Text } from "@chakra-ui/react";
 import { useDynamicModalContext } from "@umami/components";
-import { useCurrentAccount, useGetAccountBalance, useGetDollarBalance } from "@umami/state";
+import {
+  useBuyTezUrl,
+  useCurrentAccount,
+  useGetAccountBalance,
+  useGetDollarBalance,
+} from "@umami/state";
 import { TEZ, prettyTezAmount } from "@umami/tezos";
 
 import { SendTezButton } from "./SendTezButton";
@@ -19,7 +24,7 @@ export const AccountBalance = () => {
   const usdBalance = useGetDollarBalance()(address);
   const isVerified = useIsAccountVerified();
 
-  const buyTezUrl = `https://widget.wert.io/default/widget/?commodity=XTZ&address=${address}&network=tezos&commodity_id=xtz.simple.tezos`;
+  const buyTezUrl = useBuyTezUrl(address);
 
   const getUsdBalance = () => {
     if (balance === undefined) {
