@@ -1,7 +1,7 @@
 {
   "name": "@umami/oauth",
   "files": [
-    "public/redirect.html"
+    "public/sw.js",
   ],
   "devDependencies": {
     "depcheck": "^1.4.7",
