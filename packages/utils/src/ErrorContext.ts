@@ -2,6 +2,7 @@ import { type MichelsonV1ExpressionBase, type TezosGenericOperationError } from 
 import { TezosOperationError, type TezosOperationErrorWithMessage } from "@taquito/taquito";
 import { type ErrorResponse } from "@walletconnect/jsonrpc-utils";
 import { type SessionTypes } from "@walletconnect/types";
+import sanitizeHtml from "sanitize-html";
 
 import { TezosRpcErrors } from "./TezosRpcErrors";
 
@@ -88,6 +89,40 @@ export const getTezErrorMessage = (err: string): string | undefined => {
   }
 };
 
+export const getHttpErrorMessage = (status: number): string => {
+  const defaultAction = "Please try again later or contact support.";
+  const httpErrorDescriptions: { [key: number]: string } = {
+    400: "Bad Request - The server could not understand the request. Please check your input and try again.",
+    401: "Unauthorized - Authentication is required or has failed. Please log in and try again.",
+    403: "Forbidden - You do not have permission to access the requested resource. Contact support if you believe this is an error.",
+    404: `Not Found - The requested resource could not be found. ${defaultAction}`,
+    405: `Method Not Allowed - The HTTP method is not supported by the resource. ${defaultAction}`,
+    408: "Request Timeout - The server timed out waiting for the request. Please check your network connection and try again.",
+    409: `Conflict - There is a conflict with the current state of the resource. ${defaultAction}`,
+    410: `Gone - The resource is no longer available. It may have been removed or retired. ${defaultAction}`,
+    500: `Internal Server Error - An unexpected error occurred on the server. ${defaultAction}`,
+    501: "Not Implemented - The server does not support the functionality required to fulfill the request. Contact support for assistance.",
+    502: "Bad Gateway - The server received an invalid response from the upstream server. Please try again later.",
+    503: `Service Unavailable - The server is temporarily unable to handle the request. ${defaultAction}`,
+    504: "Gateway Timeout - The server did not receive a timely response from the upstream server. Check your network and try again.",
+  };
+
+  return (
+    httpErrorDescriptions[status] ||
+    `Unknown Error - Status code: ${status}. Please try again later or contact support.`
+  );
+};
+
+function stripHtmlTags(html: string): string {
+  return sanitizeHtml(html, {
+    allowedTags: [],
+    allowedAttributes: {},
+  })
+    .replace(/[\r\n]/g, " ") // replace new lines with spaces
+    .replace(/\s+/g, " ") // replace multiple spaces with single space
+    .trim();
+}
+
 const isTezosOperationErrorWithMessage = (
   error: TezosGenericOperationError
 ): error is TezosOperationErrorWithMessage => "with" in error;
@@ -97,7 +132,7 @@ export const getErrorContext = (error: any, silent: boolean = false): ErrorConte
     "Something went wrong. Please try again. Contact support if the issue persists.";
   let description = defaultDescription;
   let technicalDetails: any = undefined;
-  let code = WcErrorCode.INTERNAL_ERROR;
+  let code: number = WcErrorCode.INTERNAL_ERROR;
   const errorMessage = typeof error === "string" ? error : error.message;
 
   let stacktrace = "";
@@ -119,7 +154,7 @@ export const getErrorContext = (error: any, silent: boolean = false): ErrorConte
     description =
       "Rejected by chain. " +
       (getTezErrorMessage(lastError.id) ?? "") +
-      " Details: " +
+      "\nDetails: " +
       errorMessage;
     if (isTezosOperationErrorWithMessage(lastError)) {
       const failswith: MichelsonV1ExpressionBase = lastError.with;
@@ -127,6 +162,24 @@ export const getErrorContext = (error: any, silent: boolean = false): ErrorConte
     } else {
       technicalDetails = [lastError.id];
     }
+  } else if (
+    typeof error === "object" &&
+    error !== null &&
+    "status" in error &&
+    typeof error.status === "number" &&
+    "url" in error &&
+    typeof error.url === "string"
+  ) {
+    // HttpErrorResponse exception has these fields. Since we need the fields only, we can use them directly.
+    const httpError = getHttpErrorMessage(error.status);
+    const plainMessage = stripHtmlTags(error.message);
+    description = `HTTP request failed for ${error.url} (${error.status}) ${httpError}`;
+    code = error.status;
+    console.log("HTTP ERROR", error);
+    if (code === 500) {
+      description = `${description}\nDetails: ${plainMessage}`;
+    }
+    technicalDetails = [error.status, httpError, error.url, plainMessage];
   } else if (error instanceof Error || Object.prototype.hasOwnProperty.call(error, "message")) {
     description = getTezErrorMessage(errorMessage) ?? defaultDescription;
     technicalDetails = errorMessage;
