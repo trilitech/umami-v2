@@ -19,11 +19,11 @@
     "@types/eslint": "^8",
     "@types/jest": "^29.5.14",
     "@types/lodash": "^4",
-    "@umami/utils": "workspace:^",
     "@umami/core": "workspace:^",
     "@umami/eslint-config": "workspace:^",
     "@umami/jest-config": "workspace:^",
     "@umami/typescript-config": "workspace:^",
+    "@umami/utils": "workspace:^",
     "babel-jest": "^29.7.0",
     "depcheck": "^1.4.7",
     "eslint": "^8.57.0",
@@ -60,8 +60,8 @@
     ]
   },
   "dependencies": {
-    "@taquito/rpc": "^20.1.2",
-    "@taquito/utils": "^20.1.2",
+    "@taquito/rpc": "^21.0.0",
+    "@taquito/utils": "^21.0.0",
     "@tzkt/sdk-api": "^2.2.1",
     "@umami/tezos": "workspace:^",
     "@umami/tzkt": "workspace:^",

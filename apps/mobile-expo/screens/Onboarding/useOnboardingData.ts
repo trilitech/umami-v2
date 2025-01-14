@@ -9,10 +9,11 @@ import Web3Auth, {
 import { CommonPrivateKeyProvider } from "@web3auth/base-provider";
 import * as SecureStore from "expo-secure-store";
 
+
 WebBrowser.maybeCompleteAuthSession();
 
 const WEB3_AUTH_CLIENT_ID =
-  "BBQoFIabI50S1-0QsGHGTM4qID_FDjja0ZxIxKPyFqc0El--M-EG0c2giaBYVTVVE6RC9WCUzCJyW24aJrR_Lzc";
+  "BKWj5XMZ7iZULQwqoeUAWibh-UcBVHoBlosUzKBGBuEb-M-AnaZRulEYP19yHYP40G0fRs02PBmYEPMgswLU0Ho";
 
 const STRINGS = {
   continueWith: "Continue with:",
@@ -44,8 +45,7 @@ const createWeb3AuthInstance = () => {
     clientId: WEB3_AUTH_CLIENT_ID,
     network: WEB3AUTH_NETWORK.MAINNET,
     privateKeyProvider,
-    // TODO: set the proper value for the redirectUrl
-    redirectUrl: "redirect.html",
+    redirectUrl: "umami://",
   });
 };
 

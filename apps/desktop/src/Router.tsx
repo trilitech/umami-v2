@@ -4,6 +4,7 @@ import { useDataPolling } from "@umami/data-polling";
 import {
   WalletClient,
   useCurrentAccount,
+  useGetUserAlerts,
   useImplicitAccounts,
   useResetBeaconConnections,
 } from "@umami/state";
@@ -14,6 +15,7 @@ import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
 import { AnnouncementBanner } from "./components/AnnouncementBanner";
 import { SocialLoginWarningModal } from "./components/SocialLoginWarningModal/SocialLoginWarningModal";
 import { BeaconProvider } from "./utils/beacon/BeaconProvider";
+import { persistor } from "./utils/persistor";
 import { useDeeplinkHandler } from "./utils/useDeeplinkHandler";
 import { AddressBookView } from "./views/addressBook/AddressBookView";
 import { BatchPage } from "./views/batch/BatchPage";
@@ -40,12 +42,13 @@ const LoggedInRouterWithPolling = () => {
   useDataPolling();
   const modalDisclosure = useDynamicModal();
   const currentUser = useCurrentAccount();
+  const getUserAlerts = useGetUserAlerts();
 
   useEffect(() => {
     if (currentUser?.type === "social") {
-      const isInformed = localStorage.getItem("user:isSocialLoginWarningShown");
+      const isInformed = getUserAlerts("isSocialLoginWarningShown");
 
-      if (!isInformed || !JSON.parse(isInformed)) {
+      if (!isInformed) {
         void modalDisclosure.openWith(<SocialLoginWarningModal />, { closeOnEsc: false });
       }
     }
@@ -82,6 +85,36 @@ const LoggedOutRouter = () => {
   useEffect(() => {
     WalletClient.destroy().then(resetBeaconConnections).catch(noop);
   }, [resetBeaconConnections]);
+
+  useEffect(() => {
+    if (localStorage.getItem("migration_to_2_3_5_completed")) {
+      return;
+    }
+
+    const getBackupData = async () => {
+      const backupData = await window.electronAPI.getBackupData();
+
+      if (!backupData) {
+        localStorage.setItem("migration_to_2_3_5_completed", "true");
+        return;
+      }
+
+      persistor.pause();
+
+      await persistor.flush();
+      localStorage.clear();
+
+      localStorage.setItem("migration_to_2_3_5_completed", "true");
+      localStorage.setItem("persist:accounts", JSON.stringify(backupData["persist:accounts"]));
+      localStorage.setItem("persist:root", JSON.stringify(backupData["persist:root"]));
+
+      persistor.persist();
+
+      window.location.reload();
+    };
+
+    getBackupData().catch(() => {});
+  }, []);
 
   return (
     <HashRouter>
