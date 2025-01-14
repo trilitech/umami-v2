@@ -1,7 +1,12 @@
-import { SigningType } from "@airgap/beacon-wallet";
+import { type SigningType } from "@airgap/beacon-wallet";
 import { useToast } from "@chakra-ui/react";
 import { useDynamicModalContext } from "@umami/components";
-import { type ImplicitAccount, estimate, toAccountOperations } from "@umami/core";
+import {
+  type ImplicitAccount,
+  estimate,
+  getSigningTypeFromPayload,
+  toAccountOperations,
+} from "@umami/core";
 import {
   useAsyncActionHandler,
   useFindNetwork,
@@ -95,14 +100,16 @@ export const useHandleWcRequest = () => {
               session
             );
           }
+
+          const signingType: SigningType = getSigningTypeFromPayload(request.params.payload);
           const signPayloadProps: SignPayloadProps = {
             appName: session.peer.metadata.name,
             appIcon: session.peer.metadata.icons[0],
             payload: request.params.payload,
             isScam: event.verifyContext.verified.isScam,
             validationStatus: event.verifyContext.verified.validation,
-            signer: signer,
-            signingType: SigningType.RAW,
+            signer,
+            signingType,
             requestId: { sdkType: "walletconnect", id: id, topic },
           };
 
