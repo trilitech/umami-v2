@@ -323,6 +323,14 @@ function createWindow() {
 }
 
 function start() {
+  app.on("open-url", (_event, url) => {
+    if (mainWindow) {
+      mainWindow.webContents.send("deeplinkURL", url);
+    } else {
+      deeplinkURL = url;
+    }
+  });
+
   // Assure single instance
   if (!app.requestSingleInstanceLock()) {
     app.quit();
@@ -367,15 +375,6 @@ function start() {
       }
     } else {
       createWindow();
-    }
-  });
-
-  app.on("open-url", (_event, url) => {
-    if (mainWindow) {
-      mainWindow.webContents.send("deeplinkURL", url);
-    } else {
-      deeplinkURL = url;
-      app.whenReady().then(createWindow);
     }
   });
 
