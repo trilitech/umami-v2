@@ -15,7 +15,7 @@ import {
   useRemoveBeaconPeerBySenderId,
 } from "@umami/state";
 import { type Network } from "@umami/tezos";
-import { CustomError } from "@umami/utils";
+import { BeaconError, getErrorContext } from "@umami/utils";
 
 import { PermissionRequestModal } from "./PermissionRequestModal";
 import { SignPayloadRequestModal } from "../common/SignPayloadRequestModal";
@@ -40,10 +40,31 @@ export const useHandleBeaconMessage = () => {
   const getImplicitAccount = useGetImplicitAccount();
   const findNetwork = useFindNetwork();
   const removePeer = useRemoveBeaconPeerBySenderId();
+  let lastProcessedMessageId: string | null = null;
+
+  // Beacon SDK expects errorData for TRANSACTION_INVALID_ERROR only and as an array of RPC errors
+  const respondWithError = async (
+    messageId: string,
+    errorType: BeaconErrorType,
+    errorData?: any
+  ) => {
+    console.info("[respondWithError]", messageId, errorType, errorData);
+    if (messageId !== lastProcessedMessageId) {
+      lastProcessedMessageId = messageId;
+      console.info("[respondWithError] sending response", errorType);
+      await WalletClient.respond({
+        id: messageId,
+        type: BeaconMessageType.Error,
+        errorType,
+        errorData,
+      });
+    } else {
+      console.info("[respondWithError] response already sent", errorType);
+    }
+  };
 
   // we should confirm that we support the network that the beacon request is coming from
   const checkNetwork = ({
-    id: messageId,
     network: beaconNetwork,
   }: {
     id: string;
@@ -52,15 +73,11 @@ export const useHandleBeaconMessage = () => {
     const network = findNetwork(beaconNetwork.type);
 
     if (!network) {
-      void WalletClient.respond({
-        id: messageId,
-        type: BeaconMessageType.Error,
-        errorType: BeaconErrorType.NETWORK_NOT_SUPPORTED,
-      });
-      throw new CustomError(
+      throw new BeaconError(
         `Got Beacon request from an unknown network: ${JSON.stringify(
           beaconNetwork
-        )}. Please add it to the networks list and retry.`
+        )}. Please add it to the networks list and retry.`,
+        BeaconErrorType.NETWORK_NOT_SUPPORTED
       );
     }
 
@@ -79,11 +96,7 @@ export const useHandleBeaconMessage = () => {
             checkNetwork(message);
             modal = <PermissionRequestModal request={message} />;
             onClose = async () => {
-              await WalletClient.respond({
-                id: message.id,
-                type: BeaconMessageType.Error,
-                errorType: BeaconErrorType.NOT_GRANTED_ERROR,
-              });
+              await respondWithError(message.id, BeaconErrorType.NOT_GRANTED_ERROR);
               await removePeer(message.senderId);
             };
             break;
@@ -100,11 +113,7 @@ export const useHandleBeaconMessage = () => {
             };
             modal = <SignPayloadRequestModal opts={signPayloadProps} />;
             onClose = async () => {
-              await WalletClient.respond({
-                id: message.id,
-                type: BeaconMessageType.Error,
-                errorType: BeaconErrorType.ABORTED_ERROR,
-              });
+              await respondWithError(message.id, BeaconErrorType.ABORTED_ERROR);
             };
             break;
           }
@@ -112,12 +121,10 @@ export const useHandleBeaconMessage = () => {
             const network = checkNetwork(message);
             const signer = getAccount(message.sourceAddress);
             if (!signer) {
-              void WalletClient.respond({
-                id: message.id,
-                type: BeaconMessageType.Error,
-                errorType: BeaconErrorType.NO_PRIVATE_KEY_FOUND_ERROR,
-              });
-              throw new CustomError(`Unknown account: ${message.sourceAddress}`);
+              throw new BeaconError(
+                `Unknown account: ${message.sourceAddress}`,
+                BeaconErrorType.NO_PRIVATE_KEY_FOUND_ERROR
+              );
             }
 
             const operation = toAccountOperations(
@@ -141,33 +148,28 @@ export const useHandleBeaconMessage = () => {
             } else {
               modal = <BatchSignPage {...signProps} {...message.operationDetails} />;
             }
-            onClose = () =>
-              WalletClient.respond({
-                id: message.id,
-                type: BeaconMessageType.Error,
-                errorType: BeaconErrorType.ABORTED_ERROR,
-              });
+            onClose = () => respondWithError(message.id, BeaconErrorType.ABORTED_ERROR);
 
             break;
           }
           default: {
             // TODO: Open a modal with an unknown operation instead
-
-            void WalletClient.respond({
-              id: message.id,
-              type: BeaconMessageType.Error,
-              errorType: BeaconErrorType.UNKNOWN_ERROR,
-            });
-
-            throw new CustomError(`Unknown Beacon message type: ${message.type}`);
+            throw new BeaconError(
+              `Unknown Beacon message type: ${message.type}`,
+              BeaconErrorType.UNKNOWN_ERROR
+            );
           }
         }
 
         return openWith(modal, { onClose });
       },
-      (error: { message: any }) => ({
-        description: `Error while processing Beacon request: ${error.message}`,
-      })
+      (error: any) => {
+        const context = getErrorContext(error);
+        const errorType = error.errorType || BeaconErrorType.UNKNOWN_ERROR;
+
+        void respondWithError(message.id, errorType);
+        return { description: `Error while processing Beacon request: ${context.description}` };
+      }
     );
   };
 };

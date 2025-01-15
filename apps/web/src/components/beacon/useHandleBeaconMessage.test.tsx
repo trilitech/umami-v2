@@ -91,6 +91,7 @@ describe("<useHandleBeaconMessage />", () => {
         id: "mockMessageId",
         type: "error",
       });
+      expect(WalletClient.respond).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -143,12 +144,14 @@ describe("<useHandleBeaconMessage />", () => {
         id: "mockMessageId",
         type: "error",
       });
+      expect(WalletClient.respond).toHaveBeenCalledTimes(1);
     });
   });
 
   it("displays an error on an unknown Beacon request", async () => {
     const message = {
       type: BeaconMessageType.BlockchainRequest,
+      id: "mockMessageId",
     } as unknown as BeaconRequestOutputMessage;
 
     const {
@@ -165,6 +168,12 @@ describe("<useHandleBeaconMessage />", () => {
         isClosable: true,
       })
     );
+    expect(WalletClient.respond).toHaveBeenCalledWith({
+      errorType: "UNKNOWN_ERROR",
+      id: "mockMessageId",
+      type: "error",
+    });
+    expect(WalletClient.respond).toHaveBeenCalledTimes(1);
     expect(dynamicModalContextMock.openWith).not.toHaveBeenCalled();
   });
 
@@ -173,6 +182,7 @@ describe("<useHandleBeaconMessage />", () => {
       const message = {
         type: BeaconMessageType.OperationRequest,
         operationDetails: [],
+        id: "mockMessageId",
         sourceAddress: account.address.pkh,
         network: { type: NetworkType.MAINNET },
       } as unknown as BeaconRequestOutputMessage;
@@ -190,6 +200,12 @@ describe("<useHandleBeaconMessage />", () => {
           isClosable: true,
         })
       );
+      expect(WalletClient.respond).toHaveBeenCalledWith({
+        errorType: "UNKNOWN_ERROR",
+        id: "mockMessageId",
+        type: "error",
+      });
+      expect(WalletClient.respond).toHaveBeenCalledTimes(1);
       expect(dynamicModalContextMock.openWith).not.toHaveBeenCalled();
     });
 
@@ -197,6 +213,7 @@ describe("<useHandleBeaconMessage />", () => {
       const message = {
         type: BeaconMessageType.OperationRequest,
         operationDetails: [{ kind: TezosOperationType.ACTIVATE_ACCOUNT }],
+        id: "mockMessageId",
         sourceAddress: account.address.pkh,
         network: { type: NetworkType.MAINNET },
       } as unknown as BeaconRequestOutputMessage;
@@ -215,6 +232,12 @@ describe("<useHandleBeaconMessage />", () => {
           isClosable: true,
         })
       );
+      expect(WalletClient.respond).toHaveBeenCalledWith({
+        errorType: "UNKNOWN_ERROR",
+        id: "mockMessageId",
+        type: "error",
+      });
+      expect(WalletClient.respond).toHaveBeenCalledTimes(1);
       expect(dynamicModalContextMock.openWith).not.toHaveBeenCalled();
     });
 
@@ -254,6 +277,7 @@ describe("<useHandleBeaconMessage />", () => {
         id: "mockMessageId",
         type: "error",
       });
+      expect(WalletClient.respond).toHaveBeenCalledTimes(1);
       expect(dynamicModalContextMock.openWith).not.toHaveBeenCalled();
     });
 
@@ -317,12 +341,12 @@ describe("<useHandleBeaconMessage />", () => {
           isClosable: true,
         });
       });
-
       expect(WalletClient.respond).toHaveBeenCalledWith({
         errorType: "NETWORK_NOT_SUPPORTED",
         id: "mockMessageId",
         type: "error",
       });
+      expect(WalletClient.respond).toHaveBeenCalledTimes(1);
       expect(dynamicModalContextMock.openWith).not.toHaveBeenCalled();
     });
 
@@ -421,6 +445,7 @@ describe("<useHandleBeaconMessage />", () => {
           id: "mockMessageId",
           type: "error",
         });
+        expect(WalletClient.respond).toHaveBeenCalledTimes(1);
       });
     });
 
@@ -527,6 +552,7 @@ describe("<useHandleBeaconMessage />", () => {
         id: "mockMessageId",
         type: "error",
       });
+      expect(WalletClient.respond).toHaveBeenCalledTimes(1);
     });
   });
 });

@@ -1,10 +1,10 @@
 import { type PartialTezosOperation, TezosOperationType } from "@airgap/beacon-wallet";
 import { isValidImplicitPkh, parseImplicitPkh, parsePkh } from "@umami/tezos";
+import { CustomError } from "@umami/utils";
 
 import { type ImplicitAccount } from "./Account";
 import { type ImplicitOperations } from "./AccountOperations";
 import { type ContractOrigination, type Operation } from "./Operation";
-import { CustomError } from "../../utils/src/ErrorContext";
 
 /**
  * takes a list of {@link PartialTezosOperation} which come from Beacon
