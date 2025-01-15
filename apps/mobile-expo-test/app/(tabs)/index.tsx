@@ -4,9 +4,13 @@ import { HelloWave } from "@/components/HelloWave";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { Button } from "tamagui";
+import { Button, Text } from "tamagui";
+import { useAvailableNetworks, useCurrentAccount, useSelectedNetwork } from "@umami/state";
 
 export default function HomeScreen() {
+  const currentAccount = useCurrentAccount();
+  const networks = useAvailableNetworks();
+
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
@@ -36,6 +40,8 @@ export default function HomeScreen() {
           to open developer tools.
         </ThemedText>
       </ThemedView>
+      <Text>{currentAccount?.address.pkh ? currentAccount?.address.pkh : "No account"}</Text>
+      <Text>{networks.map((network) => network.name)}</Text>
       <Button>Click me</Button>
       <ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Step 2: Explore</ThemedText>
