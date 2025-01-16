@@ -1,5 +1,6 @@
 import React from "react";
-import { TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, Text} from "react-native";
+import { View } from "@tamagui/core";
 
 import {
   AppleImage,
@@ -41,66 +42,69 @@ export const OnboardingScreen: React.FC = () => {
   } = useOnboardingData();
 
   return (
-    <MainContainer>
-      <ContentWrapper>
-        <MainContainer>
-          {/*TODO: change image*/}
-          <StyledImage source={images.tezos} />
-          <ContinueLabel>{strings.continueWith}</ContinueLabel>
-            <SocialButtonsWrapper>
-              <TouchableOpacity onPress={onGoogleLogin}>
-                <SocialIconWrapper>
-                  <GoogleImage source={images.google} />
-                </SocialIconWrapper>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={onFacebookLogin}>
-                <SocialIconWrapper>
-                  <FacebookRedditImage source={images.facebook} />
-                </SocialIconWrapper>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={onXLogin}>
-                <SocialIconWrapper>
-                  <TwitterImage source={images.twitter} />
-                </SocialIconWrapper>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={onRedditLogin}>
-                <SocialIconWrapper>
-                  <FacebookRedditImage source={images.reddit} />
-                </SocialIconWrapper>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={onAppleLogin}>
-                <SocialIconWrapper>
-                  <AppleImage source={images.apple} />
-                </SocialIconWrapper>
-              </TouchableOpacity>
-            </SocialButtonsWrapper>
-
-          <DividerWrapper>
-            <DividerLine />
-            <DividerLabel>{strings.or}</DividerLabel>
-            <DividerLine />
-          </DividerWrapper>
-
-          <ButtonsWrapper>
-            <PrimaryButton>
-              <PrimaryButtonLabel>{strings.createWallet}</PrimaryButtonLabel>
-            </PrimaryButton>
-
-            <SecondaryButton>
-              <ButtonLabel>{strings.alreadyHaveWallet}</ButtonLabel>
-            </SecondaryButton>
-          </ButtonsWrapper>
-        </MainContainer>
-        <View style={{ alignItems: "center" }}>
-          <FooterLabel>{strings.byProceeding}</FooterLabel>
-          <LinksWrapper>
-            <StyledLink onPress={openTerms}>{strings.terms}</StyledLink>
-            <FooterLinkLabel>{strings.and}</FooterLinkLabel>
-            <StyledLink onPress={openPrivacy}>{strings.privacyPolicy}</StyledLink>
-          </LinksWrapper>
-        </View>
-      </ContentWrapper>
-    </MainContainer>
+    <View padding={20}>
+      <Text>Test</Text>
+    </View>
+    // <MainContainer>
+    //   <ContentWrapper>
+    //     <MainContainer>
+    //       {/*TODO: change image*/}
+    //       <StyledImage source={images.tezos} />
+    //       <ContinueLabel>{strings.continueWith}</ContinueLabel>
+    //         <SocialButtonsWrapper>
+    //           <TouchableOpacity onPress={onGoogleLogin}>
+    //             <SocialIconWrapper>
+    //               <GoogleImage source={images.google} />
+    //             </SocialIconWrapper>
+    //           </TouchableOpacity>
+    //           <TouchableOpacity onPress={onFacebookLogin}>
+    //             <SocialIconWrapper>
+    //               <FacebookRedditImage source={images.facebook} />
+    //             </SocialIconWrapper>
+    //           </TouchableOpacity>
+    //           <TouchableOpacity onPress={onXLogin}>
+    //             <SocialIconWrapper>
+    //               <TwitterImage source={images.twitter} />
+    //             </SocialIconWrapper>
+    //           </TouchableOpacity>
+    //           <TouchableOpacity onPress={onRedditLogin}>
+    //             <SocialIconWrapper>
+    //               <FacebookRedditImage source={images.reddit} />
+    //             </SocialIconWrapper>
+    //           </TouchableOpacity>
+    //           <TouchableOpacity onPress={onAppleLogin}>
+    //             <SocialIconWrapper>
+    //               <AppleImage source={images.apple} />
+    //             </SocialIconWrapper>
+    //           </TouchableOpacity>
+    //         </SocialButtonsWrapper>
+    //
+    //       <DividerWrapper>
+    //         <DividerLine />
+    //         <DividerLabel>{strings.or}</DividerLabel>
+    //         <DividerLine />
+    //       </DividerWrapper>
+    //
+    //       <ButtonsWrapper>
+    //         <PrimaryButton>
+    //           <PrimaryButtonLabel>{strings.createWallet}</PrimaryButtonLabel>
+    //         </PrimaryButton>
+    //
+    //         <SecondaryButton>
+    //           <ButtonLabel>{strings.alreadyHaveWallet}</ButtonLabel>
+    //         </SecondaryButton>
+    //       </ButtonsWrapper>
+    //     </MainContainer>
+    //     <View style={{ alignItems: "center" }}>
+    //       <FooterLabel>{strings.byProceeding}</FooterLabel>
+    //       <LinksWrapper>
+    //         <StyledLink onPress={openTerms}>{strings.terms}</StyledLink>
+    //         <FooterLinkLabel>{strings.and}</FooterLinkLabel>
+    //         <StyledLink onPress={openPrivacy}>{strings.privacyPolicy}</StyledLink>
+    //       </LinksWrapper>
+    //     </View>
+    //   </ContentWrapper>
+    // </MainContainer>
   );
 };
 

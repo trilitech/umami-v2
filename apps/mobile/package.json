@@ -4,8 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
+    "android": "TAMAGUI_TARGET=native react-native run-android",
+    "ios": "TAMAGUI_TARGET=native react-native run-ios",
     "format:ci": "prettier --ignore-path ../../.gitignore --check src",
     "format": "prettier --ignore-path ../../.gitignore --write src",
     "lint:ci": "eslint src --ext .js,.jsx,.ts,.tsx --max-warnings=0",

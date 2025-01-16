@@ -1,131 +1,131 @@
-import { Image, SafeAreaView } from "react-native";
-import styled from "styled-components/native";
+import {SafeAreaView, TouchableOpacity, Image} from 'react-native';
+import { styled, View, Text } from "@tamagui/core";
 
-export const MainContainer = styled(SafeAreaView)`
-  flex: 1;
-`;
+export const MainContainer = styled(SafeAreaView, {
+  flex: 1,
+});
 
-export const ContentWrapper = styled.View`
-  flex: 1;
-  padding-horizontal: 20px;
-  justify-content: space-between;
-`;
+export const ContentWrapper = styled(View, {
+  flex: 1,
+  paddingHorizontal: 20,
+  justifyContent: 'space-between'
+});
 
-export const StyledImage = styled.Image`
-  width: 100%;
-  height: 350px;
-  resize-mode: cover;
-  border-radius: 15px;
-`;
+export const StyledImage = styled(Image, {
+  width: '100%',
+  height: 350,
+  resizeMode: 'cover',
+  borderRadius: 15,
+});
 
-export const ContinueLabel = styled.Text`
-  margin-top: 35px;
-  align-self: center;
-  font-weight: 600;
-  font-size: 16px;
-`;
+export const ContinueLabel = styled(Text, {
+  marginTop: 35,
+  alignSelf: 'center',
+  fontWeight: 600,
+  fontSize: 16
+});
 
-export const DividerWrapper = styled.View`
-  flex-direction: row;
-  align-items: center;
-`;
+export const DividerWrapper = styled(View, {
+  flexDirection: 'row',
+  alignItems: 'center',
+});
 
-export const DividerLine = styled.View`
-  width: 47%;
-  height: 1px;
-  background-color: #E1E1EF;
-`;
+export const DividerLine = styled(View, {
+    width: '47%',
+    height: 1,
+    backgroundColor: '#E1E1EF',
+  });
 
-export const DividerLabel = styled.Text`
-  margin-horizontal: 10px;
-  font-weight: 600;
-  font-size: 16px;
-`;
+export const DividerLabel = styled(Text, {
+  marginHorizontal: 10,
+  fontWeight: 600,
+  fontSize: 16,
+});
 
 
-const StyledButton = styled.TouchableOpacity`
-  border-radius: 100px;
-  width: 100%;
-  align-items: center;
-  justify-content: center;
-  padding: 15px;
-  margin-top: 10px;
-`;
+const StyledButton = styled(TouchableOpacity, {
+  borderRadius: 100,
+  width: '100%',
+  alignItems: 'center',
+  justifyContent: 'center',
+  padding: 15,
+  marginTop: 10,
+});
 
-export const ButtonsWrapper = styled.View`
- margin-top: 20px;
-`;
+export const ButtonsWrapper = styled(View, {
+  marginTop: 20,
+});
 
-export const PrimaryButton = styled(StyledButton)`
-  background-color: black;
-`;
+export const PrimaryButton = styled(StyledButton, {
+  backgroundColor: 'black',
+});
 
-export const SecondaryButton = styled(StyledButton)`
-  background-color: #E1E1EF;
-`;
+export const SecondaryButton = styled(StyledButton, {
+  backgroundColor: '#E1E1EF',
+});
 
-export const ButtonLabel = styled.Text`
-  font-size: 16px;
-  font-weight: 600;
-`;
+export const ButtonLabel = styled(Text, {
+  fontSize: 16,
+  fontWeight: 600,
+});
 
-export const PrimaryButtonLabel = styled(ButtonLabel)`
-  color: white;
-`;
+export const PrimaryButtonLabel = styled(ButtonLabel, {
+  color: 'white',
+});
 
-export const FooterLabel = styled.Text`
-  margin-top: 20px;
-`;
+export const FooterLabel = styled(Text, {
+  marginTop: 20,
+});
 
-export const LinksWrapper = styled.View`
-  flex-direction: row;
-  align-items: center;
-`;
+export const LinksWrapper = styled(View, {
+  flexDirection: 'row',
+  alignItems: 'center',
+});
 
-export const StyledLink = styled.Text`
-  text-decoration-line: underline;
-`;
+export const StyledLink = styled(Text, {
+  textDecorationLine: 'underline',
+});
 
-export const FooterLinkLabel = styled.Text`
-  margin-horizontal: 10px;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 18px;
-`;
+export const FooterLinkLabel = styled(Text, {
+  marginHorizontal: 10,
+  fontWeight: 400,
+  fontSize: 14,
+  lineHeight: 18,
+});
 
-export const SocialButtonsWrapper = styled.View`
-  width: 100%;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  margin-vertical: 30px;
-`;
+export const SocialButtonsWrapper = styled(View, {
+  width: '100%',
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  marginVertical: 30,
+});
 
-export const SocialIconWrapper = styled.View`
-  width: 48px;
-  height: 48px;
-  border-radius: 24px;
-  border-width: 1px;
-  align-items: center;
-  justify-content: center;
-`;
+export const SocialIconWrapper = styled(View, {
+  width: 48,
+  height: 48,
+  borderRadius: 24,
+  borderWidth: 1,
+  alignItems: 'center',
+  justifyContent: 'center',
+});
 
-export const GoogleImage = styled(Image)`
-  width: 20px;
-  height: 20px;
-`;
+export const GoogleImage = styled(Image, {
+  width: 20,
+  height: 20,
+});
 
-export const FacebookRedditImage = styled(Image)`
-  width: 26px;
-  height: 26px;
-`;
+export const FacebookRedditImage = styled(Image, {
+  width: 26,
+  height: 26,
+});
 
-export const TwitterImage = styled(Image)`
-  width: 16px;
-  height: 16px;
-`;
+export const TwitterImage = styled(Image, {
+  width: 16,
+  height: 16,
+});
 
-export const AppleImage = styled(Image)`
-  width: 22px;
-  height: 22px;
-`;
+export const AppleImage = styled(Image, {
+  width: 22,
+  height: 22,
+});
