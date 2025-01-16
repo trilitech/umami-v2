@@ -45,7 +45,7 @@ const createWeb3AuthInstance = () => {
     network: WEB3AUTH_NETWORK.MAINNET,
     privateKeyProvider,
     // TODO: set the proper value for the redirectUrl
-    redirectUrl: "redirect.html",
+    redirectUrl: "umami://",
   });
 };
 
