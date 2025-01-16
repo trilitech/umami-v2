@@ -45,7 +45,7 @@ export const OnboardingScreen: React.FC = () => {
       <ContentWrapper>
         <MainContainer>
           {/*TODO: change image*/}
-          <StyledImage source={images.tezos} />
+          <StyledImage source={images.tezos} resizeMode="cover" />
           <ContinueLabel>{strings.continueWith}</ContinueLabel>
             <SocialButtonsWrapper>
               <TouchableOpacity onPress={onGoogleLogin}>
