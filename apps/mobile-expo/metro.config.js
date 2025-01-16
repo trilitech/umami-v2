@@ -26,7 +26,7 @@ defaultConfig.resolver = {
     vm: require.resolve("vm-browserify"),
     zlib: require.resolve("pako"),
     process: require.resolve("process"),
-    crypto: require.resolve('expo-crypto'),
+    crypto: require.resolve('crypto-browserify'),
   },
   disableHierarchicalLookup: true,
   unstable_enableSymlinks: true,
