@@ -24,6 +24,10 @@ describe("accountsSlice", () => {
       seedPhrases: {},
       secretKeys: {},
       password: "",
+      alerts: {
+        isSocialLoginWarningShown: false,
+        isExtensionsWarningShown: false,
+      },
     });
   });
 
@@ -57,6 +61,10 @@ describe("accountsSlice", () => {
         seedPhrases: { mockPrint1: {}, mockPrint2: {} },
         secretKeys: {},
         password: "",
+        alerts: {
+          isSocialLoginWarningShown: false,
+          isExtensionsWarningShown: false,
+        },
       });
 
       store.dispatch(accountsActions.removeMnemonicAndAccounts({ fingerPrint: "mockPrint1" }));
@@ -66,6 +74,10 @@ describe("accountsSlice", () => {
         seedPhrases: { mockPrint2: {} },
         secretKeys: {},
         password: "",
+        alerts: {
+          isSocialLoginWarningShown: false,
+          isExtensionsWarningShown: false,
+        },
       });
     });
   });

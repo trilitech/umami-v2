@@ -1,6 +1,12 @@
-import { SigningType } from "@airgap/beacon-wallet";
+import { type SigningType } from "@airgap/beacon-wallet";
+import { useToast } from "@chakra-ui/react";
 import { useDynamicModalContext } from "@umami/components";
-import { type ImplicitAccount, estimate, toAccountOperations } from "@umami/core";
+import {
+  type ImplicitAccount,
+  estimate,
+  getSigningTypeFromPayload,
+  toAccountOperations,
+} from "@umami/core";
 import {
   useAsyncActionHandler,
   useFindNetwork,
@@ -9,7 +15,7 @@ import {
   walletKit,
 } from "@umami/state";
 import { WalletConnectError } from "@umami/utils";
-import { formatJsonRpcError } from "@walletconnect/jsonrpc-utils";
+import { formatJsonRpcError, formatJsonRpcResult } from "@walletconnect/jsonrpc-utils";
 import { type SessionTypes, type SignClientTypes, type Verify } from "@walletconnect/types";
 import { type SdkErrorKey, getSdkError } from "@walletconnect/utils";
 
@@ -21,7 +27,6 @@ import {
   type SignHeaderProps,
   type SignPayloadProps,
 } from "../SendFlow/utils";
-
 /**
  * @returns a function that handles a beacon message and opens a modal with the appropriate content
  *
@@ -34,6 +39,7 @@ export const useHandleWcRequest = () => {
   const getAccount = useGetOwnedAccountSafe();
   const getImplicitAccount = useGetImplicitAccount();
   const findNetwork = useFindNetwork();
+  const toast = useToast();
 
   return async (
     event: {
@@ -57,11 +63,28 @@ export const useHandleWcRequest = () => {
 
       switch (request.method) {
         case "tezos_getAccounts": {
-          throw new WalletConnectError(
-            "Getting accounts is not supported yet",
-            "WC_METHOD_UNSUPPORTED",
-            session
-          );
+          const wcPeers = walletKit.getActiveSessions();
+          if (!(topic in wcPeers)) {
+            throw new WalletConnectError(`Unknown session ${topic}`, "UNAUTHORIZED_EVENT", null);
+          }
+          const session = wcPeers[topic];
+          const accountPkh = session.namespaces.tezos.accounts[0].split(":")[2];
+          const signer = getImplicitAccount(accountPkh);
+          const publicKey = signer.pk;
+          const response = formatJsonRpcResult(id, [
+            {
+              algo: "ed25519", // the only supported curve
+              address: accountPkh,
+              pubkey: publicKey,
+            },
+          ]);
+          await walletKit.respondSessionRequest({ topic, response });
+
+          toast({
+            description: "Successfully provided the requested account data",
+            status: "success",
+          });
+          return;
         }
 
         case "tezos_sign": {
@@ -77,14 +100,16 @@ export const useHandleWcRequest = () => {
               session
             );
           }
+
+          const signingType: SigningType = getSigningTypeFromPayload(request.params.payload);
           const signPayloadProps: SignPayloadProps = {
             appName: session.peer.metadata.name,
             appIcon: session.peer.metadata.icons[0],
             payload: request.params.payload,
             isScam: event.verifyContext.verified.isScam,
             validationStatus: event.verifyContext.verified.validation,
-            signer: signer,
-            signingType: SigningType.RAW,
+            signer,
+            signingType,
             requestId: { sdkType: "walletconnect", id: id, topic },
           };
 

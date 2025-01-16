@@ -5,7 +5,9 @@ import {
   addTestAccount,
   assetsActions,
   makeStore,
+  networksActions,
 } from "@umami/state";
+import { GHOSTNET, MAINNET } from "@umami/tezos";
 
 import { AccountBalance } from "./AccountBalance";
 import { act, render, screen, userEvent, waitFor, within } from "../../testUtils";
@@ -20,7 +22,9 @@ beforeEach(() => {
 });
 
 describe("<AccountBalance />", () => {
-  it("renders a buy tez link", () => {
+  it("renders a buy tez link for mainnet", () => {
+    store.dispatch(networksActions.setCurrent(MAINNET));
+
     render(<AccountBalance />, { store });
 
     const link = screen.getByRole("link", { name: "Buy" });
@@ -29,6 +33,16 @@ describe("<AccountBalance />", () => {
       "href",
       "https://widget.wert.io/default/widget/?commodity=XTZ&address=tz1gUNyn3hmnEWqkusWPzxRaon1cs7ndWh7h&network=tezos&commodity_id=xtz.simple.tezos"
     );
+  });
+
+  it("renders a buy tez link for ghostnet", () => {
+    store.dispatch(networksActions.setCurrent(GHOSTNET));
+
+    render(<AccountBalance />, { store });
+
+    const link = screen.getByRole("link", { name: "Buy" });
+    expect(link).toBeVisible();
+    expect(link).toHaveAttribute("href", "https://faucet.ghostnet.teztnets.com/");
   });
 
   it("renders a receive button", () => {

@@ -6,7 +6,7 @@ import {
   makeStore,
   networksActions,
 } from "@umami/state";
-import { MAINNET } from "@umami/tezos";
+import { GHOSTNET, MAINNET } from "@umami/tezos";
 import {
   type TzktCombinedOperation,
   getCombinedOperations,
@@ -45,7 +45,7 @@ describe("<Activity />", () => {
       jest.mocked(getRelatedTokenTransfers).mockResolvedValue([]);
     });
 
-    it("displays an empty state ", async () => {
+    it("displays an empty state", async () => {
       render(<Activity />, { store });
 
       await waitFor(() => {
@@ -56,6 +56,32 @@ describe("<Activity />", () => {
         screen.getByText("You need Tez to take part in any activity. Buy some to get started.")
       ).toBeVisible();
       expect(screen.queryByTestId("view-all-operations-button")).not.toBeInTheDocument();
+    });
+
+    it("has correct mainnet Buy Tez link", async () => {
+      store.dispatch(networksActions.setCurrent(MAINNET));
+      render(<Activity />, { store });
+
+      await waitFor(() => {
+        expect(screen.getByTestId("empty-state-message")).toBeVisible();
+      });
+      const link = screen.getByRole("link", { name: "Buy Tez Now" });
+      expect(link).toHaveAttribute(
+        "href",
+        `https://widget.wert.io/default/widget/?commodity=XTZ&address=${account.address.pkh}&network=tezos&commodity_id=xtz.simple.tezos`
+      );
+    });
+
+    it("has correct ghostnet Buy Tez link", async () => {
+      store.dispatch(networksActions.setCurrent(GHOSTNET));
+      render(<Activity />, { store });
+
+      await waitFor(() => {
+        expect(screen.getByTestId("empty-state-message")).toBeVisible();
+      });
+      const link = screen.getByRole("link", { name: "Buy Tez Now" });
+      expect(link).toBeVisible();
+      expect(link).toHaveAttribute("href", "https://faucet.ghostnet.teztnets.com/");
     });
   });
 

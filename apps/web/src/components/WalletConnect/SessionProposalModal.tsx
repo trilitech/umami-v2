@@ -26,7 +26,7 @@ import { type SessionTypes, type Verify } from "@walletconnect/types";
 import { buildApprovedNamespaces, getSdkError } from "@walletconnect/utils";
 import { FormProvider, useForm } from "react-hook-form";
 
-import { CheckmarkIcon, CloseIcon } from "../../assets/icons";
+import { AlertTriangleIcon, CheckmarkIcon, CloseIcon } from "../../assets/icons";
 import { OwnedImplicitAccountsAutocomplete } from "../AddressAutocomplete";
 import { ProjectInfoCard } from "./ProjectInfoCard";
 import { VerifyInfobox } from "./VerifyInfobox";
@@ -102,6 +102,18 @@ export const SessionProposalModal = ({
         <ModalBody>
           <Card>
             <ProjectInfoCard metadata={proposal.params.proposer.metadata} />
+            <VStack margin="auto" spacing="16px">
+              <HStack
+                margin="auto"
+                padding="8px"
+                border="1px solid"
+                borderColor="yellow.500"
+                borderRadius="md"
+              >
+                <Icon as={AlertTriangleIcon} verticalAlign="bottom" />
+                <Card marginLeft="8px">Beta version. Use with caution.</Card>
+              </HStack>
+            </VStack>
             <VerifyInfobox isScam={isScam} validationStatus={validationStatus} />
             <Divider />
             <Box marginBottom="16px" fontSize="xl" fontWeight="semibold">
