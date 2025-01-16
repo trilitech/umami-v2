@@ -684,7 +684,7 @@ importers:
         version: 2.5.0(react-redux@9.2.0(@types/react@18.3.12)(react@18.3.1)(redux@5.0.1))(react@18.3.1)
       '@tamagui/config':
         specifier: ^1.120.1
-        version: 1.121.11(react-dom@18.3.1(react@18.3.1))(react-native-reanimated@3.16.7(@babel/core@7.26.0)(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.12)(encoding@0.1.13)(react@18.3.1)(typescript@5.7.2))(react@18.3.1))(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.12)(encoding@0.1.13)(react@18.3.1)(typescript@5.7.2))(react@18.3.1)
+        version: 1.121.11(react-dom@18.3.1(react@18.3.1))(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.12)(encoding@0.1.13)(react@18.3.1)(typescript@5.7.2))(react@18.3.1)
       '@umami/state':
         specifier: workspace:^
         version: link:../../packages/state
@@ -754,7 +754,7 @@ importers:
         version: 0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))
       '@react-native/eslint-config':
         specifier: 0.76.5
-        version: 0.76.5(eslint@8.57.1)(jest@29.7.0(babel-plugin-macros@3.1.0))(prettier@3.4.2)(typescript@5.7.2)
+        version: 0.76.5(eslint@8.57.1)(jest@29.7.0(@types/node@22.10.7)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@swc/core@1.10.7(@swc/helpers@0.5.15))(@types/node@22.10.7)(typescript@5.7.2)))(prettier@3.4.2)(typescript@5.7.2)
       '@react-native/gradle-plugin':
         specifier: ^0.75.4
         version: 0.75.4
@@ -769,7 +769,7 @@ importers:
         version: 5.4.3(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.12)(encoding@0.1.13)(react@18.3.1)(typescript@5.7.2))(react-test-renderer@18.3.1(react@18.3.1))(react@18.3.1)
       '@testing-library/react-native':
         specifier: ^12.9.0
-        version: 12.9.0(jest@29.7.0(babel-plugin-macros@3.1.0))(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.12)(encoding@0.1.13)(react@18.3.1)(typescript@5.7.2))(react-test-renderer@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 12.9.0(jest@29.7.0(@types/node@22.10.7)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@swc/core@1.10.7(@swc/helpers@0.5.15))(@types/node@22.10.7)(typescript@5.7.2)))(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.12)(encoding@0.1.13)(react@18.3.1)(typescript@5.7.2))(react-test-renderer@18.3.1(react@18.3.1))(react@18.3.1)
       '@types/react':
         specifier: ^18.3.12
         version: 18.3.12
@@ -815,9 +815,9 @@ importers:
       '@ledgerhq/devices':
         specifier: ^8.4.4
         version: 8.4.4
-      '@ledgerhq/hw-transport-webusb':
-        specifier: ^6.29.4
-        version: 6.29.4
+      '@ledgerhq/hw-transport':
+        specifier: 6.27.1
+        version: 6.27.1
       '@react-native-async-storage/async-storage':
         specifier: ^2.0.0
         version: 2.1.0(react-native@0.76.3(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@react-native-community/cli-server-api@15.1.3)(@types/react@18.3.12)(encoding@0.1.13)(react@18.3.1))
@@ -827,6 +827,12 @@ importers:
       '@react-navigation/native':
         specifier: ^7.0.0
         version: 7.0.14(react-native@0.76.3(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@react-native-community/cli-server-api@15.1.3)(@types/react@18.3.12)(encoding@0.1.13)(react@18.3.1))(react@18.3.1)
+      '@rnx-kit/metro-config':
+        specifier: ^2.0.1
+        version: 2.0.1(@react-native/metro-config@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0)))(react-native@0.76.3(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@react-native-community/cli-server-api@15.1.3)(@types/react@18.3.12)(encoding@0.1.13)(react@18.3.1))(react@18.3.1)
+      '@rnx-kit/metro-resolver-symlinks':
+        specifier: ^0.2.1
+        version: 0.2.1
       '@tamagui/babel-plugin':
         specifier: ^1.121.5
         version: 1.121.11(@swc/helpers@0.5.15)(encoding@0.1.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -1007,7 +1013,7 @@ importers:
         version: 29.7.0(@types/node@22.10.7)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@swc/core@1.10.7(@swc/helpers@0.5.15))(@types/node@22.10.7)(typescript@5.7.2))
       jest-expo:
         specifier: ~52.0.2
-        version: 52.0.3(nmtwnqw2cchikp3tzkeiiqd3dq)
+        version: 52.0.3(numnq4olwqqprxouwd7gyidi6y)
       patch-package:
         specifier: ^8.0.0
         version: 8.0.0
@@ -1127,10 +1133,10 @@ importers:
         version: 1.0.8
       '@walletconnect/types':
         specifier: ^2.17.3
-        version: 2.17.3
+        version: 2.17.4
       '@walletconnect/utils':
         specifier: ^2.17.3
-        version: 2.17.3
+        version: 2.17.4
       bignumber.js:
         specifier: ^9.1.2
         version: 9.1.2
@@ -1332,7 +1338,7 @@ importers:
         version: 2.5.2
       jest-transformer-svg:
         specifier: ^2.0.2
-        version: 2.1.0(jest@29.7.0(@types/node@22.10.7)(babel-plugin-macros@3.1.0))(react@18.3.1)
+        version: 2.1.0(jest@29.7.0(@types/node@22.10.7)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@swc/core@1.10.7(@swc/helpers@0.5.15))(@types/node@22.10.7)(typescript@5.7.2)))(react@18.3.1)
       madge:
         specifier: ^8.0.0
         version: 8.0.0(typescript@5.7.2)
@@ -1816,7 +1822,7 @@ importers:
         version: 2.31.0(@typescript-eslint/parser@8.20.0(eslint@8.57.1)(typescript@5.7.2))(eslint-import-resolver-typescript@3.7.0)(eslint@8.57.1)
       eslint-plugin-jest:
         specifier: ^28.10.0
-        version: 28.11.0(@typescript-eslint/eslint-plugin@8.20.0(@typescript-eslint/parser@8.20.0(eslint@8.57.1)(typescript@5.7.2))(eslint@8.57.1)(typescript@5.7.2))(eslint@8.57.1)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.7.2)
+        version: 28.11.0(@typescript-eslint/eslint-plugin@8.20.0(@typescript-eslint/parser@8.20.0(eslint@8.57.1)(typescript@5.7.2))(eslint@8.57.1)(typescript@5.7.2))(eslint@8.57.1)(jest@29.7.0(@types/node@22.10.7)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@swc/core@1.10.7(@swc/helpers@0.5.15))(@types/node@22.10.7)(typescript@5.7.2)))(typescript@5.7.2)
       eslint-plugin-jest-dom:
         specifier: ^5.5.0
         version: 5.5.0(@testing-library/dom@10.4.0)(eslint@8.57.1)
@@ -2119,16 +2125,16 @@ importers:
         version: link:../tzkt
       '@walletconnect/core':
         specifier: ^2.16.2
-        version: 2.17.3
+        version: 2.17.4
       '@walletconnect/jsonrpc-utils':
         specifier: ^1.0.8
         version: 1.0.8
       '@walletconnect/types':
         specifier: ^2.17.3
-        version: 2.17.3
+        version: 2.17.4
       '@walletconnect/utils':
         specifier: ^2.17.3
-        version: 2.17.3
+        version: 2.17.4
       bip39:
         specifier: ^3.1.0
         version: 3.1.0
@@ -2300,8 +2306,8 @@ importers:
   packages/tezos:
     dependencies:
       '@ledgerhq/hw-transport-webusb':
-        specifier: ^6.29.4
-        version: 6.29.4
+        specifier: 6.27.1
+        version: 6.27.1
       '@taquito/ledger-signer':
         specifier: ^21.0.0
         version: 21.0.0(encoding@0.1.13)
@@ -4155,14 +4161,20 @@ packages:
   '@jsdevtools/ono@7.1.3':
     resolution: {integrity: sha512-4JQNk+3mVzK3xh2rqd6RB4J46qUR19azEHBneZyTZM+c456qOrbbM/5xcR8huNCCcbVt7+UmizG6GuUvPvKUYg==}
 
+  '@ledgerhq/devices@6.27.1':
+    resolution: {integrity: sha512-jX++oy89jtv7Dp2X6gwt3MMkoajel80JFWcdc0HCouwDsV1mVJ3SQdwl/bQU0zd8HI6KebvUP95QTwbQLLK/RQ==}
+
   '@ledgerhq/devices@8.4.4':
     resolution: {integrity: sha512-sz/ryhe/R687RHtevIE9RlKaV8kkKykUV4k29e7GAVwzHX1gqG+O75cu1NCJUHLbp3eABV5FdvZejqRUlLis9A==}
 
   '@ledgerhq/errors@6.19.1':
     resolution: {integrity: sha512-75yK7Nnit/Gp7gdrJAz0ipp31CCgncRp+evWt6QawQEtQKYEDfGo10QywgrrBBixeRxwnMy1DP6g2oCWRf1bjw==}
 
-  '@ledgerhq/hw-transport-webusb@6.29.4':
-    resolution: {integrity: sha512-HoGF1LlBT9HEGBQy2XeCHrFdv/FEOZU0+J+yfKcgAQIAiASr2MLvdzwoJbUS8h6Gn+vc+/BjzBSO3JNn7Loqbg==}
+  '@ledgerhq/hw-transport-webusb@6.27.1':
+    resolution: {integrity: sha512-n0ygJSeRpznrUfwtbDCLQOM5mA23YT/ngYY8HU46dzsVJHrHQ4jwBNJU48iKB+a9GhHyPAUpPNlWGTogvoVUxg==}
+
+  '@ledgerhq/hw-transport@6.27.1':
+    resolution: {integrity: sha512-hnE4/Fq1YzQI4PA1W0H8tCkI99R3UWDb3pJeZd6/Xs4Qw/q1uiQO+vNLC6KIPPhK0IajUfuI/P2jk0qWcMsuAQ==}
 
   '@ledgerhq/hw-transport@6.31.4':
     resolution: {integrity: sha512-6c1ir/cXWJm5dCWdq55NPgCJ3UuKuuxRvf//Xs36Bq9BwkV2YaRQhZITAkads83l07NAdR16hkTWqqpwFMaI6A==}
@@ -4716,6 +4728,37 @@ packages:
 
   '@reown/walletkit@1.1.2':
     resolution: {integrity: sha512-JcrO8d7FLMG8R99TeUTDpm7lhZjD2oqKuIs6TWK2obLrnpXtD0/S+FdoJoBXffjDzhv38npCMqYs0QGUu1Fo0A==}
+
+  '@rnx-kit/console@2.0.0':
+    resolution: {integrity: sha512-8kyM0TUWpawWlaypHKWLgJjPoF5HcsjIxx9LSnYM8VgwBW1gOl2cCDhPYaeS8IG9m0fi4rMtQD8OJqmwpJ2jEg==}
+    engines: {node: '>=16.17'}
+
+  '@rnx-kit/metro-config@2.0.1':
+    resolution: {integrity: sha512-BkhniefN5U5lQtlwu97rz+32reUyBCC22zBrCazV/3BvfOZ3b94z2oljUPtYIosoVKm4o6e2bGNlNklG1GWNbQ==}
+    engines: {node: '>=16.17'}
+    peerDependencies:
+      '@react-native/metro-config': '*'
+      react: '*'
+      react-native: '*'
+    peerDependenciesMeta:
+      '@react-native/metro-config':
+        optional: true
+
+  '@rnx-kit/metro-resolver-symlinks@0.2.1':
+    resolution: {integrity: sha512-EHO4odFMyQ3vh03J9lqDnF7RbG1WfH1s8A02S01ZhqtHEeFHEuk/sP90PN1uMuaoJQrcoRr2fJovdd/CoxXpsg==}
+    engines: {node: '>=16.17'}
+
+  '@rnx-kit/tools-node@3.0.0':
+    resolution: {integrity: sha512-9FmST15/KucIw8Yy5vHHr5JypTlYU+hNWDOhBMRLA3a88zc4MsRtdqfqbA/Nd9fM2Gyfkg8m2zgYJZQE6MDNaQ==}
+    engines: {node: '>=16.17'}
+
+  '@rnx-kit/tools-react-native@2.0.3':
+    resolution: {integrity: sha512-M0cVCacHck7o93IYj61TE9UJQHnVxRPj9jAm5ZBVhBxCOikc4gYHcTp+1C1k1dW2EetcEAuoXtIO67Cv1+VJYQ==}
+    engines: {node: '>=16.17'}
+
+  '@rnx-kit/tools-workspaces@0.2.0':
+    resolution: {integrity: sha512-EjyFBASHOgXGATBjv0IHdqkiGf23s31dr/TjqUagmMHT4fGxxTUgI6rkC11cGYaL0u6QczsbhSi390B4k6cByg==}
+    engines: {node: '>=16.17'}
 
   '@rollup/plugin-inject@5.0.5':
     resolution: {integrity: sha512-2+DEJbNBoPROPkgTDNe8/1YXWcqxbN5DTjASVIOx8HS+pITXushyNiBV56RB08zuptzz8gT3YfkqriTBVycepg==}
@@ -6527,6 +6570,10 @@ packages:
     resolution: {integrity: sha512-57uv0FW4L6H/tmkb1kS2nG41MDguyDgZbGR58nkDUd1TO/HydyiTByVOhFzIxgN331cnY/1G1rMaKqncgdnOFA==}
     engines: {node: '>=18'}
 
+  '@walletconnect/core@2.17.4':
+    resolution: {integrity: sha512-/BF+yoY5mjK5RQ6zJ60YLsJysUC0saWrjTAfR2AqCsyaehRKk+Ql0QfbAZd3S3SY/Dwm9o84RD8z01qxwaogQA==}
+    engines: {node: '>=18'}
+
   '@walletconnect/environment@1.0.1':
     resolution: {integrity: sha512-T426LLZtHj8e8rYnKfzsw1aG6+M0BT1ZxayMdv/p8yM0MU+eJDISqNY3/bccxRr4LrF9csq02Rhqt08Ibl0VRg==}
 
@@ -6589,11 +6636,17 @@ packages:
   '@walletconnect/types@2.17.3':
     resolution: {integrity: sha512-5eFxnbZGJJx0IQyCS99qz+OvozpLJJYfVG96dEHGgbzZMd+C9V1eitYqVClx26uX6V+WQVqVwjpD2Dyzie++Wg==}
 
+  '@walletconnect/types@2.17.4':
+    resolution: {integrity: sha512-i4yHY005RHhwCavaKk+GaDwwUaSqnwLM4b2btcHSOIqjReyFImnwOY+59zQTO7tbmnjjJpGZcfRGcHk70TQ9mA==}
+
   '@walletconnect/utils@2.14.0':
     resolution: {integrity: sha512-vRVomYQEtEAyCK2c5bzzEvtgxaGGITF8mWuIL+WYSAMyEJLY97mirP2urDucNwcUczwxUgI+no9RiNFbUHreQQ==}
 
   '@walletconnect/utils@2.17.3':
     resolution: {integrity: sha512-tG77UpZNeLYgeOwViwWnifpyBatkPlpKSSayhN0gcjY1lZAUNqtYslpm4AdTxlrA3pL61MnyybXgWYT5eZjarw==}
+
+  '@walletconnect/utils@2.17.4':
+    resolution: {integrity: sha512-Vvqs66cPV4OZteO2PjUjGLiKlo3myJjwSB5ElgwHwfAwr+WfUbJl4WPAOp6YHh6xxObRCQN+AgwC69EKfwXAiA==}
 
   '@walletconnect/window-getters@1.0.1':
     resolution: {integrity: sha512-vHp+HqzGxORPAN8gY03qnbTMnhqIwjeRJNOMOAzePRg4xVEEE2WvYsI9G2NMjOknA8hnuYbU3/hwLcKbjhc8+Q==}
@@ -11976,6 +12029,10 @@ packages:
     resolution: {integrity: sha512-9viLL4/n1BJUCT1NXVTdS1jtm80yDEgR5T4yCelII49Mbj0v1rZdKqj7zCiYdbB0CuCgdrvHcNogAKTFPBocFA==}
     engines: {node: '>=18'}
 
+  read-yaml-file@2.1.0:
+    resolution: {integrity: sha512-UkRNRIwnhG+y7hpqnycCL/xbTk7+ia9VuVTC0S+zVbwd65DI9eUpRMfsWIGrCWxTU/mi+JW8cHQCrv+zfCbEPQ==}
+    engines: {node: '>=10.13'}
+
   readable-stream@2.3.8:
     resolution: {integrity: sha512-8p0AUk4XODgIewSi0l8Epjs+EVnWiK7NoDIEGU0HhE7+ZyY8D1IMY7odu5lRrFXGg71L15KG8QrPmum45RTtdA==}
 
@@ -12250,6 +12307,10 @@ packages:
   runtime-required@1.1.0:
     resolution: {integrity: sha512-yX97f5E0WfNpcQnfVjap6vzQcvErkYYCx6eTK4siqGEdC8lglwypUFgZVTX7ShvIlgfkC4XGFl9O1KTYcff0pw==}
     engines: {node: '>=4.0.0'}
+
+  rxjs@6.6.7:
+    resolution: {integrity: sha512-hTdwr+7yYNIT5n4AMYp85KA6yw2Va0FLa3Rguvbpa4W3I5xynaBZo41cM3XM+4Q6fRMj3sBYIR1VAmZMXYJvRQ==}
+    engines: {npm: '>=2.0.0'}
 
   rxjs@7.8.1:
     resolution: {integrity: sha512-AA3TVj+0A2iuIoQkWEK/tqFjBq2j+6PO6Y0zJcvzLAFhEFIO3HL0vls9hWLncZbAAbK0mar7oZ4V079I/qPMxg==}
@@ -13299,8 +13360,8 @@ packages:
   undici-types@6.20.0:
     resolution: {integrity: sha512-Ny6QZ2Nju20vw1SRHe3d9jVu6gJ+4e3+MMpqu7pqE5HT6WsTSlce++GQmK5UXS8mzV8DSYHrQH+Xrf2jVcuKNg==}
 
-  undici@6.21.0:
-    resolution: {integrity: sha512-BUgJXc752Kou3oOIuU1i+yZZypyZRqNPW0vqoMPl8VaoalSfeR0D8/t4iAS3yirs79SSMTxTag+ZC86uswv+Cw==}
+  undici@6.21.1:
+    resolution: {integrity: sha512-q/1rj5D0/zayJB2FraXdaWxbhWiNKDvu8naDT2dl1yTlvJp4BLtOcp2a5BvgGNQpYYJzau7tf1WgKv3b+7mqpQ==}
     engines: {node: '>=18.17'}
 
   unenv@1.10.0:
@@ -15941,7 +16002,7 @@ snapshots:
       temp-dir: 2.0.0
       tempy: 0.7.1
       terminal-link: 2.1.1
-      undici: 6.21.0
+      undici: 6.21.1
       unique-string: 2.0.0
       wrap-ansi: 7.0.0
       ws: 8.18.0
@@ -16464,6 +16525,13 @@ snapshots:
 
   '@jsdevtools/ono@7.1.3': {}
 
+  '@ledgerhq/devices@6.27.1':
+    dependencies:
+      '@ledgerhq/errors': 6.19.1
+      '@ledgerhq/logs': 6.12.0
+      rxjs: 6.6.7
+      semver: 7.6.3
+
   '@ledgerhq/devices@8.4.4':
     dependencies:
       '@ledgerhq/errors': 6.19.1
@@ -16473,12 +16541,18 @@ snapshots:
 
   '@ledgerhq/errors@6.19.1': {}
 
-  '@ledgerhq/hw-transport-webusb@6.29.4':
+  '@ledgerhq/hw-transport-webusb@6.27.1':
     dependencies:
-      '@ledgerhq/devices': 8.4.4
+      '@ledgerhq/devices': 6.27.1
       '@ledgerhq/errors': 6.19.1
-      '@ledgerhq/hw-transport': 6.31.4
+      '@ledgerhq/hw-transport': 6.27.1
       '@ledgerhq/logs': 6.12.0
+
+  '@ledgerhq/hw-transport@6.27.1':
+    dependencies:
+      '@ledgerhq/devices': 6.27.1
+      '@ledgerhq/errors': 6.19.1
+      events: 3.3.0
 
   '@ledgerhq/hw-transport@6.31.4':
     dependencies:
@@ -17275,7 +17349,7 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@react-native/eslint-config@0.76.5(eslint@8.57.1)(jest@29.7.0(babel-plugin-macros@3.1.0))(prettier@3.4.2)(typescript@5.7.2)':
+  '@react-native/eslint-config@0.76.5(eslint@8.57.1)(jest@29.7.0(@types/node@22.10.7)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@swc/core@1.10.7(@swc/helpers@0.5.15))(@types/node@22.10.7)(typescript@5.7.2)))(prettier@3.4.2)(typescript@5.7.2)':
     dependencies:
       '@babel/core': 7.26.0
       '@babel/eslint-parser': 7.26.5(@babel/core@7.26.0)(eslint@8.57.1)
@@ -17286,7 +17360,7 @@ snapshots:
       eslint-config-prettier: 8.10.0(eslint@8.57.1)
       eslint-plugin-eslint-comments: 3.2.0(eslint@8.57.1)
       eslint-plugin-ft-flow: 2.0.3(@babel/eslint-parser@7.26.5(@babel/core@7.26.0)(eslint@8.57.1))(eslint@8.57.1)
-      eslint-plugin-jest: 27.9.0(@typescript-eslint/eslint-plugin@7.18.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.7.2))(eslint@8.57.1)(typescript@5.7.2))(eslint@8.57.1)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.7.2)
+      eslint-plugin-jest: 27.9.0(@typescript-eslint/eslint-plugin@7.18.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.7.2))(eslint@8.57.1)(typescript@5.7.2))(eslint@8.57.1)(jest@29.7.0(@types/node@22.10.7)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@swc/core@1.10.7(@swc/helpers@0.5.15))(@types/node@22.10.7)(typescript@5.7.2)))(typescript@5.7.2)
       eslint-plugin-react: 7.37.4(eslint@8.57.1)
       eslint-plugin-react-hooks: 4.6.2(eslint@8.57.1)
       eslint-plugin-react-native: 4.1.0(eslint@8.57.1)
@@ -17335,7 +17409,9 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - '@babel/preset-env'
+      - bufferutil
       - supports-color
+      - utf-8-validate
 
   '@react-native/normalize-color@2.1.0': {}
 
@@ -17442,7 +17518,7 @@ snapshots:
       cookie-signature: 1.2.2
       source-map-support: 0.5.21
       stream-slice: 0.1.2
-      undici: 6.21.0
+      undici: 6.21.1
     optionalDependencies:
       typescript: 5.7.2
 
@@ -17518,6 +17594,38 @@ snapshots:
       - ioredis
       - uploadthing
       - utf-8-validate
+
+  '@rnx-kit/console@2.0.0': {}
+
+  '@rnx-kit/metro-config@2.0.1(@react-native/metro-config@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0)))(react-native@0.76.3(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@react-native-community/cli-server-api@15.1.3)(@types/react@18.3.12)(encoding@0.1.13)(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@rnx-kit/tools-node': 3.0.0
+      '@rnx-kit/tools-react-native': 2.0.3
+      '@rnx-kit/tools-workspaces': 0.2.0
+      react: 18.3.1
+      react-native: 0.76.3(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@react-native-community/cli-server-api@15.1.3)(@types/react@18.3.12)(encoding@0.1.13)(react@18.3.1)
+    optionalDependencies:
+      '@react-native/metro-config': 0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))
+
+  '@rnx-kit/metro-resolver-symlinks@0.2.1':
+    dependencies:
+      '@rnx-kit/console': 2.0.0
+      '@rnx-kit/tools-node': 3.0.0
+      '@rnx-kit/tools-react-native': 2.0.3
+      enhanced-resolve: 5.18.0
+
+  '@rnx-kit/tools-node@3.0.0': {}
+
+  '@rnx-kit/tools-react-native@2.0.3':
+    dependencies:
+      '@rnx-kit/tools-node': 3.0.0
+
+  '@rnx-kit/tools-workspaces@0.2.0':
+    dependencies:
+      fast-glob: 3.3.3
+      find-up: 5.0.0
+      read-yaml-file: 2.1.0
+      strip-json-comments: 3.1.1
 
   '@rollup/plugin-inject@5.0.5(rollup@4.30.1)':
     dependencies:
@@ -18269,16 +18377,6 @@ snapshots:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  '@tamagui/animations-moti@1.121.11(react-dom@18.3.1(react@18.3.1))(react-native-reanimated@3.16.7(@babel/core@7.26.0)(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.12)(encoding@0.1.13)(react@18.3.1)(typescript@5.7.2))(react@18.3.1))(react@18.3.1)':
-    dependencies:
-      '@tamagui/use-presence': 1.121.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@tamagui/web': 1.121.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      moti: 0.29.0(react-dom@18.3.1(react@18.3.1))(react-native-reanimated@3.16.7(@babel/core@7.26.0)(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.12)(encoding@0.1.13)(react@18.3.1)(typescript@5.7.2))(react@18.3.1))(react@18.3.1)
-      react: 18.3.1
-    transitivePeerDependencies:
-      - react-dom
-      - react-native-reanimated
-
   '@tamagui/animations-moti@1.121.11(react-dom@18.3.1(react@18.3.1))(react-native-reanimated@3.16.7(@babel/core@7.26.0)(react-native@0.76.3(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@react-native-community/cli-server-api@15.1.3)(@types/react@18.3.12)(encoding@0.1.13)(react@18.3.1))(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@tamagui/use-presence': 1.121.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -18492,24 +18590,6 @@ snapshots:
       - react
       - react-dom
 
-  '@tamagui/config@1.121.11(react-dom@18.3.1(react@18.3.1))(react-native-reanimated@3.16.7(@babel/core@7.26.0)(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.12)(encoding@0.1.13)(react@18.3.1)(typescript@5.7.2))(react@18.3.1))(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.12)(encoding@0.1.13)(react@18.3.1)(typescript@5.7.2))(react@18.3.1)':
-    dependencies:
-      '@tamagui/animations-css': 1.121.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@tamagui/animations-moti': 1.121.11(react-dom@18.3.1(react@18.3.1))(react-native-reanimated@3.16.7(@babel/core@7.26.0)(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.12)(encoding@0.1.13)(react@18.3.1)(typescript@5.7.2))(react@18.3.1))(react@18.3.1)
-      '@tamagui/animations-react-native': 1.121.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@tamagui/colors': 1.121.11
-      '@tamagui/font-inter': 1.121.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@tamagui/font-silkscreen': 1.121.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@tamagui/react-native-media-driver': 1.121.11(react-dom@18.3.1(react@18.3.1))(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.12)(encoding@0.1.13)(react@18.3.1)(typescript@5.7.2))(react@18.3.1)
-      '@tamagui/shorthands': 1.121.11
-      '@tamagui/themes': 1.121.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@tamagui/web': 1.121.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-    transitivePeerDependencies:
-      - react
-      - react-dom
-      - react-native
-      - react-native-reanimated
-
   '@tamagui/config@1.121.11(react-dom@18.3.1(react@18.3.1))(react-native-reanimated@3.16.7(@babel/core@7.26.0)(react-native@0.76.3(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@react-native-community/cli-server-api@15.1.3)(@types/react@18.3.12)(encoding@0.1.13)(react@18.3.1))(react@18.3.1))(react-native@0.76.3(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@react-native-community/cli-server-api@15.1.3)(@types/react@18.3.12)(encoding@0.1.13)(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@tamagui/animations-css': 1.121.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -18519,6 +18599,24 @@ snapshots:
       '@tamagui/font-inter': 1.121.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@tamagui/font-silkscreen': 1.121.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@tamagui/react-native-media-driver': 1.121.11(react-dom@18.3.1(react@18.3.1))(react-native@0.76.3(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@react-native-community/cli-server-api@15.1.3)(@types/react@18.3.12)(encoding@0.1.13)(react@18.3.1))(react@18.3.1)
+      '@tamagui/shorthands': 1.121.11
+      '@tamagui/themes': 1.121.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@tamagui/web': 1.121.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+    transitivePeerDependencies:
+      - react
+      - react-dom
+      - react-native
+      - react-native-reanimated
+
+  '@tamagui/config@1.121.11(react-dom@18.3.1(react@18.3.1))(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.12)(encoding@0.1.13)(react@18.3.1)(typescript@5.7.2))(react@18.3.1)':
+    dependencies:
+      '@tamagui/animations-css': 1.121.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@tamagui/animations-moti': 1.121.11(react-dom@18.3.1(react@18.3.1))(react-native-reanimated@3.16.7(@babel/core@7.26.0)(react-native@0.76.3(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@react-native-community/cli-server-api@15.1.3)(@types/react@18.3.12)(encoding@0.1.13)(react@18.3.1))(react@18.3.1))(react@18.3.1)
+      '@tamagui/animations-react-native': 1.121.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@tamagui/colors': 1.121.11
+      '@tamagui/font-inter': 1.121.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@tamagui/font-silkscreen': 1.121.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@tamagui/react-native-media-driver': 1.121.11(react-dom@18.3.1(react@18.3.1))(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.12)(encoding@0.1.13)(react@18.3.1)(typescript@5.7.2))(react@18.3.1)
       '@tamagui/shorthands': 1.121.11
       '@tamagui/themes': 1.121.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@tamagui/web': 1.121.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -19712,7 +19810,7 @@ snapshots:
       react-test-renderer: 18.3.1(react@18.3.1)
       redent: 3.0.0
 
-  '@testing-library/react-native@12.9.0(jest@29.7.0(babel-plugin-macros@3.1.0))(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.12)(encoding@0.1.13)(react@18.3.1)(typescript@5.7.2))(react-test-renderer@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@testing-library/react-native@12.9.0(jest@29.7.0(@types/node@22.10.7)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@swc/core@1.10.7(@swc/helpers@0.5.15))(@types/node@22.10.7)(typescript@5.7.2)))(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.12)(encoding@0.1.13)(react@18.3.1)(typescript@5.7.2))(react-test-renderer@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       jest-matcher-utils: 29.7.0
       pretty-format: 29.7.0
@@ -20617,6 +20715,47 @@ snapshots:
       - uploadthing
       - utf-8-validate
 
+  '@walletconnect/core@2.17.4':
+    dependencies:
+      '@walletconnect/heartbeat': 1.2.2
+      '@walletconnect/jsonrpc-provider': 1.0.14
+      '@walletconnect/jsonrpc-types': 1.0.4
+      '@walletconnect/jsonrpc-utils': 1.0.8
+      '@walletconnect/jsonrpc-ws-connection': 1.0.16
+      '@walletconnect/keyvaluestorage': 1.1.1
+      '@walletconnect/logger': 2.1.2
+      '@walletconnect/relay-api': 1.0.11
+      '@walletconnect/relay-auth': 1.0.4
+      '@walletconnect/safe-json': 1.0.2
+      '@walletconnect/time': 1.0.2
+      '@walletconnect/types': 2.17.4
+      '@walletconnect/utils': 2.17.4
+      '@walletconnect/window-getters': 1.0.1
+      events: 3.3.0
+      lodash.isequal: 4.5.0
+      uint8arrays: 3.1.0
+    transitivePeerDependencies:
+      - '@azure/app-configuration'
+      - '@azure/cosmos'
+      - '@azure/data-tables'
+      - '@azure/identity'
+      - '@azure/keyvault-secrets'
+      - '@azure/storage-blob'
+      - '@capacitor/preferences'
+      - '@deno/kv'
+      - '@netlify/blobs'
+      - '@planetscale/database'
+      - '@react-native-async-storage/async-storage'
+      - '@upstash/redis'
+      - '@vercel/blob'
+      - '@vercel/kv'
+      - aws4fetch
+      - bufferutil
+      - db0
+      - ioredis
+      - uploadthing
+      - utf-8-validate
+
   '@walletconnect/environment@1.0.1':
     dependencies:
       tslib: 1.14.1
@@ -20846,6 +20985,34 @@ snapshots:
       - ioredis
       - uploadthing
 
+  '@walletconnect/types@2.17.4':
+    dependencies:
+      '@walletconnect/events': 1.0.1
+      '@walletconnect/heartbeat': 1.2.2
+      '@walletconnect/jsonrpc-types': 1.0.4
+      '@walletconnect/keyvaluestorage': 1.1.1
+      '@walletconnect/logger': 2.1.2
+      events: 3.3.0
+    transitivePeerDependencies:
+      - '@azure/app-configuration'
+      - '@azure/cosmos'
+      - '@azure/data-tables'
+      - '@azure/identity'
+      - '@azure/keyvault-secrets'
+      - '@azure/storage-blob'
+      - '@capacitor/preferences'
+      - '@deno/kv'
+      - '@netlify/blobs'
+      - '@planetscale/database'
+      - '@react-native-async-storage/async-storage'
+      - '@upstash/redis'
+      - '@vercel/blob'
+      - '@vercel/kv'
+      - aws4fetch
+      - db0
+      - ioredis
+      - uploadthing
+
   '@walletconnect/utils@2.14.0':
     dependencies:
       '@stablelib/chacha20poly1305': 1.0.1
@@ -20898,6 +21065,48 @@ snapshots:
       '@walletconnect/safe-json': 1.0.2
       '@walletconnect/time': 1.0.2
       '@walletconnect/types': 2.17.3
+      '@walletconnect/window-getters': 1.0.1
+      '@walletconnect/window-metadata': 1.0.1
+      detect-browser: 5.3.0
+      elliptic: 6.6.1
+      query-string: 7.1.3
+      uint8arrays: 3.1.0
+    transitivePeerDependencies:
+      - '@azure/app-configuration'
+      - '@azure/cosmos'
+      - '@azure/data-tables'
+      - '@azure/identity'
+      - '@azure/keyvault-secrets'
+      - '@azure/storage-blob'
+      - '@capacitor/preferences'
+      - '@deno/kv'
+      - '@netlify/blobs'
+      - '@planetscale/database'
+      - '@react-native-async-storage/async-storage'
+      - '@upstash/redis'
+      - '@vercel/blob'
+      - '@vercel/kv'
+      - aws4fetch
+      - db0
+      - ioredis
+      - uploadthing
+
+  '@walletconnect/utils@2.17.4':
+    dependencies:
+      '@ethersproject/hash': 5.7.0
+      '@ethersproject/transactions': 5.7.0
+      '@stablelib/chacha20poly1305': 1.0.1
+      '@stablelib/hkdf': 1.0.1
+      '@stablelib/random': 1.0.2
+      '@stablelib/sha256': 1.0.1
+      '@stablelib/x25519': 1.0.3
+      '@walletconnect/jsonrpc-utils': 1.0.8
+      '@walletconnect/keyvaluestorage': 1.1.1
+      '@walletconnect/relay-api': 1.0.11
+      '@walletconnect/relay-auth': 1.0.4
+      '@walletconnect/safe-json': 1.0.2
+      '@walletconnect/time': 1.0.2
+      '@walletconnect/types': 2.17.4
       '@walletconnect/window-getters': 1.0.1
       '@walletconnect/window-metadata': 1.0.1
       detect-browser: 5.3.0
@@ -22066,7 +22275,7 @@ snapshots:
       parse5: 7.2.1
       parse5-htmlparser2-tree-adapter: 7.1.0
       parse5-parser-stream: 7.1.2
-      undici: 6.21.0
+      undici: 6.21.1
       whatwg-mimetype: 4.0.0
 
   chokidar@3.6.0:
@@ -23377,7 +23586,7 @@ snapshots:
     optionalDependencies:
       '@testing-library/dom': 10.4.0
 
-  eslint-plugin-jest@27.9.0(@typescript-eslint/eslint-plugin@7.18.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.7.2))(eslint@8.57.1)(typescript@5.7.2))(eslint@8.57.1)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.7.2):
+  eslint-plugin-jest@27.9.0(@typescript-eslint/eslint-plugin@7.18.0(@typescript-eslint/parser@7.18.0(eslint@8.57.1)(typescript@5.7.2))(eslint@8.57.1)(typescript@5.7.2))(eslint@8.57.1)(jest@29.7.0(@types/node@22.10.7)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@swc/core@1.10.7(@swc/helpers@0.5.15))(@types/node@22.10.7)(typescript@5.7.2)))(typescript@5.7.2):
     dependencies:
       '@typescript-eslint/utils': 7.18.0(eslint@8.57.1)(typescript@5.7.2)
       eslint: 8.57.1
@@ -23388,7 +23597,7 @@ snapshots:
       - supports-color
       - typescript
 
-  eslint-plugin-jest@28.11.0(@typescript-eslint/eslint-plugin@8.20.0(@typescript-eslint/parser@8.20.0(eslint@8.57.1)(typescript@5.7.2))(eslint@8.57.1)(typescript@5.7.2))(eslint@8.57.1)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.7.2):
+  eslint-plugin-jest@28.11.0(@typescript-eslint/eslint-plugin@8.20.0(@typescript-eslint/parser@8.20.0(eslint@8.57.1)(typescript@5.7.2))(eslint@8.57.1)(typescript@5.7.2))(eslint@8.57.1)(jest@29.7.0(@types/node@22.10.7)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@swc/core@1.10.7(@swc/helpers@0.5.15))(@types/node@22.10.7)(typescript@5.7.2)))(typescript@5.7.2):
     dependencies:
       '@typescript-eslint/utils': 7.18.0(eslint@8.57.1)(typescript@5.7.2)
       eslint: 8.57.1
@@ -25127,7 +25336,7 @@ snapshots:
       jest-mock: 29.7.0
       jest-util: 29.7.0
 
-  jest-expo@52.0.3(nmtwnqw2cchikp3tzkeiiqd3dq):
+  jest-expo@52.0.3(numnq4olwqqprxouwd7gyidi6y):
     dependencies:
       '@expo/config': 10.0.8
       '@expo/json-file': 9.0.1
@@ -25140,11 +25349,11 @@ snapshots:
       jest-environment-jsdom: 29.7.0
       jest-snapshot: 29.7.0
       jest-watch-select-projects: 2.0.0
-      jest-watch-typeahead: 2.2.1(jest@29.7.0(babel-plugin-macros@3.1.0))
+      jest-watch-typeahead: 2.2.1(jest@29.7.0(@types/node@22.10.7)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@swc/core@1.10.7(@swc/helpers@0.5.15))(@types/node@22.10.7)(typescript@5.7.2)))
       json5: 2.2.3
       lodash: 4.17.21
       react-native: 0.76.3(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@react-native-community/cli-server-api@15.1.3)(@types/react@18.3.12)(encoding@0.1.13)(react@18.3.1)
-      react-server-dom-webpack: 19.0.0-rc-6230622a1a-20240610(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(webpack@5.97.1(esbuild@0.23.1))
+      react-server-dom-webpack: 19.0.0-rc-6230622a1a-20240610(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(webpack@5.97.1(@swc/core@1.10.7(@swc/helpers@0.5.15))(esbuild@0.23.1))
       react-test-renderer: 18.3.1(react@18.3.1)
       server-only: 0.0.1
       stacktrace-js: 2.0.2
@@ -25313,7 +25522,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  jest-transformer-svg@2.1.0(jest@29.7.0(@types/node@22.10.7)(babel-plugin-macros@3.1.0))(react@18.3.1):
+  jest-transformer-svg@2.1.0(jest@29.7.0(@types/node@22.10.7)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@swc/core@1.10.7(@swc/helpers@0.5.15))(@types/node@22.10.7)(typescript@5.7.2)))(react@18.3.1):
     dependencies:
       jest: 29.7.0(@types/node@22.10.7)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@swc/core@1.10.7(@swc/helpers@0.5.15))(@types/node@22.10.7)(typescript@5.7.2))
       react: 18.3.1
@@ -25342,7 +25551,7 @@ snapshots:
       chalk: 3.0.0
       prompts: 2.4.2
 
-  jest-watch-typeahead@2.2.1(jest@29.7.0(babel-plugin-macros@3.1.0)):
+  jest-watch-typeahead@2.2.1(jest@29.7.0(@types/node@22.10.7)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@swc/core@1.10.7(@swc/helpers@0.5.15))(@types/node@22.10.7)(typescript@5.7.2))):
     dependencies:
       ansi-escapes: 6.2.1
       chalk: 4.1.2
@@ -26389,14 +26598,6 @@ snapshots:
   moo-color@1.0.3:
     dependencies:
       color-name: 1.1.4
-
-  moti@0.29.0(react-dom@18.3.1(react@18.3.1))(react-native-reanimated@3.16.7(@babel/core@7.26.0)(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.12)(encoding@0.1.13)(react@18.3.1)(typescript@5.7.2))(react@18.3.1))(react@18.3.1):
-    dependencies:
-      framer-motion: 6.5.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      react-native-reanimated: 3.16.7(@babel/core@7.26.0)(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.12)(encoding@0.1.13)(react@18.3.1)(typescript@5.7.2))(react@18.3.1)
-    transitivePeerDependencies:
-      - react
-      - react-dom
 
   moti@0.29.0(react-dom@18.3.1(react@18.3.1))(react-native-reanimated@3.16.7(@babel/core@7.26.0)(react-native@0.76.3(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@react-native-community/cli-server-api@15.1.3)(@types/react@18.3.12)(encoding@0.1.13)(react@18.3.1))(react@18.3.1))(react@18.3.1):
     dependencies:
@@ -27451,25 +27652,6 @@ snapshots:
       buffer: 4.9.2
       sjcl: 1.0.8
 
-  react-native-reanimated@3.16.7(@babel/core@7.26.0)(react-native@0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.12)(encoding@0.1.13)(react@18.3.1)(typescript@5.7.2))(react@18.3.1):
-    dependencies:
-      '@babel/core': 7.26.0
-      '@babel/plugin-transform-arrow-functions': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-class-properties': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-classes': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-nullish-coalescing-operator': 7.26.6(@babel/core@7.26.0)
-      '@babel/plugin-transform-optional-chaining': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-shorthand-properties': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-template-literals': 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-transform-unicode-regex': 7.25.9(@babel/core@7.26.0)
-      '@babel/preset-typescript': 7.26.0(@babel/core@7.26.0)
-      convert-source-map: 2.0.0
-      invariant: 2.2.4
-      react: 18.3.1
-      react-native: 0.75.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.12)(encoding@0.1.13)(react@18.3.1)(typescript@5.7.2)
-    transitivePeerDependencies:
-      - supports-color
-
   react-native-reanimated@3.16.7(@babel/core@7.26.0)(react-native@0.76.3(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@react-native-community/cli-server-api@15.1.3)(@types/react@18.3.12)(encoding@0.1.13)(react@18.3.1))(react@18.3.1):
     dependencies:
       '@babel/core': 7.26.0
@@ -27706,13 +27888,13 @@ snapshots:
       '@remix-run/router': 1.21.0
       react: 18.3.1
 
-  react-server-dom-webpack@19.0.0-rc-6230622a1a-20240610(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(webpack@5.97.1(esbuild@0.23.1)):
+  react-server-dom-webpack@19.0.0-rc-6230622a1a-20240610(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(webpack@5.97.1(@swc/core@1.10.7(@swc/helpers@0.5.15))(esbuild@0.23.1)):
     dependencies:
       acorn-loose: 8.4.0
       neo-async: 2.6.2
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
-      webpack: 5.97.1(esbuild@0.23.1)
+      webpack: 5.97.1(@swc/core@1.10.7(@swc/helpers@0.5.15))(esbuild@0.23.1)
 
   react-shallow-renderer@16.15.0(react@18.3.1):
     dependencies:
@@ -27758,6 +27940,11 @@ snapshots:
       parse-json: 8.1.0
       type-fest: 4.32.0
       unicorn-magic: 0.1.0
+
+  read-yaml-file@2.1.0:
+    dependencies:
+      js-yaml: 4.1.0
+      strip-bom: 4.0.0
 
   readable-stream@2.3.8:
     dependencies:
@@ -28054,6 +28241,10 @@ snapshots:
       queue-microtask: 1.2.3
 
   runtime-required@1.1.0: {}
+
+  rxjs@6.6.7:
+    dependencies:
+      tslib: 1.14.1
 
   rxjs@7.8.1:
     dependencies:
@@ -28964,15 +29155,16 @@ snapshots:
       ansi-escapes: 4.3.2
       supports-hyperlinks: 2.3.0
 
-  terser-webpack-plugin@5.3.11(esbuild@0.23.1)(webpack@5.97.1(esbuild@0.23.1)):
+  terser-webpack-plugin@5.3.11(@swc/core@1.10.7(@swc/helpers@0.5.15))(esbuild@0.23.1)(webpack@5.97.1(@swc/core@1.10.7(@swc/helpers@0.5.15))(esbuild@0.23.1)):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.25
       jest-worker: 27.5.1
       schema-utils: 4.3.0
       serialize-javascript: 6.0.2
       terser: 5.37.0
-      webpack: 5.97.1(esbuild@0.23.1)
+      webpack: 5.97.1(@swc/core@1.10.7(@swc/helpers@0.5.15))(esbuild@0.23.1)
     optionalDependencies:
+      '@swc/core': 1.10.7(@swc/helpers@0.5.15)
       esbuild: 0.23.1
 
   terser@5.37.0:
@@ -29310,7 +29502,7 @@ snapshots:
 
   undici-types@6.20.0: {}
 
-  undici@6.21.0: {}
+  undici@6.21.1: {}
 
   unenv@1.10.0:
     dependencies:
@@ -29642,7 +29834,7 @@ snapshots:
 
   webpack-virtual-modules@0.6.2: {}
 
-  webpack@5.97.1(esbuild@0.23.1):
+  webpack@5.97.1(@swc/core@1.10.7(@swc/helpers@0.5.15))(esbuild@0.23.1):
     dependencies:
       '@types/eslint-scope': 3.7.7
       '@types/estree': 1.0.6
@@ -29664,7 +29856,7 @@ snapshots:
       neo-async: 2.6.2
       schema-utils: 3.3.0
       tapable: 2.2.1
-      terser-webpack-plugin: 5.3.11(esbuild@0.23.1)(webpack@5.97.1(esbuild@0.23.1))
+      terser-webpack-plugin: 5.3.11(@swc/core@1.10.7(@swc/helpers@0.5.15))(esbuild@0.23.1)(webpack@5.97.1(@swc/core@1.10.7(@swc/helpers@0.5.15))(esbuild@0.23.1))
       watchpack: 2.4.2
       webpack-sources: 3.2.3
     transitivePeerDependencies:
