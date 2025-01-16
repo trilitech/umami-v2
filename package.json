@@ -24,8 +24,7 @@
     "dev:web": "turbo dev --filter=@umami/web",
     "dev:mobile": "turbo dev --filter=@umami/mobile-expo",
     "storybook": "turbo dev --filter=@umami/storybook",
-    "start:mobile": "pnpm --filter=@umami/mobile-expo start",
-    "postinstall": "patch-package"
+    "start:mobile": "pnpm --filter=@umami/mobile-expo start"
   },
   "devDependencies": {
     "jest": "^29.7.0",
