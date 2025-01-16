@@ -11,12 +11,12 @@ import store, { persistor } from "../store/store";
 export default function RootLayout() {
   const colorScheme = useColorScheme()
   return (
-    // <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme!}>
+    <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme!}>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <Stack screenOptions={{ headerShown: false }} />
        </PersistGate>
      </Provider>
-    // </TamaguiProvider>
+    </TamaguiProvider>
   );
 }
