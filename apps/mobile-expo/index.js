@@ -1,8 +1,7 @@
 import { registerRootComponent } from "expo";
 import { ExpoRoot } from "expo-router";
-import * as Crypto from "expo-crypto";
 import { Buffer } from 'buffer';
-import process from 'process';
+import 'react-native-get-random-values';
 
 global.Buffer = Buffer;
 global.process = process;
