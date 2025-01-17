@@ -1,13 +1,16 @@
-import 'node-libs-react-native/globals';
-import { AppRegistry } from "react-native";
-import App from "./src/App";
-import { name as appName } from "./app.json";
-import process from 'process'
-import { Buffer } from 'buffer';
+import { Buffer } from "buffer";
 
-Object.assign(global, {
-  Buffer,
-  process
-})
+import { registerRootComponent } from "expo";
+import { ExpoRoot } from "expo-router";
+import "react-native-get-random-values";
 
-AppRegistry.registerComponent(appName, () => App);
+global.Buffer = Buffer;
+global.process = process;
+
+// Must be exported or Fast Refresh won't update the context
+export function App() {
+  const ctx = require.context("./app");
+  return <ExpoRoot context={ctx} />;
+}
+
+registerRootComponent(App);

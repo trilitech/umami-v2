@@ -22,7 +22,9 @@
     "test:e2e": "turbo test:e2e",
     "dev:desktop": "turbo dev --filter=@umami/desktop",
     "dev:web": "turbo dev --filter=@umami/web",
-    "storybook": "turbo dev --filter=@umami/storybook"
+    "dev:mobile": "turbo dev --filter=@umami/mobile",
+    "storybook": "turbo dev --filter=@umami/storybook",
+    "start:mobile": "pnpm --filter=@umami/mobile start"
   },
   "devDependencies": {
     "jest": "^29.7.0",
