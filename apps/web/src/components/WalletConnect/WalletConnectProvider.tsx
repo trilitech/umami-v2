@@ -12,10 +12,10 @@ import {
   walletKit,
 } from "@umami/state";
 import { type Network } from "@umami/tezos";
-import { CustomError, WalletConnectError } from "@umami/utils";
+import { CustomError, WalletConnectError, WcErrorCode, getWcErrorResponse } from "@umami/utils";
 import { formatJsonRpcError } from "@walletconnect/jsonrpc-utils";
 import { type SessionTypes } from "@walletconnect/types";
-import { type SdkErrorKey, getSdkError } from "@walletconnect/utils";
+import { getSdkError } from "@walletconnect/utils";
 import { type PropsWithChildren, useCallback, useEffect, useRef } from "react";
 
 import { SessionProposalModal } from "./SessionProposalModal";
@@ -94,7 +94,7 @@ export const WalletConnectProvider = ({ children }: PropsWithChildren) => {
       handleAsyncActionUnsafe(async () => {
         const activeSessions: Record<string, SessionTypes.Struct> = walletKit.getActiveSessions();
         if (!(event.topic in activeSessions)) {
-          throw new WalletConnectError("Session not found", "INVALID_EVENT", null);
+          throw new WalletConnectError("Session not found", WcErrorCode.SESSION_NOT_FOUND, null);
         }
 
         const session = activeSessions[event.topic];
@@ -105,19 +105,8 @@ export const WalletConnectProvider = ({ children }: PropsWithChildren) => {
         await handleWcRequest(event, session);
       }).catch(async error => {
         const { id, topic } = event;
-        let sdkErrorKey: SdkErrorKey =
-          error instanceof WalletConnectError ? error.sdkError : "SESSION_SETTLEMENT_FAILED";
-        if (sdkErrorKey === "USER_REJECTED") {
-          console.info("WC request rejected", sdkErrorKey, event, error);
-        } else {
-          if (error.message.includes("delegate.unchanged")) {
-            sdkErrorKey = "INVALID_EVENT";
-          }
-          console.warn("WC request failed", sdkErrorKey, event, error);
-        }
+        const response = formatJsonRpcError(id, getWcErrorResponse(error));
         // dApp is waiting so we need to notify it
-        const sdkErrorMessage = getSdkError(sdkErrorKey).message;
-        const response = formatJsonRpcError(id, sdkErrorMessage);
         await walletKit.respondSessionRequest({ topic, response });
       }),
     [handleAsyncActionUnsafe, handleWcRequest, toast]

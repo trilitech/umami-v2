@@ -15,7 +15,7 @@ import {
   useRemoveBeaconPeerBySenderId,
 } from "@umami/state";
 import { type Network } from "@umami/tezos";
-import { CustomError } from "@umami/utils";
+import { CustomError, getErrorContext } from "@umami/utils";
 
 import { PermissionRequestModal } from "./PermissionRequestModal";
 import { SignPayloadRequestModal } from "../common/SignPayloadRequestModal";
@@ -41,6 +41,20 @@ export const useHandleBeaconMessage = () => {
   const findNetwork = useFindNetwork();
   const removePeer = useRemoveBeaconPeerBySenderId();
 
+  // Beacon SDK expects errorData for TRANSACTION_INVALID_ERROR only and as an array of RPC errors
+  const respondWithError = async (
+    messageId: string,
+    errorType: BeaconErrorType,
+    errorData?: any
+  ) => {
+    await WalletClient.respond({
+      id: messageId,
+      type: BeaconMessageType.Error,
+      errorType,
+      errorData,
+    });
+  };
+
   // we should confirm that we support the network that the beacon request is coming from
   const checkNetwork = ({
     id: messageId,
@@ -52,11 +66,7 @@ export const useHandleBeaconMessage = () => {
     const network = findNetwork(beaconNetwork.type);
 
     if (!network) {
-      void WalletClient.respond({
-        id: messageId,
-        type: BeaconMessageType.Error,
-        errorType: BeaconErrorType.NETWORK_NOT_SUPPORTED,
-      });
+      void respondWithError(messageId, BeaconErrorType.NETWORK_NOT_SUPPORTED);
       throw new CustomError(
         `Got Beacon request from an unknown network: ${JSON.stringify(
           beaconNetwork
@@ -79,11 +89,7 @@ export const useHandleBeaconMessage = () => {
             checkNetwork(message);
             modal = <PermissionRequestModal request={message} />;
             onClose = async () => {
-              await WalletClient.respond({
-                id: message.id,
-                type: BeaconMessageType.Error,
-                errorType: BeaconErrorType.NOT_GRANTED_ERROR,
-              });
+              await respondWithError(message.id, BeaconErrorType.NOT_GRANTED_ERROR);
               await removePeer(message.senderId);
             };
             break;
@@ -100,11 +106,7 @@ export const useHandleBeaconMessage = () => {
             };
             modal = <SignPayloadRequestModal opts={signPayloadProps} />;
             onClose = async () => {
-              await WalletClient.respond({
-                id: message.id,
-                type: BeaconMessageType.Error,
-                errorType: BeaconErrorType.ABORTED_ERROR,
-              });
+              await respondWithError(message.id, BeaconErrorType.ABORTED_ERROR);
             };
             break;
           }
@@ -112,11 +114,7 @@ export const useHandleBeaconMessage = () => {
             const network = checkNetwork(message);
             const signer = getAccount(message.sourceAddress);
             if (!signer) {
-              void WalletClient.respond({
-                id: message.id,
-                type: BeaconMessageType.Error,
-                errorType: BeaconErrorType.NO_PRIVATE_KEY_FOUND_ERROR,
-              });
+              void respondWithError(message.id, BeaconErrorType.NO_PRIVATE_KEY_FOUND_ERROR);
               throw new CustomError(`Unknown account: ${message.sourceAddress}`);
             }
 
@@ -141,23 +139,14 @@ export const useHandleBeaconMessage = () => {
             } else {
               modal = <BatchSignPage {...signProps} {...message.operationDetails} />;
             }
-            onClose = () =>
-              WalletClient.respond({
-                id: message.id,
-                type: BeaconMessageType.Error,
-                errorType: BeaconErrorType.ABORTED_ERROR,
-              });
+            onClose = () => respondWithError(message.id, BeaconErrorType.ABORTED_ERROR);
 
             break;
           }
           default: {
             // TODO: Open a modal with an unknown operation instead
 
-            void WalletClient.respond({
-              id: message.id,
-              type: BeaconMessageType.Error,
-              errorType: BeaconErrorType.UNKNOWN_ERROR,
-            });
+            void respondWithError(message.id, BeaconErrorType.UNKNOWN_ERROR);
 
             throw new CustomError(`Unknown Beacon message type: ${message.type}`);
           }
@@ -165,9 +154,11 @@ export const useHandleBeaconMessage = () => {
 
         return openWith(modal, { onClose });
       },
-      error => ({
-        description: `Error while processing Beacon request: ${error.message}`,
-      })
+      error => {
+        const context = getErrorContext(error);
+        void respondWithError(message.id, BeaconErrorType.UNKNOWN_ERROR);
+        return { description: `Error while processing Beacon request: ${context.description}` };
+      }
     );
   };
 };
