@@ -1,5 +1,5 @@
-import React from "react";
 import { TouchableOpacity, View } from "react-native";
+import { Button } from "tamagui";
 
 import {
   AppleImage,
@@ -11,8 +11,8 @@ import {
   DividerLine,
   DividerWrapper,
   FacebookRedditImage,
-  FooterLinkLabel,
   FooterLabel,
+  FooterLinkLabel,
   GoogleImage,
   LinksWrapper,
   MainContainer,
@@ -25,11 +25,10 @@ import {
   StyledLink,
   TwitterImage,
 } from "./onboarding.styles";
-import { images } from "../../assets/images";
 import { useOnboardingData } from "./useOnboardingData";
-import { Button } from "tamagui";
+import { images } from "../../assets/images";
 
-export const OnboardingScreen: React.FC = () => {
+export const OnboardingScreen = () => {
   const {
     onGoogleLogin,
     onFacebookLogin,
@@ -46,35 +45,35 @@ export const OnboardingScreen: React.FC = () => {
       <ContentWrapper>
         <MainContainer>
           {/*TODO: change image*/}
-          <StyledImage source={images.tezos} resizeMode="cover" />
+          <StyledImage resizeMode="cover" source={images.tezos} />
           <ContinueLabel>{strings.continueWith}</ContinueLabel>
-            <SocialButtonsWrapper>
-              <TouchableOpacity onPress={onGoogleLogin}>
-                <SocialIconWrapper>
-                  <GoogleImage source={images.google} />
-                </SocialIconWrapper>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={onFacebookLogin}>
-                <SocialIconWrapper>
-                  <FacebookRedditImage source={images.facebook} />
-                </SocialIconWrapper>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={onXLogin}>
-                <SocialIconWrapper>
-                  <TwitterImage source={images.twitter} />
-                </SocialIconWrapper>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={onRedditLogin}>
-                <SocialIconWrapper>
-                  <FacebookRedditImage source={images.reddit} />
-                </SocialIconWrapper>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={onAppleLogin}>
-                <SocialIconWrapper>
-                  <AppleImage source={images.apple} />
-                </SocialIconWrapper>
-              </TouchableOpacity>
-            </SocialButtonsWrapper>
+          <SocialButtonsWrapper>
+            <TouchableOpacity onPress={onGoogleLogin}>
+              <SocialIconWrapper>
+                <GoogleImage source={images.google} />
+              </SocialIconWrapper>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={onFacebookLogin}>
+              <SocialIconWrapper>
+                <FacebookRedditImage source={images.facebook} />
+              </SocialIconWrapper>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={onXLogin}>
+              <SocialIconWrapper>
+                <TwitterImage source={images.twitter} />
+              </SocialIconWrapper>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={onRedditLogin}>
+              <SocialIconWrapper>
+                <FacebookRedditImage source={images.reddit} />
+              </SocialIconWrapper>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={onAppleLogin}>
+              <SocialIconWrapper>
+                <AppleImage source={images.apple} />
+              </SocialIconWrapper>
+            </TouchableOpacity>
+          </SocialButtonsWrapper>
 
           <DividerWrapper>
             <DividerLine />
@@ -91,9 +90,7 @@ export const OnboardingScreen: React.FC = () => {
               <ButtonLabel>{strings.alreadyHaveWallet}</ButtonLabel>
             </SecondaryButton>
 
-            <Button>
-              Tamagui Button
-            </Button>
+            <Button>Tamagui Button</Button>
           </ButtonsWrapper>
         </MainContainer>
         <View style={{ alignItems: "center" }}>
@@ -108,4 +105,3 @@ export const OnboardingScreen: React.FC = () => {
     </MainContainer>
   );
 };
-

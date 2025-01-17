@@ -1,13 +1,13 @@
-import { useCallback, useEffect } from "react";
-import * as WebBrowser from "expo-web-browser";
-import Web3Auth, {
-  LOGIN_PROVIDER,
-  WEB3AUTH_NETWORK,
-  ChainNamespace,
-  LOGIN_PROVIDER_TYPE,
-} from "@web3auth/react-native-sdk";
 import { CommonPrivateKeyProvider } from "@web3auth/base-provider";
+import Web3Auth, {
+  ChainNamespace,
+  LOGIN_PROVIDER,
+  type LOGIN_PROVIDER_TYPE,
+  WEB3AUTH_NETWORK,
+} from "@web3auth/react-native-sdk";
 import * as SecureStore from "expo-secure-store";
+import * as WebBrowser from "expo-web-browser";
+import { useCallback, useEffect } from "react";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -38,7 +38,9 @@ const CHAIN_CONFIG = {
 };
 
 const createWeb3AuthInstance = () => {
-  const privateKeyProvider = new CommonPrivateKeyProvider({ config: { chainConfig: CHAIN_CONFIG } });
+  const privateKeyProvider = new CommonPrivateKeyProvider({
+    config: { chainConfig: CHAIN_CONFIG },
+  });
 
   return new Web3Auth(WebBrowser, SecureStore, {
     clientId: WEB3_AUTH_CLIENT_ID,
@@ -61,7 +63,7 @@ export const useOnboardingData = () => {
       }
     };
 
-    initializeWeb3Auth();
+    void initializeWeb3Auth();
   }, [web3auth]);
 
   const login = useCallback(
@@ -84,8 +86,7 @@ export const useOnboardingData = () => {
     [web3auth]
   );
 
-  const createLoginHandler = (provider: LOGIN_PROVIDER_TYPE) =>
-    useCallback(() => login(provider), [login]);
+  const createLoginHandler = (provider: LOGIN_PROVIDER_TYPE) => () => login(provider);
 
   const onGoogleLogin = createLoginHandler(LOGIN_PROVIDER.GOOGLE);
   const onFacebookLogin = createLoginHandler(LOGIN_PROVIDER.FACEBOOK);
@@ -101,7 +102,10 @@ export const useOnboardingData = () => {
     }
   }, []);
 
-  const openTerms = useCallback(() => openBrowser("https://umamiwallet.com/tos.html"), [openBrowser]);
+  const openTerms = useCallback(
+    () => openBrowser("https://umamiwallet.com/tos.html"),
+    [openBrowser]
+  );
   const openPrivacy = useCallback(
     () => openBrowser("https://umamiwallet.com/privacypolicy.html"),
     [openBrowser]

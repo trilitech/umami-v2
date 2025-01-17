@@ -1,7 +1,8 @@
+import { Buffer } from "buffer";
+
 import { registerRootComponent } from "expo";
 import { ExpoRoot } from "expo-router";
-import { Buffer } from 'buffer';
-import 'react-native-get-random-values';
+import "react-native-get-random-values";
 
 global.Buffer = Buffer;
 global.process = process;

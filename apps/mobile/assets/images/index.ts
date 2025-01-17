@@ -1,8 +1,15 @@
+import apple from "./apple.png";
+import facebook from "./facebook.png";
+import google from "./google.png";
+import reddit from "./reddit.png";
+import tezos from "./tezos.webp";
+import twitter from "./twitter.png";
+
 export const images = {
-  tezos: require('./tezos.webp'),
-  apple: require('./apple.png'),
-  google: require('./google.png'),
-  twitter: require('./twitter.png'),
-  reddit: require('./reddit.png'),
-  facebook: require('./facebook.png'),
-}
+  tezos,
+  apple,
+  google,
+  twitter,
+  reddit,
+  facebook,
+};

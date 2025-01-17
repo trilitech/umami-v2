@@ -3,7 +3,11 @@
   "include": [
     "**/*.ts",
     "**/*.tsx",
+    ".eslintrc.js",
     ".expo/types/**/*.ts",
-    "expo-env.d.ts"
+    "expo-env.d.ts",
+    "babel-config.js",
+    "metro.config.js",
+    "index.js"
   ]
 }
