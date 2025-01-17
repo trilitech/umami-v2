@@ -26,7 +26,7 @@ export const RenameRemoveMenuSwitch = ({ account }: { account: Account }) => {
             onSubmit={() => {
               removeAccount(account);
               closeModal();
-              navigate("/");
+              void navigate("/");
             }}
             title={title}
           />

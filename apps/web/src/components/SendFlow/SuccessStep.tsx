@@ -51,7 +51,7 @@ export const SuccessStep = ({ hash }: { hash: string }) => {
           width="100%"
           onClick={() => {
             onClose();
-            navigate("/activity");
+            void navigate("/activity");
           }}
           size="lg"
           variant="primary"

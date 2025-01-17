@@ -33,7 +33,7 @@ export const AccountListWithDrawer = () => {
   const closeDrawer = useCallback(() => {
     setSelectedAccount(null);
     onClose();
-    navigate("/home");
+    void navigate("/home");
   }, [onClose, navigate]);
 
   // For some reason the drawer doesn't close on esc for this particular component
