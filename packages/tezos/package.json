@@ -59,7 +59,7 @@
     ]
   },
   "dependencies": {
-    "@ledgerhq/hw-transport-webusb": "^6.29.4",
+    "@ledgerhq/hw-transport-webusb": "6.27.1",
     "@taquito/ledger-signer": "^21.0.0",
     "@taquito/michel-codec": "^21.0.0",
     "@taquito/rpc": "^21.0.0",

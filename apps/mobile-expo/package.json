@@ -20,7 +20,7 @@
     "@chriscdn/promise-semaphore": "^2.0.9",
     "@expo/vector-icons": "^14.0.2",
     "@ledgerhq/devices": "^8.4.4",
-    "@ledgerhq/hw-transport-webusb": "^6.29.4",
+    "@ledgerhq/hw-transport-webusb": "6.27.1",
     "@react-native-async-storage/async-storage": "^2.0.0",
     "@react-navigation/bottom-tabs": "^7.0.0",
     "@react-navigation/native": "^7.0.0",

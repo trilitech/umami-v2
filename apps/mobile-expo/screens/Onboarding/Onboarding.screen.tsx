@@ -27,6 +27,7 @@ import {
 } from "./onboarding.styles";
 import { images } from "../../assets/images";
 import { useOnboardingData } from "./useOnboardingData";
+import { Button } from "tamagui";
 
 export const OnboardingScreen: React.FC = () => {
   const {
@@ -89,6 +90,10 @@ export const OnboardingScreen: React.FC = () => {
             <SecondaryButton>
               <ButtonLabel>{strings.alreadyHaveWallet}</ButtonLabel>
             </SecondaryButton>
+
+            <Button>
+              Tamagui Button
+            </Button>
           </ButtonsWrapper>
         </MainContainer>
         <View style={{ alignItems: "center" }}>
