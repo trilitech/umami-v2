@@ -29,6 +29,7 @@ describe("Errors reducer", () => {
           description: `error ${i}`,
           stacktrace: "stacktrace",
           technicalDetails: "technicalDetails",
+          code: i,
         })
       );
     }
