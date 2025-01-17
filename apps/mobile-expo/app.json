@@ -41,9 +41,9 @@
       "router": {
         "origin": false
       },
-      "eas": {
-        "projectId": "6efbb35b-65b6-4067-9dbb-07c4535af447"
-      }
+      // "eas": {
+      //   "projectId": "6efbb35b-65b6-4067-9dbb-07c4535af447"
+      // }
     }
   }
 }

@@ -13,11 +13,15 @@ defaultConfig.watchFolders = [
 
 defaultConfig.resolver = {
   ...defaultConfig.resolver,
+  sourceExts: [...defaultConfig.resolver.sourceExts, "cjs", "mjs"],
+  resolverMainFields: ["react-native", "browser", "main"],
   nodeModulesPaths: [
     path.resolve(projectRoot, "node_modules"),
     path.resolve(workspaceRoot, "node_modules"),
   ],
   extraNodeModules: {
+    "@tzkt/oazapfts": path.resolve(workspaceRoot, "node_modules/@tzkt/oazapfts/lib/"),
+    "@chakra-ui/utils": path.resolve(workspaceRoot, "node_modules/@chakra-ui/utils/dist/esm"),
     http: require.resolve("stream-http"),
     https: require.resolve("https-browserify"),
     stream: require.resolve("stream-browserify"),
@@ -26,11 +30,10 @@ defaultConfig.resolver = {
     vm: require.resolve("vm-browserify"),
     zlib: require.resolve("pako"),
     process: require.resolve("process"),
-    crypto: require.resolve('crypto-browserify'),
+    crypto: require.resolve("crypto-browserify"),
   },
   disableHierarchicalLookup: true,
   unstable_enableSymlinks: true,
-  unstable_enablePackageExports: true,
 };
 
 module.exports = defaultConfig;
