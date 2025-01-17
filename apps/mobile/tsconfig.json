@@ -1,7 +1,9 @@
 {
-  "extends": "@react-native/typescript-config/tsconfig.json",
-  "include": ["index.js", "src", "babel.config.cjs", "metro.config.cjs", "jest.config.ts"],
-  "compilerOptions": {
-    "jsx": "react-native"
-  }
+  "extends": "@umami/typescript-config/tsconfig.json",
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    ".expo/types/**/*.ts",
+    "expo-env.d.ts"
+  ]
 }

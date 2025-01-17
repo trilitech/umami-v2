@@ -16,7 +16,6 @@ import {
 } from "@umami/state";
 import { WalletConnectError, WcErrorCode } from "@umami/utils";
 import { formatJsonRpcError, formatJsonRpcResult } from "@walletconnect/jsonrpc-utils";
-import { formatJsonRpcError } from "@walletconnect/jsonrpc-utils";
 import { type SessionTypes, type SignClientTypes, type Verify } from "@walletconnect/types";
 
 import { SignPayloadRequestModal } from "../common/SignPayloadRequestModal";
