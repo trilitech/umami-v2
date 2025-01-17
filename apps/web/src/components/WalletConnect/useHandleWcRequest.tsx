@@ -14,10 +14,9 @@ import {
   useGetOwnedAccountSafe,
   walletKit,
 } from "@umami/state";
-import { WalletConnectError } from "@umami/utils";
+import { WalletConnectError, WcErrorCode } from "@umami/utils";
 import { formatJsonRpcError, formatJsonRpcResult } from "@walletconnect/jsonrpc-utils";
 import { type SessionTypes, type SignClientTypes, type Verify } from "@walletconnect/types";
-import { type SdkErrorKey, getSdkError } from "@walletconnect/utils";
 
 import { SignPayloadRequestModal } from "../common/SignPayloadRequestModal";
 import { BatchSignPage } from "../SendFlow/common/BatchSignPage";
@@ -61,11 +60,25 @@ export const useHandleWcRequest = () => {
       let modal;
       let onClose;
 
+      const handleUserRejected = () => {
+        // dApp is waiting so we need to notify it
+        const response = formatJsonRpcError(id, {
+          code: WcErrorCode.USER_REJECTED,
+          message: "User rejected the request",
+        });
+        console.info("WC request rejected by user", event, response);
+        void walletKit.respondSessionRequest({ topic, response });
+      };
+
       switch (request.method) {
         case "tezos_getAccounts": {
           const wcPeers = walletKit.getActiveSessions();
           if (!(topic in wcPeers)) {
-            throw new WalletConnectError(`Unknown session ${topic}`, "UNAUTHORIZED_EVENT", null);
+            throw new WalletConnectError(
+              `Unknown session ${topic}`,
+              WcErrorCode.SESSION_NOT_FOUND,
+              null
+            );
           }
           const session = wcPeers[topic];
           const accountPkh = session.namespaces.tezos.accounts[0].split(":")[2];
@@ -89,15 +102,20 @@ export const useHandleWcRequest = () => {
 
         case "tezos_sign": {
           if (!request.params.account) {
-            throw new WalletConnectError("Missing account in request", "INVALID_EVENT", session);
+            throw new WalletConnectError(
+              "Missing account in request",
+              WcErrorCode.MISSING_ACCOUNT_IN_REQUEST,
+              session
+            );
           }
           const signer = getImplicitAccount(request.params.account);
           const network = findNetwork(chainId.split(":")[1]);
           if (!network) {
             throw new WalletConnectError(
               `Unsupported network ${chainId}`,
-              "UNSUPPORTED_CHAINS",
-              session
+              WcErrorCode.UNSUPPORTED_CHAINS,
+              session,
+              chainId
             );
           }
 
@@ -115,24 +133,24 @@ export const useHandleWcRequest = () => {
 
           modal = <SignPayloadRequestModal opts={signPayloadProps} />;
           onClose = () => {
-            const sdkErrorKey: SdkErrorKey = "USER_REJECTED";
-            console.info("WC request rejected by user", sdkErrorKey, event);
-            // dApp is waiting so we need to notify it
-            const response = formatJsonRpcError(id, getSdkError(sdkErrorKey).message);
-            void walletKit.respondSessionRequest({ topic, response });
+            handleUserRejected();
           };
           return openWith(modal, { onClose });
         }
 
         case "tezos_send": {
           if (!request.params.account) {
-            throw new WalletConnectError("Missing account in request", "INVALID_EVENT", session);
+            throw new WalletConnectError(
+              "Missing account in request",
+              WcErrorCode.MISSING_ACCOUNT_IN_REQUEST,
+              session
+            );
           }
           const signer = getAccount(request.params.account);
           if (!signer) {
             throw new WalletConnectError(
               `Unknown account, no signer: ${request.params.account}`,
-              "UNAUTHORIZED_EVENT",
+              WcErrorCode.INTERNAL_SIGNER_IS_MISSING,
               session
             );
           }
@@ -144,7 +162,7 @@ export const useHandleWcRequest = () => {
           if (!network) {
             throw new WalletConnectError(
               `Unsupported network ${chainId}`,
-              "UNSUPPORTED_CHAINS",
+              WcErrorCode.UNSUPPORTED_CHAINS,
               session
             );
           }
@@ -168,7 +186,7 @@ export const useHandleWcRequest = () => {
             modal = <BatchSignPage {...signProps} {...event.params.request.params} />;
           }
           onClose = () => {
-            throw new WalletConnectError("Rejected by user", "USER_REJECTED", session);
+            handleUserRejected();
           };
 
           return openWith(modal, { onClose });
@@ -176,8 +194,9 @@ export const useHandleWcRequest = () => {
         default:
           throw new WalletConnectError(
             `Unsupported method ${request.method}`,
-            "WC_METHOD_UNSUPPORTED",
-            session
+            WcErrorCode.METHOD_UNSUPPORTED,
+            session,
+            request.method
           );
       }
     });
