@@ -1,1 +1,1 @@
-export * from './Onboarding.screen';
+export * from "./Onboarding.screen";

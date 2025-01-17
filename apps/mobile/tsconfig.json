@@ -1,9 +1,22 @@
 {
-  "extends": "@umami/typescript-config/tsconfig.json",
+  "extends": "expo/tsconfig.base.json",
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "ESNext",
+    "isolatedModules": true,
+  },
   "include": [
     "**/*.ts",
     "**/*.tsx",
+    ".eslintrc.js",
     ".expo/types/**/*.ts",
-    "expo-env.d.ts"
+    "expo-env.d.ts",
+    "babel-config.js",
+    "metro.config.js",
+    "index.js"
   ]
 }

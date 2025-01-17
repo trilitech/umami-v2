@@ -1,5 +1,7 @@
 import { Image, SafeAreaView } from "react-native";
-import styled from 'styled-components/native';
+// @ts-ignore styled components will be removed in the future in favor of tamagui
+// eslint-disable-next-line
+import styled from "styled-components/native";
 
 export const MainContainer = styled(SafeAreaView)`
   flex: 1;

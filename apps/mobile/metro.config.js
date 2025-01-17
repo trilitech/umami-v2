@@ -1,15 +1,14 @@
 // Learn more https://docs.expo.dev/guides/customizing-metro
-const { getDefaultConfig } = require("expo/metro-config");
 const path = require("path");
+
+const { getDefaultConfig } = require("expo/metro-config");
 
 const projectRoot = __dirname;
 const workspaceRoot = path.resolve(projectRoot, "../..");
 
 const defaultConfig = getDefaultConfig(projectRoot);
 
-defaultConfig.watchFolders = [
-  workspaceRoot,
-];
+defaultConfig.watchFolders = [workspaceRoot];
 
 defaultConfig.resolver = {
   ...defaultConfig.resolver,
