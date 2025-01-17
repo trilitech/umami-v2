@@ -1,4 +1,3 @@
-import { MAINNET } from "@umami/tezos";
 import { useDispatch } from "react-redux";
 
 import { useAppSelector } from "./useAppSelector";
@@ -10,7 +9,7 @@ export const useBuyTezUrl = (pkh?: string) => {
   const network = useSelectedNetwork();
   let buyTezUrl = network.buyTezUrl;
 
-  if (buyTezUrl && network === MAINNET) {
+  if (buyTezUrl && network.name === "mainnet") {
     buyTezUrl += `/default/widget/?commodity=XTZ&address=${pkh}&network=tezos&commodity_id=xtz.simple.tezos`;
   }
 
