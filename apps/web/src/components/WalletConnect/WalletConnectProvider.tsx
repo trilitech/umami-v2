@@ -15,7 +15,7 @@ import { type Network } from "@umami/tezos";
 import { CustomError, WalletConnectError, WcErrorCode, getWcErrorResponse } from "@umami/utils";
 import { formatJsonRpcError } from "@walletconnect/jsonrpc-utils";
 import { type SessionTypes } from "@walletconnect/types";
-import { type SdkErrorKey, getSdkError } from "@walletconnect/utils";
+import { getSdkError } from "@walletconnect/utils";
 import { type PropsWithChildren, useCallback, useEffect, useRef } from "react";
 
 import { SessionProposalModal } from "./SessionProposalModal";

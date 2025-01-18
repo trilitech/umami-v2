@@ -45,7 +45,6 @@ export const OnboardingScreen = () => {
       <ContentWrapper>
         <MainContainer>
           {/*TODO: change image*/}
-          {/** */}
           <StyledImage resizeMode="cover" source={images.tezos} />
           <ContinueLabel>{strings.continueWith}</ContinueLabel>
           <SocialButtonsWrapper>
