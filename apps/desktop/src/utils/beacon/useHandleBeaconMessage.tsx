@@ -139,7 +139,7 @@ export const useHandleBeaconMessage = () => {
 
         return openWith(modal, { onClose });
       },
-      error => ({
+      (error: { message: any }) => ({
         description: `Error while processing Beacon request: ${error.message}`,
       })
     );

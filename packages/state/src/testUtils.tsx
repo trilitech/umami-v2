@@ -1,9 +1,13 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import * as testLib from "@testing-library/react";
 import { type Account } from "@umami/core";
 import { type Multisig } from "@umami/multisig";
+import { type RawPkh } from "@umami/tezos";
+import { type PropsWithChildren, act } from "react";
+import { Provider } from "react-redux";
 
 import { accountsActions, multisigsActions } from "./slices";
-import { makeStore, UmamiStore } from "./store";
-import * as testLib from "@testing-library/react";
+import { type UmamiStore, makeStore } from "./store";
 
 export const addTestAccount = (store: UmamiStore, account: Account | Multisig) => {
   if (!("type" in account) || account.type === "multisig") {
@@ -17,11 +21,6 @@ export const addTestAccount = (store: UmamiStore, account: Account | Multisig) =
 export const addTestAccounts = (store: UmamiStore, accounts: (Account | Multisig)[]) => {
   accounts.forEach(account => addTestAccount(store, account));
 };
-
-import { PropsWithChildren, act } from "react";
-import { Provider } from "react-redux";
-import { RawPkh } from "@umami/tezos";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const customRenderHook = <
   Result,

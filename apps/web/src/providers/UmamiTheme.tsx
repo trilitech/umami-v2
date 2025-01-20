@@ -1,5 +1,6 @@
-import { ChakraProvider, ColorModeScript } from "@chakra-ui/react";
+import { ChakraProvider, ColorModeScript, useToast } from "@chakra-ui/react";
 import { Global, css } from "@emotion/react";
+import { ToastProvider } from "@umami/utils";
 import { type PropsWithChildren } from "react";
 import "focus-visible/dist/focus-visible";
 
@@ -17,17 +18,16 @@ const GlobalStyles = css`
   }
 `;
 
-export const UmamiTheme = ({ children }: PropsWithChildren) => (
-  <ChakraProvider
-    theme={theme}
-    toastOptions={{
-      defaultOptions: {
-        render: CustomToast,
-      },
-    }}
-  >
-    <Global styles={GlobalStyles} />
-    <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-    {children}
-  </ChakraProvider>
-);
+export const UmamiTheme = ({ children }: PropsWithChildren) => {
+  const toast = useToast({ render: CustomToast });
+
+  return (
+    <ChakraProvider theme={theme}>
+      <ToastProvider toast={toast}>
+        <Global styles={GlobalStyles} />
+        <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+        {children}
+      </ToastProvider>
+    </ChakraProvider>
+  );
+};

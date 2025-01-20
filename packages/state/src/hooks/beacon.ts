@@ -4,9 +4,9 @@ import {
   type NetworkType,
   Serializer,
 } from "@airgap/beacon-wallet";
-import { useToast } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { type RawPkh } from "@umami/tezos";
+import { useCustomToast } from "@umami/utils";
 import { uniq } from "lodash";
 import { useDispatch } from "react-redux";
 
@@ -102,7 +102,7 @@ export const useRemoveBeaconPeersByAccounts = () => {
 
 export const useAddPeer = () => {
   const { refresh } = useBeaconPeers();
-  const toast = useToast();
+  const toast = useCustomToast();
 
   return (payload: string) =>
     new Serializer()
@@ -111,11 +111,20 @@ export const useAddPeer = () => {
       .then(peer => WalletClient.addPeer(peer as ExtendedPeerInfo))
       .then(() => refresh())
       .catch(e => {
-        toast({
-          description:
-            "Beacon sync code in the clipboard is invalid. Please copy a beacon sync code from the dApp",
-          status: "error",
-        });
+        const description =
+          "Beacon sync code in the clipboard is invalid. Please copy a beacon sync code from the dApp";
+        const type = "error";
+
+        toast.show
+          ? toast.show({
+              type,
+              text1: description,
+            })
+          : toast({
+              description,
+              status: type,
+            });
+
         console.error(e);
       });
 };
