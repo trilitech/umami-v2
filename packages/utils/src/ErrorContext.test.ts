@@ -5,6 +5,7 @@ import {
   WalletConnectError,
   WcErrorCode,
   getErrorContext,
+  getHttpErrorMessage,
   getTezErrorMessage,
   getWcErrorResponse,
 } from "./ErrorContext";
@@ -62,6 +63,7 @@ describe("getErrorContext", () => {
     expect(context.stacktrace).toBeDefined();
     expect(context.timestamp).toBeDefined();
   });
+
   it("should handle WalletConnectError instances", () => {
     const error = new WalletConnectError(
       "Custom WC error message",
@@ -75,6 +77,41 @@ describe("getErrorContext", () => {
     expect(context.description).toBe("Custom WC error message");
     expect(context.stacktrace).toBeDefined();
     expect(context.timestamp).toBeDefined();
+  });
+
+  it("should handle HttpErrorResponse instances", () => {
+    const error = {
+      status: 503,
+      message:
+        "Http error response: (503) <html><head><title>503 Service Temporarily Unavailable</title></head>",
+      url: "https://example.com/api",
+    };
+
+    const context = getErrorContext(error);
+    expect(context.description).toBe(
+      "HTTP request failed for https://example.com/api (503) Service Unavailable - The server is temporarily unable to handle the request. Please try again later or contact support."
+    );
+    expect(context.code).toBe(503);
+    expect(context.technicalDetails).toEqual([
+      503,
+      "Service Unavailable - The server is temporarily unable to handle the request. Please try again later or contact support.",
+      "https://example.com/api",
+      "Http error response: (503) 503 Service Temporarily Unavailable",
+    ]);
+    expect(context.stacktrace).toBeDefined();
+    expect(context.timestamp).toBeDefined();
+  });
+
+  it("should recognize well known http error codes", () => {
+    expect(getHttpErrorMessage(123)).toEqual(
+      "Unknown Error - Status code: 123. Please try again later or contact support."
+    );
+    for (const status of [400, 401, 403, 404, 405, 408, 409, 410, 500, 501, 502, 503, 504]) {
+      expect(getHttpErrorMessage(status)).toBeDefined();
+      expect(getHttpErrorMessage(status)).not.toEqual(
+        "Unknown Error - Status code: 123. Please try again later or contact support."
+      );
+    }
   });
 });
 
@@ -141,7 +178,6 @@ describe("getTezErrorMessage", () => {
   });
 
   it("should return TezosOperationError message", () => {
-    // const error = new TezosOperationError(errors:[], lastError: { id: 'michelson_v1.script_rejected', with: { prim: 'Unit' } });
     const mockError: TezosOperationErrorWithMessage = {
       kind: "temporary",
       id: "proto.020-PsParisC.michelson_v1.script_rejected",
@@ -154,7 +190,7 @@ describe("getTezErrorMessage", () => {
     );
     const context = getErrorContext(error);
     expect(context.description).toContain(
-      "Rejected by chain. The contract code failed to run. Please check the contract. Details: Fail entrypoint"
+      "Rejected by chain. The contract code failed to run. Please check the contract.\nDetails: Fail entrypoint"
     );
     expect(context.technicalDetails).toEqual([
       "proto.020-PsParisC.michelson_v1.script_rejected",

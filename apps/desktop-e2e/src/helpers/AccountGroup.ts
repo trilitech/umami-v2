@@ -42,14 +42,14 @@ export class AccountGroupBuilder {
 
   setDerivationPathTemplate(derivationPathTemplate: string): void {
     if (this.accountGroup.type !== "mnemonic") {
-      throw new CustomError(`Derivation path is not used for ${this.accountGroup.type} accounts}`);
+      throw new CustomError(`Derivation path is not used for ${this.accountGroup.type} accounts`);
     }
     this.derivationPathTemplate = derivationPathTemplate;
   }
 
   setSeedPhrase(seedPhrase: string[]): void {
     if (this.accountGroup.type !== "mnemonic") {
-      throw new CustomError(`Seed phrase is not used for ${this.accountGroup.type} accounts}`);
+      throw new CustomError(`Seed phrase is not used for ${this.accountGroup.type} accounts`);
     }
     this.seedPhrase = seedPhrase;
   }
@@ -58,7 +58,7 @@ export class AccountGroupBuilder {
 
   async setSecretKey(secretKey: string, accountIndex = 0): Promise<void> {
     if (this.accountGroup.type !== "secret_key") {
-      throw new CustomError(`Secret key is not used for ${this.accountGroup.type} accounts}`);
+      throw new CustomError(`Secret key is not used for ${this.accountGroup.type} accounts`);
     }
     this.accountGroup.accounts[accountIndex].pkh = await (
       await InMemorySigner.fromSecretKey(secretKey)
