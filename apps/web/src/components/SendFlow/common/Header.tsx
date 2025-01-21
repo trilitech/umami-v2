@@ -7,12 +7,18 @@ import { VerifyInfobox } from "../../WalletConnect/VerifyInfobox";
 import { SignPageHeader } from "../SignPageHeader";
 import { type SignHeaderProps } from "../utils";
 
-export const Header = ({ headerProps }: { headerProps: SignHeaderProps }) => {
+export const Header = ({
+  headerProps,
+  title,
+}: {
+  headerProps: SignHeaderProps;
+  title?: string;
+}) => {
   const color = useColor();
 
   return (
     <>
-      <SignPageHeader>
+      <SignPageHeader title={title}>
         <Flex alignItems="center" justifyContent="center" marginTop="10px">
           <Heading marginRight="4px" color={color("700")} size="sm">
             Network:
@@ -37,7 +43,9 @@ export const Header = ({ headerProps }: { headerProps: SignHeaderProps }) => {
               src={headerProps.appIcon}
             />
           </AspectRatio>
-          <Heading size="sm">{headerProps.appName}</Heading>
+          <Heading data-testid="app-name" size="sm">
+            {headerProps.appName}
+          </Heading>
         </Flex>
       </SignPageHeader>
       {headerProps.requestId.sdkType === "walletconnect" ? (

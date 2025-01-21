@@ -1,14 +1,14 @@
 import { BeaconMessageType, type SignPayloadResponseInput } from "@airgap/beacon-wallet";
 import { WarningIcon } from "@chakra-ui/icons";
 import {
+  AspectRatio,
   Box,
   Flex,
   Heading,
+  Image,
   ModalBody,
-  ModalCloseButton,
   ModalContent,
   ModalFooter,
-  ModalHeader,
   Switch,
   Text,
   useToast,
@@ -21,8 +21,10 @@ import { formatJsonRpcResult } from "@walletconnect/jsonrpc-utils";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
+import { CodeSandboxIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
 import { SignButton } from "../SendFlow/SignButton";
+import { SignPageHeader } from "../SendFlow/SignPageHeader";
 import { type SignPayloadProps } from "../SendFlow/utils";
 import { VerifyInfobox } from "../WalletConnect/VerifyInfobox";
 
@@ -64,17 +66,34 @@ export const SignPayloadRequestModal = ({ opts }: { opts: SignPayloadProps }) =>
   return (
     <FormProvider {...form}>
       <ModalContent>
-        <ModalHeader marginBottom="32px" textAlign="center">
-          {`Sign Payload Request from ${opts.appName}`}
-        </ModalHeader>
+        <SignPageHeader title="Sign Payload Request">
+          <Flex
+            alignItems="center"
+            marginTop="16px"
+            padding="15px"
+            borderRadius="4px"
+            backgroundColor={color("100")}
+          >
+            <AspectRatio width="30px" marginRight="12px" ratio={1}>
+              <Image
+                borderRadius="4px"
+                objectFit="cover"
+                fallback={<CodeSandboxIcon width="36px" height="36px" />}
+                src={opts.appIcon}
+              />
+            </AspectRatio>
+            <Heading data-testid="app-name" size="sm">
+              {opts.appName}
+            </Heading>
+          </Flex>
+        </SignPageHeader>
+
         {opts.requestId.sdkType === "walletconnect" ? (
           <VerifyInfobox
             isScam={opts.isScam ?? false}
             validationStatus={opts.validationStatus ?? "UNKNOWN"}
           />
         ) : null}
-
-        <ModalCloseButton />
 
         <ModalBody>
           <Flex justifyContent="space-between" marginBottom="12px">

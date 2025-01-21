@@ -96,7 +96,7 @@ describe("<useHandleBeaconMessage />", () => {
   });
 
   describe("sign payload request", () => {
-    it("opens a SignPayloadRequestModal", async () => {
+    it("opens a SignPayloadRequestModal", () => {
       const message: SignPayloadRequestOutput = {
         payload: "mockPayload",
         sourceAddress: account.address.pkh,
@@ -114,10 +114,11 @@ describe("<useHandleBeaconMessage />", () => {
 
       act(() => handleMessage(message));
 
-      await screen.findByText("Sign Payload Request from mockDappName");
+      expect(screen.getByTestId("sign-page-header")).toHaveTextContent("Sign Payload Request");
+      expect(screen.getByTestId("app-name")).toHaveTextContent("mockDappName");
     });
 
-    it("sends an error response to the dapp on close", async () => {
+    it("sends an error response to the dapp on close", () => {
       const message: SignPayloadRequestOutput = {
         payload: "mockPayload",
         sourceAddress: account.address.pkh,
@@ -135,7 +136,8 @@ describe("<useHandleBeaconMessage />", () => {
 
       act(() => handleMessage(message));
 
-      await screen.findByText("Sign Payload Request from mockDappName");
+      expect(screen.getByTestId("sign-page-header")).toHaveTextContent("Sign Payload Request");
+      expect(screen.getByTestId("app-name")).toHaveTextContent("mockDappName");
 
       act(() => screen.getByRole("button", { name: "Close" }).click());
 
@@ -403,6 +405,9 @@ describe("<useHandleBeaconMessage />", () => {
             { onClose: expect.any(Function) }
           )
         );
+        expect(screen.getByTestId("sign-page-header")).toHaveTextContent("Send Request");
+        expect(screen.getByTestId("app-name")).toHaveTextContent("mockDappName");
+
         expect(mockToast).not.toHaveBeenCalled();
       });
 

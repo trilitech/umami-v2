@@ -6,6 +6,7 @@ import { Header } from "./Header";
 import { AddressTile } from "../../AddressTile/AddressTile";
 import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";
 import { TezTile } from "../../AssetTiles/TezTile";
+import { Titles } from "../../Titles/Titles";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
 import { type CalculatedSignProps, type SdkSignPageProps } from "../utils";
@@ -25,7 +26,7 @@ export const TezSignPage = ({
     <FormProvider {...form}>
       <ModalContent data-testid="TezSignPage">
         <form>
-          <Header headerProps={headerProps} />
+          <Header headerProps={headerProps} title={Titles.TezSignPage} />
           <ModalBody>
             <TezTile mutezAmount={mutezAmount} />
 

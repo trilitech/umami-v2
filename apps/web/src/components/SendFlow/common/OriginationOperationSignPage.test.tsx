@@ -22,7 +22,7 @@ const message = {
   id: "messageid",
   type: BeaconMessageType.OperationRequest,
   network: { type: NetworkType.GHOSTNET },
-  appMetadata: {},
+  appMetadata: { name: "mockDappName", icon: "" },
 } as OperationRequestOutput;
 const operation = {
   type: "implicit" as const,
@@ -62,6 +62,9 @@ describe("<OriginationOperationSignPage />", () => {
     await renderInModal(<SingleSignPage {...signProps} />);
 
     await waitFor(() => expect(screen.getByText(prettyTezAmount(123))).toBeVisible());
+
+    expect(screen.getByTestId("sign-page-header")).toHaveTextContent("Origination Request");
+    expect(screen.getByTestId("app-name")).toHaveTextContent("mockDappName");
   });
 
   it("passes correct payload to sign handler", async () => {

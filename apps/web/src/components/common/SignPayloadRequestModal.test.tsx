@@ -63,7 +63,7 @@ describe("<SignPayloadRequestModal />", () => {
     await renderInModal(<SignPayloadRequestModal opts={beaconOpts} />, store);
 
     await waitFor(() =>
-      expect(screen.getByText("Sign Payload Request from mockBeaconDappName")).toBeVisible()
+      expect(screen.getByTestId("sign-page-header")).toHaveTextContent("Sign Payload Request")
     );
   });
 
@@ -101,7 +101,7 @@ describe("<SignPayloadRequestModal />", () => {
     await renderInModal(<SignPayloadRequestModal opts={wcOpts} />, store);
 
     await waitFor(() =>
-      expect(screen.getByText("Sign Payload Request from mockWalletConnectDappName")).toBeVisible()
+      expect(screen.getByTestId("sign-page-header")).toHaveTextContent("Sign Payload Request")
     );
     await waitFor(() => expect(screen.getByText(new RegExp(decodedPayload))).toBeVisible());
 
