@@ -12,9 +12,9 @@ Object.defineProperties(global, {
   fetch: { value: jest.fn(), writable: true },
 });
 
-jest.mock("@chakra-ui/react", () => ({
-  ...jest.requireActual("@chakra-ui/react"),
-  useToast: () => mockToast,
+jest.mock("@umami/utils", () => ({
+  ...jest.requireActual("@umami/utils"),
+  useCustomToast: () => mockToast,
 }));
 
 jest.mock("./beacon/WalletClient", () => ({

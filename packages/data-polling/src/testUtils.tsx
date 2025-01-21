@@ -1,9 +1,8 @@
-import * as testLib from "@testing-library/react";
-import { Provider } from "react-redux";
-import { makeStore, UmamiStore } from "@umami/state";
-import { PropsWithChildren, act } from "react";
-
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import * as testLib from "@testing-library/react";
+import { type UmamiStore, makeStore } from "@umami/state";
+import { type PropsWithChildren, act } from "react";
+import { Provider } from "react-redux";
 
 const customRenderHook = <
   Result,
