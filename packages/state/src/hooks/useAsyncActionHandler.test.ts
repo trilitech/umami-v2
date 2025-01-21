@@ -162,7 +162,7 @@ describe("useAsyncActionHandler", () => {
           view.result.current.handleAsyncActionUnsafe(() => Promise.reject(new Error("test error")))
         )
       ).rejects.toThrow("test error");
-      expect(mockToast).toHaveBeenCalledTimes(2);
+      expect(mockToast).toHaveBeenCalledTimes(1);
     });
 
     it("Unsafe propagates the error and shows the toast once on first handling", async () => {
@@ -181,7 +181,7 @@ describe("useAsyncActionHandler", () => {
         status: "error",
         isClosable: true,
       });
-      expect(mockToast).toHaveBeenCalledTimes(2);
+      expect(mockToast).toHaveBeenCalledTimes(1);
     });
 
     it("Unsafe propagates the error and shows no toast on second handling", async () => {

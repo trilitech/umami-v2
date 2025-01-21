@@ -66,7 +66,7 @@ export const RestoreLedger = ({
           toast({ description: "Account successfully created!", status: "success" });
           closeModal();
         }, LEDGER_TIMEOUT),
-      error => {
+      (error: { name: string; message: any }) => {
         if (error.name === "PublicKeyRetrievalError") {
           return {
             description: "Request rejected. Please unlock your Ledger and open the Tezos app",
