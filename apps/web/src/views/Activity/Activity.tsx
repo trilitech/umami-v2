@@ -38,10 +38,10 @@ export const Activity = () => {
           isEmpty && (
             <EmptyMessage
               margin="auto"
-              cta="Buy Tez Now"
+              cta="Buy tez now"
               ctaUrl={buyTezUrl}
-              subtitle={"You need Tez to take part in any activity.\n Buy some to get started."}
-              title="Welcome to Your Web3 Wallet"
+              subtitle={"You need tez to take part in any activity.\n Buy some to get started."}
+              title="Welcome to your Web3 wallet"
             />
           )
         ) : (

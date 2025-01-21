@@ -38,7 +38,7 @@ describe("<EditNetworkMenu />", () => {
       await act(() => user.clear(screen.getByLabelText("RPC URL")));
       await act(() => user.clear(screen.getByLabelText("Tzkt API URL")));
       await act(() => user.clear(screen.getByLabelText("Tzkt Explorer URL")));
-      await act(() => user.clear(screen.getByLabelText("Buy Tez URL")));
+      await act(() => user.clear(screen.getByLabelText("Buy tez URL")));
       await act(() => user.type(screen.getByLabelText("RPC URL"), updatedNetwork.rpcUrl));
       await act(() => user.type(screen.getByLabelText("Tzkt API URL"), updatedNetwork.tzktApiUrl));
       await act(() =>
@@ -60,7 +60,7 @@ describe("<EditNetworkMenu />", () => {
       await act(() => user.clear(screen.getByLabelText("RPC URL")));
       await act(() => user.clear(screen.getByLabelText("Tzkt API URL")));
       await act(() => user.clear(screen.getByLabelText("Tzkt Explorer URL")));
-      await act(() => user.clear(screen.getByLabelText("Buy Tez URL")));
+      await act(() => user.clear(screen.getByLabelText("Buy tez URL")));
       await act(() => user.type(screen.getByLabelText("RPC URL"), updatedNetwork.rpcUrl + "///"));
       await act(() =>
         user.type(screen.getByLabelText("Tzkt API URL"), updatedNetwork.tzktApiUrl + "///")
@@ -84,7 +84,7 @@ describe("<EditNetworkMenu />", () => {
       { label: "RPC URL", required: true },
       { label: "Tzkt API URL", required: true },
       { label: "Tzkt Explorer URL", required: true },
-      { label: "Buy Tez URL", required: false },
+      { label: "Buy tez URL", required: false },
     ];
 
     it.each(urlFields)("validates $label field", async ({ label, required }) => {
@@ -173,14 +173,14 @@ describe("<EditNetworkMenu />", () => {
       await act(() => user.clear(screen.getByLabelText("RPC URL")));
       await act(() => user.clear(screen.getByLabelText("Tzkt API URL")));
       await act(() => user.clear(screen.getByLabelText("Tzkt Explorer URL")));
-      await act(() => user.clear(screen.getByLabelText("Buy Tez URL")));
+      await act(() => user.clear(screen.getByLabelText("Buy tez URL")));
       await act(() => user.type(screen.getByLabelText("Name"), customNetwork.name));
       await act(() => user.type(screen.getByLabelText("RPC URL"), customNetwork.rpcUrl));
       await act(() => user.type(screen.getByLabelText("Tzkt API URL"), customNetwork.tzktApiUrl));
       await act(() =>
         user.type(screen.getByLabelText("Tzkt Explorer URL"), customNetwork.tzktExplorerUrl!)
       );
-      await act(() => user.type(screen.getByLabelText("Buy Tez URL"), customNetwork.buyTezUrl!));
+      await act(() => user.type(screen.getByLabelText("Buy tez URL"), customNetwork.buyTezUrl!));
 
       await waitFor(() => {
         expect(screen.getByText("Add network")).toBeEnabled();

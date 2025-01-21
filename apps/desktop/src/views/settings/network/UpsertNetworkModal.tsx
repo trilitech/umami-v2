@@ -96,7 +96,7 @@ export const UpsertNetworkModal = ({ network }: { network?: Network }) => {
           </FormControl>
 
           <FormControl isInvalid={!!errors.buyTezUrl}>
-            <FormLabel>Buy Tez URL</FormLabel>
+            <FormLabel>Buy tez URL</FormLabel>
             <Input placeholder="https://faucet.ghostnet.teztnets.com" {...register("buyTezUrl")} />
             {errors.buyTezUrl && <FormErrorMessage>{errors.buyTezUrl.message}</FormErrorMessage>}
           </FormControl>

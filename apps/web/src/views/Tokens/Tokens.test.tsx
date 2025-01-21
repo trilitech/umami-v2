@@ -35,11 +35,11 @@ describe("<Tokens />", () => {
         expect(screen.getByTestId("empty-state-message")).toBeVisible();
       });
 
-      expect(screen.getByText("Get Started with Tokens")).toBeVisible();
+      expect(screen.getByText("Get started with tokens")).toBeVisible();
       expect(
-        screen.getByText("You need Tez to take part in any activity. Buy some to get started.")
+        screen.getByText("You need tez to take part in any activity. Buy some to get started.")
       ).toBeVisible();
-      expect(screen.getByText("Buy Tez Now")).toBeVisible();
+      expect(screen.getByText("Buy tez now")).toBeVisible();
       expect(screen.queryByTestId("token-card")).not.toBeInTheDocument();
     });
 
@@ -50,7 +50,7 @@ describe("<Tokens />", () => {
       await waitFor(() => {
         expect(screen.getByTestId("empty-state-message")).toBeVisible();
       });
-      const link = screen.getByRole("link", { name: "Buy Tez Now" });
+      const link = screen.getByRole("link", { name: "Buy tez now" });
       expect(link).toHaveAttribute(
         "href",
         `https://widget.wert.io/default/widget/?commodity=XTZ&address=${account.address.pkh}&network=tezos&commodity_id=xtz.simple.tezos`
@@ -64,7 +64,7 @@ describe("<Tokens />", () => {
       await waitFor(() => {
         expect(screen.getByTestId("empty-state-message")).toBeVisible();
       });
-      const link = screen.getByRole("link", { name: "Buy Tez Now" });
+      const link = screen.getByRole("link", { name: "Buy tez now" });
       expect(link).toBeVisible();
       expect(link).toHaveAttribute("href", "https://faucet.ghostnet.teztnets.com/");
     });
