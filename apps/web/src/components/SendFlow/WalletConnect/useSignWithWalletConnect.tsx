@@ -39,7 +39,7 @@ export const useSignWithWalletConnect = ({
         await walletKit.respondSessionRequest({ topic: requestId.topic, response });
         return openWith(<SuccessStep hash={opHash} />);
       },
-      error => ({
+      (error: { message: any }) => ({
         description: `Failed to confirm WalletConnect operation: ${error.message}`,
       })
     );

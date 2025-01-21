@@ -34,7 +34,7 @@ export const useSignWithBeacon = ({
 
         return openWith(<SuccessStep hash={opHash} />);
       },
-      error => ({
+      (error: { message: any }) => ({
         description: `Failed to confirm Beacon operation: ${error.message}`,
       })
     );
