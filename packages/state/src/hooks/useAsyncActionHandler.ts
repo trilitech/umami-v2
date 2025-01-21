@@ -3,7 +3,6 @@ import { useCallback, useRef, useState } from "react";
 
 import { useAppDispatch } from "./useAppDispatch";
 import { errorsActions } from "../slices";
-import { mockToast } from "../testUtils";
 
 /**
  * Hook for gracefully handling async actions.
@@ -46,14 +45,6 @@ export const useAsyncActionHandler = () => {
           error.processed = true;
 
           toast({
-            description: errorContext.description,
-            status: "error",
-            isClosable: true,
-            ...(typeof toastOptions === "function" ? toastOptions(error) : toastOptions),
-          });
-
-          // TODO: fix this dirty hack
-          mockToast({
             description: errorContext.description,
             status: "error",
             isClosable: true,

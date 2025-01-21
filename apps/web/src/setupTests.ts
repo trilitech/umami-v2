@@ -69,6 +69,11 @@ jest.doMock("@chakra-ui/react", () => ({
   useColorMode: () => ({ colorMode: "light", toggleColorMode: jest.fn() }),
 }));
 
+jest.mock("@umami/utils", () => ({
+  ...jest.requireActual("@umami/utils"),
+  useCustomToast: () => mockToast,
+}));
+
 jest.mock("./utils/persistor", () => ({
   pause: jest.fn(),
 }));
