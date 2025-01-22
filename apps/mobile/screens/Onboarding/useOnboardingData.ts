@@ -1,3 +1,7 @@
+import { TezosToolkit } from "@taquito/taquito";
+import { hex2buf } from "@taquito/utils";
+// @ts-ignore
+import * as tezosCrypto from "@tezos-core-tools/crypto-utils";
 import * as Linking from "expo-linking";
 import { useRouter } from "expo-router";
 import { useCallback, useEffect } from "react";
@@ -22,6 +26,7 @@ type Web3AuthLoginResponse = {
   verifier: string;
   verifierId: string;
 };
+
 
 export const useOnboardingData = () => {
   const router = useRouter();
@@ -63,6 +68,18 @@ export const useOnboardingData = () => {
         if (web3auth.connected) {
           const userInfo = web3auth.userInfo();
           console.log("userInfo", userInfo);
+          const tezos = new TezosToolkit("https://ithacanet.ecadinfra.com");
+
+          const web3authProvider = web3auth.provider;
+          const privateKey = await web3authProvider?.request({ method: "private_key" }) as string;
+          console.log('private key', privateKey);
+
+          const keyPair = tezosCrypto.utils.seedToKeyPair(hex2buf(privateKey));
+          const account = keyPair?.pkh;
+          console.log('account', account);
+
+          const balance = await tezos.tz.getBalance(account);
+          console.log('balance', balance);
 
           if (web3authResponse.idToken) {
             await saveToken("authToken", web3authResponse.idToken);
