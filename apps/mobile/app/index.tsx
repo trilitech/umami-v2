@@ -1,7 +1,14 @@
-import { OnboardingScreen } from "../screens/Onboarding";
+import { useCurrentAccount } from "@umami/state";
+
+import HomeScreen from "./home";
+import Onboarding from "./onboarding";
 
 export default function MainStack() {
-  return (
-    <OnboardingScreen />
-  )
+  const currentAccount = useCurrentAccount();
+  console.log("currentAccount", currentAccount);
+
+  if (!currentAccount) {
+    return <Onboarding />;
+  }
+  return <HomeScreen />;
 }

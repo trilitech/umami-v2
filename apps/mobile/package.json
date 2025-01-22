@@ -27,6 +27,7 @@
     "@react-navigation/native": "^7.0.0",
     "@tamagui/babel-plugin": "^1.121.5",
     "@tamagui/config": "^1.116.15",
+    "@taquito/utils": "^21.0.0",
     "@tezos-core-tools/crypto-utils": "^0.0.7",
     "@umami/core": "workspace:^",
     "@umami/crypto": "workspace:^",
