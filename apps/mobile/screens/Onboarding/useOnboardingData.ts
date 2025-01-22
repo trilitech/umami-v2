@@ -1,7 +1,7 @@
-import { TezosToolkit } from "@taquito/taquito";
-import { hex2buf } from "@taquito/utils";
+import { b58cencode, prefix } from "@taquito/utils";
 // @ts-ignore
-import * as tezosCrypto from "@tezos-core-tools/crypto-utils";
+import { useRestoreSocial } from "@umami/state";
+import { MAINNET, getPublicKeyPairFromSk, makeToolkit } from "@umami/tezos";
 import * as Linking from "expo-linking";
 import { useRouter } from "expo-router";
 import { useCallback, useEffect } from "react";
@@ -27,10 +27,10 @@ type Web3AuthLoginResponse = {
   verifierId: string;
 };
 
-
 export const useOnboardingData = () => {
   const router = useRouter();
   const web3auth = createWeb3AuthInstance();
+  const restoreSocial = useRestoreSocial();
 
   useEffect(() => {
     const handleUrl = (event: any) => {
@@ -63,23 +63,29 @@ export const useOnboardingData = () => {
       }
 
       try {
-        const web3authResponse = await web3auth.login({ loginProvider }) as unknown as Web3AuthLoginResponse;
+        const web3authResponse = (await web3auth.login({
+          loginProvider,
+        })) as unknown as Web3AuthLoginResponse;
 
         if (web3auth.connected) {
           const userInfo = web3auth.userInfo();
           console.log("userInfo", userInfo);
-          const tezos = new TezosToolkit("https://ithacanet.ecadinfra.com");
-
           const web3authProvider = web3auth.provider;
-          const privateKey = await web3authProvider?.request({ method: "private_key" }) as string;
-          console.log('private key', privateKey);
+          const privateKey = (await web3authProvider?.request({ method: "private_key" })) as string;
+          const secretKey = b58cencode(privateKey, prefix.spsk);
+          const tezos = await makeToolkit({ type: "social", secretKey, network: MAINNET });
 
-          const keyPair = tezosCrypto.utils.seedToKeyPair(hex2buf(privateKey));
-          const account = keyPair?.pkh;
-          console.log('account', account);
+          console.log("private key", privateKey);
 
-          const balance = await tezos.tz.getBalance(account);
-          console.log('balance', balance);
+          // const keyPair = tezosCrypto.utils.seedToKeyPair(hex2buf(privateKey));
+          // const account = keyPair?.pkh;
+          const { pk, pkh } = await getPublicKeyPairFromSk(secretKey);
+
+          restoreSocial(pk, pkh, userInfo?.email || userInfo?.name || "Social account", "google");
+          console.log("account", pkh);
+
+          const balance = await tezos.tz.getBalance(pkh);
+          console.log("balance", balance);
 
           if (web3authResponse.idToken) {
             await saveToken("authToken", web3authResponse.idToken);
@@ -102,10 +108,7 @@ export const useOnboardingData = () => {
   const onRedditLogin = createLoginHandler("reddit");
   const onAppleLogin = createLoginHandler("apple");
 
-  const openTerms = useCallback(
-    () => openBrowser("https://umamiwallet.com/tos.html"),
-    []
-  );
+  const openTerms = useCallback(() => openBrowser("https://umamiwallet.com/tos.html"), []);
 
   const openPrivacy = useCallback(
     () => openBrowser("https://umamiwallet.com/privacypolicy.html"),

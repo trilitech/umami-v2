@@ -1,9 +1,10 @@
-import Web3Auth, { WEB3AUTH_NETWORK } from "@web3auth/react-native-sdk";
 import { CommonPrivateKeyProvider } from "@web3auth/base-provider";
-import { CHAIN_CONFIG, WEB3_AUTH_CLIENT_ID } from "../constants";
-import * as WebBrowser from "expo-web-browser";
-import * as SecureStore from "expo-secure-store";
+import Web3Auth, { WEB3AUTH_NETWORK } from "@web3auth/react-native-sdk";
 import { makeRedirectUri } from "expo-auth-session";
+import * as SecureStore from "expo-secure-store";
+import * as WebBrowser from "expo-web-browser";
+
+import { CHAIN_CONFIG, WEB3_AUTH_CLIENT_ID } from "../constants";
 
 export const createWeb3AuthInstance = () => {
   const privateKeyProvider = new CommonPrivateKeyProvider({
