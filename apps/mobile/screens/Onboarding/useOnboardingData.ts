@@ -1,16 +1,11 @@
-import { CommonPrivateKeyProvider } from "@web3auth/base-provider";
-import Web3Auth, {
-  ChainNamespace,
-  LOGIN_PROVIDER,
-  type LOGIN_PROVIDER_TYPE,
-  WEB3AUTH_NETWORK,
-} from "@web3auth/react-native-sdk";
-import * as SecureStore from "expo-secure-store";
-import * as WebBrowser from "expo-web-browser";
-import { makeRedirectUri } from "expo-auth-session";
 import * as Linking from "expo-linking";
-import { useRouter } from "expo-router"; // For navigation
+import { useRouter } from "expo-router";
 import { useCallback, useEffect } from "react";
+
+import { STRINGS } from "../../constants";
+import { createWeb3AuthInstance } from "../../services/web3AuthFactory";
+import { openBrowser } from "../../utils/browserUtils";
+import { saveToken } from "../../utils/tokenManager";
 
 type Web3AuthLoginResponse = {
   aggregateVerifier: string;
@@ -28,73 +23,8 @@ type Web3AuthLoginResponse = {
   verifierId: string;
 };
 
-
-WebBrowser.maybeCompleteAuthSession();
-
-const WEB3_AUTH_CLIENT_ID = process.env.EXPO_PUBLIC_WEB3_AUTH_CLIENT_ID;
-
-const STRINGS = {
-  continueWith: "Continue with:",
-  loginWith: "Login with Auth0",
-  logout: "Logout",
-  or: "or",
-  createWallet: "Create a new wallet",
-  alreadyHaveWallet: "I already have a wallet",
-  byProceeding: "By proceeding, you agree to Umami's",
-  terms: "Terms of Use",
-  and: "and",
-  privacyPolicy: "Privacy Policy",
-};
-
-const CHAIN_CONFIG = {
-  chainNamespace: ChainNamespace.EIP155,
-  chainId: "0x1",
-  rpcTarget: "https://rpc.tzbeta.net/",
-  displayName: "Tezos Mainnet",
-  blockExplorerUrl: "https://tzstats.com",
-  ticker: "XTZ",
-  tickerName: "Tezos",
-};
-
-const saveToken = async (key: string, value: string) => {
-  try {
-    await SecureStore.setItemAsync(key, value);
-  } catch (error) {
-    console.error("Error saving token:", error);
-  }
-};
-
-const getToken = async (key: string): Promise<string | null> => {
-  try {
-    return await SecureStore.getItemAsync(key);
-  } catch (error) {
-    console.error("Error retrieving token:", error);
-    return null;
-  }
-};
-
-const createWeb3AuthInstance = () => {
-  const privateKeyProvider = new CommonPrivateKeyProvider({
-    config: { chainConfig: CHAIN_CONFIG },
-  });
-
-  const redirectUrl = makeRedirectUri({
-    scheme: "umami",
-    path: "auth",
-  });
-
-  console.log("redirectUrl", redirectUrl);
-
-  return new Web3Auth(WebBrowser, SecureStore, {
-    clientId: WEB3_AUTH_CLIENT_ID ?? "",
-    network: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
-    privateKeyProvider,
-    redirectUrl,
-  });
-};
-
 export const useOnboardingData = () => {
-  const router = useRouter(); // Expo Router navigation hook
+  const router = useRouter();
   const web3auth = createWeb3AuthInstance();
 
   useEffect(() => {
@@ -121,7 +51,7 @@ export const useOnboardingData = () => {
   }, [web3auth]);
 
   const login = useCallback(
-    async (loginProvider: LOGIN_PROVIDER_TYPE) => {
+    async (loginProvider: string) => {
       if (!web3auth.ready) {
         console.error("Web3Auth is not initialized.");
         return;
@@ -131,9 +61,10 @@ export const useOnboardingData = () => {
         const web3authResponse = await web3auth.login({ loginProvider }) as unknown as Web3AuthLoginResponse;
 
         if (web3auth.connected) {
-          const userInfo = await web3auth.userInfo();
+          const userInfo = web3auth.userInfo();
+          console.log("userInfo", userInfo);
 
-          if (web3authResponse?.idToken) {
+          if (web3authResponse.idToken) {
             await saveToken("authToken", web3authResponse.idToken);
           }
 
@@ -146,29 +77,22 @@ export const useOnboardingData = () => {
     [web3auth, router]
   );
 
-  const createLoginHandler = (provider: LOGIN_PROVIDER_TYPE) => () => login(provider);
+  const createLoginHandler = (provider: string) => () => login(provider);
 
-  const onGoogleLogin = createLoginHandler(LOGIN_PROVIDER.GOOGLE);
-  const onFacebookLogin = createLoginHandler(LOGIN_PROVIDER.FACEBOOK);
-  const onXLogin = createLoginHandler(LOGIN_PROVIDER.TWITTER);
-  const onRedditLogin = createLoginHandler(LOGIN_PROVIDER.REDDIT);
-  const onAppleLogin = createLoginHandler(LOGIN_PROVIDER.APPLE);
-
-  const openBrowser = useCallback(async (link: string) => {
-    try {
-      await WebBrowser.openBrowserAsync(link);
-    } catch (error) {
-      console.error("Error opening browser:", error);
-    }
-  }, []);
+  const onGoogleLogin = createLoginHandler("google");
+  const onFacebookLogin = createLoginHandler("facebook");
+  const onXLogin = createLoginHandler("twitter");
+  const onRedditLogin = createLoginHandler("reddit");
+  const onAppleLogin = createLoginHandler("apple");
 
   const openTerms = useCallback(
     () => openBrowser("https://umamiwallet.com/tos.html"),
-    [openBrowser]
+    []
   );
+
   const openPrivacy = useCallback(
     () => openBrowser("https://umamiwallet.com/privacypolicy.html"),
-    [openBrowser]
+    []
   );
 
   return {
