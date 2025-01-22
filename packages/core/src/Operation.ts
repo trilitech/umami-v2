@@ -1,9 +1,8 @@
 import { type MichelsonV1Expression, type TransactionOperationParameter } from "@taquito/rpc";
 import { MANAGER_LAMBDA } from "@taquito/taquito";
 import { type Address, type ContractAddress, type ImplicitAddress } from "@umami/tezos";
+import { CustomError } from "@umami/utils";
 import { isEqual } from "lodash";
-
-import { CustomError } from "../../utils/src/ErrorContext";
 
 export type TezTransfer = {
   type: "tez";

@@ -1,3 +1,4 @@
+import { type BeaconErrorType } from "@airgap/beacon-wallet";
 import { type MichelsonV1ExpressionBase, type TezosGenericOperationError } from "@taquito/rpc";
 import { TezosOperationError, type TezosOperationErrorWithMessage } from "@taquito/taquito";
 import { type ErrorResponse } from "@walletconnect/jsonrpc-utils";
@@ -19,6 +20,15 @@ export class CustomError extends Error {
   constructor(message: string) {
     super(message);
     this.name = "CustomError";
+  }
+}
+
+export class BeaconError extends CustomError {
+  errorType: BeaconErrorType;
+  constructor(message: string, errorType: BeaconErrorType) {
+    super(message);
+    this.name = "BeaconError";
+    this.errorType = errorType;
   }
 }
 
@@ -132,7 +142,7 @@ export const getErrorContext = (error: any, silent: boolean = false): ErrorConte
     "Something went wrong. Please try again. Contact support if the issue persists.";
   let description = defaultDescription;
   let technicalDetails: any = undefined;
-  let code: number = WcErrorCode.INTERNAL_ERROR;
+  let code: WcErrorCode | number = WcErrorCode.INTERNAL_ERROR;
   const errorMessage = typeof error === "string" ? error : error.message;
 
   let stacktrace = "";
@@ -142,12 +152,14 @@ export const getErrorContext = (error: any, silent: boolean = false): ErrorConte
     technicalDetails = error;
   }
 
-  if (error instanceof CustomError) {
+  if (error instanceof BeaconError) {
     description = errorMessage;
   } else if (error instanceof WalletConnectError) {
     code = error.code;
     description = errorMessage;
     technicalDetails = error.context;
+  } else if (error instanceof CustomError) {
+    description = errorMessage;
   } else if (error instanceof TezosOperationError) {
     code = WcErrorCode.REJECTED_BY_CHAIN;
     const lastError = error.lastError;
@@ -175,7 +187,6 @@ export const getErrorContext = (error: any, silent: boolean = false): ErrorConte
     const plainMessage = stripHtmlTags(error.message);
     description = `HTTP request failed for ${error.url} (${error.status}) ${httpError}`;
     code = error.status;
-    console.log("HTTP ERROR", error);
     if (code === 500) {
       description = `${description}\nDetails: ${plainMessage}`;
     }
@@ -186,7 +197,7 @@ export const getErrorContext = (error: any, silent: boolean = false): ErrorConte
   }
 
   if (!silent) {
-    console.warn("Request failed", code, description, technicalDetails, error);
+    console.error("Request failed", code, description, technicalDetails, error);
   }
 
   return {

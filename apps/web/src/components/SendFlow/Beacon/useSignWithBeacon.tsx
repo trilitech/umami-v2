@@ -1,8 +1,13 @@
-import { BeaconMessageType, type OperationResponseInput } from "@airgap/beacon-wallet";
+import {
+  BeaconErrorType,
+  BeaconMessageType,
+  type OperationResponseInput,
+} from "@airgap/beacon-wallet";
 import { type TezosToolkit } from "@taquito/taquito";
 import { useDynamicModalContext } from "@umami/components";
 import { executeOperations, totalFee } from "@umami/core";
 import { WalletClient, useAsyncActionHandler } from "@umami/state";
+import { getErrorContext } from "@umami/utils";
 import { useForm } from "react-hook-form";
 
 import { SuccessStep } from "../SuccessStep";
@@ -34,9 +39,15 @@ export const useSignWithBeacon = ({
 
         return openWith(<SuccessStep hash={opHash} />);
       },
-      (error: { message: any }) => ({
-        description: `Failed to confirm Beacon operation: ${error.message}`,
-      })
+      (error: any) => {
+        const context = getErrorContext(error);
+        void WalletClient.respond({
+          id: headerProps.requestId.id.toString(),
+          type: BeaconMessageType.Error,
+          errorType: BeaconErrorType.UNKNOWN_ERROR,
+        });
+        return { description: `Failed to confirm Beacon operation: ${context.description}` };
+      }
     );
 
   return {

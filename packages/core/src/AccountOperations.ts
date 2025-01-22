@@ -1,9 +1,9 @@
 import { type Estimation } from "@umami/tezos";
+import { CustomError } from "@umami/utils";
 import { BigNumber } from "bignumber.js";
 
 import { type Account, type ImplicitAccount, type MultisigAccount } from "./Account";
 import { type Operation } from "./Operation";
-import { CustomError } from "../../utils/src/ErrorContext";
 
 type ProposalOperations = {
   type: "proposal";
