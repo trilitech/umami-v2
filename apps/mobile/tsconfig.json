@@ -1,7 +1,22 @@
 {
-  "extends": "@react-native/typescript-config/tsconfig.json",
-  "include": ["index.js", "src", "babel.config.cjs", "metro.config.cjs", "jest.config.ts"],
+  "extends": "expo/tsconfig.base.json",
   "compilerOptions": {
-    "jsx": "react-native"
-  }
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "ESNext",
+    "isolatedModules": true,
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    ".eslintrc.js",
+    ".expo/types/**/*.ts",
+    "expo-env.d.ts",
+    "babel-config.js",
+    "metro.config.js",
+    "index.js"
+  ]
 }

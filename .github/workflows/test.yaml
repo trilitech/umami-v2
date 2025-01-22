@@ -36,7 +36,7 @@ jobs:
 
       - run: pnpm run ci
 
-      - run: pnpm run test --concurrency 1
+      - run: pnpm run test -- --runInBand
 
       - name: Post Jest Coverage Comment
         uses: MishaKav/jest-coverage-comment@main
