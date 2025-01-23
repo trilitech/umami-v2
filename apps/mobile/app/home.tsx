@@ -10,7 +10,7 @@ import { persistor } from "../store/store";
 export default function HomeScreen() {
   const currentAccount = useCurrentAccount();
   const getBalance = useGetAccountBalance();
-  const balance = getBalance(currentAccount!.address.pkh);
+  const balance = getBalance(currentAccount ? currentAccount.address.pkh : "");
 
   return (
     <View style={styles.container}>

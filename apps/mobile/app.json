@@ -13,13 +13,15 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anonymous.mobile"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.anonymous.mobile"
     },
     "plugins": [
       "expo-router",
@@ -41,9 +43,9 @@
       "router": {
         "origin": false
       },
-      // "eas": {
-      //   "projectId": "6efbb35b-65b6-4067-9dbb-07c4535af447"
-      // }
+      "eas": {
+        "projectId": "d679edca-756b-4dd2-9d53-01b52e1a94ff"
+      }
     }
   }
 }
