@@ -29,6 +29,7 @@ import {
 import { SuccessStep } from "../SuccessStep";
 import { type SdkSignPageProps, type SignHeaderProps } from "../utils";
 import { SingleSignPage } from "./SingleSignPage";
+import { Titles } from "../../Titles/Titles";
 
 jest.mock("@umami/core", () => ({
   ...jest.requireActual("@umami/core"),
@@ -55,7 +56,7 @@ describe("<SingleSignPage />", () => {
       id: "messageid",
       type: BeaconMessageType.OperationRequest,
       network: { type: NetworkType.GHOSTNET },
-      appMetadata: {},
+      appMetadata: { name: "mockDappName", icon: "mockIcon" },
     } as OperationRequestOutput;
 
     // check all types of Modals called by SingleSignOperation
@@ -68,6 +69,17 @@ describe("<SingleSignPage />", () => {
       StakeSignPage: mockStakeOperation(0),
       UnstakeSignPage: mockUnstakeOperation(0),
       FinalizeUnstakeSignPage: mockFinalizeUnstakeOperation(0),
+    };
+
+    const titles: Record<string, string> = {
+      TezSignPage: Titles.TezSignPage,
+      ContractCallSignPage: Titles.ContractCallSignPage,
+      DelegationSignPage: Titles.DelegationSignPage,
+      UndelegationSignPage: Titles.UndelegationSignPage,
+      OriginationOperationSignPage: Titles.OriginationOperationSignPage,
+      StakeSignPage: Titles.StakeSignPage,
+      UnstakeSignPage: Titles.UnstakeSignPage,
+      FinalizeUnstakeSignPage: Titles.FinalizeUnstakeSignPage,
     };
 
     const operation: EstimatedAccountOperations = {
@@ -104,6 +116,9 @@ describe("<SingleSignPage />", () => {
       expect(screen.getByText("Ghostnet")).toBeInTheDocument();
       expect(screen.queryByText("Mainnet")).not.toBeInTheDocument();
       expect(screen.getByTestId(key)).toBeInTheDocument(); // e.g. TezSignPage
+
+      expect(screen.getByTestId("sign-page-header")).toHaveTextContent(titles[key]);
+      expect(screen.getByTestId("app-name")).toHaveTextContent("mockDappName");
 
       const signButton = screen.getByRole("button", {
         name: "Confirm Transaction",

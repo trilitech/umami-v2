@@ -5,6 +5,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { Header } from "./Header";
 import { AddressTile } from "../../AddressTile/AddressTile";
 import { TezTile } from "../../AssetTiles/TezTile";
+import { Titles } from "../../Titles/Titles";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
 import { type CalculatedSignProps, type SdkSignPageProps } from "../utils";
@@ -25,7 +26,7 @@ export const UnstakeSignPage = ({
     <FormProvider {...form}>
       <ModalContent data-testid="UnstakeSignPage">
         <form>
-          <Header headerProps={headerProps} />
+          <Header headerProps={headerProps} title={Titles.UnstakeSignPage} />
           <ModalBody>
             <Flex alignItems="center" justifyContent="end" marginTop="12px">
               <SignPageFee fee={fee} />

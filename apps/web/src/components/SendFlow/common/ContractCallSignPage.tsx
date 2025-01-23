@@ -20,6 +20,7 @@ import { AddressTile } from "../../AddressTile/AddressTile";
 import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";
 import { TezTile } from "../../AssetTiles/TezTile";
 import { JsValueWrap } from "../../JsValueWrap";
+import { Titles } from "../../Titles/Titles";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
 import { type CalculatedSignProps, type SdkSignPageProps } from "../utils";
@@ -45,7 +46,7 @@ export const ContractCallSignPage = ({
     <FormProvider {...form}>
       <ModalContent data-testid="ContractCallSignPage">
         <form>
-          <Header headerProps={headerProps} />
+          <Header headerProps={headerProps} title={Titles.ContractCallSignPage} />
           <ModalBody>
             <TezTile mutezAmount={mutezAmount} />
 

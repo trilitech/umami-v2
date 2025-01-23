@@ -4,6 +4,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { Header } from "./Header";
 import { AddressTile } from "../../AddressTile/AddressTile";
 import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";
+import { Titles } from "../../Titles/Titles";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
 import { type CalculatedSignProps, type SdkSignPageProps } from "../utils";
@@ -22,7 +23,7 @@ export const UndelegationSignPage = ({
     <FormProvider {...form}>
       <ModalContent data-testid="UndelegationSignPage">
         <form>
-          <Header headerProps={headerProps} />
+          <Header headerProps={headerProps} title={Titles.UndelegationSignPage} />
           <ModalBody>
             <FormLabel>From</FormLabel>
             <AddressTile address={operation.signer.address} />
