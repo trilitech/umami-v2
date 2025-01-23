@@ -54,7 +54,7 @@ describe("<AccountsList />", () => {
       await act(() => user.click(removeSocial));
 
       expect(screen.getByTestId("description")).toHaveTextContent(
-        "Are you sure you want to remove all of your Social Accounts?"
+        "Are you sure you want to remove all of your Social accounts?"
       );
     });
 
@@ -140,7 +140,7 @@ describe("<AccountsList />", () => {
 
     const socialAccounts = screen.getByTestId(/account-group-social/i);
     expect(within(socialAccounts).getAllByTestId("account-tile-container")).toHaveLength(2);
-    expect(socialAccounts).toHaveTextContent("Social Accounts");
+    expect(socialAccounts).toHaveTextContent("Social accounts");
     expect(socialAccounts).toHaveTextContent(GOOGLE_ACCOUNT_LABEL2);
     expect(socialAccounts).toHaveTextContent(GOOGLE_ACCOUNT_LABEL2);
 

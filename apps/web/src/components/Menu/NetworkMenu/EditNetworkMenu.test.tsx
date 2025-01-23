@@ -183,10 +183,10 @@ describe("<EditNetworkMenu />", () => {
       await act(() => user.type(screen.getByLabelText("Buy tez URL"), customNetwork.buyTezUrl!));
 
       await waitFor(() => {
-        expect(screen.getByText("Add network")).toBeEnabled();
+        expect(screen.getByRole("button", { name: "Add network" })).toBeEnabled();
       });
 
-      await user.click(screen.getByText("Add network"));
+      await user.click(screen.getByRole("button", { name: "Add network" }));
       await waitFor(() => {
         expect(store.getState().networks.available).toEqual([MAINNET, GHOSTNET, customNetwork]);
       });

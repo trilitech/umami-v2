@@ -16,13 +16,13 @@ describe("<ChangePasswordMenu />", () => {
   describe("currentPassword", () => {
     it("is empty by default", async () => {
       await renderInDrawer(<ChangePasswordMenu />);
-      expect(screen.getByLabelText("Current Password")).toHaveValue("");
+      expect(screen.getByLabelText("Current password")).toHaveValue("");
     });
 
     it("is required", async () => {
       await renderInDrawer(<ChangePasswordMenu />);
 
-      fireEvent.blur(screen.getByLabelText("Current Password"));
+      fireEvent.blur(screen.getByLabelText("Current password"));
 
       await waitFor(() => {
         expect(screen.getByTestId("current-password-error")).toHaveTextContent(
@@ -115,7 +115,7 @@ describe("<ChangePasswordMenu />", () => {
       await user.type(newPasswordInput, newPassword);
       await user.type(newPasswordConfirmationInput, newPassword);
 
-      expect(screen.getByRole("button", { name: "Update Password" })).toBeEnabled();
+      expect(screen.getByRole("button", { name: "Update password" })).toBeEnabled();
     });
 
     it("submits the new password", async () => {
@@ -130,7 +130,7 @@ describe("<ChangePasswordMenu />", () => {
       await user.type(newPasswordInput, newPassword);
       await user.type(newPasswordConfirmationInput, newPassword);
 
-      await user.click(screen.getByRole("button", { name: "Update Password" }));
+      await user.click(screen.getByRole("button", { name: "Update password" }));
 
       expect(changeMnemonicPassword).toHaveBeenCalledWith({
         currentPassword: currentPassword,

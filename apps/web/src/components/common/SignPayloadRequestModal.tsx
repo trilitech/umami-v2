@@ -66,7 +66,7 @@ export const SignPayloadRequestModal = ({ opts }: { opts: SignPayloadProps }) =>
   return (
     <FormProvider {...form}>
       <ModalContent>
-        <SignPageHeader title="Sign Payload Request">
+        <SignPageHeader title="Sign payload request">
           <Flex
             alignItems="center"
             marginTop="16px"
@@ -125,7 +125,7 @@ export const SignPayloadRequestModal = ({ opts }: { opts: SignPayloadProps }) =>
             <Flex alignItems="center" gap="4px" marginTop="4px">
               <WarningIcon width="15px" height="15px" />
               <Text color="red" size="xs">
-                Raw Payload. Parsing failed
+                Raw payload. Parsing failed.
               </Text>
             </Flex>
           )}

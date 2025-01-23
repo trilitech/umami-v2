@@ -38,7 +38,7 @@ export const SuccessStep = ({
       return [AlertTriangleIcon, color("red"), "Operation submitted but dApp not notified"];
     }
 
-    return [CheckCircleIcon, color("green"), "Operation Submitted"];
+    return [CheckCircleIcon, color("green"), "Operation submitted"];
   };
 
   const Message = () => {
@@ -95,7 +95,7 @@ export const SuccessStep = ({
           size="lg"
           variant="primary"
         >
-          See all Operations
+          See all operations
         </Button>
         <Button as={Link} gap="10px" width="full" href={tzktUrl} isExternal variant="ghost">
           <ExternalLinkIcon color={color("400")} />

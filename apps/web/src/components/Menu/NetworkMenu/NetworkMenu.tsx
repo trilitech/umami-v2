@@ -105,7 +105,7 @@ export const NetworkMenu = () => {
           onClick={() => openWith(<EditNetworkMenu />)}
           variant="primary"
         >
-          Add New
+          Add new
         </Button>
       }
       title="Network"

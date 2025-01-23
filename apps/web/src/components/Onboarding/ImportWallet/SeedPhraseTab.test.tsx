@@ -100,7 +100,7 @@ describe("<SeedPhraseTab />", () => {
       expect(textbox1).toHaveValue("something1");
       expect(textbox2).toHaveValue("something2");
 
-      await act(() => user.click(screen.getByRole("button", { name: "Clear All" })));
+      await act(() => user.click(screen.getByRole("button", { name: "Clear all" })));
 
       expect(textbox1).toHaveValue(undefined);
       expect(textbox2).toHaveValue(undefined);
@@ -118,7 +118,7 @@ describe("<SeedPhraseTab />", () => {
       await act(() => user.click(changeTo12Button));
       expect(screen.getAllByTestId("mnemonic-input")).toHaveLength(12);
 
-      await act(() => user.click(screen.getByRole("button", { name: "Clear All" })));
+      await act(() => user.click(screen.getByRole("button", { name: "Clear all" })));
 
       expect(screen.getAllByTestId("mnemonic-input")).toHaveLength(12);
     });

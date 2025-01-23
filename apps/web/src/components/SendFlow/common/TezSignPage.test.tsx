@@ -76,7 +76,7 @@ describe("<TezSignPage />", () => {
     expect(screen.queryByText("verifyinfobox")).not.toBeInTheDocument();
 
     const signButton = screen.getByRole("button", {
-      name: "Confirm Transaction",
+      name: "Confirm transaction",
     });
     await waitFor(() => expect(signButton).toBeDisabled());
 

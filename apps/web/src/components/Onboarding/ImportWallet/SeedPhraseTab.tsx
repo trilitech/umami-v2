@@ -228,7 +228,7 @@ export const SeedPhraseTab = () => {
               variant="ghost"
             >
               <Icon as={CloseIcon} boxSize="18px" color={color("400")} />
-              Clear All
+              Clear all
             </Button>
             <Button
               gap="8px"

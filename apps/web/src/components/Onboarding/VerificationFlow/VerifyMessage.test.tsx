@@ -21,7 +21,7 @@ describe("<VerifyMessage />", () => {
   it("renders correctly", () => {
     render(<VerifyMessage />);
 
-    expect(screen.getByText("Verify Your Account")).toBeVisible();
+    expect(screen.getByText("Verify your account")).toBeVisible();
     expect(
       screen.getByText(
         "Please verify your account, to unlock all features and keep your account secure."
@@ -47,7 +47,7 @@ describe("<VerifyMessage />", () => {
     const user = userEvent.setup();
     render(<VerifyMessage />);
 
-    await user.click(screen.getByText("Verify Now"));
+    await user.click(screen.getByText("Verify now"));
 
     expect(mockHandleVerify).toHaveBeenCalled();
   });

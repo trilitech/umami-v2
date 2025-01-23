@@ -95,7 +95,7 @@ export const WalletConnectProvider = ({ children }: PropsWithChildren) => {
       // by that time the session is already deleted from WalletKit so we cannot find the dApp name
       console.log("WC session deleted by peer dApp", event);
       toast({
-        description: "WalletConnect Session deleted by peer dApp",
+        description: "WalletConnect session deleted by peer dApp",
         status: "info",
       });
       // now re-render peer list

@@ -31,18 +31,18 @@ export const Menu = () => {
 
   const menuItemsForVerifiedUser = [
     {
-      label: "Address Book",
+      label: "Address book",
       icon: <BookIcon />,
       onClick: () => openDrawer(<AddressBookMenu />),
       hasArrow: true,
     },
     {
-      label: "Add Account",
+      label: "Add account",
       icon: <UserPlusIcon />,
       onClick: () => openModal(<OnboardOptionsModal />),
     },
     {
-      label: "Save Backup",
+      label: "Save backup",
       icon: <DownloadIcon />,
       onClick: saveBackup,
     },
@@ -74,7 +74,7 @@ export const Menu = () => {
     ],
     [
       {
-        label: "Logout",
+        label: "Log out",
         icon: <LogoutIcon />,
         onClick: () => openModal(<LogoutModal />),
       },

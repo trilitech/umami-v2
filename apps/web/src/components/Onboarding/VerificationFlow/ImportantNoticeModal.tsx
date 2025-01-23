@@ -58,7 +58,7 @@ export const ImportantNoticeModal = ({ mnemonic }: ImportantNoticeModalProps) =>
         <ModalBackButton />
         <Center flexDirection="column" gap="12px">
           <Icon as={AlertIcon} boxSize="24px" marginBottom="4px" color={color("400")} />
-          <Heading size="xl">Important Notice</Heading>
+          <Heading size="xl">Important notice</Heading>
           <Text width="full" color={color("700")} fontWeight="400" textAlign="center" size="md">
             Please read the following before you continue to see your secret Seed Phrase.
           </Text>

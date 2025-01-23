@@ -121,7 +121,7 @@ describe("<SingleSignPage />", () => {
       expect(screen.getByTestId("app-name")).toHaveTextContent("mockDappName");
 
       const signButton = screen.getByRole("button", {
-        name: "Confirm Transaction",
+        name: "Confirm transaction",
       });
       await waitFor(() => expect(signButton).toBeDisabled());
 

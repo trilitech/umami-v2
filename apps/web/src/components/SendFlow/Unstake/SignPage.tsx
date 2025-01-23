@@ -34,7 +34,7 @@ export const SignPage = (props: SignPageProps<{ stakedBalance: number }>) => {
             <FormLabel marginTop="24px">Stake amount</FormLabel>
             <TezTile mutezAmount={stakedBalance} />
 
-            <FormLabel marginTop="24px">Amount to Unstake</FormLabel>
+            <FormLabel marginTop="24px">Amount to unstake</FormLabel>
             <TezTile mutezAmount={mutezAmount} />
 
             <AdvancedSettingsAccordion />

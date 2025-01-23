@@ -127,7 +127,7 @@ export const VerifySeedphraseModal = ({ seedPhrase }: VerifySeedphraseModalProps
 
             {IS_DEV && (
               <Button width="100%" marginTop="12px" onClick={onSubmit} variant="secondary">
-                Bypass (Dev only)
+                Bypass (dev only)
               </Button>
             )}
           </ModalFooter>

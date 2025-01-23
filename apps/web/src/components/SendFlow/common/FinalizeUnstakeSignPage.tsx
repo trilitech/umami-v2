@@ -35,7 +35,7 @@ export const FinalizeUnstakeSignPage = ({
             <FormLabel marginTop="24px">From</FormLabel>
             <AddressTile address={operation.sender.address} />
 
-            <FormLabel marginTop="24px">Finalize Unstake</FormLabel>
+            <FormLabel marginTop="24px">Finalize unstake</FormLabel>
             <TezTile mutezAmount={totalFinalizableAmount} />
           </ModalBody>
           <ModalFooter>

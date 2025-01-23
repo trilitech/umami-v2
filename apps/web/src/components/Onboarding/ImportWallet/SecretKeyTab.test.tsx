@@ -13,7 +13,7 @@ describe("<SecretKeyTab />", () => {
   it("renders only textbox by default", () => {
     render(<SecretKeyTab />);
 
-    expect(screen.getByLabelText("Secret Key")).toBeVisible();
+    expect(screen.getByLabelText("Secret key")).toBeVisible();
     expect(screen.queryByRole("Password")).not.toBeInTheDocument();
   });
 
@@ -21,9 +21,9 @@ describe("<SecretKeyTab />", () => {
     it("requires the secret key", async () => {
       render(<SecretKeyTab />);
 
-      fireEvent.blur(screen.getByLabelText("Secret Key"));
+      fireEvent.blur(screen.getByLabelText("Secret key"));
 
-      await waitFor(() => expect(screen.getByText("Secret Key is required")).toBeVisible());
+      await waitFor(() => expect(screen.getByText("Secret key is required")).toBeVisible());
     });
 
     it("requires the password when the secret key is encrypted", async () => {
@@ -31,7 +31,7 @@ describe("<SecretKeyTab />", () => {
 
       render(<SecretKeyTab />);
 
-      await act(() => user.type(screen.getByLabelText("Secret Key"), ENCRYPTED_SECRET_KEY));
+      await act(() => user.type(screen.getByLabelText("Secret key"), ENCRYPTED_SECRET_KEY));
       fireEvent.blur(screen.getByLabelText("Password"));
 
       await waitFor(() => expect(screen.getByText("Password is required")).toBeVisible());
@@ -43,7 +43,7 @@ describe("<SecretKeyTab />", () => {
       render(<SecretKeyTab />);
 
       await act(() =>
-        user.type(screen.getByLabelText("Secret Key"), UNENCRYPTED_SECRET_KEY + "somedatas")
+        user.type(screen.getByLabelText("Secret key"), UNENCRYPTED_SECRET_KEY + "somedatas")
       );
 
       await act(() => user.click(screen.getByRole("button", { name: "Next" })));
@@ -61,7 +61,7 @@ describe("<SecretKeyTab />", () => {
 
       render(<SecretKeyTab />);
 
-      await act(() => user.type(screen.getByLabelText("Secret Key"), ENCRYPTED_SECRET_KEY));
+      await act(() => user.type(screen.getByLabelText("Secret key"), ENCRYPTED_SECRET_KEY));
       await act(() => user.type(screen.getByLabelText("Password"), "wrongpassword"));
 
       await act(() => user.click(screen.getByRole("button", { name: "Next" })));
@@ -80,7 +80,7 @@ describe("<SecretKeyTab />", () => {
 
     render(<SecretKeyTab />);
 
-    await act(() => user.type(screen.getByLabelText("Secret Key"), ENCRYPTED_SECRET_KEY));
+    await act(() => user.type(screen.getByLabelText("Secret key"), ENCRYPTED_SECRET_KEY));
 
     expect(screen.getByLabelText("Password")).toBeVisible();
   });
@@ -90,7 +90,7 @@ describe("<SecretKeyTab />", () => {
 
     render(<SecretKeyTab />);
 
-    await act(() => user.type(screen.getByLabelText("Secret Key"), UNENCRYPTED_SECRET_KEY));
+    await act(() => user.type(screen.getByLabelText("Secret key"), UNENCRYPTED_SECRET_KEY));
 
     expect(screen.queryByLabelText("Password")).not.toBeInTheDocument();
   });

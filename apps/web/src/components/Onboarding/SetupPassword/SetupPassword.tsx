@@ -40,29 +40,29 @@ const getModeConfig = (mode: Mode) => {
     case "new_mnemonic":
       return {
         icon: UserIcon,
-        title: "Create Password",
-        buttonLabel: "Create Account",
+        title: "Create password",
+        buttonLabel: "Create account",
         subtitle:
           "Set a password to unlock your wallet.\n Make sure to store your password safely.",
       };
     case "save_backup":
       return {
         icon: LockIcon,
-        title: "Encrypt Backup",
-        buttonLabel: "Save Backup",
+        title: "Create password",
+        buttonLabel: "Save backup",
       };
     case "mnemonic":
     case "secret_key":
       return {
         icon: LockIcon,
         title: "Almost there",
-        buttonLabel: "Import Wallet",
+        buttonLabel: "Import wallet",
       };
     case "add_account":
       return {
         icon: LockIcon,
         title: "Confirm password",
-        buttonLabel: "Add Account",
+        buttonLabel: "Add account",
         subtitle: "Confirm the password to add your account.",
       };
   }
@@ -112,13 +112,13 @@ export const SetupPassword = ({ mode }: SetupPasswordProps) => {
               <PasswordInput
                 inputName="password"
                 isStrengthCheckEnabled={!isPasswordSet}
-                label={isPasswordSet ? "Password" : "Set Password"}
+                label={isPasswordSet ? "Password" : "Set password"}
                 required="Password is required"
               />
               {!isPasswordSet && (
                 <PasswordInput
                   inputName="passwordConfirmation"
-                  label="Confirm Password"
+                  label="Confirm password"
                   required="Password confirmation is required"
                   validate={value => value === getValues("password") || "Passwords do not match"}
                 />

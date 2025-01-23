@@ -15,7 +15,7 @@ describe("<SocialLoginWarningModal />", () => {
 
     expect(
       screen.getByText(
-        "Wallets created with social accounts depend on those accounts to function. Losing access to this social account will result in loosing the wallet. Enable two-factor authentication to protect your social accounts."
+        "Your wallet relies on your social account to operate. If you lose access to this social account, you will also lose access to your wallet. Protect your social account by enabling two-factor authentication."
       )
     ).toBeVisible();
   });

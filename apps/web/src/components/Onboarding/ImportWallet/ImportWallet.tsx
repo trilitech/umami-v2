@@ -20,8 +20,8 @@ import { useColor } from "../../../styles/useColor";
 import { ModalCloseButton } from "../../CloseButton";
 import { TabSwitch } from "../../TabSwitch/TabSwitch";
 
-const BEFORE_ONBOARDING_OPTIONS = ["Seed Phrase", "Secret Key", "Backup", "Ledger"];
-const AFTER_ONBOARDING_OPTIONS = ["Seed Phrase", "Secret Key", "Ledger"];
+const BEFORE_ONBOARDING_OPTIONS = ["Seed phrase", "Secret key", "Backup", "Ledger"];
+const AFTER_ONBOARDING_OPTIONS = ["Seed phrase", "Secret key", "Ledger"];
 
 export const ImportWallet = () => {
   const color = useColor();
@@ -33,7 +33,7 @@ export const ImportWallet = () => {
         <ModalCloseButton />
         <Center flexDirection="column" gap="16px">
           <Icon as={LoginIcon} width="24px" height="24px" color={color("400")} />
-          <Heading size="xl">Import Wallet</Heading>
+          <Heading size="xl">Import wallet</Heading>
         </Center>
       </ModalHeader>
 

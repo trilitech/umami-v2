@@ -64,7 +64,7 @@ export const ImportBackupTab = () => {
               <>
                 <Center gap="10px" height="72px">
                   <Text color={color("black")} fontWeight="600" size="xl">
-                    Upload Complete
+                    Upload complete
                   </Text>
                   <Icon as={CheckmarkIcon} color={color("green")} />
                 </Center>
@@ -92,7 +92,7 @@ export const ImportBackupTab = () => {
                 rightIcon={<Icon as={FileUploadIcon} color={color("400")} />}
                 variant="ghost"
               >
-                Choose File
+                Choose file
               </Button>
             )}
 
@@ -112,7 +112,7 @@ export const ImportBackupTab = () => {
           </FormControl>
           <PasswordInput inputName="password" required={false} />
           <Button width="full" isDisabled={!isValid} type="submit" variant="primary">
-            Import Wallet
+            Import wallet
           </Button>
         </Flex>
       </form>

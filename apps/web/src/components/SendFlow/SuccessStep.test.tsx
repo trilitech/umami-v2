@@ -11,7 +11,7 @@ describe("<SuccessStep />", () => {
     expect(screen.queryByTestId("success-no-notify-text")).not.toBeInTheDocument();
     expect(screen.queryByTestId("do-not-retry-text")).not.toBeInTheDocument();
     expect(screen.queryByTestId("dapp-noticaition-error")).not.toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "See all Operations" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "See all operations" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "View in TzKT" })).toHaveAttribute(
       "href",
       "https://tzkt.io/testHash"
@@ -28,7 +28,7 @@ describe("<SuccessStep />", () => {
     expect(screen.getByTestId("success-text")).toHaveTextContent(
       "You can follow this operation's progress in the Operations section. It may take up to 30 seconds to appear."
     );
-    expect(screen.getByRole("button", { name: "See all Operations" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "See all operations" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "View in TzKT" })).toHaveAttribute(
       "href",
       "https://tzkt.io/testHash"

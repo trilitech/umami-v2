@@ -60,7 +60,7 @@ describe("<NetworkMenu />", () => {
 
     const { openWith } = dynamicDrawerContextMock;
 
-    await user.click(screen.getByRole("button", { name: "Add New" }));
+    await user.click(screen.getByRole("button", { name: "Add new" }));
 
     expect(openWith).toHaveBeenCalledWith(<EditNetworkMenu />);
   });

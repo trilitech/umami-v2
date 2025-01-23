@@ -61,7 +61,7 @@ export const TokenTransferTile = ({
       fee={fee}
       from={tokenTransfer.from}
       icon={<TransactionDirectionIcon marginRight="8px" destination={destination} />}
-      operationType="Token Transfer"
+      operationType="Token transfer"
       status={status}
       timestamp={tokenTransfer.timestamp}
       title={title}

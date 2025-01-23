@@ -23,7 +23,7 @@ describe("<ContractCallTile />", () => {
           "href",
           `${network.tzktExplorerUrl}/test-hash/1234`
         );
-        expect(screen.getByTestId("title")).toHaveTextContent("Contract Call: test-entrypoint");
+        expect(screen.getByTestId("title")).toHaveTextContent("Contract call: test-entrypoint");
       });
     });
   });

@@ -54,7 +54,7 @@ export const ContractCallTileTitle = ({
   return (
     <TzktLink counter={counter} data-testid="title" hash={hash}>
       <Heading color={color("900")} size="sm">
-        Contract Call: {entrypoint}
+        Contract call: {entrypoint}
       </Heading>
     </TzktLink>
   );

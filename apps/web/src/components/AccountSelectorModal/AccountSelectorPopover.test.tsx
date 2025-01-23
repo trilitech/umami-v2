@@ -49,7 +49,7 @@ describe("AccountSelectorPopover", () => {
 
     await act(() => user.click(screen.getByLabelText("Account actions")));
 
-    await waitFor(() => expect(screen.getByText("Account Info")).toBeVisible());
+    await waitFor(() => expect(screen.getByText("Account info")).toBeVisible());
     expect(screen.getByText("Rename")).toBeVisible();
     expect(screen.getByText("Remove")).toBeVisible();
     expect(screen.getByText("View in TzKT")).toBeVisible();
@@ -63,7 +63,7 @@ describe("AccountSelectorPopover", () => {
 
     await act(async () => {
       await user.click(screen.getByLabelText("Account actions"));
-      await user.click(screen.getByText("Account Info"));
+      await user.click(screen.getByText("Account info"));
     });
 
     expect(openWith).toHaveBeenCalledWith(<AccountInfoModal account={mockAccount} />);

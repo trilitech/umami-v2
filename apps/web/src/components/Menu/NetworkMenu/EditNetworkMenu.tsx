@@ -34,7 +34,7 @@ export const EditNetworkMenu = ({ network }: EditNetworkMenuProps) => {
   };
 
   return (
-    <DrawerContentWrapper title={`${network ? "Edit" : "Add"} Network`}>
+    <DrawerContentWrapper title={`${network ? "Edit" : "Add"} network`}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <VStack gap="30px" marginTop="40px" spacing="0">
           {!network && (

@@ -23,7 +23,7 @@ export const AdvancedMenu = () => {
   const menuItems = [
     [
       {
-        label: "Change Password",
+        label: "Change password",
         icon: <LockIcon />,
         onClick: () => openWith(<ChangePasswordMenu />),
         hasArrow: true,
@@ -32,7 +32,7 @@ export const AdvancedMenu = () => {
     ],
     [
       {
-        label: "Error Logs",
+        label: "Error logs",
         icon: <AlertCircleIcon />,
         onClick: () => openWith(<ErrorLogsMenu />),
       },

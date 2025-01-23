@@ -28,7 +28,7 @@ export const NoticeModal = ({ account }: { account: Account }) => {
         <ModalCloseButton />
         <Center flexDirection="column" gap="16px">
           <WarningIcon width="24px" height="24px" stroke={color("450")} strokeWidth="3" />
-          <Heading>Important Notice</Heading>
+          <Heading>Important notice</Heading>
         </Center>
       </ModalHeader>
       <ModalBody>

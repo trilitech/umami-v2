@@ -31,7 +31,7 @@ export const ErrorLogsMenu = () => {
                 Download
               </Button>
               <Button width="auto" padding="0 24px" onClick={clearErrors} variant="tertiary">
-                Clear All
+                Clear all
               </Button>
             </Flex>
           )}

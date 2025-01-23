@@ -35,7 +35,7 @@ describe("<ImportBackupTab />", () => {
 
     await act(() => user.upload(screen.getByTestId("file-input"), file));
 
-    const button = screen.getByRole("button", { name: "Import Wallet" });
+    const button = screen.getByRole("button", { name: "Import wallet" });
     expect(button).toBeEnabled();
 
     await act(() => user.click(button));
@@ -59,7 +59,7 @@ describe("<ImportBackupTab />", () => {
     await act(() => user.type(screen.getByLabelText("Password"), "wrong password"));
 
     await waitFor(async () => {
-      await act(() => user.click(screen.getByRole("button", { name: "Import Wallet" })));
+      await act(() => user.click(screen.getByRole("button", { name: "Import wallet" })));
     });
 
     await waitFor(() => expect(mockToast).toHaveBeenCalledTimes(1));
@@ -82,7 +82,7 @@ describe("<ImportBackupTab />", () => {
     const password = "password";
     await act(() => user.upload(screen.getByTestId("file-input"), file));
     await act(() => user.type(screen.getByLabelText("Password"), password));
-    await act(() => user.click(screen.getByText("Import Wallet")));
+    await act(() => user.click(screen.getByText("Import wallet")));
 
     await waitFor(() => expect(store.getState().accounts.items.length).toEqual(1));
   });

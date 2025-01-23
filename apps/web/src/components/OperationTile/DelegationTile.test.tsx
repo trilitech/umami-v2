@@ -22,7 +22,7 @@ describe("<DelegationTile />", () => {
       render(<DelegationTile operation={delegationFixture({ newDelegate: undefined })} />, {
         store,
       });
-      expect(screen.getByTestId("title")).toHaveTextContent("Delegation Ended");
+      expect(screen.getByTestId("title")).toHaveTextContent("Delegation ended");
     });
   });
 
@@ -81,7 +81,7 @@ describe("<DelegationTile />", () => {
       render(<DelegationTile operation={delegationFixture({ newDelegate: undefined })} />, {
         store,
       });
-      expect(screen.getByTestId("operation-type")).toHaveTextContent("Delegation Ended");
+      expect(screen.getByTestId("operation-type")).toHaveTextContent("Delegation ended");
     });
   });
 });

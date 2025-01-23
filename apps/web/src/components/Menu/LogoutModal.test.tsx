@@ -14,22 +14,22 @@ describe("<LogoutModal />", () => {
     await renderInModal(<LogoutModal />);
 
     await waitFor(() => {
-      expect(screen.getByRole("heading", { name: "Logout" })).toBeVisible();
+      expect(screen.getByRole("heading", { name: "Log out" })).toBeVisible();
     });
 
     expect(
       screen.getByText(
-        "Before logging out, make sure your mnemonic phrase is securely saved. Losing this phrase could result in permanent loss of access to your data."
+        "Before you log out, ensure your mnemonic phrase is securely saved. Without it, you may permanently lose access to your account and data."
       )
     ).toBeVisible();
-    expect(screen.getByRole("button", { name: "Logout" })).toBeVisible();
+    expect(screen.getByRole("button", { name: "Log out" })).toBeVisible();
   });
 
   it("calls logout function with persistor when logout button is clicked", async () => {
     const user = userEvent.setup();
     await renderInModal(<LogoutModal />);
 
-    await user.click(screen.getByRole("button", { name: "Logout" }));
+    await user.click(screen.getByRole("button", { name: "Log out" }));
 
     expect(logout).toHaveBeenCalledWith(persistor);
   });

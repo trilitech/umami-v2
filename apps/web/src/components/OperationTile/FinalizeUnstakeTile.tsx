@@ -57,7 +57,7 @@ export const FinalizeUnstakeTileTitle = ({
     <TzktLink counter={counter} data-testid="title" hash={hash}>
       <Flex gap="4px">
         <Heading color={color("900")} size="sm">
-          Finalize Unstake:
+          Finalize unstake:
         </Heading>
         <Text lineHeight="22px">{amount}</Text>
       </Flex>

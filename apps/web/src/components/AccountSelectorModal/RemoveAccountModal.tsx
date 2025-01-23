@@ -34,7 +34,7 @@ export const RemoveAccountModal = ({ account }: RemoveAccountModalProps) => {
       "Removing your last account will off-board you from Umami. " +
       "This will remove or reset all customized settings to their defaults. " +
       "Personal data (including saved contacts, password and accounts) won't be affected.";
-    buttonLabel = "Remove & Off-board";
+    buttonLabel = "Remove & off-board";
   }
 
   return (
@@ -42,7 +42,7 @@ export const RemoveAccountModal = ({ account }: RemoveAccountModalProps) => {
       buttonLabel={buttonLabel}
       description={description}
       onSubmit={handleRemoveAccount}
-      title="Remove Account"
+      title="Remove account"
     />
   );
 };

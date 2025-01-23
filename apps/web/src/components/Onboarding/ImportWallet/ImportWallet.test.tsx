@@ -10,7 +10,7 @@ jest.mock("@chakra-ui/react", () => ({
 }));
 
 describe("<ImportWallet />", () => {
-  it.each(["Seed Phrase", "Secret Key", "Ledger"])("renders %s tab", async tabName => {
+  it.each(["Seed phrase", "Secret key", "Ledger"])("renders %s tab", async tabName => {
     await renderInModal(<ImportWallet />);
 
     await waitFor(() => expect(screen.getByText(tabName)).toBeVisible());
