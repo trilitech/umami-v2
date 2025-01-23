@@ -10,8 +10,8 @@
     "isolatedModules": true,
   },
   "include": [
-    "**/*.ts",
-    "**/*.tsx",
+    "./**/*.ts",
+    "./**/*.tsx",
     ".eslintrc.js",
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
