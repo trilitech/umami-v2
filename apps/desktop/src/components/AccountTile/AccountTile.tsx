@@ -79,6 +79,8 @@ const accountIconGradientColor = (account: Account) => {
         case "email":
         case "twitter":
           return colors.gray[450];
+        case "apple":
+          throw new Error("Apple auth is not supported yet");
       }
   }
 };

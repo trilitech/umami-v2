@@ -34,7 +34,7 @@ export const DividerWrapper = styled.View`
 export const DividerLine = styled.View`
   width: 47%;
   height: 1px;
-  background-color: #E1E1EF;
+  background-color: #e1e1ef;
 `;
 
 export const DividerLabel = styled.Text`
@@ -42,7 +42,6 @@ export const DividerLabel = styled.Text`
   font-weight: 600;
   font-size: 16px;
 `;
-
 
 const StyledButton = styled.TouchableOpacity`
   border-radius: 100px;
@@ -54,7 +53,7 @@ const StyledButton = styled.TouchableOpacity`
 `;
 
 export const ButtonsWrapper = styled.View`
- margin-top: 20px;
+  margin-top: 20px;
 `;
 
 export const PrimaryButton = styled(StyledButton)`
@@ -62,7 +61,7 @@ export const PrimaryButton = styled(StyledButton)`
 `;
 
 export const SecondaryButton = styled(StyledButton)`
-  background-color: #E1E1EF;
+  background-color: #e1e1ef;
 `;
 
 export const ButtonLabel = styled.Text`

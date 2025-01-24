@@ -22,5 +22,7 @@ export const forIDP = (idp: IDP) => {
       return new FacebookAuth();
     case "twitter":
       return new TwitterAuth();
+    case "apple":
+      throw new Error("Apple Auth is not supported yet");
   }
 };

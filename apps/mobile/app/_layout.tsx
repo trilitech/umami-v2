@@ -15,7 +15,7 @@ export default function RootLayout() {
       <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme!}>
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
-              <Stack screenOptions={{ headerShown: false }} />
+            <Stack screenOptions={{ headerShown: false }} />
           </PersistGate>
         </Provider>
       </TamaguiProvider>
