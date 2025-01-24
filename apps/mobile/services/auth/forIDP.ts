@@ -17,6 +17,8 @@ export const forIDP = (idp: IDP) => {
       return new GoogleAuth();
     case "email":
       throw new Error("Email auth is not supported on mobile");
+
+    // TODO: Implement email auth for mobile
     // return new EmailAuth();
     case "reddit":
       return new RedditAuth();
@@ -26,5 +28,7 @@ export const forIDP = (idp: IDP) => {
       return new TwitterAuth();
     case "apple":
       return new AppleAuth();
+    default:
+      throw new Error(`Unsupported IDP: ${idp}`);
   }
 };

@@ -5,7 +5,6 @@ import Onboarding from "./onboarding";
 
 export default function MainStack() {
   const currentAccount = useCurrentAccount();
-  console.log("currentAccount", currentAccount);
 
   if (!currentAccount) {
     return <Onboarding />;
