@@ -3,6 +3,7 @@ import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/ba
 import {
   type EstimatedAccountOperations,
   type Operation,
+  Titles,
   executeOperations,
   mockContractCall,
   mockImplicitAccount,
@@ -23,7 +24,6 @@ import {
 import { SuccessStep } from "../SuccessStep";
 import { type SdkSignPageProps, type SignHeaderProps } from "../utils";
 import { BatchSignPage } from "./BatchSignPage";
-import { Titles } from "../../Titles";
 
 jest.mock("@umami/core", () => ({
   ...jest.requireActual("@umami/core"),
