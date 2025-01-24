@@ -407,6 +407,7 @@ describe("<useHandleBeaconMessage />", () => {
         );
         expect(screen.getByTestId("sign-page-header")).toHaveTextContent("Send Request");
         expect(screen.getByTestId("app-name")).toHaveTextContent("mockDappName");
+        expect(screen.queryByTestId("hints-accordion")).not.toBeInTheDocument();
 
         expect(mockToast).not.toHaveBeenCalled();
       });

@@ -2,7 +2,10 @@ import { BeaconMessageType, NetworkType, type OperationRequestOutput } from "@ai
 import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
 import {
   type EstimatedAccountOperations,
+  Hints,
   type Operation,
+  type SignPage,
+  Titles,
   executeOperations,
   mockContractCall,
   mockContractOrigination,
@@ -29,7 +32,6 @@ import {
 import { SuccessStep } from "../SuccessStep";
 import { type SdkSignPageProps, type SignHeaderProps } from "../utils";
 import { SingleSignPage } from "./SingleSignPage";
-import { Titles } from "../../Titles/Titles";
 
 jest.mock("@umami/core", () => ({
   ...jest.requireActual("@umami/core"),
@@ -60,7 +62,7 @@ describe("<SingleSignPage />", () => {
     } as OperationRequestOutput;
 
     // check all types of Modals called by SingleSignOperation
-    const mockedOperations: Record<string, Operation> = {
+    const mockedOperations: Record<SignPage, Operation> = {
       TezSignPage: mockTezOperation(0),
       ContractCallSignPage: mockContractCall(0),
       DelegationSignPage: mockDelegationOperation(0),
@@ -69,17 +71,6 @@ describe("<SingleSignPage />", () => {
       StakeSignPage: mockStakeOperation(0),
       UnstakeSignPage: mockUnstakeOperation(0),
       FinalizeUnstakeSignPage: mockFinalizeUnstakeOperation(0),
-    };
-
-    const titles: Record<string, string> = {
-      TezSignPage: Titles.TezSignPage,
-      ContractCallSignPage: Titles.ContractCallSignPage,
-      DelegationSignPage: Titles.DelegationSignPage,
-      UndelegationSignPage: Titles.UndelegationSignPage,
-      OriginationOperationSignPage: Titles.OriginationOperationSignPage,
-      StakeSignPage: Titles.StakeSignPage,
-      UnstakeSignPage: Titles.UnstakeSignPage,
-      FinalizeUnstakeSignPage: Titles.FinalizeUnstakeSignPage,
     };
 
     const operation: EstimatedAccountOperations = {
@@ -117,8 +108,14 @@ describe("<SingleSignPage />", () => {
       expect(screen.queryByText("Mainnet")).not.toBeInTheDocument();
       expect(screen.getByTestId(key)).toBeInTheDocument(); // e.g. TezSignPage
 
-      expect(screen.getByTestId("sign-page-header")).toHaveTextContent(titles[key]);
+      expect(screen.getByTestId("sign-page-header")).toHaveTextContent(Titles[key]);
       expect(screen.getByTestId("app-name")).toHaveTextContent("mockDappName");
+      if (Hints[key].header && Hints[key].description) {
+        expect(screen.getByTestId("hints-accordion")).toHaveTextContent(Hints[key].header);
+        expect(screen.getByTestId("hints-accordion")).toHaveTextContent(Hints[key].description);
+      } else {
+        expect(screen.queryByTestId("hints-accordion")).not.toBeInTheDocument();
+      }
 
       const signButton = screen.getByRole("button", {
         name: "Confirm Transaction",

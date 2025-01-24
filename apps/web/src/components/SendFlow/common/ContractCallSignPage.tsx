@@ -11,7 +11,7 @@ import {
   ModalContent,
   ModalFooter,
 } from "@chakra-ui/react";
-import { type ContractCall } from "@umami/core";
+import { type ContractCall, Titles } from "@umami/core";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { Header } from "./Header";
@@ -19,8 +19,8 @@ import { useColor } from "../../../styles/useColor";
 import { AddressTile } from "../../AddressTile/AddressTile";
 import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";
 import { TezTile } from "../../AssetTiles/TezTile";
+import { HintsAccordion } from "../../HintsAccordion";
 import { JsValueWrap } from "../../JsValueWrap";
-import { Titles } from "../../Titles/Titles";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
 import { type CalculatedSignProps, type SdkSignPageProps } from "../utils";
@@ -47,6 +47,7 @@ export const ContractCallSignPage = ({
       <ModalContent data-testid="ContractCallSignPage">
         <form>
           <Header headerProps={headerProps} title={Titles.ContractCallSignPage} />
+          <HintsAccordion signPage="ContractCallSignPage" />
           <ModalBody>
             <TezTile mutezAmount={mutezAmount} />
 

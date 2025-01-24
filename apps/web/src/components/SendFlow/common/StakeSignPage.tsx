@@ -1,11 +1,11 @@
 import { Flex, FormLabel, ModalBody, ModalContent, ModalFooter } from "@chakra-ui/react";
-import { type Stake } from "@umami/core";
+import { type Stake, Titles } from "@umami/core";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { Header } from "./Header";
 import { AddressTile } from "../../AddressTile/AddressTile";
 import { TezTile } from "../../AssetTiles/TezTile";
-import { Titles } from "../../Titles/Titles";
+import { HintsAccordion } from "../../HintsAccordion";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
 import { type CalculatedSignProps, type SdkSignPageProps } from "../utils";
@@ -27,6 +27,7 @@ export const StakeSignPage = ({
       <ModalContent data-testid="StakeSignPage">
         <form>
           <Header headerProps={headerProps} title={Titles.StakeSignPage} />
+          <HintsAccordion signPage="StakeSignPage" />
           <ModalBody>
             <Flex alignItems="center" justifyContent="end" marginTop="12px">
               <SignPageFee fee={fee} />

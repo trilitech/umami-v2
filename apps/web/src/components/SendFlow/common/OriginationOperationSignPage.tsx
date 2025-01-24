@@ -10,17 +10,17 @@ import {
   ModalContent,
   ModalFooter,
 } from "@chakra-ui/react";
-import { type ContractOrigination } from "@umami/core";
+import { type ContractOrigination, Titles } from "@umami/core";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { useColor } from "../../../styles/useColor";
 import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";
+import { HintsAccordion } from "../../HintsAccordion";
 import { JsValueWrap } from "../../JsValueWrap";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
 import { type CalculatedSignProps, type SdkSignPageProps } from "../utils";
 import { Header } from "./Header";
-import { Titles } from "../../Titles/Titles";
 
 export const OriginationOperationSignPage = ({
   operation,
@@ -39,6 +39,7 @@ export const OriginationOperationSignPage = ({
       <ModalContent data-testid="OriginationOperationSignPage">
         <form>
           <Header headerProps={headerProps} title={Titles.OriginationOperationSignPage} />
+          <HintsAccordion signPage="OriginationOperationSignPage" />
           <ModalBody data-testid="beacon-request-body">
             <Flex alignItems="center" justifyContent="end" marginTop="12px">
               <SignPageFee fee={fee} />
