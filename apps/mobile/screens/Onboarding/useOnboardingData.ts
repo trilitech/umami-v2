@@ -1,4 +1,3 @@
-
 import { type IDP } from "@umami/social-auth";
 import { useAsyncActionHandler, useRestoreSocial } from "@umami/state";
 import { getPublicKeyPairFromSk } from "@umami/tezos";
@@ -30,8 +29,8 @@ export const useOnboardingData = () => {
 
   const login = (idp: IDP) =>
     handleAsyncAction(async () => {
-        const { secretKey, name, id, email } = await forIDP(idp).getCredentials();
-        const { pk, pkh } = await getPublicKeyPairFromSk(secretKey);
+      const { secretKey, name, id, email } = await forIDP(idp).getCredentials();
+      const { pk, pkh } = await getPublicKeyPairFromSk(secretKey);
       restoreSocial(pk, pkh, email || name || id, idp);
       router.replace("/home");
     });
