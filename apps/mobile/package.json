@@ -12,8 +12,8 @@
     "test:watch": "pnpm run test --watch",
     "format:ci": "prettier --ignore-path ../../.gitignore --check .",
     "format": "prettier --ignore-path ../../.gitignore --write .",
-    "lint:ci": "eslint src --ext .ts,.tsx --max-warnings=0",
-    "lint": "eslint src --ext .ts,.tsx --fix"
+    "lint:ci": "eslint . --ext .ts,.tsx --max-warnings=0",
+    "lint": "eslint . --ext .ts,.tsx --fix"
   },
   "jest": {
     "preset": "jest-expo"

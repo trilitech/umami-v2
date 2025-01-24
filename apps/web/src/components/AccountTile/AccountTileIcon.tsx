@@ -43,6 +43,8 @@ export const AccountTileIcon = ({
           return <Icon as={EnvelopeIcon} width="28px" height="28px" color={color("600")} />;
         case "reddit":
           return <RedditAccountIcon />;
+        case "apple":
+          throw new Error("Apple auth is not supported yet");
       }
     }
     // eslint-disable-next-line no-fallthrough
