@@ -1,11 +1,12 @@
 import { Flex, FormLabel, ModalBody, ModalContent, ModalFooter } from "@chakra-ui/react";
+import { Titles } from "@umami/core";
 import { useAccountTotalFinalizableUnstakeAmount } from "@umami/state";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { Header } from "./Header";
 import { AddressTile } from "../../AddressTile/AddressTile";
 import { TezTile } from "../../AssetTiles/TezTile";
-import { Titles } from "../../Titles";
+import { HintsAccordion } from "../../HintsAccordion";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
 import { type CalculatedSignProps, type SdkSignPageProps } from "../utils";
@@ -27,6 +28,7 @@ export const FinalizeUnstakeSignPage = ({
       <ModalContent data-testid="FinalizeUnstakeSignPage">
         <form>
           <Header headerProps={headerProps} title={Titles.FinalizeUnstakeSignPage} />
+          <HintsAccordion signPage="FinalizeUnstakeSignPage" />
           <ModalBody>
             <Flex alignItems="center" justifyContent="end" marginTop="12px">
               <SignPageFee fee={fee} />

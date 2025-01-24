@@ -1,3 +1,4 @@
+export type SignPage = keyof typeof Titles;
 export const Titles: Record<string, string> = {
   TezSignPage: "Send request",
   ContractCallSignPage: "Contract call request",

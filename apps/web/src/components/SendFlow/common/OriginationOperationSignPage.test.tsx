@@ -65,6 +65,7 @@ describe("<OriginationOperationSignPage />", () => {
 
     expect(screen.getByTestId("sign-page-header")).toHaveTextContent("Origination request");
     expect(screen.getByTestId("app-name")).toHaveTextContent("mockDappName");
+    expect(screen.queryByTestId("hints-accordion")).not.toBeInTheDocument();
   });
 
   it("passes correct payload to sign handler", async () => {
