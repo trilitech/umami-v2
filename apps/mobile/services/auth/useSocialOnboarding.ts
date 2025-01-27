@@ -25,7 +25,7 @@ export const useSocialOnboarding = () => {
       await forIDP(idp).logout();
       persistor.pause();
       await AsyncStorage.clear();
-      router.replace("/onboarding");
+      router.replace("/");
     });
 
   const createLoginHandler = (provider: IDP) => () => login(provider);
