@@ -4,8 +4,10 @@ type HintData = {
   header?: string;
   description?: string;
 };
-const basicOperationHeader = undefined;
-const basicOperationDescription = undefined;
+const basicOperationHeader =
+  "A confirmation typically takes 1 block (8 seconds), and the transaction is considered final and irreversible after 2 blocks (16 seconds).";
+const basicOperationDescription =
+  "A confirmation means the block has been validated by the network, though the operation could still be reversed in rare cases due to chain reorganizations. Finality refers to the point where the operation is irreversible.";
 
 const finalizationConsequences =
   "Finalized funds are returned to your balance, allowing you to spend them or stake them again to earn rewards. Delegation rewards for these funds stop once they are finalized.";

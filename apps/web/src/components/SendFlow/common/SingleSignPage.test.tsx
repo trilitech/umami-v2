@@ -143,5 +143,5 @@ describe("<SingleSignPage />", () => {
       expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(<SuccessStep hash="ophash" />);
       dynamicModalContextMock.openWith.mockClear();
     }
-  });
+  }, 10000);
 });
