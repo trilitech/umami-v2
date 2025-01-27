@@ -1,15 +1,14 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { type SocialAccount } from "@umami/core";
 import { useCurrentAccount, useGetAccountBalance } from "@umami/state";
-import { router } from "expo-router";
-import * as SecureStore from "expo-secure-store";
 import { StyleSheet, Text, View } from "react-native";
 import { Button } from "tamagui";
 
-import { persistor } from "../store/store";
+import { useSocialOnboarding } from "../services/auth/useSocialOnboarding";
 
 export default function HomeScreen() {
   const currentAccount = useCurrentAccount();
   const getBalance = useGetAccountBalance();
+  const { logout } = useSocialOnboarding();
   const balance = getBalance(currentAccount ? currentAccount.address.pkh : "");
 
   return (
@@ -18,14 +17,7 @@ export default function HomeScreen() {
       <Text>{currentAccount?.address.pkh}</Text>
       <Text>{currentAccount?.label}</Text>
       <Text>Balance: {balance}</Text>
-      <Button
-        onPress={async () => {
-          persistor.pause();
-          await AsyncStorage.clear();
-          await SecureStore.deleteItemAsync("authToken");
-          router.replace("/onboarding");
-        }}
-      >
+      <Button onPress={() => logout((currentAccount as SocialAccount).idp)}>
         <Button.Text>Logout</Button.Text>
       </Button>
     </View>

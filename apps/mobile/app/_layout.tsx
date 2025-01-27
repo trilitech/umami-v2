@@ -10,6 +10,7 @@ import { tamaguiConfig } from "../tamagui.config";
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
+
   return (
     <ToastProvider toast={{} as Toast}>
       <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme!}>

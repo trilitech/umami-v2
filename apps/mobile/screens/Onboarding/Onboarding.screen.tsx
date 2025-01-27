@@ -1,5 +1,4 @@
 import { TouchableOpacity, View } from "react-native";
-import { Button } from "tamagui";
 
 import {
   AppleImage,
@@ -89,8 +88,6 @@ export const OnboardingScreen = () => {
             <SecondaryButton>
               <ButtonLabel>{strings.alreadyHaveWallet}</ButtonLabel>
             </SecondaryButton>
-
-            <Button>Tamagui Button</Button>
           </ButtonsWrapper>
         </MainContainer>
         <View style={{ alignItems: "center" }}>
