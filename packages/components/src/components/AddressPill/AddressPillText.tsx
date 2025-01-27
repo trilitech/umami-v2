@@ -22,5 +22,5 @@ export const AddressPillText = ({
     return <Text {...props}>{formattedPkh}</Text>;
   }
 
-  return <Text {...props}>{nameOrLabel ? truncate(nameOrLabel, 21) : formattedPkh}</Text>;
+  return <Text {...props}>{nameOrLabel ? truncate(nameOrLabel, 25) : formattedPkh}</Text>;
 };

@@ -7,6 +7,8 @@ import { SelectorIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
 import { AccountSelectorModal } from "../AccountSelectorModal";
 import { AccountTile } from "../AccountTile";
+import { AccountBalanceDetails } from "./AccountBalanceDetails";
+import { AccountButtons } from "./AccountButtons"; // Import AccountButtons component
 
 export const AccountCard = () => {
   const color = useColor();
@@ -39,6 +41,8 @@ export const AccountCard = () => {
         />
       </AccountTile>
       <AccountBalance />
+      <AccountBalanceDetails />
+      <AccountButtons />
     </Card>
   );
 };
