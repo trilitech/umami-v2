@@ -6,7 +6,7 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { TamaguiProvider } from "tamagui";
 
-import { AuthProvider } from "../services/auth";
+import { AuthProvider, ReactQueryProvider } from "../providers";
 import store, { persistor } from "../store/store";
 import { tamaguiConfig } from "../tamagui.config";
 
@@ -20,18 +20,20 @@ export default function RootLayout() {
 
   return (
     <ToastProvider toast={{} as Toast}>
-      <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme!}>
-        <Provider store={store}>
-          <PersistGate loading={null} persistor={persistor}>
-            <AuthProvider>
-              <Stack screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="home" />
-                <Stack.Screen name="index" />
-              </Stack>
-            </AuthProvider>
-          </PersistGate>
-        </Provider>
-      </TamaguiProvider>
+      <ReactQueryProvider>
+        <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme!}>
+          <Provider store={store}>
+            <PersistGate loading={null} persistor={persistor}>
+              <AuthProvider>
+                <Stack screenOptions={{ headerShown: false }}>
+                  <Stack.Screen name="home" />
+                  <Stack.Screen name="index" />
+                </Stack>
+              </AuthProvider>
+            </PersistGate>
+          </Provider>
+        </TamaguiProvider>
+      </ReactQueryProvider>
     </ToastProvider>
   );
 }

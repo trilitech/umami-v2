@@ -20,12 +20,14 @@ export abstract class Auth {
     };
   }> {
     try {
+      console.log("login1 connected", web3auth.connected);
       if (!web3auth.connected) {
         await web3auth.init();
       }
 
       const loginParams = this.getLoginParams();
       await web3auth.login(loginParams);
+      console.log("logged in")
     } catch (error) {
       console.error("Error logging in with Web3Auth:", error);
       throw error;
@@ -49,10 +51,19 @@ export abstract class Auth {
   }
 
   async logout() {
+    console.log("logout connected", web3auth.connected);
+
     if (!web3auth.connected) {
       await web3auth.init();
     }
-    await web3auth.logout();
+
+    try {
+      await web3auth.logout();
+      console.log("logout")
+    } catch (error) {
+      console.error("Error logging out with Web3Auth:", error);
+      throw error;
+    }
   }
 
   async getCredentials(): Promise<{

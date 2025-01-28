@@ -104,6 +104,7 @@ export const accountsSlice = createSlice({
      * For mnemonics used as a part of {@link ./hooks/mnemonic#useDeriveMnemonicAccount} hook (for setting unique account name).
      * */
     addAccount: (state, { payload }: { payload: ImplicitAccount }) => {
+      console.log("addAccount", payload);
       state.items = concatUnique(state.items, [payload]);
     },
     /**

@@ -174,6 +174,7 @@ export const useRestoreSocial = () => {
 
   return useCallback(
     (pk: string, pkh: string, label: string, idp: IDP) => {
+      console.log("restore social", pk, pkh, label, idp);
       const account: SocialAccount = {
         type: "social",
         pk: pk,
