@@ -34,5 +34,5 @@ export const CHAIN_CONFIG_GHOSTNET: CustomChainConfig = {
   blockExplorerUrl: GHOSTNET.tzktExplorerUrl,
   ticker: "XTZ",
   tickerName: "Tezos",
-  isTestnet: true
+  isTestnet: true,
 };
