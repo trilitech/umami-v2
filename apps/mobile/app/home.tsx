@@ -20,8 +20,11 @@ export default function HomeScreen() {
   const network = useSelectedNetwork();
   const selectNetwork = useSelectNetwork();
   const { logout } = useSocialOnboarding();
-  const balance = useGetAccountBalance()(currentAccount ? currentAccount.address.pkh : "");
-  const balanceInUsd = useGetDollarBalance()(currentAccount ? currentAccount.address.pkh : "");
+
+  const address = currentAccount ? currentAccount.address.pkh : "";
+
+  const balance = useGetAccountBalance()(address);
+  const balanceInUsd = useGetDollarBalance()(address);
 
   return (
     <View style={styles.container}>
