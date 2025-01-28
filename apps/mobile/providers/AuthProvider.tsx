@@ -1,8 +1,8 @@
 import type Web3Auth from "@web3auth/react-native-sdk";
 import { type PropsWithChildren, createContext, useContext, useEffect } from "react";
 
-import { web3auth } from "./AuthClient";
-import { useRedirectToAuthorized } from "./useRedirectToAuthorized";
+import { web3auth } from "../services/auth/AuthClient";
+import { useRedirectToAuthorized } from "../services/auth/useRedirectToAuthorized";
 
 type AuthContextType = {
   web3auth: Web3Auth;

@@ -41,6 +41,7 @@
     "@umami/tezos": "workspace:^",
     "@umami/tzkt": "workspace:^",
     "@umami/utils": "workspace:^",
+    "@umami/data-polling": "workspace:^",
     "@web3auth/base": "^9.5.0",
     "@web3auth/base-provider": "^9.5.0",
     "@web3auth/react-native-sdk": "^8.1.0",

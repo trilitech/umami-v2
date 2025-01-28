@@ -1,4 +1,5 @@
-import { CHAIN_NAMESPACES } from "@web3auth/base";
+import { GHOSTNET, MAINNET } from "@umami/tezos";
+import { CHAIN_NAMESPACES, type CustomChainConfig } from "@web3auth/base";
 
 export const STRINGS = {
   continueWith: "Continue with:",
@@ -15,22 +16,23 @@ export const STRINGS = {
 
 export const WEB3_AUTH_CLIENT_ID = process.env.EXPO_PUBLIC_WEB3_AUTH_CLIENT_ID;
 
-export const CHAIN_CONFIG_MAINNET = {
-  chainNamespace: CHAIN_NAMESPACES.OTHER,
+export const CHAIN_CONFIG_MAINNET: CustomChainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
   chainId: "0x1",
-  rpcTarget: "https://mainnet.tezos.ecadinfra.com",
+  rpcTarget: MAINNET.rpcUrl,
   displayName: "Tezos Mainnet",
-  blockExplorerUrl: "https://tzkt.io",
+  blockExplorerUrl: MAINNET.tzktExplorerUrl,
   ticker: "XTZ",
   tickerName: "Tezos",
 };
 
-export const CHAIN_CONFIG_GHOSTNET = {
-  chainNamespace: CHAIN_NAMESPACES.OTHER,
+export const CHAIN_CONFIG_GHOSTNET: CustomChainConfig = {
+  chainNamespace: CHAIN_NAMESPACES.EIP155,
   chainId: "0x5",
-  rpcTarget: "https://ghostnet.tezos.ecadinfra.com",
+  rpcTarget: GHOSTNET.rpcUrl,
   displayName: "Tezos Ghostnet",
-  blockExplorerUrl: "https://ghostnet.tzkt.io",
+  blockExplorerUrl: GHOSTNET.tzktExplorerUrl,
   ticker: "XTZ",
   tickerName: "Tezos",
+  isTestnet: true
 };

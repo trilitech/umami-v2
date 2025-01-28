@@ -1,11 +1,11 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { type IDP } from "@umami/social-auth";
-import { useAsyncActionHandler, useRestoreSocial } from "@umami/state";
+import { accountsSlice, useAsyncActionHandler, useRestoreSocial } from "@umami/state";
 import { getPublicKeyPairFromSk } from "@umami/tezos";
 import { useRouter } from "expo-router";
 
 import { forIDP } from "./forIDP";
-import { persistor } from "../../store/store";
+import store, { persistor } from "../../store/store";
 
 export const useSocialOnboarding = () => {
   const router = useRouter();
@@ -15,9 +15,15 @@ export const useSocialOnboarding = () => {
   const login = (idp: IDP) =>
     handleAsyncAction(async () => {
       const { secretKey, name, id, email } = await forIDP(idp).getCredentials();
+      console.log("secretKey", secretKey, email);
       const { pk, pkh } = await getPublicKeyPairFromSk(secretKey);
-      restoreSocial(pk, pkh, email || name || id, idp);
-      router.replace("/home");
+      console.log("pkh", pkh);
+      try {
+        restoreSocial(pk, pkh, email || name || id, idp);
+        console.log("social login restored");
+      } catch (error) {
+        console.error("Error restoring social login", error);
+      }
     });
 
   const logout = (idp: IDP) =>
@@ -26,6 +32,7 @@ export const useSocialOnboarding = () => {
       persistor.pause();
       await AsyncStorage.clear();
       router.replace("/");
+      console.log(await AsyncStorage.getAllKeys(), store.getState());
     });
 
   const createLoginHandler = (provider: IDP) => () => login(provider);
