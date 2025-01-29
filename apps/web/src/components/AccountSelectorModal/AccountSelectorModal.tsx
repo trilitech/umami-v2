@@ -74,20 +74,8 @@ export const AccountSelectorModal = () => {
 
   const groupedAccounts = groupBy(implicitAccounts, getAccountGroupLabel);
 
-  const handleDeriveAccount = (account?: ImplicitAccount) => {
-    if (!account) {
-      return;
-    }
-
-    switch (account.type) {
-      case "mnemonic":
-        return openWith(<DeriveMnemonicAccountModal account={account as MnemonicAccount} />);
-      case "social":
-      case "ledger":
-      case "secret_key":
-        return openWith(<OnboardOptionsModal />);
-    }
-  };
+  const showDeriveAccountButton = (account?: ImplicitAccount) =>
+    account && account.type === "mnemonic";
 
   const buttonLabel = (isLast: boolean) => (isLast ? "Remove & off-board" : "Remove");
   const description = (isLast: boolean, type: string) => {
@@ -155,14 +143,20 @@ export const AccountSelectorModal = () => {
                       size="sm"
                       variant="ghost"
                     />
-                    <IconButton
-                      color={color("500")}
-                      aria-label={`Add ${type} account`}
-                      icon={<PlusCircleIcon />}
-                      onClick={() => handleDeriveAccount(accounts[0])}
-                      size="sm"
-                      variant="ghost"
-                    />
+                    {showDeriveAccountButton(accounts[0]) && (
+                      <IconButton
+                        color={color("500")}
+                        aria-label={`Add ${type} account`}
+                        icon={<PlusCircleIcon />}
+                        onClick={() =>
+                          openWith(
+                            <DeriveMnemonicAccountModal account={accounts[0] as MnemonicAccount} />
+                          )
+                        }
+                        size="sm"
+                        variant="ghost"
+                      />
+                    )}
                   </Flex>
                 )}
               </Center>
