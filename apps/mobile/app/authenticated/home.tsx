@@ -1,15 +1,30 @@
 import { type SocialAccount } from "@umami/core";
-import { useCurrentAccount, useGetAccountBalance } from "@umami/state";
+import { useDataPolling } from "@umami/data-polling";
+import {
+  useCurrentAccount,
+  useGetAccountBalance, useGetDollarBalance,
+  useSelectNetwork,
+  useSelectedNetwork,
+} from "@umami/state";
+import { prettyTezAmount } from "@umami/tezos";
 import { StyleSheet, Text, View } from "react-native";
-import { Button } from "tamagui";
+import { Button, Label, Switch, XStack } from "tamagui";
 
 import { useSocialOnboarding } from "../../services/auth";
 
+
 export default function Home() {
+  useDataPolling();
+
   const currentAccount = useCurrentAccount();
-  const getBalance = useGetAccountBalance();
+  const network = useSelectedNetwork();
+  const selectNetwork = useSelectNetwork();
   const { logout } = useSocialOnboarding();
-  const balance = getBalance(currentAccount ? currentAccount.address.pkh : "");
+
+  const address = currentAccount ? currentAccount.address.pkh : "";
+
+  const balance = useGetAccountBalance()(address);
+  const balanceInUsd = useGetDollarBalance()(address);
 
   return (
     <View style={styles.container}>
@@ -42,12 +57,29 @@ export default function Home() {
         </View>
       </View>
       <View style={{marginTop: 50}}>
-      <Text>Address: {currentAccount?.address.pkh}</Text>
-      <Text>Label: {currentAccount?.label}</Text>
-      <Button onPress={() => logout((currentAccount as SocialAccount).idp)}>
-        <Button.Text>Logout</Button.Text>
-      </Button>
+        <Text style={styles.title}>Welcome to the Home Screen!</Text>
+        <XStack alignItems="center" gap={8}>
+          <Label htmlFor="network-switch">Current network</Label>
+          <Switch
+            checked={network.name === "mainnet"}
+            id="network-switch"
+            onCheckedChange={checked => {
+              selectNetwork(checked ? "mainnet" : "ghostnet");
+            }}
+            size="$4"
+          >
+            <Switch.Thumb animation="quick" />
+          </Switch>
+        </XStack>
       </View>
+        <Text>Current network: {network.name}</Text>
+        <Text>Label: {currentAccount?.label}</Text>
+        <Text>Address: {currentAccount?.address.pkh}</Text>
+        <Text>Balance: {prettyTezAmount(balance ?? 0)}</Text>
+        <Text>Balance in USD: {balanceInUsd?.toString() ?? 0}</Text>
+        <Button onPress={() => logout((currentAccount as SocialAccount).idp)}>
+          <Button.Text>Logout</Button.Text>
+        </Button>
     </View>
   );
 }

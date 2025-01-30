@@ -42,4 +42,8 @@ export const useDataPolling = () => {
       );
     }
   }, [dispatch, isFetching, lastUpdatedAt]);
+
+  return {
+    isFetching,
+  };
 };

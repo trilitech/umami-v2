@@ -1,31 +1,7 @@
 import { b58cencode, prefix } from "@taquito/utils";
-import { CommonPrivateKeyProvider } from "@web3auth/base-provider";
-import Web3Auth, { type LoginParams, WEB3AUTH_NETWORK } from "@web3auth/react-native-sdk";
-import { makeRedirectUri } from "expo-auth-session";
-import * as SecureStore from "expo-secure-store";
-import * as WebBrowser from "expo-web-browser";
+import { type LoginParams } from "@web3auth/react-native-sdk";
 
-import { CHAIN_CONFIG_GHOSTNET, WEB3_AUTH_CLIENT_ID } from "../../constants";
-
-const createWeb3AuthInstance = (): Web3Auth => {
-  const privateKeyProvider = new CommonPrivateKeyProvider({
-    config: { chainConfig: CHAIN_CONFIG_GHOSTNET },
-  });
-
-  const redirectUrl = makeRedirectUri({
-    scheme: "umami",
-    path: "auth",
-  });
-
-  return new Web3Auth(WebBrowser, SecureStore, {
-    clientId: WEB3_AUTH_CLIENT_ID!,
-    network: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
-    privateKeyProvider,
-    redirectUrl,
-  });
-};
-
-export const web3auth = createWeb3AuthInstance();
+import { web3auth } from "./AuthClient";
 
 /**
  * Abstract class that's responsible for the social auth process
@@ -55,10 +31,6 @@ export abstract class Auth {
       throw error;
     }
 
-    if (!web3auth.connected) {
-      throw new Error("Web3Auth connection failed");
-    }
-
     const userInfo = web3auth.userInfo();
 
     const privateKey = (await web3auth.provider?.request({
@@ -77,10 +49,16 @@ export abstract class Auth {
   }
 
   async logout() {
-    if (!web3auth.connected) {
-      await web3auth.init();
+    try {
+      if (!web3auth.connected) {
+        await web3auth.init();
+      }
+
+      await web3auth.logout();
+    } catch (error) {
+      console.error("Error logging out with Web3Auth:", error);
+      throw error;
     }
-    await web3auth.logout();
   }
 
   async getCredentials(): Promise<{
