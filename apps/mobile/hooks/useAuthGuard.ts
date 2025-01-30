@@ -2,7 +2,6 @@ import { useRouter, useSegments } from "expo-router";
 import { useEffect, useState } from "react";
 
 export const useAuthGuard = (isAuthenticated: boolean) => {
-
   const router = useRouter();
   const segments = useSegments();
   const [mounted, setMounted] = useState(false);
@@ -11,8 +10,7 @@ export const useAuthGuard = (isAuthenticated: boolean) => {
     setMounted(true);
   }, []);
 
-  useEffect(() => {
-  }, [isAuthenticated]);
+  useEffect(() => {}, [isAuthenticated]);
 
   useEffect(() => {
     if (mounted) {
