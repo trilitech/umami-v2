@@ -1,4 +1,4 @@
-import { combineReducers } from "@reduxjs/toolkit";
+import { type Action, combineReducers } from "@reduxjs/toolkit";
 import { type Storage, persistReducer } from "redux-persist";
 import createWebStorage from "redux-persist/lib/storage/createWebStorage";
 
@@ -51,7 +51,7 @@ export const makeReducer = (storage_: Storage | undefined) => {
     blacklist: ["password"],
   };
 
-  const rootReducers = combineReducers({
+  const appReducer = combineReducers({
     accounts: persistReducer(accountsPersistConfig, accountsSlice.reducer),
     announcement: announcementSlice.reducer,
     assets: assetsSlice.reducer,
@@ -65,6 +65,13 @@ export const makeReducer = (storage_: Storage | undefined) => {
     protocolSettings: protocolSettingsSlice.reducer,
     tokens: tokensSlice.reducer,
   });
+
+  const rootReducers = (state: any, action: Action) => {
+    if (action.type === "RESET_ALL") {
+      state = undefined;
+    }
+    return appReducer(state, action);
+  };
 
   return persistReducer(rootPersistConfig, rootReducers);
 };

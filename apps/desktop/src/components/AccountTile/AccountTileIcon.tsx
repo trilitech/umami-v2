@@ -142,6 +142,8 @@ export const AccountTileIcon = memo(
             return (
               <EmailIcon {...defaults} {...sizeObj.social.email} color="black" background="white" />
             );
+          case "apple":
+            throw new Error("Apple auth is not supported yet");
         }
       }
     }
