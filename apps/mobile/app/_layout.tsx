@@ -32,8 +32,8 @@ export default function RootLayout() {
             >
               <AuthProvider>
                 <Stack screenOptions={{ headerShown: false }}>
-                  <Stack.Screen name="home" />
                   <Stack.Screen name="login" />
+                  <Stack.Screen name="authenticated" />
                 </Stack>
               </AuthProvider>
             </PersistGate>

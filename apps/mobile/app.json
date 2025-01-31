@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "mobile-expo",
+    "name": "mobile",
     "slug": "mobile",
     "platforms": ["ios", "android"],
     "version": "1.0.0",

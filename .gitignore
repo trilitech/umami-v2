@@ -39,3 +39,6 @@ storybook-static
 
 # IDE
 .idea
+
+# EXPO
+.expo

@@ -10,7 +10,7 @@ export const useRedirectToAuthorized = () => {
 
   useEffect(() => {
     if (currentAccount) {
-      router.replace("/authenticated/home");
+      router.replace("/home");
     }
   }, [currentAccount, router]);
 };
