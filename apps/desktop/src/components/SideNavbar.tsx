@@ -1,5 +1,5 @@
 import { Box, Divider, Flex, type FlexProps, Text, useMediaQuery } from "@chakra-ui/react";
-import { useTotalBalance } from "@umami/state";
+import { useSpendableBalanceOfAllAccounts } from "@umami/state";
 import { type ReactElement } from "react";
 import { Link, useLocation } from "react-router-dom";
 
@@ -156,7 +156,7 @@ const MenuItem = ({
 };
 
 const TotalBalance = () => {
-  const balance = useTotalBalance();
+  const balance = useSpendableBalanceOfAllAccounts();
   const [isShort] = useMediaQuery("(max-height: 900px)");
 
   return (

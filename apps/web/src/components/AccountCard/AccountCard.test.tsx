@@ -14,15 +14,12 @@ beforeEach(() => {
 });
 
 describe("<AccountCard />", () => {
-  it("renders account tile", () => {
+  it("renders account card", () => {
     render(<AccountCard />, { store });
 
     expect(screen.getByTestId("account-tile")).toBeVisible();
-  });
-
-  it("renders account balance", () => {
-    render(<AccountCard />, { store });
-
     expect(screen.getByTestId("account-balance")).toBeVisible();
+    expect(screen.getByTestId("balance-details")).toBeVisible();
+    expect(screen.getByTestId("account-buttons")).toBeVisible();
   });
 });

@@ -25,6 +25,7 @@ export const useGetAccountDelegate = () => {
   return (pkh: string) => getAccountState(pkh)?.delegate;
 };
 
+// returns spendable balance
 export const useGetAccountBalance = () => {
   const getAccountState = useGetAccountState();
 
@@ -113,8 +114,14 @@ export const useTezToDollar = () => {
   }
 
   // tezosBalance is in tez
-  return (tezosBalance: string): BigNumber =>
-    BigNumber(tezosBalance).multipliedBy(rate).decimalPlaces(2, BigNumber.ROUND_UP);
+  return (tezosBalanceTez: string): BigNumber =>
+    BigNumber(tezosBalanceTez).multipliedBy(rate).decimalPlaces(2, BigNumber.ROUND_UP);
+};
+
+export const useMutezToUsd = () => {
+  const tezToDollar = useTezToDollar();
+
+  return (tezosBalanceMutez: string) => tezToDollar(mutezToTez(tezosBalanceMutez).toFixed());
 };
 
 export const useGetDollarBalance = () => {
@@ -130,10 +137,10 @@ export const useGetDollarBalance = () => {
 };
 
 /**
- * @returns Total balance across all accounts in both mutez and USD
+ * @returns Total spendable balance across all accounts in both mutez and USD
  *          or null if there are no balances (not fetched yet, for example)
  */
-export const useTotalBalance = () => {
+export const useSpendableBalanceOfAllAccounts = () => {
   const accountStates = useGetAccountStates();
   const tezToDollar = useTezToDollar();
 
