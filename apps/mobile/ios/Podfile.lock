@@ -15,8 +15,11 @@ PODS:
     - SimpleKeychain (~> 1.1)
   - boost (1.84.0)
   - DoubleConversion (1.1.6)
+<<<<<<< HEAD
   - EASClient (0.13.2):
     - ExpoModulesCore
+=======
+>>>>>>> 303b286c88d85559d99091b26b45261d84732d13
   - EXApplication (6.0.2):
     - ExpoModulesCore
   - EXConstants (17.0.4):
@@ -290,6 +293,7 @@ PODS:
     - ExpoModulesCore
   - ExpoWebBrowser (14.0.2):
     - ExpoModulesCore
+<<<<<<< HEAD
   - EXStructuredHeaders (4.0.0)
   - EXUpdates (0.26.13):
     - DoubleConversion
@@ -318,6 +322,8 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
+=======
+>>>>>>> 303b286c88d85559d99091b26b45261d84732d13
   - EXUpdatesInterface (1.0.0):
     - ExpoModulesCore
   - FBLazyVector (0.76.3)
@@ -357,7 +363,10 @@ PODS:
     - FBLazyVector (= 0.76.3)
     - RCTRequired (= 0.76.3)
     - React-Core (= 0.76.3)
+<<<<<<< HEAD
   - ReachabilitySwift (5.2.4)
+=======
+>>>>>>> 303b286c88d85559d99091b26b45261d84732d13
   - React (0.76.3):
     - React-Core (= 0.76.3)
     - React-Core/DevSupport (= 0.76.3)
@@ -2133,7 +2142,10 @@ DEPENDENCIES:
   - A0Auth0 (from `../../../node_modules/react-native-auth0`)
   - boost (from `../../../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - DoubleConversion (from `../../../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
+<<<<<<< HEAD
   - EASClient (from `../../../node_modules/expo-eas-client/ios`)
+=======
+>>>>>>> 303b286c88d85559d99091b26b45261d84732d13
   - EXApplication (from `../../../node_modules/expo-application/ios`)
   - EXConstants (from `../../../node_modules/expo-constants/ios`)
   - EXJSONUtils (from `../../../node_modules/expo-json-utils/ios`)
@@ -2160,8 +2172,11 @@ DEPENDENCIES:
   - ExpoSymbols (from `../../../node_modules/expo-symbols/ios`)
   - ExpoSystemUI (from `../../../node_modules/expo-system-ui/ios`)
   - ExpoWebBrowser (from `../../../node_modules/expo-web-browser/ios`)
+<<<<<<< HEAD
   - EXStructuredHeaders (from `../../../node_modules/expo-structured-headers/ios`)
   - EXUpdates (from `../../../node_modules/expo-updates/ios`)
+=======
+>>>>>>> 303b286c88d85559d99091b26b45261d84732d13
   - EXUpdatesInterface (from `../../../node_modules/expo-updates-interface/ios`)
   - FBLazyVector (from `../../../node_modules/react-native/Libraries/FBLazyVector`)
   - fmt (from `../../../node_modules/react-native/third-party-podspecs/fmt.podspec`)
@@ -2244,7 +2259,10 @@ SPEC REPOS:
     - GTMAppAuth
     - GTMSessionFetcher
     - JWTDecode
+<<<<<<< HEAD
     - ReachabilitySwift
+=======
+>>>>>>> 303b286c88d85559d99091b26b45261d84732d13
     - SimpleKeychain
     - SocketRocket
 
@@ -2255,8 +2273,11 @@ EXTERNAL SOURCES:
     :podspec: "../../../node_modules/react-native/third-party-podspecs/boost.podspec"
   DoubleConversion:
     :podspec: "../../../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
+<<<<<<< HEAD
   EASClient:
     :path: "../../../node_modules/expo-eas-client/ios"
+=======
+>>>>>>> 303b286c88d85559d99091b26b45261d84732d13
   EXApplication:
     :path: "../../../node_modules/expo-application/ios"
   EXConstants:
@@ -2309,10 +2330,13 @@ EXTERNAL SOURCES:
     :path: "../../../node_modules/expo-system-ui/ios"
   ExpoWebBrowser:
     :path: "../../../node_modules/expo-web-browser/ios"
+<<<<<<< HEAD
   EXStructuredHeaders:
     :path: "../../../node_modules/expo-structured-headers/ios"
   EXUpdates:
     :path: "../../../node_modules/expo-updates/ios"
+=======
+>>>>>>> 303b286c88d85559d99091b26b45261d84732d13
   EXUpdatesInterface:
     :path: "../../../node_modules/expo-updates-interface/ios"
   FBLazyVector:
@@ -2463,7 +2487,10 @@ SPEC CHECKSUMS:
   Auth0: 28cb24cb19ebd51f0b07751f16d83b59f4019532
   boost: 1dca942403ed9342f98334bf4c3621f011aa7946
   DoubleConversion: f16ae600a246532c4020132d54af21d0ddb2a385
+<<<<<<< HEAD
   EASClient: d7420d607795707821b8bcd30ab7444159e802e0
+=======
+>>>>>>> 303b286c88d85559d99091b26b45261d84732d13
   EXApplication: 27a524f5c3e671c6218220fba04752629466a1a9
   EXConstants: cc788e18fb962b77999c16f6b90e551542b1bcf4
   EXJSONUtils: 01fc7492b66c234e395dcffdd5f53439c5c29c93
@@ -2490,6 +2517,7 @@ SPEC CHECKSUMS:
   ExpoSymbols: 54fa089478e1bc00f4d1d66ffb5c8bc64dc71ada
   ExpoSystemUI: 7296f92af7c30ec0fc4305bbeb5c396d7fc9e86c
   ExpoWebBrowser: 6890a769e6c9d83da938dceb9a03e764afc3ec9c
+<<<<<<< HEAD
   EXStructuredHeaders: 09c70347b282e3d2507e25fb4c747b1b885f87f6
   EXUpdates: d61c867ebb33b405f6e8e563dc0f0e239e69dfa9
   EXUpdatesInterface: 1dcebac98ac5dad4289e6ff2bd5616822e894397
@@ -2506,6 +2534,21 @@ SPEC CHECKSUMS:
   RCTRequired: 5f785a001cf68a551c5f5040fb4c415672dbb481
   RCTTypeSafety: 6b98db8965005d32449605c0d005ecb4fee8a0f7
   ReachabilitySwift: 32793e867593cfc1177f5d16491e3a197d2fccda
+=======
+  EXUpdatesInterface: 1dcebac98ac5dad4289e6ff2bd5616822e894397
+  FBLazyVector: be7314029d6ec6b90f0f75ce1195b8130ed9ac4f
+  fmt: fad7775865bb4340e98e10997c965fd61b3c749e
+  glog: 94308668c25e8ccac76f853cda1931c7aa3f5fae
+  GoogleSignIn: d4281ab6cf21542b1cfaff85c191f230b399d2db
+  GTMAppAuth: f69bd07d68cd3b766125f7e072c45d7340dea0de
+  GTMSessionFetcher: 5aea5ba6bd522a239e236100971f10cb71b96ab6
+  hermes-engine: 77f19b2923ed39b21649b7551471674e3ace7a0a
+  JWTDecode: 3eaab1e06b6f4dcbdd6716aff09ba4c2104ca8b7
+  RCT-Folly: aac5a2e8a7b6b8108945e58a66d08f78b800a1ea
+  RCTDeprecation: 2c5e1000b04ab70b53956aa498bf7442c3c6e497
+  RCTRequired: 5f785a001cf68a551c5f5040fb4c415672dbb481
+  RCTTypeSafety: 6b98db8965005d32449605c0d005ecb4fee8a0f7
+>>>>>>> 303b286c88d85559d99091b26b45261d84732d13
   React: 8077bf7c185afb515be82518507e16f71a247a5e
   React-callinvoker: 519eee9520727805e2867a6d8dad4ebbeed543db
   React-Core: e364ceda7d086c7d14adeec0eb880a90073e3dde

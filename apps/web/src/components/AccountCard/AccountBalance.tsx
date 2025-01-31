@@ -1,88 +1,59 @@
-import { Box, Flex, Link, Text } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import { useDynamicModalContext } from "@umami/components";
-import {
-  useBuyTezUrl,
-  useCurrentAccount,
-  useGetAccountBalance,
-  useGetDollarBalance,
-} from "@umami/state";
-import { TEZ, prettyTezAmount } from "@umami/tezos";
+import { useCurrentAccount, useGetAccountBalanceDetails, useMutezToUsd } from "@umami/state";
+import { prettyTezAmount } from "@umami/tezos";
+import { BigNumber } from "bignumber.js";
 
-import { SendTezButton } from "./SendTezButton";
-import { ArrowDownLeftIcon, WalletIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
-import { AccountInfoModal } from "../AccountSelectorModal";
-import { IconButtonWithText } from "../IconButtonWithText";
-import { useIsAccountVerified } from "../Onboarding/VerificationFlow";
 
 export const AccountBalance = () => {
   const color = useColor();
-  const { openWith } = useDynamicModalContext();
+  useDynamicModalContext();
   const currentAccount = useCurrentAccount()!;
   const address = currentAccount.address.pkh;
-  const balance = useGetAccountBalance()(address);
-  const usdBalance = useGetDollarBalance()(address);
-  const isVerified = useIsAccountVerified();
+  const mutezToDollar = useMutezToUsd();
+  const { totalBalance } = useGetAccountBalanceDetails(address);
 
-  const buyTezUrl = useBuyTezUrl(address);
+  const BalanceLabel = ({ label }: { label: string }) => (
+    <Text color={color("600")} fontWeight="600" size="sm">
+      {label}
+    </Text>
+  );
 
-  const getUsdBalance = () => {
-    if (balance === undefined) {
+  const getUsdBalance = (tezosBalance?: string) => {
+    if (tezosBalance === undefined || BigNumber(tezosBalance).isEqualTo(0)) {
       return "$0.00";
-    } else if (usdBalance === undefined) {
-      return;
     }
+    const usdBalance = mutezToDollar(tezosBalance);
+    if (usdBalance === undefined) {
+      return undefined;
+    }
+
     return `$${usdBalance}`;
   };
+
+  const getConversionRate = () => {
+    const rate = mutezToDollar("1000000");
+    if (!rate) {
+      return null;
+    }
+    return `(US$${rate} / XTZ)`;
+  };
+
+  const totalUsdBalance = getUsdBalance(totalBalance.toString());
 
   return (
     <Box data-testid="account-balance" paddingX="12px">
       <Flex flexDirection="column" gap="4px">
-        <Text
-          display={{
-            base: "none",
-            md: "block",
-          }}
-          color={color("600")}
-          fontWeight="600"
-          size="sm"
-        >
-          Tez Balance
-        </Text>
+        <BalanceLabel label="Tez Balance" />
         <Text color={color("900")} fontWeight="600" data-testid="tez-balance" size="2xl">
-          {balance ? prettyTezAmount(balance) : `0 ${TEZ}`}
+          {prettyTezAmount(totalBalance)}
         </Text>
-        {getUsdBalance() && (
+        {totalUsdBalance && (
           <Text color={color("700")} data-testid="usd-balance" size="sm">
-            {getUsdBalance()}
+            {totalUsdBalance} {getConversionRate()}
           </Text>
         )}
-      </Flex>
-      <Flex
-        alignItems="center"
-        justifyContent="space-between"
-        marginTop={{ base: "20px", md: "40px" }}
-      >
-        <IconButtonWithText
-          as={Link}
-          pointerEvents={isVerified ? "auto" : "none"}
-          href={isVerified ? buyTezUrl : ""}
-          icon={WalletIcon}
-          isDisabled={!isVerified}
-          isExternal
-          label="Buy"
-          variant="iconButtonSolid"
-        />
-        <Flex gap="24px">
-          <IconButtonWithText
-            icon={ArrowDownLeftIcon}
-            isDisabled={!isVerified}
-            label="Receive"
-            onClick={() => openWith(<AccountInfoModal account={currentAccount} />)}
-            variant="iconButtonSolid"
-          />
-          <SendTezButton />
-        </Flex>
       </Flex>
     </Box>
   );

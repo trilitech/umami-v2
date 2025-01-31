@@ -6,7 +6,7 @@ import {
   useBakerList,
   useGetAccountDelegate,
   useIsBlockFinalised,
-  useTotalBalance,
+  useSpendableBalanceOfAllAccounts,
 } from "./assets";
 import { assetsActions } from "../slices";
 import { type UmamiStore, makeStore } from "../store";
@@ -27,9 +27,9 @@ describe("useBakerList", () => {
   });
 });
 
-describe("useTotalBalance", () => {
+describe("useSpendableBalanceOfAllAccounts", () => {
   it("returns null if there are no balances", () => {
-    const { result } = renderHook(() => useTotalBalance(), { store });
+    const { result } = renderHook(() => useSpendableBalanceOfAllAccounts(), { store });
 
     expect(result.current).toBeNull();
   });
@@ -42,7 +42,7 @@ describe("useTotalBalance", () => {
       ])
     );
 
-    const { result } = renderHook(() => useTotalBalance(), { store });
+    const { result } = renderHook(() => useSpendableBalanceOfAllAccounts(), { store });
 
     expect(result.current).toEqual({ mutez: "1000000", usd: BigNumber("0.5") });
   });
