@@ -28,7 +28,7 @@ export const useSocialOnboarding = () => {
       await forIDP(idp).logout();
       resetState();
       await persistor.purge();
-      router.replace("/");
+      router.replace("/login");
     });
 
   const createLoginHandler = (provider: IDP) => () => login(provider);

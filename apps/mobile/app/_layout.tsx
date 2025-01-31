@@ -1,5 +1,5 @@
 import { type Toast, ToastProvider } from "@umami/utils";
-import { Slot, SplashScreen } from "expo-router";
+import { Slot, SplashScreen, Stack } from "expo-router";
 import { useEffect } from "react";
 import { ActivityIndicator, View, useColorScheme } from "react-native";
 import { Provider } from "react-redux";
@@ -31,7 +31,10 @@ export default function RootLayout() {
               persistor={persistor}
             >
               <AuthProvider>
-                <Slot />
+                <Stack screenOptions={{ headerShown: false }}>
+                  <Stack.Screen name="home" />
+                  <Stack.Screen name="login" />
+                </Stack>
               </AuthProvider>
             </PersistGate>
           </Provider>
