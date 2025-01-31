@@ -15,11 +15,8 @@ PODS:
     - SimpleKeychain (~> 1.1)
   - boost (1.84.0)
   - DoubleConversion (1.1.6)
-<<<<<<< HEAD
   - EASClient (0.13.2):
     - ExpoModulesCore
-=======
->>>>>>> 303b286c88d85559d99091b26b45261d84732d13
   - EXApplication (6.0.2):
     - ExpoModulesCore
   - EXConstants (17.0.4):
@@ -293,7 +290,6 @@ PODS:
     - ExpoModulesCore
   - ExpoWebBrowser (14.0.2):
     - ExpoModulesCore
-<<<<<<< HEAD
   - EXStructuredHeaders (4.0.0)
   - EXUpdates (0.26.13):
     - DoubleConversion
@@ -322,8 +318,6 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-=======
->>>>>>> 303b286c88d85559d99091b26b45261d84732d13
   - EXUpdatesInterface (1.0.0):
     - ExpoModulesCore
   - FBLazyVector (0.76.3)
@@ -363,10 +357,7 @@ PODS:
     - FBLazyVector (= 0.76.3)
     - RCTRequired (= 0.76.3)
     - React-Core (= 0.76.3)
-<<<<<<< HEAD
   - ReachabilitySwift (5.2.4)
-=======
->>>>>>> 303b286c88d85559d99091b26b45261d84732d13
   - React (0.76.3):
     - React-Core (= 0.76.3)
     - React-Core/DevSupport (= 0.76.3)
@@ -2142,10 +2133,7 @@ DEPENDENCIES:
   - A0Auth0 (from `../../../node_modules/react-native-auth0`)
   - boost (from `../../../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - DoubleConversion (from `../../../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
-<<<<<<< HEAD
   - EASClient (from `../../../node_modules/expo-eas-client/ios`)
-=======
->>>>>>> 303b286c88d85559d99091b26b45261d84732d13
   - EXApplication (from `../../../node_modules/expo-application/ios`)
   - EXConstants (from `../../../node_modules/expo-constants/ios`)
   - EXJSONUtils (from `../../../node_modules/expo-json-utils/ios`)
@@ -2172,11 +2160,8 @@ DEPENDENCIES:
   - ExpoSymbols (from `../../../node_modules/expo-symbols/ios`)
   - ExpoSystemUI (from `../../../node_modules/expo-system-ui/ios`)
   - ExpoWebBrowser (from `../../../node_modules/expo-web-browser/ios`)
-<<<<<<< HEAD
   - EXStructuredHeaders (from `../../../node_modules/expo-structured-headers/ios`)
   - EXUpdates (from `../../../node_modules/expo-updates/ios`)
-=======
->>>>>>> 303b286c88d85559d99091b26b45261d84732d13
   - EXUpdatesInterface (from `../../../node_modules/expo-updates-interface/ios`)
   - FBLazyVector (from `../../../node_modules/react-native/Libraries/FBLazyVector`)
   - fmt (from `../../../node_modules/react-native/third-party-podspecs/fmt.podspec`)
@@ -2259,10 +2244,7 @@ SPEC REPOS:
     - GTMAppAuth
     - GTMSessionFetcher
     - JWTDecode
-<<<<<<< HEAD
     - ReachabilitySwift
-=======
->>>>>>> 303b286c88d85559d99091b26b45261d84732d13
     - SimpleKeychain
     - SocketRocket
 
@@ -2273,11 +2255,8 @@ EXTERNAL SOURCES:
     :podspec: "../../../node_modules/react-native/third-party-podspecs/boost.podspec"
   DoubleConversion:
     :podspec: "../../../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
-<<<<<<< HEAD
   EASClient:
     :path: "../../../node_modules/expo-eas-client/ios"
-=======
->>>>>>> 303b286c88d85559d99091b26b45261d84732d13
   EXApplication:
     :path: "../../../node_modules/expo-application/ios"
   EXConstants:
@@ -2330,13 +2309,10 @@ EXTERNAL SOURCES:
     :path: "../../../node_modules/expo-system-ui/ios"
   ExpoWebBrowser:
     :path: "../../../node_modules/expo-web-browser/ios"
-<<<<<<< HEAD
   EXStructuredHeaders:
     :path: "../../../node_modules/expo-structured-headers/ios"
   EXUpdates:
     :path: "../../../node_modules/expo-updates/ios"
-=======
->>>>>>> 303b286c88d85559d99091b26b45261d84732d13
   EXUpdatesInterface:
     :path: "../../../node_modules/expo-updates-interface/ios"
   FBLazyVector:
@@ -2487,10 +2463,7 @@ SPEC CHECKSUMS:
   Auth0: 28cb24cb19ebd51f0b07751f16d83b59f4019532
   boost: 1dca942403ed9342f98334bf4c3621f011aa7946
   DoubleConversion: f16ae600a246532c4020132d54af21d0ddb2a385
-<<<<<<< HEAD
   EASClient: d7420d607795707821b8bcd30ab7444159e802e0
-=======
->>>>>>> 303b286c88d85559d99091b26b45261d84732d13
   EXApplication: 27a524f5c3e671c6218220fba04752629466a1a9
   EXConstants: cc788e18fb962b77999c16f6b90e551542b1bcf4
   EXJSONUtils: 01fc7492b66c234e395dcffdd5f53439c5c29c93
