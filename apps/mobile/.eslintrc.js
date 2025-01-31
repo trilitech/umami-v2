@@ -10,6 +10,7 @@ module.exports = {
     {
       files: ["*.ts", "*.tsx", "*.js", "*.jsx"],
       rules: {
+        "no-restricted-imports": "off",
         "import/no-unused-modules": "off",
       },
     },

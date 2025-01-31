@@ -1,11 +1,12 @@
 import { type Toast, ToastProvider } from "@umami/utils";
-import { Slot, SplashScreen, Stack } from "expo-router";
+import { SplashScreen, Stack } from "expo-router";
 import { useEffect } from "react";
-import { ActivityIndicator, View, useColorScheme } from "react-native";
+import { useColorScheme } from "react-native";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { TamaguiProvider } from "tamagui";
 
+import { PersistedLoaderComponent } from "../components/persistLoader/persisteLoader.component";
 import { AuthProvider, ReactQueryProvider } from "../providers";
 import store, { persistor } from "../store/store";
 import { tamaguiConfig } from "../tamagui.config";
@@ -23,11 +24,7 @@ export default function RootLayout() {
         <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme!}>
           <Provider store={store}>
             <PersistGate
-              loading={
-                <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                  <ActivityIndicator color="#000" size="large" />
-                </View>
-              }
+              loading={<PersistedLoaderComponent />}
               persistor={persistor}
             >
               <AuthProvider>
