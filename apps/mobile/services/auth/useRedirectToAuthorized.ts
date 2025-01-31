@@ -10,9 +10,9 @@ export const useRedirectToAuthorized = () => {
 
   useEffect(() => {
     if (currentAccount) {
-      router.replace("/home");
-    } else {
-      router.replace("/login");
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      router.replace("(auth)");
     }
   }, [currentAccount, router]);
 };
