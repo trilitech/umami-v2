@@ -1,1 +1,1 @@
-export * from './HeaderIcon.component';
+export * from "./HeaderIcon.component";
