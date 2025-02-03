@@ -19,6 +19,7 @@ import { Header } from "./Header";
 import { useColor } from "../../../styles/useColor";
 import { AddressTile } from "../../AddressTile/AddressTile";
 import { JsValueWrap } from "../../JsValueWrap";
+import { Titles } from "../../Titles";
 import { useSignWithBeacon } from "../Beacon/useSignWithBeacon";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
@@ -45,9 +46,9 @@ export const BatchSignPage = (
 
   return (
     <FormProvider {...form}>
-      <ModalContent>
+      <ModalContent data-testId="BatchSignPage">
         <form>
-          <Header headerProps={signProps.headerProps} />
+          <Header headerProps={signProps.headerProps} title={Titles.BatchSignPage} />
 
           <ModalBody>
             <Accordion allowToggle>

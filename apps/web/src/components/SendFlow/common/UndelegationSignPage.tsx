@@ -4,7 +4,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { Header } from "./Header";
 import { AddressTile } from "../../AddressTile/AddressTile";
 import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";
-import { Titles } from "../../Titles/Titles";
+import { Titles } from "../../Titles";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
 import { type CalculatedSignProps, type SdkSignPageProps } from "../utils";
