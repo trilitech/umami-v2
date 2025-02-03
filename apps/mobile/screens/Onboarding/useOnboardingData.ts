@@ -20,7 +20,6 @@ export const useOnboardingData = () => {
       subscription.remove();
     };
   }, []);
-
   const openTerms = useCallback(() => openBrowser("https://umamiwallet.com/tos.html"), []);
 
   const openPrivacy = useCallback(

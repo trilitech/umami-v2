@@ -41,8 +41,13 @@
         "origin": false
       },
       "eas": {
-        "projectId": "d679edca-756b-4dd2-9d53-01b52e1a94ff"
+        "projectId": "3bb0b2d5-bf83-4e1d-9a02-7aa9ba46bb8c"
       }
+    },
+    "owner": "mariotrili",
+    "runtimeVersion": "1.0.0",
+    "updates": {
+      "url": "https://u.expo.dev/3bb0b2d5-bf83-4e1d-9a02-7aa9ba46bb8c"
     }
   }
 }

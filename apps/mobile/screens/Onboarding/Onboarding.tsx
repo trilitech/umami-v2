@@ -23,11 +23,11 @@ import {
   StyledImage,
   StyledLink,
   TwitterImage,
-} from "./onboarding.styles";
+} from "./onboardingStyles";
 import { useOnboardingData } from "./useOnboardingData";
 import { images } from "../../assets/images";
 
-export const OnboardingScreen = () => {
+export const Onboarding = () => {
   const {
     onGoogleLogin,
     onFacebookLogin,

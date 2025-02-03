@@ -4,7 +4,7 @@ import { getPublicKeyPairFromSk } from "@umami/tezos";
 import { useRouter } from "expo-router";
 
 import { forIDP } from "./forIDP";
-import { persistor } from "../../store/store";
+import { persistor } from "../../store";
 
 export const useSocialOnboarding = () => {
   const router = useRouter();
