@@ -1,1 +1,1 @@
-export * from "./AccountBadge.component";
+export * from "./AccountBadge";

@@ -1,5 +1,5 @@
-import { HomeScreen } from "../../screens/Home/Home.screen";
+import { HomeComponent } from "../../screens/Home/HomeComponent";
 
-export default function Index() {
- return <HomeScreen />
+export default function Home() {
+  return <HomeComponent />;
 }

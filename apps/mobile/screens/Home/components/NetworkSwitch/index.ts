@@ -1,1 +1,1 @@
-export * from "./NetworkSwitch.component";
+export * from "./NetworkSwitch";

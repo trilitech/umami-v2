@@ -6,7 +6,7 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { TamaguiProvider } from "tamagui";
 
-import { PersistedLoaderComponent } from "../components/persistLoader/persisteLoader.component";
+import { PersistedLoaderComponent } from "../components/persistorLoader/persistorLoader";
 import { AuthProvider, ReactQueryProvider } from "../providers";
 import store, { persistor } from "../store/store";
 import { tamaguiConfig } from "../tamagui.config";
@@ -23,10 +23,7 @@ export default function RootLayout() {
       <ReactQueryProvider>
         <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme!}>
           <Provider store={store}>
-            <PersistGate
-              loading={<PersistedLoaderComponent />}
-              persistor={persistor}
-            >
+            <PersistGate loading={<PersistedLoaderComponent />} persistor={persistor}>
               <AuthProvider>
                 <Stack screenOptions={{ headerShown: false }}>
                   <Stack.Screen name="login" />

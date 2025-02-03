@@ -1,1 +1,1 @@
-export * from "./BalanceDisplay.component";
+export * from "./BalanceDisplay";

@@ -6,16 +6,13 @@ interface NetworkSwitchProps {
   selectNetwork: (network: string) => void;
 }
 
-export const NetworkSwitchComponent: React.FC<NetworkSwitchProps> = ({
-   network,
-   selectNetwork,
- }) => (
+export const NetworkSwitch: React.FC<NetworkSwitchProps> = ({ network, selectNetwork }) => (
   <XStack alignItems="center" gap={8}>
     <Label htmlFor="network-switch">Current network</Label>
     <Switch
       checked={network.name === "mainnet"}
       id="network-switch"
-      onCheckedChange={(checked) => selectNetwork(checked ? "mainnet" : "ghostnet")}
+      onCheckedChange={checked => selectNetwork(checked ? "mainnet" : "ghostnet")}
       size="$4"
     >
       <Switch.Thumb animation="quick" />

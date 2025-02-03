@@ -11,10 +11,10 @@ import { prettyTezAmount } from "@umami/tezos";
 import type React from "react";
 import { Button, Text, XStack, YStack } from "tamagui";
 
-import { ActionButtonComponent, BalanceDisplayComponent, NetworkSwitchComponent } from "./components";
+import { ActionButton, BalanceDisplay, NetworkSwitch } from "./components";
 import { useSocialOnboarding } from "../../services/auth";
 
-export const  HomeScreen: React.FC = () => {
+export const HomeComponent: React.FC = () => {
   useDataPolling();
 
   const currentAccount = useCurrentAccount();
@@ -28,19 +28,19 @@ export const  HomeScreen: React.FC = () => {
 
   return (
     <YStack alignItems="center" flex={1} paddingTop={20} backgroundColor="white">
-      <BalanceDisplayComponent balance={balance} />
+      <BalanceDisplay balance={balance} />
       <XStack justifyContent="space-around" width="100%" marginVertical={20}>
-        <ActionButtonComponent title="Buy" />
-        <ActionButtonComponent title="Swap" />
-        <ActionButtonComponent title="Receive" />
-        <ActionButtonComponent title="Send" />
+        <ActionButton title="Buy" />
+        <ActionButton title="Swap" />
+        <ActionButton title="Receive" />
+        <ActionButton title="Send" />
       </XStack>
 
       <YStack alignItems="center" marginTop={50}>
         <Text color="#333" fontSize={24} fontWeight="bold">
           Welcome to the Home Screen!
         </Text>
-        <NetworkSwitchComponent network={network} selectNetwork={selectNetwork} />
+        <NetworkSwitch network={network} selectNetwork={selectNetwork} />
       </YStack>
 
       <YStack alignItems="center" marginTop={20}>
@@ -60,4 +60,4 @@ export const  HomeScreen: React.FC = () => {
       </Button>
     </YStack>
   );
-}
+};

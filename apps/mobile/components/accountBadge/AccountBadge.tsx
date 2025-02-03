@@ -1,4 +1,4 @@
-import type React from "react"
+import type React from "react";
 import { Text, View, XStack } from "tamagui";
 
 export const AccountBadge: React.FC = () => (
@@ -10,13 +10,7 @@ export const AccountBadge: React.FC = () => (
     paddingHorizontal={10}
     paddingVertical={6}
   >
-    <View
-      width={24}
-      height={24}
-      marginRight={5}
-      borderRadius={12}
-      backgroundColor="white"
-    />
+    <View width={24} height={24} marginRight={5} borderRadius={12} backgroundColor="white" />
     <Text>Account</Text>
   </XStack>
 );

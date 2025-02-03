@@ -2,10 +2,10 @@ import type React from "react";
 import { Text, View, YStack } from "tamagui";
 
 interface ActionButtonComponentProps {
-  title: string
+  title: string;
 }
 
-export const ActionButtonComponent: React.FC<ActionButtonComponentProps> = ({ title }) => (
+export const ActionButton: React.FC<ActionButtonComponentProps> = ({ title }) => (
   <YStack alignItems="center">
     <View
       alignItems="center"
