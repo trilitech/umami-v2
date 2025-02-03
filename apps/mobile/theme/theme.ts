@@ -80,7 +80,6 @@ const builtThemes = createThemes({
 export type Themes = typeof builtThemes;
 
 export const themes: Themes =
-  process.env.TAMAGUI_ENVIRONMENT === "client" &&
-  process.env.NODE_ENV === "production"
+  process.env.TAMAGUI_ENVIRONMENT === "client" && process.env.NODE_ENV === "production"
     ? ({} as any)
     : (builtThemes as any);

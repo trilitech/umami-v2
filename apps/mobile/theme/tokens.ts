@@ -1,4 +1,4 @@
-import { createTokens } from "tamagui"
+import { createTokens } from "tamagui";
 
 export const tokens = createTokens({
   size: {
@@ -44,4 +44,4 @@ export const tokens = createTokens({
     subtitle: 12,
     label: 10,
   },
-})
+});

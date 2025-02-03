@@ -9,7 +9,7 @@ import { TamaguiProvider } from "tamagui";
 import { PersistedLoaderComponent } from "../components/persistorLoader/persistorLoader";
 import { AuthProvider, ReactQueryProvider } from "../providers";
 import store, { persistor } from "../store/store";
-import { tamaguiConfig } from "../tamagui.config"
+import { tamaguiConfig } from "../tamagui.config";
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
