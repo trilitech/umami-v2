@@ -1,9 +1,9 @@
 import { XStack } from "tamagui";
 
-import { AccountBadge } from "../accountBadge";
-import { HeaderIcon } from "../headerIcon";
+import { AccountBadge } from "../AccountBadge";
+import { HeaderIcon } from "../HeaderIcon";
 
-export const Header: React.FC = () => (
+export const Header = () => (
   <XStack alignItems="center" justifyContent="space-between" width="100%" paddingHorizontal={10}>
     <AccountBadge />
 

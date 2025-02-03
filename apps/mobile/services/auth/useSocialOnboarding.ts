@@ -4,7 +4,7 @@ import { getPublicKeyPairFromSk } from "@umami/tezos";
 import { useRouter } from "expo-router";
 
 import { forIDP } from "./forIDP";
-import { persistor } from "../../store/store";
+import { persistor } from "../../store";
 
 export const useSocialOnboarding = () => {
   const router = useRouter();
@@ -28,7 +28,7 @@ export const useSocialOnboarding = () => {
       await forIDP(idp).logout();
       resetState();
       await persistor.purge();
-      router.replace("/");
+      router.replace("/login");
     });
 
   const createLoginHandler = (provider: IDP) => () => login(provider);

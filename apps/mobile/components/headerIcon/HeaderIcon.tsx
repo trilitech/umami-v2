@@ -1,7 +1,6 @@
-import type React from "react";
 import { Button } from "tamagui";
 
-export const HeaderIcon: React.FC = () => (
+export const HeaderIcon = () => (
   <Button
     alignItems="center"
     justifyContent="center"

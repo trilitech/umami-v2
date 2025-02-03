@@ -8,13 +8,12 @@ import {
   useSelectedNetwork,
 } from "@umami/state";
 import { prettyTezAmount } from "@umami/tezos";
-import type React from "react";
 import { Button, Text, XStack, YStack } from "tamagui";
 
 import { ActionButton, BalanceDisplay, NetworkSwitch } from "./components";
 import { useSocialOnboarding } from "../../services/auth";
 
-export const HomeComponent: React.FC = () => {
+export const Home = () => {
   useDataPolling();
 
   const currentAccount = useCurrentAccount();
