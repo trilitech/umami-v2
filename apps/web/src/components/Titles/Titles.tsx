@@ -7,4 +7,5 @@ export const Titles: Record<string, string> = {
   StakeSignPage: "Stake Request",
   UnstakeSignPage: "Unstake Request",
   FinalizeUnstakeSignPage: "Finalize Unstake Request",
+  BatchSignPage: "Batch Request",
 };
