@@ -146,7 +146,7 @@ export const useHandleBeaconMessage = () => {
             if (operation.operations.length === 1) {
               modal = <SingleSignPage {...signProps} />;
             } else {
-              modal = <BatchSignPage {...signProps} {...message.operationDetails} />;
+              modal = <BatchSignPage {...signProps} />;
             }
             onClose = () => respondWithError(message.id, BeaconErrorType.ABORTED_ERROR);
 
