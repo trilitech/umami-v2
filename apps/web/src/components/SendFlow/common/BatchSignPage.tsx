@@ -1,4 +1,3 @@
-import { type PartialTezosOperation } from "@airgap/beacon-wallet";
 import {
   Accordion,
   AccordionButton,
@@ -26,10 +25,7 @@ import { SignPageFee } from "../SignPageFee";
 import { type SdkSignPageProps } from "../utils";
 import { useSignWithWalletConnect } from "../WalletConnect/useSignWithWalletConnect";
 
-export const BatchSignPage = (
-  signProps: SdkSignPageProps,
-  operationDetails: PartialTezosOperation[]
-) => {
+export const BatchSignPage = (signProps: SdkSignPageProps) => {
   const color = useColor();
 
   const beaconCalculatedProps = useSignWithBeacon({ ...signProps });
@@ -60,7 +56,11 @@ export const BatchSignPage = (
                   <AccordionIcon />
                 </AccordionButton>
                 <AccordionPanel>
-                  <JsValueWrap overflowY="auto" maxHeight="200px" value={operationDetails} />
+                  <JsValueWrap
+                    overflowY="auto"
+                    maxHeight="200px"
+                    value={signProps.operation.operations}
+                  />
                 </AccordionPanel>
               </AccordionItem>
             </Accordion>
