@@ -1,0 +1,115 @@
+import { type GenericFont } from "tamagui";
+
+export const typography = {
+  fonts: {
+    heading: {
+      family: "Poppins-Bold",
+      size: {
+        true: 16,
+        heading: 22,
+        body: 18,
+        title: 26,
+        subtitle: 20,
+        small: 14,
+      },
+      lineHeight: {
+        true: 1.4,
+        heading: 1.2,
+        body: 1.5,
+        title: 1.3,
+        subtitle: 1.4,
+        small: 1.6,
+      },
+      weight: {
+        100: "100",
+        300: "300",
+        400: "400",
+        500: "500",
+        600: "600",
+        700: "700",
+        800: "800",
+      },
+      letterSpacing: {
+        true: 0,
+        heading: -0.5,
+        body: 0,
+        title: -0.25,
+        subtitle: 0.25,
+        small: 0.5,
+      },
+    } as GenericFont<"heading">,
+
+    body: {
+      family: "Poppins-Regular",
+      size: {
+        true: 16,
+        heading: 20,
+        body: 16,
+        title: 24,
+        subtitle: 18,
+        small: 14,
+      },
+      lineHeight: {
+        true: 1.5,
+        heading: 1.3,
+        body: 1.4,
+        title: 1.6,
+        subtitle: 1.5,
+        small: 1.7,
+      },
+      weight: {
+        100: "100",
+        300: "300",
+        400: "400",
+        500: "500",
+        600: "600",
+        700: "700",
+      },
+      letterSpacing: {
+        true: 0,
+        heading: -0.5,
+        body: 0,
+        title: -0.25,
+        subtitle: 0.25,
+        small: 0.5,
+      },
+    } as GenericFont<"body">,
+
+    mono: {
+      family: "Courier New",
+      size: {
+        true: 14,
+        heading: 18,
+        body: 14,
+        title: 20,
+        subtitle: 16,
+        small: 12,
+        mono: 14,
+      },
+      lineHeight: {
+        true: 1.4,
+        heading: 1.3,
+        body: 1.4,
+        title: 1.5,
+        subtitle: 1.4,
+        small: 1.6,
+        mono: 1.4,
+      },
+      weight: {
+        400: "400",
+        500: "500",
+        600: "600",
+        700: "700",
+      },
+      letterSpacing: {
+        true: 0,
+        heading: -0.5,
+        body: 0,
+        title: -0.25,
+        subtitle: 0.25,
+        small: 0.5,
+        mono: 0,
+      },
+    } as GenericFont<"mono">,
+  },
+};

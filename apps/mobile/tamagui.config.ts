@@ -1,13 +1,12 @@
-import { config } from "@tamagui/config/v3";
 import { createTamagui } from "tamagui";
 
-export const tamaguiConfig = createTamagui(config);
+import { shorthands, themes, tokens, typography } from "./theme";
 
-export default tamaguiConfig;
+export const tamaguiConfig = createTamagui({
+  themes,
+  tokens,
+  shorthands,
+  fonts: typography.fonts,
+});
 
-export type Conf = typeof tamaguiConfig;
-
-declare module "tamagui" {
-  // eslint-disable-next-line
-  interface TamaguiCustomConfig extends Conf {}
-}
+export type AppTamaguiConfig = typeof tamaguiConfig;

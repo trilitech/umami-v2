@@ -9,10 +9,11 @@ import { TamaguiProvider } from "tamagui";
 import { PersistedLoaderComponent } from "../components/persistorLoader/persistorLoader";
 import { AuthProvider, ReactQueryProvider } from "../providers";
 import store, { persistor } from "../store/store";
-import { tamaguiConfig } from "../tamagui.config";
+import { tamaguiConfig } from "../tamagui.config"
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
+  const theme = colorScheme === "dark" ? "dark" : "light";
 
   useEffect(() => {
     void SplashScreen.hideAsync();
@@ -21,7 +22,7 @@ export default function RootLayout() {
   return (
     <ToastProvider toast={{} as Toast}>
       <ReactQueryProvider>
-        <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme!}>
+        <TamaguiProvider config={tamaguiConfig} defaultTheme={theme}>
           <Provider store={store}>
             <PersistGate loading={<PersistedLoaderComponent />} persistor={persistor}>
               <AuthProvider>
