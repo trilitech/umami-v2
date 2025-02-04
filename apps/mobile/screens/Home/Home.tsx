@@ -1,5 +1,5 @@
+import { ArrowDown, ArrowUpRight, Repeat, Wallet } from "@tamagui/lucide-icons";
 import { type SocialAccount } from "@umami/core";
-import { useDataPolling } from "@umami/data-polling";
 import {
   useCurrentAccount,
   useGetAccountBalance,
@@ -11,28 +11,33 @@ import { prettyTezAmount } from "@umami/tezos";
 import { Button, Text, XStack, YStack } from "tamagui";
 
 import { ActionButton, BalanceDisplay, NetworkSwitch } from "./components";
+import { FormPage } from "../../components/SendFlow/Tez";
+import { useModal } from "../../providers/ModalProvider";
 import { useSocialOnboarding } from "../../services/auth";
 
 export const Home = () => {
-  useDataPolling();
-
   const currentAccount = useCurrentAccount();
   const network = useSelectedNetwork();
   const selectNetwork = useSelectNetwork();
   const { logout } = useSocialOnboarding();
+  const { showModal } = useModal();
 
   const address = currentAccount ? currentAccount.address.pkh : "";
-  const balance = useGetAccountBalance()(address);
+  const balance = prettyTezAmount(useGetAccountBalance()(address) ?? 0);
   const balanceInUsd = useGetDollarBalance()(address);
 
   return (
     <YStack alignItems="center" flex={1} paddingTop={20} backgroundColor="white">
-      <BalanceDisplay balance={balance} />
+      <BalanceDisplay balance={balance} balanceInUsd={balanceInUsd?.toString()} />
       <XStack justifyContent="space-around" width="100%" marginVertical={20}>
-        <ActionButton title="Buy" />
-        <ActionButton title="Swap" />
-        <ActionButton title="Receive" />
-        <ActionButton title="Send" />
+        <ActionButton icon={<Wallet />} title="Buy" />
+        <ActionButton icon={<Repeat />} title="Swap" />
+        <ActionButton icon={<ArrowDown />} title="Receive" />
+        <ActionButton
+          icon={<ArrowUpRight boxSizing="24px" />}
+          onPress={() => showModal(<FormPage sender={currentAccount} />)}
+          title="Send"
+        />
       </XStack>
 
       <YStack alignItems="center" marginTop={50}>
@@ -46,8 +51,6 @@ export const Home = () => {
         <Text>Current network: {network.name}</Text>
         <Text>Label: {currentAccount?.label}</Text>
         <Text>Address: {currentAccount?.address.pkh}</Text>
-        <Text>Balance: {prettyTezAmount(balance ?? 0)}</Text>
-        <Text>Balance in USD: {balanceInUsd?.toString() ?? "0"}</Text>
       </YStack>
 
       <Button

@@ -8,7 +8,8 @@ import { TamaguiProvider } from "tamagui";
 
 import { PersistorLoader } from "../components/PersistorLoader";
 import { AuthProvider, ReactQueryProvider } from "../providers";
-import store, { persistor } from "../store/store";
+import { ModalProvider } from "../providers/ModalProvider";
+import { persistor, store } from "../store";
 import { tamaguiConfig } from "../tamagui.config";
 
 export default function RootLayout() {
@@ -19,18 +20,20 @@ export default function RootLayout() {
   }, []);
 
   return (
-    <ToastProvider toast={{} as Toast}>
-      <ReactQueryProvider>
-        <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme!}>
-          <Provider store={store}>
-            <PersistGate loading={<PersistorLoader />} persistor={persistor}>
-              <AuthProvider>
-                <Slot />
-              </AuthProvider>
-            </PersistGate>
-          </Provider>
-        </TamaguiProvider>
-      </ReactQueryProvider>
-    </ToastProvider>
+    <Provider store={store}>
+      <PersistGate loading={<PersistorLoader />} persistor={persistor}>
+        <ToastProvider toast={{} as Toast}>
+          <ReactQueryProvider>
+            <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme!}>
+              <ModalProvider>
+                <AuthProvider>
+                  <Slot />
+                </AuthProvider>
+              </ModalProvider>
+            </TamaguiProvider>
+          </ReactQueryProvider>
+        </ToastProvider>
+      </PersistGate>
+    </Provider>
   );
 }
