@@ -112,7 +112,7 @@ export const SignButton = ({
               <Button
                 width="100%"
                 disabled={isButtonDisabled || isLoading}
-                icon={isLoading ? <Spinner color="$green10" size="small" /> : null}
+                icon={isLoading ? <Spinner color="white" size="small" /> : null}
                 onPress={handleSubmit(
                   signer.type === "mnemonic" ? onMnemonicSign : onSecretKeySign
                 )}
@@ -130,7 +130,7 @@ export const SignButton = ({
         <Button
           width="100%"
           disabled={isDisabled || isLoading}
-          icon={isLoading ? <Spinner color="$green10" size="small" /> : null}
+          icon={isLoading ? <Spinner color="white" size="small" /> : null}
           onPress={onSocialSign}
           variant="primary"
         >
@@ -142,7 +142,7 @@ export const SignButton = ({
         <Button
           width="100%"
           disabled={isDisabled || isLoading}
-          icon={isLoading ? <Spinner color="$green10" size="small" /> : null}
+          icon={isLoading ? <Spinner color="white" size="small" /> : null}
           onPress={onLedgerSign}
           variant="primary"
         >
