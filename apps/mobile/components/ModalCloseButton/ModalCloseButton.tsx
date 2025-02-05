@@ -11,8 +11,8 @@ export const ModalCloseButton = () => {
 
 const CloseButton = styled(Button, {
   position: "absolute",
-  top: 0,
-  right: 0,
+  top: 12,
+  right: 12,
   zIndex: 1000,
   borderRadius: 100,
   width: "auto",

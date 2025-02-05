@@ -11,7 +11,7 @@ import { useAsyncActionHandler, useGetSecretKey, useSelectedNetwork } from "@uma
 import { type Network, makeToolkit } from "@umami/tezos";
 import { useCustomToast } from "@umami/utils";
 import { FormProvider, useForm, useFormContext } from "react-hook-form";
-import { Button, Input, Label, Text, View, YStack } from "tamagui";
+import { Button, Input, Label, Spinner, Text, View, YStack } from "tamagui";
 
 import { forIDP } from "../../services/auth";
 
@@ -97,7 +97,7 @@ export const SignButton = ({
     case "secret_key":
     case "mnemonic":
       return (
-        <View width="full">
+        <View width="100%">
           <FormProvider {...form}>
             <YStack alignItems="start" spacing="30px">
               <YStack isInvalid={!!errors.password}>
@@ -110,13 +110,12 @@ export const SignButton = ({
                 {errors.password && <Text>{errors.password.message}</Text>}
               </YStack>
               <Button
-                width="full"
-                isDisabled={isButtonDisabled}
-                isLoading={isLoading}
-                onClick={handleSubmit(
+                width="100%"
+                disabled={isButtonDisabled || isLoading}
+                icon={isLoading ? <Spinner color="$green10" size="small" /> : null}
+                onPress={handleSubmit(
                   signer.type === "mnemonic" ? onMnemonicSign : onSecretKeySign
                 )}
-                size="lg"
                 type="submit"
                 variant="primary"
               >
@@ -129,11 +128,10 @@ export const SignButton = ({
     case "social":
       return (
         <Button
-          width="full"
-          isDisabled={isDisabled}
-          isLoading={isLoading}
+          width="100%"
+          disabled={isDisabled || isLoading}
+          icon={isLoading ? <Spinner color="$green10" size="small" /> : null}
           onPress={onSocialSign}
-          size="lg"
           variant="primary"
         >
           {text}
@@ -142,11 +140,10 @@ export const SignButton = ({
     case "ledger":
       return (
         <Button
-          width="full"
-          isDisabled={isDisabled}
-          isLoading={isLoading}
-          onClick={onLedgerSign}
-          size="lg"
+          width="100%"
+          disabled={isDisabled || isLoading}
+          icon={isLoading ? <Spinner color="$green10" size="small" /> : null}
+          onPress={onLedgerSign}
           variant="primary"
         >
           {text}

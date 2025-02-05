@@ -3,6 +3,7 @@ import { prettyTezAmount } from "@umami/tezos";
 import { FormProvider } from "react-hook-form";
 import { Form, Text, XStack, YStack } from "tamagui";
 
+import { ModalBackButton } from "../../ModalBackButton";
 import { ModalCloseButton } from "../../ModalCloseButton";
 import { SignButton } from "../SignButton";
 import { type SignPageProps, useSignPageHelpers } from "../utils";
@@ -18,7 +19,8 @@ export const SignPage = (props: SignPageProps) => {
     <FormProvider {...form}>
       <Form>
         <ModalCloseButton />
-        <YStack padding="$4" space="$4">
+        <ModalBackButton goBack={props.goBack} />
+        <YStack padding="$4" paddingTop="$10" space="$4">
           <Text fontSize="$6" fontWeight="bold">
             Sign Transaction
           </Text>

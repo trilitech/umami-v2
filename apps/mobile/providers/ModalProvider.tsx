@@ -25,7 +25,6 @@ export const ModalProvider: React.FC<ModalProviderProps> = ({ children }) => {
   const [isVisible, setIsVisible] = useState(false);
 
   const showModal = (content: ReactNode) => {
-    console.log("showModal", content);
     setModalContent(content);
 
     if (!isVisible) {
@@ -66,7 +65,11 @@ export const ModalProvider: React.FC<ModalProviderProps> = ({ children }) => {
             <Dialog.Sheet.Frame>
               <Dialog.Adapt.Contents />
             </Dialog.Sheet.Frame>
-            <Dialog.Sheet.Overlay />
+            <Dialog.Sheet.Overlay
+              animation="quick"
+              enterStyle={{ opacity: 0 }}
+              exitStyle={{ opacity: 0 }}
+            />
           </Dialog.Sheet>
         </Dialog.Adapt>
       </Dialog>

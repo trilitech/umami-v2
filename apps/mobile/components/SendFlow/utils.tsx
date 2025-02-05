@@ -19,12 +19,12 @@ import {
   useSelectedNetwork,
 } from "@umami/state";
 import { type ExecuteParams, type Network, type RawPkh } from "@umami/tezos";
-import * as Linking from "expo-linking";
+import * as WebBrowser from "expo-web-browser";
 import { repeat } from "lodash";
 import { useState } from "react";
-import { useForm, useFormContext } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Alert } from "react-native";
-import { Button, type ButtonProps } from "tamagui";
+import { Button, type ButtonProps, Spinner } from "tamagui";
 
 import { useModal } from "../../providers/ModalProvider";
 
@@ -98,17 +98,18 @@ export type SignPayloadProps = {
   signingType: SigningType;
 };
 
-export const FormSubmitButton = ({ title = "Preview", ...props }: ButtonProps) => {
-  const {
-    formState: { isValid },
-  } = useFormContext();
-
-  return (
-    <Button width="full" isDisabled={!isValid} type="submit" variant="primary" {...props}>
-      {title}
-    </Button>
-  );
-};
+export const FormSubmitButton = ({ title = "Preview", ...props }: ButtonProps) => (
+  <Button
+    width="100%"
+    disabled={props.isLoading}
+    icon={props.isLoading ? <Spinner color="$green10" size="small" /> : null}
+    type="submit"
+    variant="primary"
+    {...props}
+  >
+    {title}
+  </Button>
+);
 
 export const formDefaultValues = <T,>({ sender, form }: FormPageProps<T>) => {
   if (form) {
@@ -178,20 +179,22 @@ export const useSignPageHelpers = (
         tezosToolkit
       );
       // await openWith(<SuccessStep hash={operation.opHash} />);
-      Alert.alert("Success", operation.opHash, [
-        {
-          text: "Close",
-          onPress: () => {
-            hideModal();
+      hideModal();
+      Alert.alert(
+        "Operation Submitted",
+        "You can follow this operation's progress in the Operations section. \nIt may take up to 30 seconds to appear.",
+        [
+          {
+            text: "Close",
           },
-        },
-        {
-          text: "Open in Explorer",
-          onPress: () => {
-            void Linking.openURL(`${network.tzktExplorerUrl}/${operation.opHash}`);
+          {
+            text: "Open in Explorer",
+            onPress: () => {
+              void WebBrowser.openBrowserAsync(`${network.tzktExplorerUrl}/${operation.opHash}`);
+            },
           },
-        },
-      ]);
+        ]
+      );
 
       return operation;
     });
