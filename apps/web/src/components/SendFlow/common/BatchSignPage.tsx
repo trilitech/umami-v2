@@ -1,4 +1,3 @@
-import { type PartialTezosOperation } from "@airgap/beacon-wallet";
 import {
   Accordion,
   AccordionButton,
@@ -19,16 +18,14 @@ import { Header } from "./Header";
 import { useColor } from "../../../styles/useColor";
 import { AddressTile } from "../../AddressTile/AddressTile";
 import { JsValueWrap } from "../../JsValueWrap";
+import { Titles } from "../../Titles";
 import { useSignWithBeacon } from "../Beacon/useSignWithBeacon";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
 import { type SdkSignPageProps } from "../utils";
 import { useSignWithWalletConnect } from "../WalletConnect/useSignWithWalletConnect";
 
-export const BatchSignPage = (
-  signProps: SdkSignPageProps,
-  operationDetails: PartialTezosOperation[]
-) => {
+export const BatchSignPage = (signProps: SdkSignPageProps) => {
   const color = useColor();
 
   const beaconCalculatedProps = useSignWithBeacon({ ...signProps });
@@ -45,9 +42,9 @@ export const BatchSignPage = (
 
   return (
     <FormProvider {...form}>
-      <ModalContent>
+      <ModalContent data-testId="BatchSignPage">
         <form>
-          <Header headerProps={signProps.headerProps} />
+          <Header headerProps={signProps.headerProps} title={Titles.BatchSignPage} />
 
           <ModalBody>
             <Accordion allowToggle>
@@ -59,7 +56,11 @@ export const BatchSignPage = (
                   <AccordionIcon />
                 </AccordionButton>
                 <AccordionPanel>
-                  <JsValueWrap overflowY="auto" maxHeight="200px" value={operationDetails} />
+                  <JsValueWrap
+                    overflowY="auto"
+                    maxHeight="200px"
+                    value={signProps.operation.operations}
+                  />
                 </AccordionPanel>
               </AccordionItem>
             </Accordion>

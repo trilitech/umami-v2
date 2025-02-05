@@ -1,7 +1,6 @@
-import type React from "react";
 import { Text, View, XStack } from "tamagui";
 
-export const AccountBadge: React.FC = () => (
+export const AccountBadge = () => (
   <XStack
     alignItems="center"
     justifyContent="center"

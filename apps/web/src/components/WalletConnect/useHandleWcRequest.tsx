@@ -183,7 +183,7 @@ export const useHandleWcRequest = () => {
           if (operation.operations.length === 1) {
             modal = <SingleSignPage {...signProps} />;
           } else {
-            modal = <BatchSignPage {...signProps} {...event.params.request.params} />;
+            modal = <BatchSignPage {...signProps} />;
           }
           onClose = () => {
             handleUserRejected();

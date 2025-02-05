@@ -510,7 +510,7 @@ describe("<useHandleBeaconMessage />", () => {
 
         await waitFor(() =>
           expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
-            <BatchSignPage {...signProps} {...message.operationDetails} />,
+            <BatchSignPage {...signProps} />,
             { onClose: expect.any(Function) }
           )
         );

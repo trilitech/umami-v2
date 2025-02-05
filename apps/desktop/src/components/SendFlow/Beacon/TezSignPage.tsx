@@ -19,7 +19,7 @@ export const TezSignPage = ({ operation, message }: BeaconSignPageProps) => {
 
   return (
     <FormProvider {...form}>
-      <ModalContent data-testId="TezSignPage">
+      <ModalContent data-testid="TezSignPage">
         <form>
           <Header message={message} mode="single" operation={operation} />
           <ModalBody>

@@ -20,7 +20,7 @@ import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
 import { type CalculatedSignProps, type SdkSignPageProps } from "../utils";
 import { Header } from "./Header";
-import { Titles } from "../../Titles/Titles";
+import { Titles } from "../../Titles";
 
 export const OriginationOperationSignPage = ({
   operation,

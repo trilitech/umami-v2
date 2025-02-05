@@ -2,6 +2,7 @@ import { type TezosToolkit } from "@taquito/taquito";
 import { useDynamicModalContext } from "@umami/components";
 import { executeOperations, totalFee } from "@umami/core";
 import { useAsyncActionHandler, walletKit } from "@umami/state";
+import { getErrorContext } from "@umami/utils";
 import { formatJsonRpcResult } from "@walletconnect/jsonrpc-utils";
 import { useForm } from "react-hook-form";
 
@@ -35,12 +36,24 @@ export const useSignWithWalletConnect = ({
           tezosToolkit
         );
 
-        const response = formatJsonRpcResult(requestId.id, { hash: opHash, operationHash: opHash });
-        await walletKit.respondSessionRequest({ topic: requestId.topic, response });
+        try {
+          const response = formatJsonRpcResult(requestId.id, {
+            hash: opHash,
+            operationHash: opHash,
+          });
+          await walletKit.respondSessionRequest({ topic: requestId.topic, response });
+        } catch (error: any) {
+          const errorContext = getErrorContext(error);
+          await openWith(
+            <SuccessStep dAppNotificationError={errorContext.description} hash={opHash} />
+          );
+          error.processed = true; // no toast for this error
+          throw error;
+        }
         return openWith(<SuccessStep hash={opHash} />);
       },
       (error: { message: any }) => ({
-        description: `Failed to confirm WalletConnect operation: ${error.message}`,
+        description: `Failed to perform WalletConnect operation: ${error.message}`,
       })
     );
 
