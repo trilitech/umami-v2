@@ -1,5 +1,5 @@
 import { type Toast, ToastProvider } from "@umami/utils";
-import { Slot, SplashScreen } from "expo-router";
+import { SplashScreen, Stack } from "expo-router";
 import { useEffect } from "react";
 import { useColorScheme } from "react-native";
 import { Provider } from "react-redux";
@@ -27,7 +27,10 @@ export default function RootLayout() {
             <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme!}>
               <ModalProvider>
                 <AuthProvider>
-                  <Slot />
+                  <Stack screenOptions={{ headerShown: false }}>
+                    <Stack.Screen name="index" options={{ gestureEnabled: false }} />
+                    <Stack.Screen name="(auth)" options={{ gestureEnabled: false }} />
+                  </Stack>
                 </AuthProvider>
               </ModalProvider>
             </TamaguiProvider>

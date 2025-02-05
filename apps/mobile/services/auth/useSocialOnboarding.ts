@@ -1,13 +1,11 @@
 import { type IDP } from "@umami/social-auth";
 import { useAsyncActionHandler, useResetState, useRestoreSocial } from "@umami/state";
 import { getPublicKeyPairFromSk } from "@umami/tezos";
-import { useRouter } from "expo-router";
 
 import { forIDP } from "./forIDP";
 import { persistor } from "../../store";
 
 export const useSocialOnboarding = () => {
-  const router = useRouter();
   const restoreSocial = useRestoreSocial();
   const { handleAsyncAction } = useAsyncActionHandler();
   const resetState = useResetState();
@@ -28,7 +26,6 @@ export const useSocialOnboarding = () => {
       await forIDP(idp).logout();
       resetState();
       await persistor.purge();
-      router.replace("/login");
     });
 
   const createLoginHandler = (provider: IDP) => () => login(provider);
