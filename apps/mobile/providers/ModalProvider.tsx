@@ -1,8 +1,8 @@
 import { type ReactNode, createContext, useContext, useState } from "react";
-import { Dialog } from "tamagui";
+import { Dialog, type SheetProps } from "tamagui";
 
 type ModalContextType = {
-  showModal: (content: ReactNode) => void;
+  showModal: (content: ReactNode, props?: SheetProps) => void;
   hideModal: () => void;
 };
 
@@ -23,9 +23,11 @@ type ModalProviderProps = {
 export const ModalProvider: React.FC<ModalProviderProps> = ({ children }) => {
   const [modalContent, setModalContent] = useState<ReactNode | null>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [sheetProps, setSheetProps] = useState<SheetProps>({});
 
-  const showModal = (content: ReactNode) => {
+  const showModal = (content: ReactNode, props: SheetProps = {}) => {
     setModalContent(content);
+    setSheetProps(props);
 
     if (!isVisible) {
       setIsVisible(true);
@@ -34,6 +36,8 @@ export const ModalProvider: React.FC<ModalProviderProps> = ({ children }) => {
 
   const hideModal = () => {
     setIsVisible(false);
+    setSheetProps({});
+
     setTimeout(() => {
       setModalContent(null);
     }, 300);
@@ -61,7 +65,7 @@ export const ModalProvider: React.FC<ModalProviderProps> = ({ children }) => {
         </Dialog.Content>
 
         <Dialog.Adapt platform="touch">
-          <Dialog.Sheet>
+          <Dialog.Sheet {...sheetProps}>
             <Dialog.Sheet.Frame>
               <Dialog.Adapt.Contents />
             </Dialog.Sheet.Frame>
