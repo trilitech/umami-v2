@@ -1,13 +1,6 @@
 import { ArrowDown, ArrowUpRight, Repeat, Wallet } from "@tamagui/lucide-icons";
 import { type SocialAccount } from "@umami/core";
-import {
-  useCurrentAccount,
-  useGetAccountBalance,
-  useGetDollarBalance,
-  useSelectNetwork,
-  useSelectedNetwork,
-} from "@umami/state";
-import { prettyTezAmount } from "@umami/tezos";
+import { useCurrentAccount, useSelectNetwork, useSelectedNetwork } from "@umami/state";
 import { Button, Text, XStack, YStack } from "tamagui";
 
 import { ActionButton, BalanceDisplay, NetworkSwitch } from "./components";
@@ -23,12 +16,10 @@ export const Home = () => {
   const { showModal } = useModal();
 
   const address = currentAccount ? currentAccount.address.pkh : "";
-  const balance = prettyTezAmount(useGetAccountBalance()(address) ?? 0);
-  const balanceInUsd = useGetDollarBalance()(address);
 
   return (
     <YStack alignItems="center" flex={1} paddingTop={20} backgroundColor="white">
-      <BalanceDisplay balance={balance} balanceInUsd={balanceInUsd?.toString()} />
+      <BalanceDisplay address={address} />
       <XStack justifyContent="space-around" width="100%" marginVertical={20}>
         <ActionButton icon={<Wallet />} title="Buy" />
         <ActionButton icon={<Repeat />} title="Swap" />
@@ -50,7 +41,7 @@ export const Home = () => {
       <YStack alignItems="center" marginTop={20}>
         <Text>Current network: {network.name}</Text>
         <Text>Label: {currentAccount?.label}</Text>
-        <Text>Address: {currentAccount?.address.pkh}</Text>
+        <Text>Address: {address}</Text>
       </YStack>
 
       <Button
