@@ -17,9 +17,17 @@ import {
   mockUndelegationOperation,
   mockUnstakeOperation,
 } from "@umami/core";
-import { WalletClient, makeStore, networksActions, useGetSecretKey } from "@umami/state";
+import {
+  WalletClient,
+  makeStore,
+  networksActions,
+  useGetSecretKey,
+  useValidateWcRequest,
+  walletKit,
+} from "@umami/state";
 import { executeParams } from "@umami/test-utils";
 import { GHOSTNET, makeToolkit } from "@umami/tezos";
+import { type JsonRpcResult } from "@walletconnect/jsonrpc-utils";
 
 import {
   act,
@@ -47,92 +55,115 @@ jest.mock("@umami/tezos", () => ({
 jest.mock("@umami/state", () => ({
   ...jest.requireActual("@umami/state"),
   useGetSecretKey: jest.fn(),
+  useValidateWcRequest: jest.fn(),
+  walletKit: {
+    core: {},
+    metadata: {
+      name: "AppMenu test",
+      description: "Umami Wallet with WalletConnect",
+      url: "https://umamiwallet.com",
+      icons: ["https://umamiwallet.com/assets/favicon-32-45gq0g6M.png"],
+    },
+    respondSessionRequest: jest.fn(),
+  },
+  createWalletKit: jest.fn(),
 }));
 
 describe("<SingleSignPage />", () => {
-  it("calls the correct modal", async () => {
-    const store = makeStore();
-    const user = userEvent.setup();
+  const store = makeStore();
+  const user = userEvent.setup();
 
-    const message = {
-      id: "messageid",
-      type: BeaconMessageType.OperationRequest,
-      network: { type: NetworkType.GHOSTNET },
-      appMetadata: { name: "mockDappName", icon: "mockIcon" },
-    } as OperationRequestOutput;
+  const message = {
+    id: "messageid",
+    type: BeaconMessageType.OperationRequest,
+    network: { type: NetworkType.GHOSTNET },
+    appMetadata: { name: "mockDappName", icon: "mockIcon" },
+  } as OperationRequestOutput;
 
-    // check all types of Modals called by SingleSignOperation
-    const mockedOperations: Record<SignPage, Operation> = {
-      TezSignPage: mockTezOperation(0),
-      ContractCallSignPage: mockContractCall(0),
-      DelegationSignPage: mockDelegationOperation(0),
-      UndelegationSignPage: mockUndelegationOperation(0),
-      OriginationOperationSignPage: mockContractOrigination(0),
-      StakeSignPage: mockStakeOperation(0),
-      UnstakeSignPage: mockUnstakeOperation(0),
-      FinalizeUnstakeSignPage: mockFinalizeUnstakeOperation(0),
-    };
+  // check all types of Modals called by SingleSignOperation
+  const mockedOperations: Record<SignPage, Operation> = {
+    TezSignPage: mockTezOperation(0),
+    ContractCallSignPage: mockContractCall(0),
+    DelegationSignPage: mockDelegationOperation(0),
+    UndelegationSignPage: mockUndelegationOperation(0),
+    OriginationOperationSignPage: mockContractOrigination(0),
+    StakeSignPage: mockStakeOperation(0),
+    UnstakeSignPage: mockUnstakeOperation(0),
+    FinalizeUnstakeSignPage: mockFinalizeUnstakeOperation(0),
+  };
 
-    const operation: EstimatedAccountOperations = {
-      type: "implicit" as const,
-      sender: mockImplicitAccount(0),
-      signer: mockImplicitAccount(0),
-      operations: [],
-      estimates: [executeParams({ fee: 123 })],
-    };
+  const operation: EstimatedAccountOperations = {
+    type: "implicit" as const,
+    sender: mockImplicitAccount(0),
+    signer: mockImplicitAccount(0),
+    operations: [],
+    estimates: [executeParams({ fee: 123 })],
+  };
+
+  beforeEach(() => {
+    store.dispatch(networksActions.setCurrent(GHOSTNET));
+    jest.spyOn(walletKit, "respondSessionRequest");
+  });
+
+  const testOperation = async (key: string, sdkType: "beacon" | "walletconnect") => {
+    operation.operations = [mockedOperations[key]];
     const headerProps: SignHeaderProps = {
       network: GHOSTNET,
       appName: message.appMetadata.name,
       appIcon: message.appMetadata.icon,
-      requestId: { sdkType: "beacon", id: message.id },
+      requestId:
+        sdkType === "beacon"
+          ? { sdkType, id: message.id }
+          : { sdkType, id: 123, topic: "mockTopic" },
     };
-    store.dispatch(networksActions.setCurrent(GHOSTNET));
+    const signProps: SdkSignPageProps = {
+      headerProps,
+      operation,
+    };
 
-    for (const key in mockedOperations) {
-      operation.operations = [mockedOperations[key]];
-      const signProps: SdkSignPageProps = {
-        headerProps: headerProps,
-        operation: operation,
-      };
+    jest.mocked(useGetSecretKey).mockImplementation(() => () => Promise.resolve("secretKey"));
 
-      jest.mocked(useGetSecretKey).mockImplementation(() => () => Promise.resolve("secretKey"));
+    jest.mocked(executeOperations).mockResolvedValue({ opHash: "ophash" } as BatchWalletOperation);
 
-      jest
-        .mocked(executeOperations)
-        .mockResolvedValue({ opHash: "ophash" } as BatchWalletOperation);
-      jest.spyOn(WalletClient, "respond").mockResolvedValue();
+    await renderInModal(<SingleSignPage {...signProps} />, store);
 
-      await renderInModal(<SingleSignPage {...signProps} />, store);
+    expect(screen.getByText("Ghostnet")).toBeInTheDocument();
+    expect(screen.queryByText("Mainnet")).not.toBeInTheDocument();
+    expect(screen.getByTestId(key)).toBeInTheDocument(); // e.g. TezSignPage
 
-      expect(screen.getByText("Ghostnet")).toBeInTheDocument();
-      expect(screen.queryByText("Mainnet")).not.toBeInTheDocument();
-      expect(screen.getByTestId(key)).toBeInTheDocument(); // e.g. TezSignPage
+    expect(screen.getByTestId("sign-page-header")).toHaveTextContent(Titles[key]);
+    expect(screen.getByTestId("app-name")).toHaveTextContent("mockDappName");
+    if (key in Hints && Hints[key].header && Hints[key].description) {
+      expect(screen.getByTestId("hints-accordion")).toHaveTextContent(Hints[key].header);
+      expect(screen.getByTestId("hints-accordion")).toHaveTextContent(Hints[key].description);
+    } else {
+      expect(screen.queryByTestId("hints-accordion")).not.toBeInTheDocument();
+    }
 
-      expect(screen.getByTestId("sign-page-header")).toHaveTextContent(Titles[key]);
-      expect(screen.getByTestId("app-name")).toHaveTextContent("mockDappName");
-      if (key in Hints && Hints[key].header && Hints[key].description) {
-        expect(screen.getByTestId("hints-accordion")).toHaveTextContent(Hints[key].header);
-        expect(screen.getByTestId("hints-accordion")).toHaveTextContent(Hints[key].description);
-      } else {
-        expect(screen.queryByTestId("hints-accordion")).not.toBeInTheDocument();
-      }
+    expect(screen.getByTestId("sign-page-header")).toHaveTextContent(Titles[key]);
+    expect(screen.getByTestId("app-name")).toHaveTextContent("mockDappName");
+    if (key in Hints && Hints[key].header && Hints[key].description) {
+      expect(screen.getByTestId("hints-accordion")).toHaveTextContent(Hints[key].header);
+      expect(screen.getByTestId("hints-accordion")).toHaveTextContent(Hints[key].description);
+    } else {
+      expect(screen.queryByTestId("hints-accordion")).not.toBeInTheDocument();
+    }
+    const signButton = screen.getByRole("button", { name: "Confirm transaction" });
+    await waitFor(() => expect(signButton).toBeDisabled());
 
-      const signButton = screen.getByRole("button", {
-        name: "Confirm transaction",
-      });
-      await waitFor(() => expect(signButton).toBeDisabled());
+    await act(() => user.type(screen.getByLabelText("Password"), "ThisIsAPassword"));
 
-      await act(() => user.type(screen.getByLabelText("Password"), "ThisIsAPassword"));
+    await waitFor(() => expect(signButton).toBeEnabled());
 
-      await waitFor(() => expect(signButton).toBeEnabled());
-      await act(() => user.click(signButton));
+    await act(() => user.click(signButton));
 
-      expect(makeToolkit).toHaveBeenCalledWith({
-        type: "mnemonic",
-        secretKey: "secretKey",
-        network: GHOSTNET,
-      });
+    expect(makeToolkit).toHaveBeenCalledWith({
+      type: "mnemonic",
+      secretKey: "secretKey",
+      network: GHOSTNET,
+    });
 
+    if (sdkType === "beacon") {
       await waitFor(() =>
         expect(WalletClient.respond).toHaveBeenCalledWith({
           type: BeaconMessageType.OperationResponse,
@@ -140,10 +171,44 @@ describe("<SingleSignPage />", () => {
           transactionHash: "ophash",
         })
       );
-      expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(<SuccessStep hash="ophash" />, {
-        canBeOverridden: true,
-      });
-      dynamicModalContextMock.openWith.mockClear();
+    } else {
+      const response: JsonRpcResult = {
+        id: 123,
+        jsonrpc: "2.0",
+        result: {
+          hash: "ophash",
+          operationHash: "ophash",
+        },
+      } as unknown as JsonRpcResult;
+
+      await waitFor(() =>
+        expect(walletKit.respondSessionRequest).toHaveBeenCalledWith({
+          topic: "mockTopic",
+          response,
+        })
+      );
+      expect(useValidateWcRequest).toHaveBeenCalledTimes(1);
+    }
+
+    expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(<SuccessStep hash="ophash" />, {
+      canBeOverridden: true,
+    });
+    dynamicModalContextMock.openWith.mockClear();
+  };
+
+  it("Beacon: handles operation and responds", async () => {
+    jest.spyOn(WalletClient, "respond").mockResolvedValue();
+
+    for (const key in mockedOperations) {
+      await testOperation(key, "beacon");
+    }
+  }, 10000);
+
+  it("WalletConnect: handles valid operation and responds", async () => {
+    for (const key in mockedOperations) {
+      jest.mocked(useValidateWcRequest).mockImplementation(() => () => true);
+      await testOperation(key, "walletconnect");
+      jest.mocked(useValidateWcRequest).mockClear();
     }
   }, 10000);
 });

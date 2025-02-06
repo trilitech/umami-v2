@@ -69,8 +69,10 @@ export enum WcErrorCode {
   UNKNOWN_CURVE_FOR_PUBLIC_KEY = 4008,
   REJECTED_BY_CHAIN = 4009,
   DELEGATE_UNCHANGED = 4010,
-  UNKNOWN_ERROR = 4011,
+  DAPP_NOTIFICATION_FAILED = 4011,
   WALLET_BUSY = 4012,
+
+  UNKNOWN_ERROR = 4100,
 }
 
 // Converts a known L1 error message to a more user-friendly one
