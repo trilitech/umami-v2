@@ -22,7 +22,6 @@ export type Mode =
   | "save_backup";
 
 const useGetSecretKeyHandler = () => {
-  // const { allFormValues } = useDynamicModalContext();
   const restoreFromSecretKey = useRestoreFromSecretKey();
 
   return async (password: string, allFormValues: any) => {
@@ -35,7 +34,6 @@ const useGetSecretKeyHandler = () => {
 };
 
 const useGetMnemonicHandler = () => {
-  // const { allFormValues } = useDynamicModalContext();
   const restoreFromMnemonic = useRestoreFromMnemonic();
   const getNextAvailableAccountLabels = useGetNextAvailableAccountLabels();
   const dispatch = useAppDispatch();
@@ -50,30 +48,24 @@ const useGetMnemonicHandler = () => {
     const mnemonic = isNewMnemonic
       ? generate24WordMnemonic()
       : allFormValues.mnemonic.map(({ val }: { val: string }) => val).join(" ");
-    console.log("mnemonic", mnemonic);
-    console.log("password", password);
-    try {
-      const accounts = await restoreFromMnemonic({
-        mnemonic,
-        password,
-        derivationPathTemplate: derivationPath,
-        label: allFormValues.accountName || label,
-        curve,
-        isVerified: !isNewMnemonic,
-      });
 
-      if (isNewMnemonic) {
-        dispatch(accountsActions.setPassword(password));
-        dispatch(accountsActions.setCurrent(accounts[0].address.pkh));
-      }
-    } catch (error) {
-      console.log("error", error);
+    const accounts = await restoreFromMnemonic({
+      mnemonic,
+      password,
+      derivationPathTemplate: derivationPath,
+      label: allFormValues.accountName || label,
+      curve,
+      isVerified: !isNewMnemonic,
+    });
+
+    if (isNewMnemonic) {
+      dispatch(accountsActions.setPassword(password));
+      dispatch(accountsActions.setCurrent(accounts[0].address.pkh));
     }
   };
 };
 
 const useGetVerificationHandler = () => {
-  // const { openWith } = useDynamicModalContext();
   const getDecryptedMnemonic = useGetDecryptedMnemonic();
   const currentAccount = useCurrentAccount();
 
@@ -85,8 +77,8 @@ const useGetVerificationHandler = () => {
 };
 
 export const useGetSetupPasswordSubmitHandler = (mode: Mode) => {
-  // const { onClose } = useDynamicModalContext();
   const { handleAsyncAction, isLoading } = useAsyncActionHandler();
+  // TODO: turn on password validation
   // const checkPassword = useValidateMasterPassword();
 
   const handleVerify = useGetVerificationHandler();
@@ -100,6 +92,7 @@ export const useGetSetupPasswordSubmitHandler = (mode: Mode) => {
     onSubmit: (formValues: any, allFormValues: any) =>
       handleAsyncAction(async () => {
         const { password } = formValues;
+        // TODO: turn on password validation
         // await checkPassword?.(password);
 
         switch (mode) {
@@ -121,8 +114,6 @@ export const useGetSetupPasswordSubmitHandler = (mode: Mode) => {
             break;
           }
         }
-
-        // onClose();
       }),
     isLoading,
   };

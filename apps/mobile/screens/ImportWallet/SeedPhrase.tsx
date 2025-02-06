@@ -37,11 +37,11 @@ export const SeedPhrase = () => {
   const pasteMnemonic = async () => {
     const mnemonic = await Clipboard.getStringAsync();
     const words = mnemonic.split(" ");
+
     if (words.length > MNEMONIC_SIZE) {
-      console.log("words.length", words.length);
       throw new CustomError(`the mnemonic must be ${MNEMONIC_SIZE} words long`);
     }
-    console.log("words", words);
+
     words.forEach((word, i) => update(i, { val: word }));
   };
 

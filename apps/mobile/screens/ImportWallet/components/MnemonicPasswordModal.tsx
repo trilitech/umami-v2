@@ -3,18 +3,18 @@ import { Controller, type FieldValues, useForm } from "react-hook-form";
 import { Input, Spinner, Text, XStack, YStack } from "tamagui";
 
 import { ModalCloseButton } from "../../../components/ModalCloseButton";
+import { useModal } from "../../../providers/ModalProvider";
 import { PrimaryButton, PrimaryButtonLabel } from "../../Onboarding/onboardingStyles";
 import { useGetSetupPasswordSubmitHandler } from "../useGetSetupPasswordSubmitHandler";
 
-type MnemonicPasswordModalProps<T extends FieldValues> = {
-  mnemonic: T;
+type MnemonicPasswordModalProps = {
+  mnemonic: FieldValues;
 };
 
 const ONBOARDING_MODE = "mnemonic";
 
-export const MnemonicPasswordModal = <T extends FieldValues>({
-  mnemonic,
-}: MnemonicPasswordModalProps<T>) => {
+export const MnemonicPasswordModal = ({ mnemonic }: MnemonicPasswordModalProps) => {
+  const { hideModal } = useModal();
   const form = useForm({
     mode: "onBlur",
     defaultValues: {
@@ -26,7 +26,10 @@ export const MnemonicPasswordModal = <T extends FieldValues>({
 
   const { onSubmit, isLoading } = useGetSetupPasswordSubmitHandler(ONBOARDING_MODE);
 
-  console.log("isLoading", isLoading);
+  const handleSuccessSubmit = async (formValues: FieldValues) => {
+    await onSubmit(formValues, { mnemonic });
+    hideModal();
+  };
 
   return (
     <YStack padding="$4" space="$4">
@@ -62,7 +65,7 @@ export const MnemonicPasswordModal = <T extends FieldValues>({
           <Text data-testid="amount-error">{form.formState.errors.password.message}</Text>
         )}
       </YStack>
-      <PrimaryButton onPress={form.handleSubmit(formValues => onSubmit(formValues, { mnemonic }))}>
+      <PrimaryButton onPress={form.handleSubmit(handleSuccessSubmit)}>
         <XStack alignItems="center" gap="$2">
           {isLoading && <Spinner color="white" size="small" />}
           <PrimaryButtonLabel>Import</PrimaryButtonLabel>

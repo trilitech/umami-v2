@@ -57,28 +57,17 @@ export const useOpenSignPageFormAction = <
   const { showModal } = useModal();
 
   return async (formValues: FormValues) => {
-    try {
-      console.log(formValues, network);
-      const operations = makeFormOperations(formValues);
-      const estimatedOperations = await estimate(operations, network);
-      return showModal(
-        <SignPage
-          data={signPageExtraData}
-          goBack={() =>
-            showModal(
-              <FormPage
-                {...defaultFormPageProps}
-                form={formValues} // whatever user selects on the form should override the default values
-              />
-            )
-          }
-          mode="single"
-          operations={estimatedOperations}
-        />
-      );
-    } catch (e) {
-      console.log(e);
-    }
+    const operations = makeFormOperations(formValues);
+    const estimatedOperations = await estimate(operations, network);
+
+    return showModal(
+      <SignPage
+        data={signPageExtraData}
+        goBack={() => showModal(<FormPage {...defaultFormPageProps} form={formValues} />)}
+        mode="single"
+        operations={estimatedOperations}
+      />
+    );
   };
 };
 

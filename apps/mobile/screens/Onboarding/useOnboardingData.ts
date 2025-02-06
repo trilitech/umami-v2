@@ -2,11 +2,11 @@ import * as Linking from "expo-linking";
 import { useCallback, useEffect } from "react";
 
 import { STRINGS } from "../../constants";
-import { useSocialOnboarding } from "../../services/auth";
+import { useOnboardingAuth } from "../../services/auth";
 import { openBrowser } from "../../utils/browserUtils";
 
 export const useOnboardingData = () => {
-  const socialLoginHandlers = useSocialOnboarding();
+  const socialLoginHandlers = useOnboardingAuth();
 
   useEffect(() => {
     const handleUrl = (event: any) => {

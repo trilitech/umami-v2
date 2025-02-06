@@ -5,7 +5,7 @@ import { getPublicKeyPairFromSk } from "@umami/tezos";
 import { forIDP } from "./forIDP";
 import { persistor } from "../../store";
 
-export const useSocialOnboarding = () => {
+export const useOnboardingAuth = () => {
   const restoreSocial = useRestoreSocial();
   const { handleAsyncAction } = useAsyncActionHandler();
   const resetState = useResetState();
@@ -21,9 +21,11 @@ export const useSocialOnboarding = () => {
       }
     });
 
-  const logout = (idp: IDP) =>
+  const logout = (idp?: IDP) =>
     handleAsyncAction(async () => {
-      await forIDP(idp).logout();
+      if (idp) {
+        await forIDP(idp).logout();
+      }
       resetState();
       await persistor.purge();
     });
