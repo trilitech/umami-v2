@@ -1,7 +1,12 @@
 import { type TezosToolkit } from "@taquito/taquito";
 import { useDynamicModalContext } from "@umami/components";
 import { executeOperations, totalFee } from "@umami/core";
-import { useAsyncActionHandler, walletKit } from "@umami/state";
+import {
+  WcScenarioType,
+  useAsyncActionHandler,
+  useValidateWcRequest,
+  walletKit,
+} from "@umami/state";
 import { getErrorContext } from "@umami/utils";
 import { formatJsonRpcResult } from "@walletconnect/jsonrpc-utils";
 import { useForm } from "react-hook-form";
@@ -14,7 +19,8 @@ export const useSignWithWalletConnect = ({
   headerProps,
 }: SdkSignPageProps): CalculatedSignProps => {
   const { isLoading: isSigning, handleAsyncAction } = useAsyncActionHandler();
-  const { openWith } = useDynamicModalContext();
+  const { openWith, goBack } = useDynamicModalContext();
+  const validateWcRequest = useValidateWcRequest();
 
   const form = useForm({ defaultValues: { executeParams: operation.estimates } });
   const requestId = headerProps.requestId;
@@ -31,6 +37,8 @@ export const useSignWithWalletConnect = ({
   const onSign = async (tezosToolkit: TezosToolkit) =>
     handleAsyncAction(
       async () => {
+        validateWcRequest("request", requestId.id, WcScenarioType.APPROVE, goBack);
+
         const { opHash } = await executeOperations(
           { ...operation, estimates: form.watch("executeParams") },
           tezosToolkit

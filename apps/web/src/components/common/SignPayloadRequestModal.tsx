@@ -16,7 +16,7 @@ import {
 import { type TezosToolkit } from "@taquito/taquito";
 import { useDynamicModalContext } from "@umami/components";
 import { decodeBeaconPayload } from "@umami/core";
-import { WalletClient, walletKit } from "@umami/state";
+import { WalletClient, WcScenarioType, useValidateWcRequest, walletKit } from "@umami/state";
 import { formatJsonRpcResult } from "@walletconnect/jsonrpc-utils";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
@@ -30,6 +30,7 @@ import { VerifyInfobox } from "../WalletConnect/VerifyInfobox";
 
 export const SignPayloadRequestModal = ({ opts }: { opts: SignPayloadProps }) => {
   const { goBack } = useDynamicModalContext();
+  const validateWcRequest = useValidateWcRequest();
   const toast = useToast();
   const form = useForm();
   const color = useColor();
@@ -52,6 +53,7 @@ export const SignPayloadRequestModal = ({ opts }: { opts: SignPayloadProps }) =>
       };
       await WalletClient.respond(response);
     } else {
+      validateWcRequest("request", opts.requestId.id, WcScenarioType.APPROVE, goBack);
       const response = formatJsonRpcResult(opts.requestId.id, { signature: result.prefixSig });
       await walletKit.respondSessionRequest({ topic: opts.requestId.topic, response });
     }
