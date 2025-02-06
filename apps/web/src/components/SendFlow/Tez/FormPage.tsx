@@ -33,7 +33,6 @@ import {
 
 export type FormValues = {
   sender: RawPkh;
-
   recipient: RawPkh;
   prettyAmount: string;
 };

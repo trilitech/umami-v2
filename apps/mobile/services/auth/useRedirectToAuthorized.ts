@@ -10,9 +10,9 @@ export const useRedirectToAuthorized = () => {
 
   useEffect(() => {
     if (currentAccount) {
-      router.replace("/home");
-    } else {
-      router.replace("/login");
+      router.push("/home");
+    } else if (router.canGoBack()) {
+      router.dismissAll();
     }
   }, [currentAccount, router]);
 };

@@ -1,19 +1,21 @@
 import type React from "react";
-import { Text, View, YStack } from "tamagui";
+import { Button, type ButtonProps, Text, YStack } from "tamagui";
 
-interface ActionButtonComponentProps {
+type ActionButtonComponentProps = {
   title: string;
-}
+  icon: React.JSX.Element;
+} & ButtonProps;
 
-export const ActionButton: React.FC<ActionButtonComponentProps> = ({ title }) => (
+export const ActionButton: React.FC<ActionButtonComponentProps> = ({ title, icon, ...props }) => (
   <YStack alignItems="center">
-    <View
+    <Button
       alignItems="center"
       justifyContent="center"
-      width={40}
       height={40}
-      borderRadius={20}
+      borderRadius={100}
       backgroundColor="#E1E1EF"
+      icon={icon}
+      {...props}
     />
     <Text>{title}</Text>
   </YStack>
