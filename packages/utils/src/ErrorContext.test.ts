@@ -77,6 +77,7 @@ describe("getErrorContext", () => {
     expect(context.description).toBe("Custom WC error message");
     expect(context.stacktrace).toBeDefined();
     expect(context.timestamp).toBeDefined();
+    expect(context.code).toBe(WcErrorCode.INTERNAL_ERROR);
   });
 
   it("should handle HttpErrorResponse instances", () => {

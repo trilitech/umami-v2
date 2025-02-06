@@ -17,11 +17,14 @@ import {
 import { type WalletKitTypes } from "@reown/walletkit";
 import { useDynamicModalContext } from "@umami/components";
 import {
+  WcScenarioType,
   useAsyncActionHandler,
   useGetImplicitAccount,
   useToggleWcPeerListUpdated,
+  useValidateWcRequest,
   walletKit,
 } from "@umami/state";
+import { WalletConnectError, WcErrorCode } from "@umami/utils";
 import { type SessionTypes, type Verify } from "@walletconnect/types";
 import { buildApprovedNamespaces, getSdkError } from "@walletconnect/utils";
 import { FormProvider, useForm } from "react-hook-form";
@@ -41,6 +44,7 @@ export const SessionProposalModal = ({
 }) => {
   const getAccount = useGetImplicitAccount();
   const toggleWcPeerListUpdated = useToggleWcPeerListUpdated();
+  const validateWcRequest = useValidateWcRequest();
   const color = useColor();
 
   const { goBack } = useDynamicModalContext();
@@ -61,7 +65,7 @@ export const SessionProposalModal = ({
   const onApprove = () =>
     handleAsyncAction(async () => {
       const account = getAccount(getValues("address"));
-
+      validateWcRequest("session proposal", proposal.id, WcScenarioType.APPROVE, goBack);
       // prepare the list of accounts and networks to approve
       const namespaces = buildApprovedNamespaces({
         proposal: proposal.params,
@@ -75,25 +79,37 @@ export const SessionProposalModal = ({
         },
       });
 
-      const session: SessionTypes.Struct = await walletKit.approveSession({
-        id: proposal.id,
-        namespaces,
-        sessionProperties: {},
-      });
-      console.log("WC session approved", session);
-      toggleWcPeerListUpdated();
       goBack();
+      try {
+        const session: SessionTypes.Struct = await walletKit.approveSession({
+          id: proposal.id,
+          namespaces,
+          sessionProperties: {},
+        });
+        console.log("WC session approved", session);
+        toggleWcPeerListUpdated();
+      } catch (error: any) {
+        throw new WalletConnectError(
+          "Failed to approve the session. Check the connection at dApp side and try again.",
+          WcErrorCode.SESSION_NOT_FOUND,
+          null,
+          error?.message
+        );
+      }
     });
 
   const onReject = () =>
     handleAsyncAction(async () => {
       // Close immediately assuming that the user wants to get rid of the modal
       goBack();
+
       console.log("WC session rejected");
-      await walletKit.rejectSession({
-        id: proposal.id,
-        reason: getSdkError("USER_REJECTED_METHODS"),
-      });
+      if (validateWcRequest("session proposal", proposal.id, WcScenarioType.REJECT, goBack)) {
+        await walletKit.rejectSession({
+          id: proposal.id,
+          reason: getSdkError("USER_REJECTED_METHODS"),
+        });
+      }
     });
 
   return (

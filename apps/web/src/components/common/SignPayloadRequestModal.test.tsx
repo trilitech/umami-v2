@@ -1,6 +1,13 @@
 import { SigningType } from "@airgap/beacon-wallet";
 import { mockImplicitAccount, mockMnemonicAccount } from "@umami/core";
-import { type UmamiStore, WalletClient, accountsActions, makeStore, walletKit } from "@umami/state";
+import {
+  type UmamiStore,
+  WalletClient,
+  accountsActions,
+  makeStore,
+  useValidateWcRequest,
+  walletKit,
+} from "@umami/state";
 import { encryptedMnemonic1 } from "@umami/test-utils";
 import { type JsonRpcResult } from "@walletconnect/jsonrpc-utils";
 
@@ -10,6 +17,7 @@ import { type SignPayloadProps } from "../SendFlow/utils";
 
 jest.mock("@umami/state", () => ({
   ...jest.requireActual("@umami/state"),
+  useValidateWcRequest: jest.fn(),
   walletKit: {
     core: {},
     metadata: {
@@ -98,6 +106,7 @@ describe("<SignPayloadRequestModal />", () => {
 
   it("WalletConnect sends the signed payload back to the DApp", async () => {
     const user = userEvent.setup();
+    jest.mocked(useValidateWcRequest).mockImplementation(() => () => true);
     jest.spyOn(walletKit, "respondSessionRequest");
     await renderInModal(<SignPayloadRequestModal opts={wcOpts} />, store);
 

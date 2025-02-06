@@ -8,10 +8,12 @@ import {
   toAccountOperations,
 } from "@umami/core";
 import {
+  WcScenarioType,
   useAsyncActionHandler,
   useFindNetwork,
   useGetImplicitAccount,
   useGetOwnedAccountSafe,
+  useValidateWcRequest,
   walletKit,
 } from "@umami/state";
 import { WalletConnectError, WcErrorCode } from "@umami/utils";
@@ -33,8 +35,9 @@ import {
  * estimate the fee and open the BeaconSignPage only if it succeeds
  */
 export const useHandleWcRequest = () => {
-  const { openWith } = useDynamicModalContext();
+  const { openWith, goBack } = useDynamicModalContext();
   const { handleAsyncActionUnsafe } = useAsyncActionHandler();
+  const validateWcRequest = useValidateWcRequest();
   const getAccount = useGetOwnedAccountSafe();
   const getImplicitAccount = useGetImplicitAccount();
   const findNetwork = useFindNetwork();
@@ -61,13 +64,15 @@ export const useHandleWcRequest = () => {
       let onClose;
 
       const handleUserRejected = () => {
-        // dApp is waiting so we need to notify it
-        const response = formatJsonRpcError(id, {
-          code: WcErrorCode.USER_REJECTED,
-          message: "User rejected the request",
-        });
-        console.info("WC request rejected by user", event, response);
-        void walletKit.respondSessionRequest({ topic, response });
+        if (validateWcRequest("request", id, WcScenarioType.REJECT, goBack)) {
+          // dApp is waiting so we need to notify it
+          const response = formatJsonRpcError(id, {
+            code: WcErrorCode.USER_REJECTED,
+            message: "User rejected the request",
+          });
+          console.info("WC request rejected by user", event, response);
+          void walletKit.respondSessionRequest({ topic, response });
+        }
       };
 
       switch (request.method) {
