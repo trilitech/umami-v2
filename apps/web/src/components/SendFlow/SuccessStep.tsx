@@ -48,24 +48,28 @@ export const SuccessStep = ({
     if (dAppNotificationError) {
       return (
         <>
-          <Text size="md">
+          <Text data-testid="success-no-notify-text" size="md">
             Transaction was performed successfully and stored on the blockchain. However, the dApp
             was not notified.
           </Text>
-          <Text marginTop="12px" size="md">
+          <Text marginTop="12px" data-testid="do-not-retry-text" size="md">
             <strong>Do not retry this operation</strong> — it has already been completed. You may
             need to reload the dApp page to see the updated status.
           </Text>
-          <Text marginTop="12px" size="md">
+          <Text marginTop="12px" data-testid="dapp-noticaition-error" size="md">
             <strong>Error on dApp notification:</strong> {dAppNotificationError}
           </Text>
-          <Text marginTop="12px" size="md">
+          <Text marginTop="12px" data-testid="success-text" size="md">
             {successText}
           </Text>
         </>
       );
     } else {
-      return <Text size="md">successText</Text>;
+      return (
+        <Text data-testid="success-text" size="md">
+          {successText}
+        </Text>
+      );
     }
   };
 
