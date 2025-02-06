@@ -1,14 +1,14 @@
 import { buf2hex, hex2Bytes } from "@taquito/utils";
 import { CustomError } from "@umami/utils";
-import { differenceInMinutes } from "date-fns";
+// import { differenceInMinutes } from "date-fns";
 
 import { AES_MODE } from "../AES_MODE";
 import { derivePasswordBasedKeyV1, derivePasswordBasedKeyV2 } from "./KDF";
 import { type EncryptedData } from "../types";
+// import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // for mobile we should use react-native-quick-crypto polifil over native crypto api
 import crypto from "react-native-quick-crypto";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // NIST recommends a salt size of at least 128 bits (16 bytes)
 // https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-132.pdf
@@ -49,15 +49,15 @@ export const decrypt = async (
 ): Promise<string> => {
   const { iv, salt, data: encrypted } = data;
   try {
-    if ((await getAttemptsCount()) >= 3) {
-      const minutesSinceLastAttempt = differenceInMinutes(
-        new Date(),
-        new Date((await AsyncStorage.getItem("failedDecryptTime"))!)
-      );
-      if (minutesSinceLastAttempt < 5) {
-        throw new CustomError(TOO_MANY_ATTEMPTS_ERROR);
-      }
-    }
+    // if ((await getAttemptsCount()) >= 3) {
+    //   const minutesSinceLastAttempt = differenceInMinutes(
+    //     new Date(),
+    //     new Date((await AsyncStorage.getItem("failedDecryptTime"))!)
+    //   );
+    //   if (minutesSinceLastAttempt < 5) {
+    //     throw new CustomError(TOO_MANY_ATTEMPTS_ERROR);
+    //   }
+    // }
     const derivedKey =
       mode === "V2"
         ? await derivePasswordBasedKeyV2(password, hex2Bytes(salt))
@@ -70,19 +70,19 @@ export const decrypt = async (
       derivedKey,
       hex2Bytes(encrypted)
     );
-    setAttemptsCount(0);
-    await AsyncStorage.removeItem("failedDecryptTime");
+    // setAttemptsCount(0);
+    // await AsyncStorage.removeItem("failedDecryptTime");
     return Buffer.from(decrypted).toString("utf-8");
   } catch (err: any) {
-    if (err?.message === TOO_MANY_ATTEMPTS_ERROR) {
-      throw err;
-    }
-    setAttemptsCount((await getAttemptsCount()) + 1);
-    await AsyncStorage.setItem("failedDecryptTime", new Date().toISOString());
+    // if (err?.message === TOO_MANY_ATTEMPTS_ERROR) {
+    //   throw err;
+    // }
+    // setAttemptsCount((await getAttemptsCount()) + 1);
+    // await AsyncStorage.setItem("failedDecryptTime", new Date().toISOString());
     throw new CustomError("Error decrypting data: Invalid password");
   }
 };
 
-const getAttemptsCount = async () => Number((await AsyncStorage.getItem("passwordAttempts")) || 0);
-const setAttemptsCount = async (count: number) =>
-  await AsyncStorage.setItem("passwordAttempts", String(count));
+// const getAttemptsCount = async () => Number((await AsyncStorage.getItem("passwordAttempts")) || 0);
+// const setAttemptsCount = async (count: number) =>
+//   await AsyncStorage.setItem("passwordAttempts", String(count));
