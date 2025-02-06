@@ -11,7 +11,6 @@ const StyledInput = styled(Input, {
   borderRadius: "$4",
   color: "$gray12",
   textAlign: "center",
-  // borderWidth: 1,
   padding: 0,
   paddingVertical: 10,
   variants: {
@@ -33,38 +32,58 @@ export const MnemonicGrid = <T extends FieldArrayWithId<FormValues>>({
 }) => {
   const form = useFormContext<FormValues>();
 
+  const rowsNumber = Math.ceil(fields.length / 3);
+
+  // Create 2D array with dynamic rows and 3 columns
+  const rows = Array.from(
+    { length: rowsNumber },
+    (_, rowIndex) =>
+      Array.from({ length: 3 }, (_, colIndex) => {
+        const index = rowIndex * 3 + colIndex;
+        return index < fields.length ? fields[index] : null;
+      }).filter((field): field is T => field !== null) // Type guard to remove null entries
+  );
+
   return (
-    <YStack flexWrap="wrap" flexDirection="row" flex={1} gap="$3">
-      {fields.map((field, row) => (
-        <XStack
-          key={field.id}
-          alignItems="center"
-          width="30%"
-          paddingRight="$3"
-          paddingLeft="$3"
-          borderWidth={1}
-          borderColor="$gray5"
-          borderRadius="$8"
-          backgroundColor="$gray2"
-          paddingVertical="$1"
-        >
-          <IndexLabel flex={1}>{row + 1}</IndexLabel>
-          <Controller
-            control={form.control}
-            name={`mnemonic.${row}.val`}
-            render={({ field }) => (
-              <StyledInput
-                {...field}
-                multiline={false}
-                numberOfLines={1}
-                onChangeText={field.onChange}
-                placeholder={`word #${row + 1}`}
-                unstyled
+    <YStack flex={1} gap="$3">
+      {rows.map((row, rowIndex) => (
+        <XStack key={rowIndex} justifyContent="flex-start" gap="$3">
+          {row.map((field, colIndex) => (
+            <XStack
+              key={field.id}
+              alignItems="center"
+              flex={1}
+              borderWidth={1}
+              borderColor="$gray5"
+              borderRadius="$8"
+              backgroundColor="$gray2"
+              paddingHorizontal="$3"
+              paddingVertical="$1"
+            >
+              <IndexLabel flex={1}>{rowIndex * 3 + colIndex + 1}</IndexLabel>
+              <Controller
+                control={form.control}
+                name={`mnemonic.${rowIndex * 3 + colIndex}.val`}
+                render={({ field }) => (
+                  <StyledInput
+                    {...field}
+                    multiline={false}
+                    numberOfLines={1}
+                    onChangeText={field.onChange}
+                    placeholder={`word #${rowIndex * 3 + colIndex + 1}`}
+                    unstyled
+                  />
+                )}
               />
-            )}
-          />
+            </XStack>
+          ))}
         </XStack>
       ))}
     </YStack>
   );
 };
+
+const MnemonicGridItem = styled(XStack, {
+  flex: 1,
+  maxWidth: 100 / 3 + "%",
+});

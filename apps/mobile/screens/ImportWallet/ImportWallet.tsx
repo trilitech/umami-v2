@@ -1,5 +1,6 @@
+import { ArrowLeftCircle } from "@tamagui/lucide-icons";
 import { useRouter } from "expo-router";
-import { SafeAreaView } from "react-native";
+import { SafeAreaView, TouchableOpacity } from "react-native";
 import { Text, YStack } from "tamagui";
 
 import {
@@ -14,9 +15,13 @@ export const ImportWallet = () => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
-      <YStack flex={1} paddingBottom="$5" backgroundColor="white">
-        <YStack flex={1} paddingHorizontal="$4" space="$4">
-          <Text marginTop="$6" fontSize="$8" fontWeight="bold">
+      <YStack flex={1} paddingTop="$4" backgroundColor="white" paddingHorizontal="$4" space="$4">
+        <TouchableOpacity onPress={() => router.back()}>
+          <ArrowLeftCircle size="$2" />
+        </TouchableOpacity>
+
+        <YStack flex={1}>
+          <Text fontSize="$8" fontWeight="bold">
             How would you like to import your wallet?
           </Text>
 

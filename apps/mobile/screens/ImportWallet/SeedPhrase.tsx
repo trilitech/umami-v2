@@ -1,9 +1,10 @@
-import { ClipboardPaste, Trash2 } from "@tamagui/lucide-icons";
+import { ArrowLeftCircle, ClipboardPaste, Trash2 } from "@tamagui/lucide-icons";
 import { CustomError } from "@umami/utils";
 import { validateMnemonic } from "bip39";
 import * as Clipboard from "expo-clipboard";
+import { useRouter } from "expo-router";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
-import { SafeAreaView } from "react-native";
+import { SafeAreaView, TouchableOpacity } from "react-native";
 import { Button, Text, XStack, YStack } from "tamagui";
 
 import { ButtonLabel, PrimaryButton, PrimaryButtonLabel } from "../Onboarding/onboardingStyles";
@@ -18,11 +19,12 @@ type FormValues = {
 const MNEMONIC_SIZE = 24;
 
 export const SeedPhrase = () => {
+  const router = useRouter();
   const { showModal } = useModal();
   const form = useForm<FormValues>({
     mode: "onBlur",
     defaultValues: {
-      mnemonic: Array(24).fill({ val: "" }),
+      mnemonic: Array(MNEMONIC_SIZE).fill({ val: "" }),
     },
   });
 
@@ -59,8 +61,12 @@ export const SeedPhrase = () => {
   return (
     <FormProvider {...form}>
       <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
-        <YStack flex={1} paddingHorizontal="$4" space="$6">
-          <YStack paddingTop="$6">
+        <YStack flex={1} paddingTop="$4" backgroundColor="white" paddingHorizontal="$4" space="$4">
+          <TouchableOpacity onPress={() => router.back()}>
+            <ArrowLeftCircle size="$2" />
+          </TouchableOpacity>
+
+          <YStack>
             <Text paddingBottom="$4" fontSize="$8" fontWeight="bold">
               Seed Phrase
             </Text>
