@@ -27,9 +27,9 @@ export default function RootLayout() {
             <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme!}>
               <ModalProvider>
                 <AuthProvider>
-                  <Stack screenOptions={{ headerShown: false }}>
-                    <Stack.Screen name="index" options={{ gestureEnabled: false }} />
-                    <Stack.Screen name="(auth)" options={{ gestureEnabled: false }} />
+                  <Stack screenOptions={{ headerShown: false, gestureEnabled: false }}>
+                    <Stack.Screen name="index" />
+                    <Stack.Screen name="(auth)" />
                   </Stack>
                 </AuthProvider>
               </ModalProvider>
