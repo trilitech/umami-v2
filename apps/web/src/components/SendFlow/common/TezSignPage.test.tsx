@@ -98,6 +98,8 @@ describe("<TezSignPage />", () => {
         transactionHash: "ophash",
       })
     );
-    expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(<SuccessStep hash="ophash" />);
+    expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(<SuccessStep hash="ophash" />, {
+      canBeOverridden: true,
+    });
   });
 });

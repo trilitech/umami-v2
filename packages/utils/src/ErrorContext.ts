@@ -70,6 +70,7 @@ export enum WcErrorCode {
   REJECTED_BY_CHAIN = 4009,
   DELEGATE_UNCHANGED = 4010,
   UNKNOWN_ERROR = 4011,
+  WALLET_BUSY = 4012,
 }
 
 // Converts a known L1 error message to a more user-friendly one

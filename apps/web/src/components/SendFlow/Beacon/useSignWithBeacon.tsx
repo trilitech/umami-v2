@@ -37,7 +37,7 @@ export const useSignWithBeacon = ({
         };
         await WalletClient.respond(response);
 
-        return openWith(<SuccessStep hash={opHash} />);
+        return openWith(<SuccessStep hash={opHash} />, { canBeOverridden: true });
       },
       (error: any) => {
         const context = getErrorContext(error);

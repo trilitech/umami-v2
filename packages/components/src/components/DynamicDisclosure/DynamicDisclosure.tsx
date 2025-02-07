@@ -24,6 +24,7 @@ interface DynamicDisclosureContextType {
     props?: ThemingProps & {
       onClose?: () => void | Promise<void>;
       closeOnEsc?: boolean;
+      canBeOverridden?: boolean;
     }
   ) => Promise<void>;
   onClose: () => void;
@@ -31,6 +32,7 @@ interface DynamicDisclosureContextType {
   goBack: () => void;
   goToIndex: (index: number) => void;
   hasPrevious: boolean;
+  canBeOverridden: boolean;
   formValues: Record<string, any>;
   allFormValues: RefObject<Record<string, any>>;
 }
@@ -42,6 +44,7 @@ const defaultContextValue = {
   goToIndex: () => {},
   isOpen: false,
   hasPrevious: false,
+  canBeOverridden: false,
   formValues: {},
   allFormValues: { current: {} },
 };
@@ -64,6 +67,7 @@ type DisclosureStackItem = {
   props: ThemingProps & {
     onClose: () => void | Promise<void>;
     closeOnEsc?: boolean;
+    canBeOverridden?: boolean; // protects WalletConnect and Beacon modals from being overriden
   };
   formValues: Record<string, any>;
 };
@@ -89,6 +93,7 @@ export const useDynamicDisclosure = () => {
     props: ThemingProps & {
       onClose?: () => void | Promise<void>;
       closeOnEsc?: boolean;
+      canBeOverridden?: boolean;
     } = {}
   ) => {
     const onClose = () => {
@@ -146,6 +151,7 @@ export const useDynamicDisclosure = () => {
     formValues: currentItem?.formValues || {},
     hasPrevious: stackRef.current.length > 1,
     allFormValues,
+    canBeOverridden: !!currentItem?.props.canBeOverridden,
   };
 };
 
