@@ -15,6 +15,7 @@ const ONBOARDING_MODE = "mnemonic";
 
 export const MnemonicPasswordModal = ({ mnemonic }: MnemonicPasswordModalProps) => {
   const { hideModal } = useModal();
+
   const form = useForm({
     mode: "onBlur",
     defaultValues: {

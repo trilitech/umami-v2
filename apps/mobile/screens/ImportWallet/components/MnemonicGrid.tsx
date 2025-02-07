@@ -82,8 +82,3 @@ export const MnemonicGrid = <T extends FieldArrayWithId<FormValues>>({
     </YStack>
   );
 };
-
-const MnemonicGridItem = styled(XStack, {
-  flex: 1,
-  maxWidth: 100 / 3 + "%",
-});

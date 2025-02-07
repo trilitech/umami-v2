@@ -1,15 +1,16 @@
+import crypto from "crypto";
+
 import TransportWebUSB from "@ledgerhq/hw-transport-webusb";
 import { DerivationType, LedgerSigner } from "@taquito/ledger-signer";
 import { Parser } from "@taquito/michel-codec";
 import { type Curves, InMemorySigner } from "@taquito/signer";
 import { TezosToolkit } from "@taquito/taquito";
 import { CustomError } from "@umami/utils";
-import crypto from "crypto";
 
 import { FakeSigner } from "./fakeSigner";
 import { type PublicKeyPair, type SignerConfig } from "./types";
 
-export const generateHash = async (): Promise<string> => {
+export const generateHash = (): string => {
   const utf8 = new TextEncoder().encode(Date.now().toString());
   const hash = crypto.createHash("sha256").update(utf8).digest("hex");
   return hash.slice(0, 8);

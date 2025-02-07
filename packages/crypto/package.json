@@ -11,6 +11,11 @@
       "import": "./dist/index.js",
       "require": "./dist/index.cjs",
       "types": "./dist/index.d.ts"
+    },
+    "./react-native": {
+      "import": "./dist/mobile/index.js",
+      "require": "./dist/mobile/index.cjs",
+      "types": "./dist/mobile/index.d.ts"
     }
   },
   "devDependencies": {
@@ -50,7 +55,8 @@
   },
   "tsup": {
     "entry": [
-      "src/index.ts"
+      "src/index.ts",
+      "src/mobile/index.ts"
     ],
     "clean": true,
     "format": [
@@ -59,7 +65,6 @@
     ]
   },
   "dependencies": {
-    "@react-native-async-storage/async-storage": "^2.0.0",
     "@taquito/utils": "^21.0.0",
     "date-fns": "^4.1.0",
     "react-native-quick-crypto": "^0.7.11"

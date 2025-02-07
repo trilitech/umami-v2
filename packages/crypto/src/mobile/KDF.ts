@@ -1,9 +1,8 @@
-import { CryptoKey } from "react-native-quick-crypto/lib/typescript/src/keys";
-import { AES_MODE } from "../AES_MODE";
-import { RandomTypedArrays } from "react-native-quick-crypto/lib/typescript/src/random";
-
-// for mobile we should use react-native-quick-crypto polifil over native crypto api
 import crypto from "react-native-quick-crypto";
+import { type CryptoKey } from "react-native-quick-crypto/lib/typescript/src/keys";
+import { type RandomTypedArrays } from "react-native-quick-crypto/lib/typescript/src/random";
+
+import { AES_MODE } from "../AES_MODE";
 
 // Use the full output of the hash to maximize the derived key's strength (sha256)
 const KEY_SIZE = 32;

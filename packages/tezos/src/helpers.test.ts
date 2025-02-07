@@ -86,9 +86,9 @@ describe("helpers", () => {
     });
   });
 
-  test("generateHash", async () => {
+  test("generateHash", () => {
     MockDate.set("2022-12-27T14:15:49.760Z");
-    expect(await generateHash()).toEqual("a321a5e0");
+    expect(generateHash()).toEqual("a321a5e0");
   });
 
   describe("curveToDerivationPath", () => {
