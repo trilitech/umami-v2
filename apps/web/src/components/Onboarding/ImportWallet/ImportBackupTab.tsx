@@ -101,8 +101,7 @@ export const ImportBackupTab = () => {
                 ref(element);
                 inputRef.current = element;
               }}
-              width="0"
-              height="0"
+              display="none"
               accept=".json,application/JSON"
               data-testid="file-input"
               type="file"
