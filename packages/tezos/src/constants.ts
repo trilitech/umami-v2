@@ -1,4 +1,9 @@
 const getTezSymbol = () => {
+  // This is a workaround to avoid the error "navigator is not defined".
+  if (typeof navigator === "undefined") {
+    return "ꜩ";
+  }
+
   const isIOS = /iPad|iPhone|iPod/i.test(navigator.userAgent);
   return isIOS ? "XTZ" : "ꜩ";
 };
