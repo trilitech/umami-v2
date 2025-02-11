@@ -175,7 +175,7 @@ export const useSignPageHelpers = (
         { ...operations, estimates: form.watch("executeParams") },
         tezosToolkit
       );
-      await openWith(<SuccessStep hash={operation.opHash} />);
+      await openWith(<SuccessStep hash={operation.opHash} />, { canBeOverridden: true });
       return operation;
     });
 

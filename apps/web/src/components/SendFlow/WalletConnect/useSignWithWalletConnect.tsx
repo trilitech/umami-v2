@@ -45,12 +45,13 @@ export const useSignWithWalletConnect = ({
         } catch (error: any) {
           const errorContext = getErrorContext(error);
           await openWith(
-            <SuccessStep dAppNotificationError={errorContext.description} hash={opHash} />
+            <SuccessStep dAppNotificationError={errorContext.description} hash={opHash} />,
+            { canBeOverridden: true }
           );
           error.processed = true; // no toast for this error
           throw error;
         }
-        return openWith(<SuccessStep hash={opHash} />);
+        return openWith(<SuccessStep hash={opHash} />, { canBeOverridden: true });
       },
       (error: { message: any }) => ({
         description: `Failed to perform WalletConnect operation: ${error.message}`,

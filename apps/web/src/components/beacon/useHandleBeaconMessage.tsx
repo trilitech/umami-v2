@@ -15,7 +15,7 @@ import {
   useRemoveBeaconPeerBySenderId,
 } from "@umami/state";
 import { type Network } from "@umami/tezos";
-import { BeaconError, getErrorContext } from "@umami/utils";
+import { BeaconError, CustomError, getErrorContext } from "@umami/utils";
 
 import { PermissionRequestModal } from "./PermissionRequestModal";
 import { SignPayloadRequestModal } from "../common/SignPayloadRequestModal";
@@ -34,7 +34,7 @@ import {
  * estimate the fee and open the SingleSignPage only if it succeeds
  */
 export const useHandleBeaconMessage = () => {
-  const { openWith } = useDynamicModalContext();
+  const { openWith, isOpen, canBeOverridden } = useDynamicModalContext();
   const { handleAsyncAction } = useAsyncActionHandler();
   const getAccount = useGetOwnedAccountSafe();
   const getImplicitAccount = useGetImplicitAccount();
@@ -48,10 +48,9 @@ export const useHandleBeaconMessage = () => {
     errorType: BeaconErrorType,
     errorData?: any
   ) => {
-    console.info("[respondWithError]", messageId, errorType, errorData);
     if (messageId !== lastProcessedMessageId) {
       lastProcessedMessageId = messageId;
-      console.info("[respondWithError] sending response", errorType);
+      console.info("[respondWithError] sending response", messageId, errorType, errorData);
       await WalletClient.respond({
         id: messageId,
         type: BeaconMessageType.Error,
@@ -59,7 +58,7 @@ export const useHandleBeaconMessage = () => {
         errorData,
       });
     } else {
-      console.info("[respondWithError] response already sent", errorType);
+      console.info("[respondWithError] response already sent", messageId, errorType, errorData);
     }
   };
 
@@ -89,6 +88,12 @@ export const useHandleBeaconMessage = () => {
       async () => {
         let modal;
         let onClose;
+
+        if (isOpen && !canBeOverridden) {
+          const errMessage = `Rejected request from dApp ${message.appMetadata.name}. Wallet is busy waiting for user answer for the previous request`;
+          console.error(errMessage);
+          throw new CustomError(errMessage);
+        }
 
         // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
         switch (message.type) {

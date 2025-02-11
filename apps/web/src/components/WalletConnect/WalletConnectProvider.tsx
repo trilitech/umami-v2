@@ -15,7 +15,6 @@ import { type Network } from "@umami/tezos";
 import { CustomError, WalletConnectError, WcErrorCode, getWcErrorResponse } from "@umami/utils";
 import { formatJsonRpcError } from "@walletconnect/jsonrpc-utils";
 import { type SessionTypes } from "@walletconnect/types";
-import { getSdkError } from "@walletconnect/utils";
 import { type PropsWithChildren, useCallback, useEffect, useRef } from "react";
 
 import { SessionProposalModal } from "./SessionProposalModal";
@@ -31,13 +30,21 @@ export const WalletConnectProvider = ({ children }: PropsWithChildren) => {
   const walletKitState = useRef<WalletKitState>(WalletKitState.NOT_INITIALIZED);
   const eventEmitters = useRef<EventEmitter[]>([]);
   const { handleAsyncActionUnsafe } = useAsyncActionHandler();
-  const { openWith } = useDynamicModalContext();
+  const { openWith, isOpen, canBeOverridden } = useDynamicModalContext();
   const toggleWcPeerListUpdated = useToggleWcPeerListUpdated();
   const toast = useToast();
 
   const availableNetworks: Network[] = useAvailableNetworks();
 
   const handleWcRequest = useHandleWcRequest();
+
+  const throwBusyWalletError = (dAppName: string, action: string) => {
+    throw new WalletConnectError(
+      `Rejected ${action} from dApp ${dAppName}. Wallet is busy waiting for user answer for the previous request`,
+      WcErrorCode.WALLET_BUSY,
+      null
+    );
+  };
 
   const onSessionProposal = useCallback(
     (proposal: WalletKitTypes.SessionProposal) =>
@@ -64,15 +71,23 @@ export const WalletConnectProvider = ({ children }: PropsWithChildren) => {
           );
         }
 
+        if (isOpen && !canBeOverridden) {
+          throwBusyWalletError(proposal.params.proposer.metadata.name, "session proposal");
+        }
+
         await openWith(<SessionProposalModal network={network} proposal={proposal} />, {});
-      }).catch(async () => {
+      }).catch(async error => {
         // dApp is waiting so we need to notify it
+        const errorContext = getWcErrorResponse(error);
         await walletKit.rejectSession({
           id: proposal.id,
-          reason: getSdkError("UNSUPPORTED_CHAINS"),
+          reason: {
+            code: errorContext.code,
+            message: errorContext.message,
+          },
         });
       }),
-    [availableNetworks, openWith, handleAsyncActionUnsafe]
+    [handleAsyncActionUnsafe, availableNetworks, isOpen, canBeOverridden, openWith]
   );
 
   const onSessionDelete = useCallback(
@@ -98,6 +113,9 @@ export const WalletConnectProvider = ({ children }: PropsWithChildren) => {
         }
 
         const session = activeSessions[event.topic];
+        if (isOpen && !canBeOverridden) {
+          throwBusyWalletError(session.peer.metadata.name, "request");
+        }
         toast({
           description: `Session request from dApp ${session.peer.metadata.name}`,
           status: "info",
@@ -109,7 +127,7 @@ export const WalletConnectProvider = ({ children }: PropsWithChildren) => {
         // dApp is waiting so we need to notify it
         await walletKit.respondSessionRequest({ topic, response });
       }),
-    [handleAsyncActionUnsafe, handleWcRequest, toast]
+    [handleAsyncActionUnsafe, handleWcRequest, isOpen, canBeOverridden, toast]
   );
 
   useEffect(() => {
