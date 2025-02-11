@@ -50,7 +50,10 @@ module.exports = {
     "@typescript-eslint/require-await": "warn",
     "@typescript-eslint/no-floating-promises": "warn",
     "@typescript-eslint/no-misused-promises": ["warn", { checksVoidReturn: { attributes: false } }],
-    "@typescript-eslint/no-unused-expressions": ["warn", { allowShortCircuit: true, allowTernary: true, enforceForJSX: true }],
+    "@typescript-eslint/no-unused-expressions": [
+      "warn",
+      { allowShortCircuit: true, allowTernary: true, enforceForJSX: true },
+    ],
     "@typescript-eslint/consistent-type-imports": ["error", { fixStyle: "inline-type-imports" }],
 
     "react/jsx-curly-brace-presence": ["warn", "never"],
@@ -106,16 +109,19 @@ module.exports = {
 
     "prefer-const": "warn",
     "arrow-body-style": ["warn", "as-needed"],
-    "curly": ["warn", "all"],
-    "eqeqeq": ["warn", "always"],
+    curly: ["warn", "all"],
+    eqeqeq: ["warn", "always"],
     "no-restricted-imports": [
-      "warn", {
-        "paths": [{
-          "name": "react",
-          "importNames": ["default"],
-          "message": "use `import { <...> } from 'react'` instead"
-        }]
-      }
+      "warn",
+      {
+        paths: [
+          {
+            name: "react",
+            importNames: ["default"],
+            message: "use `import { <...> } from 'react'` instead",
+          },
+        ],
+      },
     ],
     "no-duplicate-imports": "warn",
     "sort-imports": [
@@ -133,7 +139,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ["jest.config.ts", "vite.config.ts"],
+      files: ["jest.config.ts", "vite.config.ts", "*.ts", "*.tsx"],
       rules: {
         "import/no-unused-modules": "off",
       },

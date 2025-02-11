@@ -1,4 +1,14 @@
-export const TEZ = "ꜩ";
+const getTezSymbol = () => {
+  // This is a workaround to avoid the error "navigator is not defined".
+  if (typeof navigator === "undefined") {
+    return "ꜩ";
+  }
+
+  const isIOS = /iPad|iPhone|iPod/i.test(navigator.userAgent);
+  return isIOS ? "XTZ" : "ꜩ";
+};
+
+export const TEZ = getTezSymbol();
 export const TEZ_DECIMALS = 6;
 export const BLOCK_TIME = 10 * 1000; // 10 seconds
 
