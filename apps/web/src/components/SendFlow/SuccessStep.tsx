@@ -35,7 +35,7 @@ export const SuccessStep = ({
 
   const getIconAndHeader = (): StepData => {
     if (dAppNotificationError) {
-      return [AlertTriangleIcon, color("orange"), "Operation Submitted but dApp Not Notified"];
+      return [AlertTriangleIcon, color("red"), "Operation submitted but dApp not notified"];
     }
 
     return [CheckCircleIcon, color("green"), "Operation Submitted"];
@@ -48,16 +48,12 @@ export const SuccessStep = ({
     if (dAppNotificationError) {
       return (
         <>
-          <Text data-testid="success-no-notify-text" size="md">
-            Transaction was performed successfully and stored on the blockchain. However, the dApp
-            was not notified.
-          </Text>
           <Text marginTop="12px" data-testid="do-not-retry-text" size="md">
-            <strong>Do not retry this operation</strong> — it has already been completed. You may
-            need to reload the dApp page to see the updated status.
+            Do <strong>not</strong> retry this operation; it has already been processed. You may
+            need to reload the dApp to see the updated status.
           </Text>
           <Text marginTop="12px" data-testid="dapp-noticaition-error" size="md">
-            <strong>Error on dApp notification:</strong> {dAppNotificationError}
+            {dAppNotificationError}
           </Text>
           <Text marginTop="12px" data-testid="success-text" size="md">
             {successText}

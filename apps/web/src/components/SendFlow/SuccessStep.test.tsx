@@ -21,15 +21,10 @@ describe("<SuccessStep />", () => {
   it("renders warning message when dAppNotificationError is present", async () => {
     await renderInModal(<SuccessStep dAppNotificationError="testError" hash="testHash" />);
 
-    expect(screen.getByTestId("success-no-notify-text")).toHaveTextContent(
-      "Transaction was performed successfully and stored on the blockchain. However, the dApp was not notified."
-    );
     expect(screen.getByTestId("do-not-retry-text")).toHaveTextContent(
-      "Do not retry this operation — it has already been completed. You may need to reload the dApp page to see the updated status."
+      "Do not retry this operation; it has already been processed. You may need to reload the dApp to see the updated status."
     );
-    expect(screen.getByTestId("dapp-noticaition-error")).toHaveTextContent(
-      "Error on dApp notification: testError"
-    );
+    expect(screen.getByTestId("dapp-noticaition-error")).toHaveTextContent("testError");
     expect(screen.getByTestId("success-text")).toHaveTextContent(
       "You can follow this operation's progress in the Operations section. It may take up to 30 seconds to appear."
     );
