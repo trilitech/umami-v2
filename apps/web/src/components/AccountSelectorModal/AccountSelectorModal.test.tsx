@@ -183,10 +183,20 @@ describe("<AccountSelectorModal />", () => {
       );
     });
 
-    it("does not render 'Add Account' button", async () => {
+    it("renders 'Add account' button", async () => {
       await renderInModal(<AccountSelectorModal />, store);
 
-      expect(screen.queryByText("Add account")).not.toBeInTheDocument();
+      expect(screen.queryByText("Add account")).toBeVisible();
+    });
+
+    it("opens appropriate modal when clicking 'Add Account' button", async () => {
+      const user = userEvent.setup();
+      const { openWith } = dynamicModalContextMock;
+      await renderInModal(<AccountSelectorModal />, store);
+
+      await act(() => user.click(screen.getByText("Add account")));
+
+      expect(openWith).toHaveBeenCalledWith(<OnboardOptionsModal />);
     });
   });
 });

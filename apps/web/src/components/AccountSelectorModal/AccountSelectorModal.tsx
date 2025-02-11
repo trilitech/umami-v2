@@ -192,35 +192,29 @@ export const AccountSelectorModal = () => {
         margin="0"
         paddingX={{ base: "32px", md: "42px" }}
       >
-        {isVerified && (
-          <Flex
-            position="absolute"
-            top="-25px"
-            justifyContent="center"
-            width="full"
-            padding="8px"
-            background="white"
-            borderRadius="100px"
-            boxShadow={
-              showShadow
-                ? color(
-                    "0px -4px 10px 0px rgba(45, 55, 72, 0.10)",
-                    "0px -4px 10px 0px rgba(0, 0, 0, 0.20)"
-                  )
-                : "transparent"
-            }
-            transition="box-shadow 0.2s ease-in"
-            backdropFilter="blur(40px)"
-          >
-            <Button
-              width="full"
-              onClick={() => openWith(<OnboardOptionsModal />)}
-              variant="primary"
-            >
-              Add account
-            </Button>
-          </Flex>
-        )}
+        <Flex
+          position="absolute"
+          top="-25px"
+          justifyContent="center"
+          width="full"
+          padding="8px"
+          background="white"
+          borderRadius="100px"
+          boxShadow={
+            showShadow
+              ? color(
+                  "0px -4px 10px 0px rgba(45, 55, 72, 0.10)",
+                  "0px -4px 10px 0px rgba(0, 0, 0, 0.20)"
+                )
+              : "transparent"
+          }
+          transition="box-shadow 0.2s ease-in"
+          backdropFilter="blur(40px)"
+        >
+          <Button width="full" onClick={() => openWith(<OnboardOptionsModal />)} variant="primary">
+            Add account
+          </Button>
+        </Flex>
       </ModalFooter>
     </ModalContent>
   );
