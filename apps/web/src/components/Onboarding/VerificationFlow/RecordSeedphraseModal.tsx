@@ -11,8 +11,7 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
-import { useDynamicModalContext } from "@umami/components";
-import { useState } from "react";
+import { useDynamicModalContext, useToggleMnemonic } from "@umami/components";
 
 import { VerifySeedphraseModal } from "./VerifySeedphraseModal";
 import { CopyIcon, EyeIcon, EyeOffIcon, KeyIcon } from "../../../assets/icons";
@@ -30,7 +29,8 @@ export const RecordSeedphraseModal = ({ seedPhrase }: CopySeedphraseModalProps) 
   const color = useColor();
   const { openWith } = useDynamicModalContext();
   const words = seedPhrase.split(" ");
-  const [isHidden, setIsHidden] = useState(true);
+
+  const { isVisible, toggleMnemonic } = useToggleMnemonic();
 
   return (
     <ModalContent>
@@ -69,7 +69,7 @@ export const RecordSeedphraseModal = ({ seedPhrase }: CopySeedphraseModalProps) 
               borderColor={color("100")}
               borderRadius="full"
               index={index}
-              isHidden={isHidden}
+              isHidden={!isVisible}
               word={word}
             />
           ))}
@@ -82,12 +82,12 @@ export const RecordSeedphraseModal = ({ seedPhrase }: CopySeedphraseModalProps) 
             fontSize="14px"
             fontWeight="400"
             leftIcon={
-              <Icon as={isHidden ? EyeOffIcon : EyeIcon} boxSize="18px" color={color("400")} />
+              <Icon as={isVisible ? EyeOffIcon : EyeIcon} boxSize="18px" color={color("400")} />
             }
-            onClick={() => setIsHidden(!isHidden)}
+            onClick={toggleMnemonic}
             variant="ghost"
           >
-            {isHidden ? "Show" : "Hide"} seed phrase
+            {isVisible ? "Hide" : "Show"} phrase
           </Button>
           <CopyButton
             gap="8px"
