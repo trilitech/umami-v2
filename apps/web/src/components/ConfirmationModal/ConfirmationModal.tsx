@@ -1,7 +1,9 @@
 import {
   Button,
+  type ButtonProps,
   Center,
   Heading,
+  type LinkProps,
   ModalBody,
   ModalContent,
   ModalFooter,
@@ -14,17 +16,23 @@ import { useColor } from "../../styles/useColor";
 import { ModalBackButton } from "../BackButton";
 import { ModalCloseButton } from "../CloseButton";
 
+type ConfirmationModalProps = {
+  title: string;
+  description?: string;
+  buttonLabel: string;
+  onSubmit: () => void;
+  type?: ButtonProps["variant"];
+  props?: ButtonProps & LinkProps;
+};
+
 export const ConfirmationModal = ({
   title,
   description,
   buttonLabel,
   onSubmit,
-}: {
-  title: string;
-  buttonLabel: string;
-  description?: string;
-  onSubmit: () => void;
-}) => {
+  type = "alert",
+  props,
+}: ConfirmationModalProps) => {
   const { onClose } = useDynamicModalContext();
   const onClick = () => {
     onSubmit();
@@ -55,7 +63,7 @@ export const ConfirmationModal = ({
         </Center>
       </ModalBody>
       <ModalFooter>
-        <Button width="full" onClick={onClick} size="lg" variant="alert">
+        <Button width="full" onClick={onClick} variant={type} {...props}>
           {buttonLabel}
         </Button>
       </ModalFooter>
