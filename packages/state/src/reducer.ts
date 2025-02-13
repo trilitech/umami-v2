@@ -39,7 +39,7 @@ export const makeReducer = (storage_: Storage | undefined) => {
     key: "root",
     version: VERSION,
     storage,
-    blacklist: ["accounts"],
+    blacklist: ["accounts", "assets", "announcement", "tokens", "protocolSettings"],
     migrate: createAsyncMigrate(mainStoreMigrations, { debug: false }),
   };
 
