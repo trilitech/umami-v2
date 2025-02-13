@@ -1,5 +1,6 @@
 import { Flex, type FlexProps, Heading } from "@chakra-ui/react";
 import { type ImplicitAccount } from "@umami/core";
+import { truncate } from "@umami/tezos";
 import { type PropsWithChildren } from "react";
 
 import { AccountTileIcon } from "./AccountTileIcon";
@@ -47,7 +48,7 @@ export const AccountTile = ({
         <Flex justifyContent="center" flexDirection="column" gap="2px">
           {!isSmall && (
             <Heading color={color("900")} size="sm">
-              {account.label}
+              {account.type === "social" ? truncate(account.label, 28) : account.label}
             </Heading>
           )}
           <CopyAddressButton address={address} isCopyDisabled={isSmall} {...copyButtonStyles} />
