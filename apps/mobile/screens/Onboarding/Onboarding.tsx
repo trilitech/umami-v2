@@ -1,3 +1,4 @@
+import { useRouter } from "expo-router";
 import { TouchableOpacity, View } from "react-native";
 
 import {
@@ -38,6 +39,7 @@ export const Onboarding = () => {
     openPrivacy,
     strings,
   } = useOnboardingData();
+  const router = useRouter();
 
   return (
     <MainContainer>
@@ -85,7 +87,7 @@ export const Onboarding = () => {
               <PrimaryButtonLabel>{strings.createWallet}</PrimaryButtonLabel>
             </PrimaryButton>
 
-            <SecondaryButton>
+            <SecondaryButton onPress={() => router.push("/import-wallet")}>
               <ButtonLabel>{strings.alreadyHaveWallet}</ButtonLabel>
             </SecondaryButton>
           </ButtonsWrapper>

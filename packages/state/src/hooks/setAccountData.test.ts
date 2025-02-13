@@ -94,7 +94,7 @@ describe.each(["ed25519", "secp256k1", "p256"] as const)(
 
       describe("useRestoreFromMnemonic", () => {
         beforeEach(() => {
-          jest.mocked(generateHash).mockResolvedValue(MOCK_FINGERPRINT);
+          jest.mocked(generateHash).mockReturnValue(MOCK_FINGERPRINT);
           jest.mocked(encrypt).mockReturnValue(Promise.resolve(MOCK_ENCRYPTED));
         });
 

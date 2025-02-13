@@ -25,7 +25,6 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     const initWeb3Auth = async () => {
       try {
         await web3auth.init();
-        console.log("web3auth initialized");
       } catch (error) {
         console.error("Error initializing web3auth", error);
       }

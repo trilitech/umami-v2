@@ -89,7 +89,7 @@ export const useRestoreRevealedMnemonicAccounts = () => {
       curve,
       network
     );
-    const seedFingerPrint = await generateHash();
+    const seedFingerPrint = generateHash();
     const accountLabels = getNextAvailableAccountLabels(label, pubKeyPairs.length);
 
     return pubKeyPairs.map(({ pk, pkh }, accountIndex) => ({

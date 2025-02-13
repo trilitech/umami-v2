@@ -10,7 +10,7 @@ import {
 import { useAsyncActionHandler, useGetSecretKey, useSelectedNetwork } from "@umami/state";
 import { type Network, makeToolkit } from "@umami/tezos";
 import { useCustomToast } from "@umami/utils";
-import { FormProvider, useForm, useFormContext } from "react-hook-form";
+import { Controller, FormProvider, useForm, useFormContext } from "react-hook-form";
 import { Button, Input, Label, Spinner, Text, View, YStack } from "tamagui";
 
 import { forIDP } from "../../services/auth";
@@ -99,20 +99,28 @@ export const SignButton = ({
       return (
         <View width="100%">
           <FormProvider {...form}>
-            <YStack alignItems="start" spacing="30px">
+            <YStack alignItems="start" space="$4" spacing="30px">
               <YStack isInvalid={!!errors.password}>
                 <Label>Password</Label>
-                <Input
-                  data-testid="password"
-                  type="password"
-                  {...form.register("password", { required: "Password is required" })}
+                <Controller
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      data-testid="password"
+                      onChangeText={field.onChange}
+                      secureTextEntry
+                    />
+                  )}
+                  rules={{ required: "Password is required" }}
                 />
                 {errors.password && <Text>{errors.password.message}</Text>}
               </YStack>
               <Button
                 width="100%"
                 disabled={isButtonDisabled || isLoading}
-                icon={isLoading ? <Spinner color="$green10" size="small" /> : null}
+                icon={isLoading ? <Spinner color="white" size="small" /> : null}
                 onPress={handleSubmit(
                   signer.type === "mnemonic" ? onMnemonicSign : onSecretKeySign
                 )}
@@ -130,7 +138,7 @@ export const SignButton = ({
         <Button
           width="100%"
           disabled={isDisabled || isLoading}
-          icon={isLoading ? <Spinner color="$green10" size="small" /> : null}
+          icon={isLoading ? <Spinner color="white" size="small" /> : null}
           onPress={onSocialSign}
           variant="primary"
         >
@@ -142,7 +150,7 @@ export const SignButton = ({
         <Button
           width="100%"
           disabled={isDisabled || isLoading}
-          icon={isLoading ? <Spinner color="$green10" size="small" /> : null}
+          icon={isLoading ? <Spinner color="white" size="small" /> : null}
           onPress={onLedgerSign}
           variant="primary"
         >

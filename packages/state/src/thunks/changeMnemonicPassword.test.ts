@@ -20,9 +20,9 @@ let fingerPrint1: string;
 let fingerPrint2: string;
 
 beforeAll(async () => {
-  fingerPrint1 = await generateHash();
+  fingerPrint1 = generateHash();
   await new Promise(resolve => setTimeout(resolve, 1000)); // make sure the fingerprints are different
-  fingerPrint2 = await generateHash();
+  fingerPrint2 = generateHash();
 });
 
 beforeEach(async () => {

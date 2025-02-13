@@ -87,7 +87,6 @@ export const SeedPhraseTab = () => {
   const onSubmit = ({ mnemonic }: FormValues) =>
     handleAsyncAction(async () => {
       if (!validateMnemonic(mnemonic.map(({ val }) => val).join(" "))) {
-        console.log("validateMnemonic", mnemonic.map(({ val }) => val).join(" "));
         throw new CustomError("Invalid Mnemonic");
       }
       return openWith(<SetupPassword mode="mnemonic" />);

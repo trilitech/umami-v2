@@ -102,7 +102,7 @@ export const FormSubmitButton = ({ title = "Preview", ...props }: ButtonProps) =
   <Button
     width="100%"
     disabled={props.isLoading}
-    icon={props.isLoading ? <Spinner color="$green10" size="small" /> : null}
+    icon={props.isLoading ? <Spinner color="white" size="small" /> : null}
     type="submit"
     variant="primary"
     {...props}

@@ -75,7 +75,7 @@ const testPublicKeys = {
 };
 
 beforeEach(() => {
-  jest.mocked(generateHash).mockResolvedValue("mockFingerPrint");
+  jest.mocked(generateHash).mockReturnValue("mockFingerPrint");
 });
 
 describe.each(["ed25519", "secp256k1", "p256"] as const)("with %s curve", curve => {
