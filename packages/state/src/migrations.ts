@@ -80,6 +80,7 @@ export const mainStoreMigrations = {
         }
       }
     }),
+  10: identity,
 } as any;
 
 export const accountsMigrations = {
@@ -120,4 +121,5 @@ export const accountsMigrations = {
       });
     }),
   9: identity,
+  10: identity,
 } as any;
