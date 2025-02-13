@@ -29,6 +29,20 @@ describe("NameAccountModal", () => {
     expect(mockOnSubmit).toHaveBeenCalled();
   });
 
+  it("shows error for a long account name", async () => {
+    const user = userEvent.setup();
+    await renderInModal(<NameAccountModal onSubmit={mockOnSubmit} />);
+
+    await act(() => user.type(screen.getByLabelText("Account name (optional)"), "a".repeat(28)));
+    expect(screen.getByRole("button", { name: "Continue" })).toBeEnabled();
+
+    await act(() => user.type(screen.getByLabelText("Account name (optional)"), "a".repeat(29)));
+    expect(screen.getByRole("button", { name: "Continue" })).toBeDisabled();
+    expect(await screen.findByTestId("name-error")).toHaveTextContent(
+      "Maximum length is 28 characters"
+    );
+  });
+
   it("renders advanced settings when enabled", async () => {
     await renderInModal(<NameAccountModal onSubmit={mockOnSubmit} withAdvancedSettings />);
 

@@ -2,6 +2,7 @@ import {
   Button,
   Center,
   FormControl,
+  FormErrorMessage,
   FormLabel,
   Heading,
   Icon,
@@ -40,7 +41,7 @@ export const NameAccountModal = ({
   const color = useColor();
 
   const form = useMultiForm({
-    mode: "onBlur",
+    mode: "all",
     defaultValues: {
       accountName: "",
       ...(withAdvancedSettings && {
@@ -50,7 +51,11 @@ export const NameAccountModal = ({
     },
   });
 
-  const { register, handleSubmit } = form;
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = form;
 
   return (
     <ModalContent data-testid="name-account-modal">
@@ -78,21 +83,30 @@ export const NameAccountModal = ({
       <FormProvider {...form}>
         <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
           <ModalBody gap="30px">
-            <FormControl>
+            <FormControl isInvalid={!!errors.accountName}>
               <FormLabel>Account name (optional)</FormLabel>
               <Input
                 data-testid="accountName"
                 type="text"
                 {...register("accountName", {
                   required: false,
+                  maxLength: {
+                    value: 28,
+                    message: "Maximum length is 28 characters",
+                  },
                 })}
                 placeholder="Enter Account Name"
               />
+              {errors.accountName && (
+                <FormErrorMessage data-testid="name-error">
+                  {errors.accountName.message}
+                </FormErrorMessage>
+              )}
             </FormControl>
             {withAdvancedSettings && <AdvancedAccountSettings />}
           </ModalBody>
           <ModalFooter>
-            <Button width="full" type="submit" variant="primary">
+            <Button width="full" isDisabled={!isValid} type="submit" variant="primary">
               {buttonLabel}
             </Button>
           </ModalFooter>
