@@ -35,7 +35,7 @@
     "@hookform/resolvers": "^3.9.1",
     "@reduxjs/toolkit": "^2.5.0",
     "@reown/walletkit": "^1.0.1",
-    "@tanstack/react-query": "^5.62.11",
+    "@tanstack/react-query": "^5.66.0",
     "@taquito/beacon-wallet": "^21.0.0",
     "@taquito/ledger-signer": "^21.0.0",
     "@taquito/michel-codec": "^21.0.0",
