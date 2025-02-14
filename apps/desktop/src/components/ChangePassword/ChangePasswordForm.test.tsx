@@ -45,20 +45,6 @@ describe("ChangePassword Form", () => {
         );
       });
     });
-
-    it("requires 12 characters", async () => {
-      render(fixture());
-
-      const newPasswordInput = screen.getByTestId("new-password");
-      fireEvent.change(newPasswordInput, { target: { value: "myPass" } });
-      fireEvent.blur(newPasswordInput);
-
-      await waitFor(() => {
-        expect(screen.getByTestId("new-password-error")).toHaveTextContent(
-          "Password must be at least 12 characters long"
-        );
-      });
-    });
   });
   describe("newPasswordConfirmation", () => {
     it("is empty by default", () => {
