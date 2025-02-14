@@ -1,6 +1,7 @@
 import { type Action, combineReducers } from "@reduxjs/toolkit";
 import { type Storage, persistReducer } from "redux-persist";
 import createWebStorage from "redux-persist/lib/storage/createWebStorage";
+import { encryptTransform } from "redux-persist-transform-encrypt";
 
 import { createAsyncMigrate } from "./createAsyncMigrate";
 import { VERSION, accountsMigrations, mainStoreMigrations } from "./migrations";
@@ -41,6 +42,17 @@ export const makeReducer = (storage_: Storage | undefined) => {
     storage,
     blacklist: ["accounts", "assets", "announcement", "tokens", "protocolSettings"],
     migrate: createAsyncMigrate(mainStoreMigrations, { debug: false }),
+    transforms: [
+      encryptTransform(
+        {
+          secretKey: "umami-123-deva",
+          onError: error => {
+            console.error("Error encrypting root state:", error);
+          },
+        },
+        { whitelist: ["contacts", "batches", "multisigs", "networks"] }
+      ),
+    ],
   };
 
   const accountsPersistConfig = {
@@ -49,6 +61,14 @@ export const makeReducer = (storage_: Storage | undefined) => {
     storage,
     migrate: createAsyncMigrate(accountsMigrations, { debug: false }),
     blacklist: ["password"],
+    transforms: [
+      encryptTransform({
+        secretKey: "umami-123-deva",
+        onError: error => {
+          console.error("Error encrypting accounts state:", error);
+        },
+      }),
+    ],
   };
 
   const appReducer = combineReducers({
