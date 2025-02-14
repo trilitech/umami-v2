@@ -2,6 +2,7 @@ import {
   getAccountGroupLabel,
   mockLedgerAccount,
   mockMnemonicAccount,
+  mockSecretKeyAccount,
   mockSocialAccount,
 } from "@umami/core";
 import {
@@ -43,26 +44,29 @@ describe("<AccountSelectorModal />", () => {
   });
 
   it.each([
-    [
-      "mnemonic",
-      mockMnemonicAccount(0),
-      () => <DeriveMnemonicAccountModal account={mockMnemonicAccount(0)} />,
-    ],
-    ["ledger", mockLedgerAccount(1), () => <OnboardOptionsModal />],
-    ["social", mockSocialAccount(2), () => <OnboardOptionsModal />],
-  ])(
-    "open appropriate modal when clicking 'Add %s Account' button",
-    async (_, account, getModalComponent) => {
-      const user = userEvent.setup();
-      const accountLabel = getAccountGroupLabel(account);
-      const { openWith } = dynamicModalContextMock;
-      await renderInModal(<AccountSelectorModal />, store);
+    ["ledger", mockLedgerAccount(1)],
+    ["social", mockSocialAccount(2)],
+    ["secret_key", mockSecretKeyAccount(1)],
+  ])("doesn't have 'Derive account' button for %s group", async (_, account) => {
+    const accountLabel = getAccountGroupLabel(account);
 
-      await act(() => user.click(screen.getByLabelText(`Add ${accountLabel} account`)));
+    await renderInModal(<AccountSelectorModal />, store);
 
-      expect(openWith).toHaveBeenCalledWith(getModalComponent());
-    }
-  );
+    expect(screen.queryByLabelText(`Add ${accountLabel} account`)).not.toBeInTheDocument();
+  });
+
+  it("opens modal when clicking 'Derive account' button for mnemonic group", async () => {
+    const user = userEvent.setup();
+    const accountLabel = getAccountGroupLabel(mockMnemonicAccount(0));
+    const { openWith } = dynamicModalContextMock;
+
+    await renderInModal(<AccountSelectorModal />, store);
+
+    await act(() => user.click(screen.getByLabelText(`Add ${accountLabel} account`)));
+    expect(openWith).toHaveBeenCalledWith(
+      <DeriveMnemonicAccountModal account={mockMnemonicAccount(0)} />
+    );
+  });
 
   describe("when clicking 'Remove account group' button", () => {
     it.each([
@@ -179,10 +183,20 @@ describe("<AccountSelectorModal />", () => {
       );
     });
 
-    it("does not render 'Add Account' button", async () => {
+    it("renders 'Add account' button", async () => {
       await renderInModal(<AccountSelectorModal />, store);
 
-      expect(screen.queryByText("Add account")).not.toBeInTheDocument();
+      expect(screen.queryByText("Add account")).toBeVisible();
+    });
+
+    it("opens appropriate modal when clicking 'Add Account' button", async () => {
+      const user = userEvent.setup();
+      const { openWith } = dynamicModalContextMock;
+      await renderInModal(<AccountSelectorModal />, store);
+
+      await act(() => user.click(screen.getByText("Add account")));
+
+      expect(openWith).toHaveBeenCalledWith(<OnboardOptionsModal />);
     });
   });
 });
