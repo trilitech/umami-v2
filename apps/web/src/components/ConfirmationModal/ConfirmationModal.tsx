@@ -18,9 +18,10 @@ import { ModalCloseButton } from "../CloseButton";
 
 type ConfirmationModalProps = {
   title: string;
-  description?: string;
   buttonLabel: string;
+  description?: string;
   onSubmit: () => void;
+  closeOnSubmit?: boolean;
   type?: ButtonProps["variant"];
   props?: ButtonProps & LinkProps;
 };
@@ -30,13 +31,16 @@ export const ConfirmationModal = ({
   description,
   buttonLabel,
   onSubmit,
+  closeOnSubmit = true,
   type = "alert",
   props,
 }: ConfirmationModalProps) => {
   const { onClose } = useDynamicModalContext();
   const onClick = () => {
     onSubmit();
-    onClose();
+    if (closeOnSubmit) {
+      onClose();
+    }
   };
 
   const color = useColor();
