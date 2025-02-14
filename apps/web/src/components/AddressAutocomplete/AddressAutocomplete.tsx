@@ -171,7 +171,10 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
             {rawValue ? (
               <CrossButton width="16px" height="auto" onClick={clearInput} />
             ) : (
-              <ChevronDownIcon data-testid="chevron-icon" />
+              <ChevronDownIcon
+                data-testid="chevron-icon"
+                onClick={() => setHideSuggestions(false)}
+              />
             )}
           </InputRightElement>
         </InputGroup>
