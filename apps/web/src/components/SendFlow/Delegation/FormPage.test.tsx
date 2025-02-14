@@ -90,7 +90,7 @@ describe("<Form />", () => {
       );
 
       await waitFor(() => {
-        expect(screen.getByText("Change Baker")).toBeInTheDocument();
+        expect(screen.getByText("Change baker")).toBeInTheDocument();
       });
     });
   });

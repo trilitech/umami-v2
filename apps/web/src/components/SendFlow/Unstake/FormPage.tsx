@@ -82,7 +82,7 @@ export const FormPage = (props: FormPageProps<FormValues> & { stakedBalance: num
             <TezTile mutezAmount={stakedBalance} />
 
             <FormControl marginTop="24px" isInvalid={!!errors.prettyAmount}>
-              <FormLabel>Enter Amount</FormLabel>
+              <FormLabel>Enter amount</FormLabel>
               <InputGroup>
                 <Input
                   isDisabled={isLoading}

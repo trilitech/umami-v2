@@ -30,7 +30,7 @@ export const AccountInfoModal = ({ account }: AccountInfoModalProps) => {
     <ModalContent>
       <ModalHeader>
         <VStack gap="12px">
-          <Heading size="xl">Account Info</Heading>
+          <Heading size="xl">Account info</Heading>
           <Text maxWidth="340px" color={color("700")} fontWeight="400" size="md">
             You can receive tez or other digital assets by scanning or sharing this QR code
           </Text>
@@ -68,7 +68,7 @@ export const AccountInfoModal = ({ account }: AccountInfoModalProps) => {
           variant="primary"
         >
           <Icon as={CopyIcon} />
-          <Text>Copy Wallet Address</Text>
+          <Text>Copy wallet address</Text>
         </CopyButton>
       </ModalFooter>
     </ModalContent>

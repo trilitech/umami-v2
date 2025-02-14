@@ -68,17 +68,17 @@ describe("<Menu />", () => {
       await renderInDrawer(<Menu />, store);
 
       expect(screen.getByText("Advanced")).toBeVisible();
-      expect(screen.getByText("Address Book")).toBeVisible();
-      expect(screen.getByText("Add Account")).toBeVisible();
-      expect(screen.getByText("Save Backup")).toBeVisible();
+      expect(screen.getByText("Address book")).toBeVisible();
+      expect(screen.getByText("Add account")).toBeVisible();
+      expect(screen.getByText("Save backup")).toBeVisible();
       expect(screen.getByText("Apps")).toBeVisible();
       expect(screen.getByText("Light mode")).toBeVisible();
-      expect(screen.getByText("Logout")).toBeVisible();
+      expect(screen.getByText("Log out")).toBeVisible();
     });
 
     it.each([
       ["Advanced", AdvancedMenu],
-      ["Address Book", AddressBookMenu],
+      ["Address book", AddressBookMenu],
       ["Apps", AppsMenu],
     ])("opens %label menu correctly", async (label, Component) => {
       const user = userEvent.setup();
@@ -97,7 +97,7 @@ describe("<Menu />", () => {
 
       await renderInDrawer(<Menu />, store);
 
-      await user.click(screen.getByText("Logout"));
+      await user.click(screen.getByText("Log out"));
       expect(openWith).toHaveBeenCalledWith(<LogoutModal />);
     });
 
@@ -108,11 +108,11 @@ describe("<Menu />", () => {
 
       await renderInDrawer(<Menu />, store);
 
-      await user.click(screen.getByText("Save Backup"));
+      await user.click(screen.getByText("Save backup"));
 
-      await user.type(screen.getByLabelText("Set Password"), password);
-      await user.type(screen.getByLabelText("Confirm Password"), password);
-      await user.click(screen.getByRole("button", { name: "Save Backup" }));
+      await user.type(screen.getByLabelText("Set password"), password);
+      await user.type(screen.getByLabelText("Confirm password"), password);
+      await user.click(screen.getByRole("button", { name: "Save backup" }));
 
       expect(mockDownloadBackupFile).toHaveBeenCalled();
     });
@@ -131,7 +131,7 @@ describe("<Menu />", () => {
       const user = userEvent.setup();
       await renderInDrawer(<Menu />, store);
 
-      await user.click(screen.getByText("Add Account"));
+      await user.click(screen.getByText("Add account"));
 
       expect(openWith).toHaveBeenCalledWith(<OnboardOptionsModal />);
     });
@@ -151,12 +151,12 @@ describe("<Menu />", () => {
       await renderInDrawer(<Menu />, store);
 
       expect(screen.getByText("Advanced")).toBeVisible();
-      expect(screen.queryByText("Address Book")).not.toBeInTheDocument();
-      expect(screen.queryByText("Add Account")).not.toBeInTheDocument();
-      expect(screen.queryByText("Save Backup")).not.toBeInTheDocument();
+      expect(screen.queryByText("Address book")).not.toBeInTheDocument();
+      expect(screen.queryByText("Add account")).not.toBeInTheDocument();
+      expect(screen.queryByText("Save backup")).not.toBeInTheDocument();
       expect(screen.queryByText("Apps")).not.toBeInTheDocument();
       expect(screen.getByText("Light mode")).toBeVisible();
-      expect(screen.getByText("Logout")).toBeVisible();
+      expect(screen.getByText("Log out")).toBeVisible();
     });
   });
 });

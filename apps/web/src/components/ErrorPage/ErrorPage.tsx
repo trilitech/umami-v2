@@ -52,7 +52,7 @@ export const ErrorPage = () => {
           <VStack width="100%" spacing="16px">
             {isVerified && (
               <Button width="100%" onClick={saveBackup} size="lg" variant="primary">
-                Save Backup
+                Save backup
               </Button>
             )}
 
@@ -64,7 +64,7 @@ export const ErrorPage = () => {
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                Report Error
+                Report error
               </Link>
             </Button>
 
@@ -75,7 +75,7 @@ export const ErrorPage = () => {
                 size="lg"
                 variant="alert"
               >
-                Logout
+                Log out
               </Button>
             )}
           </VStack>

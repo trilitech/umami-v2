@@ -51,35 +51,35 @@ describe("<Activity />", () => {
       await waitFor(() => {
         expect(screen.getByTestId("empty-state-message")).toBeVisible();
       });
-      expect(screen.getByText("Buy Tez Now")).toBeVisible();
+      expect(screen.getByText("Buy tez now")).toBeVisible();
       expect(
-        screen.getByText("You need Tez to take part in any activity. Buy some to get started.")
+        screen.getByText("You need tez to take part in any activity. Buy some to get started.")
       ).toBeVisible();
       expect(screen.queryByTestId("view-all-operations-button")).not.toBeInTheDocument();
     });
 
-    it("has correct mainnet Buy Tez link", async () => {
+    it("has correct mainnet Buy tez link", async () => {
       store.dispatch(networksActions.setCurrent(MAINNET));
       render(<Activity />, { store });
 
       await waitFor(() => {
         expect(screen.getByTestId("empty-state-message")).toBeVisible();
       });
-      const link = screen.getByRole("link", { name: "Buy Tez Now" });
+      const link = screen.getByRole("link", { name: "Buy tez now" });
       expect(link).toHaveAttribute(
         "href",
         `https://widget.wert.io/default/widget/?commodity=XTZ&address=${account.address.pkh}&network=tezos&commodity_id=xtz.simple.tezos`
       );
     });
 
-    it("has correct ghostnet Buy Tez link", async () => {
+    it("has correct ghostnet Buy tez link", async () => {
       store.dispatch(networksActions.setCurrent(GHOSTNET));
       render(<Activity />, { store });
 
       await waitFor(() => {
         expect(screen.getByTestId("empty-state-message")).toBeVisible();
       });
-      const link = screen.getByRole("link", { name: "Buy Tez Now" });
+      const link = screen.getByRole("link", { name: "Buy tez now" });
       expect(link).toBeVisible();
       expect(link).toHaveAttribute("href", "https://faucet.ghostnet.teztnets.com/");
     });

@@ -75,7 +75,7 @@ export const PermissionRequestModal = ({ request }: { request: PermissionRequest
     <ModalContent>
       <ModalHeader marginBottom="24px">
         <Flex alignItems="center" justifyContent="center">
-          Permission Request
+          Permission request
         </Flex>
         <Text marginTop="10px" color={color("700")} textAlign="center" size="sm">
           {request.appMetadata.name} is requesting permission to sign this operation.

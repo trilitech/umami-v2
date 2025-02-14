@@ -63,7 +63,7 @@ describe("<SignPayloadRequestModal />", () => {
     await renderInModal(<SignPayloadRequestModal opts={beaconOpts} />, store);
 
     await waitFor(() =>
-      expect(screen.getByTestId("sign-page-header")).toHaveTextContent("Sign Payload Request")
+      expect(screen.getByTestId("sign-page-header")).toHaveTextContent("Sign payload request")
     );
   });
 
@@ -95,13 +95,14 @@ describe("<SignPayloadRequestModal />", () => {
       })
     );
   });
+
   it("WalletConnect sends the signed payload back to the DApp", async () => {
     const user = userEvent.setup();
     jest.spyOn(walletKit, "respondSessionRequest");
     await renderInModal(<SignPayloadRequestModal opts={wcOpts} />, store);
 
     await waitFor(() =>
-      expect(screen.getByTestId("sign-page-header")).toHaveTextContent("Sign Payload Request")
+      expect(screen.getByTestId("sign-page-header")).toHaveTextContent("Sign payload request")
     );
     await waitFor(() => expect(screen.getByText(new RegExp(decodedPayload))).toBeVisible());
 
@@ -127,44 +128,54 @@ describe("<SignPayloadRequestModal />", () => {
       expect(walletKit.respondSessionRequest).toHaveBeenCalledWith({ topic: "mockTopic", response })
     );
   });
+
   it("Verify info box is visible for default", async () => {
     await renderInModal(<SignPayloadRequestModal opts={wcOpts} />, store);
+
     await waitFor(() => {
       expect(screen.getByText("This domain is unknown. Cannot verify it.")).toBeInTheDocument();
     });
   });
+
   it("Verify info box is visible for UNKNOWN", async () => {
     await renderInModal(
       <SignPayloadRequestModal opts={{ ...wcOpts, isScam: false, validationStatus: "UNKNOWN" }} />,
       store
     );
+
     await waitFor(() => {
       expect(screen.getByText("This domain is unknown. Cannot verify it.")).toBeInTheDocument();
     });
   });
+
   it("Verify info box is visible for INVALID", async () => {
     await renderInModal(
       <SignPayloadRequestModal opts={{ ...wcOpts, isScam: false, validationStatus: "INVALID" }} />,
       store
     );
+
     await waitFor(() => {
       expect(screen.getByText("This domain is invalid.")).toBeInTheDocument();
     });
   });
+
   it("Verify info box is visible for VALID", async () => {
     await renderInModal(
       <SignPayloadRequestModal opts={{ ...wcOpts, isScam: false, validationStatus: "VALID" }} />,
       store
     );
+
     await waitFor(() => {
       expect(screen.getByText("This domain is verified.")).toBeInTheDocument();
     });
   });
+
   it("Verify info box is visible for SCAM", async () => {
     await renderInModal(
       <SignPayloadRequestModal opts={{ ...wcOpts, isScam: true, validationStatus: "UNKNOWN" }} />,
       store
     );
+
     await waitFor(() => {
       expect(
         screen.getByText("This domain is suspected to be a SCAM. Potential threat detected.")

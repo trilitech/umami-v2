@@ -62,7 +62,7 @@ describe("<AdvancedSettingsAccordion />", () => {
     render(<TestComponent />);
     await act(() => user.click(screen.getByRole("button", { name: "Advanced" })));
 
-    const gasLimitInput = screen.getByLabelText("Gas Limit");
+    const gasLimitInput = screen.getByLabelText("Gas limit");
 
     await act(() => user.type(gasLimitInput, "1000"));
 
@@ -74,7 +74,7 @@ describe("<AdvancedSettingsAccordion />", () => {
     render(<TestComponent />);
     await act(() => user.click(screen.getByRole("button", { name: "Advanced" })));
 
-    const storageLimitInput = screen.getByLabelText("Storage Limit");
+    const storageLimitInput = screen.getByLabelText("Storage limit");
 
     await act(() => user.type(storageLimitInput, "1000"));
 

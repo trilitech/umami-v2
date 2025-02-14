@@ -33,7 +33,7 @@ describe("<DeriveMnemonicAccountModal />", () => {
     await renderInModal(<DeriveMnemonicAccountModal account={account} />, store);
 
     await waitFor(() => {
-      expect(screen.getByText("Name Your Account")).toBeVisible();
+      expect(screen.getByText("Name your account")).toBeVisible();
     });
 
     expect(
@@ -46,7 +46,7 @@ describe("<DeriveMnemonicAccountModal />", () => {
 
     const account = mockMnemonicAccount(0);
     await renderInModal(<DeriveMnemonicAccountModal account={account} />, store);
-    await act(() => user.type(screen.getByLabelText("Account name (Optional)"), "Test Account"));
+    await act(() => user.type(screen.getByLabelText("Account name (optional)"), "Test Account"));
     await act(() => user.click(screen.getByRole("button", { name: "Continue" })));
 
     await waitFor(() => {
@@ -64,7 +64,7 @@ describe("<DeriveMnemonicAccountModal />", () => {
     const account = mockMnemonicAccount(0);
     await renderInModal(<DeriveMnemonicAccountModal account={account} />, store);
 
-    await act(() => user.type(screen.getByLabelText("Account name (Optional)"), newAccount.label));
+    await act(() => user.type(screen.getByLabelText("Account name (optional)"), newAccount.label));
     await act(() => user.click(screen.getByRole("button", { name: "Continue" })));
     await act(() => user.type(screen.getByLabelText("Password"), "test-password"));
     await waitFor(async () => {

@@ -27,15 +27,15 @@ describe("<AdvancedMenu />", () => {
     it("renders advanced menu items correctly", async () => {
       await renderInDrawer(<AdvancedMenu />, store);
 
-      expect(screen.getByText("Change Password")).toBeVisible();
+      expect(screen.getByText("Change password")).toBeVisible();
       expect(screen.getByText("Network")).toBeVisible();
-      expect(screen.getByText("Error Logs")).toBeVisible();
+      expect(screen.getByText("Error logs")).toBeVisible();
     });
 
     it.each([
-      ["Change Password", ChangePasswordMenu],
+      ["Change password", ChangePasswordMenu],
       ["Network", NetworkMenu],
-      ["Error Logs", ErrorLogsMenu],
+      ["Error logs", ErrorLogsMenu],
     ])("opens %label menu", async (label, Component) => {
       const { openWith } = dynamicDrawerContextMock;
 
@@ -59,9 +59,9 @@ describe("<AdvancedMenu />", () => {
 
       await renderInDrawer(<AdvancedMenu />, store);
 
-      expect(screen.getByText("Change Password")).toBeVisible();
+      expect(screen.getByText("Change password")).toBeVisible();
       expect(screen.queryByText("Network")).not.toBeInTheDocument();
-      expect(screen.getByText("Error Logs")).toBeVisible();
+      expect(screen.getByText("Error logs")).toBeVisible();
     });
   });
 });

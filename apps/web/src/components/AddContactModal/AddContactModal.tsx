@@ -80,7 +80,7 @@ export const AddContactModal: FC<{
     <ModalContent>
       <form onSubmit={handleSubmit(onSubmit)}>
         <ModalHeader>
-          <Heading size="xl">Add Contact</Heading>
+          <Heading size="xl">Add contact</Heading>
           <ModalCloseButton />
         </ModalHeader>
         <ModalBody gap="24px">
@@ -123,7 +123,7 @@ export const AddContactModal: FC<{
             type="submit"
             variant="primary"
           >
-            Add to Address Book
+            Add to address book
           </Button>
         </ModalFooter>
       </form>

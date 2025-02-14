@@ -89,7 +89,7 @@ export const AccountSelectorModal = () => {
     }
   };
 
-  const buttonLabel = (isLast: boolean) => (isLast ? "Remove & Off-board" : "Remove");
+  const buttonLabel = (isLast: boolean) => (isLast ? "Remove & off-board" : "Remove");
   const description = (isLast: boolean, type: string) => {
     const isMnemonic = type.toLowerCase().includes("seedphrase");
 
@@ -98,7 +98,7 @@ export const AccountSelectorModal = () => {
     } else if (isMnemonic) {
       return `Are you sure you want to remove all accounts derived from the ${type}? You will need to manually import them again.`;
     } else {
-      return `Are you sure you want to remove all of your ${type} accounts? You will need to manually import them again.`;
+      return `Are you sure you want to remove all of your ${type}? You will need to manually import them again.`;
     }
   };
 
@@ -118,7 +118,7 @@ export const AccountSelectorModal = () => {
           }
           goBack();
         }}
-        title="Remove All Accounts"
+        title="Remove all accounts"
       />
     );
   };
@@ -223,7 +223,7 @@ export const AccountSelectorModal = () => {
               onClick={() => openWith(<OnboardOptionsModal />)}
               variant="primary"
             >
-              Add Account
+              Add account
             </Button>
           </Flex>
         )}

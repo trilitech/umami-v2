@@ -69,7 +69,7 @@ export const EditContactMenu: FC<{
   const validateName = useValidateName(contact?.name);
 
   return (
-    <DrawerContentWrapper title={isEdit ? "Edit Contact" : "Add Contact"}>
+    <DrawerContentWrapper title={isEdit ? "Edit contact" : "Add contact"}>
       <form onSubmit={handleSubmit(({ name, pkh }) => onSubmitContact({ name: name.trim(), pkh }))}>
         <VStack gap="30px" marginTop="40px" spacing="0">
           <FormControl isInvalid={!!errors.name}>
@@ -112,7 +112,7 @@ export const EditContactMenu: FC<{
           type="submit"
           variant="primary"
         >
-          {isEdit ? "Update" : "Add Contact"}
+          {isEdit ? "Update" : "Add to address book"}
         </Button>
       </form>
     </DrawerContentWrapper>

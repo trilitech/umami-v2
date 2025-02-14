@@ -5,12 +5,12 @@ export const getAccountGroupLabel = (account: Account) => {
     case "mnemonic":
       return `Seedphrase ${account.seedFingerPrint}`;
     case "social":
-      return "Social Accounts";
+      return "Social accounts";
     case "ledger":
-      return "Ledger Accounts";
+      return "Ledger accounts";
     case "secret_key":
-      return "Secret Key Accounts";
+      return "Secret key accounts";
     case "multisig":
-      return "Multisig Accounts";
+      return "Multisig accounts";
   }
 };

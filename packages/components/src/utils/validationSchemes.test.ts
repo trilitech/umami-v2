@@ -67,7 +67,7 @@ describe("getNetworkValidationScheme", () => {
   it("should allow empty buyTezUrl", () => {
     const schema = getNetworkValidationScheme(mockAvailableNetworks);
     const validInput = {
-      name: "No Buy Tez URL",
+      name: "No Buy tez URL",
       rpcUrl: "https://rpc.example.com",
       tzktApiUrl: "https://api.tzkt.example.com",
       tzktExplorerUrl: "https://explorer.tzkt.example.com",

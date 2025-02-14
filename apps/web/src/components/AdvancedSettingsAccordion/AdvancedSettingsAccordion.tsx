@@ -83,7 +83,7 @@ export const AdvancedSettingsAccordion = ({ index = 0 }: AdvancedSettingsAccordi
             </InputGroup>
           </FormControl>
           <FormControl isInvalid={!!errors.executeParams?.[index]?.gasLimit}>
-            <FormLabel fontSize="14px">Gas Limit</FormLabel>
+            <FormLabel fontSize="14px">Gas limit</FormLabel>
             <Input
               {...register(`executeParams.${index}.gasLimit`, {
                 valueAsNumber: true,
@@ -94,7 +94,7 @@ export const AdvancedSettingsAccordion = ({ index = 0 }: AdvancedSettingsAccordi
             />
           </FormControl>
           <FormControl isInvalid={!!errors.executeParams?.[index]?.storageLimit}>
-            <FormLabel fontSize="14px">Storage Limit</FormLabel>
+            <FormLabel fontSize="14px">Storage limit</FormLabel>
             <Input
               {...register(`executeParams.${index}.storageLimit`, {
                 valueAsNumber: true,

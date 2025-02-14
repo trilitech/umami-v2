@@ -9,7 +9,7 @@ describe("<AccountInfoModal />", () => {
   it("renders correctly with initial values", async () => {
     await renderInModal(<AccountInfoModal account={mockAccount} />);
 
-    await waitFor(() => expect(screen.getByText("Account Info")).toBeVisible());
+    await waitFor(() => expect(screen.getByText("Account info")).toBeVisible());
     expect(
       screen.getByText(
         "You can receive tez or other digital assets by scanning or sharing this QR code"
@@ -24,7 +24,7 @@ describe("<AccountInfoModal />", () => {
 
     await renderInModal(<AccountInfoModal account={mockAccount} />);
 
-    await act(() => user.click(screen.getByRole("button", { name: "Copy Wallet Address" })));
+    await act(() => user.click(screen.getByRole("button", { name: "Copy wallet address" })));
 
     await waitFor(() => expect(screen.getByText("Copied!")).toBeVisible());
   });

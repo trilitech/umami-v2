@@ -62,7 +62,7 @@ describe("<useHandleBeaconMessage />", () => {
 
       act(() => handleMessage(message));
 
-      await screen.findByText("Permission Request");
+      await screen.findByText("Permission request");
     });
 
     it("sends an error response to the dapp on close", async () => {
@@ -82,7 +82,7 @@ describe("<useHandleBeaconMessage />", () => {
 
       act(() => handleMessage(message));
 
-      await screen.findByText("Permission Request");
+      await screen.findByText("Permission request");
 
       act(() => screen.getByRole("button", { name: "Close" }).click());
 
@@ -114,7 +114,7 @@ describe("<useHandleBeaconMessage />", () => {
 
       act(() => handleMessage(message));
 
-      expect(screen.getByTestId("sign-page-header")).toHaveTextContent("Sign Payload Request");
+      expect(screen.getByTestId("sign-page-header")).toHaveTextContent("Sign payload request");
       expect(screen.getByTestId("app-name")).toHaveTextContent("mockDappName");
     });
 
@@ -136,7 +136,7 @@ describe("<useHandleBeaconMessage />", () => {
 
       act(() => handleMessage(message));
 
-      expect(screen.getByTestId("sign-page-header")).toHaveTextContent("Sign Payload Request");
+      expect(screen.getByTestId("sign-page-header")).toHaveTextContent("Sign payload request");
       expect(screen.getByTestId("app-name")).toHaveTextContent("mockDappName");
 
       act(() => screen.getByRole("button", { name: "Close" }).click());
@@ -405,7 +405,7 @@ describe("<useHandleBeaconMessage />", () => {
             { onClose: expect.any(Function) }
           )
         );
-        expect(screen.getByTestId("sign-page-header")).toHaveTextContent("Send Request");
+        expect(screen.getByTestId("sign-page-header")).toHaveTextContent("Send request");
         expect(screen.getByTestId("app-name")).toHaveTextContent("mockDappName");
 
         expect(mockToast).not.toHaveBeenCalled();

@@ -39,12 +39,12 @@ export const SecretKeyTab = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <Flex flexDirection="column" gap="24px">
           <FormControl isInvalid={!!form.formState.errors.secretKey}>
-            <FormLabel>Secret Key</FormLabel>
+            <FormLabel>Secret key</FormLabel>
             <Textarea
               minHeight="120px"
               fontSize="18px"
               {...register("secretKey", {
-                required: "Secret Key is required",
+                required: "Secret key is required",
                 onChange: event => setIsEncrypted(isEncryptedSecretKeyPrefix(event.target.value)),
               })}
               _focusVisible={{

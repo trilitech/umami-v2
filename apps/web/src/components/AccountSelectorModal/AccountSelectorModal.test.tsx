@@ -38,8 +38,8 @@ describe("<AccountSelectorModal />", () => {
     await waitFor(() =>
       expect(screen.getByText(`Seedphrase ${mockMnemonicAccount(0).seedFingerPrint}`)).toBeVisible()
     );
-    expect(screen.getByText("Social Accounts")).toBeVisible();
-    expect(screen.getByText("Ledger Accounts")).toBeVisible();
+    expect(screen.getByText("Social accounts")).toBeVisible();
+    expect(screen.getByText("Ledger accounts")).toBeVisible();
   });
 
   it.each([
@@ -79,12 +79,12 @@ describe("<AccountSelectorModal />", () => {
         const removeButton = screen.getByLabelText(`Remove ${accountLabel} accounts`);
         await act(() => user.click(removeButton));
 
-        expect(screen.getByText("Remove All Accounts")).toBeInTheDocument();
+        expect(screen.getByText("Remove all accounts")).toBeInTheDocument();
 
         const expectedMessage =
           type === "mnemonic"
             ? `Are you sure you want to remove all accounts derived from the ${accountLabel}? You will need to manually import them again.`
-            : `Are you sure you want to remove all of your ${accountLabel} accounts? You will need to manually import them again.`;
+            : `Are you sure you want to remove all of your ${accountLabel}? You will need to manually import them again.`;
 
         await waitFor(() => expect(screen.getByText(expectedMessage)).toBeVisible());
       }
@@ -134,7 +134,7 @@ describe("<AccountSelectorModal />", () => {
       const removeButton = screen.getByLabelText(`Remove ${accountLabel} accounts`);
       await act(() => user.click(removeButton));
 
-      expect(screen.getByText("Remove & Off-board")).toBeInTheDocument();
+      expect(screen.getByText("Remove & off-board")).toBeInTheDocument();
 
       await waitFor(() =>
         expect(
@@ -151,7 +151,7 @@ describe("<AccountSelectorModal />", () => {
     const { openWith } = dynamicModalContextMock;
     await renderInModal(<AccountSelectorModal />, store);
 
-    await act(() => user.click(screen.getByText("Add Account")));
+    await act(() => user.click(screen.getByText("Add account")));
 
     expect(openWith).toHaveBeenCalledWith(<OnboardOptionsModal />);
   });
@@ -182,7 +182,7 @@ describe("<AccountSelectorModal />", () => {
     it("does not render 'Add Account' button", async () => {
       await renderInModal(<AccountSelectorModal />, store);
 
-      expect(screen.queryByText("Add Account")).not.toBeInTheDocument();
+      expect(screen.queryByText("Add account")).not.toBeInTheDocument();
     });
   });
 });

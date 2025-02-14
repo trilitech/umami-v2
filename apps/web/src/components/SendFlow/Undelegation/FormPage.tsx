@@ -51,8 +51,8 @@ export const FormPage = (props: FormPagePropsWithSender<FormValues>) => {
       <ModalContent>
         <form data-testid="undelegate-form" onSubmit={handleSubmit(onSingleSubmit)}>
           <FormPageHeader
-            subTitle="Select preview to end delegation or insert this transaction into a Batch."
-            title="End Delegation"
+            subTitle="Select preview to end delegation or insert this transaction into a batch."
+            title="End delegation"
           />
 
           <ModalBody>

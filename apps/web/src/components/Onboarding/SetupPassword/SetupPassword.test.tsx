@@ -43,7 +43,7 @@ describe("<SetupPassword />", () => {
       it("requires a password", async () => {
         await renderInModal(<SetupPassword mode={mode} />);
 
-        const passwordInput = screen.getByLabelText("Set Password");
+        const passwordInput = screen.getByLabelText("Set password");
         fireEvent.click(passwordInput);
         fireEvent.blur(passwordInput);
 
@@ -53,7 +53,7 @@ describe("<SetupPassword />", () => {
       it("requires a password confirmation", async () => {
         await renderInModal(<SetupPassword mode={mode} />);
 
-        const passwordConfirmationInput = screen.getByLabelText("Confirm Password");
+        const passwordConfirmationInput = screen.getByLabelText("Confirm password");
 
         fireEvent.click(passwordConfirmationInput);
         fireEvent.blur(passwordConfirmationInput);
@@ -66,8 +66,8 @@ describe("<SetupPassword />", () => {
       it("requires the password and confirmation to match", async () => {
         await renderInModal(<SetupPassword mode={mode} />);
 
-        const passwordInput = screen.getByLabelText("Set Password");
-        const passwordConfirmationInput = screen.getByLabelText("Confirm Password");
+        const passwordInput = screen.getByLabelText("Set password");
+        const passwordConfirmationInput = screen.getByLabelText("Confirm password");
 
         fireEvent.input(passwordInput, { target: { value: password } });
         fireEvent.blur(passwordInput);
@@ -109,13 +109,13 @@ describe("<SetupPassword />", () => {
 
       await renderInModal(<SetupPassword mode="secret_key" />, store, allFormValues);
 
-      const passwordInput = screen.getByLabelText("Set Password");
-      const passwordConfirmationInput = screen.getByLabelText("Confirm Password");
+      const passwordInput = screen.getByLabelText("Set password");
+      const passwordConfirmationInput = screen.getByLabelText("Confirm password");
 
       await act(() => user.type(passwordInput, password));
       await act(() => user.type(passwordConfirmationInput, password));
 
-      const submitButton = screen.getByRole("button", { name: "Import Wallet" });
+      const submitButton = screen.getByRole("button", { name: "Import wallet" });
 
       await act(() => user.click(submitButton));
 
@@ -150,13 +150,13 @@ describe("<SetupPassword />", () => {
       const user = userEvent.setup();
       await renderInModal(<SetupPassword mode="mnemonic" />, store, allFormValues);
 
-      const passwordInput = screen.getByLabelText("Set Password");
-      const passwordConfirmationInput = screen.getByLabelText("Confirm Password");
+      const passwordInput = screen.getByLabelText("Set password");
+      const passwordConfirmationInput = screen.getByLabelText("Confirm password");
 
       await act(() => user.type(passwordInput, password));
       await act(() => user.type(passwordConfirmationInput, password));
 
-      const submitButton = screen.getByRole("button", { name: "Import Wallet" });
+      const submitButton = screen.getByRole("button", { name: "Import wallet" });
       await act(() => user.click(submitButton));
 
       await waitFor(() => expect(mockRestoreFromMnemonic).toHaveBeenCalledTimes(1));
@@ -174,8 +174,8 @@ describe("<SetupPassword />", () => {
       const user = userEvent.setup();
       await renderInModal(<SetupPassword mode="mnemonic" />, store, allFormValues);
 
-      const passwordInput = screen.getByLabelText("Set Password");
-      const passwordConfirmationInput = screen.getByLabelText("Confirm Password");
+      const passwordInput = screen.getByLabelText("Set password");
+      const passwordConfirmationInput = screen.getByLabelText("Confirm password");
 
       await act(() => user.type(passwordInput, password));
       await act(() => user.type(passwordConfirmationInput, password));
@@ -185,7 +185,7 @@ describe("<SetupPassword />", () => {
       const curveButton = await screen.findByRole("button", { name: curve });
       await act(() => user.click(curveButton));
 
-      const submitButton = screen.getByRole("button", { name: "Import Wallet" });
+      const submitButton = screen.getByRole("button", { name: "Import wallet" });
       await act(() => user.click(submitButton));
 
       await waitFor(() => expect(mockRestoreFromMnemonic).toHaveBeenCalledTimes(1));
@@ -203,19 +203,19 @@ describe("<SetupPassword />", () => {
       const user = userEvent.setup();
       await renderInModal(<SetupPassword mode="mnemonic" />, store, allFormValues);
 
-      const passwordInput = screen.getByLabelText("Set Password");
-      const passwordConfirmationInput = screen.getByLabelText("Confirm Password");
+      const passwordInput = screen.getByLabelText("Set password");
+      const passwordConfirmationInput = screen.getByLabelText("Confirm password");
 
       await act(() => user.type(passwordInput, password));
       await act(() => user.type(passwordConfirmationInput, password));
 
       await act(() => user.click(screen.getByRole("button", { name: "Advanced" })));
 
-      const derivationPathInput = screen.getByLabelText("Derivation Path");
+      const derivationPathInput = screen.getByLabelText("Derivation path");
       await act(() => user.clear(derivationPathInput));
       await act(() => user.type(derivationPathInput, "m/44'/1729'/0'/0'/0'"));
 
-      const submitButton = screen.getByRole("button", { name: "Import Wallet" });
+      const submitButton = screen.getByRole("button", { name: "Import wallet" });
       await act(() => user.click(submitButton));
 
       await waitFor(() => expect(mockRestoreFromMnemonic).toHaveBeenCalledTimes(1));
@@ -253,13 +253,13 @@ describe("<SetupPassword />", () => {
 
       await renderInModal(<SetupPassword mode="new_mnemonic" />, store);
 
-      const passwordInput = screen.getByLabelText("Set Password");
-      const passwordConfirmationInput = screen.getByLabelText("Confirm Password");
+      const passwordInput = screen.getByLabelText("Set password");
+      const passwordConfirmationInput = screen.getByLabelText("Confirm password");
 
       await act(() => user.type(passwordInput, password));
       await act(() => user.type(passwordConfirmationInput, password));
 
-      const submitButton = screen.getByRole("button", { name: "Create Account" });
+      const submitButton = screen.getByRole("button", { name: "Create account" });
 
       await act(() => user.click(submitButton));
 
@@ -284,7 +284,7 @@ describe("<SetupPassword />", () => {
 
       await act(() => user.type(passwordInput, password));
 
-      const submitButton = screen.getByRole("button", { name: "Add Account" });
+      const submitButton = screen.getByRole("button", { name: "Add account" });
 
       await act(() => user.click(submitButton));
 

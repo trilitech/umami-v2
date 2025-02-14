@@ -121,7 +121,7 @@ export const LedgerTab = () => {
           <AdvancedAccountSettings />
 
           <Button width="full" isLoading={isLoading} type="submit" variant="primary">
-            Import Wallet
+            Import wallet
           </Button>
         </Flex>
       </form>

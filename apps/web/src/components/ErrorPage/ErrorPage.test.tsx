@@ -25,14 +25,14 @@ describe("ErrorPage", () => {
       ).toBeVisible();
 
       const actionButtons = screen.getAllByRole("button");
-      expect(actionButtons.map(button => button.textContent)).toEqual(["Report Error"]);
+      expect(actionButtons.map(button => button.textContent)).toEqual(["Report error"]);
       actionButtons.forEach(button => expect(button).toBeVisible());
     });
 
     it("renders the feedback email link correctly", () => {
       render(<ErrorPage />, { store });
 
-      const emailLink = screen.getByRole("link", { name: "Report Error" });
+      const emailLink = screen.getByRole("link", { name: "Report error" });
       expect(emailLink).toHaveAttribute(
         "href",
         expect.stringContaining("mailto:umami-support@trili.tech")
@@ -54,7 +54,7 @@ describe("ErrorPage", () => {
       ).toBeVisible();
 
       const actionButtons = screen.getAllByRole("button");
-      expect(actionButtons.map(button => button.textContent)).toEqual(["Report Error", "Logout"]);
+      expect(actionButtons.map(button => button.textContent)).toEqual(["Report error", "Log out"]);
       actionButtons.forEach(button => expect(button).toBeVisible());
     });
 
@@ -63,7 +63,7 @@ describe("ErrorPage", () => {
       const user = userEvent.setup();
       render(<ErrorPage />, { store });
 
-      const offboardButton = screen.getByRole("button", { name: "Logout" });
+      const offboardButton = screen.getByRole("button", { name: "Log out" });
       await act(() => user.click(offboardButton));
 
       expect(openWith).toHaveBeenCalledWith(<LogoutModal />);
@@ -72,7 +72,7 @@ describe("ErrorPage", () => {
     it("renders the feedback email link correctly", () => {
       render(<ErrorPage />, { store });
 
-      const emailLink = screen.getByRole("link", { name: "Report Error" });
+      const emailLink = screen.getByRole("link", { name: "Report error" });
       expect(emailLink).toHaveAttribute(
         "href",
         expect.stringContaining("mailto:umami-support@trili.tech")
@@ -96,9 +96,9 @@ describe("ErrorPage", () => {
 
       const actionButtons = screen.getAllByRole("button");
       expect(actionButtons.map(button => button.textContent)).toEqual([
-        "Save Backup",
-        "Report Error",
-        "Logout",
+        "Save backup",
+        "Report error",
+        "Log out",
       ]);
       actionButtons.forEach(button => expect(button).toBeVisible());
     });
@@ -108,7 +108,7 @@ describe("ErrorPage", () => {
       const user = userEvent.setup();
       render(<ErrorPage />, { store });
 
-      const saveBackupButton = screen.getByRole("button", { name: "Save Backup" });
+      const saveBackupButton = screen.getByRole("button", { name: "Save backup" });
       await act(() => user.click(saveBackupButton));
 
       expect(openWith).toHaveBeenCalledWith(<SetupPassword mode="save_backup" />);
@@ -119,7 +119,7 @@ describe("ErrorPage", () => {
       const user = userEvent.setup();
       render(<ErrorPage />, { store });
 
-      const offboardButton = screen.getByRole("button", { name: "Logout" });
+      const offboardButton = screen.getByRole("button", { name: "Log out" });
       await act(() => user.click(offboardButton));
 
       expect(openWith).toHaveBeenCalledWith(<LogoutModal />);
@@ -128,7 +128,7 @@ describe("ErrorPage", () => {
     it("renders the feedback email link correctly", () => {
       render(<ErrorPage />, { store });
 
-      const emailLink = screen.getByRole("link", { name: "Report Error" });
+      const emailLink = screen.getByRole("link", { name: "Report error" });
       expect(emailLink).toHaveAttribute(
         "href",
         expect.stringContaining("mailto:umami-support@trili.tech")

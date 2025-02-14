@@ -60,7 +60,7 @@ export const FormPage = (props: FormPageProps<FormValues>) => {
         <form data-testid="delegate-form" onSubmit={handleSubmit(onSingleSubmit)}>
           <ModalHeader>
             <Text fontWeight="600" size="2xl">
-              {baker ? "Change Baker" : "Delegate"}
+              {baker ? "Change baker" : "Delegate"}
             </Text>
             <ModalCloseButton />
           </ModalHeader>

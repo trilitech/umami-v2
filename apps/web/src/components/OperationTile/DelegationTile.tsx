@@ -13,7 +13,7 @@ export const DelegationTile = ({
   ...props
 }: { operation: DelegationOperation } & FlexProps) => {
   const color = useColor();
-  const operationType = operation.newDelegate ? "Delegate" : "Delegation Ended";
+  const operationType = operation.newDelegate ? "Delegate" : "Delegation ended";
   const fee = useFee(operation);
   const status = useOperationStatus(operation.level, operation.status);
 

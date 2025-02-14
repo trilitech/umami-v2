@@ -43,7 +43,7 @@ export const AccountBalance = () => {
   return (
     <Box data-testid="account-balance" paddingX="12px">
       <Flex flexDirection="column" gap="4px">
-        <BalanceLabel label="Tez Balance" />
+        <BalanceLabel label="Tez balance" />
         <Text color={color("900")} fontWeight="600" data-testid="tez-balance" size="2xl">
           {prettyTezAmount(totalBalance)}
         </Text>
