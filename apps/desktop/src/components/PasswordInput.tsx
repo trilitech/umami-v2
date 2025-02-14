@@ -6,9 +6,9 @@ import {
   type InputProps,
   InputRightElement,
 } from "@chakra-ui/react";
-import { DEFAULT_MIN_LENGTH, usePasswordValidation } from "@umami/components";
+import { usePasswordValidation } from "@umami/components";
 import { useState } from "react";
-import { type FieldValues, type Path, type RegisterOptions, useFormContext } from "react-hook-form";
+import { type FieldValues, type Path, useFormContext } from "react-hook-form";
 
 import { EyeIcon, EyeSlashIcon } from "../assets/icons";
 import colors from "../style/colors";
@@ -21,7 +21,6 @@ type PasswordInputProps<T extends FieldValues, U extends Path<T>> = {
   placeholder?: string;
   isStrengthCheckEnabled?: boolean;
   required?: string | boolean;
-  minLength?: RegisterOptions<T, U>["minLength"];
   validate?: (val: string) => string | boolean;
 } & InputProps;
 
@@ -32,7 +31,6 @@ export const PasswordInput = <T extends FieldValues, U extends Path<T>>({
   placeholder = "Enter your password",
   required = "Password is required",
   isStrengthCheckEnabled = false,
-  minLength = DEFAULT_MIN_LENGTH,
   validate,
   ...rest
 }: PasswordInputProps<T, U>) => {
@@ -41,7 +39,6 @@ export const PasswordInput = <T extends FieldValues, U extends Path<T>>({
   const { validatePasswordStrength, PasswordStrengthBar } = usePasswordValidation({
     color: colors.gray[500],
     inputName,
-    minLength,
   });
 
   const handleValidate = (val: string) => {
