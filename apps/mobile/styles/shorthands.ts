@@ -26,15 +26,7 @@ export const shorthands = {
 
   // Borders
   br: "borderRadius",
-  btrr: "borderTopRightRadius",
-  btlr: "borderTopLeftRadius",
-  bbrr: "borderBottomRightRadius",
-  bblr: "borderBottomLeftRadius",
   bw: "borderWidth",
-  btw: "borderTopWidth",
-  bbw: "borderBottomWidth",
-  blw: "borderLeftWidth",
-  brw: "borderRightWidth",
   bc: "borderColor",
 
   // Flexbox & Alignment
@@ -44,8 +36,6 @@ export const shorthands = {
   ai: "alignItems",
   jc: "justifyContent",
   as: "alignSelf",
-  ac: "alignContent",
-  fxw: "flexWrap",
 
   // Positioning
   pos: "position",
