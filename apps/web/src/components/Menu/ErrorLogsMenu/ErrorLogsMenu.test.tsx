@@ -16,7 +16,7 @@ describe("<ErrorLogsMenu />", () => {
 
     expect(screen.getByTestId("empty-state-message")).toBeVisible();
     expect(screen.queryByText("Download")).not.toBeInTheDocument();
-    expect(screen.queryByText("Clear All")).not.toBeInTheDocument();
+    expect(screen.queryByText("Clear all")).not.toBeInTheDocument();
   });
 
   describe("when there are errors", () => {
@@ -43,7 +43,7 @@ describe("<ErrorLogsMenu />", () => {
       await renderInDrawer(<ErrorLogsMenu />, store);
 
       expect(screen.getByText("Download")).toBeVisible();
-      expect(screen.getByText("Clear All")).toBeVisible();
+      expect(screen.getByText("Clear all")).toBeVisible();
     });
 
     it("clears error list when Clear All is clicked", async () => {
@@ -51,7 +51,7 @@ describe("<ErrorLogsMenu />", () => {
 
       await renderInDrawer(<ErrorLogsMenu />, store);
 
-      await user.click(screen.getByText("Clear All"));
+      await user.click(screen.getByText("Clear all"));
 
       expect(screen.getByTestId("empty-state-message")).toBeVisible();
     });

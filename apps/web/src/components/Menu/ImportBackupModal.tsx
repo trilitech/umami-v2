@@ -37,12 +37,12 @@ export const ImportBackupModal = () => {
       <ModalHeader>
         <ModalBackButton />
         <ModalCloseButton />
-        Import Backup
+        Import backup
       </ModalHeader>
       <ModalBody>
         <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
           <FormControl>
-            <FormLabel>Backup File</FormLabel>
+            <FormLabel>Backup file</FormLabel>
             <Input {...register("file")} placeholder="Enter your backup here" type="file" />
           </FormControl>
           <FormControl>
@@ -54,7 +54,7 @@ export const ImportBackupModal = () => {
             />
           </FormControl>
           <Button width="100%" type="submit" variant="primary">
-            Import Backup
+            Import backup
           </Button>
         </form>
       </ModalBody>

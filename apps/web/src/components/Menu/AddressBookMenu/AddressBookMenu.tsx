@@ -107,7 +107,7 @@ export const AddressBookMenu = () => {
           onClick={() => openWith(<EditContactMenu />)}
           variant="primary"
         >
-          Add Contact
+          Add contact
         </Button>
       }
       title="Address book"

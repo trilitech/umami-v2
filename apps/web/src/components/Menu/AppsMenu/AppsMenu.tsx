@@ -14,7 +14,7 @@ export const AppsMenu = () => {
       actions={
         <>
           <Text marginTop="12px" size="lg">
-            Connect with DApps using a Pairing Request via Beacon or WalletConnect.
+            Connect with Apps using a Pairing request via Beacon or WalletConnect.
           </Text>
           <Button
             width="fit-content"

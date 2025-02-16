@@ -26,10 +26,10 @@ export const Tokens = () => {
           </VStack>
         ) : isVerified ? (
           <EmptyMessage
-            cta="Buy Tez Now"
+            cta="Buy tez now"
             ctaUrl={buyTezUrl}
-            subtitle={"You need Tez to take part in any activity.\n Buy some to get started."}
-            title="Get Started with Tokens"
+            subtitle={"You need tez to take part in any activity.\n Buy some to get started."}
+            title="Get started with tokens"
           />
         ) : (
           <VerifyMessage />

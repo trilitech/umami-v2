@@ -41,7 +41,7 @@ describe("<RemoveAccountModal />", () => {
     addTestAccounts(store, accounts);
     await renderInModal(<RemoveAccountModal account={accounts[0]} />, store);
 
-    await waitFor(() => expect(screen.getByText("Remove Account")).toBeVisible());
+    await waitFor(() => expect(screen.getByText("Remove account")).toBeVisible());
     expect(
       screen.getByText(
         "Are you sure you want to hide this account? You will need to manually import it again."
@@ -55,13 +55,13 @@ describe("<RemoveAccountModal />", () => {
 
     await renderInModal(<RemoveAccountModal account={accounts[0]} />, store);
 
-    await waitFor(() => expect(screen.getByText("Remove Account")).toBeVisible());
+    await waitFor(() => expect(screen.getByText("Remove account")).toBeVisible());
     expect(
       screen.getByText(
         "Removing your last account will off-board you from Umami. This will remove or reset all customized settings to their defaults. Personal data (including saved contacts, password and accounts) won't be affected."
       )
     ).toBeVisible();
-    expect(screen.getByText("Remove & Off-board")).toBeVisible();
+    expect(screen.getByText("Remove & off-board")).toBeVisible();
   });
 
   it("handles account removal and navigates correctly when only one account", async () => {
@@ -71,7 +71,7 @@ describe("<RemoveAccountModal />", () => {
 
     await renderInModal(<RemoveAccountModal account={accounts[0]} />, store);
 
-    await act(() => user.click(screen.getByText("Remove & Off-board")));
+    await act(() => user.click(screen.getByText("Remove & off-board")));
 
     expect(mockRemoveAccount).toHaveBeenCalledWith(accounts[0]);
     expect(onClose).toHaveBeenCalled();

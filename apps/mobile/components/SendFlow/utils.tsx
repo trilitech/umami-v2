@@ -1,0 +1,244 @@
+import { type SigningType } from "@airgap/beacon-wallet";
+import { type TezosToolkit } from "@taquito/taquito";
+import {
+  type Account,
+  type AccountOperations,
+  type EstimatedAccountOperations,
+  type ImplicitAccount,
+  type Operation,
+  estimate,
+  executeOperations,
+  makeAccountOperations,
+  totalFee,
+} from "@umami/core";
+import {
+  useAsyncActionHandler,
+  useGetBestSignerForAccount,
+  useGetImplicitAccount,
+  useGetOwnedAccount,
+  useSelectedNetwork,
+} from "@umami/state";
+import { type ExecuteParams, type Network, type RawPkh } from "@umami/tezos";
+import * as WebBrowser from "expo-web-browser";
+import { repeat } from "lodash";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { Alert } from "react-native";
+import { Button, type ButtonProps, Spinner } from "tamagui";
+
+import { useModal } from "../../providers/ModalProvider";
+
+// Convert given optional fields to required
+// For example:
+// type A = {a?:number, b:string}
+// RequiredFields<A, "a"> === {a:number, b:string}
+type RequiredFields<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>;
+
+export type FormPageProps<T> = { sender?: Account; form?: T };
+
+// FormPagePropsWithSender is the same as FormPageProps but with sender required,
+// Use this when we don't want to give the users options to select the sender
+// (e.g. the nft and token form)
+export type FormPagePropsWithSender<T> = RequiredFields<FormPageProps<T>, "sender">;
+
+// Form values should always have a sender field.
+export type BaseFormValues = { sender: RawPkh };
+
+export type SignPageMode = "single" | "batch";
+
+export type SignPageProps<T = undefined> = {
+  goBack?: () => void;
+  operations: EstimatedAccountOperations;
+  mode: SignPageMode;
+  data?: T;
+};
+
+export type CalculatedSignProps = {
+  fee: number;
+  isSigning: boolean;
+  onSign: (tezosToolkit: TezosToolkit) => Promise<void>;
+  network: any;
+};
+
+export type sdkType = "beacon" | "walletconnect";
+
+export type SignRequestId =
+  | {
+      sdkType: "beacon";
+      id: string;
+    }
+  | {
+      sdkType: "walletconnect";
+      id: number;
+      topic: string;
+    };
+
+export type SignHeaderProps = {
+  network: Network;
+  appName: string;
+  appIcon?: string;
+  isScam?: boolean;
+  validationStatus?: "VALID" | "INVALID" | "UNKNOWN";
+  requestId: SignRequestId;
+};
+
+export type SdkSignPageProps = {
+  operation: EstimatedAccountOperations;
+  headerProps: SignHeaderProps;
+};
+
+export type SignPayloadProps = {
+  requestId: SignRequestId;
+  appName: string;
+  appIcon?: string;
+  payload: string;
+  isScam?: boolean;
+  validationStatus?: "VALID" | "INVALID" | "UNKNOWN";
+  signer: ImplicitAccount;
+  signingType: SigningType;
+};
+
+export const FormSubmitButton = ({ title = "Preview", ...props }: ButtonProps) => (
+  <Button
+    width="100%"
+    disabled={props.isLoading}
+    icon={props.isLoading ? <Spinner color="white" size="small" /> : null}
+    type="submit"
+    variant="primary"
+    {...props}
+  >
+    {title}
+  </Button>
+);
+
+export const formDefaultValues = <T,>({ sender, form }: FormPageProps<T>) => {
+  if (form) {
+    return form;
+  } else if (sender) {
+    return { sender: sender.address.pkh };
+  } else {
+    return {};
+  }
+};
+
+// TODO: test this
+export const useSignPageHelpers = (
+  // the fee & operations you've got from the form
+  initialOperations: EstimatedAccountOperations
+) => {
+  const [estimationFailed, setEstimationFailed] = useState(false);
+  const getSigner = useGetImplicitAccount();
+  const [operations, setOperations] = useState<EstimatedAccountOperations>(initialOperations);
+  const network = useSelectedNetwork();
+  const { isLoading, handleAsyncAction, handleAsyncActionUnsafe } = useAsyncActionHandler();
+  // const { openWith } = useDynamicModalContext();
+  const { hideModal } = useModal();
+
+  const form = useForm<{
+    sender: string;
+    signer: string;
+    executeParams: ExecuteParams[];
+  }>({
+    mode: "onBlur",
+    defaultValues: {
+      signer: operations.signer.address.pkh,
+      sender: operations.sender.address.pkh,
+      executeParams: operations.estimates,
+    },
+  });
+
+  const signer = form.watch("signer");
+
+  // if it fails then the sign button must be disabled
+  // and the user is supposed to either come back to the form and amend it
+  // or choose another signer
+  const reEstimate = async (newSigner: RawPkh) =>
+    handleAsyncActionUnsafe(
+      async () => {
+        const newOperations = await estimate(
+          {
+            ...operations,
+            signer: getSigner(newSigner),
+          },
+          network
+        );
+        form.setValue("executeParams", newOperations.estimates);
+        setOperations(newOperations);
+        setEstimationFailed(false);
+      },
+      {
+        isClosable: true,
+        duration: null, // it makes the toast stick until the user closes it
+      }
+    ).catch(() => setEstimationFailed(true));
+
+  const onSign = async (tezosToolkit: TezosToolkit) =>
+    handleAsyncAction(async () => {
+      const operation = await executeOperations(
+        { ...operations, estimates: form.watch("executeParams") },
+        tezosToolkit
+      );
+      // await openWith(<SuccessStep hash={operation.opHash} />);
+      hideModal();
+      Alert.alert(
+        "Operation Submitted",
+        "You can follow this operation's progress in the Operations section. \nIt may take up to 30 seconds to appear.",
+        [
+          {
+            text: "Close",
+          },
+          {
+            text: "Open in Explorer",
+            onPress: () => {
+              void WebBrowser.openBrowserAsync(`${network.tzktExplorerUrl}/${operation.opHash}`);
+            },
+          },
+        ]
+      );
+
+      return operation;
+    });
+
+  return {
+    fee: totalFee(form.watch("executeParams")),
+    estimationFailed,
+    operations,
+    isLoading,
+    form,
+    signer: getSigner(signer),
+    reEstimate,
+    onSign,
+  };
+};
+
+export const useMakeFormOperations = <FormValues extends BaseFormValues>(
+  toOperation: (formValues: FormValues) => Operation | Operation[]
+): ((formValues: FormValues) => AccountOperations) => {
+  const getAccount = useGetOwnedAccount();
+  const getSigner = useGetBestSignerForAccount();
+
+  return (formValues: FormValues) => {
+    const sender = getAccount(formValues.sender);
+    return makeAccountOperations(sender, getSigner(sender), [toOperation(formValues)].flat());
+  };
+};
+
+export const getSmallestUnit = (decimals: number): string => {
+  if (decimals < 0) {
+    console.warn("Decimals cannot be negative");
+    decimals = 0;
+  }
+
+  const leadingZeroes = decimals === 0 ? "" : "0." + repeat("0", decimals - 1);
+  return `${leadingZeroes}1`;
+};
+
+export const makeValidateDecimals = (decimals: number) => (val: string) => {
+  if (val.includes(".")) {
+    const decimalPart = val.split(".")[1];
+    if (decimalPart.length > decimals) {
+      return `Please enter a value with up to ${decimals} decimal places`;
+    }
+  }
+  return true;
+};

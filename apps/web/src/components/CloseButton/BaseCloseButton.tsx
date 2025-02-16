@@ -5,7 +5,7 @@ import { CloseIcon } from "../../assets/icons";
 export const BaseCloseButton = (props: Omit<IconButtonProps, "aria-label">) => (
   <IconButton
     position="absolute"
-    zIndex="100"
+    zIndex="2"
     top={{
       base: "12px",
       md: "18px",

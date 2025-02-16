@@ -33,31 +33,31 @@ const accordionItems = [
     icon: CheckmarkIcon,
     title: "Install extensions only from trusted sources",
     content:
-      "Use only official platforms like the Chrome Web Store or Firefox Add-ons, as these include security reviews. Avoid third-party websites and direct download links.",
+      "Download extensions exclusively from official platforms like the Chrome Web Store or Firefox Add-ons, which conduct security reviews. Avoid third-party websites or direct download links to minimize risk.",
   },
   {
     icon: ThumbsUpIcon,
-    title: "Review permissions and ratings",
+    title: "Review permissions and ratings carefully",
     content:
-      "Before installing, check extension reviews, download counts, and requested permissions. Extensions that ask for access to sensitive data (like local storage or clipboard) should be trusted and necessary.",
+      "Before installing an extension, examine its reviews, download count, and requested permissions. Be cautious with extensions that request access to sensitive data, such as local storage or the clipboard. Only install those that are both trustworthy and essential.",
   },
   {
     icon: LockIcon,
-    title: "Maintain a separate browser for financial activities",
+    title: "Use a separate browser for financial activities",
     content:
-      "Use a dedicated browser with no extensions installed. This minimizes risk by isolating financial activities from other browsing.",
+      "Maintain a dedicated browser for financial transactions, free of additional extensions. This isolates financial activities and reduces potential security risks from other browsing habits.",
   },
   {
     icon: RefreshIcon,
-    title: "Keep your browser updated",
+    title: "Keep your browser and extensions updated",
     content:
-      "Regularly update your browser and extensions to ensure you have the latest security features and bug fixes.",
+      "Ensure your browser and extensions are always up to date. Regular updates provide the latest security features and fix known vulnerabilities.",
   },
   {
     icon: AlertCircleIcon,
     title: "Stay alert to social engineering risks",
     content:
-      "Avoid installing extensions prompted by emails, ads, or pop-ups, as these may use deceptive methods to gain access. Reliable services generally don’t push extensions, so question any unexpected installation requests.",
+      "Avoid installing extensions prompted by unsolicited emails, advertisements, or pop-ups. These can often use deceptive tactics to compromise your security. Reputable services rarely push extensions through unexpected prompts—always verify before proceeding.",
   },
 ];
 
@@ -75,7 +75,7 @@ export const SecurityWarningModal = () => {
       <ModalHeader>
         <Flex alignItems="center" justifyContent="center" flexDirection="column" gap="16px">
           <AlertIcon width="22px" color={color("400")} />
-          <Heading size="xl">Browser Extension Security Tips</Heading>
+          <Heading size="xl">Browser extension security tips</Heading>
           <Text
             width="full"
             marginTop="-4px"
@@ -84,8 +84,7 @@ export const SecurityWarningModal = () => {
             textAlign="center"
             size="md"
           >
-            Please carefully review these guidelines to protect your wallet from potential security
-            risks
+            Follow these essential guidelines to safeguard your wallet from security risks
           </Text>
         </Flex>
       </ModalHeader>

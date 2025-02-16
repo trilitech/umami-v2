@@ -41,8 +41,8 @@ describe("<EditContactMenu />", () => {
       it("shows correct title & button label for new contact", async () => {
         await renderInDrawer(modalComponent, store);
 
-        expect(screen.getByRole("dialog")).toHaveTextContent("Add Contact");
-        expect(screen.getByTestId("confirmation-button")).toHaveTextContent("Add Contact");
+        expect(screen.getByRole("dialog")).toHaveTextContent("Add to address book");
+        expect(screen.getByTestId("confirmation-button")).toHaveTextContent("Add to address book");
       });
 
       it("has editable address & name fields", async () => {
@@ -304,7 +304,7 @@ describe("<EditContactMenu />", () => {
     it("shows correct title & button label", async () => {
       await renderInDrawer(<EditContactMenu contact={contact1} />, store);
 
-      expect(screen.getByRole("dialog")).toHaveTextContent("Edit Contact");
+      expect(screen.getByRole("dialog")).toHaveTextContent("Edit contact");
       expect(screen.getByTestId("confirmation-button")).toHaveTextContent("Update");
     });
 

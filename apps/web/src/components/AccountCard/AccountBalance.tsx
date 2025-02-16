@@ -1,5 +1,4 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
-import { useDynamicModalContext } from "@umami/components";
 import { useCurrentAccount, useGetAccountBalanceDetails, useMutezToUsd } from "@umami/state";
 import { prettyTezAmount } from "@umami/tezos";
 import { BigNumber } from "bignumber.js";
@@ -8,7 +7,6 @@ import { useColor } from "../../styles/useColor";
 
 export const AccountBalance = () => {
   const color = useColor();
-  useDynamicModalContext();
   const currentAccount = useCurrentAccount()!;
   const address = currentAccount.address.pkh;
   const mutezToDollar = useMutezToUsd();
@@ -45,7 +43,7 @@ export const AccountBalance = () => {
   return (
     <Box data-testid="account-balance" paddingX="12px">
       <Flex flexDirection="column" gap="4px">
-        <BalanceLabel label="Tez Balance" />
+        <BalanceLabel label="Tez balance" />
         <Text color={color("900")} fontWeight="600" data-testid="tez-balance" size="2xl">
           {prettyTezAmount(totalBalance)}
         </Text>

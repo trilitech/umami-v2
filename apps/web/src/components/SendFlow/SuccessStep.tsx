@@ -35,10 +35,10 @@ export const SuccessStep = ({
 
   const getIconAndHeader = (): StepData => {
     if (dAppNotificationError) {
-      return [AlertTriangleIcon, color("orange"), "Operation Submitted but dApp Not Notified"];
+      return [AlertTriangleIcon, color("red"), "Operation submitted but dApp not notified"];
     }
 
-    return [CheckCircleIcon, color("green"), "Operation Submitted"];
+    return [CheckCircleIcon, color("green"), "Operation submitted"];
   };
 
   const Message = () => {
@@ -48,24 +48,24 @@ export const SuccessStep = ({
     if (dAppNotificationError) {
       return (
         <>
-          <Text size="md">
-            Transaction was performed successfully and stored on the blockchain. However, the dApp
-            was not notified.
+          <Text marginTop="12px" data-testid="do-not-retry-text" size="md">
+            Do <strong>not</strong> retry this operation; it has already been processed. You may
+            need to reload the dApp to see the updated status.
           </Text>
-          <Text marginTop="12px" size="md">
-            <strong>Do not retry this operation</strong> — it has already been completed. You may
-            need to reload the dApp page to see the updated status.
+          <Text marginTop="12px" data-testid="dapp-noticaition-error" size="md">
+            {dAppNotificationError}
           </Text>
-          <Text marginTop="12px" size="md">
-            <strong>Error on dApp notification:</strong> {dAppNotificationError}
-          </Text>
-          <Text marginTop="12px" size="md">
+          <Text marginTop="12px" data-testid="success-text" size="md">
             {successText}
           </Text>
         </>
       );
     } else {
-      return <Text size="md">successText</Text>;
+      return (
+        <Text data-testid="success-text" size="md">
+          {successText}
+        </Text>
+      );
     }
   };
 
@@ -95,7 +95,7 @@ export const SuccessStep = ({
           size="lg"
           variant="primary"
         >
-          See all Operations
+          See all operations
         </Button>
         <Button as={Link} gap="10px" width="full" href={tzktUrl} isExternal variant="ghost">
           <ExternalLinkIcon color={color("400")} />

@@ -93,7 +93,7 @@ export const VerifySeedphraseModal = ({ seedPhrase }: VerifySeedphraseModalProps
                           variant: "mnemonic",
                           placeholder: `word #${index + 1}`,
                           fontSize: { base: "12px", md: "18px" },
-                          paddingLeft: { base: "36px", md: "46px" },
+                          paddingLeft: { base: "31px", md: "46px" },
                           height: "48px",
                         },
                         listProps: {
@@ -110,7 +110,11 @@ export const VerifySeedphraseModal = ({ seedPhrase }: VerifySeedphraseModalProps
                         fontSize: { base: "12px", md: "18px" },
                       }}
                     />
-                    {error?.message && <FormErrorMessage>{error.message}</FormErrorMessage>}
+                    {error?.message && (
+                      <FormErrorMessage fontSize={{ base: "12px", md: "16px" }}>
+                        {error.message}
+                      </FormErrorMessage>
+                    )}
                   </FormControl>
                 );
               })}
@@ -123,7 +127,7 @@ export const VerifySeedphraseModal = ({ seedPhrase }: VerifySeedphraseModalProps
 
             {IS_DEV && (
               <Button width="100%" marginTop="12px" onClick={onSubmit} variant="secondary">
-                Bypass (Dev only)
+                Bypass (dev only)
               </Button>
             )}
           </ModalFooter>

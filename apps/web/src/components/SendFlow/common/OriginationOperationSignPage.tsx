@@ -39,6 +39,7 @@ export const OriginationOperationSignPage = ({
       <ModalContent data-testid="OriginationOperationSignPage">
         <form>
           <Header headerProps={headerProps} title={Titles.OriginationOperationSignPage} />
+
           <ModalBody data-testid="beacon-request-body">
             <Flex alignItems="center" justifyContent="end" marginTop="12px">
               <SignPageFee fee={fee} />

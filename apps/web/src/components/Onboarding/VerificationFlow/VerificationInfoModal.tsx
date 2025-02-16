@@ -22,12 +22,12 @@ import { ModalCloseButton } from "../../CloseButton";
 // TODO: Replace with actual copy paste
 const accordionItems = [
   {
-    title: "Why Verify?",
+    title: "Why verify?",
     content:
       "Verification ensures the security of your wallet and allows you to access all features.",
   },
   {
-    title: "What to Expect?",
+    title: "What to expect?",
     content: "Please write down your seed phrase in a safe place.",
   },
   {
@@ -46,7 +46,7 @@ export const VerificationInfoModal = () => {
       <ModalHeader>
         <Flex alignItems="center" justifyContent="center" flexDirection="column" gap="16px">
           <AlertIcon width="22px" color={color("400")} />
-          <Heading size="xl">How does Verification Work?</Heading>
+          <Heading size="xl">How does verification work?</Heading>
         </Flex>
         <ModalCloseButton />
       </ModalHeader>
@@ -81,7 +81,7 @@ export const VerificationInfoModal = () => {
       </ModalBody>
       <ModalFooter>
         <Button width="full" onClick={handleVerify} variant="primary">
-          Verify Now
+          Verify now
         </Button>
       </ModalFooter>
     </ModalContent>

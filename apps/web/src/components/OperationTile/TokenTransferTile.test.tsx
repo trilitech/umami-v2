@@ -324,6 +324,6 @@ describe("<TokenTransferTile />", () => {
   it("shows operation type", () => {
     render(fixture(tokenTransferFixture()), { store });
 
-    expect(screen.getByTestId("operation-type")).toHaveTextContent("Token Transfer");
+    expect(screen.getByTestId("operation-type")).toHaveTextContent("Token transfer");
   });
 });

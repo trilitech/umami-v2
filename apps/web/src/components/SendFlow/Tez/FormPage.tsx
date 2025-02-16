@@ -33,7 +33,6 @@ import {
 
 export type FormValues = {
   sender: RawPkh;
-
   recipient: RawPkh;
   prettyAmount: string;
 };
@@ -73,7 +72,7 @@ export const FormPage = ({ ...props }: FormPageProps<FormValues>) => {
           <FormPageHeader />
           <ModalBody gap="24px">
             <FormControl data-testid="available-balance" isInvalid={!!errors.sender}>
-              <FormLabel>Available Balance</FormLabel>
+              <FormLabel>Available balance</FormLabel>
               <TezTile address={props.sender?.address.pkh} />
             </FormControl>
             <FormControl isInvalid={!!errors.prettyAmount}>

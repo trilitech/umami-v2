@@ -1,3 +1,5 @@
+import crypto from "crypto";
+
 import TransportWebUSB from "@ledgerhq/hw-transport-webusb";
 import { DerivationType, LedgerSigner } from "@taquito/ledger-signer";
 import { Parser } from "@taquito/michel-codec";
@@ -8,15 +10,10 @@ import { CustomError } from "@umami/utils";
 import { FakeSigner } from "./fakeSigner";
 import { type PublicKeyPair, type SignerConfig } from "./types";
 
-export const generateHash = async (): Promise<string> => {
+export const generateHash = (): string => {
   const utf8 = new TextEncoder().encode(Date.now().toString());
-  const hashBuffer = await crypto.subtle.digest("SHA-256", utf8);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  const hashHex = hashArray
-    .map(bytes => bytes.toString(16).padStart(2, "0"))
-    .join("")
-    .slice(0, 8);
-  return hashHex;
+  const hash = crypto.createHash("sha256").update(utf8).digest("hex");
+  return hash.slice(0, 8);
 };
 
 export const curveToDerivationType = (curve: Curves): DerivationType => {

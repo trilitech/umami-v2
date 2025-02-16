@@ -50,14 +50,14 @@ export const AdvancedAccountSettings = () => {
         <AccordionPanel>
           <Flex flexDirection="column" gap="24px">
             <FormControl isInvalid={!!errors.curve}>
-              <FormLabel>Elliptic Curve</FormLabel>
+              <FormLabel>Elliptic curve</FormLabel>
               <Flex gap="8px">
                 <RadioButtons fontSize="sm" fontWeight="400" inputName="curve" options={CURVES} />
               </Flex>
             </FormControl>
 
             <FormControl isInvalid={!!errors.derivationPath}>
-              <FormLabel>Derivation Path</FormLabel>
+              <FormLabel>Derivation path</FormLabel>
 
               <InputGroup>
                 <Input

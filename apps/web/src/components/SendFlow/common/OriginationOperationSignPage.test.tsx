@@ -63,7 +63,7 @@ describe("<OriginationOperationSignPage />", () => {
 
     await waitFor(() => expect(screen.getByText(prettyTezAmount(123))).toBeVisible());
 
-    expect(screen.getByTestId("sign-page-header")).toHaveTextContent("Origination Request");
+    expect(screen.getByTestId("sign-page-header")).toHaveTextContent("Origination request");
     expect(screen.getByTestId("app-name")).toHaveTextContent("mockDappName");
   });
 
@@ -79,7 +79,7 @@ describe("<OriginationOperationSignPage />", () => {
     await renderInModal(<SingleSignPage {...signProps} />);
 
     const signButton = screen.getByRole("button", {
-      name: "Confirm Transaction",
+      name: "Confirm transaction",
     });
     await waitFor(() => expect(signButton).toBeDisabled());
 
@@ -102,6 +102,8 @@ describe("<OriginationOperationSignPage />", () => {
         transactionHash: "ophash",
       })
     );
-    expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(<SuccessStep hash="ophash" />);
+    expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(<SuccessStep hash="ophash" />, {
+      canBeOverridden: true,
+    });
   });
 });

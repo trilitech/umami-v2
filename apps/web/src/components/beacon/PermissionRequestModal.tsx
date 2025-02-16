@@ -43,7 +43,7 @@ export const PermissionRequestModal = ({ request }: { request: PermissionRequest
   const color = useColor();
   const addConnectionToBeaconSlice = useAddBeaconConnection();
   const getAccount = useGetImplicitAccount();
-  const { onClose } = useDynamicModalContext();
+  const { goBack } = useDynamicModalContext();
   const { handleAsyncAction } = useAsyncActionHandler();
   const form = useForm<{ address: string }>({
     mode: "onBlur",
@@ -69,13 +69,13 @@ export const PermissionRequestModal = ({ request }: { request: PermissionRequest
       await WalletClient.respond(response);
 
       addConnectionToBeaconSlice(request.senderId, account.address.pkh, request.network.type);
-    }).finally(onClose);
+    }).finally(goBack);
 
   return (
     <ModalContent>
       <ModalHeader marginBottom="24px">
         <Flex alignItems="center" justifyContent="center">
-          Permission Request
+          Permission request
         </Flex>
         <Text marginTop="10px" color={color("700")} textAlign="center" size="sm">
           {request.appMetadata.name} is requesting permission to sign this operation.

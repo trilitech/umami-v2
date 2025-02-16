@@ -35,7 +35,7 @@ export const DeleteContactModal = ({ contact }: DeleteContactModalProps) => {
   return (
     <ModalContent>
       <ModalHeader>
-        <Heading size="xl">Delete Contact</Heading>
+        <Heading size="xl">Delete contact</Heading>
         <ModalCloseButton />
       </ModalHeader>
       <ModalBody>
@@ -58,7 +58,7 @@ export const DeleteContactModal = ({ contact }: DeleteContactModalProps) => {
       </ModalBody>
       <ModalFooter>
         <Button width="full" onClick={onDeleteContact} size="lg" variant="alert">
-          Delete Contact
+          Delete contact
         </Button>
       </ModalFooter>
     </ModalContent>

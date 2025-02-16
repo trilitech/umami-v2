@@ -1,5 +1,5 @@
 import { type Toast, ToastProvider } from "@umami/utils";
-import { Slot, SplashScreen } from "expo-router";
+import { SplashScreen, Stack } from "expo-router";
 import { useEffect } from "react";
 import { useColorScheme } from "react-native";
 import { Provider } from "react-redux";
@@ -8,7 +8,8 @@ import { TamaguiProvider } from "tamagui";
 
 import { PersistorLoader } from "../components/persistorLoader";
 import { AuthProvider, ReactQueryProvider } from "../providers";
-import store, { persistor } from "../store/store";
+import { ModalProvider } from "../providers/ModalProvider";
+import { persistor, store } from "../store";
 import { tamaguiConfig } from "../tamagui.config";
 
 export default function RootLayout() {
@@ -20,18 +21,23 @@ export default function RootLayout() {
   }, []);
 
   return (
-    <ToastProvider toast={{} as Toast}>
-      <ReactQueryProvider>
-        <TamaguiProvider config={tamaguiConfig} defaultTheme={theme}>
-          <Provider store={store}>
-            <PersistGate loading={<PersistorLoader />} persistor={persistor}>
-              <AuthProvider>
-                <Slot />
-              </AuthProvider>
-            </PersistGate>
-          </Provider>
-        </TamaguiProvider>
-      </ReactQueryProvider>
-    </ToastProvider>
+    <Provider store={store}>
+      <PersistGate loading={<PersistorLoader />} persistor={persistor}>
+        <ToastProvider toast={{} as Toast}>
+          <ReactQueryProvider>
+            <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme!}>
+              <ModalProvider>
+                <AuthProvider>
+                  <Stack screenOptions={{ headerShown: false, gestureEnabled: false }}>
+                    <Stack.Screen name="index" />
+                    <Stack.Screen name="(auth)" />
+                  </Stack>
+                </AuthProvider>
+              </ModalProvider>
+            </TamaguiProvider>
+          </ReactQueryProvider>
+        </ToastProvider>
+      </PersistGate>
+    </Provider>
   );
 }

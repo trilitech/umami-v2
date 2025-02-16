@@ -44,13 +44,13 @@ export const ChangePasswordMenu = () => {
 
   return (
     <FormProvider {...form}>
-      <DrawerContentWrapper title="Change Password">
+      <DrawerContentWrapper title="Change password">
         <form onSubmit={handleSubmit(onSubmit)}>
           <VStack gap="30px" marginTop="40px" spacing="0">
             <PasswordInput
               data-testid="current-password"
               inputName="currentPassword"
-              label="Current Password"
+              label="Current password"
               placeholder="Your password"
               required="Current password is required"
             />
@@ -59,7 +59,7 @@ export const ChangePasswordMenu = () => {
               data-testid="new-password"
               inputName="newPassword"
               isStrengthCheckEnabled
-              label="New Password"
+              label="New password"
               placeholder="New password"
               required="New password is required"
               validate={(val: string) =>
@@ -70,7 +70,7 @@ export const ChangePasswordMenu = () => {
               data-testid="new-password-confirmation"
               inputName="newPasswordConfirmation"
               label="Confirm password"
-              placeholder="Confirm password"
+              placeholder="Confirm new password"
               required="Confirmation is required"
               validate={(val: string) =>
                 getValues("newPassword") === val || "Your new passwords do not match"
@@ -86,7 +86,7 @@ export const ChangePasswordMenu = () => {
             type="submit"
             variant="primary"
           >
-            Update Password
+            Update password
           </Button>
         </form>
       </DrawerContentWrapper>

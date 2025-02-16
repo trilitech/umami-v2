@@ -62,7 +62,7 @@ export const Header = () => {
         <AccountTile
           background={color("100")}
           account={currentAccount}
-          onClick={() => openWith(<AccountSelectorModal />)}
+          onClick={() => openWith(<AccountSelectorModal />, { canBeOverridden: true })}
           size="xs"
         />
       </SlideFade>

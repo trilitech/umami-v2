@@ -1,6 +1,5 @@
 import { FormControl, Text } from "@chakra-ui/react";
 import { FormProvider, useForm } from "react-hook-form";
-import { act } from "@testing-library/react";
 
 import { MnemonicAutocomplete } from "./MnemonicAutocomplete";
 import { fireEvent, render, screen, waitFor } from "../../testUtils";
@@ -136,58 +135,6 @@ describe("<MnemonicAutocomplete />", () => {
       fireEvent.mouseDown(screen.getByText("absent"));
 
       await waitFor(() => expect(input).toHaveValue("absent"));
-    });
-  });
-
-  describe("hide/show mnemonic button", () => {
-    it("shows eye icon button only when input has value", () => {
-      render(<Fixture />);
-      const input = screen.getByTestId("mnemonic-input");
-
-      expect(screen.queryByTestId("eye-icon")).not.toBeInTheDocument();
-      expect(screen.queryByTestId("eye-slash-icon")).not.toBeInTheDocument();
-
-      fireEvent.change(input, { target: { value: "test" } });
-      expect(screen.getByTestId("eye-icon")).toBeInTheDocument();
-    });
-
-    it("toggles between show and hide password when clicking the eye icon", () => {
-      render(<Fixture />);
-      const input = screen.getByTestId("mnemonic-input");
-
-      fireEvent.change(input, { target: { value: "test" } });
-
-      expect(input).toHaveAttribute("type", "password");
-      expect(screen.getByTestId("eye-icon")).toBeInTheDocument();
-
-      fireEvent.click(screen.getByTestId("eye-icon"));
-      expect(input).toHaveAttribute("type", "text");
-      expect(screen.getByTestId("eye-slash-icon")).toBeInTheDocument();
-
-      fireEvent.click(screen.getByTestId("eye-slash-icon"));
-      expect(input).toHaveAttribute("type", "password");
-      expect(screen.getByTestId("eye-icon")).toBeInTheDocument();
-    });
-
-    it("automatically hides mnemonic after timeout", () => {
-      jest.useFakeTimers();
-
-      render(<Fixture />);
-      const input = screen.getByTestId("mnemonic-input");
-
-      fireEvent.change(input, { target: { value: "test" } });
-      fireEvent.click(screen.getByTestId("eye-icon"));
-
-      expect(input).toHaveAttribute("type", "text");
-
-      act(() => {
-        jest.advanceTimersByTime(60000);
-      });
-
-      expect(input).toHaveAttribute("type", "password");
-      expect(screen.getByTestId("eye-icon")).toBeInTheDocument();
-
-      jest.useRealTimers();
     });
   });
 });

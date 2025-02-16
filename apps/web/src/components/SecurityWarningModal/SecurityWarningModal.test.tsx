@@ -10,21 +10,21 @@ describe("<SecurityWarningModal />", () => {
     await renderInModal(<SecurityWarningModal />);
 
     await waitFor(() => {
-      expect(screen.getByText("Browser Extension Security Tips")).toBeVisible();
+      expect(screen.getByText("Browser extension security tips")).toBeVisible();
     });
 
     expect(
       screen.getByText(
-        "Please carefully review these guidelines to protect your wallet from potential security risks"
+        "Follow these essential guidelines to safeguard your wallet from security risks"
       )
     ).toBeVisible();
   });
 
   it.each([
     "Install extensions only from trusted sources",
-    "Review permissions and ratings",
-    "Maintain a separate browser for financial activities",
-    "Keep your browser updated",
+    "Review permissions and ratings carefully",
+    "Use a separate browser for financial activities",
+    "Keep your browser and extensions updated",
     "Stay alert to social engineering risks",
   ])("renders %s accordion item", async title => {
     await renderInModal(<SecurityWarningModal />);

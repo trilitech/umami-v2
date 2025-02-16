@@ -4,8 +4,8 @@ import type { Config } from "jest";
 const config: Config = {
   ...baseConfig,
 
-  testEnvironment: "node",
-
+  testEnvironment: "jsdom",
+  setupFiles: ["<rootDir>/src/setupTests.ts"],
   rootDir: "./",
 };
 export default config;

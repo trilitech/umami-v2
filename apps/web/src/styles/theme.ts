@@ -143,14 +143,14 @@ const theme = extendTheme({
               borderColor: "gray.900",
             },
             ":not(:placeholder-shown)": {
-              paddingRight: "32px",
+              paddingRight: "16px",
             },
             borderRadius: "34px",
             border: "1px solid",
             background: "none",
             borderColor: "gray.100",
             fontSize: { md: "14px", base: "12px" },
-            paddingLeft: { base: "32px", md: "38px" },
+            paddingLeft: { base: "30px", md: "40px" },
             paddingRight: "10px",
             _placeholder: {
               color: "gray.400",
@@ -375,6 +375,20 @@ const theme = extendTheme({
         },
       },
       variants: {
+        ghost: {
+          _disabled: {
+            color: "gray.300",
+            bg: "transparent",
+            "& svg": {
+              color: "gray.300",
+            },
+          },
+          _hover: {
+            _disabled: {
+              bg: "transparent",
+            },
+          },
+        },
         iconButton: {
           height: "34px",
           width: "34px",

@@ -1,38 +1,38 @@
-import { type SocialAccount } from "@umami/core";
-import { useDataPolling } from "@umami/data-polling";
-import {
-  useCurrentAccount,
-  useGetAccountBalance,
-  useGetDollarBalance,
-  useSelectNetwork,
-  useSelectedNetwork,
-} from "@umami/state";
-import { prettyTezAmount } from "@umami/tezos";
+import { ArrowDown, ArrowUpRight, Repeat, Wallet } from "@tamagui/lucide-icons";
+import { useCurrentAccount, useSelectNetwork, useSelectedNetwork } from "@umami/state";
 import { Button, Text, XStack, YStack } from "tamagui";
 
 import { ActionButton, BalanceDisplay, NetworkSwitch } from "./components";
-import { useSocialOnboarding } from "../../services/auth";
+import { FormPage } from "../../components/SendFlow/Tez";
+import { useModal } from "../../providers/ModalProvider";
+import { useOnboardingAuth } from "../../services/auth";
 
 export const Home = () => {
-  useDataPolling();
-
-  const currentAccount = useCurrentAccount();
+  const currentAccount = useCurrentAccount()!;
   const network = useSelectedNetwork();
   const selectNetwork = useSelectNetwork();
-  const { logout } = useSocialOnboarding();
+  const { logout } = useOnboardingAuth();
+  const { showModal } = useModal();
 
-  const address = currentAccount ? currentAccount.address.pkh : "";
-  const balance = useGetAccountBalance()(address);
-  const balanceInUsd = useGetDollarBalance()(address);
+  const address = currentAccount.address.pkh;
+
+  const handleLogout = async () => {
+    const idp = "idp" in currentAccount ? currentAccount.idp : undefined;
+    await logout(idp);
+  };
 
   return (
     <YStack alignItems="center" flex={1} paddingTop={20} backgroundColor="white">
-      <BalanceDisplay balance={balance} />
+      <BalanceDisplay address={address} />
       <XStack justifyContent="space-around" width="100%" marginVertical={20}>
-        <ActionButton title="Buy" />
-        <ActionButton title="Swap" />
-        <ActionButton title="Receive" />
-        <ActionButton title="Send" />
+        <ActionButton icon={<Wallet />} title="Buy" />
+        <ActionButton icon={<Repeat />} title="Swap" />
+        <ActionButton icon={<ArrowDown />} title="Receive" />
+        <ActionButton
+          icon={<ArrowUpRight boxSizing="24px" />}
+          onPress={() => showModal(<FormPage sender={currentAccount} />)}
+          title="Send"
+        />
       </XStack>
 
       <YStack alignItems="center" marginTop={50}>
@@ -44,17 +44,11 @@ export const Home = () => {
 
       <YStack alignItems="center" marginTop={20}>
         <Text>Current network: {network.name}</Text>
-        <Text>Label: {currentAccount?.label}</Text>
-        <Text>Address: {currentAccount?.address.pkh}</Text>
-        <Text>Balance: {prettyTezAmount(balance ?? 0)}</Text>
-        <Text>Balance in USD: {balanceInUsd?.toString() ?? "0"}</Text>
+        <Text>Label: {currentAccount.label}</Text>
+        <Text>Address: {address}</Text>
       </YStack>
 
-      <Button
-        marginTop={20}
-        onPress={() => logout((currentAccount as SocialAccount).idp)}
-        size="$4"
-      >
+      <Button marginTop={20} onPress={handleLogout} size="$4">
         Logout
       </Button>
     </YStack>

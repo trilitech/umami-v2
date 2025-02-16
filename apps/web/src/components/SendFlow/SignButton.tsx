@@ -28,7 +28,7 @@ export const SignButton = ({
   onSubmit,
   isLoading: externalIsLoading,
   isDisabled,
-  text = "Confirm Transaction",
+  text = "Confirm transaction",
   network: preferredNetwork,
 }: {
   onSubmit: (tezosToolkit: TezosToolkit) => Promise<BatchWalletOperation | void>;

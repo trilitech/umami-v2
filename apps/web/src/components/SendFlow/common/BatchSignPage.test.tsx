@@ -98,7 +98,7 @@ describe("<BatchSignPage />", () => {
     expect(screen.getByTestId("app-name")).toHaveTextContent("mockDappName");
 
     const signButton = screen.getByRole("button", {
-      name: "Confirm Transaction",
+      name: "Confirm transaction",
     });
     await waitFor(() => expect(signButton).toBeDisabled());
 
@@ -120,7 +120,9 @@ describe("<BatchSignPage />", () => {
         transactionHash: "ophash",
       })
     );
-    expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(<SuccessStep hash="ophash" />);
+    expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(<SuccessStep hash="ophash" />, {
+      canBeOverridden: true,
+    });
     dynamicModalContextMock.openWith.mockClear();
   });
 });

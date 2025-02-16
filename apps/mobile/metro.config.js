@@ -10,6 +10,18 @@ const defaultConfig = getDefaultConfig(projectRoot);
 
 defaultConfig.watchFolders = [workspaceRoot];
 
+// Replace @umami/crypto dependency with @umami/crypto/react-native for mobile
+defaultConfig.resolver.resolveRequest = (context, moduleName, platform) => {
+  if (moduleName === "@umami/crypto") {
+    return {
+      filePath: require.resolve("@umami/crypto/react-native"),
+      type: "sourceFile",
+    };
+  }
+
+  return context.resolveRequest(context, moduleName, platform);
+};
+
 defaultConfig.resolver = {
   ...defaultConfig.resolver,
   sourceExts: [...defaultConfig.resolver.sourceExts, "cjs", "mjs"],

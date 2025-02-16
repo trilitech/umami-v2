@@ -5,7 +5,7 @@ import { ArrowLeftCircleIcon } from "../../assets/icons";
 export const BaseBackButton = (props: Omit<IconButtonProps, "aria-label">) => (
   <IconButton
     position="absolute"
-    zIndex="100"
+    zIndex="2"
     top={{
       base: "12px",
       md: "18px",

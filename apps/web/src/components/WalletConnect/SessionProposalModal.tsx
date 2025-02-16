@@ -43,7 +43,7 @@ export const SessionProposalModal = ({
   const toggleWcPeerListUpdated = useToggleWcPeerListUpdated();
   const color = useColor();
 
-  const { onClose } = useDynamicModalContext();
+  const { goBack } = useDynamicModalContext();
   const { isLoading, handleAsyncAction } = useAsyncActionHandler();
 
   const verifyContext: Verify.Context = proposal.verifyContext;
@@ -82,13 +82,13 @@ export const SessionProposalModal = ({
       });
       console.log("WC session approved", session);
       toggleWcPeerListUpdated();
-      onClose();
+      goBack();
     });
 
   const onReject = () =>
     handleAsyncAction(async () => {
-      // close immediately assuming that the user wants to get rid of the modal
-      onClose();
+      // Close immediately assuming that the user wants to get rid of the modal
+      goBack();
       console.log("WC session rejected");
       await walletKit.rejectSession({
         id: proposal.id,

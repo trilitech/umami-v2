@@ -14,7 +14,7 @@ import {
   Text,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import { useDynamicModalContext, useMultiForm } from "@umami/components";
+import { useDynamicModalContext, useMultiForm, useToggleMnemonic } from "@umami/components";
 import { useAsyncActionHandler } from "@umami/state";
 import { CustomError } from "@umami/utils";
 import { validateMnemonic } from "bip39";
@@ -22,7 +22,7 @@ import { range } from "lodash";
 import { useState } from "react";
 import { FormProvider, useFieldArray } from "react-hook-form";
 
-import { CloseIcon } from "../../../assets/icons";
+import { CloseIcon, EyeIcon, EyeOffIcon } from "../../../assets/icons";
 import { useColor } from "../../../styles/useColor";
 import { MnemonicWord } from "../../MnemonicWord";
 import { RadioButtons } from "../../RadioButtons";
@@ -47,6 +47,7 @@ export const SeedPhraseTab = () => {
   });
   const { openWith } = useDynamicModalContext();
   const [showBlur, setShowBlur] = useState(true);
+  const { isVisible, toggleMnemonic } = useToggleMnemonic();
 
   const {
     handleSubmit,
@@ -86,7 +87,6 @@ export const SeedPhraseTab = () => {
   const onSubmit = ({ mnemonic }: FormValues) =>
     handleAsyncAction(async () => {
       if (!validateMnemonic(mnemonic.map(({ val }) => val).join(" "))) {
-        console.log("validateMnemonic", mnemonic.map(({ val }) => val).join(" "));
         throw new CustomError("Invalid Mnemonic");
       }
       return openWith(<SetupPassword mode="mnemonic" />);
@@ -182,6 +182,7 @@ export const SeedPhraseTab = () => {
                     variant: "mnemonic",
                     placeholder: `word #${index + 1}`,
                     height: "40px",
+                    type: isVisible ? "text" : "password",
                   },
                 }}
                 index={index}
@@ -206,6 +207,7 @@ export const SeedPhraseTab = () => {
                       variant: "mnemonic",
                       placeholder: `word #${index + 1}`,
                       height: "40px",
+                      type: isVisible ? "text" : "password",
                     },
                   }}
                   index={index}
@@ -215,19 +217,32 @@ export const SeedPhraseTab = () => {
             })}
           </Center>
 
-          <Center>
+          <Flex gap="8px">
             <Button
               gap="8px"
               width="full"
               marginTop="16px"
               fontSize="14px"
+              isDisabled={showBlur}
               onClick={clearAll}
               variant="ghost"
             >
               <Icon as={CloseIcon} boxSize="18px" color={color("400")} />
-              Clear All
+              Clear all
             </Button>
-          </Center>
+            <Button
+              gap="8px"
+              width="full"
+              marginTop="16px"
+              fontSize="14px"
+              isDisabled={showBlur}
+              onClick={toggleMnemonic}
+              variant="ghost"
+            >
+              <Icon as={isVisible ? EyeOffIcon : EyeIcon} boxSize="18px" color={color("400")} />
+              {isVisible ? "Hide phrase" : "Show phrase"}
+            </Button>
+          </Flex>
 
           <Button
             marginTop="30px"

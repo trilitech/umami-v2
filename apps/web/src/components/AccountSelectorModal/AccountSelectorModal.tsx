@@ -74,22 +74,10 @@ export const AccountSelectorModal = () => {
 
   const groupedAccounts = groupBy(implicitAccounts, getAccountGroupLabel);
 
-  const handleDeriveAccount = (account?: ImplicitAccount) => {
-    if (!account) {
-      return;
-    }
+  const showDeriveAccountButton = (account?: ImplicitAccount) =>
+    account && account.type === "mnemonic";
 
-    switch (account.type) {
-      case "mnemonic":
-        return openWith(<DeriveMnemonicAccountModal account={account as MnemonicAccount} />);
-      case "social":
-      case "ledger":
-      case "secret_key":
-        return openWith(<OnboardOptionsModal />);
-    }
-  };
-
-  const buttonLabel = (isLast: boolean) => (isLast ? "Remove & Off-board" : "Remove");
+  const buttonLabel = (isLast: boolean) => (isLast ? "Remove & off-board" : "Remove");
   const description = (isLast: boolean, type: string) => {
     const isMnemonic = type.toLowerCase().includes("seedphrase");
 
@@ -98,7 +86,7 @@ export const AccountSelectorModal = () => {
     } else if (isMnemonic) {
       return `Are you sure you want to remove all accounts derived from the ${type}? You will need to manually import them again.`;
     } else {
-      return `Are you sure you want to remove all of your ${type} accounts? You will need to manually import them again.`;
+      return `Are you sure you want to remove all of your ${type}? You will need to manually import them again.`;
     }
   };
 
@@ -118,7 +106,7 @@ export const AccountSelectorModal = () => {
           }
           goBack();
         }}
-        title="Remove All Accounts"
+        title="Remove all accounts"
       />
     );
   };
@@ -155,14 +143,20 @@ export const AccountSelectorModal = () => {
                       size="sm"
                       variant="ghost"
                     />
-                    <IconButton
-                      color={color("500")}
-                      aria-label={`Add ${type} account`}
-                      icon={<PlusCircleIcon />}
-                      onClick={() => handleDeriveAccount(accounts[0])}
-                      size="sm"
-                      variant="ghost"
-                    />
+                    {showDeriveAccountButton(accounts[0]) && (
+                      <IconButton
+                        color={color("500")}
+                        aria-label={`Add ${type} account`}
+                        icon={<PlusCircleIcon />}
+                        onClick={() =>
+                          openWith(
+                            <DeriveMnemonicAccountModal account={accounts[0] as MnemonicAccount} />
+                          )
+                        }
+                        size="sm"
+                        variant="ghost"
+                      />
+                    )}
                   </Flex>
                 )}
               </Center>
@@ -198,35 +192,29 @@ export const AccountSelectorModal = () => {
         margin="0"
         paddingX={{ base: "32px", md: "42px" }}
       >
-        {isVerified && (
-          <Flex
-            position="absolute"
-            top="-25px"
-            justifyContent="center"
-            width="full"
-            padding="8px"
-            background="white"
-            borderRadius="100px"
-            boxShadow={
-              showShadow
-                ? color(
-                    "0px -4px 10px 0px rgba(45, 55, 72, 0.10)",
-                    "0px -4px 10px 0px rgba(0, 0, 0, 0.20)"
-                  )
-                : "transparent"
-            }
-            transition="box-shadow 0.2s ease-in"
-            backdropFilter="blur(40px)"
-          >
-            <Button
-              width="full"
-              onClick={() => openWith(<OnboardOptionsModal />)}
-              variant="primary"
-            >
-              Add Account
-            </Button>
-          </Flex>
-        )}
+        <Flex
+          position="absolute"
+          top="-25px"
+          justifyContent="center"
+          width="full"
+          padding="8px"
+          background="white"
+          borderRadius="100px"
+          boxShadow={
+            showShadow
+              ? color(
+                  "0px -4px 10px 0px rgba(45, 55, 72, 0.10)",
+                  "0px -4px 10px 0px rgba(0, 0, 0, 0.20)"
+                )
+              : "transparent"
+          }
+          transition="box-shadow 0.2s ease-in"
+          backdropFilter="blur(40px)"
+        >
+          <Button width="full" onClick={() => openWith(<OnboardOptionsModal />)} variant="primary">
+            Add account
+          </Button>
+        </Flex>
       </ModalFooter>
     </ModalContent>
   );

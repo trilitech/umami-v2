@@ -31,7 +31,7 @@ describe("<AdvancedAccountSettings />", () => {
     render(<TestComponent onSubmit={() => {}} />);
 
     await act(() => user.click(screen.getByText("Advanced")));
-    const input = screen.getByLabelText("Derivation Path");
+    const input = screen.getByLabelText("Derivation path");
     await act(() => user.clear(input));
     fireEvent.blur(input);
 
@@ -52,7 +52,7 @@ describe("<AdvancedAccountSettings />", () => {
     const user = userEvent.setup();
     render(<TestComponent onSubmit={() => {}} />);
 
-    const input = screen.getByLabelText("Derivation Path");
+    const input = screen.getByLabelText("Derivation path");
     await act(() => user.clear(input));
     await act(() => user.click(screen.getByText("Reset")));
 

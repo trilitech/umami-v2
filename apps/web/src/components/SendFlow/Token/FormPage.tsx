@@ -85,7 +85,7 @@ export const FormPage = (
           <FormPageHeader />
           <ModalBody gap="24px">
             <FormControl data-testid="available-balance">
-              <FormLabel>Available Balance</FormLabel>
+              <FormLabel>Available balance</FormLabel>
               <TokenTile amount={token.balance} token={token} />
             </FormControl>
             <FormControl isInvalid={!!errors.prettyAmount}>

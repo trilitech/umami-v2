@@ -41,7 +41,7 @@ export const AccountSelectorPopover = ({ account }: AccountSelectorPopoverProps)
       >
         <SearchIcon />
         <Text color={color("900")} fontWeight="600">
-          Account Info
+          Account info
         </Text>
       </Button>
       <Button

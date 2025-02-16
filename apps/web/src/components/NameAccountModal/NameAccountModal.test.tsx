@@ -8,13 +8,13 @@ const mockOnSubmit = jest.fn();
 describe("NameAccountModal", () => {
   it("renders with custom title and subtitle", async () => {
     await renderInModal(
-      <NameAccountModal onSubmit={mockOnSubmit} subtitle="Custom Subtitle" title="Custom Title" />
+      <NameAccountModal onSubmit={mockOnSubmit} subtitle="Custom subtitle" title="Custom title" />
     );
 
     await waitFor(() => {
-      expect(screen.getByText("Custom Title")).toBeVisible();
+      expect(screen.getByText("Custom title")).toBeVisible();
     });
-    expect(screen.getByText("Custom Subtitle")).toBeVisible();
+    expect(screen.getByText("Custom subtitle")).toBeVisible();
     expect(screen.queryByTestId("advanced-section")).not.toBeInTheDocument();
   });
 
@@ -23,7 +23,7 @@ describe("NameAccountModal", () => {
 
     await renderInModal(<NameAccountModal onSubmit={mockOnSubmit} />);
 
-    await act(() => user.type(screen.getByLabelText("Account name (Optional)"), "Test Account"));
+    await act(() => user.type(screen.getByLabelText("Account name (optional)"), "Test Account"));
     await act(() => user.click(screen.getByRole("button", { name: "Continue" })));
 
     expect(mockOnSubmit).toHaveBeenCalled();

@@ -12,7 +12,7 @@ import { ModalCloseButton } from "../CloseButton";
 export const headerText = (
   _operationType: AccountOperations["type"],
   _mode: SignPageMode
-): string => "Confirm Transaction";
+): string => "Confirm transaction";
 
 export const subTitle = (signer: ImplicitAccount): string | undefined => {
   switch (signer.type) {

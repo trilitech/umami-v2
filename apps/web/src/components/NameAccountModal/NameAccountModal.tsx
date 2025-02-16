@@ -31,7 +31,7 @@ type NameAccountModalProps = {
 };
 
 export const NameAccountModal = ({
-  title = "Name Your Account",
+  title = "Name your account",
   subtitle,
   onSubmit,
   withAdvancedSettings = false,
@@ -79,7 +79,7 @@ export const NameAccountModal = ({
         <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
           <ModalBody gap="30px">
             <FormControl>
-              <FormLabel>Account name (Optional)</FormLabel>
+              <FormLabel>Account name (optional)</FormLabel>
               <Input
                 data-testid="accountName"
                 type="text"

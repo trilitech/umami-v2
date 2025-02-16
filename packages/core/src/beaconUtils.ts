@@ -1,6 +1,6 @@
 import { type PartialTezosOperation, TezosOperationType } from "@airgap/beacon-wallet";
 import { isValidImplicitPkh, parseImplicitPkh, parsePkh } from "@umami/tezos";
-import { CustomError } from "@umami/utils";
+import { WalletConnectError, WcErrorCode } from "@umami/utils";
 
 import { type ImplicitAccount } from "./Account";
 import { type ImplicitOperations } from "./AccountOperations";
@@ -19,7 +19,7 @@ export const toAccountOperations = (
   signer: ImplicitAccount
 ): ImplicitOperations => {
   if (operationDetails.length === 0) {
-    throw new CustomError("Empty operation details!");
+    throw new WalletConnectError("Empty operation details!", WcErrorCode.INVALID_PARAMS, null);
   }
 
   const operations = operationDetails.map(operation =>
@@ -106,6 +106,10 @@ export const partialOperationToOperation = (
       };
     }
     default:
-      throw new CustomError(`Unsupported operation kind: ${partialOperation.kind}`);
+      throw new WalletConnectError(
+        `Unsupported operation kind: ${partialOperation.kind}`,
+        WcErrorCode.METHOD_UNSUPPORTED,
+        null
+      );
   }
 };

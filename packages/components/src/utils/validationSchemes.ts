@@ -29,5 +29,5 @@ export const getNetworkValidationScheme = (availableNetworks: Network[], network
     rpcUrl: urlScheme("RPC"),
     tzktApiUrl: urlScheme("Tzkt API"),
     tzktExplorerUrl: urlScheme("Tzkt Explorer"),
-    buyTezUrl: urlScheme("Buy Tez").or(z.literal("")),
+    buyTezUrl: urlScheme("Buy tez").or(z.literal("")),
   });
