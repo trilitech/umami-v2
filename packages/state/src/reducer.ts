@@ -1,5 +1,5 @@
 import { type Action, combineReducers } from "@reduxjs/toolkit";
-import { type Storage, persistReducer } from "redux-persist";
+import { type Storage } from "redux-persist";
 import createWebStorage from "redux-persist/lib/storage/createWebStorage";
 import { encryptTransform } from "redux-persist-transform-encrypt";
 
@@ -17,7 +17,8 @@ import { multisigsSlice } from "./slices/multisigs";
 import { networksSlice } from "./slices/networks";
 import { protocolSettingsSlice } from "./slices/protocolSettings";
 import { tokensSlice } from "./slices/tokens";
-import { getOrCreateSessionKey } from "./utils/localEncryptionKey";
+import { getOrCreateUserNonce } from "./utils/localEncryptionKey";
+
 let TEST_STORAGE: Storage | undefined;
 
 const getTestStorage = () => {
@@ -33,8 +34,35 @@ const getTestStorage = () => {
     : TEST_STORAGE;
 };
 
-export const makeReducer = (storage_: Storage | undefined) => {
+export const makeReducer = () => {
+  const appReducer = combineReducers({
+    accounts: accountsSlice.reducer,
+    announcement: announcementSlice.reducer,
+    assets: assetsSlice.reducer,
+    batches: batchesSlice.reducer,
+    beacon: beaconSlice.reducer,
+    walletconnect: wcSlice.reducer,
+    contacts: contactsSlice.reducer,
+    errors: errorsSlice.reducer,
+    multisigs: multisigsSlice.reducer,
+    networks: networksSlice.reducer,
+    protocolSettings: protocolSettingsSlice.reducer,
+    tokens: tokensSlice.reducer,
+  });
+
+  return (state: any, action: Action) => {
+    if (action.type === "RESET_ALL") {
+      state = undefined;
+    }
+    return appReducer(state, action);
+  };
+};
+
+export const makePersistConfigs = (storage_: Storage | undefined, password?: string) => {
   const storage = storage_ || getTestStorage() || createWebStorage("local");
+  const nonce = getOrCreateUserNonce(password);
+  
+  if (!nonce) {return null;}
 
   const rootPersistConfig = {
     key: "root",
@@ -45,7 +73,7 @@ export const makeReducer = (storage_: Storage | undefined) => {
     transforms: [
       encryptTransform(
         {
-          secretKey: getOrCreateSessionKey(),
+          secretKey: nonce,
           onError: error => {
             console.error("Error encrypting root state:", error);
           },
@@ -63,7 +91,7 @@ export const makeReducer = (storage_: Storage | undefined) => {
     blacklist: ["password"],
     transforms: [
       encryptTransform({
-        secretKey: getOrCreateSessionKey(),
+        secretKey: nonce,
         onError: error => {
           console.error("Error encrypting accounts state:", error);
         },
@@ -71,30 +99,5 @@ export const makeReducer = (storage_: Storage | undefined) => {
     ],
   };
 
-  const appReducer = combineReducers({
-    accounts: persistReducer(accountsPersistConfig, accountsSlice.reducer),
-    announcement: announcementSlice.reducer,
-    assets: assetsSlice.reducer,
-    batches: batchesSlice.reducer,
-    beacon: beaconSlice.reducer,
-    walletconnect: wcSlice.reducer,
-    contacts: contactsSlice.reducer,
-    errors: errorsSlice.reducer,
-    multisigs: multisigsSlice.reducer,
-    networks: networksSlice.reducer,
-    protocolSettings: protocolSettingsSlice.reducer,
-    tokens: tokensSlice.reducer,
-  });
-
-  type AppReducerState = ReturnType<typeof appReducer> | undefined;
-
-  const rootReducers = (state: AppReducerState, action: Action) => {
-    if (action.type === "RESET_ALL") {
-      state = undefined;
-    }
-
-    return appReducer(state, action);
-  };
-
-  return persistReducer(rootPersistConfig, rootReducers);
+  return { rootPersistConfig, accountsPersistConfig };
 };
