@@ -17,7 +17,7 @@ import { multisigsSlice } from "./slices/multisigs";
 import { networksSlice } from "./slices/networks";
 import { protocolSettingsSlice } from "./slices/protocolSettings";
 import { tokensSlice } from "./slices/tokens";
-
+import { getOrCreateSessionKey } from "./utils/localEncryptionKey";
 let TEST_STORAGE: Storage | undefined;
 
 const getTestStorage = () => {
@@ -45,7 +45,7 @@ export const makeReducer = (storage_: Storage | undefined) => {
     transforms: [
       encryptTransform(
         {
-          secretKey: "umami-123-deva",
+          secretKey: getOrCreateSessionKey(),
           onError: error => {
             console.error("Error encrypting root state:", error);
           },
@@ -63,7 +63,7 @@ export const makeReducer = (storage_: Storage | undefined) => {
     blacklist: ["password"],
     transforms: [
       encryptTransform({
-        secretKey: "umami-123-deva",
+        secretKey: getOrCreateSessionKey(),
         onError: error => {
           console.error("Error encrypting accounts state:", error);
         },
@@ -86,10 +86,13 @@ export const makeReducer = (storage_: Storage | undefined) => {
     tokens: tokensSlice.reducer,
   });
 
-  const rootReducers = (state: any, action: Action) => {
+  type AppReducerState = ReturnType<typeof appReducer> | undefined;
+
+  const rootReducers = (state: AppReducerState, action: Action) => {
     if (action.type === "RESET_ALL") {
       state = undefined;
     }
+
     return appReducer(state, action);
   };
 
