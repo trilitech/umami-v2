@@ -1,14 +1,14 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Divider, Flex, Text } from "@chakra-ui/react";
+import { useAddressPill } from "@umami/components";
 import {
   useCurrentAccount,
   useGetAccountBalanceDetails,
   useGetAccountDelegate,
 } from "@umami/state";
-import { prettyTezAmount } from "@umami/tezos";
+import { formatTezAmountMin0Decimals } from "@umami/tezos";
 import { BigNumber } from "bignumber.js";
 
 import { useColor } from "../../styles/useColor";
-import { AddressPill } from "../AddressPill";
 
 const RoundStatusDot = ({ background }: { background: string }) => (
   <Box
@@ -25,6 +25,7 @@ export const AccountBalanceDetails = () => {
   const color = useColor();
   const currentAccount = useCurrentAccount()!;
   const address = currentAccount.address.pkh;
+
   const {
     spendableBalance,
     stakedBalance,
@@ -33,6 +34,7 @@ export const AccountBalanceDetails = () => {
     totalBalance,
   } = useGetAccountBalanceDetails(address);
   const delegate = useGetAccountDelegate()(address);
+  const { addressAlias } = useAddressPill({ rawAddress: delegate || currentAccount.address });
 
   const BalanceLabel = ({ label }: { label: string }) => (
     <Text color={color("600")} fontWeight="600" size="sm">
@@ -48,63 +50,106 @@ export const AccountBalanceDetails = () => {
     testid: string;
     value: BigNumber | string | number;
   }) => (
-    <Flex alignItems="center" justifyContent="space-between" width="100%" data-testid={testid}>
+    <Flex
+      alignItems="center"
+      justifyContent="space-between"
+      gap="12px"
+      width="100%"
+      data-testid={testid}
+    >
       <BalanceLabel label={label} />
       <Text color={color("700")} fontWeight="600" size="sm">
-        {prettyTezAmount(value)}
+        {formatTezAmountMin0Decimals(value)}
       </Text>
     </Flex>
   );
 
-  return (
-    <Box data-testid="balance-details" paddingX="12px">
-      <Flex flexDirection="column" gap="4px">
-        {!delegate && !spendableBalance.isEqualTo(totalBalance) && (
+  return !delegate && spendableBalance.isEqualTo(totalBalance) ? null : (
+    <Flex
+      flexDirection="column"
+      gap="12px"
+      padding="12px"
+      background={color("50")}
+      borderRadius="20px"
+      data-testid="balance-details"
+      paddingX="12px"
+    >
+      {!delegate && !spendableBalance.isEqualTo(totalBalance) && (
+        <Flex alignItems="left" data-testid="delegation-ended">
           <Flex
             alignItems="center"
-            justifyContent="space-between"
-            width="100%"
-            data-testid="delegation"
+            justifyContent="flex-end"
+            gap="2"
+            background="rgba(197, 48, 48, 0.15)"
+            borderRadius="100px"
+            paddingX="3"
+            paddingY="1"
           >
-            <BalanceLabel label="Delegation:" />
-            <Flex alignItems="center" justifyContent="flex-end" gap="2">
-              <RoundStatusDot background={color("orange")} />
-              <Text size="sm">Inactive</Text>
-            </Flex>
+            <RoundStatusDot background={color("red")} />
+            <Text color={color("red")} size="sm">
+              Delegation ended
+            </Text>
           </Flex>
-        )}
-        {delegate && (
+        </Flex>
+      )}
+      {delegate && (
+        <Flex
+          alignItems="center"
+          justifyContent="left"
+          gap="6px"
+          width="100%"
+          data-testid="delagated-to"
+        >
           <Flex
             alignItems="center"
-            justifyContent="space-between"
-            width="100%"
-            data-testid="delagated-to"
+            justifyContent="flex-end"
+            gap="6px"
+            background={color("greenLight")}
+            borderRadius="100px"
+            paddingX="3"
+            paddingY="1"
           >
-            <BalanceLabel label="Delegated to:" />
-            <AddressPill address={delegate} data-testid="current-baker" />
+            <RoundStatusDot background={color("greenDark")} />
+            <Text color={color("green")} fontWeight="600" size="sm">
+              Delegation
+            </Text>
           </Flex>
-        )}
-        {!spendableBalance.isEqualTo(totalBalance) && (
-          <BalanceRow label="Spendable:" testid="spendable-balance" value={spendableBalance} />
-        )}
-        {stakedBalance > 0 && (
-          <BalanceRow label="Staked:" testid="staked-balance" value={stakedBalance} />
-        )}
-        {totalPendingAmount > BigNumber(0) && (
-          <BalanceRow
-            label="Frozen unstaked:"
-            testid="frozen-unstaked-balance"
-            value={totalPendingAmount}
-          />
-        )}
-        {totalFinalizableAmount > BigNumber(0) && (
-          <BalanceRow
-            label="Finalizable unstaked:"
-            testid="finalizable-unstaked-balance"
-            value={totalFinalizableAmount}
-          />
-        )}
-      </Flex>
-    </Box>
+          <Text
+            overflow="hidden"
+            maxWidth="50vw"
+            data-testid="current-baker"
+            size="sm"
+            style={{
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
+            To: {addressAlias || delegate.address}
+          </Text>
+        </Flex>
+      )}
+      {!spendableBalance.isEqualTo(totalBalance) && <Divider />}
+      {stakedBalance > 0 && (
+        <BalanceRow label="Staked" testid="staked-balance" value={stakedBalance} />
+      )}
+      {totalPendingAmount > BigNumber(0) && (
+        <BalanceRow
+          label="Frozen unstaked"
+          testid="frozen-unstaked-balance"
+          value={totalPendingAmount}
+        />
+      )}
+      {totalFinalizableAmount > BigNumber(0) && (
+        <BalanceRow
+          label="Finalizable"
+          testid="finalizable-balance"
+          value={totalFinalizableAmount}
+        />
+      )}
+      {!totalBalance.isEqualTo(spendableBalance) && (
+        <BalanceRow label="Total" testid="total-balance" value={totalBalance} />
+      )}
+    </Flex>
   );
 };

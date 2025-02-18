@@ -24,7 +24,6 @@ beforeEach(() => {
 describe("<AccountBalanceDetails />", () => {
   describe("balance details", () => {
     it("hids 0 values", () => {
-      store.dispatch(assetsActions.updateConversionRate(2.44));
       store.dispatch(
         assetsActions.updateAccountStates([
           rawAccountFixture({
@@ -36,17 +35,17 @@ describe("<AccountBalanceDetails />", () => {
 
       render(<AccountBalanceDetails />, { store });
 
-      expect(screen.queryByTestId("spendable-balance")).not.toBeInTheDocument();
+      expect(screen.queryByTestId("total-balance")).not.toBeInTheDocument();
       expect(screen.queryByTestId("staked-balance")).not.toBeInTheDocument();
-      expect(screen.queryByTestId("finalizable-unstaked-balance")).not.toBeInTheDocument();
+      expect(screen.queryByTestId("finalizable-balance")).not.toBeInTheDocument();
     });
 
     it("doesn't render balance if it's not available", () => {
       render(<AccountBalanceDetails />, { store });
 
-      expect(screen.queryByTestId("spendable-balance")).not.toBeInTheDocument();
+      expect(screen.queryByTestId("total-balance")).not.toBeInTheDocument();
       expect(screen.queryByTestId("staked-balance")).not.toBeInTheDocument();
-      expect(screen.queryByTestId("finalizable-unstaked-balance")).not.toBeInTheDocument();
+      expect(screen.queryByTestId("finalizable-balance")).not.toBeInTheDocument();
     });
   });
 
@@ -62,8 +61,8 @@ describe("<AccountBalanceDetails />", () => {
 
       render(<AccountBalanceDetails />, { store });
 
-      expect(screen.getByText("Delegated to:")).toBeInTheDocument();
-      expect(screen.getByTestId("current-baker")).toHaveTextContent("mega_baker");
+      expect(screen.getByText("Delegation")).toBeInTheDocument();
+      expect(screen.getByTestId("current-baker")).toHaveTextContent("To: mega_baker");
     });
 
     it("no delegation status if not delegated and no staking-related balances", () => {
@@ -78,12 +77,11 @@ describe("<AccountBalanceDetails />", () => {
 
       render(<AccountBalanceDetails />, { store });
 
-      expect(screen.queryByText("Delegation:")).not.toBeInTheDocument();
-      expect(screen.queryByText("Inactive")).not.toBeInTheDocument();
+      expect(screen.queryByText("Delegation ended")).not.toBeInTheDocument();
       expect(screen.queryByTestId("current-baker")).not.toBeInTheDocument();
     });
 
-    it("delegation status Inactive is shown if not delegated and finalizable balance", () => {
+    it("delegation status ended is shown if not delegated and finalizable balance", () => {
       store.dispatch(
         assetsActions.updateAccountStates([
           rawAccountFixture({
@@ -105,8 +103,7 @@ describe("<AccountBalanceDetails />", () => {
 
       render(<AccountBalanceDetails />, { store });
 
-      expect(screen.getByText("Delegation:")).toBeInTheDocument();
-      expect(screen.getByText("Inactive")).toBeInTheDocument();
+      expect(screen.getByText("Delegation ended")).toBeInTheDocument();
       expect(screen.queryByTestId("current-baker")).not.toBeInTheDocument();
     });
 
@@ -132,12 +129,11 @@ describe("<AccountBalanceDetails />", () => {
 
       render(<AccountBalanceDetails />, { store });
 
-      expect(screen.getByText("Delegation:")).toBeInTheDocument();
-      expect(screen.getByText("Inactive")).toBeInTheDocument();
+      expect(screen.getByText("Delegation ended")).toBeInTheDocument();
       expect(screen.queryByTestId("current-baker")).not.toBeInTheDocument();
     });
 
-    it("renders staked and spendable balance", () => {
+    it("renders staked and total balance", () => {
       store.dispatch(
         assetsActions.updateAccountStates([
           rawAccountFixture({
@@ -150,11 +146,11 @@ describe("<AccountBalanceDetails />", () => {
 
       render(<AccountBalanceDetails />, { store });
 
-      expect(screen.getByTestId("spendable-balance")).toHaveTextContent("0.234567 ꜩ");
-      expect(screen.getByTestId("staked-balance")).toHaveTextContent("Staked:");
-      expect(screen.getByTestId("staked-balance")).toHaveTextContent("1.000000 ꜩ");
+      expect(screen.getByTestId("total-balance")).toHaveTextContent("1.234567 ꜩ");
+      expect(screen.getByTestId("staked-balance")).toHaveTextContent("Staked");
+      expect(screen.getByTestId("staked-balance")).toHaveTextContent("1 ꜩ");
       expect(screen.queryByTestId("frozen-unstaked-balance")).not.toBeInTheDocument();
-      expect(screen.queryByTestId("finalizable-unstaked-balance")).not.toBeInTheDocument();
+      expect(screen.queryByTestId("finalizable-balance")).not.toBeInTheDocument();
     });
 
     it("renders unstaked (frozen) balance when greater than 0", () => {
@@ -187,11 +183,11 @@ describe("<AccountBalanceDetails />", () => {
 
       render(<AccountBalanceDetails />, { store });
 
-      expect(screen.getByTestId("spendable-balance")).toHaveTextContent("1.234567 ꜩ");
+      expect(screen.getByTestId("total-balance")).toHaveTextContent("1.354567 ꜩ");
       expect(screen.queryByTestId("staked-balance")).not.toBeInTheDocument();
-      expect(screen.queryByTestId("finalizable-unstaked-balance")).not.toBeInTheDocument();
-      expect(screen.getByTestId("frozen-unstaked-balance")).toHaveTextContent("Frozen unstaked:");
-      expect(screen.getByTestId("frozen-unstaked-balance")).toHaveTextContent("0.120000 ꜩ");
+      expect(screen.queryByTestId("finalizable-balance")).not.toBeInTheDocument();
+      expect(screen.getByTestId("frozen-unstaked-balance")).toHaveTextContent("Frozen unstaked");
+      expect(screen.getByTestId("frozen-unstaked-balance")).toHaveTextContent("0.12 ꜩ");
     });
 
     it("renders finalizable balance when greater than 0", () => {
@@ -217,14 +213,12 @@ describe("<AccountBalanceDetails />", () => {
 
       render(<AccountBalanceDetails />, { store });
 
-      expect(screen.getByTestId("spendable-balance")).toHaveTextContent("Spendable:");
-      expect(screen.getByTestId("spendable-balance")).toHaveTextContent("1.234567 ꜩ");
+      expect(screen.getByTestId("total-balance")).toHaveTextContent("Total");
+      expect(screen.getByTestId("total-balance")).toHaveTextContent("1.534567 ꜩ");
       expect(screen.queryByTestId("staked-balance")).not.toBeInTheDocument();
       expect(screen.queryByTestId("frozen-unstaked-balance")).not.toBeInTheDocument();
-      expect(screen.getByTestId("finalizable-unstaked-balance")).toHaveTextContent(
-        "Finalizable unstaked:"
-      );
-      expect(screen.getByTestId("finalizable-unstaked-balance")).toHaveTextContent("0.300000 ꜩ");
+      expect(screen.getByTestId("finalizable-balance")).toHaveTextContent("Finalizable");
+      expect(screen.getByTestId("finalizable-balance")).toHaveTextContent("0.3 ꜩ");
     });
 
     it("renders combination of staked, unstaked and frozen", () => {
@@ -269,16 +263,14 @@ describe("<AccountBalanceDetails />", () => {
 
       render(<AccountBalanceDetails />, { store });
 
-      expect(screen.getByTestId("spendable-balance")).toHaveTextContent("Spendable:");
-      expect(screen.getByTestId("spendable-balance")).toHaveTextContent("0.234567 ꜩ");
-      expect(screen.getByTestId("staked-balance")).toHaveTextContent("Staked:");
-      expect(screen.getByTestId("staked-balance")).toHaveTextContent("1.000000 ꜩ");
-      expect(screen.getByTestId("frozen-unstaked-balance")).toHaveTextContent("Frozen unstaked:");
-      expect(screen.getByTestId("frozen-unstaked-balance")).toHaveTextContent("0.210000 ꜩ");
-      expect(screen.getByTestId("finalizable-unstaked-balance")).toHaveTextContent(
-        "Finalizable unstaked:"
-      );
-      expect(screen.getByTestId("finalizable-unstaked-balance")).toHaveTextContent("3.000000 ꜩ");
+      expect(screen.getByTestId("total-balance")).toHaveTextContent("Total");
+      expect(screen.getByTestId("total-balance")).toHaveTextContent("4.444567 ꜩ");
+      expect(screen.getByTestId("staked-balance")).toHaveTextContent("Staked");
+      expect(screen.getByTestId("staked-balance")).toHaveTextContent("1 ꜩ");
+      expect(screen.getByTestId("frozen-unstaked-balance")).toHaveTextContent("Frozen unstaked");
+      expect(screen.getByTestId("frozen-unstaked-balance")).toHaveTextContent("0.21 ꜩ");
+      expect(screen.getByTestId("finalizable-balance")).toHaveTextContent("Finalizable");
+      expect(screen.getByTestId("finalizable-balance")).toHaveTextContent("3 ꜩ");
     });
   });
 });

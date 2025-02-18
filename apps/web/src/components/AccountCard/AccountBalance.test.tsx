@@ -35,7 +35,7 @@ describe("<AccountBalance />", () => {
       render(<AccountBalance />, { store });
 
       expect(screen.getByTestId("tez-balance")).toHaveTextContent("1.234567 ꜩ");
-      expect(screen.getByTestId("usd-balance")).toHaveTextContent("$3.02 (US$2.44 / XTZ)");
+      expect(screen.getByTestId("usd-balance")).toHaveTextContent("$3.02");
     });
 
     it("renders only tez balance if conversion rate is not available", () => {
