@@ -5,6 +5,7 @@ import { type Persistor } from "redux-persist";
 
 import { useValidateMasterPassword } from "./getAccountData";
 import { useRestoreFromMnemonic } from "./setAccountData";
+import { useAppSelector } from "./useAppSelector";
 
 const isV1Backup = (backup: any) => backup["recoveryPhrases"] && backup["derivationPaths"];
 
@@ -98,14 +99,22 @@ export const restoreV21BackupFile = async (
 
 export const useDownloadBackupFile = () => {
   const validateMasterPassword = useValidateMasterPassword();
+  const accounts = useAppSelector(s => s.accounts);
+
+  const filteredAccounts = {
+    ...accounts,
+    // For backup we need to filter out the unverified accounts
+    items: accounts.items.filter(account => account.type !== "mnemonic" || account.isVerified),
+  };
 
   return async (password: string) => {
     await validateMasterPassword?.(password);
 
     const storage = {
-      "persist:accounts": localStorage.getItem("persist:accounts"),
+      "persist:accounts": JSON.stringify(filteredAccounts),
       "persist:root": localStorage.getItem("persist:root"),
     };
+
     const rawBackup = JSON.stringify(storage);
     const encryptedBackup = await encrypt(rawBackup, password);
 
