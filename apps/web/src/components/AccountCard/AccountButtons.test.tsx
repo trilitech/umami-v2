@@ -5,8 +5,10 @@ import {
   addTestAccount,
   makeStore,
   networksActions,
+  useGetAccountBalanceDetails,
 } from "@umami/state";
 import { GHOSTNET, MAINNET } from "@umami/tezos";
+import { BigNumber } from "bignumber.js";
 
 import { AccountButtons } from "./AccountButtons";
 import { act, render, screen, userEvent, waitFor, within } from "../../testUtils";
@@ -20,7 +22,22 @@ beforeEach(() => {
   store.dispatch(accountsActions.setCurrent(account.address.pkh));
 });
 
+jest.mock("@umami/state", () => ({
+  ...jest.requireActual("@umami/state"),
+  useGetAccountBalanceDetails: jest.fn(),
+}));
+
 describe("<AccountButtons />", () => {
+  beforeEach(() => {
+    jest.mocked(useGetAccountBalanceDetails).mockReturnValue({
+      spendableBalance: BigNumber(1000000),
+      totalBalance: BigNumber(1000000),
+      stakedBalance: 0,
+      totalFinalizableAmount: BigNumber(1000000),
+      totalPendingAmount: BigNumber(0),
+    });
+  });
+
   it("renders a buy tez link for mainnet", () => {
     store.dispatch(networksActions.setCurrent(MAINNET));
 
@@ -50,23 +67,51 @@ describe("<AccountButtons />", () => {
     expect(screen.getByRole("button", { name: "Receive" })).toBeVisible();
   });
 
-  it("renders a send button", async () => {
-    const user = userEvent.setup();
-    render(<AccountButtons />, { store });
+  describe("renders a send button", () => {
+    it("if user has enough balance", async () => {
+      const user = userEvent.setup();
+      render(<AccountButtons />, { store });
 
-    const button = screen.getByRole("button", { name: "Send" });
+      const button = screen.getByRole("button", { name: "Send" });
 
-    expect(button).toBeVisible();
+      expect(button).toBeVisible();
 
-    await waitFor(async () => {
-      await act(() => user.click(button));
+      await waitFor(async () => {
+        await act(() => user.click(button));
+      });
+
+      await waitFor(() =>
+        expect(
+          within(screen.getByRole("dialog")).getByRole("heading", { name: "Send" })
+        ).toBeVisible()
+      );
     });
 
-    await waitFor(() =>
-      expect(
-        within(screen.getByRole("dialog")).getByRole("heading", { name: "Send" })
-      ).toBeVisible()
-    );
+    it("if user has insufficient balance", async () => {
+      jest.mocked(useGetAccountBalanceDetails).mockReturnValue({
+        spendableBalance: BigNumber(0),
+        totalBalance: BigNumber(0),
+        stakedBalance: 0,
+        totalFinalizableAmount: BigNumber(0),
+        totalPendingAmount: BigNumber(0),
+      });
+      const user = userEvent.setup();
+      render(<AccountButtons />, { store });
+
+      const button = screen.getByRole("button", { name: "Send" });
+
+      expect(button).toBeVisible();
+
+      await waitFor(async () => {
+        await act(() => user.click(button));
+      });
+
+      await waitFor(() =>
+        expect(
+          within(screen.getByRole("dialog")).getByRole("heading", { name: "Insufficient Funds" })
+        ).toBeVisible()
+      );
+    });
   });
 
   describe("if user is unverified", () => {

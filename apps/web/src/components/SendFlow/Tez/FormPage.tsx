@@ -10,6 +10,7 @@ import {
   ModalFooter,
 } from "@chakra-ui/react";
 import { type TezTransfer } from "@umami/core";
+import { useGetAccountBalanceDetails } from "@umami/state";
 import { type RawPkh, TEZ, TEZ_DECIMALS, parsePkh, tezToMutez } from "@umami/tezos";
 import { FormProvider, useForm } from "react-hook-form";
 
@@ -65,6 +66,23 @@ export const FormPage = ({ ...props }: FormPageProps<FormValues>) => {
     handleSubmit,
   } = form;
 
+  const { spendableBalance } = useGetAccountBalanceDetails(props.sender?.address.pkh ?? "");
+
+  const handleValidateAmount = (value: string) => {
+    const validationMessage = makeValidateDecimals(TEZ_DECIMALS)(value);
+
+    if (typeof validationMessage === "string") {
+      return validationMessage;
+    }
+
+    const amountToSend = tezToMutez(value);
+
+    if (amountToSend.gt(spendableBalance)) {
+      return "Insufficient funds";
+    }
+
+    return true;
+  };
   return (
     <FormProvider {...form}>
       <ModalContent>
@@ -84,7 +102,7 @@ export const FormPage = ({ ...props }: FormPageProps<FormValues>) => {
                   type="number"
                   {...register("prettyAmount", {
                     required: "Amount is required",
-                    validate: makeValidateDecimals(TEZ_DECIMALS),
+                    validate: handleValidateAmount,
                   })}
                   placeholder="0.000000"
                 />

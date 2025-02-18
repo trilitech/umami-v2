@@ -5,9 +5,16 @@ import {
   mockMnemonicAccount,
   mockMultisigAccount,
 } from "@umami/core";
-import { type UmamiStore, addTestAccount, makeStore, mockToast } from "@umami/state";
+import {
+  type UmamiStore,
+  addTestAccount,
+  makeStore,
+  mockToast,
+  useGetAccountBalanceDetails,
+} from "@umami/state";
 import { executeParams } from "@umami/test-utils";
 import { CustomError } from "@umami/utils";
+import { BigNumber } from "bignumber.js";
 
 import { FormPage } from "./FormPage";
 import { SignPage } from "./SignPage";
@@ -31,10 +38,22 @@ jest.mock("@chakra-ui/react", () => ({
   useBreakpointValue: jest.fn(),
 }));
 
+jest.mock("@umami/state", () => ({
+  ...jest.requireActual("@umami/state"),
+  useGetAccountBalanceDetails: jest.fn(),
+}));
+
 let store: UmamiStore;
 
 beforeEach(() => {
   store = makeStore();
+  jest.mocked(useGetAccountBalanceDetails).mockReturnValue({
+    spendableBalance: BigNumber(1000000),
+    totalBalance: BigNumber(1000000),
+    stakedBalance: 0,
+    totalFinalizableAmount: BigNumber(1000000),
+    totalPendingAmount: BigNumber(0),
+  });
 });
 
 describe("<Form />", () => {
@@ -158,6 +177,31 @@ describe("<Form />", () => {
       addTestAccount(store, mockMultisigAccount(0));
     });
 
+    it("correctly validates insufficient balance", async () => {
+      const user = userEvent.setup();
+      await renderInModal(
+        <FormPage
+          form={{
+            sender: mockImplicitAccount(0).address.pkh,
+            recipient: mockImplicitAccount(1).address.pkh,
+            prettyAmount: "2",
+          }}
+        />,
+        store
+      );
+
+      const amountInput = screen.getByLabelText("Amount");
+      await user.type(amountInput, "1");
+      await user.tab();
+
+      await waitFor(() =>
+        expect(screen.getByTestId("amount-error")).toHaveTextContent("Insufficient funds")
+      );
+
+      const submitButton = screen.getByText("Preview");
+      await waitFor(() => expect(submitButton).toBeDisabled());
+    });
+
     it("shows a toast if estimation fails", async () => {
       const user = userEvent.setup();
       await renderInModal(
@@ -165,11 +209,12 @@ describe("<Form />", () => {
           form={{
             sender: mockImplicitAccount(0).address.pkh,
             recipient: mockImplicitAccount(1).address.pkh,
-            prettyAmount: "1",
+            prettyAmount: "0.5",
           }}
         />,
         store
       );
+
       const submitButton = screen.getByText("Preview");
       await waitFor(() => expect(submitButton).toBeEnabled());
       const estimateMock = jest.mocked(estimate);
@@ -194,7 +239,7 @@ describe("<Form />", () => {
             form={{
               sender: sender.address.pkh,
               recipient: mockImplicitAccount(1).address.pkh,
-              prettyAmount: "1",
+              prettyAmount: "0.5",
             }}
           />,
           store
