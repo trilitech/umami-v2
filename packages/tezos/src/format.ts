@@ -11,11 +11,14 @@ export const tezToMutez = (tez: string): BigNumber => format("tz", "mutez", tez)
 export const mutezToTez = (mutez: BigNumber | string | number) =>
   format("mutez", "tz", mutez) as BigNumber;
 
-export const formatTezAmount = (mutez: BigNumber | string | number): string => {
+export const formatTezAmount = (
+  mutez: BigNumber | string | number,
+  minimumFractionDigits?: number
+): string => {
   const tezAmount = BigNumber(mutezToTez(mutez)).toNumber();
   // make sure we always show 6 digits after the decimal point
   const formatter = new Intl.NumberFormat("en-US", {
-    minimumFractionDigits: TEZ_DECIMALS,
+    minimumFractionDigits: minimumFractionDigits ?? TEZ_DECIMALS,
     maximumFractionDigits: TEZ_DECIMALS,
   });
 
@@ -25,6 +28,20 @@ export const formatTezAmount = (mutez: BigNumber | string | number): string => {
 export const prettyTezAmount = (mutez: BigNumber | string | number): string => {
   const fee = formatTezAmount(mutez);
   return `${fee} ${TEZ}`;
+};
+
+export const formatTezAmountMin0Decimals = (mutez: BigNumber | string | number): string => {
+  const fee = formatTezAmount(mutez, 0);
+  return `${fee} ${TEZ}`;
+};
+
+export const formatUsdAmount = (usd: BigNumber | string | number): string => {
+  const formatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
+
+  return formatter.format(BigNumber(usd).toNumber());
 };
 
 // Generates displayed account address string from public key hash

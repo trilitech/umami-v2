@@ -1,5 +1,11 @@
-import { mockImplicitAccount } from "@umami/core";
-import { type UmamiStore, accountsActions, addTestAccount, makeStore } from "@umami/state";
+import { mockImplicitAccount, rawAccountFixture } from "@umami/core";
+import {
+  type UmamiStore,
+  accountsActions,
+  addTestAccount,
+  assetsActions,
+  makeStore,
+} from "@umami/state";
 
 import { AccountCard } from "./AccountCard";
 import { render, screen } from "../../testUtils";
@@ -14,7 +20,22 @@ beforeEach(() => {
 });
 
 describe("<AccountCard />", () => {
-  it("renders account card", () => {
+  it("renders account card without balance details", () => {
+    render(<AccountCard />, { store });
+
+    expect(screen.getByTestId("account-tile")).toBeVisible();
+    expect(screen.getByTestId("account-balance")).toBeVisible();
+    expect(screen.queryByTestId("balance-details")).not.toBeInTheDocument();
+    expect(screen.getByTestId("account-buttons")).toBeVisible();
+  });
+  it("renders account card with balance details", () => {
+    store.dispatch(
+      assetsActions.updateAccountStates([
+        rawAccountFixture({
+          address: account.address.pkh,
+        }),
+      ])
+    );
     render(<AccountCard />, { store });
 
     expect(screen.getByTestId("account-tile")).toBeVisible();

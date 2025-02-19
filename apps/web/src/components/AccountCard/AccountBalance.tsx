@@ -1,6 +1,6 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { useCurrentAccount, useGetAccountBalanceDetails, useMutezToUsd } from "@umami/state";
-import { prettyTezAmount } from "@umami/tezos";
+import { formatUsdAmount, prettyTezAmount } from "@umami/tezos";
 import { BigNumber } from "bignumber.js";
 
 import { useColor } from "../../styles/useColor";
@@ -10,7 +10,7 @@ export const AccountBalance = () => {
   const currentAccount = useCurrentAccount()!;
   const address = currentAccount.address.pkh;
   const mutezToDollar = useMutezToUsd();
-  const { totalBalance } = useGetAccountBalanceDetails(address);
+  const { spendableBalance } = useGetAccountBalanceDetails(address);
 
   const BalanceLabel = ({ label }: { label: string }) => (
     <Text color={color("600")} fontWeight="600" size="sm">
@@ -27,29 +27,21 @@ export const AccountBalance = () => {
       return undefined;
     }
 
-    return `$${usdBalance}`;
+    return formatUsdAmount(usdBalance);
   };
 
-  const getConversionRate = () => {
-    const rate = mutezToDollar("1000000");
-    if (!rate) {
-      return null;
-    }
-    return `(US$${rate} / XTZ)`;
-  };
-
-  const totalUsdBalance = getUsdBalance(totalBalance.toString());
+  const totalUsdBalance = getUsdBalance(spendableBalance.toString());
 
   return (
     <Box data-testid="account-balance" paddingX="12px">
       <Flex flexDirection="column" gap="4px">
-        <BalanceLabel label="Tez balance" />
+        <BalanceLabel label="Spendable" />
         <Text color={color("900")} fontWeight="600" data-testid="tez-balance" size="2xl">
-          {prettyTezAmount(totalBalance)}
+          {prettyTezAmount(spendableBalance)}
         </Text>
         {totalUsdBalance && (
           <Text color={color("700")} data-testid="usd-balance" size="sm">
-            {totalUsdBalance} {getConversionRate()}
+            {totalUsdBalance}
           </Text>
         )}
       </Flex>

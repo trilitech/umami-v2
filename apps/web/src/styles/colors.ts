@@ -5,6 +5,7 @@ const light = {
   blueDark: "#2C2CE5",
   green: "#38A169",
   greenDark: "#25855A",
+  greenLight: "#DEF1E3",
   bg: "#E0E0FF",
   bgGradient:
     "linear-gradient(67deg, rgba(248, 248, 255, 0.70) 0%, rgba(248, 248, 255, 0.96) 29.5%, #F8F8FF 100%);",
@@ -33,6 +34,7 @@ const dark = {
   blueDark: "#2C2CE5",
   green: "#38A169",
   greenDark: "#25855A",
+  greenLight: "#DEF1E3",
   bg: "#121224",
   bgGradient:
     "linear-gradient(67deg, rgba(22, 22, 43, 0.20) 0%, rgba(22, 22, 43, 0.90) 29%, #16162B 100%)",
