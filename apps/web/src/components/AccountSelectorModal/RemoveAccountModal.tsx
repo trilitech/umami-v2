@@ -40,6 +40,7 @@ export const RemoveAccountModal = ({ account }: RemoveAccountModalProps) => {
   return (
     <ConfirmationModal
       buttonLabel={buttonLabel}
+      closeOnSubmit={isLastImplicitAccount}
       description={description}
       onSubmit={handleRemoveAccount}
       title="Remove account"

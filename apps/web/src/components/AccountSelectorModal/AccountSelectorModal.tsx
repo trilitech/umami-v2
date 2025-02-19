@@ -97,6 +97,7 @@ export const AccountSelectorModal = () => {
     return openWith(
       <ConfirmationModal
         buttonLabel={buttonLabel(isLast)}
+        closeOnSubmit={isLast}
         description={description(isLast, type)}
         onSubmit={() => {
           if (account.type === "mnemonic") {
