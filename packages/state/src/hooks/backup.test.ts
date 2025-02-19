@@ -1,10 +1,12 @@
+import { mockLedgerAccount, mockMnemonicAccount, mockSocialAccount } from "@umami/core";
 import { decrypt } from "@umami/crypto";
 import v21Backup from "@umami/test-utils/backups/V21Backup.json";
 import MockDate from "mockdate";
 
 import { useDownloadBackupFile, useRestoreBackup } from "./backup";
+import { type AccountsState } from "../slices";
 import { type UmamiStore, makeStore } from "../store";
-import { act, renderHook } from "../testUtils";
+import { act, addTestAccounts, renderHook } from "../testUtils";
 
 const v1Backup = {
   version: "1.0",
@@ -141,15 +143,44 @@ describe("<RestoreBackupFile />", () => {
 
 describe("useDownloadBackupFile", () => {
   MockDate.set("2021-01-01T02:05:01.000Z");
+  const mockAccounts = [
+    mockMnemonicAccount(0, { isVerified: true }),
+    mockMnemonicAccount(1, { isVerified: false }),
+    mockMnemonicAccount(2, { isVerified: true }),
+    mockSocialAccount(3),
+    mockLedgerAccount(4),
+  ];
 
-  it("fetches an encrypted state backup", async () => {
+  let store: UmamiStore;
+  beforeEach(() => {
+    store = makeStore();
+    addTestAccounts(store, mockAccounts);
+  });
+
+  it("fetches an encrypted state backup with only verified mnemonic accounts", async () => {
     const linkMock: any = { click: jest.fn() };
-    localStorage.setItem("persist:accounts", "persist_accounts_content");
+
+    localStorage.setItem(
+      "persist:accounts",
+      JSON.stringify({
+        ...(Object.keys(store.getState().accounts) as (keyof AccountsState)[]).reduce(
+          (acc, key) => {
+            acc[key] = JSON.stringify(store.getState().accounts[key]);
+            return acc;
+          },
+          {} as Record<keyof AccountsState, string>
+        ),
+        items: JSON.stringify(mockAccounts),
+      })
+    );
     localStorage.setItem("persist:root", "persist_root_content");
 
     const {
       result: { current: downloadBackupFile },
-    } = renderHook(() => useDownloadBackupFile());
+    } = renderHook(() => useDownloadBackupFile(), {
+      store,
+    });
+
     jest.spyOn(document, "createElement").mockReturnValueOnce(linkMock as any);
 
     await downloadBackupFile("123123123");
@@ -162,9 +193,17 @@ describe("useDownloadBackupFile", () => {
     const data = JSON.parse(decodeURIComponent(href.replace("data:text/json;charset=utf-8,", "")));
 
     const decrypted = await decrypt(data, "123123123", "V2");
+    const decryptedData = JSON.parse(decrypted);
+    const backupAccounts = JSON.parse(decryptedData["persist:accounts"]);
+    const backupItems = JSON.parse(backupAccounts.items);
 
-    expect(decrypted).toEqual(
-      '{"persist:accounts":"persist_accounts_content","persist:root":"persist_root_content"}'
-    );
+    expect(backupItems).toHaveLength(4);
+    expect(backupItems.map((item: any) => item.address)).toEqual([
+      mockAccounts[0].address,
+      mockAccounts[2].address,
+      mockAccounts[3].address,
+      mockAccounts[4].address,
+    ]);
+    expect(decryptedData["persist:root"]).toBe("persist_root_content");
   });
 });

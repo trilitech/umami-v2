@@ -101,10 +101,13 @@ export const useDownloadBackupFile = () => {
   const validateMasterPassword = useValidateMasterPassword();
   const accounts = useAppSelector(s => s.accounts);
 
+  const parsedAccounts = JSON.parse(localStorage.getItem("persist:accounts") || "{}");
   const filteredAccounts = {
-    ...accounts,
+    ...parsedAccounts,
     // For backup we need to filter out the unverified accounts
-    items: accounts.items.filter(account => account.type !== "mnemonic" || account.isVerified),
+    items: JSON.stringify(
+      accounts.items.filter(account => account.type !== "mnemonic" || account.isVerified)
+    ),
   };
 
   return async (password: string) => {
