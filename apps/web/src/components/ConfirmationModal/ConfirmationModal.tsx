@@ -11,6 +11,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useDynamicModalContext } from "@umami/components";
+import sanitizeHtml from "sanitize-html";
 
 import { useColor } from "../../styles/useColor";
 import { ModalBackButton } from "../BackButton";
@@ -52,20 +53,22 @@ export const ConfirmationModal = ({
         <ModalBackButton />
         <ModalCloseButton />
       </ModalHeader>
-      <ModalBody>
-        <Center>
-          <Text
-            width="full"
-            maxWidth="340px"
-            color={color("700")}
-            fontWeight="400"
-            textAlign="center"
-            size="md"
-          >
-            {description}
-          </Text>
-        </Center>
-      </ModalBody>
+      {description && (
+        <ModalBody>
+          <Center>
+            <Text
+              width="full"
+              maxWidth="410px"
+              color={color("700")}
+              fontWeight="400"
+              textAlign="center"
+              whiteSpace="pre-line"
+              dangerouslySetInnerHTML={{ __html: sanitizeHtml(description) }}
+              size="md"
+            />
+          </Center>
+        </ModalBody>
+      )}
       <ModalFooter>
         <Button width="full" onClick={onClick} variant={type} {...props}>
           {buttonLabel}

@@ -91,6 +91,14 @@ describe("<AccountSelectorModal />", () => {
             : `Are you sure you want to remove all of your ${accountLabel}? You will need to manually import them again.`;
 
         await waitFor(() => expect(screen.getByText(expectedMessage)).toBeVisible());
+
+        if (type === "mnemonic") {
+          expect(
+            screen.getByText(
+              "Make sure your mnemonic phrase is securely saved. Losing this phrase could result in permanent loss of access to your data."
+            )
+          ).toBeVisible();
+        }
       }
     );
 
@@ -147,6 +155,12 @@ describe("<AccountSelectorModal />", () => {
           )
         ).toBeVisible()
       );
+
+      expect(
+        screen.getByText(
+          "Make sure your mnemonic phrase is securely saved. Losing this phrase could result in permanent loss of access to your data."
+        )
+      ).toBeVisible();
     });
   });
 
