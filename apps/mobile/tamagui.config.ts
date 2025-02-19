@@ -1,13 +1,30 @@
-import { config } from "@tamagui/config/v3";
-import { createTamagui } from "tamagui";
+import { createTamagui } from "@tamagui/core";
 
-export const tamaguiConfig = createTamagui(config);
+import { shorthands, themes, tokens, typography } from "./styles";
 
-export default tamaguiConfig;
+export const tamaguiConfig = createTamagui({
+  tokens,
+  themes,
+  shorthands,
+  fonts: typography.fonts,
 
-export type Conf = typeof tamaguiConfig;
+  media: {
+    sm: { maxWidth: 860 },
+    md: { maxWidth: 1024 },
+    lg: { minWidth: 1025 },
+    short: { maxHeight: 820 },
+    tall: { minHeight: 821 },
+    hoverNone: { hover: "none" },
+    pointerCoarse: { pointer: "coarse" },
+  },
 
-declare module "tamagui" {
-  // eslint-disable-next-line
-  interface TamaguiCustomConfig extends Conf {}
+  settings: {
+    disableSSR: true,
+  },
+});
+
+export type AppTamaguiConfig = typeof tamaguiConfig;
+
+declare module "@tamagui/core" {
+  interface TamaguiCustomConfig extends AppTamaguiConfig {}
 }
