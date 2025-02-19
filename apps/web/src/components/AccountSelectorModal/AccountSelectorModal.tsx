@@ -82,9 +82,9 @@ export const AccountSelectorModal = () => {
     const isMnemonic = type.toLowerCase().includes("seedphrase");
 
     if (isLast) {
-      return "Removing all your accounts will off-board you from Umami. This will remove or reset all customized settings to their defaults. Personal data (including saved contacts, password and accounts) won't be affected.";
+      return "Removing all your accounts will off-board you from Umami. This will remove or reset all customized settings to their defaults. Personal data (including saved contacts, password and accounts) won't be affected. \n\n<b>Make sure your mnemonic phrase is securely saved. Losing this phrase could result in permanent loss of access to your data.</b>";
     } else if (isMnemonic) {
-      return `Are you sure you want to remove all accounts derived from the ${type}? You will need to manually import them again.`;
+      return `Are you sure you want to remove all accounts derived from the ${type}? You will need to manually import them again. \n\n<b>Make sure your mnemonic phrase is securely saved. Losing this phrase could result in permanent loss of access to your data.</b>`;
     } else {
       return `Are you sure you want to remove all of your ${type}? You will need to manually import them again.`;
     }

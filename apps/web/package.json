@@ -82,6 +82,7 @@
     "react-test-renderer": "^18.3.1",
     "redux": "^5.0.1",
     "redux-persist": "^6.0.0",
+    "sanitize-html": "^2.14.0",
     "zod": "^3.24.1"
   },
   "devDependencies": {
