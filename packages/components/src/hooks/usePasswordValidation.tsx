@@ -1,9 +1,10 @@
-import { CheckIcon, CloseIcon } from "@chakra-ui/icons";
 import { Flex, List, ListIcon, ListItem, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { z } from "zod";
 import zxcvbn from "zxcvbn";
+
+import { CheckmarkIcon } from "../assets/icons";
 
 export const DEFAULT_MIN_LENGTH = 12;
 
@@ -62,8 +63,9 @@ const PasswordStrengthBar = ({ requirements }: PasswordStrengthBarProps) => (
           data-testid={`${path}-${passed ? "passed" : "failed"}`}
         >
           <ListIcon
-            as={passed ? CheckIcon : CloseIcon}
+            as={CheckmarkIcon}
             boxSize="12px"
+            width="24px"
             color={passed ? "green.500" : "red.300"}
           />
           <Text color={passed ? "green.500" : "red.300"} fontSize="sm">
