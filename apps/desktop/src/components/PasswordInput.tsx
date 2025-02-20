@@ -10,6 +10,7 @@ import { DEFAULT_MIN_LENGTH, usePasswordValidation } from "@umami/components";
 import { useState } from "react";
 import { type FieldValues, type Path, type RegisterOptions, useFormContext } from "react-hook-form";
 
+import { PasswordStrengthBar } from "./PasswordStrengthBar";
 import { EyeIcon, EyeSlashIcon } from "../assets/icons";
 import colors from "../style/colors";
 
@@ -38,7 +39,7 @@ export const PasswordInput = <T extends FieldValues, U extends Path<T>>({
 }: PasswordInputProps<T, U>) => {
   const { register } = useFormContext<T>();
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const { validatePasswordStrength, PasswordStrengthBar } = usePasswordValidation({
+  const { validatePasswordStrength, requirements } = usePasswordValidation({
     color: colors.gray[500],
     inputName,
     minLength,
@@ -83,7 +84,7 @@ export const PasswordInput = <T extends FieldValues, U extends Path<T>>({
           </Button>
         </InputRightElement>
       </InputGroup>
-      {isStrengthCheckEnabled && PasswordStrengthBar}
+      {isStrengthCheckEnabled && <PasswordStrengthBar requirements={requirements} />}
     </>
   );
 };

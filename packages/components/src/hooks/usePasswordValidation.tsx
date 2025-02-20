@@ -1,23 +1,16 @@
-import { Flex, Icon, List, ListItem, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { z } from "zod";
 import zxcvbn from "zxcvbn";
 
-import { CheckCircleIcon } from "../assets/icons";
-
 export const DEFAULT_MIN_LENGTH = 12;
 
-type ValidationPath = "minLength" | "uppercase" | "number" | "special" | "simplicity";
+export type ValidationPath = "minLength" | "uppercase" | "number" | "special" | "simplicity";
 
-type Requirement = {
+export type PasswordRequirement = {
   message: string;
   path: ValidationPath;
   passed: boolean;
-};
-
-type PasswordStrengthBarProps = {
-  requirements: Requirement[];
 };
 
 type UsePasswordValidationProps = {
@@ -52,27 +45,7 @@ const getPasswordSchema = (minLength: number) =>
       }
     );
 
-const PasswordStrengthBar = ({ requirements }: PasswordStrengthBarProps) => (
-  <Flex flexDirection="column" gap="8px" marginTop="12px">
-    <List>
-      {requirements.map(({ message, path, passed }) => (
-        <ListItem
-          key={path}
-          alignItems="center"
-          display="flex"
-          data-testid={`${path}-${passed ? "passed" : "failed"}`}
-        >
-          <Icon as ={CheckCircleIcon} boxSize="12px" color={passed ? "green.500" : "grey.400"} />
-          <Text color="grey.700" fontSize="sm">
-            {message}
-          </Text>
-        </ListItem>
-      ))}
-    </List>
-  </Flex>
-);
-
-const DEFAULT_REQUIREMENTS: Requirement[] = [
+const DEFAULT_REQUIREMENTS: PasswordRequirement[] = [
   {
     message: `Password must be at least ${DEFAULT_MIN_LENGTH} characters long`,
     path: "minLength",
@@ -100,11 +73,12 @@ const DEFAULT_REQUIREMENTS: Requirement[] = [
   },
 ];
 
+
 export const usePasswordValidation = ({
   minLength = DEFAULT_MIN_LENGTH,
   inputName = "password",
-}: UsePasswordValidationProps = {}) => {
-  const [requirements, setRequirements] = useState<Requirement[]>(DEFAULT_REQUIREMENTS);
+}: UsePasswordValidationProps) => {
+  const [requirements, setRequirements] = useState<PasswordRequirement[]>(DEFAULT_REQUIREMENTS);
 
   const {
     formState: { errors, isDirty },
@@ -142,6 +116,6 @@ export const usePasswordValidation = ({
 
   return {
     validatePasswordStrength,
-    PasswordStrengthBar: <PasswordStrengthBar requirements={requirements} />,
+    requirements,
   };
 };
