@@ -1,19 +1,23 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { List, ListIcon, ListItem, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { z } from "zod";
 import zxcvbn from "zxcvbn";
 
+import { CheckmarkIcon } from "../assets/icons";
+
 export const DEFAULT_MIN_LENGTH = 12;
 
-const DEFAULT_SCORE = 0;
-const DEFAULT_COLOR = "gray.100";
-const DEFAULT_PASSWORD_FIELD_NAME = "password";
+type ValidationPath = "minLength" | "uppercase" | "number" | "special" | "simplicity";
+
+type Requirement = {
+  message: string;
+  path: ValidationPath;
+  passed: boolean;
+};
 
 type PasswordStrengthBarProps = {
-  score: number;
-  color: string;
-  hasError: boolean;
+  requirements: Requirement[];
 };
 
 type UsePasswordValidationProps = {
@@ -22,95 +26,113 @@ type UsePasswordValidationProps = {
   minLength?: number;
 };
 
-const PASSWORD_REQUIREMENTS_COUNT = 4;
 const getPasswordSchema = (minLength: number) =>
   z
     .string()
-    .min(minLength, { message: `Password must be at least ${minLength} characters long` })
-    .regex(/[A-Z]/, { message: "Password must contain at least one uppercase letter" })
-    .regex(/\d/, { message: "Password must contain at least one number" })
-    .regex(/[!@#$%^&*(),.?":{}|<>]/, {
-      message: "Password must contain at least one special character",
-    });
+    .refine(value => value.length >= minLength, {
+      path: ["minLength"],
+    })
+    .refine(value => /[A-Z]/.test(value), {
+      path: ["uppercase"],
+    })
+    .refine(value => /\d/.test(value), {
+      path: ["number"],
+    })
+    .refine(value => /[!@#$%^&*(),.?":{}|<>]/.test(value), {
+      path: ["special"],
+    })
+    .refine(
+      value => {
+        const score = zxcvbn(value).score;
 
-const PasswordStrengthBar = ({ score, color, hasError }: PasswordStrengthBarProps) => {
-  const colors = [color, "red.500", "yellow.500", "green.500"];
+        return score > 3;
+      },
+      {
+        path: ["simplicity"],
+      }
+    );
 
-  const getSectionColor = (index: number) => {
-    switch (score) {
-      case 1:
-      case 2:
-        return index === 0 ? colors[1] : colors[0];
-      case 3:
-        return index <= 1 ? colors[2] : colors[0];
-      case 4:
-        return colors[3];
-      default:
-        return colors[0];
-    }
-  };
-
-  const showPasswordStrengthText = !hasError && score === 4;
-
-  return (
-    <Flex flexDirection="column" gap="8px" marginTop="12px">
-      <Flex gap="4px" height="6px">
-        {Array.from({ length: 3 }).map((_, index) => (
-          <Box
-            key={index}
-            flex="1"
-            background={getSectionColor(index)}
-            borderRadius="8px"
-            transition="background-color 0.2s ease"
-          />
-        ))}
-      </Flex>
-      {showPasswordStrengthText && (
-        <Text lineHeight="normal" data-testid="password-strength-text" size="sm">
-          Your password is strong
+const PasswordStrengthBar = ({ requirements }: PasswordStrengthBarProps) => (
+  <List marginTop="12px" spacing="8px">
+    {requirements.map(({ message, path, passed }) => (
+      <ListItem
+        key={path}
+        alignItems="flex-start"
+        display="flex"
+        data-testid={`${path}-${passed ? "passed" : "failed"}`}
+      >
+        <ListIcon as={CheckmarkIcon} boxSize="18px" color={passed ? "green" : "gray.400"} />
+        <Text color="gray.700" size="md">
+          {message}
         </Text>
-      )}
-    </Flex>
-  );
-};
+      </ListItem>
+    ))}
+  </List>
+);
+
+const DEFAULT_REQUIREMENTS: Requirement[] = [
+  {
+    message: `Password must be at least ${DEFAULT_MIN_LENGTH} characters long`,
+    path: "minLength",
+    passed: false,
+  },
+  {
+    message: "Password must contain at least one uppercase letter",
+    path: "uppercase",
+    passed: false,
+  },
+  {
+    message: "Password must contain at least one number",
+    path: "number",
+    passed: false,
+  },
+  {
+    message: "Password must contain at least one special character",
+    path: "special",
+    passed: false,
+  },
+  {
+    message: "Avoid common passwords, simple patterns and repeated characters",
+    path: "simplicity",
+    passed: false,
+  },
+];
 
 export const usePasswordValidation = ({
-  color = DEFAULT_COLOR,
-  inputName = DEFAULT_PASSWORD_FIELD_NAME,
   minLength = DEFAULT_MIN_LENGTH,
+  inputName = "password",
 }: UsePasswordValidationProps = {}) => {
-  const [passwordScore, setPasswordScore] = useState(DEFAULT_SCORE);
+  const [requirements, setRequirements] = useState<Requirement[]>(DEFAULT_REQUIREMENTS);
+
   const {
     formState: { errors, isDirty },
   } = useFormContext();
 
   const passwordError = errors[inputName];
+  const hasRequiredError = passwordError?.type === "required";
 
   useEffect(() => {
-    // Set password score to default if the field is empty or the form was reset
-    if (passwordError?.type === "required" || !isDirty) {
-      setPasswordScore(DEFAULT_SCORE);
+    if (hasRequiredError || !isDirty) {
+      setRequirements(DEFAULT_REQUIREMENTS);
     }
-  }, [isDirty, passwordError]);
+  }, [isDirty, hasRequiredError]);
 
   const validatePasswordStrength = (value: string) => {
-    const result = zxcvbn(value);
-    let schemaErrors = 0;
-
     try {
       getPasswordSchema(minLength).parse(value);
+      setRequirements(requirements.map(requirement => ({ ...requirement, passed: true })));
     } catch (e) {
       if (e instanceof z.ZodError) {
-        schemaErrors = e.errors.length;
-        return e.errors[0].message;
-      }
-    } finally {
-      const requirementsMeetingPercentage = (PASSWORD_REQUIREMENTS_COUNT - schemaErrors) / 4;
-      setPasswordScore(Math.ceil(result.score * requirementsMeetingPercentage));
-    }
+        const errorPaths = new Set(e.errors.map(error => error.path[0]));
+        setRequirements(prev =>
+          prev.map(requirement => ({
+            ...requirement,
+            passed: !errorPaths.has(requirement.path),
+          }))
+        );
 
-    if (result.score < 4) {
-      return result.feedback.suggestions.at(-1) ?? "Keep on, make the password more complex!";
+        return false;
+      }
     }
 
     return true;
@@ -118,8 +140,6 @@ export const usePasswordValidation = ({
 
   return {
     validatePasswordStrength,
-    PasswordStrengthBar: (
-      <PasswordStrengthBar color={color} hasError={!!passwordError} score={passwordScore} />
-    ),
+    PasswordStrengthBar: <PasswordStrengthBar requirements={requirements} />,
   };
 };
