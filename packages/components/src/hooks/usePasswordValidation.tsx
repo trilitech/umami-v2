@@ -1,4 +1,4 @@
-import { Flex, List, ListIcon, ListItem, Text } from "@chakra-ui/react";
+import { List, ListIcon, ListItem, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { z } from "zod";
@@ -53,28 +53,21 @@ const getPasswordSchema = (minLength: number) =>
     );
 
 const PasswordStrengthBar = ({ requirements }: PasswordStrengthBarProps) => (
-  <Flex flexDirection="column" gap="8px" marginTop="12px">
-    <List>
-      {requirements.map(({ message, path, passed }) => (
-        <ListItem
-          key={path}
-          alignItems="center"
-          display="flex"
-          data-testid={`${path}-${passed ? "passed" : "failed"}`}
-        >
-          <ListIcon
-            as={CheckmarkIcon}
-            boxSize="12px"
-            width="24px"
-            color={passed ? "green.500" : "red.300"}
-          />
-          <Text color={passed ? "green.500" : "red.300"} fontSize="sm">
-            {message}
-          </Text>
-        </ListItem>
-      ))}
-    </List>
-  </Flex>
+  <List marginTop="12px" spacing="8px">
+    {requirements.map(({ message, path, passed }) => (
+      <ListItem
+        key={path}
+        alignItems="flex-start"
+        display="flex"
+        data-testid={`${path}-${passed ? "passed" : "failed"}`}
+      >
+        <ListIcon as={CheckmarkIcon} boxSize="18px" color={passed ? "green" : "gray.400"} />
+        <Text color="gray.700" size="md">
+          {message}
+        </Text>
+      </ListItem>
+    ))}
+  </List>
 );
 
 const DEFAULT_REQUIREMENTS: Requirement[] = [

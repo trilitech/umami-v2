@@ -79,6 +79,7 @@ export const PasswordInput = <T extends FieldValues, U extends Path<T>>({
       <FormLabel>{label}</FormLabel>
       <InputGroup marginTop="12px">
         <Input
+          paddingRight="60px"
           color={color("400")}
           fontSize="18px"
           _focusWithin={{
@@ -108,12 +109,10 @@ export const PasswordInput = <T extends FieldValues, U extends Path<T>>({
           />
         </InputRightElement>
       </InputGroup>
-      {isStrengthCheckEnabled && PasswordStrengthBar}
-      {error && (
-        <FormErrorMessage data-testid={`${rest["data-testid"]}-error`}>
-          {errorMessage}
-        </FormErrorMessage>
+      {error?.message && (
+        <FormErrorMessage data-testid="password-input-error">{errorMessage}</FormErrorMessage>
       )}
+      {isStrengthCheckEnabled && PasswordStrengthBar}
     </FormControl>
   );
 };
