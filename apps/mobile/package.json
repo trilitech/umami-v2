@@ -32,7 +32,7 @@
     "@tamagui/babel-plugin": "1.123.0",
     "@tamagui/config": "1.123.0",
     "@tamagui/lucide-icons": "^1.123.14",
-    "@taquito/utils": "^21.0.0",
+    "@taquito/utils": "^21.0.2",
     "@umami/core": "workspace:^",
     "@umami/crypto": "workspace:^",
     "@umami/data-polling": "workspace:^",
