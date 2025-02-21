@@ -7,7 +7,7 @@ import { OnboardWithGoogleButton } from "./OnboardWithGoogleButton";
 import { OnboardWithRedditButton } from "./OnboardWithRedditButton";
 import { OnboardWithTwitterButton } from "./OnboardWithTwitterButton";
 import { useColor } from "../../../styles/useColor";
-import { trackButtonClick } from "../../../utils/analytics";
+import { trackOnboardingEvent } from "../../../utils/analytics";
 import { AccountTileWrapper } from "../../AccountTile";
 import { NameAccountModal } from "../../NameAccountModal";
 import { ImportWallet } from "../ImportWallet";
@@ -72,7 +72,7 @@ export const OnboardOptions = ({ children }: PropsWithChildren) => {
           <Button
             width="full"
             onClick={() => {
-              trackButtonClick("onboarding", "create_new_wallet");
+              trackOnboardingEvent("create_new_wallet");
               return handleCreateNewWallet();
             }}
             size="lg"
@@ -83,7 +83,7 @@ export const OnboardOptions = ({ children }: PropsWithChildren) => {
           <Button
             width="full"
             onClick={() => {
-              trackButtonClick("onboarding", "use_existing_wallet");
+              trackOnboardingEvent("use_existing_wallet");
               return openWith(<ImportWallet />, {
                 size: "xl",
               });

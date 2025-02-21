@@ -24,6 +24,7 @@ import { FormProvider, useFieldArray } from "react-hook-form";
 
 import { CloseIcon, EyeIcon, EyeOffIcon } from "../../../assets/icons";
 import { useColor } from "../../../styles/useColor";
+import { trackOnboardingEvent } from "../../../utils/analytics";
 import { MnemonicWord } from "../../MnemonicWord";
 import { RadioButtons } from "../../RadioButtons";
 import { SetupPassword } from "../SetupPassword";
@@ -89,6 +90,8 @@ export const SeedPhraseTab = () => {
       if (!validateMnemonic(mnemonic.map(({ val }) => val).join(" "))) {
         throw new CustomError("Invalid Mnemonic");
       }
+
+      trackOnboardingEvent("proceed_with_mnemonic");
       return openWith(<SetupPassword mode="mnemonic" />);
     });
 

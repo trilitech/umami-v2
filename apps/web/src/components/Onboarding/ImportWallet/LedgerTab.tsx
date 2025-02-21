@@ -15,6 +15,7 @@ import {
 import { FormProvider } from "react-hook-form";
 
 import { useColor } from "../../../styles/useColor";
+import { trackOnboardingEvent } from "../../../utils/analytics";
 import { AdvancedAccountSettings } from "../AdvancedAccountSettings";
 
 type FormFields = {
@@ -38,6 +39,8 @@ export const LedgerTab = () => {
 
   const onSubmit = ({ derivationPath: derivationPathTemplate, curve }: FormFields) =>
     handleAsyncAction(async () => {
+      trackOnboardingEvent("proceed_with_ledger");
+
       const derivationPath = makeDerivationPath(derivationPathTemplate, 0);
       const { pk, pkh } = await getLedgerPublicKeyPair(derivationPath, curve);
 
