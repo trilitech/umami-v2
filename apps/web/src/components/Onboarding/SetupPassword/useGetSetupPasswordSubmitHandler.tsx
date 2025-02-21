@@ -16,6 +16,7 @@ import {
 import { decryptSecretKey } from "@umami/tezos";
 
 import { type FormFields, type Mode } from "./types";
+import { trackButtonClick, trackOnboardingEvent } from "../../../utils/analytics";
 import { ImportantNoticeModal } from "../VerificationFlow/ImportantNoticeModal";
 
 const useGetSecretKeyHandler = () => {
@@ -91,19 +92,24 @@ export const useGetSetupPasswordSubmitHandler = (mode: Mode) => {
 
         switch (mode) {
           case "secret_key": {
+            trackOnboardingEvent("create_account_with_secret_key");
             await handleSecretKey(password);
             break;
           }
           case "mnemonic":
           case "new_mnemonic":
           case "add_account": {
+            trackOnboardingEvent(`create_account_with_${mode}`);
+
             await handleMnemonic(formValues, isNewMnemonic);
+
             break;
           }
           case "verification": {
             return handleVerify(password);
           }
           case "save_backup": {
+            trackButtonClick("backup", "download_backup");
             await handleDownloadBackupFile(password);
             break;
           }

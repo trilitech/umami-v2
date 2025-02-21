@@ -58,3 +58,19 @@ export const trackSuccessfulSocialConnection = (section: string, idp: Auth.IDP) 
     },
   });
 };
+
+export const trackOnboardingEvent = (action: string) => {
+  trackButtonClick("onboarding", action);
+};
+
+export const trackSendEvent = (assetType: string) => {
+  trackButtonClick("send_flow", `send_${assetType}`);
+};
+
+export const trackBeaconEvent = (action: string) => {
+  trackButtonClick("beacon", action);
+};
+
+export const trackAccountEvent = (action: string) => {
+  trackButtonClick("account_management", action);
+};
