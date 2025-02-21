@@ -36,6 +36,7 @@
     "@hotjar/browser": "^1.0.9",
     "@reduxjs/toolkit": "^2.5.0",
     "@reown/walletkit": "^1.0.1",
+    "@sentry/react": "^9.1.0",
     "@tanstack/react-query": "^5.62.11",
     "@taquito/beacon-wallet": "^21.0.0",
     "@taquito/ledger-signer": "^21.0.0",
