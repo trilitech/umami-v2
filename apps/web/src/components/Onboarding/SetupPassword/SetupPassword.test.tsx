@@ -31,6 +31,12 @@ jest.mock("@umami/state", () => ({
   useIsPasswordSet: jest.fn(),
 }));
 
+// mock the persistor
+jest.mock("../../../utils/persistor", () => ({
+  persistor: jest.fn(),
+  setupPersistor: jest.fn(),
+}));
+
 const password = "Qwerty123123!23vcxz";
 
 beforeEach(() => {
