@@ -65,6 +65,7 @@ jest.mock("./env", () => ({ IS_DEV: false }));
 
 jest.doMock("@chakra-ui/react", () => ({
   ...jest.requireActual("@chakra-ui/react"),
+  useBreakpointValue: jest.fn(),
   useToast: () => mockToast,
   useColorMode: () => ({ colorMode: "light", toggleColorMode: jest.fn() }),
 }));

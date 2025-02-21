@@ -53,6 +53,7 @@ export const Suggestions = ({
               }}
               cursor="pointer"
               address={parsePkh(contact.pkh)}
+              paddingX="16px"
               size="xs"
             />
           </ListItem>
