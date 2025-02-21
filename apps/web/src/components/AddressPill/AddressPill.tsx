@@ -79,6 +79,7 @@ export const AddressPill = memo(
           <PopoverTrigger>
             <Center
               gap="4px"
+              overflow="hidden"
               width="fit-content"
               _focus={{ boxShadow: "none" }}
               data-testid="address-pill-copy-button"
