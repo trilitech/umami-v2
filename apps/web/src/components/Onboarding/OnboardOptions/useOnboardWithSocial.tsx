@@ -10,6 +10,7 @@ import {
   trackSocialLoginButtonClick,
   trackSuccessfulSocialConnection,
 } from "../../../utils/analytics";
+import { setupPersistence } from "../../../utils/store";
 
 const LOGIN_TIMEOUT = minutesToMilliseconds(1);
 
@@ -36,6 +37,10 @@ export const useOnboardWithSocial = (idp: Auth.IDP, onAuth?: () => void) => {
           );
           const { pk, pkh } = await getPublicKeyPairFromSk(secretKey);
           restoreSocial(pk, pkh, email || name || id, idp);
+
+          // Initialize persistence with the secret key
+          setupPersistence(secretKey);
+
           trackSuccessfulSocialConnection("onboarding", idp);
           toast({ description: `Successfully added ${name || id} account`, status: "success" });
           onAuth?.();

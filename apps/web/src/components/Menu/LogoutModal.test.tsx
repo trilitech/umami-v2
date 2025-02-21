@@ -8,6 +8,10 @@ jest.mock("@umami/state", () => ({
   ...jest.requireActual("@umami/state"),
   logout: jest.fn(),
 }));
+jest.mock("../../utils/persistor", () => ({
+  persistor: jest.fn(),
+  setupPersistor: jest.fn(),
+}));
 
 describe("<LogoutModal />", () => {
   it("renders correctly", async () => {

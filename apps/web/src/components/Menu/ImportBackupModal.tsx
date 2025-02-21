@@ -29,7 +29,7 @@ export const ImportBackupModal = () => {
     handleAsyncAction(async () => {
       const fileContent = await file[0].text();
       const backup = JSON.parse(fileContent);
-      await restoreBackup(backup, password, persistor);
+      persistor && (await restoreBackup(backup, password, persistor));
     });
 
   return (
