@@ -61,8 +61,8 @@ describe("<AccountBalanceDetails />", () => {
 
       render(<AccountBalanceDetails />, { store });
 
+      expect(screen.getByText("mega_baker", { exact: false })).toBeInTheDocument();
       expect(screen.getByText("Delegation")).toBeInTheDocument();
-      expect(screen.getByTestId("current-baker")).toHaveTextContent("To: mega_baker");
     });
 
     it("no delegation status if not delegated and no staking-related balances", () => {

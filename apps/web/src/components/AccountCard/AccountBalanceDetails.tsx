@@ -1,5 +1,4 @@
 import { Box, Divider, Flex, Text } from "@chakra-ui/react";
-import { useAddressPill } from "@umami/components";
 import {
   useCurrentAccount,
   useGetAccountBalanceDetails,
@@ -9,12 +8,14 @@ import { formatTezAmountMin0Decimals } from "@umami/tezos";
 import { BigNumber } from "bignumber.js";
 
 import { useColor } from "../../styles/useColor";
+import { AddressPill } from "../AddressPill";
 
 const RoundStatusDot = ({ background }: { background: string }) => (
   <Box
+    gap="4px"
     display="inline-block"
-    width="8px"
-    height="8px"
+    width="11px"
+    height="11px"
     marginRight="5px"
     background={background}
     borderRadius="100%"
@@ -34,7 +35,6 @@ export const AccountBalanceDetails = () => {
     totalBalance,
   } = useGetAccountBalanceDetails(address);
   const delegate = useGetAccountDelegate()(address);
-  const { addressAlias } = useAddressPill({ rawAddress: delegate || currentAccount.address });
 
   const BalanceLabel = ({ label }: { label: string }) => (
     <Text color={color("600")} fontWeight="600" size="sm">
@@ -83,7 +83,6 @@ export const AccountBalanceDetails = () => {
             background="rgba(197, 48, 48, 0.15)"
             borderRadius="100px"
             paddingX="3"
-            paddingY="1"
           >
             <RoundStatusDot background={color("red")} />
             <Text color={color("red")} size="sm">
@@ -103,30 +102,42 @@ export const AccountBalanceDetails = () => {
           <Flex
             alignItems="center"
             justifyContent="flex-end"
-            gap="6px"
+            gap="2px"
             background={color("greenLight")}
             borderRadius="100px"
-            paddingX="3"
-            paddingY="1"
-          >
-            <RoundStatusDot background={color("greenDark")} />
-            <Text color={color("green")} fontWeight="600" size="sm">
-              Delegation
-            </Text>
-          </Flex>
-          <Text
-            overflow="hidden"
-            maxWidth="50vw"
-            data-testid="current-baker"
-            size="sm"
+            paddingX="7px"
+            paddingY="3px"
             style={{
               whiteSpace: "nowrap",
               overflow: "hidden",
               textOverflow: "ellipsis",
             }}
           >
-            To: {addressAlias || delegate.address}
-          </Text>
+            <RoundStatusDot background={color("greenDark")} />
+            <Text color={color("green")} fontWeight="600" size="sm">
+              Delegation
+            </Text>
+          </Flex>
+          <Flex>
+            <Text
+              alignItems="center"
+              overflow="hidden"
+              width="30px"
+              data-testid="delegation-to"
+              paddingY="3px"
+              size="sm"
+            >
+              To:
+            </Text>
+            <AddressPill
+              overflow="hidden"
+              maxWidth="45vw"
+              whiteSpace="nowrap"
+              textOverflow="ellipsis"
+              address={delegate}
+              data-testid="current-baker"
+            />
+          </Flex>
         </Flex>
       )}
       {!spendableBalance.isEqualTo(totalBalance) && <Divider />}
