@@ -8,9 +8,9 @@ import {
   type InputProps,
   InputRightElement,
 } from "@chakra-ui/react";
-import { DEFAULT_MIN_LENGTH, usePasswordValidation } from "@umami/components";
+import { usePasswordValidation } from "@umami/components";
 import { useState } from "react";
-import { type FieldValues, type Path, type RegisterOptions, useFormContext } from "react-hook-form";
+import { type FieldValues, type Path, useFormContext } from "react-hook-form";
 
 import { EyeIcon, EyeOffIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
@@ -23,7 +23,6 @@ type PasswordInputProps<T extends FieldValues, U extends Path<T>> = {
   placeholder?: string;
   required?: string | boolean;
   isStrengthCheckEnabled?: boolean;
-  minLength?: RegisterOptions<T, U>["minLength"];
   validate?: (val: string) => string | boolean;
 } & InputProps & {
     "data-testid"?: string;
@@ -34,7 +33,6 @@ export const PasswordInput = <T extends FieldValues, U extends Path<T>>({
   label = "Password",
   placeholder = "Enter your password",
   required = "Password is required",
-  minLength = DEFAULT_MIN_LENGTH,
   isStrengthCheckEnabled = false,
   validate,
   ...rest
@@ -47,7 +45,6 @@ export const PasswordInput = <T extends FieldValues, U extends Path<T>>({
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const { validatePasswordStrength, PasswordStrengthBar } = usePasswordValidation({
     inputName,
-    minLength,
   });
 
   const color = useColor();
@@ -79,6 +76,7 @@ export const PasswordInput = <T extends FieldValues, U extends Path<T>>({
       <FormLabel>{label}</FormLabel>
       <InputGroup marginTop="12px">
         <Input
+          paddingRight="60px"
           color={color("400")}
           fontSize="18px"
           _focusWithin={{
@@ -108,12 +106,12 @@ export const PasswordInput = <T extends FieldValues, U extends Path<T>>({
           />
         </InputRightElement>
       </InputGroup>
-      {isStrengthCheckEnabled && PasswordStrengthBar}
-      {error && (
+      {error?.message && (
         <FormErrorMessage data-testid={`${rest["data-testid"]}-error`}>
           {errorMessage}
         </FormErrorMessage>
       )}
+      {isStrengthCheckEnabled && PasswordStrengthBar}
     </FormControl>
   );
 };

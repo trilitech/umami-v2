@@ -49,34 +49,56 @@ const Wrapper = () => {
 };
 
 describe("usePasswordValidation", () => {
-  it("should render PasswordStrengthBar with default score", () => {
-    render(<Wrapper />);
-    expect(screen.queryByTestId("password-strength-text")).not.toBeInTheDocument();
-  });
+  const errors: { [key: string]: string } = {
+    uppercase: "At least one uppercase letter",
+    number: "At least one number",
+    special: 'At least one special character: !@#$%^&*(),.?":{}|<>',
+    minlength: "At least 12 characters long",
+    simplicity: "Good complexity, no simple sequences or patterns",
+  };
 
   it.each([
-    [password.short, "Password must be at least 12 characters long"],
-    [password.noUppercase, "Password must contain at least one uppercase letter"],
-    [password.noNumber, "Password must contain at least one number"],
-    [password.noSpecialChar, "Password must contain at least one special character"],
-  ])("should update PasswordStrengthBar based on score", async (password, text) => {
+    {
+      password: "123",
+      passed: ["number"],
+      failed: ["uppercase", "special", "minlength", "simplicity"],
+    },
+    {
+      password: "1234567890a!",
+      passed: ["number", "special", "minlength"],
+      failed: ["uppercase", "simplicity"],
+    },
+    {
+      password: "1234567890a-=A",
+      passed: ["number", "minlength", "uppercase"],
+      failed: ["special", "simplicity"],
+    },
+    {
+      password: "1234567890a-=A!",
+      passed: ["number", "minlength", "uppercase", "special"],
+      failed: ["simplicity"],
+    },
+    {
+      password: "1234567890a-=A!get",
+      passed: ["number", "minlength", "uppercase", "special"],
+      failed: ["simplicity"],
+    },
+    {
+      password: "1234567890a-=A!getg",
+      passed: ["number", "minlength", "uppercase", "special", "simplicity"],
+      failed: [],
+    },
+  ])('should update PasswordStrengthBar based on score for "$password" ', async data => {
     const user = userEvent.setup();
     render(<Wrapper />);
 
-    await act(() => user.type(screen.getByLabelText("Password"), password));
+    await act(() => user.type(screen.getByLabelText("Password"), data.password));
 
-    expect(screen.queryByTestId("password-strength-text")).not.toBeInTheDocument();
-    expect(screen.getByTestId("password-error")).toHaveTextContent(text);
-  });
-
-  it("should display that password is strong if all requirements are met", async () => {
-    const user = userEvent.setup();
-    render(<Wrapper />);
-
-    await act(() => user.type(screen.getByLabelText("Password"), password.strong));
-
-    expect(screen.getByTestId("password-strength-text")).toHaveTextContent(
-      "Your password is strong"
-    );
+    for (const passed of data.passed) {
+      expect(screen.getByTestId(`${passed}-passed`)).toHaveTextContent(errors[passed]);
+    }
+    for (const failed of data.failed) {
+      expect(screen.getByTestId(`${failed}-failed`)).toHaveTextContent(errors[failed]);
+    }
   });
 });
