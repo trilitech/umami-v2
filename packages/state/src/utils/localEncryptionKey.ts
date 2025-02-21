@@ -12,28 +12,34 @@ export const getOrCreateUserNonce = (password?: string): string | null => {
 
     if (!encryptedNonce) {
       // Create new nonce if none exists
-      if (!password) { return null; } // Need password to create new nonce
-      
+      if (!password) {
+        return null;
+      } // Need password to create new nonce
+
       const randomBytes = crypto.getRandomValues(new Uint8Array(32));
       nonce = Array.from(randomBytes)
         .map(b => b.toString(16).padStart(2, "0"))
         .join("");
-      
+
       // Store encrypted in localStorage
       const encrypted = Aes.encrypt(nonce, password).toString();
       localStorage.setItem(NONCE_NAME, encrypted);
     } else {
       // Decrypt existing nonce
-      if (!password) {return null;}
+      if (!password) {
+        return null;
+      }
       try {
         const bytes = Aes.decrypt(encryptedNonce, password);
         nonce = bytes.toString(CryptoJsCore.enc.Utf8);
-        if (!nonce) {throw new Error("Failed to decrypt nonce");}
+        if (!nonce) {
+          throw new Error("Failed to decrypt nonce");
+        }
       } catch {
         return null; // Wrong password
       }
     }
-    
+
     // Store decrypted in sessionStorage for current session
     sessionStorage.setItem(NONCE_NAME, nonce);
   }

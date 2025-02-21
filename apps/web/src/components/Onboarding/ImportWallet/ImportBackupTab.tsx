@@ -42,6 +42,9 @@ export const ImportBackupTab = () => {
         return;
       }
       const backup = JSON.parse(await file[0].text());
+      if (!persistor) {
+        throw new Error("Persistor is not initialized");
+      }
       await restoreBackup(backup, password, persistor);
       trackSuccessfulConnection("onboarding", "restore_from_backup");
     });
