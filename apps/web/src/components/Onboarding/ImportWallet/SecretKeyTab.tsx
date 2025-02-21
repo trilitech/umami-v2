@@ -5,6 +5,7 @@ import { decryptSecretKey } from "@umami/tezos";
 import { useState } from "react";
 import { FormProvider } from "react-hook-form";
 
+import { trackOnboardingEvent } from "../../../utils/analytics";
 import { PasswordInput } from "../../PasswordInput";
 import { SetupPassword } from "../SetupPassword";
 
@@ -29,6 +30,8 @@ export const SecretKeyTab = () => {
 
   const onSubmit = ({ secretKey, secretKeyPassword }: FormValues) =>
     handleAsyncAction(async () => {
+      trackOnboardingEvent("proceed_with_secret_key");
+
       // validate secret key
       await decryptSecretKey(secretKey, secretKeyPassword);
       return openWith(<SetupPassword mode="secret_key" />);
