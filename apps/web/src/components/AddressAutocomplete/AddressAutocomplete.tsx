@@ -130,10 +130,9 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
             data-testid="clear-selected-button"
           >
             <AddressTile
-              width={size === "short" ? "338px" : "365px"}
+              width={size === "short" ? "338px" : "full"}
               background="transparent"
               address={parsePkh(currentRealValue)}
-              paddingX="16px"
               paddingY={{ base: "3px", md: "8px" }}
               size="xs"
             />
@@ -169,7 +168,7 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
           />
           <InputRightElement marginRight="12px">
             {rawValue ? (
-              <CrossButton width="16px" height="auto" onClick={clearInput} />
+              <CrossButton onClick={clearInput} />
             ) : (
               <ChevronDownIcon
                 data-testid="chevron-icon"
@@ -193,7 +192,14 @@ export const AddressAutocomplete = <T extends FieldValues, U extends Path<T>>({
 };
 
 const CrossButton = (props: IconProps) => (
-  <Icon as={XMarkIcon} cursor="pointer" data-testid="clear-input-button" {...props} />
+  <Icon
+    as={XMarkIcon}
+    cursor="pointer"
+    data-testid="clear-input-button"
+    {...props}
+    width="24px"
+    height="auto"
+  />
 );
 
 export const OwnedImplicitAccountsAutocomplete = <T extends FieldValues, U extends Path<T>>(

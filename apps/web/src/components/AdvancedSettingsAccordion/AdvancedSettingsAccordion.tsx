@@ -59,7 +59,12 @@ export const AdvancedSettingsAccordion = ({ index = 0 }: AdvancedSettingsAccordi
           </Heading>
           <AccordionIcon />
         </AccordionButton>
-        <AccordionPanel gap="16px" display="flex" padding="16px">
+        <AccordionPanel
+          flexDirection={{ base: "column", md: "row" }}
+          gap="16px"
+          display="flex"
+          padding="16px"
+        >
           <FormControl>
             <FormLabel fontSize="14px">Fee</FormLabel>
             <InputGroup>
