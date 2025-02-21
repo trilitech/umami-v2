@@ -17,7 +17,6 @@ import { multisigsSlice } from "./slices/multisigs";
 import { networksSlice } from "./slices/networks";
 import { protocolSettingsSlice } from "./slices/protocolSettings";
 import { tokensSlice } from "./slices/tokens";
-import { getOrCreateUserNonce } from "./utils/localEncryptionKey";
 
 let TEST_STORAGE: Storage | undefined;
 
@@ -60,9 +59,10 @@ export const makeReducer = () => {
 
 export const makePersistConfigs = (storage_: Storage | undefined, password?: string) => {
   const storage = storage_ || getTestStorage() || createWebStorage("local");
-  const nonce = getOrCreateUserNonce(password);
-  
-  if (!nonce) {return null;}
+
+  if (!password) {
+    return null;
+  }
 
   const rootPersistConfig = {
     key: "root",
@@ -73,7 +73,7 @@ export const makePersistConfigs = (storage_: Storage | undefined, password?: str
     transforms: [
       encryptTransform(
         {
-          secretKey: nonce,
+          secretKey: password,
           onError: error => {
             console.error("Error encrypting root state:", error);
           },
@@ -91,7 +91,7 @@ export const makePersistConfigs = (storage_: Storage | undefined, password?: str
     blacklist: ["password"],
     transforms: [
       encryptTransform({
-        secretKey: nonce,
+        secretKey: password,
         onError: error => {
           console.error("Error encrypting accounts state:", error);
         },
