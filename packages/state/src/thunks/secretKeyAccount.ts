@@ -57,5 +57,6 @@ export const restoreFromSecretKey =
       password,
     });
     dispatch(accountsActions.addAccount(account));
+    dispatch(accountsActions.setDefaultAccount());
     dispatch(accountsActions.addSecretKey({ pkh: account.address.pkh, encryptedSecretKey }));
   };

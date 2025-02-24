@@ -90,12 +90,14 @@ export const makePersistConfigs = (storage_: Storage | undefined, password?: str
     migrate: createAsyncMigrate(accountsMigrations, { debug: false }),
     blacklist: ["password"],
     transforms: [
-      encryptTransform({
-        secretKey: password,
-        onError: error => {
-          console.error("Error encrypting accounts state:", error);
-        },
-      }),
+      encryptTransform(
+        {
+          secretKey: password,
+          onError: error => {
+            console.error("Error encrypting accounts state:", error);
+          },
+        }, { blacklist: ["defaultAccount"] }
+      ),
     ],
   };
 
