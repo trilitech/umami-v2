@@ -20,14 +20,17 @@
     <title>Umami</title>
     <!-- Google Analytics tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-82XSMBDYTJ"></script>
-    <script>
+    <script type="module">
+      const measurementId =
+        process.env.NODE_ENV === "development" ? "G-GYN15SE904" : "G-82XSMBDYTJ";
+
       window.dataLayer = window.dataLayer || [];
       function gtag() {
         dataLayer.push(arguments);
       }
+      window.gtag = gtag;
       gtag("js", new Date());
-
-      gtag("config", "G-82XSMBDYTJ");
+      gtag("config", measurementId);
     </script>
   </head>
   <body>
