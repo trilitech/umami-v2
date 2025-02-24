@@ -14,6 +14,7 @@ import { remove } from "lodash";
 
 import { type AccountsState } from "./State";
 import { changeMnemonicPassword } from "../../thunks/changeMnemonicPassword";
+import { IDP } from "@umami/social-auth";
 
 export const accountsInitialState: AccountsState = {
   items: [],
@@ -98,6 +99,9 @@ export const accountsSlice = createSlice({
       );
       if (accountToRename) {
         accountToRename.label = newName;
+        if (state.defaultAccount?.address.pkh === accountToRename.address.pkh) {
+          state.defaultAccount.label = newName;
+        }
       }
     },
     /**
@@ -137,6 +141,11 @@ export const accountsSlice = createSlice({
     setCurrent: (state, { payload: address }: { payload: RawPkh | undefined }) => {
       state.current = address;
     },
+    setDefaultAccount: (state) => {
+      if (!state.defaultAccount) {
+        state.defaultAccount = hideConfidentialData(state.items[0]);
+      }
+    },
     setIsVerified: (
       state,
       { payload: { pkh, isVerified } }: { payload: { pkh: RawPkh; isVerified: boolean } }
@@ -175,5 +184,20 @@ const concatUnique = (existingAccounts: ImplicitAccount[], newAccounts: Implicit
 
   return [...existingAccounts, ...newAccounts];
 };
+
+function hideConfidentialData(acct: ImplicitAccount): ImplicitAccount {
+  // create a new object from account
+  const account = ({ ...acct } as ImplicitAccount);
+  if (account.type === "social") {
+    if (account.label.includes("@")) {
+      account.label = account.label.slice(0, 2) + "..." + account.label.slice(account.label.indexOf("@"));
+    }
+  }
+  account.pk = "********";
+  if (account.type === "mnemonic") {
+    account.seedFingerPrint = "********";
+  }
+  return account;
+}
 
 export const accountsActions = accountsSlice.actions;
