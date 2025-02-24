@@ -21,7 +21,7 @@ export const logout = (persistor: Persistor) =>
       const migrationCompleted = localStorage.getItem("migration_to_2_3_5_completed");
 
       localStorage.clear(); // TODO: fix for react-native
-
+      sessionStorage.clear();
       if (migrationCompleted) {
         localStorage.setItem("migration_to_2_3_5_completed", "true");
       }

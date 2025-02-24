@@ -1,4 +1,4 @@
-import { getOrCreateUserNonce, initializePersistence, makeStore } from "@umami/state";
+import { accountsActions, getOrCreateUserNonce, initializePersistence, makeStore} from "@umami/state";
 
 import { persistor, setupPersistor } from "./persistor";
 
@@ -17,6 +17,7 @@ export const setupPersistence = (key: string) => {
     }
     const { persistor } = initializePersistence(store, nonce);
     setupPersistor(persistor);
+    store.dispatch(accountsActions.setDefaultAccount());
   } catch (error) {
     console.error("Failed to initialize persistence:", error);
     return null;
