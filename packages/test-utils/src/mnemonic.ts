@@ -10,3 +10,6 @@ export const encryptedMnemonic1 = {
 
 export const mnemonic2 =
   "tone ahead staff legend common seek dove struggle ancient praise person injury poverty space enrich trick option defense ripple approve garlic favorite omit dose";
+
+export const mnemonic12 =
+  "poverty space enrich trick option defense ripple approve garlic favorite omit dose";
