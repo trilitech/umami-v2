@@ -6,6 +6,8 @@ import { mockToast } from "@umami/state";
 import { mockLocalStorage } from "@umami/test-utils";
 import { setupJestCanvasMock } from "jest-canvas-mock";
 
+(window as any).gtag = jest.fn();
+
 const writeText = jest.fn();
 
 Object.assign(navigator, {
