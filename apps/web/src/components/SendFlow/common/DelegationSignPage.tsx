@@ -1,11 +1,11 @@
 import { Flex, FormLabel, ModalBody, ModalContent, ModalFooter } from "@chakra-ui/react";
-import { type Delegation } from "@umami/core";
+import { type Delegation, Titles } from "@umami/core";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { Header } from "./Header";
 import { AddressTile } from "../../AddressTile/AddressTile";
 import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";
-import { Titles } from "../../Titles";
+import { HintsAccordion } from "../../HintsAccordion";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
 import { type CalculatedSignProps, type SdkSignPageProps } from "../utils";
@@ -27,6 +27,7 @@ export const DelegationSignPage = ({
       <ModalContent data-testid="DelegationSignPage">
         <form>
           <Header headerProps={headerProps} title={Titles.DelegationSignPage} />
+          <HintsAccordion signPage="DelegationSignPage" />
           <ModalBody>
             <FormLabel>From</FormLabel>
             <AddressTile address={operation.signer.address} />

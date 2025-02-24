@@ -12,13 +12,13 @@ import {
   ModalFooter,
   Text,
 } from "@chakra-ui/react";
+import { Titles } from "@umami/core";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { Header } from "./Header";
 import { useColor } from "../../../styles/useColor";
 import { AddressTile } from "../../AddressTile/AddressTile";
 import { JsValueWrap } from "../../JsValueWrap";
-import { Titles } from "../../Titles";
 import { useSignWithBeacon } from "../Beacon/useSignWithBeacon";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
@@ -42,7 +42,7 @@ export const BatchSignPage = (signProps: SdkSignPageProps) => {
 
   return (
     <FormProvider {...form}>
-      <ModalContent data-testId="BatchSignPage">
+      <ModalContent data-testid="BatchSignPage">
         <form>
           <Header headerProps={signProps.headerProps} title={Titles.BatchSignPage} />
 

@@ -1,12 +1,12 @@
 import { Flex, FormLabel, ModalBody, ModalContent, ModalFooter } from "@chakra-ui/react";
-import { type TezTransfer } from "@umami/core";
+import { type TezTransfer, Titles } from "@umami/core";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { Header } from "./Header";
 import { AddressTile } from "../../AddressTile/AddressTile";
 import { AdvancedSettingsAccordion } from "../../AdvancedSettingsAccordion";
 import { TezTile } from "../../AssetTiles/TezTile";
-import { Titles } from "../../Titles";
+import { HintsAccordion } from "../../HintsAccordion";
 import { SignButton } from "../SignButton";
 import { SignPageFee } from "../SignPageFee";
 import { type CalculatedSignProps, type SdkSignPageProps } from "../utils";
@@ -27,6 +27,7 @@ export const TezSignPage = ({
       <ModalContent data-testid="TezSignPage">
         <form>
           <Header headerProps={headerProps} title={Titles.TezSignPage} />
+          <HintsAccordion signPage="TezSignPage" />
           <ModalBody>
             <TezTile mutezAmount={mutezAmount} />
 
