@@ -99,10 +99,11 @@ export const useGetSetupPasswordSubmitHandler = (mode: Mode) => {
           case "mnemonic":
           case "new_mnemonic":
           case "add_account": {
-            trackOnboardingEvent(`create_account_with_${mode}`);
+            if (mode === "mnemonic" || mode === "new_mnemonic") {
+              trackOnboardingEvent(`create_account_with_${mode}`);
+            }
 
             await handleMnemonic(formValues, isNewMnemonic);
-
             break;
           }
           case "verification": {
