@@ -36,6 +36,7 @@
     "@umami/core": "workspace:^",
     "@umami/crypto": "workspace:^",
     "@umami/data-polling": "workspace:^",
+    "@umami/etherlink-sdk": "workspace:^",
     "@umami/multisig": "workspace:^",
     "@umami/social-auth": "workspace:^",
     "@umami/state": "workspace:^",

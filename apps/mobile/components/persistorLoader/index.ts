@@ -1,1 +1,1 @@
-export * from "./PersistorLoader";
+export * from "./persistorLoader";

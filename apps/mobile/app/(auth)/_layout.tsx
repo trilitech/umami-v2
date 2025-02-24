@@ -2,7 +2,7 @@ import { useCurrentAccount } from "@umami/state";
 import { Redirect, Stack } from "expo-router";
 import { View } from "react-native";
 
-import { Header } from "../../components/Header";
+import { Header } from "../../components/header";
 
 export default function AuthenticatedLayout() {
   const currentAccount = useCurrentAccount();

@@ -1,18 +1,33 @@
 import { ArrowDown, ArrowUpRight, Repeat, Wallet } from "@tamagui/lucide-icons";
+import { generateEtherlinkWallet, getLatestBlock, sendEtherlinkFunds, bridgeXTZToEtherlink } from "@umami/etherlink-sdk";
 import { useCurrentAccount, useSelectNetwork, useSelectedNetwork } from "@umami/state";
+import { useEffect, useState } from "react";
 import { Button, Text, XStack, YStack } from "tamagui";
+
 
 import { ActionButton, BalanceDisplay, NetworkSwitch } from "./components";
 import { FormPage } from "../../components/SendFlow/Tez";
 import { useModal } from "../../providers/ModalProvider";
 import { useOnboardingAuth } from "../../services/auth";
 
+
 export const Home = () => {
   const currentAccount = useCurrentAccount()!;
   const network = useSelectedNetwork();
   const selectNetwork = useSelectNetwork();
+  const [wallet, setWallet] = useState<{address: string; privateKey: string}>();
   const { logout } = useOnboardingAuth();
   const { showModal } = useModal();
+
+  const handleSendXTZ = () => {
+    bridgeXTZToEtherlink("10", wallet?.address ?? "")
+  }
+
+  useEffect(() => {
+    getLatestBlock();
+    const wallet = generateEtherlinkWallet()
+    setWallet(wallet);
+  }, []);
 
   const address = currentAccount.address.pkh;
 
@@ -47,6 +62,10 @@ export const Home = () => {
         <Text>Label: {currentAccount.label}</Text>
         <Text>Address: {address}</Text>
       </YStack>
+
+      <Button marginTop={20} onPress={handleSendXTZ} size="$4">
+        Send XTZ
+      </Button>
 
       <Button marginTop={20} onPress={handleLogout} size="$4">
         Logout

@@ -1,7 +1,7 @@
 import { XStack } from "tamagui";
 
-import { AccountBadge } from "../AccountBadge";
-import { HeaderIcon } from "../HeaderIcon";
+import { AccountBadge } from "../accountBadge";
+import { HeaderIcon } from "../headerIcon";
 
 export const Header = () => (
   <XStack alignItems="center" justifyContent="space-between" width="100%" paddingHorizontal={10}>

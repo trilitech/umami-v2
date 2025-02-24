@@ -6,7 +6,7 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { TamaguiProvider } from "tamagui";
 
-import { PersistorLoader } from "../components/PersistorLoader";
+import { PersistorLoader } from "../components/persistorLoader";
 import { AuthProvider, ReactQueryProvider } from "../providers";
 import { ModalProvider } from "../providers/ModalProvider";
 import { persistor, store } from "../store";

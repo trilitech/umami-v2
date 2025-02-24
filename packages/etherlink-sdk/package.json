@@ -1,0 +1,25 @@
+{
+  "name": "@umami/etherlink-sdk",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts",
+    "dev": "tsup src/index.ts --watch",
+    "lint": "eslint . --ext .ts",
+    "test": "jest"
+  },
+  "dependencies": {
+    "ethers": "^6.0.0",
+    "viem": "^1.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "tsup": "^6.0.0",
+    "eslint": "^8.0.0",
+    "jest": "^29.0.0"
+  },
+  "tsup": {
+    "external": ["@airgap/beacon-ui", "solid-js/web", "path"]
+  }
+}
