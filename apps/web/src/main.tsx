@@ -14,6 +14,7 @@ import { UmamiTheme } from "./providers/UmamiTheme";
 import { store } from "./utils/store";
 import "./utils/hotjar";
 
+import "./utils/sentry";
 import "./index.scss";
 
 // TODO: Move to a hook in @umami/state
