@@ -49,12 +49,17 @@ export const makeReducer = () => {
     tokens: tokensSlice.reducer,
   });
 
-  return (state: any, action: Action) => {
+  type AppReducerState = ReturnType<typeof appReducer> | undefined;
+
+  const rootReducers = (state: AppReducerState, action: Action) => {
     if (action.type === "RESET_ALL") {
       state = undefined;
     }
+
     return appReducer(state, action);
   };
+
+  return rootReducers;
 };
 
 export const makePersistConfigs = (storage_: Storage | undefined, password?: string) => {

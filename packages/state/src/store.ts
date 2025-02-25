@@ -1,14 +1,27 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { type Storage, persistReducer, persistStore } from "redux-persist";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { type Storage, persistReducer } from "redux-persist";
 
 import { makePersistConfigs, makeReducer } from "./reducer";
+import {
+  announcementSlice,
+  batchesSlice,
+  beaconSlice,
+  contactsSlice,
+  errorsSlice,
+  multisigsSlice,
+  networksSlice,
+  protocolSettingsSlice,
+  tokensSlice,
+  wcSlice,
+} from "./slices";
 import { accountsSlice } from "./slices/accounts/accounts";
+import { assetsSlice } from "./slices/assets";
 
 // Create initial store without persistence
 export const makeStore = () => {
   const rootReducer = makeReducer();
 
-  return configureStore({
+  const store = configureStore({
     reducer: rootReducer,
     middleware: getDefaultMiddleware =>
       getDefaultMiddleware({
@@ -26,6 +39,8 @@ export const makeStore = () => {
         },
       }),
   });
+
+  return store;
 };
 
 // Initialize persistence after authentication
@@ -44,20 +59,30 @@ export const initializePersistence = (
 
   // Create persisted reducers
   const persistedRootReducer = persistReducer(rootPersistConfig, rootReducer);
-  const persistedAccountsReducer = persistReducer(accountsPersistConfig, accountsSlice.reducer);
 
   // Combine persisted reducers
-  const finalReducer = (state: any, action: any) => {
-    const rootState = persistedRootReducer(state, action);
-    const accountsState = persistedAccountsReducer(state.accounts, action);
-    return { ...rootState, accounts: accountsState };
-  };
+  const finalReducer = combineReducers({
+    announcement: announcementSlice.reducer,
+    assets: assetsSlice.reducer,
+    batches: batchesSlice.reducer,
+    beacon: beaconSlice.reducer,
+    walletconnect: wcSlice.reducer,
+    contacts: contactsSlice.reducer,
+    errors: errorsSlice.reducer,
+    multisigs: multisigsSlice.reducer,
+    networks: networksSlice.reducer,
+    protocolSettings: protocolSettingsSlice.reducer,
+    tokens: tokensSlice.reducer,
+    accounts: persistReducer(accountsPersistConfig, accountsSlice.reducer),
+  });
 
   // Update store's reducer
-  store.replaceReducer(finalReducer);
+  store.replaceReducer(persistReducer(rootPersistConfig, finalReducer as any));
+  // @ts-ignore
+  store.persistor.persist();
 
-  const persistor = persistStore(store);
-  return { persistor };
+  // const persistor = persistStore(store);
+  // return { persistor };
 };
 
 export type UmamiStore = ReturnType<typeof makeStore>;

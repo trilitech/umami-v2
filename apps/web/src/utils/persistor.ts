@@ -1,9 +1,8 @@
-import { type Persistor } from "redux-persist";
+import { type PersistorOptions, persistStore } from "redux-persist";
 
-export let persistor: Persistor | null = null;
+import { store } from "./store";
 
-export const setupPersistor = (persistorVal: Persistor | null) => {
-  if (persistorVal) {
-    persistor = persistorVal;
-  }
-};
+export const persistor = persistStore(store);
+
+// @ts-ignore
+store.persistor = persistor;

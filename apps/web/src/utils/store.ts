@@ -1,22 +1,22 @@
 import { getOrCreateUserNonce, initializePersistence, makeStore } from "@umami/state";
 
-import { persistor, setupPersistor } from "./persistor";
+import { persistor } from "./persistor";
 
 // Start with in-memory store without persistence
 export const store = makeStore();
 
 // Function to enable persistence after authentication
 export const setupPersistence = (password: string) => {
-  if (persistor) {
-    return;
-  }
+  // if (persistor) {
+  //   return;
+  // }
   try {
     const nonce = getOrCreateUserNonce(password);
     if (!nonce) {
       throw new Error("Failed to create nonce");
     }
-    const { persistor } = initializePersistence(store, nonce);
-    setupPersistor(persistor);
+    initializePersistence(store, nonce);
+    // setupPersistor(persistor);
   } catch (error) {
     console.error("Failed to initialize persistence:", error);
     return null;

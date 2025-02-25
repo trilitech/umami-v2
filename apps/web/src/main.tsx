@@ -5,6 +5,7 @@ import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import { ErrorBoundary } from "react-error-boundary";
 import { BrowserRouter } from "react-router-dom";
+import { PersistGate } from "redux-persist/integration/react";
 
 import { App } from "./components/App";
 import { ErrorPage } from "./components/ErrorPage";
@@ -14,6 +15,7 @@ import { UmamiTheme } from "./providers/UmamiTheme";
 import { store } from "./utils/store";
 
 import "./index.scss";
+import { persistor } from "./utils/persistor";
 
 // TODO: Move to a hook in @umami/state
 const logError = (error: Error, info: { componentStack?: string | null }) => {
@@ -25,17 +27,19 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <UmamiTheme>
       <ReduxStore>
-        <ErrorBoundary fallback={<ErrorPage />} onError={logError}>
-          <ReactQueryProvider>
-            <BrowserRouter>
-              <DynamicDisclosureProvider>
-                <App />
-              </DynamicDisclosureProvider>
-            </BrowserRouter>
-            {/* Uncomment to use react-query devtools */}
-            {/* <ReactQueryDevtools initialIsOpen={true} /> */}
-          </ReactQueryProvider>
-        </ErrorBoundary>
+        {/* <PersistGate loading={null} persistor={persistor}> */}
+          <ErrorBoundary fallback={<ErrorPage />} onError={logError}>
+            <ReactQueryProvider>
+              <BrowserRouter>
+                <DynamicDisclosureProvider>
+                  <App />
+                </DynamicDisclosureProvider>
+              </BrowserRouter>
+              {/* Uncomment to use react-query devtools */}
+              {/* <ReactQueryDevtools initialIsOpen={true} /> */}
+            </ReactQueryProvider>
+          </ErrorBoundary>
+        {/* </PersistGate> */}
       </ReduxStore>
     </UmamiTheme>
   </StrictMode>
