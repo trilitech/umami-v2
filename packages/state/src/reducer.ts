@@ -99,7 +99,7 @@ export const makePersistConfigs = (storage_: Storage | undefined, password?: str
             console.error("Error encrypting accounts state:", error);
           },
         },
-        { blacklist: ["defaultAccount"] }
+        { blacklist: ["defaultAccount", "seedPhrases", "secretKeys"] }
       ),
     ],
   };

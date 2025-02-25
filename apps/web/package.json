@@ -49,6 +49,7 @@
     "@umami/multisig": "workspace:^",
     "@umami/social-auth": "workspace:^",
     "@umami/state": "workspace:^",
+    "@umami/crypto": "workspace:^",
     "@umami/tezos": "workspace:^",
     "@umami/tzkt": "workspace:^",
     "@umami/utils": "workspace:^",
