@@ -1,20 +1,25 @@
-import { useCurrentAccount } from "@umami/state";
+import { useHandleSession } from "@umami/state";
 
 import { Layout } from "../../Layout";
+import { SessionLogin } from "../../views/SessionLogin/SessionLogin";
 import { Welcome } from "../../views/Welcome";
 import { BeaconProvider } from "../beacon";
 import { WalletConnectProvider } from "../WalletConnect/WalletConnectProvider";
 
 export const App = () => {
-  const currentAccount = useCurrentAccount();
+  const { isSessionActive, isOnboarded } = useHandleSession();
 
-  return currentAccount ? (
-    <BeaconProvider>
-      <WalletConnectProvider>
-        <Layout />
-      </WalletConnectProvider>
-    </BeaconProvider>
-  ) : (
-    <Welcome />
-  );
+  if (!isOnboarded()) {
+    return <Welcome />;
+  } else if (!isSessionActive) {
+    return <SessionLogin />;
+  } else {
+    return (
+      <BeaconProvider>
+        <WalletConnectProvider>
+          <Layout />
+        </WalletConnectProvider>
+      </BeaconProvider>
+    );
+  }
 };
