@@ -11,7 +11,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useMultiForm } from "@umami/components";
-import { useIsPasswordSet } from "@umami/state";
+import { useIsPasswordSet, useSessionTimeout } from "@umami/state";
 import { defaultDerivationPathTemplate } from "@umami/tezos";
 import { FormProvider } from "react-hook-form";
 
@@ -72,6 +72,7 @@ export const SetupPassword = ({ mode }: SetupPasswordProps) => {
   const color = useColor();
   const { onSubmit, isLoading } = useGetSetupPasswordSubmitHandler(mode);
   const isPasswordSet = useIsPasswordSet();
+  const { setupSessionTimeout } = useSessionTimeout();
 
   const form = useMultiForm<FormFields>({
     mode: "all",
@@ -87,6 +88,13 @@ export const SetupPassword = ({ mode }: SetupPasswordProps) => {
   } = form;
 
   const { title, subtitle, buttonLabel, icon } = getModeConfig(mode);
+
+  const handleSubmit = async (values: FormFields) => {
+    await onSubmit(values);
+    if (mode === "new_mnemonic") {
+      setupSessionTimeout();
+    }
+  };
 
   return (
     <ModalContent>
@@ -106,7 +114,7 @@ export const SetupPassword = ({ mode }: SetupPasswordProps) => {
         </Center>
       </ModalHeader>
       <FormProvider {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+        <form onSubmit={form.handleSubmit(handleSubmit)}>
           <ModalBody>
             <Flex flexDirection="column" gap="24px">
               <PasswordInput
