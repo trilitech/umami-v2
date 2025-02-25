@@ -1,12 +1,32 @@
 import { Button, Center, Flex, type FlexProps, Heading, Icon, Text } from "@chakra-ui/react";
+import { type ImplicitAccount } from "@umami/core";
+import { useState } from "react";
 import { type FieldValues, FormProvider, useForm } from "react-hook-form";
 
+import { LoginButtonComponent } from "./SignInWithButton";
 import { LogoLightIcon, TezosLogoIcon } from "../../assets/icons";
+import { useGetSetupPasswordSubmitHandler } from "../../components/Onboarding/SetupPassword/useGetSetupPasswordSubmitHandler";
 import { PasswordInput } from "../../components/PasswordInput";
 import { useColor } from "../../styles/useColor";
 
 export const SessionLogin = () => {
   const color = useColor();
+
+  const [defaultAccount] = useState(() => {
+    const accounts = localStorage.getItem("persist:accounts");
+
+    if (!accounts) {
+      return null;
+    }
+
+    const parsedAccounts = JSON.parse(accounts);
+
+    return JSON.parse(parsedAccounts.defaultAccount) as ImplicitAccount;
+  });
+
+  const { onSubmit: onSubmit } = useGetSetupPasswordSubmitHandler(
+    defaultAccount?.type === "mnemonic" ? "mnemonic" : "secret_key"
+  );
 
   const form = useForm({
     defaultValues: {
@@ -15,8 +35,12 @@ export const SessionLogin = () => {
     mode: "onBlur",
   });
 
-  const onSubmit = (data: FieldValues) => {
-    console.log(data);
+  const handleSubmit = async (data: FieldValues) => {
+    if (defaultAccount?.type === "mnemonic") {
+      // do mnemonic logic
+    } else if (defaultAccount?.type === "secret_key") {
+      // do secret key logic
+    }
   };
 
   return (
@@ -46,10 +70,22 @@ export const SessionLogin = () => {
               You need to sign back in to use your wallet.
             </Text>
           </Flex>
-          <PasswordInput inputName="password" />
-          <Button width="full" onClick={form.handleSubmit(onSubmit)} size="lg" variant="primary">
-            Unlock
-          </Button>
+          {defaultAccount?.type === "social" ? (
+            <LoginButtonComponent idp={defaultAccount.idp} prefix="Sign in with" />
+          ) : (
+            <>
+              <PasswordInput inputName="password" />
+              <Button
+                width="full"
+                onClick={form.handleSubmit(handleSubmit)}
+                size="lg"
+                variant="primary"
+              >
+                Unlock
+              </Button>
+            </>
+          )}
+
           <Logo alignSelf="end" gridArea="tezos-logo" />
         </Flex>
       </Flex>
