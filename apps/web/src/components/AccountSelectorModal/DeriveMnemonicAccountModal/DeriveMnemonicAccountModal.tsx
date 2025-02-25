@@ -8,6 +8,7 @@ import {
   useDeriveMnemonicAccount,
 } from "@umami/state";
 
+import { trackAccountEvent } from "../../../utils/analytics";
 import { MasterPasswordModal } from "../../MasterPasswordModal";
 import { NameAccountModal } from "../../NameAccountModal";
 
@@ -27,6 +28,8 @@ export const DeriveMnemonicAccountModal = ({ account }: DeriveMnemonicAccountMod
     const handlePasswordSubmit = ({ password }: { password: string }) =>
       handleAsyncAction(
         async () => {
+          trackAccountEvent("submit_account_derivation");
+
           const newAccount = await deriveMnemonicAccount({
             fingerPrint: account.seedFingerPrint,
             password,
