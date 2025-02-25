@@ -8,6 +8,7 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
+import hj from "@hotjar/browser";
 import { type Delegation } from "@umami/core";
 import { type RawPkh, parseImplicitPkh, parsePkh } from "@umami/tezos";
 import { FormProvider, useForm } from "react-hook-form";
@@ -28,6 +29,8 @@ export type FormValues = {
 
 export const FormPage = (props: FormPageProps<FormValues>) => {
   const baker = props.form?.baker;
+
+  hj.stateChange("send_flow/delegation_form_page");
 
   const openSignPage = useOpenSignPageFormAction({
     SignPage,

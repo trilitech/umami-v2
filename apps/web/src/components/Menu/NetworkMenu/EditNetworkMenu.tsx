@@ -1,5 +1,6 @@
 import { Button, FormControl, FormErrorMessage, FormLabel, Input, VStack } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import hj from "@hotjar/browser";
 import { getNetworkValidationScheme, useDynamicDrawerContext } from "@umami/components";
 import { networksActions, useAppDispatch, useAvailableNetworks } from "@umami/state";
 import { type Network } from "@umami/tezos";
@@ -17,6 +18,8 @@ export const EditNetworkMenu = ({ network }: EditNetworkMenuProps) => {
   const { goBack } = useDynamicDrawerContext();
   const dispatch = useAppDispatch();
   const availableNetworks = useAvailableNetworks();
+
+  hj.stateChange("menu/network/add");
 
   const {
     formState: { errors, isValid },
