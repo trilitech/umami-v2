@@ -16,6 +16,7 @@ import { errorsSlice } from "./slices/errors";
 import { multisigsSlice } from "./slices/multisigs";
 import { networksSlice } from "./slices/networks";
 import { protocolSettingsSlice } from "./slices/protocolSettings";
+import { sessionSlice } from "./slices/session";
 import { tokensSlice } from "./slices/tokens";
 
 let TEST_STORAGE: Storage | undefined;
@@ -47,6 +48,7 @@ export const makeReducer = () => {
     networks: networksSlice.reducer,
     protocolSettings: protocolSettingsSlice.reducer,
     tokens: tokensSlice.reducer,
+    session: sessionSlice.reducer,
   });
 
   return (state: any, action: Action) => {
@@ -68,7 +70,7 @@ export const makePersistConfigs = (storage_: Storage | undefined, password?: str
     key: "root",
     version: VERSION,
     storage,
-    blacklist: ["accounts", "assets", "announcement", "tokens", "protocolSettings"],
+    blacklist: ["accounts", "assets", "announcement", "tokens", "protocolSettings", "session"],
     migrate: createAsyncMigrate(mainStoreMigrations, { debug: false }),
     transforms: [
       encryptTransform(
