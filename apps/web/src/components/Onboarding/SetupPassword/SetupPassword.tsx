@@ -11,7 +11,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useMultiForm } from "@umami/components";
-import { useIsPasswordSet, useSessionTimeout } from "@umami/state";
+import { useHandleSession, useIsPasswordSet } from "@umami/state";
 import { defaultDerivationPathTemplate } from "@umami/tezos";
 import { FormProvider } from "react-hook-form";
 
@@ -72,7 +72,7 @@ export const SetupPassword = ({ mode }: SetupPasswordProps) => {
   const color = useColor();
   const { onSubmit, isLoading } = useGetSetupPasswordSubmitHandler(mode);
   const isPasswordSet = useIsPasswordSet();
-  const { setupSessionTimeout } = useSessionTimeout();
+  const { setupSessionTimeout } = useHandleSession();
 
   const form = useMultiForm<FormFields>({
     mode: "all",

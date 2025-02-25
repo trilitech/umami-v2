@@ -14,12 +14,14 @@ export const ReduxStore = ({ children }: PropsWithChildren) => (
 
 const ReduxStoreContent = ({ children }: PropsWithChildren) => {
   const nonce = getOrCreateUserNonce();
+
   if (!nonce) {
     return <>{children}</>;
   }
   if (!persistor) {
     const { persistor } = initializePersistence(store, nonce);
     setupPersistor(persistor);
+
     return (
       <PersistGate loading={null} persistor={persistor}>
         {children}
