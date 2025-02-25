@@ -52,3 +52,31 @@ export const useOnboardWithSocial = (idp: Auth.IDP, onAuth?: () => void) => {
 
   return { isLoading, onboard };
 };
+
+/**
+ * Hook to login with a social identity provider.
+ * Handles the authentication process and decrypts the localstorage.
+ *
+ * @param idp - the identity provider to use for authentication
+ */
+export const useLoginWithSocial = (idp: Auth.IDP) => {
+  const { isLoading, handleAsyncAction } = useAsyncActionHandler();
+
+  const login = useCallback(
+    () =>
+      handleAsyncAction(
+        async () => {
+          trackSocialLoginButtonClick("onboarding", idp);
+          const { secretKey } = await withTimeout(
+            () => Auth.forIDP(idp).getCredentials(),
+            LOGIN_TIMEOUT
+          );
+          setupPersistence(secretKey);
+        },
+        { title: "Social login failed" }
+      ),
+    [idp, handleAsyncAction]
+  );
+
+  return { isLoading, login };
+};
