@@ -3,7 +3,7 @@ import { type PropsWithChildren } from "react";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 
-import { persistor, setupPersistor } from "../utils/persistor";
+import { clearPersistor, persistor, setupPersistor } from "../utils/persistor";
 import { store } from "../utils/store";
 
 export const ReduxStore = ({ children }: PropsWithChildren) => (
@@ -16,6 +16,7 @@ const ReduxStoreContent = ({ children }: PropsWithChildren) => {
   const nonce = getOrCreateUserNonce();
 
   if (!nonce) {
+    clearPersistor();
     return <>{children}</>;
   }
   if (!persistor) {

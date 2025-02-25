@@ -7,3 +7,7 @@ export const setupPersistor = (persistorVal: Persistor | null) => {
     persistor = persistorVal;
   }
 };
+
+export const clearPersistor = () => {
+  persistor = null;
+};

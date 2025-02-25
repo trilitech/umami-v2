@@ -194,9 +194,7 @@ function hideConfidentialData(acct: ImplicitAccount): ImplicitAccount {
     }
   }
   account.pk = "********";
-  if (account.type === "mnemonic") {
-    account.seedFingerPrint = "********";
-  }
+
   return account;
 }
 
