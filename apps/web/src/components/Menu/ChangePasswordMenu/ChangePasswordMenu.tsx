@@ -1,4 +1,5 @@
 import { Button, Divider, VStack, useToast } from "@chakra-ui/react";
+import hj from "@hotjar/browser";
 import {
   accountsActions,
   changeMnemonicPassword,
@@ -29,6 +30,8 @@ export const ChangePasswordMenu = () => {
     getValues,
     reset,
   } = form;
+
+  hj.stateChange("menu/change_password");
 
   const onSubmit = ({ currentPassword, newPassword }: ChangePasswordMenuValues) =>
     handleAsyncAction(async () => {

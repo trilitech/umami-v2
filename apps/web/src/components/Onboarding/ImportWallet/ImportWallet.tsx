@@ -9,6 +9,7 @@ import {
   TabPanels,
   Tabs,
 } from "@chakra-ui/react";
+import hj from "@hotjar/browser";
 import { useImplicitAccounts } from "@umami/state";
 
 import { ImportBackupTab } from "./ImportBackupTab";
@@ -26,6 +27,8 @@ const AFTER_ONBOARDING_OPTIONS = ["Seed phrase", "Secret key", "Ledger"];
 export const ImportWallet = () => {
   const color = useColor();
   const hasOnboarded = useImplicitAccounts().length > 0;
+
+  hj.stateChange("importWallet");
 
   return (
     <ModalContent>

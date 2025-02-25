@@ -9,6 +9,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
+import hj from "@hotjar/browser";
 import { useDynamicDrawerContext } from "@umami/components";
 import {
   networksActions,
@@ -94,6 +95,8 @@ export const NetworkMenu = () => {
   const currentNetwork = useSelectedNetwork();
   const { openWith } = useDynamicDrawerContext();
   const availableNetworks = useAvailableNetworks();
+
+  hj.stateChange("menu/network");
 
   return (
     <DrawerContentWrapper

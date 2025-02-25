@@ -12,6 +12,7 @@ import {
   ModalFooter,
   Text,
 } from "@chakra-ui/react";
+import hj from "@hotjar/browser";
 import { Titles } from "@umami/core";
 import { FormProvider, useForm } from "react-hook-form";
 
@@ -27,6 +28,8 @@ import { useSignWithWalletConnect } from "../WalletConnect/useSignWithWalletConn
 
 export const BatchSignPage = (signProps: SdkSignPageProps) => {
   const color = useColor();
+
+  hj.stateChange("batch_sign_page");
 
   const beaconCalculatedProps = useSignWithBeacon({ ...signProps });
   const walletConnectCalculatedProps = useSignWithWalletConnect({ ...signProps });
