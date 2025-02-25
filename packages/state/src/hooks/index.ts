@@ -20,3 +20,4 @@ export * from "./setAccountData";
 export * from "./staking";
 export * from "./tokens";
 export * from "./WalletConnect";
+export * from "./session";
