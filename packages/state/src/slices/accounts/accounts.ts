@@ -14,7 +14,6 @@ import { remove } from "lodash";
 
 import { type AccountsState } from "./State";
 import { changeMnemonicPassword } from "../../thunks/changeMnemonicPassword";
-import { IDP } from "@umami/social-auth";
 
 export const accountsInitialState: AccountsState = {
   items: [],
@@ -141,7 +140,7 @@ export const accountsSlice = createSlice({
     setCurrent: (state, { payload: address }: { payload: RawPkh | undefined }) => {
       state.current = address;
     },
-    setDefaultAccount: (state) => {
+    setDefaultAccount: state => {
       if (!state.defaultAccount) {
         state.defaultAccount = hideConfidentialData(state.items[0]);
       }
@@ -187,10 +186,11 @@ const concatUnique = (existingAccounts: ImplicitAccount[], newAccounts: Implicit
 
 function hideConfidentialData(acct: ImplicitAccount): ImplicitAccount {
   // create a new object from account
-  const account = ({ ...acct } as ImplicitAccount);
+  const account = { ...acct } as ImplicitAccount;
   if (account.type === "social") {
     if (account.label.includes("@")) {
-      account.label = account.label.slice(0, 2) + "..." + account.label.slice(account.label.indexOf("@"));
+      account.label =
+        account.label.slice(0, 2) + "..." + account.label.slice(account.label.indexOf("@"));
     }
   }
   account.pk = "********";

@@ -21,7 +21,7 @@ import { useColor } from "../../../styles/useColor";
 import { ModalCloseButton } from "../../CloseButton";
 import { TabSwitch } from "../../TabSwitch/TabSwitch";
 
-const BEFORE_ONBOARDING_OPTIONS = ["Seed phrase", "Secret key", "Backup", "Ledger"];
+const BEFORE_ONBOARDING_OPTIONS = ["Seed phrase", "Secret key", "Backup"];
 const AFTER_ONBOARDING_OPTIONS = ["Seed phrase", "Secret key", "Ledger"];
 
 export const ImportWallet = () => {
@@ -61,9 +61,11 @@ export const ImportWallet = () => {
               </TabPanel>
             )}
 
-            <TabPanel>
-              <LedgerTab />
-            </TabPanel>
+            {hasOnboarded && (
+              <TabPanel>
+                <LedgerTab />
+              </TabPanel>
+            )}
           </TabPanels>
         </Tabs>
       </ModalBody>
