@@ -34,6 +34,7 @@ import { useDispatch } from "react-redux";
 import { AccountSelectorPopover } from "./AccountSelectorPopover";
 import { PlusCircleIcon, TrashIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
+import { trackAccountEvent } from "../../utils/analytics";
 import { AccountTile } from "../AccountTile";
 import { ModalCloseButton } from "../CloseButton";
 import { DeriveMnemonicAccountModal } from "./DeriveMnemonicAccountModal";
@@ -88,6 +89,12 @@ export const AccountSelectorModal = () => {
     } else {
       return `Are you sure you want to remove all of your ${type}? You will need to manually import them again.`;
     }
+  };
+
+  const handleAddAccount = () => {
+    trackAccountEvent("add_account");
+
+    return openWith(<OnboardOptionsModal />);
   };
 
   const onRemove = (type: string, accounts: Account[]) => {
@@ -149,11 +156,13 @@ export const AccountSelectorModal = () => {
                         color={color("500")}
                         aria-label={`Add ${type} account`}
                         icon={<PlusCircleIcon />}
-                        onClick={() =>
-                          openWith(
+                        onClick={() => {
+                          trackAccountEvent("derive_account_from_mnemonic");
+
+                          return openWith(
                             <DeriveMnemonicAccountModal account={accounts[0] as MnemonicAccount} />
-                          )
-                        }
+                          );
+                        }}
                         size="sm"
                         variant="ghost"
                       />
@@ -212,7 +221,7 @@ export const AccountSelectorModal = () => {
           transition="box-shadow 0.2s ease-in"
           backdropFilter="blur(40px)"
         >
-          <Button width="full" onClick={() => openWith(<OnboardOptionsModal />)} variant="primary">
+          <Button width="full" onClick={handleAddAccount} variant="primary">
             Add account
           </Button>
         </Flex>

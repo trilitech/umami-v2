@@ -7,7 +7,7 @@ import { OnboardWithGoogleButton } from "./OnboardWithGoogleButton";
 import { OnboardWithRedditButton } from "./OnboardWithRedditButton";
 import { OnboardWithTwitterButton } from "./OnboardWithTwitterButton";
 import { useColor } from "../../../styles/useColor";
-import { trackOnboardingEvent } from "../../../utils/analytics";
+import { trackAccountEvent, trackOnboardingEvent } from "../../../utils/analytics";
 import { AccountTileWrapper } from "../../AccountTile";
 import { NameAccountModal } from "../../NameAccountModal";
 import { ImportWallet } from "../ImportWallet";
@@ -21,10 +21,16 @@ export const OnboardOptions = ({ children }: PropsWithChildren) => {
 
   const handleCreateNewWallet = () => {
     if (isAccountVerified) {
+      const handleNameAccount = () => {
+        trackAccountEvent("set_account_name");
+
+        return openWith(<SetupPassword mode="add_account" />);
+      };
+
       return openWith(
         <NameAccountModal
           buttonLabel="Continue"
-          onSubmit={() => openWith(<SetupPassword mode="add_account" />)}
+          onSubmit={handleNameAccount}
           subtitle={"Name your account or edit your\n account name later."}
           title="Create Account"
           withAdvancedSettings

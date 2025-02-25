@@ -16,7 +16,11 @@ import {
 import { decryptSecretKey } from "@umami/tezos";
 
 import { type FormFields, type Mode } from "./types";
-import { trackButtonClick, trackOnboardingEvent } from "../../../utils/analytics";
+import {
+  trackAccountEvent,
+  trackButtonClick,
+  trackOnboardingEvent,
+} from "../../../utils/analytics";
 import { ImportantNoticeModal } from "../VerificationFlow/ImportantNoticeModal";
 
 const useGetSecretKeyHandler = () => {
@@ -101,6 +105,10 @@ export const useGetSetupPasswordSubmitHandler = (mode: Mode) => {
           case "add_account": {
             if (mode === "mnemonic" || mode === "new_mnemonic") {
               trackOnboardingEvent(`create_account_with_${mode}`);
+            }
+
+            if (mode === "add_account") {
+              trackAccountEvent("create_account");
             }
 
             await handleMnemonic(formValues, isNewMnemonic);
