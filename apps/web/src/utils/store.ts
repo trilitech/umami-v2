@@ -1,4 +1,9 @@
-import { getOrCreateUserNonce, initializePersistence, makeStore } from "@umami/state";
+import {
+  accountsActions,
+  getOrCreateUserNonce,
+  initializePersistence,
+  makeStore,
+} from "@umami/state";
 
 import { persistor, setupPersistor } from "./persistor";
 
