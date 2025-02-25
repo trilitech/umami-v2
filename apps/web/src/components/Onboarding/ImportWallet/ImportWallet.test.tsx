@@ -10,7 +10,7 @@ jest.mock("@chakra-ui/react", () => ({
 }));
 
 describe("<ImportWallet />", () => {
-  it.each(["Seed phrase", "Secret key", "Ledger"])("renders %s tab", async tabName => {
+  it.each(["Seed phrase", "Secret key"])("renders %s tab", async tabName => {
     await renderInModal(<ImportWallet />);
 
     await waitFor(() => expect(screen.getByText(tabName)).toBeVisible());
@@ -32,6 +32,7 @@ describe("<ImportWallet />", () => {
       await renderInModal(<ImportWallet />, store);
 
       expect(screen.queryByText("Backup")).not.toBeInTheDocument();
+      await waitFor(() => expect(screen.getByText("Ledger")).toBeVisible());
     });
   });
 });
