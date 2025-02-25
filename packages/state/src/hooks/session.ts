@@ -1,8 +1,6 @@
-
 const SESSION_TIMEOUT = 30 * 60 * 1000; // 30 minutes from login
 
 export const useSessionTimeout = () => {
-
   const setupSessionTimeout = () => {
     try {
       const timeoutId = window.setTimeout(() => {
@@ -17,4 +15,4 @@ export const useSessionTimeout = () => {
   };
 
   return { setupSessionTimeout };
-}; 
+};
