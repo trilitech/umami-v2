@@ -3,8 +3,7 @@ import { type IDP } from "@umami/social-auth";
 import { type SVGProps } from "react";
 
 import { FacebookIcon, GoogleIcon, RedditIcon, TwitterIcon } from "../../assets/icons";
-import { useOnboardWithSocial } from "../../components/Onboarding/OnboardOptions/useOnboardWithSocial";
-
+import { useLoginWithSocial } from "../../components/Onboarding/OnboardOptions/useOnboardWithSocial";
 type LoginType = Omit<IDP, "email" | "apple">;
 
 type LoginButtonComponentProps = {
@@ -13,7 +12,7 @@ type LoginButtonComponentProps = {
 };
 
 export const LoginButtonComponent = ({ idp, prefix }: LoginButtonComponentProps) => {
-  const { onboard } = useOnboardWithSocial(idp as IDP);
+  const { isLoading, login } = useLoginWithSocial(idp as IDP);
 
   return (
     <Button
@@ -23,7 +22,8 @@ export const LoginButtonComponent = ({ idp, prefix }: LoginButtonComponentProps)
       padding="0px"
       border="none"
       borderRadius="100px"
-      onClick={onboard}
+      isLoading={isLoading}
+      onClick={login}
     >
       <Box position="absolute" top="50%" left="12px" transform="translateY(-50%)">
         <LogoIconWithBackground idp={idp} />
