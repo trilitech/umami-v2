@@ -1,6 +1,7 @@
 import { type Action, combineReducers } from "@reduxjs/toolkit";
-import { type Storage, persistReducer } from "redux-persist";
+import { type Storage } from "redux-persist";
 import createWebStorage from "redux-persist/lib/storage/createWebStorage";
+import { encryptTransform } from "redux-persist-transform-encrypt";
 
 import { createAsyncMigrate } from "./createAsyncMigrate";
 import { VERSION, accountsMigrations, mainStoreMigrations } from "./migrations";
@@ -32,27 +33,9 @@ const getTestStorage = () => {
     : TEST_STORAGE;
 };
 
-export const makeReducer = (storage_: Storage | undefined) => {
-  const storage = storage_ || getTestStorage() || createWebStorage("local");
-
-  const rootPersistConfig = {
-    key: "root",
-    version: VERSION,
-    storage,
-    blacklist: ["accounts", "assets", "announcement", "tokens", "protocolSettings"],
-    migrate: createAsyncMigrate(mainStoreMigrations, { debug: false }),
-  };
-
-  const accountsPersistConfig = {
-    key: "accounts",
-    version: VERSION,
-    storage,
-    migrate: createAsyncMigrate(accountsMigrations, { debug: false }),
-    blacklist: ["password"],
-  };
-
+export const makeReducer = () => {
   const appReducer = combineReducers({
-    accounts: persistReducer(accountsPersistConfig, accountsSlice.reducer),
+    accounts: accountsSlice.reducer,
     announcement: announcementSlice.reducer,
     assets: assetsSlice.reducer,
     batches: batchesSlice.reducer,
@@ -66,12 +49,60 @@ export const makeReducer = (storage_: Storage | undefined) => {
     tokens: tokensSlice.reducer,
   });
 
-  const rootReducers = (state: any, action: Action) => {
+  type AppReducerState = ReturnType<typeof appReducer> | undefined;
+
+  const rootReducers = (state: AppReducerState, action: Action) => {
     if (action.type === "RESET_ALL") {
       state = undefined;
     }
+
     return appReducer(state, action);
   };
 
-  return persistReducer(rootPersistConfig, rootReducers);
+  return rootReducers;
+};
+
+export const makePersistConfigs = (storage_: Storage | undefined, password?: string) => {
+  const storage = storage_ || getTestStorage() || createWebStorage("local");
+
+  if (!password) {
+    return null;
+  }
+
+  const rootPersistConfig = {
+    key: "root",
+    version: VERSION,
+    storage,
+    blacklist: ["accounts", "assets", "announcement", "tokens", "protocolSettings"],
+    migrate: createAsyncMigrate(mainStoreMigrations, { debug: false }),
+    transforms: [
+      encryptTransform(
+        {
+          secretKey: password,
+          onError: error => {
+            console.error("Error encrypting root state:", error);
+          },
+        },
+        { whitelist: ["contacts", "batches", "multisigs", "networks"] }
+      ),
+    ],
+  };
+
+  const accountsPersistConfig = {
+    key: "accounts",
+    version: VERSION,
+    storage,
+    migrate: createAsyncMigrate(accountsMigrations, { debug: false }),
+    blacklist: ["password"],
+    transforms: [
+      encryptTransform({
+        secretKey: password,
+        onError: error => {
+          console.error("Error encrypting accounts state:", error);
+        },
+      }),
+    ],
+  };
+
+  return { rootPersistConfig, accountsPersistConfig };
 };

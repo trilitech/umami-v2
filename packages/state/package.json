@@ -18,6 +18,7 @@
     "@testing-library/dom": "^10.4.0",
     "@testing-library/react": "^16.1.0",
     "@types/babel__core": "^7.20.5",
+    "@types/crypto-js": "^4.2.2",
     "@types/eslint": "^8",
     "@types/lodash": "^4",
     "@types/react": "18.3.12",
@@ -92,6 +93,7 @@
     "react-redux": "^9.2.0",
     "redux": "^5.0.1",
     "redux-persist": "^6.0.0",
+    "redux-persist-transform-encrypt": "^5.1.1",
     "redux-thunk": "^3.1.0",
     "zod": "^3.24.1"
   }

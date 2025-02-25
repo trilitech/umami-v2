@@ -12,10 +12,10 @@ import { ErrorPage } from "./components/ErrorPage";
 import { ReactQueryProvider } from "./providers/ReactQueryProvider";
 import { ReduxStore } from "./providers/ReduxStore";
 import { UmamiTheme } from "./providers/UmamiTheme";
-import { persistor } from "./utils/persistor";
 import { store } from "./utils/store";
 
 import "./index.scss";
+import { persistor } from "./utils/persistor";
 
 // TODO: Move to a hook in @umami/state
 const logError = (error: Error, info: { componentStack?: string | null }) => {
@@ -27,7 +27,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <UmamiTheme>
       <ReduxStore>
-        <PersistGate loading={<div>loading</div>} persistor={persistor}>
+        {/* <PersistGate loading={null} persistor={persistor}> */}
           <ErrorBoundary fallback={<ErrorPage />} onError={logError}>
             <ReactQueryProvider>
               <BrowserRouter>
@@ -39,7 +39,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
               {/* <ReactQueryDevtools initialIsOpen={true} /> */}
             </ReactQueryProvider>
           </ErrorBoundary>
-        </PersistGate>
+        {/* </PersistGate> */}
       </ReduxStore>
     </UmamiTheme>
   </StrictMode>

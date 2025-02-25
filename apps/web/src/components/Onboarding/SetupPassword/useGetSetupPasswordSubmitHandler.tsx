@@ -16,6 +16,7 @@ import {
 import { decryptSecretKey } from "@umami/tezos";
 
 import { type FormFields, type Mode } from "./types";
+import { setupPersistence } from "../../../utils/store";
 import { ImportantNoticeModal } from "../VerificationFlow/ImportantNoticeModal";
 
 const useGetSecretKeyHandler = () => {
@@ -27,6 +28,7 @@ const useGetSecretKeyHandler = () => {
       allFormValues.current?.secretKey,
       allFormValues.current?.secretKeyPassword
     );
+    setupPersistence(secretKey);
     await restoreFromSecretKey(secretKey, password, DEFAULT_ACCOUNT_LABEL);
   };
 };
@@ -53,6 +55,9 @@ const useGetMnemonicHandler = () => {
       isVerified: !isNewMnemonic,
     });
 
+    // Initialize persistence with mnemonic
+    setupPersistence(mnemonic);
+
     if (isNewMnemonic) {
       dispatch(accountsActions.setPassword(password));
       dispatch(accountsActions.setCurrent(accounts[0].address.pkh));
@@ -67,6 +72,7 @@ const useGetVerificationHandler = () => {
 
   return async (password: string) => {
     const mnemonic = await getDecryptedMnemonic(currentAccount as MnemonicAccount, password);
+    setupPersistence(mnemonic);
     return openWith(<ImportantNoticeModal mnemonic={mnemonic} />, { size: "xl" });
   };
 };
