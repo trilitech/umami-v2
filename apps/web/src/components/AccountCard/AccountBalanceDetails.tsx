@@ -92,52 +92,43 @@ export const AccountBalanceDetails = () => {
         </Flex>
       )}
       {delegate && (
-        <Flex
-          alignItems="center"
-          justifyContent="left"
-          gap="6px"
-          width="100%"
-          data-testid="delagated-to"
-        >
+        <Flex alignItems="center" justifyContent="left" gap="6px" data-testid="delagated-to">
           <Flex
             alignItems="center"
-            justifyContent="flex-end"
+            justifyContent="flex-start"
+            flex="0 0 107px"
             gap="2px"
+            overflow="hidden"
             background={color("greenLight")}
             borderRadius="100px"
+            whiteSpace="nowrap"
+            textOverflow="ellipsis"
             paddingX="7px"
             paddingY="3px"
-            style={{
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-            }}
           >
             <RoundStatusDot background={color("greenDark")} />
             <Text color={color("green")} fontWeight="600" size="sm">
               Delegation
             </Text>
           </Flex>
-          <Flex>
-            <Text
-              alignItems="center"
-              overflow="hidden"
-              width="30px"
-              data-testid="delegation-to"
-              paddingY="3px"
-              size="sm"
-            >
-              To:
-            </Text>
-            <AddressPill
-              overflow="hidden"
-              maxWidth="45vw"
-              whiteSpace="nowrap"
-              textOverflow="ellipsis"
-              address={delegate}
-              data-testid="current-baker"
-            />
-          </Flex>
+          <Text
+            alignItems="center"
+            overflow="hidden"
+            width="30px"
+            data-testid="delegation-to"
+            paddingY="3px"
+            size="sm"
+          >
+            To:
+          </Text>
+          <AddressPill
+            overflow="hidden"
+            maxWidth="45vw"
+            whiteSpace="nowrap"
+            textOverflow="ellipsis"
+            address={delegate}
+            data-testid="current-baker"
+          />
         </Flex>
       )}
       {!spendableBalance.isEqualTo(totalBalance) && <Divider />}
