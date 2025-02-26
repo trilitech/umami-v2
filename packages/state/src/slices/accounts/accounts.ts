@@ -185,7 +185,6 @@ const concatUnique = (existingAccounts: ImplicitAccount[], newAccounts: Implicit
 };
 
 function hideConfidentialData(acct: ImplicitAccount): ImplicitAccount {
-  // create a new object from account
   const account = { ...acct } as ImplicitAccount;
   if (account.type === "social") {
     if (account.label.includes("@")) {

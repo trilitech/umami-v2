@@ -16,7 +16,7 @@ const clearSessionKey = () => {
   localStorage.removeItem("user_requirements_nonce");
   window.location.reload();
 };
-// Move outside component to avoid recreation on every render
+
 const getInitialAccounts = (): AccountsState | null => {
   const accounts = localStorage.getItem("persist:accounts");
   if (!accounts) {
@@ -26,7 +26,7 @@ const getInitialAccounts = (): AccountsState | null => {
   return JSON.parse(accounts) as AccountsState;
 };
 
-export const useLoginWithMnemonic = (
+const useLoginWithMnemonic = (
   defaultAccount: ImplicitAccount | undefined,
   accounts: AccountsState | null
 ) => {
