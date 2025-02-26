@@ -3,7 +3,6 @@ import { type Storage, persistReducer, persistStore } from "redux-persist";
 
 import { makePersistConfigs, makeReducer } from "./reducer";
 import { accountsSlice } from "./slices/accounts/accounts";
-import { setHasSession } from "./slices/session";
 
 // Create initial store without persistence
 export const makeStore = () => {
@@ -56,9 +55,9 @@ export const initializePersistence = (
 
   // Update store's reducer
   store.replaceReducer(finalReducer);
-  store.dispatch(setHasSession(true));
 
   const persistor = persistStore(store);
+
   return { persistor };
 };
 
