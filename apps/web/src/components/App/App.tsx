@@ -9,10 +9,11 @@ import { WalletConnectProvider } from "../WalletConnect/WalletConnectProvider";
 export const App = () => {
   const { isSessionActive, isOnboarded } = useHandleSession();
 
-  if (!isOnboarded()) {
+  if (!isSessionActive) {
+    if (isOnboarded()) {
+      return <SessionLogin />;
+    }
     return <Welcome />;
-  } else if (!isSessionActive) {
-    return <SessionLogin />;
   } else {
     return (
       <BeaconProvider>
