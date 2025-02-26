@@ -14,6 +14,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
+import hj from "@hotjar/browser";
 import { useMultiForm } from "@umami/components";
 import { type FA2Transfer, type NFTBalance } from "@umami/core";
 import { useCurrentAccount } from "@umami/state";
@@ -50,6 +51,8 @@ export const FormPage = (props: FormPageProps<FormValues> & { nft: NFTBalance })
     register,
     handleSubmit,
   } = form;
+
+  hj.stateChange("send_flow/nft_form_page");
 
   return (
     <FormProvider {...form}>

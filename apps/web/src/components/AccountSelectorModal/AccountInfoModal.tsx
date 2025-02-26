@@ -9,6 +9,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
+import hj from "@hotjar/browser";
 import { type Account } from "@umami/core";
 import { QRCode } from "react-qrcode-logo";
 
@@ -25,6 +26,8 @@ type AccountInfoModalProps = {
 
 export const AccountInfoModal = ({ account }: AccountInfoModalProps) => {
   const color = useColor();
+
+  hj.stateChange("account_info");
 
   return (
     <ModalContent>

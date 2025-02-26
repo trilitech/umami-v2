@@ -1,5 +1,6 @@
 import { Switch } from "@chakra-ui/react";
 import { useColorMode } from "@chakra-ui/system";
+import hj from "@hotjar/browser";
 import { useDynamicDrawerContext, useDynamicModalContext } from "@umami/components";
 
 import { AddressBookMenu } from "./AddressBookMenu/AddressBookMenu";
@@ -28,6 +29,8 @@ export const Menu = () => {
   const saveBackup = useSaveBackup();
 
   const colorModeSwitchLabel = colorMode === "light" ? "Light mode" : "Dark mode";
+
+  hj.stateChange("menu");
 
   const advanced = {
     label: "Advanced",

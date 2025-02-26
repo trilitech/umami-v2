@@ -12,6 +12,7 @@ import { ReactQueryProvider } from "./providers/ReactQueryProvider";
 import { ReduxStore } from "./providers/ReduxStore";
 import { UmamiTheme } from "./providers/UmamiTheme";
 import { store } from "./utils/store";
+import "./utils/hotjar";
 
 import "./index.scss";
 

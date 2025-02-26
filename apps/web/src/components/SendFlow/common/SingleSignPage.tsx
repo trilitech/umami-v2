@@ -1,3 +1,4 @@
+import hj from "@hotjar/browser";
 import { CustomError } from "@umami/utils";
 
 import { type SdkSignPageProps } from "../utils";
@@ -21,6 +22,8 @@ export const SingleSignPage = (signProps: SdkSignPageProps) => {
     signProps.headerProps.requestId.sdkType === "beacon"
       ? beaconCalculatedProps
       : walletConnectCalculatedProps;
+
+  hj.stateChange(`single_sign_page/${operationType}`);
 
   switch (operationType) {
     case "tez": {

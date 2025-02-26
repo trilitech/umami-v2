@@ -9,6 +9,7 @@ import {
   ModalContent,
   ModalFooter,
 } from "@chakra-ui/react";
+import hj from "@hotjar/browser";
 import {
   type FA12TokenBalance,
   type FA2TokenBalance,
@@ -58,6 +59,8 @@ export const FormPage = (
   });
 
   const addToBatch = useAddToBatchFormAction(toOperation(token));
+
+  hj.stateChange("send_flow/token_form_page");
 
   const {
     onFormSubmitActionHandlers: [onSingleSubmit],

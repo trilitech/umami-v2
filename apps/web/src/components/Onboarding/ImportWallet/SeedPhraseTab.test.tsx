@@ -1,8 +1,8 @@
 import { mockToast } from "@umami/state";
-import { mnemonic1 } from "@umami/test-utils";
+import { mnemonic1, mnemonic12 } from "@umami/test-utils";
 
 import { SeedPhraseTab } from "./SeedPhraseTab";
-import { act, render, screen, userEvent } from "../../../testUtils";
+import { act, render, screen, userEvent, waitFor } from "../../../testUtils";
 
 jest.setTimeout(10000);
 
@@ -69,14 +69,36 @@ describe("<SeedPhraseTab />", () => {
       });
     });
 
-    it("fills in the form automatically", async () => {
+    it("changes the number of words on paste", async () => {
+      const user = userEvent.setup();
+
+      render(<SeedPhraseTab />);
+
+      expect(screen.getAllByTestId("mnemonic-input")).toHaveLength(24);
+
+      expect(screen.getByText("24 word seed phrase")).toBeInTheDocument();
+      expect(screen.queryByText("12 word seed phrase")).not.toBeInTheDocument();
+
+      const textbox = screen.getAllByTestId("mnemonic-input")[0];
+      await act(() => user.click(textbox));
+      await act(() => user.paste(`${mnemonic12} `));
+
+      await waitFor(() => {
+        expect(screen.getByText("12 word seed phrase")).toBeInTheDocument();
+      });
+      expect(screen.queryByText("24 word seed phrase")).not.toBeInTheDocument();
+
+      expect(screen.getAllByTestId("mnemonic-input")).toHaveLength(12);
+    });
+
+    it("trims and fills in the form by paste button", async () => {
       const user = userEvent.setup({});
       render(<SeedPhraseTab />);
 
       const textbox = screen.getAllByTestId("mnemonic-input")[0];
       await act(() => user.click(textbox));
 
-      await act(() => user.paste(mnemonic1));
+      await act(() => user.paste(`${mnemonic1} `));
 
       screen.getAllByTestId("mnemonic-input").forEach((textbox, i) => {
         expect(textbox).toHaveValue(mnemonic1.split(" ")[i]);
@@ -84,7 +106,7 @@ describe("<SeedPhraseTab />", () => {
     });
   });
 
-  describe("clear all", () => {
+  describe("clear", () => {
     it("clears all the words", async () => {
       const user = userEvent.setup();
 
@@ -100,10 +122,18 @@ describe("<SeedPhraseTab />", () => {
       expect(textbox1).toHaveValue("something1");
       expect(textbox2).toHaveValue("something2");
 
-      await act(() => user.click(screen.getByRole("button", { name: "Clear all" })));
+      await act(() => user.click(screen.getByText("24 word seed phrase")));
+      const changeTo12Button = await screen.findByRole("button", { name: "12" });
+      await act(() => user.click(changeTo12Button));
+
+      await act(() => user.click(screen.getByRole("button", { name: "Clear" })));
 
       expect(textbox1).toHaveValue(undefined);
       expect(textbox2).toHaveValue(undefined);
+
+      await act(() => user.click(screen.getByText("12 word seed phrase")));
+      const changeTo24Button = await screen.findByRole("button", { name: "24" });
+      await act(() => user.click(changeTo24Button));
 
       expect(screen.getAllByTestId("mnemonic-input")).toHaveLength(24);
     });
@@ -118,7 +148,7 @@ describe("<SeedPhraseTab />", () => {
       await act(() => user.click(changeTo12Button));
       expect(screen.getAllByTestId("mnemonic-input")).toHaveLength(12);
 
-      await act(() => user.click(screen.getByRole("button", { name: "Clear all" })));
+      await act(() => user.click(screen.getByRole("button", { name: "Clear" })));
 
       expect(screen.getAllByTestId("mnemonic-input")).toHaveLength(12);
     });

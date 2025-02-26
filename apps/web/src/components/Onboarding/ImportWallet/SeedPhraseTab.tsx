@@ -22,7 +22,7 @@ import { range } from "lodash";
 import { useState } from "react";
 import { FormProvider, useFieldArray } from "react-hook-form";
 
-import { CloseIcon, EyeIcon, EyeOffIcon } from "../../../assets/icons";
+import { CloseIcon, EyeIcon, EyeOffIcon, PasteIcon } from "../../../assets/icons";
 import { useColor } from "../../../styles/useColor";
 import { trackOnboardingEvent } from "../../../utils/analytics";
 import { MnemonicWord } from "../../MnemonicWord";
@@ -30,11 +30,14 @@ import { RadioButtons } from "../../RadioButtons";
 import { SetupPassword } from "../SetupPassword";
 
 const MNEMONIC_SIZE_OPTIONS = [12, 15, 18, 21, 24];
+const MNEMONIC_SIZE_MAX = 24;
 
 type FormValues = {
   mnemonicSize: number;
   mnemonic: { val: string }[];
 };
+
+const getEmptyValue = (mnemonicSize: number) => range(mnemonicSize).map(() => ({ val: "" }));
 
 export const SeedPhraseTab = () => {
   const color = useColor();
@@ -42,13 +45,14 @@ export const SeedPhraseTab = () => {
   const form = useMultiForm<FormValues>({
     mode: "onBlur",
     defaultValues: {
-      mnemonicSize: 24,
-      mnemonic: range(24).map(() => ({ val: "" })),
+      mnemonicSize: MNEMONIC_SIZE_MAX,
+      mnemonic: getEmptyValue(MNEMONIC_SIZE_MAX),
     },
   });
   const { openWith } = useDynamicModalContext();
   const [showBlur, setShowBlur] = useState(true);
   const { isVisible, toggleMnemonic } = useToggleMnemonic();
+  const [expandedIndex, setExpandedIndex] = useState<number | number[]>(-1);
 
   const {
     handleSubmit,
@@ -60,7 +64,7 @@ export const SeedPhraseTab = () => {
   const { fields, remove, append, update } = useFieldArray({
     control,
     name: "mnemonic",
-    rules: { required: true, minLength: 12, maxLength: 24 },
+    rules: { required: true, minLength: 12, maxLength: MNEMONIC_SIZE_MAX },
   });
 
   const mnemonicSize = form.watch("mnemonicSize");
@@ -71,17 +75,29 @@ export const SeedPhraseTab = () => {
     } else {
       remove(range(newSize, mnemonicSize));
     }
+
+    // change the accordion for the seed phrase size
+    form.setValue("mnemonicSize", newSize);
+
+    // Close the accordion
+    setExpandedIndex(-1);
   };
 
   const pasteMnemonic = (mnemonic: string) =>
     handleAsyncAction(async () => {
-      const words = mnemonic.split(" ");
+      const words = mnemonic.trim().split(" "); // trim here. otherwise the last word is ''
+
       if (!MNEMONIC_SIZE_OPTIONS.includes(words.length)) {
         throw new CustomError(
           `the mnemonic must be ${MNEMONIC_SIZE_OPTIONS.join(", ")} words long`
         );
       }
-      words.slice(0, mnemonicSize).forEach((word, i) => update(i, { val: word }));
+
+      if (words.length !== mnemonicSize) {
+        changeMnemonicSize(words.length);
+      }
+
+      words.forEach((word, i) => update(i, { val: word.trim() }));
       return Promise.resolve();
     });
 
@@ -95,13 +111,7 @@ export const SeedPhraseTab = () => {
       return openWith(<SetupPassword mode="mnemonic" />);
     });
 
-  const clearAll = () =>
-    form.setValue(
-      "mnemonic",
-      range(mnemonicSize).map(() => ({ val: "" }))
-    );
-
-  const lastRowSize = useBreakpointValue({ md: fields.length % 4 }) || 0;
+  const clearAll = () => form.setValue("mnemonic", getEmptyValue(mnemonicSize));
 
   const onPaste: InputProps["onPaste"] = event => {
     event.preventDefault();
@@ -109,15 +119,28 @@ export const SeedPhraseTab = () => {
     return;
   };
 
+  const handlePaste = async () => {
+    try {
+      const text = await navigator.clipboard.readText();
+      if (text) {
+        void pasteMnemonic(text);
+      }
+    } catch (error) {
+      console.error("Failed to read clipboard:", error);
+    }
+  };
+
   const indexProps = {
     fontSize: { base: "12px", md: "14px" },
   };
+
+  const lastRowSize = useBreakpointValue({ md: fields.length % 4 }) || 0;
 
   return (
     <FormProvider {...form}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Flex flexDirection="column">
-          <Accordion allowToggle>
+          <Accordion allowToggle index={expandedIndex} onChange={setExpandedIndex}>
             <AccordionItem>
               <AccordionButton
                 justifyContent="center"
@@ -145,7 +168,7 @@ export const SeedPhraseTab = () => {
 
           <Grid
             position="relative"
-            gridRowGap="16px"
+            gridRowGap="8px"
             gridColumnGap="8px"
             gridTemplateColumns={{ base: "repeat(3, 1fr)", md: "repeat(4, 1fr)" }}
             marginTop="36px"
@@ -174,7 +197,8 @@ export const SeedPhraseTab = () => {
                 </Text>
               </Flex>
             )}
-            {fields.slice(0, fields.length - lastRowSize).map((field, index) => (
+
+            {fields.slice(0, mnemonicSize - lastRowSize).map((field, index) => (
               <MnemonicWord
                 key={field.id}
                 autocompleteProps={{
@@ -220,35 +244,45 @@ export const SeedPhraseTab = () => {
             })}
           </Center>
 
-          <Flex gap="8px">
+          <Flex flexWrap="nowrap" gap="8px" marginTop="12px">
             <Button
               gap="8px"
               width="full"
-              marginTop="16px"
               fontSize="14px"
+              data-testid="paste-button"
               isDisabled={showBlur}
-              onClick={clearAll}
+              onClick={handlePaste}
               variant="ghost"
             >
-              <Icon as={CloseIcon} boxSize="18px" color={color("400")} />
-              Clear all
+              <Icon as={PasteIcon} boxSize="18px" color={color("400")} />
+              Paste
             </Button>
             <Button
               gap="8px"
               width="full"
-              marginTop="16px"
               fontSize="14px"
               isDisabled={showBlur}
               onClick={toggleMnemonic}
               variant="ghost"
             >
               <Icon as={isVisible ? EyeOffIcon : EyeIcon} boxSize="18px" color={color("400")} />
-              {isVisible ? "Hide phrase" : "Show phrase"}
+              {isVisible ? "Hide" : "Show"}
+            </Button>
+            <Button
+              gap="8px"
+              width="full"
+              fontSize="14px"
+              isDisabled={showBlur}
+              onClick={clearAll}
+              variant="ghost"
+            >
+              <Icon as={CloseIcon} boxSize="18px" color={color("400")} />
+              Clear
             </Button>
           </Flex>
 
           <Button
-            marginTop="30px"
+            marginTop="12px"
             isDisabled={!isValid}
             isLoading={isLoading}
             type="submit"

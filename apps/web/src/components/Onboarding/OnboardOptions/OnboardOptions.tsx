@@ -1,4 +1,5 @@
 import { Button, Center, Divider, Flex, Heading, Text } from "@chakra-ui/react";
+import hj from "@hotjar/browser";
 import { useDynamicModalContext } from "@umami/components";
 import { type PropsWithChildren } from "react";
 
@@ -18,6 +19,8 @@ export const OnboardOptions = ({ children }: PropsWithChildren) => {
   const color = useColor();
   const { openWith } = useDynamicModalContext();
   const isAccountVerified = useIsAccountVerified();
+
+  hj.stateChange("onboardOptions");
 
   const handleCreateNewWallet = () => {
     if (isAccountVerified) {
