@@ -37,7 +37,6 @@ export const useAsyncActionHandler = () => {
         return await fn();
       } catch (error: any) {
         const errorContext = getErrorContext(error, true);
-        console.error(error);
 
         // Prevent double toast and record of the same error if case of nested handleAsyncActionUnsafe calls.
         // Still we need to re-throw the error to propagate it to the caller.
@@ -68,7 +67,7 @@ export const useAsyncActionHandler = () => {
     async <T>(
       fn: () => Promise<T>,
       toastOptions?: ToastOptions | ((error: any) => ToastOptions)
-    ): Promise<T | void> => handleAsyncActionUnsafe(fn, toastOptions),
+    ): Promise<T | void> => handleAsyncActionUnsafe(fn, toastOptions).catch(() => {}),
     [handleAsyncActionUnsafe]
   );
 
