@@ -123,7 +123,7 @@
     "mockdate": "^3.0.5",
     "node-fetch": "2.7.0",
     "ordinal": "^1.0.3",
-    "papaparse": "^5.4.1",
+    "papaparse": "^5.5.2",
     "pluralize": "^8.0.0",
     "prettier": "^3.4.2",
     "prettier-plugin-gherkin": "^3.1.1",
