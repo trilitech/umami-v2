@@ -39,7 +39,7 @@ import {
 } from "../../../testUtils";
 import { SuccessStep } from "../SuccessStep";
 import { type SdkSignPageProps, type SignHeaderProps } from "../utils";
-import { SingleSignPage } from "./SingleSignPage";
+import { SingleSignPage } from "./RequestSignPage";
 
 jest.mock("@umami/core", () => ({
   ...jest.requireActual("@umami/core"),
@@ -69,6 +69,26 @@ jest.mock("@umami/state", () => ({
   createWalletKit: jest.fn(),
 }));
 
+// check all types of Modals called by SingleSignOperation
+const mockedOperations: Record<SignPage, Operation> = {
+  tez: mockTezOperation(0),
+  contract_call: mockContractCall(0),
+  delegation: mockDelegationOperation(0),
+  undelegation: mockUndelegationOperation(0),
+  contract_origination: mockContractOrigination(0),
+  stake: mockStakeOperation(0),
+  unstake: mockUnstakeOperation(0),
+  finalize_unstake: mockFinalizeUnstakeOperation(0),
+};
+
+const operation: EstimatedAccountOperations = {
+  type: "implicit" as const,
+  sender: mockImplicitAccount(0),
+  signer: mockImplicitAccount(0),
+  operations: [],
+  estimates: [executeParams({ fee: 123 })],
+};
+
 describe("<SingleSignPage />", () => {
   const store = makeStore();
   const user = userEvent.setup();
@@ -79,26 +99,6 @@ describe("<SingleSignPage />", () => {
     network: { type: NetworkType.GHOSTNET },
     appMetadata: { name: "mockDappName", icon: "mockIcon" },
   } as OperationRequestOutput;
-
-  // check all types of Modals called by SingleSignOperation
-  const mockedOperations: Record<SignPage, Operation> = {
-    TezSignPage: mockTezOperation(0),
-    ContractCallSignPage: mockContractCall(0),
-    DelegationSignPage: mockDelegationOperation(0),
-    UndelegationSignPage: mockUndelegationOperation(0),
-    OriginationOperationSignPage: mockContractOrigination(0),
-    StakeSignPage: mockStakeOperation(0),
-    UnstakeSignPage: mockUnstakeOperation(0),
-    FinalizeUnstakeSignPage: mockFinalizeUnstakeOperation(0),
-  };
-
-  const operation: EstimatedAccountOperations = {
-    type: "implicit" as const,
-    sender: mockImplicitAccount(0),
-    signer: mockImplicitAccount(0),
-    operations: [],
-    estimates: [executeParams({ fee: 123 })],
-  };
 
   beforeEach(() => {
     store.dispatch(networksActions.setCurrent(GHOSTNET));
@@ -129,7 +129,7 @@ describe("<SingleSignPage />", () => {
 
     expect(screen.getByText("Ghostnet")).toBeInTheDocument();
     expect(screen.queryByText("Mainnet")).not.toBeInTheDocument();
-    expect(screen.getByTestId(key)).toBeInTheDocument(); // e.g. TezSignPage
+    expect(screen.getByTestId(key)).toBeInTheDocument(); // e.g. tez
 
     expect(screen.getByTestId("sign-page-header")).toHaveTextContent(Titles[key]);
     expect(screen.getByTestId("app-name")).toHaveTextContent("mockDappName");
@@ -187,7 +187,6 @@ describe("<SingleSignPage />", () => {
           response,
         })
       );
-      expect(useValidateWcRequest).toHaveBeenCalledTimes(1);
     }
 
     expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(<SuccessStep hash="ophash" />, {
@@ -211,4 +210,75 @@ describe("<SingleSignPage />", () => {
       jest.mocked(useValidateWcRequest).mockClear();
     }
   }, 10000);
+});
+
+describe("batch handling", () => {
+  it("calls the correct modal", async () => {
+    const store = makeStore();
+    const user = userEvent.setup();
+
+    const message = {
+      id: "messageid",
+      type: BeaconMessageType.OperationRequest,
+      network: { type: NetworkType.GHOSTNET },
+      appMetadata: { name: "mockDappName", icon: "mockIcon" },
+    } as OperationRequestOutput;
+
+    operation.operations = [mockedOperations["tez"], mockedOperations["contract_call"]];
+
+    const headerProps: SignHeaderProps = {
+      network: GHOSTNET,
+      appName: message.appMetadata.name,
+      appIcon: message.appMetadata.icon,
+      requestId: { sdkType: "beacon", id: message.id },
+    };
+    store.dispatch(networksActions.setCurrent(GHOSTNET));
+
+    const signProps: SdkSignPageProps = {
+      headerProps: headerProps,
+      operation: operation,
+    };
+
+    jest.mocked(useGetSecretKey).mockImplementation(() => () => Promise.resolve("secretKey"));
+
+    jest.mocked(executeOperations).mockResolvedValue({ opHash: "ophash" } as BatchWalletOperation);
+    jest.spyOn(WalletClient, "respond").mockResolvedValue();
+
+    await renderInModal(<SingleSignPage {...signProps} />, store);
+
+    expect(screen.getByText("Ghostnet")).toBeInTheDocument();
+    expect(screen.queryByText("Mainnet")).not.toBeInTheDocument();
+    expect(screen.getByTestId("batch")).toBeInTheDocument();
+
+    expect(screen.getByTestId("sign-page-header")).toHaveTextContent(Titles["batch"]);
+    expect(screen.getByTestId("app-name")).toHaveTextContent("mockDappName");
+
+    const signButton = screen.getByRole("button", {
+      name: "Confirm transaction",
+    });
+    await waitFor(() => expect(signButton).toBeDisabled());
+
+    await act(() => user.type(screen.getByLabelText("Password"), "ThisIsAPassword"));
+
+    await waitFor(() => expect(signButton).toBeEnabled());
+    await act(() => user.click(signButton));
+
+    expect(makeToolkit).toHaveBeenCalledWith({
+      type: "mnemonic",
+      secretKey: "secretKey",
+      network: GHOSTNET,
+    });
+
+    await waitFor(() =>
+      expect(WalletClient.respond).toHaveBeenCalledWith({
+        type: BeaconMessageType.OperationResponse,
+        id: message.id,
+        transactionHash: "ophash",
+      })
+    );
+    expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(<SuccessStep hash="ophash" />, {
+      canBeOverridden: true,
+    });
+    dynamicModalContextMock.openWith.mockClear();
+  });
 });

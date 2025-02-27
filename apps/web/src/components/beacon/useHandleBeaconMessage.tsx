@@ -19,8 +19,7 @@ import { BeaconError, CustomError, getErrorContext } from "@umami/utils";
 
 import { PermissionRequestModal } from "./PermissionRequestModal";
 import { SignPayloadRequestModal } from "../common/SignPayloadRequestModal";
-import { BatchSignPage } from "../SendFlow/common/BatchSignPage";
-import { SingleSignPage } from "../SendFlow/common/SingleSignPage";
+import { SingleSignPage } from "../SendFlow/common/RequestSignPage";
 import {
   type SdkSignPageProps,
   type SignHeaderProps,
@@ -148,11 +147,8 @@ export const useHandleBeaconMessage = () => {
               operation: estimatedOperations,
             };
 
-            if (operation.operations.length === 1) {
-              modal = <SingleSignPage {...signProps} />;
-            } else {
-              modal = <BatchSignPage {...signProps} />;
-            }
+            modal = <SingleSignPage {...signProps} />;
+
             onClose = () => respondWithError(message.id, BeaconErrorType.ABORTED_ERROR);
 
             break;
