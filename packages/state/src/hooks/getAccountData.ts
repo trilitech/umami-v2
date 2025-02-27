@@ -202,6 +202,19 @@ export const useCurrentAccount = (): ImplicitAccount | undefined => {
   return currentAccount;
 };
 
+export const useDefaultAccount = (): ImplicitAccount | undefined => {
+  const defaultAccount = useAppSelector(s => s.accounts.defaultAccount);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (!defaultAccount) {
+      dispatch(accountsActions.setDefaultAccount());
+    }
+  }, [defaultAccount, dispatch]);
+
+  return defaultAccount;
+};
+
 export const useGetDecryptedMnemonic = () => {
   const seedPhrases = useSeedPhrases();
 

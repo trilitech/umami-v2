@@ -1,48 +1,66 @@
 import { useDynamicModalContext } from "@umami/components";
 import { type LedgerAccount, type SecretKeyAccount, type SocialAccount } from "@umami/core";
-import { useImplicitAccounts, useRemoveAccount } from "@umami/state";
+import { logout, useAppSelector, useRemoveAccount } from "@umami/state";
 
+import { persistor } from "../../utils/persistor";
 import { ConfirmationModal } from "../ConfirmationModal";
 
 type RemoveAccountModalProps = {
   account: SocialAccount | LedgerAccount | SecretKeyAccount;
 };
 
+export const HandleRemoveDefaultAccount = async () => {
+  persistor && (await logout(persistor));
+};
+
+export const removeDefaultAccountDescription = (type: string): string => {
+  const isMnemonic = type.toLowerCase().includes("seedphrase");
+  let description =
+    "Removing your default account will off-board you from Umami.\n\n" +
+    "This will remove all personal data (including saved contacts, password and accounts) from your device. \n\n" +
+    "Backup your data before proceeding.";
+  description =
+    description +
+    (isMnemonic
+      ? "\n\n<b>Make sure your mnemonic phrase is securely saved. Losing this phrase could result in permanent loss of access to your data.</b>"
+      : "");
+  return description;
+};
+
 export const RemoveAccountModal = ({ account }: RemoveAccountModalProps) => {
+  const isDefaultAccount = useAppSelector(
+    state => state.accounts.defaultAccount?.address.pkh === account.address.pkh
+  );
   const { goBack, onClose } = useDynamicModalContext();
   const removeAccount = useRemoveAccount();
+  let description =
+    "Are you sure you want to remove this account? You will need to manually import it again.";
+  let buttonLabel = "Remove";
 
-  const isLastImplicitAccount = useImplicitAccounts().length === 1;
+  if (isDefaultAccount) {
+    description = removeDefaultAccountDescription(account.type);
+    buttonLabel = "Remove & off-board";
+  }
 
-  const handleRemoveAccount = () => {
-    removeAccount(account);
-
-    if (isLastImplicitAccount) {
-      onClose();
-      window.location.replace("/"); // TODO: fix for react-native
+  const handleRemoveAccount = async (
+    isDefaultAccount: boolean,
+    account: SocialAccount | LedgerAccount | SecretKeyAccount
+  ) => {
+    if (isDefaultAccount) {
+      persistor && (await logout(persistor));
     } else {
+      removeAccount(account);
+      onClose();
       goBack();
     }
   };
 
-  let description =
-    "Are you sure you want to hide this account? You will need to manually import it again.";
-  let buttonLabel = "Remove";
-
-  if (isLastImplicitAccount) {
-    description =
-      "Removing your last account will off-board you from Umami. " +
-      "This will remove or reset all customized settings to their defaults. " +
-      "Personal data (including saved contacts, password and accounts) won't be affected.";
-    buttonLabel = "Remove & off-board";
-  }
-
   return (
     <ConfirmationModal
       buttonLabel={buttonLabel}
-      closeOnSubmit={isLastImplicitAccount}
+      closeOnSubmit={isDefaultAccount}
       description={description}
-      onSubmit={handleRemoveAccount}
+      onSubmit={async () => await handleRemoveAccount(isDefaultAccount, account)}
       title="Remove account"
     />
   );

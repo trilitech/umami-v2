@@ -10,11 +10,13 @@ import {
   accountsActions,
   addTestAccount,
   addTestAccounts,
+  initializePersistence,
   makeStore,
 } from "@umami/state";
 
 import { AccountSelectorModal } from "./AccountSelectorModal";
 import { DeriveMnemonicAccountModal } from "./DeriveMnemonicAccountModal";
+import * as RemoveAccountModal from "./RemoveAccountModal";
 import {
   act,
   dynamicModalContextMock,
@@ -30,6 +32,8 @@ let store: UmamiStore;
 beforeEach(() => {
   store = makeStore();
   addTestAccounts(store, [mockMnemonicAccount(0), mockLedgerAccount(1), mockSocialAccount(2)]);
+  initializePersistence(store, mockMnemonicAccount(0).pk);
+  store.dispatch(accountsActions.setDefaultAccount());
 });
 
 describe("<AccountSelectorModal />", () => {
@@ -76,6 +80,8 @@ describe("<AccountSelectorModal />", () => {
     ])(
       "opens confirmation modal when clicking remove button for %s accounts",
       async (type, account) => {
+        const isDefaultAccount =
+          store.getState().accounts.defaultAccount?.address.pkh === account.address.pkh;
         const user = userEvent.setup();
         await renderInModal(<AccountSelectorModal />, store);
         const accountLabel = getAccountGroupLabel(account);
@@ -85,12 +91,15 @@ describe("<AccountSelectorModal />", () => {
 
         expect(screen.getByText("Remove all accounts")).toBeInTheDocument();
 
-        const expectedMessage =
-          type === "mnemonic"
+        const expectedMessage = isDefaultAccount
+          ? "Removing your default account will off-board you from Umami."
+          : type === "mnemonic"
             ? `Are you sure you want to remove all accounts derived from the ${accountLabel}? You will need to manually import them again.`
             : `Are you sure you want to remove all of your ${accountLabel}? You will need to manually import them again.`;
 
-        await waitFor(() => expect(screen.getByText(expectedMessage)).toBeVisible());
+        await waitFor(() =>
+          expect(screen.getByText(content => content.includes(expectedMessage))).toBeVisible()
+        );
 
         if (type === "mnemonic") {
           expect(
@@ -103,6 +112,7 @@ describe("<AccountSelectorModal />", () => {
     );
 
     it("removes mnemonic accounts when confirmed", async () => {
+      jest.spyOn(RemoveAccountModal, "HandleRemoveDefaultAccount");
       const user = userEvent.setup();
       await renderInModal(<AccountSelectorModal />, store);
       const account = mockMnemonicAccount(0);
@@ -110,11 +120,19 @@ describe("<AccountSelectorModal />", () => {
       const removeButton = screen.getByLabelText(`Remove ${accountLabel} accounts`);
       await act(() => user.click(removeButton));
 
-      const confirmButton = screen.getByText("Remove");
+      const isDefaultAccount =
+        store.getState().accounts.defaultAccount?.address.pkh === account.address.pkh;
+      const confirmButton = screen.getByText(isDefaultAccount ? "Remove & off-board" : "Remove");
       await act(() => user.click(confirmButton));
 
       expect(store.getState().accounts.seedPhrases[account.seedFingerPrint]).toBe(undefined);
-      expect(store.getState().accounts.items.length).toBe(2);
+      if (isDefaultAccount) {
+        await waitFor(() =>
+          expect(RemoveAccountModal.HandleRemoveDefaultAccount).toHaveBeenCalled()
+        );
+      } else {
+        expect(store.getState().accounts.items.length).toBe(2);
+      }
     });
 
     it.each([
@@ -138,6 +156,8 @@ describe("<AccountSelectorModal />", () => {
     it('shows "Remove & Off-board" message when removing last group of accounts', async () => {
       store.dispatch(accountsActions.reset());
       addTestAccount(store, mockSocialAccount(0));
+      store.dispatch(accountsActions.setDefaultAccount());
+      initializePersistence(store, mockSocialAccount(0).pk);
 
       const user = userEvent.setup();
       const accountLabel = getAccountGroupLabel(mockSocialAccount(0));
@@ -148,19 +168,11 @@ describe("<AccountSelectorModal />", () => {
 
       expect(screen.getByText("Remove & off-board")).toBeInTheDocument();
 
-      await waitFor(() =>
-        expect(
-          screen.getByText(
-            "Removing all your accounts will off-board you from Umami. This will remove or reset all customized settings to their defaults. Personal data (including saved contacts, password and accounts) won't be affected."
-          )
-        ).toBeVisible()
-      );
+      const expectedMessage = "Removing your default account will off-board you from Umami.";
 
-      expect(
-        screen.getByText(
-          "Make sure your mnemonic phrase is securely saved. Losing this phrase could result in permanent loss of access to your data."
-        )
-      ).toBeVisible();
+      await waitFor(() =>
+        expect(screen.getByText(content => content.includes(expectedMessage))).toBeVisible()
+      );
     });
   });
 
