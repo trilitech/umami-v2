@@ -21,8 +21,7 @@ import { CustomError } from "@umami/utils";
 
 import { useHandleBeaconMessage } from "./useHandleBeaconMessage";
 import { act, dynamicModalContextMock, renderHook, screen, waitFor } from "../../testUtils";
-import { BatchSignPage } from "../SendFlow/common/BatchSignPage";
-import { SingleSignPage } from "../SendFlow/common/SingleSignPage";
+import { SingleSignPage } from "../SendFlow/common/RequestSignPage";
 import { type SdkSignPageProps, type SignHeaderProps } from "../SendFlow/utils";
 
 jest.mock("@umami/core", () => ({
@@ -456,7 +455,7 @@ describe("<useHandleBeaconMessage />", () => {
     });
 
     describe("batch operation", () => {
-      it("opens a modal with the BatchSignPage for multiple operations", async () => {
+      it("opens a modal  for multiple operations", async () => {
         jest.mocked(estimate).mockResolvedValueOnce({
           ...makeAccountOperations(account, account, [
             { type: "tez", amount: "1", recipient: mockImplicitAddress(2) },
@@ -511,7 +510,7 @@ describe("<useHandleBeaconMessage />", () => {
 
         await waitFor(() =>
           expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
-            <BatchSignPage {...signProps} />,
+            <SingleSignPage {...signProps} />,
             { onClose: expect.any(Function) }
           )
         );
