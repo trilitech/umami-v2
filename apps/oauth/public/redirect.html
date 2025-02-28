@@ -220,7 +220,7 @@
               return null;
             }
 
-            const regex = /https:\/\/(umami-v2-web|umami-embed-iframe|umami-embed-iframe-ghostnet)(-git-.*)?\.vercel\.app\/?/;
+            const regex = /https:\/\/(umami-v2-web|umami-embed-iframe|umami-embed-iframe-ghostnet)(-git-.*)?\.vercel\.app\/?|http:\/\/(localhost|127\.0\.0\.1)(:[0-9]+)?\/?/;
             if (instanceParams.redirectToOpener.match(regex)) {
               return instanceParams.redirectToOpener;
             }
