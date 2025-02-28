@@ -1,4 +1,4 @@
-import { Button, Flex, Text } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import hj from "@hotjar/browser";
 import { useAddPeer } from "@umami/state";
 
@@ -18,10 +18,12 @@ export const AppsMenu = () => {
       actions={
         <>
           <Flex>
-            <Text marginTop="12px" size="lg">
-              Connect with Apps using a Pairing request via Beacon or WalletConnect.{" "}
-              <InfoMark label="To get the connect link, open the dApp and click on the QR code to copy the connect URL. Then, return to the Umami Wallet and click the 'Connect' button." />
-            </Text>
+            <Flex alignItems="center" flexWrap="wrap" marginTop="12px">
+              <Box as="span" fontSize="lg">
+                Connect with Apps using a Pairing request via Beacon or WalletConnect.{" "}
+                <InfoMark label="To get the connect link, open the dApp and click on the QR code to copy the connect URL. Then, return to the Umami Wallet and click the 'Connect' button." />
+              </Box>
+            </Flex>
           </Flex>
           <Button
             width="fit-content"
