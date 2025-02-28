@@ -34,12 +34,12 @@ export const ImportWallet = () => {
 
   const handleTabChange = (index: number) => {
     setSearchParams(prev => {
-      prev.set("import-wallet-tab", index.toString());
+      prev.set("importWalletTab", index.toString());
       return prev;
     });
   };
 
-  const currentTab = parseInt(searchParams.get("import-wallet-tab") || "0");
+  const currentTab = parseInt(searchParams.get("importWalletTab") || "0");
 
   return (
     <ModalContent>

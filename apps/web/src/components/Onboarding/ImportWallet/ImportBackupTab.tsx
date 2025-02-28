@@ -9,11 +9,12 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useDynamicModalContext, useMultiForm } from "@umami/components";
-import { type ImplicitAccount } from "@umami/core";
+import { type ImplicitAccount, type SocialAccount } from "@umami/core";
 import {
   type AccountsState,
   type Backup,
   useAsyncActionHandler,
+  useLoginToWallet,
   useRestoreBackup,
 } from "@umami/state";
 import { useEffect, useState } from "react";
@@ -22,7 +23,7 @@ import { Controller, FormProvider } from "react-hook-form";
 import { CheckmarkIcon, CloseIcon, FileUploadIcon } from "../../../assets/icons";
 import { useColor } from "../../../styles/useColor";
 import { trackOnboardingEvent, trackSuccessfulConnection } from "../../../utils/analytics";
-import { useLoginWithMnemonic } from "../../../views/SessionLogin/useLoginWithMnemonic";
+import { setupPersistence } from "../../../utils/store";
 import { MasterPasswordModal } from "../../MasterPasswordModal";
 
 export const ImportBackupTab = () => {
@@ -55,7 +56,7 @@ export const ImportBackupTab = () => {
     return JSON.parse(backup["persist:accounts"]) as AccountsState;
   };
 
-  const { isLoading, login } = useLoginWithMnemonic(getAccounts(), defaultAccount);
+  const { isLoading, handleLogin } = useLoginToWallet(defaultAccount, setupPersistence);
 
   useEffect(() => {
     const parseBackup = async () => {
@@ -86,11 +87,12 @@ export const ImportBackupTab = () => {
       trackOnboardingEvent("proceed_with_backup");
 
       const backup = JSON.parse(await fileData[0].text());
-
       restoreBackup(backup);
 
-      if (defaultAccount?.type !== "social") {
-        await login({ password });
+      if (password) {
+        await handleLogin()(getAccounts(), { password });
+      } else {
+        await handleLogin<SocialAccount>()();
       }
 
       onClose();
@@ -102,13 +104,7 @@ export const ImportBackupTab = () => {
     <FormProvider {...form}>
       <form
         onSubmit={handleSubmit(() =>
-          openWith(
-            <MasterPasswordModal
-              defaultAccount={defaultAccount}
-              isLoading={isLoading}
-              onSubmit={onSubmit}
-            />
-          )
+          openWith(<MasterPasswordModal isLoading={isLoading} onSubmit={onSubmit} />)
         )}
       >
         <Flex flexDirection="column" gap="24px">

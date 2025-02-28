@@ -3,43 +3,34 @@ import { type IDP } from "@umami/social-auth";
 import { type SVGProps } from "react";
 
 import { FacebookIcon, GoogleIcon, RedditIcon, TwitterIcon } from "../../assets/icons";
-import { useLoginWithSocial } from "../../components/Onboarding/OnboardOptions/useOnboardWithSocial";
 type LoginType = Omit<IDP, "email" | "apple">;
 
 type LoginButtonProps = {
   idp: LoginType;
   prefix?: string;
-  onSubmit?: () => void | (() => void);
+  onSubmit: () => Promise<void>;
+  isLoading?: boolean;
 };
 
-export const LoginButton = ({ idp, prefix, onSubmit }: LoginButtonProps) => {
-  const { isLoading, login } = useLoginWithSocial(idp as IDP);
-
-  const handleSubmit = async () => {
-    onSubmit?.();
-    await login();
-  };
-
-  return (
-    <Button
-      position="relative"
-      width="100%"
-      height="62px"
-      padding="0px"
-      border="none"
-      borderRadius="100px"
-      isLoading={isLoading}
-      onClick={handleSubmit}
-    >
-      <Box position="absolute" top="50%" left="12px" transform="translateY(-50%)">
-        <LogoIconWithBackground idp={idp} />
-      </Box>
-      <Heading flex="1" lineHeight="18px" textAlign="center" size="lg">
-        {prefix ? `${prefix} ${socialLabel(idp)}` : socialLabel(idp)}
-      </Heading>
-    </Button>
-  );
-};
+export const LoginButton = ({ idp, prefix, onSubmit, isLoading }: LoginButtonProps) => (
+  <Button
+    position="relative"
+    width="100%"
+    height="62px"
+    padding="0px"
+    border="none"
+    borderRadius="100px"
+    isLoading={isLoading}
+    onClick={onSubmit}
+  >
+    <Box position="absolute" top="50%" left="12px" transform="translateY(-50%)">
+      <LogoIconWithBackground idp={idp} />
+    </Box>
+    <Heading flex="1" lineHeight="18px" textAlign="center" size="lg">
+      {prefix ? `${prefix} ${socialLabel(idp)}` : socialLabel(idp)}
+    </Heading>
+  </Button>
+);
 
 const LogoIconWithBackground = ({ idp }: { idp: LoginType }) => (
   <Flex

@@ -21,7 +21,7 @@ import { ModalCloseButton } from "../CloseButton";
 import { PasswordInput } from "../PasswordInput";
 
 type MasterPasswordModalProps = {
-  onSubmit: (password?: string) => void;
+  onSubmit: (password?: string) => Promise<void> | void;
   isLoading?: boolean;
   defaultAccount?: ImplicitAccount | null;
 };
@@ -41,12 +41,17 @@ export const MasterPasswordModal = ({
     },
   });
 
+  const handleSubmit = async () => {
+    await onSubmit();
+  };
+
   const getPasswordField = () => {
     if (defaultAccount?.type === "social") {
       return (
         <LoginButton
           idp={(defaultAccount as SocialAccount).idp}
-          onSubmit={onSubmit}
+          isLoading={isLoading}
+          onSubmit={handleSubmit}
           prefix="Confirm with"
         />
       );

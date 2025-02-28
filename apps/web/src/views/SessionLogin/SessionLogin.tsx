@@ -1,14 +1,14 @@
 import { Button, Center, Flex, type FlexProps, Heading, Icon, Text } from "@chakra-ui/react";
-import { type ImplicitAccount } from "@umami/core";
-import { type AccountsState, clearSessionKey } from "@umami/state";
+import { type ImplicitAccount, type SocialAccount } from "@umami/core";
+import { type AccountsState, clearSessionKey, useLoginToWallet } from "@umami/state";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { LoginButton } from "./LoginButton";
-import { useLoginWithMnemonic } from "./useLoginWithMnemonic";
 import { LogoLightIcon, TezosLogoIcon } from "../../assets/icons";
 import { PasswordInput } from "../../components/PasswordInput";
 import { useColor } from "../../styles/useColor";
+import { setupPersistence } from "../../utils/store";
 
 const getInitialAccounts = (): AccountsState | null => {
   const accounts = localStorage.getItem("persist:accounts");
@@ -29,7 +29,7 @@ export const SessionLogin = () => {
   const defaultAccount = accounts?.defaultAccount
     ? (JSON.parse(accounts.defaultAccount as unknown as string) as ImplicitAccount)
     : null;
-  const { isLoading, login } = useLoginWithMnemonic(accounts, defaultAccount);
+  const { isLoading, handleLogin } = useLoginToWallet(defaultAccount, setupPersistence);
 
   const form = useForm({
     defaultValues: {
@@ -66,14 +66,21 @@ export const SessionLogin = () => {
             </Text>
           </Flex>
           {defaultAccount?.type === "social" ? (
-            <LoginButton idp={defaultAccount.idp} prefix="Sign in with" />
+            <LoginButton
+              idp={defaultAccount.idp}
+              isLoading={isLoading}
+              onSubmit={handleLogin<SocialAccount>()}
+              prefix="Sign in with"
+            />
           ) : (
             <>
               <PasswordInput inputName="password" />
               <Button
                 width="full"
                 isLoading={isLoading}
-                onClick={form.handleSubmit(login)}
+                onClick={form.handleSubmit(() =>
+                  handleLogin()(accounts, { password: form.getValues().password })
+                )}
                 size="lg"
                 variant="primary"
               >
