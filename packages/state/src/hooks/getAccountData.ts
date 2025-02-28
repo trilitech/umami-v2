@@ -221,3 +221,13 @@ export const useGetUserAlerts = () => {
 
   return (key: keyof AccountsState["alerts"]) => alerts[key];
 };
+
+export const useGetDefaultAccount = () => {
+  const defaultAccount = useAppSelector(s => s.accounts.defaultAccount);
+
+  if (!defaultAccount) {
+    throw new CustomError("No default account found");
+  }
+
+  return defaultAccount;
+};

@@ -6,12 +6,12 @@ import { FacebookIcon, GoogleIcon, RedditIcon, TwitterIcon } from "../../assets/
 import { useLoginWithSocial } from "../../components/Onboarding/OnboardOptions/useOnboardWithSocial";
 type LoginType = Omit<IDP, "email" | "apple">;
 
-type LoginButtonComponentProps = {
+type LoginButtonProps = {
   idp: LoginType;
   prefix?: string;
 };
 
-export const LoginButtonComponent = ({ idp, prefix }: LoginButtonComponentProps) => {
+export const LoginButton = ({ idp, prefix }: LoginButtonProps) => {
   const { isLoading, login } = useLoginWithSocial(idp as IDP);
 
   return (

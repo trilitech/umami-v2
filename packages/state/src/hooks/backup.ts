@@ -1,70 +1,30 @@
-import { DEFAULT_ACCOUNT_LABEL } from "@umami/core";
-import { type EncryptedData, decrypt, encrypt } from "@umami/crypto";
+import { type EncryptedData, decrypt } from "@umami/crypto";
 import { CustomError } from "@umami/utils";
 import { type Persistor } from "redux-persist";
 
-import { useValidateMasterPassword } from "./getAccountData";
-import { useRestoreFromMnemonic } from "./setAccountData";
-import { useAppSelector } from "./useAppSelector";
-
-const isV1Backup = (backup: any) => backup["recoveryPhrases"] && backup["derivationPaths"];
-
-const isV2Backup = (backup: any) => !!backup["persist:accounts"];
-
-const isV21Backup = (backup: any) => ["data", "iv", "salt"].every(key => key in backup);
-
-export const useRestoreBackup = () => {
-  const restoreV1 = useRestoreV1BackupFile();
-
-  return async (backup: any, password: string, persistor: Persistor) => {
-    if (isV1Backup(backup)) {
-      return restoreV1(backup, password);
-    }
-    if (isV2Backup(backup)) {
-      return restoreV2BackupFile(backup, password, persistor);
-    }
-    if (isV21Backup(backup)) {
-      return restoreV21BackupFile(backup, password, persistor);
-    }
-    throw new CustomError("Invalid backup file.");
-  };
+type Backup = {
+  "persist:accounts": string;
+  "persist:root": string;
+  user_requirements_nonce: string;
 };
 
-type V1Backup = { recoveryPhrases: [EncryptedData]; derivationPaths: [string] };
-export const useRestoreV1BackupFile = () => {
-  const restoreFromMnemonic = useRestoreFromMnemonic();
+const isBackupValid = (backup: any) =>
+  ["persist:accounts", "persist:root", "user_requirements_nonce"].every(key => key in backup);
 
-  return async (backup: V1Backup, password: string) => {
-    const encrypted: [EncryptedData] = backup["recoveryPhrases"];
-    // The prefix `m/` from V1 can be ignored.
-    const derivationPaths = backup.derivationPaths.map((path: string) =>
-      path.slice(0, 2) === "m/" ? path.slice(2) : path
-    );
+export const useRestoreBackup =
+  () => async (backup: string, password: string, persistor: Persistor) => {
+    try {
+      const parsedBackup = JSON.parse(backup) as any;
 
-    const mnemonics = [];
-
-    for (const encryptedMnemonic of encrypted) {
-      mnemonics.push(await decrypt(encryptedMnemonic, password, "V1"));
-    }
-
-    for (const [i, mnemonic] of mnemonics.entries()) {
-      await restoreFromMnemonic({
-        mnemonic,
-        password,
-        label: DEFAULT_ACCOUNT_LABEL,
-        derivationPathTemplate: derivationPaths[i],
-        curve: "ed25519",
-      });
+      if (isBackupValid(parsedBackup)) {
+        return restoreBackupFile(parsedBackup, password, persistor);
+      }
+    } catch {
+      throw new CustomError("Invalid backup file.");
     }
   };
-};
 
-type V2Backup = { "persist:accounts": string; "persist:root": string };
-export const restoreV2BackupFile = async (
-  backup: V2Backup,
-  password: string,
-  persistor: Persistor
-) => {
+export const restoreBackupFile = async (backup: Backup, password: string, persistor: Persistor) => {
   const accountsInString: string = backup["persist:accounts"];
   if (!accountsInString) {
     throw new CustomError("Invalid backup file.");
@@ -88,45 +48,20 @@ export const restoreV2BackupFile = async (
   window.location.reload();
 };
 
-export const restoreV21BackupFile = async (
-  encryptedBackup: EncryptedData,
-  password: string,
-  persistor: Persistor
-) => {
-  const backup = JSON.parse(await decrypt(encryptedBackup, password, "V2")) as V2Backup;
-  return restoreV2BackupFile(backup, password, persistor);
-};
-
-export const useDownloadBackupFile = () => {
-  const validateMasterPassword = useValidateMasterPassword();
-  const accounts = useAppSelector(s => s.accounts);
-
-  const parsedAccounts = JSON.parse(localStorage.getItem("persist:accounts") || "{}");
-  const filteredAccounts = {
-    ...parsedAccounts,
-    // For backup we need to filter out the unverified accounts
-    items: JSON.stringify(
-      accounts.items.filter(account => account.type !== "mnemonic" || account.isVerified)
-    ),
+export const useDownloadBackupFile = () => () => {
+  const storage = {
+    "persist:accounts": localStorage.getItem("persist:accounts"),
+    "persist:root": localStorage.getItem("persist:root"),
+    user_requirements_nonce: localStorage.getItem("user_requirements_nonce"),
   };
 
-  return async (password: string) => {
-    await validateMasterPassword?.(password);
+  const rawBackup = JSON.stringify(storage);
 
-    const storage = {
-      "persist:accounts": JSON.stringify(filteredAccounts),
-      "persist:root": localStorage.getItem("persist:root"),
-    };
+  const link = document.createElement("a");
 
-    const rawBackup = JSON.stringify(storage);
-    const encryptedBackup = await encrypt(rawBackup, password);
+  const currentDate = new Date().toISOString().slice(0, 10);
+  link.href = `data:text/json;charset=utf-8,${encodeURIComponent(rawBackup)}`;
+  link.download = `UmamiV2Backup_${currentDate}.json`;
 
-    const link = document.createElement("a");
-
-    const currentDate = new Date().toISOString().slice(0, 10);
-    link.href = `data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(encryptedBackup))}`;
-    link.download = `UmamiV2Backup_${currentDate}.json`;
-
-    link.click();
-  };
+  link.click();
 };

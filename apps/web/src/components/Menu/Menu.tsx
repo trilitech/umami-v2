@@ -2,13 +2,13 @@ import { Switch } from "@chakra-ui/react";
 import { useColorMode } from "@chakra-ui/system";
 import hj from "@hotjar/browser";
 import { useDynamicDrawerContext, useDynamicModalContext } from "@umami/components";
+import { useDownloadBackupFile } from "@umami/state";
 
 import { AddressBookMenu } from "./AddressBookMenu/AddressBookMenu";
 import { AdvancedMenu } from "./AdvancedMenu/AdvancedMenu";
 import { AppsMenu } from "./AppsMenu/AppsMenu";
 import { GenericMenu } from "./GenericMenu";
 import { LogoutModal } from "./LogoutModal";
-import { useSaveBackup } from "./useSaveBackup";
 import {
   BookIcon,
   CodeSandboxIcon,
@@ -26,7 +26,7 @@ export const Menu = () => {
   const { openWith: openDrawer } = useDynamicDrawerContext();
   const { colorMode, toggleColorMode } = useColorMode();
   const hasVerified = useHasVerifiedAccounts();
-  const saveBackup = useSaveBackup();
+  const saveBackup = useDownloadBackupFile();
 
   const colorModeSwitchLabel = colorMode === "light" ? "Light mode" : "Dark mode";
 

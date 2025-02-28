@@ -6,7 +6,7 @@ import { type RawPkh } from "@umami/tezos";
 import { useCallback, useState } from "react";
 import { type FieldValues, FormProvider, useForm } from "react-hook-form";
 
-import { LoginButtonComponent } from "./SignInWithButton";
+import { LoginButton } from "./LoginButton";
 import { LogoLightIcon, TezosLogoIcon } from "../../assets/icons";
 import { PasswordInput } from "../../components/PasswordInput";
 import { useColor } from "../../styles/useColor";
@@ -104,7 +104,7 @@ export const SessionLogin = () => {
             </Text>
           </Flex>
           {defaultAccount?.type === "social" ? (
-            <LoginButtonComponent idp={defaultAccount.idp} prefix="Sign in with" />
+            <LoginButton idp={defaultAccount.idp} prefix="Sign in with" />
           ) : (
             <>
               <PasswordInput inputName="password" />

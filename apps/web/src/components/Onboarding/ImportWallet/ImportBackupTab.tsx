@@ -1,6 +1,7 @@
 import {
   Button,
   Center,
+  Collapse,
   Flex,
   FormControl,
   FormErrorMessage,
@@ -9,19 +10,22 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useMultiForm } from "@umami/components";
+import { type ImplicitAccount } from "@umami/core";
 import { useAsyncActionHandler, useRestoreBackup } from "@umami/state";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FormProvider } from "react-hook-form";
 
 import { CheckmarkIcon, CloseIcon, FileUploadIcon } from "../../../assets/icons";
 import { useColor } from "../../../styles/useColor";
 import { trackOnboardingEvent, trackSuccessfulConnection } from "../../../utils/analytics";
 import { persistor } from "../../../utils/persistor";
+import { LoginButton } from "../../../views/SessionLogin/LoginButton";
 import { PasswordInput } from "../../PasswordInput";
 
 export const ImportBackupTab = () => {
   const color = useColor();
   const restoreBackup = useRestoreBackup();
+  const [defaultAccount, setDefaultAccount] = useState<ImplicitAccount | null>(null);
   const { handleAsyncAction } = useAsyncActionHandler();
   const form = useMultiForm<{ file: FileList | undefined; password: string }>({
     mode: "onBlur",
@@ -35,6 +39,25 @@ export const ImportBackupTab = () => {
   } = form;
 
   const fileData = form.watch("file");
+
+  useEffect(() => {
+    const parseBackup = async () => {
+      const rawBackup = await fileData?.[0].text();
+
+      if (rawBackup) {
+        const backup = JSON.parse(rawBackup);
+        const defaultAccount = JSON.parse(backup["persist:accounts"]).defaultAccount;
+        setDefaultAccount(defaultAccount);
+      }
+    };
+
+    if (!defaultAccount && fileData?.[0]) {
+      void parseBackup();
+    } else if (!fileData) {
+      setDefaultAccount(null);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fileData]);
 
   const onSubmit = ({ password, file }: { file: FileList | undefined; password: string }) =>
     handleAsyncAction(async () => {
@@ -54,6 +77,13 @@ export const ImportBackupTab = () => {
   const { ref, ...inputRegisterProps } = register("file", {
     required: "File is required",
   });
+
+  const getPasswordInput = () => {
+    if (defaultAccount?.type === "social") {
+      return <LoginButton idp={defaultAccount.idp} />;
+    }
+    return <PasswordInput inputName="password" required={false} />;
+  };
 
   return (
     <FormProvider {...form}>
@@ -115,7 +145,7 @@ export const ImportBackupTab = () => {
             />
             {errors.file && <FormErrorMessage>{errors.file.message}</FormErrorMessage>}
           </FormControl>
-          <PasswordInput inputName="password" required={false} />
+          <Collapse in={!!defaultAccount}>{getPasswordInput()}</Collapse>
           <Button width="full" isDisabled={!isValid} type="submit" variant="primary">
             Import wallet
           </Button>

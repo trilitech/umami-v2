@@ -7,10 +7,4 @@ export type FormFields = {
   curve: Exclude<Curves, "bip25519">;
 };
 
-export type Mode =
-  | "mnemonic"
-  | "secret_key"
-  | "new_mnemonic"
-  | "verification"
-  | "add_account"
-  | "save_backup";
+export type Mode = "mnemonic" | "secret_key" | "new_mnemonic" | "verification" | "add_account";

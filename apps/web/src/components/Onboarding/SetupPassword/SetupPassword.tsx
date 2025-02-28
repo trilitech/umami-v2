@@ -45,12 +45,6 @@ const getModeConfig = (mode: Mode) => {
         subtitle:
           "Set a password to unlock your wallet.\n Make sure to store your password safely.",
       };
-    case "save_backup":
-      return {
-        icon: LockIcon,
-        title: "Create password",
-        buttonLabel: "Save backup",
-      };
     case "mnemonic":
     case "secret_key":
       return {
