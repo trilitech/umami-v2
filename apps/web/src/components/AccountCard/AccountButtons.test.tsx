@@ -67,6 +67,12 @@ describe("<AccountButtons />", () => {
     expect(screen.getByRole("button", { name: "Receive" })).toBeVisible();
   });
 
+  it("renders a connect button", () => {
+    render(<AccountButtons />, { store });
+
+    expect(screen.getByRole("button", { name: "Connect" })).toBeVisible();
+  });
+
   describe("renders a send button", () => {
     it("if user has enough balance", async () => {
       const user = userEvent.setup();
@@ -121,7 +127,7 @@ describe("<AccountButtons />", () => {
       );
     });
 
-    it.each(["Buy", "Send", "Receive"])("%s button is disabled", buttonName => {
+    it.each(["Buy", "Connect", "Send", "Receive"])("%s button is disabled", buttonName => {
       render(<AccountButtons />, { store });
 
       const button = screen.getByLabelText(buttonName);
