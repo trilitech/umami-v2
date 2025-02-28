@@ -54,38 +54,27 @@ describe("usePasswordValidation", () => {
     number: "At least one number",
     special: 'At least one special character: !@#$%^&*(),.?":{}|<>',
     minlength: "At least 12 characters long",
-    simplicity: "Good complexity, no simple sequences or patterns",
   };
 
   it.each([
     {
       password: "123",
       passed: ["number"],
-      failed: ["uppercase", "special", "minlength", "simplicity"],
+      failed: ["uppercase", "special", "minlength"],
     },
     {
       password: "1234567890a!",
       passed: ["number", "special", "minlength"],
-      failed: ["uppercase", "simplicity"],
+      failed: ["uppercase"],
     },
     {
       password: "1234567890a-=A",
       passed: ["number", "minlength", "uppercase"],
-      failed: ["special", "simplicity"],
+      failed: ["special"],
     },
     {
       password: "1234567890a-=A!",
       passed: ["number", "minlength", "uppercase", "special"],
-      failed: ["simplicity"],
-    },
-    {
-      password: "1234567890a-=A!get",
-      passed: ["number", "minlength", "uppercase", "special"],
-      failed: ["simplicity"],
-    },
-    {
-      password: "1234567890a-=A!getg",
-      passed: ["number", "minlength", "uppercase", "special", "simplicity"],
       failed: [],
     },
   ])('should update PasswordStrengthBar based on score for "$password" ', async data => {

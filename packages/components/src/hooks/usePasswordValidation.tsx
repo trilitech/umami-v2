@@ -39,17 +39,19 @@ const getPasswordSchema = () =>
     })
     .refine(value => /[!@#$%^&*(),.?":{}|<>]/.test(value), {
       path: ["special"],
-    })
-    .refine(
-      value => {
-        const score = zxcvbn(value).score;
+    });
 
-        return score > 3;
-      },
-      {
-        path: ["simplicity"],
-      }
-    );
+// TODO waiting for the design decision, https://linear.app/tezos/issue/UMA-1201/design-password-complexity
+// .refine(
+//   value => {
+//     const score = zxcvbn(value).score;
+
+//     return score > 3;
+//   },
+//   {
+//     path: ["simplicity"],
+//   }
+// )
 
 const PasswordStrengthBar = ({ requirements }: PasswordStrengthBarProps) => (
   <List marginTop="12px" spacing="8px">
@@ -90,11 +92,12 @@ const DEFAULT_REQUIREMENTS: Requirement[] = [
     path: "special",
     passed: false,
   },
-  {
-    message: "Good complexity, no simple sequences or patterns",
-    path: "simplicity",
-    passed: false,
-  },
+  // TODO waiting for the design decision, https://linear.app/tezos/issue/UMA-1201/design-password-complexity
+  // {
+  //   message: "Good complexity, no simple sequences or patterns",
+  //   path: "simplicity",
+  //   passed: false,
+  // },
 ];
 
 export const usePasswordValidation = ({
