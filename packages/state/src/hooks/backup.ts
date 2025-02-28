@@ -1,8 +1,6 @@
-import { type EncryptedData, decrypt } from "@umami/crypto";
 import { CustomError } from "@umami/utils";
-import { type Persistor } from "redux-persist";
 
-type Backup = {
+export type Backup = {
   "persist:accounts": string;
   "persist:root": string;
   user_requirements_nonce: string;
@@ -11,41 +9,20 @@ type Backup = {
 const isBackupValid = (backup: any) =>
   ["persist:accounts", "persist:root", "user_requirements_nonce"].every(key => key in backup);
 
-export const useRestoreBackup =
-  () => async (backup: string, password: string, persistor: Persistor) => {
-    try {
-      const parsedBackup = JSON.parse(backup) as any;
-
-      if (isBackupValid(parsedBackup)) {
-        return restoreBackupFile(parsedBackup, password, persistor);
-      }
-    } catch {
-      throw new CustomError("Invalid backup file.");
-    }
-  };
-
-export const restoreBackupFile = async (backup: Backup, password: string, persistor: Persistor) => {
-  const accountsInString: string = backup["persist:accounts"];
-  if (!accountsInString) {
-    throw new CustomError("Invalid backup file.");
+export const useRestoreBackup = () => (backup: Backup) => {
+  if (isBackupValid(backup)) {
+    return restoreBackupFile(backup);
   }
 
-  const accounts: { seedPhrases: string } = JSON.parse(accountsInString);
+  throw new CustomError("Invalid backup file.");
+};
 
-  const encryptedMnemonics: Record<string, EncryptedData> = JSON.parse(accounts.seedPhrases);
-
-  for (const encrypted of Object.values(encryptedMnemonics)) {
-    await decrypt(encrypted, password, "V2");
-  }
-
-  persistor.pause();
-
+export const restoreBackupFile = (backup: Backup) => {
   localStorage.clear();
-  localStorage.setItem("migration_to_2_3_5_completed", "true");
-  localStorage.setItem("persist:accounts", accountsInString);
-  localStorage.setItem("persist:root", backup["persist:root"]);
 
-  window.location.reload();
+  for (const key in backup) {
+    localStorage.setItem(key, backup[key as keyof Backup]);
+  }
 };
 
 export const useDownloadBackupFile = () => () => {

@@ -9,10 +9,16 @@ type LoginType = Omit<IDP, "email" | "apple">;
 type LoginButtonProps = {
   idp: LoginType;
   prefix?: string;
+  onSubmit?: () => void;
 };
 
-export const LoginButton = ({ idp, prefix }: LoginButtonProps) => {
+export const LoginButton = ({ idp, prefix, onSubmit }: LoginButtonProps) => {
   const { isLoading, login } = useLoginWithSocial(idp as IDP);
+
+  const handleSubmit = async () => {
+    onSubmit?.();
+    await login();
+  };
 
   return (
     <Button
@@ -23,7 +29,7 @@ export const LoginButton = ({ idp, prefix }: LoginButtonProps) => {
       border="none"
       borderRadius="100px"
       isLoading={isLoading}
-      onClick={login}
+      onClick={handleSubmit}
     >
       <Box position="absolute" top="50%" left="12px" transform="translateY(-50%)">
         <LogoIconWithBackground idp={idp} />

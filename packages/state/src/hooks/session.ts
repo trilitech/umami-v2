@@ -21,3 +21,8 @@ export const useHandleSession = () => {
 
   return { setupSessionTimeout, isSessionActive, isOnboarded };
 };
+
+export const clearSessionKey = () => {
+  localStorage.removeItem("user_requirements_nonce");
+  window.location.reload();
+};
