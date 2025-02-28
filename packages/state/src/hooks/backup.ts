@@ -38,7 +38,7 @@ export const useDownloadBackupFile = () => () => {
 
   const currentDate = new Date().toISOString().slice(0, 10);
   link.href = `data:text/json;charset=utf-8,${encodeURIComponent(rawBackup)}`;
-  link.download = `UmamiV2Backup_${currentDate}.json`;
+  link.download = `UmamiBackup_${currentDate}.json`;
 
   link.click();
 };
