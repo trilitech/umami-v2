@@ -32,7 +32,7 @@ beforeEach(() => {
 });
 
 describe("<RestoreBackupFile />", () => {
-  it("shows error for wrong backup file format", async () => {
+  it("shows error for wrong backup file format", () => {
     const {
       result: { current: restoreBackup },
     } = renderHook(() => useRestoreBackup(), { store });
@@ -78,7 +78,7 @@ describe("useDownloadBackupFile", () => {
     addTestAccounts(store, mockAccounts);
   });
 
-  it("fetches an encrypted state backup", async () => {
+  it("fetches an encrypted state backup", () => {
     const linkMock: any = { click: jest.fn() };
 
     localStorage.setItem("persist:accounts", backup["persist:accounts"]);

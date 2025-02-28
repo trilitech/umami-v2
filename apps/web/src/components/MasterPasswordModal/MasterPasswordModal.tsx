@@ -23,7 +23,7 @@ import { PasswordInput } from "../PasswordInput";
 type MasterPasswordModalProps = {
   onSubmit: (password?: string) => void;
   isLoading?: boolean;
-  defaultAccount: ImplicitAccount | null;
+  defaultAccount?: ImplicitAccount | null;
 };
 
 export const MasterPasswordModal = ({

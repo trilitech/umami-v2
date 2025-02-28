@@ -11,7 +11,6 @@ import {
 } from "@chakra-ui/react";
 import hj from "@hotjar/browser";
 import { useImplicitAccounts } from "@umami/state";
-import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import { ImportBackupTab } from "./ImportBackupTab";

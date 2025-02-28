@@ -9,7 +9,7 @@ type LoginType = Omit<IDP, "email" | "apple">;
 type LoginButtonProps = {
   idp: LoginType;
   prefix?: string;
-  onSubmit?: () => void;
+  onSubmit?: () => void | (() => void);
 };
 
 export const LoginButton = ({ idp, prefix, onSubmit }: LoginButtonProps) => {

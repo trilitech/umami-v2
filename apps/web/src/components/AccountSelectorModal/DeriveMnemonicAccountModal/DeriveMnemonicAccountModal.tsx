@@ -25,14 +25,14 @@ export const DeriveMnemonicAccountModal = ({ account }: DeriveMnemonicAccountMod
   const toast = useToast();
 
   const handleNameSubmit = ({ accountName }: { accountName: string }) => {
-    const handlePasswordSubmit = ({ password }: { password: string }) =>
+    const handlePasswordSubmit = (password?: string) =>
       handleAsyncAction(
         async () => {
           trackAccountEvent("submit_account_derivation");
 
           const newAccount = await deriveMnemonicAccount({
             fingerPrint: account.seedFingerPrint,
-            password,
+            password: password || "",
             label: accountName.trim() || DEFAULT_ACCOUNT_LABEL,
           });
 

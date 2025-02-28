@@ -93,6 +93,8 @@ export const ImportBackupTab = () => {
         await login({ password });
       }
 
+      onClose();
+
       trackSuccessfulConnection("onboarding", "restore_from_backup");
     });
 
