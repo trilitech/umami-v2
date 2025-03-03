@@ -1,11 +1,10 @@
 import { Box, Button, Center, Heading, Link, Text, VStack } from "@chakra-ui/react";
 import { useDynamicModalContext } from "@umami/components";
-import { useImplicitAccounts } from "@umami/state";
+import { useDownloadBackupFile, useImplicitAccounts } from "@umami/state";
 
 import { AlertCircleIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
 import { LogoutModal } from "../Menu/LogoutModal";
-import { useSaveBackup } from "../Menu/useSaveBackup";
 import { useHasVerifiedAccounts } from "../Onboarding/VerificationFlow";
 
 const feedbackEmailBodyTemplate =
@@ -14,7 +13,7 @@ const feedbackEmailBodyTemplate =
 export const ErrorPage = () => {
   const { openWith: openModal } = useDynamicModalContext();
   const color = useColor();
-  const saveBackup = useSaveBackup();
+  const saveBackup = useDownloadBackupFile();
 
   const isLoggedIn = useImplicitAccounts().length > 0;
   const isVerified = useHasVerifiedAccounts();

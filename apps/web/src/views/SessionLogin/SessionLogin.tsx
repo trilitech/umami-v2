@@ -1,74 +1,36 @@
 import { Button, Center, Flex, type FlexProps, Heading, Icon, Text } from "@chakra-ui/react";
-import { type ImplicitAccount } from "@umami/core";
-import { type EncryptedData, decrypt } from "@umami/crypto";
-import { type AccountsState, useAsyncActionHandler } from "@umami/state";
-import { type RawPkh } from "@umami/tezos";
-import { useCallback, useState } from "react";
-import { type FieldValues, FormProvider, useForm } from "react-hook-form";
+import { type ImplicitAccount, type SocialAccount } from "@umami/core";
+import { type AccountsState, clearSessionKey, useLoginToWallet } from "@umami/state";
+import { useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
 
-import { LoginButtonComponent } from "./SignInWithButton";
+import { LoginButton } from "./LoginButton";
 import { LogoLightIcon, TezosLogoIcon } from "../../assets/icons";
 import { PasswordInput } from "../../components/PasswordInput";
 import { useColor } from "../../styles/useColor";
 import { setupPersistence } from "../../utils/store";
 
-const clearSessionKey = () => {
-  localStorage.removeItem("user_requirements_nonce");
-  window.location.reload();
-};
-
 const getInitialAccounts = (): AccountsState | null => {
   const accounts = localStorage.getItem("persist:accounts");
+
   if (!accounts) {
     clearSessionKey();
     return null;
   }
+
   return JSON.parse(accounts) as AccountsState;
-};
-
-const useLoginWithMnemonic = (
-  defaultAccount: ImplicitAccount | undefined,
-  accounts: AccountsState | null
-) => {
-  const { isLoading, handleAsyncAction } = useAsyncActionHandler();
-  const login = useCallback(
-    (data: FieldValues) =>
-      handleAsyncAction(
-        async () => {
-          if (!defaultAccount || !accounts) {
-            clearSessionKey();
-            return;
-          }
-          if (defaultAccount.type === "mnemonic") {
-            const mnemonic = (
-              JSON.parse(accounts.seedPhrases as unknown as string) as Record<string, EncryptedData>
-            )[defaultAccount.seedFingerPrint];
-            const result = await decrypt(mnemonic, data.password);
-            setupPersistence(result);
-          } else if (defaultAccount.type === "secret_key") {
-            const secretKey = (
-              JSON.parse(accounts.secretKeys as unknown as string) as Record<RawPkh, EncryptedData>
-            )[defaultAccount.address.pkh];
-            const result = await decrypt(secretKey, data.password);
-            setupPersistence(result);
-          }
-        },
-        { title: "Mnemonic or secret key not found" }
-      ),
-    [handleAsyncAction, defaultAccount, accounts]
-  );
-
-  return { isLoading, login };
 };
 
 export const SessionLogin = () => {
   const color = useColor();
 
   const [accounts] = useState(getInitialAccounts);
-  const defaultAccount =
-    accounts?.defaultAccount &&
-    (JSON.parse(accounts.defaultAccount as unknown as string) as ImplicitAccount);
-  const { isLoading, login } = useLoginWithMnemonic(defaultAccount, accounts);
+
+  const defaultAccount = accounts?.defaultAccount
+    ? (JSON.parse(accounts.defaultAccount as unknown as string) as ImplicitAccount)
+    : null;
+  const { isLoading, handleLogin } = useLoginToWallet(defaultAccount, setupPersistence);
+
   const form = useForm({
     defaultValues: {
       password: "",
@@ -104,14 +66,21 @@ export const SessionLogin = () => {
             </Text>
           </Flex>
           {defaultAccount?.type === "social" ? (
-            <LoginButtonComponent idp={defaultAccount.idp} prefix="Sign in with" />
+            <LoginButton
+              idp={defaultAccount.idp}
+              isLoading={isLoading}
+              onSubmit={handleLogin<SocialAccount>()}
+              prefix="Sign in with"
+            />
           ) : (
             <>
               <PasswordInput inputName="password" />
               <Button
                 width="full"
                 isLoading={isLoading}
-                onClick={form.handleSubmit(login)}
+                onClick={form.handleSubmit(() =>
+                  handleLogin()(accounts, { password: form.getValues().password })
+                )}
                 size="lg"
                 variant="primary"
               >

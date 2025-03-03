@@ -7,9 +7,9 @@ export type AccountsState = {
   //TODO: Rename to encryptedMnemonics
   seedPhrases: Record<string, EncryptedData | undefined>;
   secretKeys: Record<RawPkh, EncryptedData | undefined>;
-  current?: RawPkh | undefined;
-  defaultAccount?: ImplicitAccount | undefined;
-  password?: string | undefined;
+  current?: RawPkh;
+  defaultAccount?: ImplicitAccount;
+  password?: string;
   alerts: {
     isSocialLoginWarningShown: boolean;
     isExtensionsWarningShown: boolean;

@@ -1,3 +1,5 @@
+import { mockMnemonicAccount, mockSocialAccount } from "@umami/core";
+
 import { MasterPasswordModal } from "./MasterPasswordModal";
 import { renderInModal, screen, userEvent, waitFor } from "../../testUtils";
 
@@ -18,7 +20,7 @@ describe("<MasterPasswordModal />", () => {
       }
     );
 
-    await waitFor(() => expect(mockOnSubmit).toHaveBeenCalledWith({ password: "testpassword" }));
+    await waitFor(() => expect(mockOnSubmit).toHaveBeenCalledWith("testpassword"));
   });
 
   it("shows validation error when submitting without a password", async () => {
@@ -29,5 +31,23 @@ describe("<MasterPasswordModal />", () => {
 
     expect(screen.getByText("Password is required")).toBeInTheDocument();
     expect(mockOnSubmit).not.toHaveBeenCalled();
+  });
+
+  describe("when has defaultAccount", () => {
+    it("shows social login button if defaultAccount is social", async () => {
+      await renderInModal(
+        <MasterPasswordModal defaultAccount={mockSocialAccount(0)} onSubmit={mockOnSubmit} />
+      );
+
+      await screen.findByTestId("social-login-button");
+    });
+
+    it("shows password input if defaultAccount is mnemonic", async () => {
+      await renderInModal(
+        <MasterPasswordModal defaultAccount={mockMnemonicAccount(0)} onSubmit={mockOnSubmit} />
+      );
+
+      await screen.findByLabelText("Password");
+    });
   });
 });

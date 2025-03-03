@@ -6,7 +6,6 @@ import { type UmamiStore, addTestAccount, makeStore } from "@umami/state";
 import { ErrorPage } from "./ErrorPage";
 import { act, dynamicModalContextMock, render, screen, userEvent } from "../../testUtils";
 import { LogoutModal } from "../Menu/LogoutModal";
-import { SetupPassword } from "../Onboarding/SetupPassword";
 
 let store: UmamiStore;
 
@@ -104,14 +103,11 @@ describe("ErrorPage", () => {
     });
 
     it("calls saveBackup function when 'Save Backup' button is clicked", async () => {
-      const { openWith } = dynamicModalContextMock;
       const user = userEvent.setup();
       render(<ErrorPage />, { store });
 
       const saveBackupButton = screen.getByRole("button", { name: "Save backup" });
       await act(() => user.click(saveBackupButton));
-
-      expect(openWith).toHaveBeenCalledWith(<SetupPassword mode="save_backup" />);
     });
 
     it("opens LogoutModal when 'Logout' button is clicked", async () => {

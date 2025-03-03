@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import hj from "@hotjar/browser";
 import { useImplicitAccounts } from "@umami/state";
+import { useSearchParams } from "react-router-dom";
 
 import { ImportBackupTab } from "./ImportBackupTab";
 import { LedgerTab } from "./LedgerTab";
@@ -26,9 +27,19 @@ const AFTER_ONBOARDING_OPTIONS = ["Seed phrase", "Secret key", "Ledger"];
 
 export const ImportWallet = () => {
   const color = useColor();
+  const [searchParams, setSearchParams] = useSearchParams();
   const hasOnboarded = useImplicitAccounts().length > 0;
 
   hj.stateChange("importWallet");
+
+  const handleTabChange = (index: number) => {
+    setSearchParams(prev => {
+      prev.set("importWalletTab", index.toString());
+      return prev;
+    });
+  };
+
+  const currentTab = parseInt(searchParams.get("importWalletTab") || "0");
 
   return (
     <ModalContent>
@@ -41,7 +52,7 @@ export const ImportWallet = () => {
       </ModalHeader>
 
       <ModalBody>
-        <Tabs isLazy variant="onboarding">
+        <Tabs index={currentTab} isLazy onChange={handleTabChange} variant="onboarding">
           <TabSwitch
             options={hasOnboarded ? AFTER_ONBOARDING_OPTIONS : BEFORE_ONBOARDING_OPTIONS}
           />

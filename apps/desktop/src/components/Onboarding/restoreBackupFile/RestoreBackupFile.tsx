@@ -11,7 +11,6 @@ import { useAsyncActionHandler, useRestoreBackup } from "@umami/state";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { RotateIcon } from "../../../assets/icons";
-import { persistor } from "../../../utils/persistor";
 import { PasswordInput } from "../../PasswordInput";
 import { ModalContentWrapper } from "../ModalContentWrapper";
 
@@ -32,11 +31,11 @@ export const RestoreBackupFile = () => {
   const { handleAsyncAction } = useAsyncActionHandler();
   const restoreBackup = useRestoreBackup();
 
-  const onSubmit = ({ password, file }: FormFields) =>
+  const onSubmit = ({ file }: FormFields) =>
     handleAsyncAction(async () => {
       const fileContent = await file[0].text();
       const backup = JSON.parse(fileContent);
-      await restoreBackup(backup, password, persistor);
+      restoreBackup(backup);
     });
 
   return (

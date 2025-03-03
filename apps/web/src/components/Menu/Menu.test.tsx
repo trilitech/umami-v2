@@ -46,7 +46,6 @@ jest.mock("@umami/state", () => ({
 
 let store: UmamiStore;
 const account = mockImplicitAccount(0);
-const password = "Qwerty123123!23vcxz";
 
 beforeEach(() => {
   store = makeStore();
@@ -109,10 +108,6 @@ describe("<Menu />", () => {
       await renderInDrawer(<Menu />, store);
 
       await user.click(screen.getByText("Save backup"));
-
-      await user.type(screen.getByLabelText("Set password"), password);
-      await user.type(screen.getByLabelText("Confirm password"), password);
-      await user.click(screen.getByRole("button", { name: "Save backup" }));
 
       expect(mockDownloadBackupFile).toHaveBeenCalled();
     });
@@ -236,10 +231,6 @@ describe("<Menu />", () => {
       await renderInDrawer(<Menu />, store);
 
       await user.click(screen.getByText("Save backup"));
-
-      await user.type(screen.getByLabelText("Set password"), password);
-      await user.type(screen.getByLabelText("Confirm password"), password);
-      await user.click(screen.getByRole("button", { name: "Save backup" }));
 
       expect(mockDownloadBackupFile).toHaveBeenCalled();
     });

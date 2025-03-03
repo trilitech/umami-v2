@@ -28,7 +28,10 @@ export const useSaveBackup = () => {
           </ModalHeader>
           <MasterPassword
             onClose={onClose}
-            onVerify={password => downloadBackupFile(password).then(onClose)}
+            onVerify={() => {
+              downloadBackupFile();
+              onClose();
+            }}
           />
         </ModalContent>
       </Modal>

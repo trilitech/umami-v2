@@ -10,26 +10,62 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useMultiForm } from "@umami/components";
+import { type ImplicitAccount, type SocialAccount } from "@umami/core";
 import { FormProvider } from "react-hook-form";
 
 import { LockIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
+import { LoginButton } from "../../views/SessionLogin/LoginButton";
 import { ModalBackButton } from "../BackButton";
 import { ModalCloseButton } from "../CloseButton";
 import { PasswordInput } from "../PasswordInput";
 
 type MasterPasswordModalProps = {
-  onSubmit: ({ password }: { password: string }) => void;
+  onSubmit: (password?: string) => Promise<void> | void;
+  isLoading?: boolean;
+  defaultAccount?: ImplicitAccount | null;
 };
 
-export const MasterPasswordModal = ({ onSubmit }: MasterPasswordModalProps) => {
+export const MasterPasswordModal = ({
+  onSubmit,
+  isLoading,
+  defaultAccount,
+}: MasterPasswordModalProps) => {
   const color = useColor();
 
-  const form = useMultiForm({
+  const form = useMultiForm<{
+    password: string;
+  }>({
     defaultValues: {
       password: "",
     },
   });
+
+  const handleSubmit = async () => {
+    await onSubmit();
+  };
+
+  const getPasswordField = () => {
+    if (defaultAccount?.type === "social") {
+      return (
+        <LoginButton
+          idp={(defaultAccount as SocialAccount).idp}
+          isLoading={isLoading}
+          onSubmit={handleSubmit}
+          prefix="Confirm with"
+        />
+      );
+    }
+
+    return (
+      <PasswordInput
+        data-testid="master-password"
+        inputName="password"
+        label="Password"
+        placeholder="Enter your password"
+      />
+    );
+  };
 
   return (
     <ModalContent data-testid="master-password-modal">
@@ -45,20 +81,15 @@ export const MasterPasswordModal = ({ onSubmit }: MasterPasswordModalProps) => {
         </Center>
       </ModalHeader>
       <FormProvider {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <ModalBody>
-            <PasswordInput
-              data-testid="master-password"
-              inputName="password"
-              label="Password"
-              placeholder="Enter your password"
-            />
-          </ModalBody>
-          <ModalFooter>
-            <Button width="full" type="submit" variant="primary">
-              Submit
-            </Button>
-          </ModalFooter>
+        <form onSubmit={form.handleSubmit(({ password }) => onSubmit(password))}>
+          <ModalBody>{getPasswordField()}</ModalBody>
+          {defaultAccount?.type !== "social" ? (
+            <ModalFooter>
+              <Button width="full" isLoading={isLoading} type="submit" variant="primary">
+                Submit
+              </Button>
+            </ModalFooter>
+          ) : null}
         </form>
       </FormProvider>
     </ModalContent>

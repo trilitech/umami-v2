@@ -6,7 +6,6 @@ import {
   useAppDispatch,
   useAsyncActionHandler,
   useCurrentAccount,
-  useDownloadBackupFile,
   useGetDecryptedMnemonic,
   useGetNextAvailableAccountLabels,
   useRestoreFromMnemonic,
@@ -16,11 +15,7 @@ import {
 import { decryptSecretKey } from "@umami/tezos";
 
 import { type FormFields, type Mode } from "./types";
-import {
-  trackAccountEvent,
-  trackButtonClick,
-  trackOnboardingEvent,
-} from "../../../utils/analytics";
+import { trackAccountEvent, trackOnboardingEvent } from "../../../utils/analytics";
 import { setupPersistence } from "../../../utils/store";
 import { ImportantNoticeModal } from "../VerificationFlow/ImportantNoticeModal";
 
@@ -85,7 +80,6 @@ export const useGetSetupPasswordSubmitHandler = (mode: Mode) => {
   const checkPassword = useValidateMasterPassword();
 
   const handleVerify = useGetVerificationHandler();
-  const handleDownloadBackupFile = useDownloadBackupFile();
   const handleSecretKey = useGetSecretKeyHandler();
   const handleMnemonic = useGetMnemonicHandler();
 
@@ -119,11 +113,6 @@ export const useGetSetupPasswordSubmitHandler = (mode: Mode) => {
           }
           case "verification": {
             return handleVerify(password);
-          }
-          case "save_backup": {
-            trackButtonClick("backup", "download_backup");
-            await handleDownloadBackupFile(password);
-            break;
           }
         }
 

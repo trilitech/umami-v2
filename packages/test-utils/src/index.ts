@@ -8,3 +8,5 @@ export * from "./mockLocalStorage";
 export * from "./nftTokens";
 export * from "./tzktResponse";
 export * from "./v1BackupFile";
+
+export { default as backup } from "./fixtures/backups/backup.json";

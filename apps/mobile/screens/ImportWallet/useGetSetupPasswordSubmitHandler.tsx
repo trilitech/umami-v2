@@ -5,7 +5,6 @@ import {
   useAppDispatch,
   useAsyncActionHandler,
   useCurrentAccount,
-  useDownloadBackupFile,
   useGetDecryptedMnemonic,
   useGetNextAvailableAccountLabels,
   useRestoreFromMnemonic,
@@ -13,13 +12,7 @@ import {
 } from "@umami/state";
 import { decryptSecretKey } from "@umami/tezos";
 
-export type Mode =
-  | "mnemonic"
-  | "secret_key"
-  | "new_mnemonic"
-  | "verification"
-  | "add_account"
-  | "save_backup";
+export type Mode = "mnemonic" | "secret_key" | "new_mnemonic" | "verification" | "add_account";
 
 const useGetSecretKeyHandler = () => {
   const restoreFromSecretKey = useRestoreFromSecretKey();
@@ -82,7 +75,6 @@ export const useGetSetupPasswordSubmitHandler = (mode: Mode) => {
   // const checkPassword = useValidateMasterPassword();
 
   const handleVerify = useGetVerificationHandler();
-  const handleDownloadBackupFile = useDownloadBackupFile();
   const handleSecretKey = useGetSecretKeyHandler();
   const handleMnemonic = useGetMnemonicHandler();
 
@@ -108,10 +100,6 @@ export const useGetSetupPasswordSubmitHandler = (mode: Mode) => {
           }
           case "verification": {
             return handleVerify(password);
-          }
-          case "save_backup": {
-            await handleDownloadBackupFile(password);
-            break;
           }
         }
       }),
