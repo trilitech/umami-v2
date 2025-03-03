@@ -48,24 +48,27 @@ const useLoginWithPassword = (
           clearSessionKey();
           return;
         }
+        try {
+          if (defaultAccount.type === "mnemonic") {
+            const mnemonic = (
+              JSON.parse(accounts.seedPhrases as unknown as string) as Record<string, EncryptedData>
+            )[defaultAccount.seedFingerPrint];
 
-        if (defaultAccount.type === "mnemonic") {
-          const mnemonic = (
-            JSON.parse(accounts.seedPhrases as unknown as string) as Record<string, EncryptedData>
-          )[defaultAccount.seedFingerPrint];
+            const result = await decrypt(mnemonic, data.password);
+            setupPersistence(result);
+          } else if (defaultAccount.type === "secret_key") {
+            const secretKey = (
+              JSON.parse(accounts.secretKeys as unknown as string) as Record<RawPkh, EncryptedData>
+            )[defaultAccount.address.pkh];
 
-          const result = await decrypt(mnemonic, data.password);
-          setupPersistence(result);
-        } else if (defaultAccount.type === "secret_key") {
-          const secretKey = (
-            JSON.parse(accounts.secretKeys as unknown as string) as Record<RawPkh, EncryptedData>
-          )[defaultAccount.address.pkh];
-
-          const result = await decrypt(secretKey, data.password);
-          setupPersistence(result);
+            const result = await decrypt(secretKey, data.password);
+            setupPersistence(result);
+          }
+        } catch (error) {
+          console.error("Failed to login:", error);
+          throw error;
         }
-      },
-      { title: "Mnemonic or secret key not found" }
+      }
     );
 
   return { isLoading, login };

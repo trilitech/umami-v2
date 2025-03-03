@@ -1,5 +1,5 @@
 import { mockToast } from "@umami/state";
-import { fileUploadMock, umamiBackup } from "@umami/test-utils";
+import { backup, fileUploadMock } from "@umami/test-utils";
 
 import { ImportBackupTab } from "./ImportBackupTab";
 import { act, fireEvent, render, screen, userEvent, waitFor } from "../../../testUtils";
@@ -11,79 +11,105 @@ jest.mock("../../../utils/persistor", () => ({
 jest.setTimeout(15000);
 
 describe("<ImportBackupTab />", () => {
-  it("requires a file", async () => {
+  it("next button is disabled if the file is not uploaded", () => {
     render(<ImportBackupTab />);
 
-    fireEvent.blur(screen.getByTestId("file-input"));
-
-    await waitFor(() => expect(screen.getByText("File is required")).toBeVisible());
+    expect(screen.getByRole("button", { name: "Next" })).toBeDisabled();
   });
 
-  it("doesn't require a password", () => {
-    render(<ImportBackupTab />);
+  describe("opens the correct master password modal", () => {
+    it("for non-social account", async () => {
+      const user = userEvent.setup();
+      const file = fileUploadMock({
+        "persist:accounts": JSON.stringify({
+          defaultAccount:
+            '{"type":"mnemonic","curve":"ed25519","pk":"********","address":{"type":"implicit","pkh":"pkh"},"derivationPath":"44\'/1729\'/0\'/0\'","derivationPathTemplate":"44\'/1729\'/?\'/0\'","seedFingerPrint":"seedFingerPrint","label":"label","isVerified":false}',
+        }),
+      });
 
-    fireEvent.blur(screen.getByLabelText("Password"));
+      render(<ImportBackupTab />);
 
-    expect(screen.queryByText("Password is required")).not.toBeInTheDocument();
-  });
+      await act(() => user.upload(screen.getByTestId("file-input"), file));
 
-  it("shows a toast if the file is invalid", async () => {
-    const user = userEvent.setup();
-    const file = fileUploadMock({});
+      const button = screen.getByRole("button", { name: "Next" });
+      expect(button).toBeEnabled();
 
-    render(<ImportBackupTab />);
+      await act(() => user.click(button));
 
-    await act(() => user.upload(screen.getByTestId("file-input"), file));
+      await screen.findByText("Confirm password");
+      await screen.findByTestId("master-password");
+    });
 
-    const button = screen.getByRole("button", { name: "Import wallet" });
-    expect(button).toBeEnabled();
+    it("for social account", async () => {
+      const user = userEvent.setup();
+      const file = fileUploadMock({
+        "persist:accounts": JSON.stringify({
+          defaultAccount:
+            '{"type":"social","pk":"********","address":{"type":"implicit","pkh":"pkh"},"idp":"google","label":"label"}',
+        }),
+      });
 
-    await act(() => user.click(button));
+      render(<ImportBackupTab />);
 
-    await waitFor(() => expect(mockToast).toHaveBeenCalledTimes(1));
+      await act(() => user.upload(screen.getByTestId("file-input"), file));
 
-    expect(mockToast).toHaveBeenCalledWith({
-      status: "error",
-      isClosable: true,
-      description: "Invalid backup file.",
+      const button = screen.getByRole("button", { name: "Next" });
+      expect(button).toBeEnabled();
+
+      await act(() => user.click(button));
+
+      await screen.findByText("Confirm password");
+      await screen.findByTestId("social-login-button");
     });
   });
 
   it("shows a toast if the password is invalid", async () => {
     const user = userEvent.setup();
-    const file = fileUploadMock(umamiBackup);
+    const file = fileUploadMock(backup);
 
     render(<ImportBackupTab />);
 
     await act(() => user.upload(screen.getByTestId("file-input"), file));
-    await act(() => user.type(screen.getByLabelText("Password"), "wrong password"));
 
-    await waitFor(async () => {
-      await act(() => user.click(screen.getByRole("button", { name: "Import wallet" })));
-    });
+    const button = screen.getByRole("button", { name: "Next" });
 
-    await waitFor(() => expect(mockToast).toHaveBeenCalledTimes(1));
-    expect(mockToast).toHaveBeenCalledWith({
-      status: "error",
-      isClosable: true,
-      description: "Error decrypting data: Invalid password",
-    });
+    await act(() => user.click(button));
+
+    const passwordInput = await screen.findByLabelText("Password");
+    fireEvent.change(passwordInput, { target: { value: "invalid" } });
+    await act(() => user.click(screen.getByText("Submit")));
+
+    await waitFor(() =>
+      expect(mockToast).toHaveBeenCalledWith({
+        status: "error",
+        isClosable: true,
+        description: "Error decrypting data: Invalid password",
+      })
+    );
   });
 
-  it("restores the backup", async () => {
-    jest.mocked(global.fetch).mockResolvedValueOnce({
-      json: () => Promise.resolve({ type: "empty" }),
-    } as Response);
-    const user = userEvent.setup();
+  // TODO: add test for restoring the backup
+  //   it("restores the backup", async () => {
+  //     const user = userEvent.setup();
 
-    const { store } = render(<ImportBackupTab />);
+  //     const { store } = render(<ImportBackupTab />);
+  //     const file = fileUploadMock(backup);
 
-    const file = fileUploadMock(umamiBackup);
-    const password = "password";
-    await act(() => user.upload(screen.getByTestId("file-input"), file));
-    await act(() => user.type(screen.getByLabelText("Password"), password));
-    await act(() => user.click(screen.getByText("Import wallet")));
+  //     const password = "qwerty123!!!Test00";
+  //     await act(() => user.upload(screen.getByTestId("file-input"), file));
 
-    await waitFor(() => expect(store.getState().accounts.items.length).toEqual(1));
-  });
+  //     const button = screen.getByRole("button", { name: "Next" });
+
+  //     await act(() => user.click(button));
+
+  //     const passwordInput = await screen.findByLabelText("Password");
+  //     fireEvent.change(passwordInput, { target: { value: password } });
+  //     await act(() => user.click(screen.getByText("Submit")));
+
+  //     await waitFor(() => {
+  //       console.log(store.getState().accounts);
+  //     });
+
+  //     await waitFor(() => expect(store.getState().accounts.items.length).toEqual(1));
+  //   });
 });

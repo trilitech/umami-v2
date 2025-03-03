@@ -20,6 +20,7 @@ export const LoginButton = ({ idp, prefix, onSubmit, isLoading }: LoginButtonPro
     padding="0px"
     border="none"
     borderRadius="100px"
+    data-testid="social-login-button"
     isLoading={isLoading}
     onClick={onSubmit}
   >

@@ -52,7 +52,6 @@ export const ImportBackupTab = () => {
     if (!backup) {
       return null;
     }
-
     return JSON.parse(backup["persist:accounts"]) as AccountsState;
   };
 
@@ -75,7 +74,6 @@ export const ImportBackupTab = () => {
     } else if (!fileData) {
       setDefaultAccount(null);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fileData, defaultAccount]);
 
   const onSubmit = (password?: string) =>
@@ -96,7 +94,6 @@ export const ImportBackupTab = () => {
       }
 
       onClose();
-
       trackSuccessfulConnection("onboarding", "restore_from_backup");
     });
 
@@ -104,7 +101,13 @@ export const ImportBackupTab = () => {
     <FormProvider {...form}>
       <form
         onSubmit={handleSubmit(() =>
-          openWith(<MasterPasswordModal isLoading={isLoading} onSubmit={onSubmit} />)
+          openWith(
+            <MasterPasswordModal
+              defaultAccount={defaultAccount}
+              isLoading={isLoading}
+              onSubmit={onSubmit}
+            />
+          )
         )}
       >
         <Flex flexDirection="column" gap="24px">
