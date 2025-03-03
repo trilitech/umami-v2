@@ -110,10 +110,10 @@ export const useAddPeer = () => {
       .then(parsePeerInfo)
       .then(peer => WalletClient.addPeer(peer as ExtendedPeerInfo))
       .then(() => refresh())
-      .catch(e => {
+      .catch(() => {
         const description =
-          "Beacon sync code in the clipboard is invalid. Please copy a beacon sync code from the dApp";
-        const type = "error";
+          "To connect, open the dApp’s connect menu and copy the QR code. Look for a Beacon or WalletConnect option.";
+        const type = "info";
 
         toast.show
           ? toast.show({
@@ -124,7 +124,5 @@ export const useAddPeer = () => {
               description,
               status: type,
             });
-
-        console.error(e);
       });
 };

@@ -1,12 +1,13 @@
 import { Box, Flex, Link } from "@chakra-ui/react";
 import { useDynamicModalContext } from "@umami/components";
-import { useBuyTezUrl, useCurrentAccount } from "@umami/state";
+import { useAddPeer, useBuyTezUrl, useCurrentAccount } from "@umami/state";
 
 import { SendTezButton } from "./SendTezButton";
-import { ArrowDownLeftIcon, WalletIcon } from "../../assets/icons";
+import { ArrowDownLeftIcon, QRCodeIcon, WalletIcon } from "../../assets/icons";
 import { AccountInfoModal } from "../AccountSelectorModal";
 import { IconButtonWithText } from "../IconButtonWithText";
 import { useIsAccountVerified } from "../Onboarding/VerificationFlow";
+import { useOnWalletConnect } from "../WalletConnect";
 
 export const AccountButtons = () => {
   const { openWith } = useDynamicModalContext();
@@ -14,6 +15,8 @@ export const AccountButtons = () => {
   const address = currentAccount.address.pkh;
   const buyTezUrl = useBuyTezUrl(address);
   const isVerified = useIsAccountVerified();
+  const onBeaconConnect = useAddPeer();
+  const onWalletConnect = useOnWalletConnect();
 
   return (
     <Box data-testid="account-buttons" paddingX="12px">
@@ -33,6 +36,19 @@ export const AccountButtons = () => {
           variant="iconButtonSolid"
         />
         <Flex gap="24px">
+          <IconButtonWithText
+            icon={QRCodeIcon}
+            isDisabled={!isVerified}
+            label="Connect"
+            onClick={() =>
+              navigator.clipboard
+                .readText()
+                .then(payload =>
+                  payload.startsWith("wc:") ? onWalletConnect(payload) : onBeaconConnect(payload)
+                )
+            }
+            variant="iconButtonSolid"
+          />
           <IconButtonWithText
             icon={ArrowDownLeftIcon}
             isDisabled={!isVerified}
