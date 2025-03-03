@@ -1,6 +1,7 @@
 import { OpKind } from "@taquito/rpc";
 import { type ParamsWithKind, type WalletParamsWithKind } from "@taquito/taquito";
 import { isValidMichelson } from "@umami/tezos";
+import { CustomError } from "@umami/utils";
 import { shuffle, zipWith } from "lodash";
 
 import { type AccountOperations, type EstimatedAccountOperations } from "./AccountOperations";
@@ -137,7 +138,7 @@ export const withTimeout = <T>(fn: () => Promise<T>, timeout: number, errorMessa
     // because we're going to throw anyway which stops the execution
     new Promise<T>((_, reject) =>
       setTimeout(() => {
-        reject(new Error(errorMessage || "The operation has timed out"));
+        reject(new CustomError(errorMessage || "The operation has timed out"));
       }, timeout)
     ),
   ]);
