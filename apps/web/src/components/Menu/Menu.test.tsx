@@ -46,7 +46,6 @@ jest.mock("@umami/state", () => ({
 
 let store: UmamiStore;
 const account = mockImplicitAccount(0);
-const password = "Qwerty123123!23vcxz";
 
 beforeEach(() => {
   store = makeStore();
