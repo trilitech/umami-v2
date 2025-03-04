@@ -13,6 +13,7 @@ import {
   type TextProps,
   useBreakpointValue,
 } from "@chakra-ui/react";
+import Hotjar from "@hotjar/browser";
 import { useDynamicModalContext } from "@umami/components";
 
 import { LogoLightIcon, TezosLogoIcon } from "../../assets/icons";
@@ -23,6 +24,8 @@ export const Welcome = () => {
   const color = useColor();
   const isMobile = useBreakpointValue({ base: true, md: false });
   const { isOpen: isOnboarding } = useDynamicModalContext();
+
+  Hotjar.stateChange("welcome");
 
   return (
     <Grid

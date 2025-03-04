@@ -1,5 +1,5 @@
 import { FormControl, FormLabel, ModalBody, ModalContent, ModalFooter } from "@chakra-ui/react";
-import hj from "@hotjar/browser";
+import Hotjar from "@hotjar/browser";
 import { type Undelegation } from "@umami/core";
 import { type RawPkh, parsePkh } from "@umami/tezos";
 import { FormProvider, useForm } from "react-hook-form";
@@ -47,7 +47,7 @@ export const FormPage = (props: FormPagePropsWithSender<FormValues>) => {
 
   const { handleSubmit } = form;
 
-  hj.stateChange("send_flow/undelegation_form_page");
+  Hotjar.stateChange("send_flow/undelegation_form_page");
 
   return (
     <FormProvider {...form}>

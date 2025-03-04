@@ -1,4 +1,5 @@
 import { Flex } from "@chakra-ui/react";
+import Hotjar from "@hotjar/browser";
 import {
   useCurrentAccount,
   useGetAccountBalanceDetails,
@@ -20,6 +21,8 @@ export const Earn = () => {
   const isBalanceEqualToSpendable = BigNumber(totalBalance).isEqualTo(spendableBalance);
 
   const stakeTezosUrl = "https://stake.tezos.com/";
+
+  Hotjar.stateChange("earn");
 
   const CtaMessage = ({
     cta,

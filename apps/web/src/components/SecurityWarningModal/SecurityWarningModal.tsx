@@ -15,6 +15,7 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
+import Hotjar from "@hotjar/browser";
 import { useDynamicModalContext } from "@umami/components";
 import { useState } from "react";
 
@@ -69,6 +70,8 @@ export const SecurityWarningModal = () => {
   const handleInform = () => {
     onClose();
   };
+
+  Hotjar.stateChange("onboarding/security_warning");
 
   return (
     <ModalContent>

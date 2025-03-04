@@ -1,5 +1,5 @@
 import { Box, Button, Divider, Flex, Heading, Link, Text, VStack } from "@chakra-ui/react";
-import hj from "@hotjar/browser";
+import Hotjar from "@hotjar/browser";
 import { errorsActions, useAppDispatch, useAppSelector } from "@umami/state";
 
 import { useColor } from "../../../styles/useColor";
@@ -13,7 +13,7 @@ export const ErrorLogsMenu = () => {
 
   const clearErrors = () => dispatch(errorsActions.reset());
 
-  hj.stateChange("menu/errorLogs");
+  Hotjar.stateChange("menu/errorLogs");
 
   return (
     <DrawerContentWrapper

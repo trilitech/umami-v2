@@ -1,4 +1,5 @@
 import { Button, Card, CardBody, Flex, Heading, Image, Square, Text } from "@chakra-ui/react";
+import Hotjar from "@hotjar/browser";
 import { useDynamicModalContext } from "@umami/components";
 import { type NFTBalance, artifactUri, mimeType, tokenName } from "@umami/core";
 import { getIPFSurl } from "@umami/tezos";
@@ -19,6 +20,8 @@ export const NFTDrawerCard = ({ nft }: { nft: NFTBalance }) => {
   const fallbackUrl = getIPFSurl(nft.displayUri);
   const isVideo = mimeType(nft)?.startsWith("video/");
   const name = tokenName(nft);
+
+  Hotjar.stateChange("nft/drawer_card");
 
   return (
     <Flex flexDirection="column">

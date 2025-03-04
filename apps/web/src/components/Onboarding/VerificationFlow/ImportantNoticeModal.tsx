@@ -11,6 +11,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
+import Hotjar from "@hotjar/browser";
 import { useDynamicModalContext } from "@umami/components";
 
 import { RecordSeedphraseModal } from "./RecordSeedphraseModal";
@@ -51,6 +52,8 @@ type ImportantNoticeModalProps = {
 export const ImportantNoticeModal = ({ mnemonic }: ImportantNoticeModalProps) => {
   const color = useColor();
   const { openWith } = useDynamicModalContext();
+
+  Hotjar.stateChange("onboarding/important_notice");
 
   return (
     <ModalContent>

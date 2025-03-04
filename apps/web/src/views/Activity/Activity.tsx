@@ -1,4 +1,5 @@
 import { Box, Center, Divider, Flex, Image, Spinner } from "@chakra-ui/react";
+import Hotjar from "@hotjar/browser";
 import { type Account } from "@umami/core";
 import { useGetOperations } from "@umami/data-polling";
 import { useBuyTezUrl, useCurrentAccount } from "@umami/state";
@@ -24,6 +25,8 @@ export const Activity = () => {
   const buyTezUrl = useBuyTezUrl(currentAccount?.address.pkh);
 
   const isEmpty = operations.length === 0 && !isLoading;
+
+  Hotjar.stateChange("activity");
 
   return (
     <>

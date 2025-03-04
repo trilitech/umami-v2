@@ -9,6 +9,7 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
+import Hotjar from "@hotjar/browser";
 import { useDynamicModalContext } from "@umami/components";
 import { useBuyTezUrl, useCurrentAccount } from "@umami/state";
 
@@ -22,6 +23,8 @@ export const InsufficientFunds = () => {
   const buyTezUrl = useBuyTezUrl(currentAccount!.address.pkh);
 
   const { onClose } = useDynamicModalContext();
+
+  Hotjar.stateChange("local_request/insufficient_funds");
 
   return (
     <ModalContent>
