@@ -1,6 +1,11 @@
 import { Button, Center, Flex, type FlexProps, Heading, Icon, Text } from "@chakra-ui/react";
 import { type ImplicitAccount, type SocialAccount } from "@umami/core";
-import { type AccountsState, clearSessionKey, useLoginToWallet } from "@umami/state";
+import {
+  type AccountsState,
+  clearSessionKey,
+  useAsyncActionHandler,
+  useLoginToWallet,
+} from "@umami/state";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
@@ -30,6 +35,7 @@ export const SessionLogin = () => {
     ? (JSON.parse(accounts.defaultAccount as unknown as string) as ImplicitAccount)
     : null;
   const { isLoading, handleLogin } = useLoginToWallet(defaultAccount, setupPersistence);
+  const { handleAsyncAction } = useAsyncActionHandler();
 
   const form = useForm({
     defaultValues: {
@@ -37,6 +43,15 @@ export const SessionLogin = () => {
     },
     mode: "onBlur",
   });
+
+  const handleSubmit = () =>
+    handleAsyncAction(async () => {
+      if (defaultAccount?.type === "social") {
+        await handleLogin<SocialAccount>()();
+      } else {
+        await handleLogin()(accounts, { password: form.getValues().password });
+      }
+    });
 
   return (
     <FormProvider {...form}>
@@ -69,7 +84,7 @@ export const SessionLogin = () => {
             <LoginButton
               idp={defaultAccount.idp}
               isLoading={isLoading}
-              onSubmit={handleLogin<SocialAccount>()}
+              onSubmit={handleSubmit}
               prefix="Sign in with"
             />
           ) : (
@@ -78,9 +93,7 @@ export const SessionLogin = () => {
               <Button
                 width="full"
                 isLoading={isLoading}
-                onClick={form.handleSubmit(() =>
-                  handleLogin()(accounts, { password: form.getValues().password })
-                )}
+                onClick={handleSubmit}
                 size="lg"
                 variant="primary"
               >

@@ -18,8 +18,6 @@ export const useRestoreBackup = () => (backup: Backup) => {
 };
 
 export const restoreBackupFile = (backup: Backup) => {
-  localStorage.clear();
-
   for (const key in backup) {
     localStorage.setItem(key, backup[key as keyof Backup]);
   }
