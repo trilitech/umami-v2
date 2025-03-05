@@ -13,6 +13,7 @@ import { type ImplicitAccount, type SocialAccount } from "@umami/core";
 import {
   type AccountsState,
   type Backup,
+  clearStorage,
   useAsyncActionHandler,
   useLoginToWallet,
   useRestoreBackup,
@@ -34,7 +35,7 @@ export const ImportBackupTab = () => {
 
   const restoreBackup = useRestoreBackup();
   const { openWith, onClose } = useDynamicModalContext();
-  const { handleAsyncAction } = useAsyncActionHandler();
+  const { handleAsyncActionUnsafe } = useAsyncActionHandler();
 
   const form = useMultiForm<{
     file?: FileList;
@@ -77,7 +78,7 @@ export const ImportBackupTab = () => {
   }, [fileData, defaultAccount]);
 
   const onSubmit = (password?: string) =>
-    handleAsyncAction(async () => {
+    handleAsyncActionUnsafe(async () => {
       if (!fileData) {
         return;
       }
@@ -95,7 +96,7 @@ export const ImportBackupTab = () => {
 
       onClose();
       trackSuccessfulConnection("onboarding", "restore_from_backup");
-    });
+    }).catch(clearStorage);
 
   return (
     <FormProvider {...form}>

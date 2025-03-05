@@ -39,10 +39,11 @@ const useLoginWithPassword = (
   defaultAccount: ImplicitAccount | null,
   setupPersistence: (key: string) => void
 ) => {
-  const { isLoading, handleAsyncAction } = useAsyncActionHandler();
+  const { isLoading, handleAsyncActionUnsafe } = useAsyncActionHandler();
 
+  // login function throws an error so the caller needs to handle it or wrap it in handleAsyncAction
   const login = (accounts: AccountsState | null, data: { password: string }) =>
-    handleAsyncAction(async () => {
+    handleAsyncActionUnsafe(async () => {
       if (!defaultAccount || !accounts) {
         clearSessionKey();
         return;
@@ -107,4 +108,10 @@ export const useLoginToWallet = (
     isLoading: boolean;
     handleLogin<T extends ImplicitAccount>(): LoginFn<T>;
   };
+};
+
+export const clearStorage = () => {
+  localStorage.removeItem("persist:accounts");
+  localStorage.removeItem("persist:root");
+  localStorage.removeItem("user_requirements_nonce");
 };

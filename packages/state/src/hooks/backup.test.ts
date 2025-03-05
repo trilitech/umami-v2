@@ -48,7 +48,6 @@ describe("<RestoreBackupFile />", () => {
 
       act(() => restoreBackup(backup));
 
-      expect(localStorage.clear).toHaveBeenCalledTimes(1);
       expect(localStorage.setItem).toHaveBeenCalledWith(
         "persist:accounts",
         backup["persist:accounts"]
