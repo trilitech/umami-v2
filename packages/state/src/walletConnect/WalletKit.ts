@@ -5,7 +5,7 @@ export let walletKit: IWalletKit;
 
 export const createWalletKit = async () => {
   const core = new Core({
-    projectId: "252533b433e70f85a0e5c8b53b97faea",
+    projectId: "27cab1157f006c2d45f5c10fc2c7c4d4",
   });
 
   walletKit = await WalletKit.init({
