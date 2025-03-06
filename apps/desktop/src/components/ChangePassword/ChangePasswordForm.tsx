@@ -9,6 +9,7 @@ import {
   ModalHeader,
   useToast,
 } from "@chakra-ui/react";
+import hj from "@hotjar/browser";
 import { useDynamicModalContext } from "@umami/components";
 import { changeMnemonicPassword, useAppDispatch, useAsyncActionHandler } from "@umami/state";
 import { FormProvider, useForm } from "react-hook-form";
@@ -34,6 +35,8 @@ export const ChangePasswordForm = () => {
     formState: { isValid, errors },
     getValues,
   } = form;
+
+  hj.stateChange("settings/change_password");
 
   const onSubmit = async ({
     currentPassword,

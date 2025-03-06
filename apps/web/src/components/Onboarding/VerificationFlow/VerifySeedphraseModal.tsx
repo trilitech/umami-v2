@@ -12,6 +12,7 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
+import Hotjar from "@hotjar/browser";
 import { useDynamicModalContext } from "@umami/components";
 import { selectRandomElements } from "@umami/core";
 import { accountsActions, useAppDispatch, useCurrentAccount } from "@umami/state";
@@ -49,6 +50,8 @@ export const VerifySeedphraseModal = ({ seedPhrase }: VerifySeedphraseModalProps
 
   const seedphraseArray = seedPhrase.split(" ");
   const [randomElements] = useState(selectRandomElements(seedphraseArray, 3));
+
+  Hotjar.stateChange("onboarding/verify_seedphrase");
 
   const onSubmit = () => {
     dispatch(

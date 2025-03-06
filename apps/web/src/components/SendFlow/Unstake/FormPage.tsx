@@ -13,7 +13,7 @@ import {
   ModalFooter,
   ModalHeader,
 } from "@chakra-ui/react";
-import hj from "@hotjar/browser";
+import Hotjar from "@hotjar/browser";
 import { type Unstake } from "@umami/core";
 import { type RawPkh, TEZ, TEZ_DECIMALS, parsePkh, tezToMutez } from "@umami/tezos";
 import { BigNumber } from "bignumber.js";
@@ -68,7 +68,7 @@ export const FormPage = (props: FormPageProps<FormValues> & { stakedBalance: num
     handleSubmit,
   } = form;
 
-  hj.stateChange("send_flow/unstake_form_page");
+  Hotjar.stateChange("send_flow/unstake_form_page");
 
   return (
     <FormProvider {...form}>

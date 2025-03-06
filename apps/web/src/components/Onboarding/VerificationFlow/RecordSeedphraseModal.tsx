@@ -11,6 +11,7 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
+import Hotjar from "@hotjar/browser";
 import { useDynamicModalContext, useToggleMnemonic } from "@umami/components";
 
 import { VerifySeedphraseModal } from "./VerifySeedphraseModal";
@@ -31,6 +32,8 @@ export const RecordSeedphraseModal = ({ seedPhrase }: CopySeedphraseModalProps) 
   const words = seedPhrase.split(" ");
 
   const { isVisible, toggleMnemonic } = useToggleMnemonic();
+
+  Hotjar.stateChange("onboarding/record_seedphrase");
 
   return (
     <ModalContent>

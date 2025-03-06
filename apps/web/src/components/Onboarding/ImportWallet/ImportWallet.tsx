@@ -9,7 +9,7 @@ import {
   TabPanels,
   Tabs,
 } from "@chakra-ui/react";
-import hj from "@hotjar/browser";
+import Hotjar from "@hotjar/browser";
 import { useImplicitAccounts } from "@umami/state";
 import { useSearchParams } from "react-router-dom";
 
@@ -30,7 +30,7 @@ export const ImportWallet = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const hasOnboarded = useImplicitAccounts().length > 0;
 
-  hj.stateChange("importWallet");
+  Hotjar.stateChange("onboarding/importWallet");
 
   const handleTabChange = (index: number) => {
     setSearchParams(prev => {

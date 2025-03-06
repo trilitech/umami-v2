@@ -12,6 +12,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
+import Hotjar from "@hotjar/browser";
 import { useDynamicModalContext } from "@umami/components";
 import {
   type Account,
@@ -53,6 +54,8 @@ export const AccountSelectorModal = () => {
 
   const lastItemRef = useRef<HTMLDivElement>(null);
   const [showShadow, setShowShadow] = useState(false);
+
+  Hotjar.stateChange("account/account_selector");
 
   useEffect(() => {
     const observer = new IntersectionObserver(

@@ -10,7 +10,7 @@ import {
   VStack,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import hj from "@hotjar/browser";
+import Hotjar from "@hotjar/browser";
 import { useDynamicDrawerContext, useDynamicModalContext } from "@umami/components";
 import { type Contact } from "@umami/core";
 import { useSortedContacts } from "@umami/state";
@@ -98,7 +98,7 @@ export const AddressBookMenu = () => {
   const { openWith } = useDynamicDrawerContext();
   const contacts = useSortedContacts();
 
-  hj.stateChange("menu/address_book_menu");
+  Hotjar.stateChange("menu/address_book_menu");
 
   return (
     <DrawerContentWrapper

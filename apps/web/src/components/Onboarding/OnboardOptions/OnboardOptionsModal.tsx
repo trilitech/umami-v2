@@ -1,12 +1,13 @@
 import { ModalBody, ModalContent, ModalHeader } from "@chakra-ui/react";
-import hj from "@hotjar/browser";
+import Hotjar from "@hotjar/browser";
 
 import { OnboardOptions } from "./OnboardOptions";
 import { ModalBackButton } from "../../BackButton";
 import { ModalCloseButton } from "../../CloseButton";
 
 export const OnboardOptionsModal = () => {
-  hj.stateChange("menu/onboardOptionsModal");
+
+  Hotjar.stateChange("account/onboardOptionsModal");
 
   return (
     <ModalContent>

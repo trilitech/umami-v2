@@ -10,6 +10,7 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
+import Hotjar from "@hotjar/browser";
 import { useMultiForm } from "@umami/components";
 import { useHandleSession, useIsPasswordSet } from "@umami/state";
 import { defaultDerivationPathTemplate } from "@umami/tezos";
@@ -67,6 +68,8 @@ export const SetupPassword = ({ mode }: SetupPasswordProps) => {
   const { onSubmit, isLoading } = useGetSetupPasswordSubmitHandler(mode);
   const isPasswordSet = useIsPasswordSet();
   const { setupSessionTimeout } = useHandleSession();
+
+  Hotjar.stateChange("setup_password");
 
   const form = useMultiForm<FormFields>({
     mode: "all",

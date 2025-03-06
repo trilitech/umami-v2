@@ -13,6 +13,7 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
+import Hotjar from "@hotjar/browser";
 import { useMultiForm } from "@umami/components";
 import { defaultDerivationPathTemplate } from "@umami/tezos";
 import { FormProvider } from "react-hook-form";
@@ -39,6 +40,8 @@ export const NameAccountModal = ({
   buttonLabel = "Continue",
 }: NameAccountModalProps) => {
   const color = useColor();
+
+  Hotjar.stateChange("onboarding/name_account");
 
   const form = useMultiForm({
     mode: "all",

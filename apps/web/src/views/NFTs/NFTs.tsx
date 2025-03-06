@@ -1,4 +1,5 @@
 import { Box, Flex, Heading, SimpleGrid } from "@chakra-ui/react";
+import Hotjar from "@hotjar/browser";
 import { useDynamicDrawerContext } from "@umami/components";
 import { fullId } from "@umami/core";
 import { BigNumber } from "bignumber.js";
@@ -23,6 +24,8 @@ export const NFTs = () => {
     base: "repeat(auto-fit, minmax(min(100%/2, max(157px, 100%/5)), 1fr))",
     md: "repeat(auto-fit, minmax(min(100%/2, max(236px, 100%/5)), 1fr))",
   };
+
+  Hotjar.stateChange("nfts");
 
   return (
     <>

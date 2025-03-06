@@ -13,7 +13,7 @@ import {
   ModalFooter,
   ModalHeader,
 } from "@chakra-ui/react";
-import hj from "@hotjar/browser";
+import Hotjar from "@hotjar/browser";
 import { type Stake } from "@umami/core";
 import { type RawPkh, TEZ, TEZ_DECIMALS, parsePkh, tezToMutez } from "@umami/tezos";
 import { FormProvider, useForm } from "react-hook-form";
@@ -65,7 +65,7 @@ export const FormPage = (props: FormPageProps<FormValues>) => {
     handleSubmit,
   } = form;
 
-  hj.stateChange("send_flow/stake_form_page");
+  Hotjar.stateChange("send_flow/stake_form_page");
 
   return (
     <FormProvider {...form}>

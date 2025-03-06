@@ -1,5 +1,5 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
-import hj from "@hotjar/browser";
+import Hotjar from "@hotjar/browser";
 import { useAddPeer } from "@umami/state";
 
 import { useOnWalletConnect } from "../../WalletConnect";
@@ -11,7 +11,7 @@ export const AppsMenu = () => {
   const onBeaconConnect = useAddPeer();
   const onWalletConnect = useOnWalletConnect();
 
-  hj.stateChange("menu/apps");
+  Hotjar.stateChange("menu/apps");
 
   return (
     <DrawerContentWrapper

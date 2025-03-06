@@ -1,4 +1,5 @@
 import { Flex, VStack } from "@chakra-ui/react";
+import Hotjar from "@hotjar/browser";
 import { fullId } from "@umami/core";
 import { useBuyTezUrl, useCurrentAccount, useGetAccountAllTokens } from "@umami/state";
 
@@ -14,6 +15,8 @@ export const Tokens = () => {
   const availableTokens = useGetAccountAllTokens()(currentAccount.address.pkh);
 
   const buyTezUrl = useBuyTezUrl(currentAccount.address.pkh);
+
+  Hotjar.stateChange("/tokens");
 
   return (
     <>

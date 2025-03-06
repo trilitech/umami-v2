@@ -1,4 +1,4 @@
-import hj from "@hotjar/browser";
+import Hotjar from "@hotjar/browser";
 import { useDynamicDrawerContext } from "@umami/components";
 
 import { AlertCircleIcon, LockIcon, RadioIcon } from "../../../assets/icons";
@@ -12,7 +12,7 @@ export const AdvancedMenu = () => {
   const { openWith } = useDynamicDrawerContext();
   const isVerified = useIsAccountVerified();
 
-  hj.stateChange("menu/advanced");
+  Hotjar.stateChange("menu/advanced");
 
   const menuItemsForVerifiedUser = [
     {

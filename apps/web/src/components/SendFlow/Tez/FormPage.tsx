@@ -9,7 +9,7 @@ import {
   ModalContent,
   ModalFooter,
 } from "@chakra-ui/react";
-import hj from "@hotjar/browser";
+import Hotjar from "@hotjar/browser";
 import { type TezTransfer } from "@umami/core";
 import { useGetAccountBalanceDetails } from "@umami/state";
 import { type RawPkh, TEZ, TEZ_DECIMALS, parsePkh, tezToMutez } from "@umami/tezos";
@@ -49,7 +49,7 @@ export const FormPage = ({ ...props }: FormPageProps<FormValues>) => {
     toOperation,
   });
 
-  hj.stateChange("send_flow/tez_form_page");
+  Hotjar.stateChange("local_request/tez_form_page");
 
   const addToBatch = useAddToBatchFormAction(toOperation);
 

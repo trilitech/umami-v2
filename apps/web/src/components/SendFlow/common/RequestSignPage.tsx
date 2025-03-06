@@ -12,7 +12,7 @@ import {
   ModalFooter,
   Text,
 } from "@chakra-ui/react";
-import hj from "@hotjar/browser";
+import Hotjar from "@hotjar/browser";
 import {
   type ContractCall,
   type ContractOrigination,
@@ -172,7 +172,7 @@ export const SingleSignPage = (signProps: SdkSignPageProps) => {
     );
   };
 
-  hj.stateChange(`single_sign_page/${operationType}`);
+  Hotjar.stateChange(`single_sign_page/${operationType}`);
 
   const formFields = {
     mutezAmount: TezTile({ mutezAmount: fields["mutezAmount"] }),
