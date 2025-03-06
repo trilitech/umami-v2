@@ -18,11 +18,14 @@ import { useDynamicModalContext } from "@umami/components";
 import { LogoLightIcon, TezosLogoIcon } from "../../assets/icons";
 import { OnboardOptions } from "../../components/Onboarding/OnboardOptions";
 import { useColor } from "../../styles/useColor";
+import { Passkey } from "../../components/Passkey/Passkey";
 
 export const Welcome = () => {
   const color = useColor();
   const isMobile = useBreakpointValue({ base: true, md: false });
   const { isOpen: isOnboarding } = useDynamicModalContext();
+  const isPasskey = true;
+  const OnBoardComponent = isPasskey ? Passkey : OnboardOptions;
 
   return (
     <Grid
@@ -78,7 +81,7 @@ export const Welcome = () => {
           borderBottomRadius={{ base: 0, md: "30px" }}
           backgroundColor={color("white")}
         >
-          <OnboardOptions>
+          <OnBoardComponent>
             <Text color={color("700")} size="sm">
               By proceeding, you agree to Umami's{" "}
               <Link
@@ -110,7 +113,7 @@ export const Welcome = () => {
                 <Logo />
               </>
             )}
-          </OnboardOptions>
+          </OnBoardComponent>
         </Flex>
       </Flex>
       {!isMobile && (
