@@ -79,7 +79,12 @@ export const VerifySeedphraseModal = ({ seedPhrase }: VerifySeedphraseModalProps
       <FormProvider {...form}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <ModalBody>
-            <Flex gap={{ base: "6px", md: "12px" }} userSelect="none">
+            <Flex
+              flexDirection={{ base: "column", md: "row" }}
+              gap={{ base: "6px", md: "12px" }}
+              userSelect="none"
+              data-testid="mnemonic-words"
+            >
               {randomElements.map(({ index, value }) => {
                 const inputName = `word${index + 1}`;
                 const error = errors[inputName as keyof typeof errors];
