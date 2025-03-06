@@ -7,7 +7,6 @@ import {
   FormLabel,
   Input,
   VStack,
-  useToast,
 } from "@chakra-ui/react";
 import { type TezosToolkit } from "@taquito/taquito";
 import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
@@ -21,6 +20,7 @@ import {
 import * as Auth from "@umami/social-auth";
 import { useAsyncActionHandler, useGetSecretKey, useSelectedNetwork } from "@umami/state";
 import { type Network, makeToolkit } from "@umami/tezos";
+import { useCustomToast } from "@umami/utils";
 import { FormProvider, useForm, useFormContext } from "react-hook-form";
 
 export const SignButton = ({
@@ -55,7 +55,7 @@ export const SignButton = ({
   const isButtonDisabled = isDisabled || !isPasswordValid || !isOuterFormValid;
 
   const getSecretKey = useGetSecretKey();
-  const toast = useToast();
+  const toast = useCustomToast();
   const { isLoading: internalIsLoading, handleAsyncAction } = useAsyncActionHandler();
   const isLoading = internalIsLoading || externalIsLoading;
 

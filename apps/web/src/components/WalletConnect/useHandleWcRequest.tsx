@@ -1,5 +1,4 @@
 import { type SigningType } from "@airgap/beacon-wallet";
-import { useToast } from "@chakra-ui/react";
 import { useDynamicModalContext } from "@umami/components";
 import {
   type ImplicitAccount,
@@ -16,7 +15,7 @@ import {
   useValidateWcRequest,
   walletKit,
 } from "@umami/state";
-import { WalletConnectError, WcErrorCode } from "@umami/utils";
+import { WalletConnectError, WcErrorCode, useCustomToast } from "@umami/utils";
 import { formatJsonRpcError, formatJsonRpcResult } from "@walletconnect/jsonrpc-utils";
 import { type SessionTypes, type SignClientTypes, type Verify } from "@walletconnect/types";
 
@@ -40,7 +39,7 @@ export const useHandleWcRequest = () => {
   const getAccount = useGetOwnedAccountSafe();
   const getImplicitAccount = useGetImplicitAccount();
   const findNetwork = useFindNetwork();
-  const toast = useToast();
+  const toast = useCustomToast();
 
   return async (
     event: {

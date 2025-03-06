@@ -1,4 +1,3 @@
-import { useToast } from "@chakra-ui/react";
 import { useDynamicModalContext } from "@umami/components";
 import { type EstimatedAccountOperations, type Operation, estimate } from "@umami/core";
 import {
@@ -7,6 +6,7 @@ import {
   useAsyncActionHandler,
   useSelectedNetwork,
 } from "@umami/state";
+import { useCustomToast } from "@umami/utils";
 import { type FunctionComponent } from "react";
 
 import {
@@ -85,7 +85,7 @@ export const useAddToBatchFormAction = <FormValues extends BaseFormValues>(
   const network = useSelectedNetwork();
   const makeFormOperations = useMakeFormOperations(toOperation);
   const dispatch = useAppDispatch();
-  const toast = useToast();
+  const toast = useCustomToast();
 
   const onAddToBatchAction = async (formValues: FormValues) => {
     const operations = makeFormOperations(formValues);

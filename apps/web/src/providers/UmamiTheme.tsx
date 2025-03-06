@@ -4,7 +4,7 @@ import { ToastProvider } from "@umami/utils";
 import { type PropsWithChildren } from "react";
 import "focus-visible/dist/focus-visible";
 
-import { CustomToast } from "../components/CustomToast/CustomToast";
+import { CustomToast } from "../components/CustomToast";
 import theme from "../styles/theme";
 
 const GlobalStyles = css`

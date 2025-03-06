@@ -10,11 +10,11 @@ import {
   ModalFooter,
   ModalHeader,
   VStack,
-  useToast,
 } from "@chakra-ui/react";
 import { useDynamicModalContext } from "@umami/components";
 import { type Account } from "@umami/core";
 import { renameAccount, useAppDispatch, useValidateName } from "@umami/state";
+import { useCustomToast } from "@umami/utils";
 import { useForm } from "react-hook-form";
 
 import { EditIcon } from "../../assets/icons";
@@ -29,7 +29,7 @@ type RenameAccountPageProps = {
 export const RenameAccountPage = ({ account }: RenameAccountPageProps) => {
   const dispatch = useAppDispatch();
   const color = useColor();
-  const toast = useToast();
+  const toast = useCustomToast();
   const { goBack } = useDynamicModalContext();
 
   const {

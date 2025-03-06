@@ -1,4 +1,4 @@
-import { Button, Divider, VStack, useToast } from "@chakra-ui/react";
+import { Button, Divider, VStack } from "@chakra-ui/react";
 import hj from "@hotjar/browser";
 import {
   accountsActions,
@@ -7,6 +7,7 @@ import {
   useAppSelector,
   useAsyncActionHandler,
 } from "@umami/state";
+import { useCustomToast } from "@umami/utils";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { PasswordInput } from "../../PasswordInput";
@@ -20,7 +21,7 @@ type ChangePasswordMenuValues = {
 
 export const ChangePasswordMenu = () => {
   const form = useForm<ChangePasswordMenuValues>({ mode: "all" });
-  const toast = useToast();
+  const toast = useCustomToast();
   const dispatch = useAppDispatch();
   const accounts = useAppSelector(state => state.accounts);
   const { handleAsyncAction, isLoading } = useAsyncActionHandler();
