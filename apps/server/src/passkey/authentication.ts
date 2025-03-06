@@ -1,6 +1,7 @@
 import { rpID, origin } from "./config";
 import { db } from "./db";
 import { Passkey } from "./types";
+import { uint8ArrayToBase64 } from "./utils";
 
 import { AuthenticationResponseJSON, generateAuthenticationOptions, verifyAuthenticationResponse} from '@simplewebauthn/server';
 
@@ -33,45 +34,49 @@ return options;
 
 export const verifyAuthentication = async (userId: number, authenticationResponse: AuthenticationResponseJSON) => {  
 
-const user = await db.getUserById(userId);
-if (!user) {
-    throw new Error(`Could not find user ${userId}`);
+  const user = await db.getUserById(userId);
+  if (!user) {
+      throw new Error(`Could not find user ${userId}`);
+    }
+  // (Pseudocode} Retrieve a passkey from the DB that
+  // should match the `id` in the returned credential
+  //TODO: credential does it comes from the browser request??
+  const passkey = await db.getPasskeyById(authenticationResponse.id);
+  if (!passkey) {
+      throw new Error(`Could not find passkey ${authenticationResponse.id} for user ${user.id}`);
+    }
+
+  // (Pseudocode) Get `options.challenge` that was saved above
+  const currentOptions: PublicKeyCredentialRequestOptionsJSON | undefined =
+    await db.getCurrentAuthenticationOptions(user);
+
+  if (!currentOptions) {
+      throw new Error('No challenge found for user');
+    }
+
+
+  let verification;
+  try {
+    verification = await verifyAuthenticationResponse({
+      response: authenticationResponse,
+      expectedChallenge: currentOptions.challenge,
+      expectedOrigin: origin,
+      expectedRPID: rpID,
+      credential: {
+        id: passkey.id,
+        publicKey: passkey.publicKey,
+        counter: passkey.counter,
+        transports: passkey.transports,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+  throw new Error('Verification failed');
   }
-// (Pseudocode} Retrieve a passkey from the DB that
-// should match the `id` in the returned credential
-//TODO: credential does it comes from the browser request??
-const passkey = await db.getPasskeyById(authenticationResponse.id);
-if (!passkey) {
-    throw new Error(`Could not find passkey ${authenticationResponse.id} for user ${user.id}`);
+
+  let publicKey;
+  if(verification.verified) {
+    publicKey = passkey.publicKey;
   }
-
-// (Pseudocode) Get `options.challenge` that was saved above
-const currentOptions: PublicKeyCredentialRequestOptionsJSON | undefined =
-  await db.getCurrentAuthenticationOptions(user);
-
-if (!currentOptions) {
-    throw new Error('No challenge found for user');
-  }
-
-
-let verification;
-try {
-  verification = await verifyAuthenticationResponse({
-    response: authenticationResponse,
-    expectedChallenge: currentOptions.challenge,
-    expectedOrigin: origin,
-    expectedRPID: rpID,
-    credential: {
-      id: passkey.id,
-      publicKey: passkey.publicKey,
-      counter: passkey.counter,
-      transports: passkey.transports,
-    },
-  });
-} catch (error) {
-  console.error(error);
- throw new Error('Verification failed');
-}
-
-return verification
+  return {verified: verification.verified, publicKey: uint8ArrayToBase64(publicKey)};
 }

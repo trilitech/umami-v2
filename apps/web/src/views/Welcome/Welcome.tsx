@@ -18,21 +18,19 @@ import { useDynamicModalContext } from "@umami/components";
 import { LogoLightIcon, TezosLogoIcon } from "../../assets/icons";
 import { OnboardOptions } from "../../components/Onboarding/OnboardOptions";
 import { useColor } from "../../styles/useColor";
-import { Passkey } from "../../components/Passkey/Passkey";
 
 export const Welcome = () => {
   const color = useColor();
   const isMobile = useBreakpointValue({ base: true, md: false });
   const { isOpen: isOnboarding } = useDynamicModalContext();
   const isPasskey = true;
-  const OnBoardComponent = isPasskey ? Passkey : OnboardOptions;
 
   return (
     <Grid
       className="welcome-view"
       justifyItems="center"
       gridGap={{ base: "36px", md: "60px" }}
-      gridTemplateRows={{ base: "130px auto", md: "auto 444px auto" }}
+      gridTemplateRows={{ base: "130px auto", md: "auto 530px auto" }}
       gridTemplateAreas={{
         base: "'header' 'main'",
         md: `
@@ -42,7 +40,7 @@ export const Welcome = () => {
     `,
       }}
       height="100vh"
-      padding={{ base: "24px 0 0 0", md: "24px 46px 46px 46px" }}
+      padding={{ base: "24px 0 0 0", md: "0px 46px 0px 46px" }}
       data-testid="welcome-view"
     >
       <Flex
@@ -81,7 +79,7 @@ export const Welcome = () => {
           borderBottomRadius={{ base: 0, md: "30px" }}
           backgroundColor={color("white")}
         >
-          <OnBoardComponent>
+          <OnboardOptions>
             <Text color={color("700")} size="sm">
               By proceeding, you agree to Umami's{" "}
               <Link
@@ -113,7 +111,7 @@ export const Welcome = () => {
                 <Logo />
               </>
             )}
-          </OnBoardComponent>
+          </OnboardOptions>
         </Flex>
       </Flex>
       {!isMobile && (

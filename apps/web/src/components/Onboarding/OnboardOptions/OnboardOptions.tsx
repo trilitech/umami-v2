@@ -14,6 +14,7 @@ import { NameAccountModal } from "../../NameAccountModal";
 import { ImportWallet } from "../ImportWallet";
 import { SetupPassword } from "../SetupPassword";
 import { useIsAccountVerified } from "../VerificationFlow";
+import { PasskeyModal } from "../ImportWallet/PassKeyModal";
 
 export const OnboardOptions = ({ children }: PropsWithChildren) => {
   const color = useColor();
@@ -44,6 +45,14 @@ export const OnboardOptions = ({ children }: PropsWithChildren) => {
     }
   };
 
+  const AlternativeDivider = () => <Center gap="4px" width="full">
+  <Divider width="full" />
+  <Text color={color("500")} size="lg">
+    or
+  </Text>
+  <Divider width="full" />
+</Center>;
+
   return (
     <Flex alignItems="center" flexDirection="column" width="full">
       <Heading color={color("900")} size="lg">
@@ -69,13 +78,24 @@ export const OnboardOptions = ({ children }: PropsWithChildren) => {
           </AccountTileWrapper>
         </Flex>
 
-        <Center gap="4px" width="full">
-          <Divider width="full" />
-          <Text color={color("500")} size="lg">
-            or
-          </Text>
-          <Divider width="full" />
-        </Center>
+        <AlternativeDivider />
+
+        <Flex flexDirection="column" gap="12px" width="full">
+          <Button
+            width="full"
+            onClick={() => {
+              return openWith(<PasskeyModal />, {
+                size: "xl",
+              });
+            }}
+            size="lg"
+            variant="secondary"
+          >
+            Use passkeys
+          </Button>
+        </Flex>
+
+        <AlternativeDivider />
 
         <Flex flexDirection="column" gap="12px" width="full">
           <Button

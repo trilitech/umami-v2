@@ -4,7 +4,7 @@ import cors from 'cors';
 import { RegistrationResponseJSON, verifyBody } from './passkey/types';
 import { getAuthenticationOptions, verifyAuthentication } from './passkey/authentication';
 import { AuthenticationResponseJSON } from '@simplewebauthn/server';
-
+import {db} from './passkey/db';
 const app = express();
 const router = express.Router()
 app.use('/api', router);
@@ -24,8 +24,8 @@ router.post('/generate-registration-options', async (req, res) => {
 
 router.post('/verify-registration', async (req, res) => {
   const response = req.body as verifyBody;
-  const verification = await verifyRegistration(response);
-  res.json({verified: verification.verified, PublicKey: verification.registrationInfo?.credential.publicKey});
+  const {verified, publicKey } = await verifyRegistration(response);
+    res.json({verified, publicKey});
 });
 
 router.post('/generate-authentication-options', async (req, res) => {
@@ -40,8 +40,8 @@ router.post('/generate-authentication-options', async (req, res) => {
 
 router.post('/verify-authentication', async (req, res) => {
   const response = req.body as AuthenticationResponseJSON;
-  const verification = await verifyAuthentication(123, response);
-  res.json({verified: verification.verified});
+  const {verified, publicKey} = await verifyAuthentication(123, response);
+  res.json({verified, publicKey});
 });
 
 app.listen(port, () => {

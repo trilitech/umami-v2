@@ -6,6 +6,7 @@ import {
 import { rpID, rpName, origin } from './config';
 import { Passkey, User, verifyBody } from './types';
 import { db } from './db';
+import { uint8ArrayToBase64 } from "./utils";
 
 
 export const getRegistrationOptions =  async (userName: string) => {
@@ -39,21 +40,21 @@ export const getRegistrationOptions =  async (userName: string) => {
       });
       await db.setCurrentRegistrationOptions(user, options);
       await db.storePasskey
-      console.log({users: await db.getUsers()});
     return {options, userId: user.id};
     
 }
 
-export const verifyRegistration = async ({userId, registrationResponse}: verifyBody) => {
-  console.log('registrationResponse',{registrationResponse});
+export const verifyRegistration = async ({userId, registrationResponse}: verifyBody) : Promise<{
+  verified: boolean,
+  publicKey: PublicKeyCredentialJSON | undefined
+}> => {
+  const publicKey = registrationResponse.response.publicKey as string;
     const user = await db.getUserById(userId);
     if(!user) {
         throw new Error('User not found');
     }
     const currentOptions: PublicKeyCredentialCreationOptionsJSON | undefined = await db.getCurrentRegistrationOptions(user);
 
-    const passkey = await db.getPasskeysForUser(user)
-    console.log('passkey', {passkey});
     if (!currentOptions) {
         throw new Error('No registration options found for user');
     }
@@ -74,13 +75,13 @@ export const verifyRegistration = async ({userId, registrationResponse}: verifyB
     }
 
     if(verification && verified) {
-      await createPasskey(user, verification, currentOptions);
+      const passkey = await createPasskey(user, verification, currentOptions, publicKey);
     }
-    return verification
+    return {verified: verification.verified, publicKey: verification.verified ? publicKey : undefined};
   }
 
 
-  const createPasskey = async (user: User, verification: VerifiedRegistrationResponse, currentOptions: PublicKeyCredentialCreationOptionsJSON) => {
+  const createPasskey = async (user: User, verification: VerifiedRegistrationResponse, currentOptions: PublicKeyCredentialCreationOptionsJSON, publicKey: string) => {
     const { registrationInfo } = verification;
 
     if(!registrationInfo) {
@@ -91,7 +92,7 @@ export const verifyRegistration = async ({userId, registrationResponse}: verifyB
       credentialDeviceType,
       credentialBackedUp,
     } = registrationInfo;
-    
+
     const newPasskey: Passkey = {
       // `user` here is from Step 2
       user,
@@ -109,9 +110,11 @@ export const verifyRegistration = async ({userId, registrationResponse}: verifyB
       deviceType: credentialDeviceType,
       // Whether the passkey has been backed up in some way
       backedUp: credentialBackedUp,
+      // realPublicKey: publicKey
     };
     
     // (Pseudocode) Save the authenticator info so that we can
     // get it by user ID later
     await db.storePasskey(newPasskey);
+    return newPasskey
   }
