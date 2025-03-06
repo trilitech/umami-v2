@@ -6,6 +6,8 @@ import {
   type Account,
   type AccountOperations,
   type EstimatedAccountOperations,
+  type FA12TokenBalance,
+  type FA2TokenBalance,
   type ImplicitAccount,
   type Operation,
   estimate,
@@ -44,6 +46,13 @@ export type FormPagePropsWithSender<T> = RequiredFields<FormPageProps<T>, "sende
 export type BaseFormValues = { sender: RawPkh };
 
 export type SignPageMode = "single" | "batch";
+
+export type LocalSignPageProps = {
+  goBack?: () => void;
+  operationType: "token" | "tez";
+  token?: FA12TokenBalance | FA2TokenBalance;
+  operations: EstimatedAccountOperations;
+};
 
 export type SignPageProps<T = undefined> = {
   goBack?: () => void;

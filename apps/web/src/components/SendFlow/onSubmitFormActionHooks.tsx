@@ -1,6 +1,12 @@
 import { useToast } from "@chakra-ui/react";
 import { useDynamicModalContext } from "@umami/components";
-import { type EstimatedAccountOperations, type Operation, estimate } from "@umami/core";
+import {
+  type EstimatedAccountOperations,
+  type FA12TokenBalance,
+  type FA2TokenBalance,
+  type Operation,
+  estimate,
+} from "@umami/core";
 import {
   estimateAndUpdateBatch,
   useAppDispatch,
@@ -9,12 +15,8 @@ import {
 } from "@umami/state";
 import { type FunctionComponent } from "react";
 
-import {
-  type BaseFormValues,
-  type FormPageProps,
-  type SignPageProps,
-  useMakeFormOperations,
-} from "./utils";
+import { LocalSignPage } from "./LocalSignPage";
+import { type BaseFormValues, type FormPageProps, useMakeFormOperations } from "./utils";
 
 // This file defines hooks to create actions when form is submitted.
 
@@ -23,14 +25,11 @@ type OnSubmitFormAction<FormValues extends BaseFormValues> = (
 ) => Promise<void>;
 
 type UseOpenSignPageArgs<
-  ExtraData,
   FormValues extends BaseFormValues,
   FormProps extends FormPageProps<FormValues>,
 > = {
-  // Sign page component to render.
-  SignPage: FunctionComponent<SignPageProps<ExtraData>>;
-  // Extra data to pass to the Sign page component (e.g. NFT or Token)
-  signPageExtraData: ExtraData;
+  operationType: "token" | "tez";
+  token?: FA12TokenBalance | FA2TokenBalance;
   // Form page component to render when the user goes back from the sign page.
   FormPage: FunctionComponent<FormProps>;
   // Form page props, used to render the form page again when the user goes back from the sign page
@@ -42,16 +41,15 @@ type UseOpenSignPageArgs<
 
 // Hook to open the sign page that knows how to get back to the form page.
 export const useOpenSignPageFormAction = <
-  SignPageData,
   FormValues extends BaseFormValues,
   FormProps extends FormPageProps<FormValues>,
 >({
-  SignPage,
-  signPageExtraData,
+  operationType,
+  token,
   FormPage,
   defaultFormPageProps,
   toOperation,
-}: UseOpenSignPageArgs<SignPageData, FormValues, FormProps>): OnSubmitFormAction<FormValues> => {
+}: UseOpenSignPageArgs<FormValues, FormProps>): OnSubmitFormAction<FormValues> => {
   const { openWith } = useDynamicModalContext();
   const makeFormOperations = useMakeFormOperations(toOperation);
   const network = useSelectedNetwork();
@@ -61,8 +59,7 @@ export const useOpenSignPageFormAction = <
     const estimatedOperations = await estimate(operations, network);
 
     return openWith(
-      <SignPage
-        data={signPageExtraData}
+      <LocalSignPage
         goBack={() =>
           openWith(
             <FormPage
@@ -71,8 +68,9 @@ export const useOpenSignPageFormAction = <
             />
           )
         }
-        mode="single"
+        operationType={operationType}
         operations={estimatedOperations}
+        token={token}
       />
     );
   };
