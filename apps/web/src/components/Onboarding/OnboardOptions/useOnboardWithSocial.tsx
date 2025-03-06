@@ -1,3 +1,4 @@
+import { useDynamicModalContext } from "@umami/components";
 import { withTimeout } from "@umami/core";
 import * as Auth from "@umami/social-auth";
 import { useAsyncActionHandler, useRestoreSocial } from "@umami/state";
@@ -23,6 +24,7 @@ const LOGIN_TIMEOUT = minutesToMilliseconds(1);
  */
 export const useOnboardWithSocial = (idp: Auth.IDP, onAuth?: () => void) => {
   const toast = useCustomToast();
+  const { onClose } = useDynamicModalContext();
   const { isLoading, handleAsyncAction } = useAsyncActionHandler();
   const restoreSocial = useRestoreSocial();
 
@@ -44,10 +46,11 @@ export const useOnboardWithSocial = (idp: Auth.IDP, onAuth?: () => void) => {
           trackSuccessfulSocialConnection("onboarding", idp);
           toast({ description: `Successfully added ${name || id} account`, status: "success" });
           onAuth?.();
+          onClose();
         },
         { title: "Social login failed" }
       ),
-    [idp, toast, handleAsyncAction, restoreSocial, onAuth]
+    [idp, toast, handleAsyncAction, restoreSocial, onAuth, onClose]
   );
 
   return { isLoading, onboard };
