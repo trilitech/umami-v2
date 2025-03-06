@@ -1,7 +1,6 @@
 import { rpID, origin } from "./config";
 import { db } from "./db";
 import { Passkey } from "./types";
-import { uint8ArrayToBase64 } from "./utils";
 
 import { AuthenticationResponseJSON, generateAuthenticationOptions, verifyAuthenticationResponse} from '@simplewebauthn/server';
 
@@ -22,7 +21,10 @@ const options: PublicKeyCredentialRequestOptionsJSON = await generateAuthenticat
     id: passkey.id,
     transports: passkey.transports,
   })),
+  challenge: 'this is a challenge'
 });
+
+console.log({options});
 
 // (Pseudocode) Remember this challenge for this user
 await db.setCurrentAuthenticationOptions(user, options);
@@ -76,7 +78,7 @@ export const verifyAuthentication = async (userId: number, authenticationRespons
 
   let publicKey;
   if(verification.verified) {
-    publicKey = passkey.publicKey;
+    publicKey = await db.getPublicKey(passkey);
   }
-  return {verified: verification.verified, publicKey: uint8ArrayToBase64(publicKey)};
+  return {verified: verification.verified, publicKey: publicKey};
 }

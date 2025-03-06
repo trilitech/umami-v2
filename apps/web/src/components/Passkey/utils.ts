@@ -2,14 +2,14 @@ import { startRegistration, startAuthentication } from "@simplewebauthn/browser"
 
 const domain = "http://localhost:3000/api";
 
- export const registerPasskey = async () => {
+ export const registerPasskey = async (userName: string) => {
     const response = await fetch(`${domain}/generate-registration-options`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        userName: "test-trili",
+        userName
       }),
     });
     const { options, userId } = await response.json();
@@ -19,7 +19,7 @@ const domain = "http://localhost:3000/api";
       registrationResponse = await startRegistration({ optionsJSON: options });
     } catch (error) {
       console.log(error);
-      // throw new Error("Registration failed");
+      throw error
     }
 
     let verified = false;
@@ -49,18 +49,18 @@ const domain = "http://localhost:3000/api";
     }
   };
 
-  export const authenticatePasskey = async () => {
+  export const authenticatePasskey = async (userName: string) => {
     const resp = await fetch(`${domain}/generate-authentication-options`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        userName: "test-trili",
+        userName
       }),
     }); 
     const optionsJSON = await resp.json();
-console.log('optionsJSON', optionsJSON);
+    optionsJSON.challenge = optionsJSON.challenge
     let asseResp;
     try {
       // Pass the options to the authenticator and wait for a response
@@ -69,7 +69,7 @@ console.log('optionsJSON', optionsJSON);
       console.log(error)
       throw error;
     }
-console.log('asseResp', asseResp);
+
     // POST the response to the endpoint that calls
     // @simplewebauthn/server -> verifyAuthenticationResponse()
     const verificationResp = await fetch(`${domain}/verify-authentication`, {
@@ -82,7 +82,6 @@ console.log('asseResp', asseResp);
 
     // Wait for the results of verification
     const verificationJSON = await verificationResp.json();
-    console.log('verificationJSON', verificationJSON);
 
     // Show UI appropriate for the `verified` status
     if (verificationJSON && verificationJSON.verified) {

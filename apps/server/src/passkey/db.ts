@@ -1,8 +1,9 @@
-import { User, Passkey } from './types'; // Adjust the import path as necessary
+import { User, Passkey, PublicKey } from './types'; // Adjust the import path as necessary
 
 class Database {
   private users: User[] = [];
   private passkeys: Passkey[] = [];
+  private publicKeys: PublicKey[] = [];
 
   async getUsers(): Promise<User[]> {
     return this.users;
@@ -36,6 +37,12 @@ class Database {
 
   async storePasskey(passkey: Passkey): Promise<void> {
     this.passkeys.push(passkey);
+  }
+  async storePublicKey(passkey: Passkey, publicKey: string): Promise<void> {
+    this.publicKeys.push({publicKey: publicKey, id: passkey.id});
+  }
+  async getPublicKey(passkey: Passkey): Promise<string | undefined> {
+    return this.publicKeys.find(publicKey => publicKey.id === passkey.id)?.publicKey;
   }
 
   async setCurrentRegistrationOptions(user: User, options: PublicKeyCredentialCreationOptionsJSON): Promise<void> {

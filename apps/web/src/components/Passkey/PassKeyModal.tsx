@@ -4,18 +4,19 @@ import {
   Flex,
   Heading,
   Icon,
+  Input,
   ModalBody,
   ModalContent,
   ModalHeader,
   Text,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
 import hj from "@hotjar/browser";
 
-import { PasskeyIcon } from "../../../assets/icons";
-import { useColor } from "../../../styles/useColor";
-import { ModalCloseButton } from "../../CloseButton";
-import { authenticatePasskey, registerPasskey } from "../../Passkey/utils";
+import { PasskeyIcon } from "../../assets/icons";
+import { useColor } from "../../styles/useColor";
+import { ModalCloseButton } from "../CloseButton";
+import { authenticatePasskey, registerPasskey } from "./utils";
 import { useState } from "react";
 
 
@@ -23,6 +24,7 @@ export const PasskeyModal = () => {
   const color = useColor();
   const toast = useToast();
   hj.stateChange("passkey");
+  const [userName, setUserName] = useState<string | undefined>(undefined);
   const [verified, setVerified] = useState(false);
   const [publicKey, setPublicKey] = useState<string | undefined>(undefined);
 
@@ -37,12 +39,25 @@ export const PasskeyModal = () => {
     }
   }
 
+  const handlePasskey = async (callback: () => Promise<any>) => {
+    if(userName){
+      try {
+
+        await callback();
+      } catch (error: any) {
+        toast({ description: "an error occurred", status: "error" });
+      }
+    } else {
+      toast({ description: "Please enter a username", status: "warning" });
+    }
+  }
+
   const handleRegisterPasskey = async () => {
-    const result = await registerPasskey();
-    handleResult(result);
+    const result = await registerPasskey(userName as string);
+      handleResult(result);
   }
   const handleAuthenticatePasskey = async () => {
-    const result = await authenticatePasskey();
+    const result = await authenticatePasskey(userName as string);
     handleResult(result);
   }
 
@@ -59,12 +74,14 @@ export const PasskeyModal = () => {
       <ModalBody>
       <Center flexDirection="column" gap="36px" width="full" height="full">
         <Flex flexDirection="column" gap="12px" width="full">
-          <Button width="full" onClick={handleRegisterPasskey} size="lg" variant="primary">
+          <Input  onChange={(e) => setUserName(e.target.value)} placeholder="Enter your username" />
+          <Button width="full" onClick={() => handlePasskey(handleRegisterPasskey)} size="lg" variant="primary">
             Register
           </Button>
-          <Button width="full" onClick={handleAuthenticatePasskey} size="lg" variant="secondary">
+          <Button width="full" onClick={() => handlePasskey(handleAuthenticatePasskey)} size="lg" variant="secondary">
             Login
           </Button>
+          {verified && <Text>User is logged in</Text>}
           {publicKey && <Text>Public Key: {publicKey}</Text>}
         </Flex>
 

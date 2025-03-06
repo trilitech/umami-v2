@@ -14,7 +14,7 @@ import { NameAccountModal } from "../../NameAccountModal";
 import { ImportWallet } from "../ImportWallet";
 import { SetupPassword } from "../SetupPassword";
 import { useIsAccountVerified } from "../VerificationFlow";
-import { PasskeyModal } from "../ImportWallet/PassKeyModal";
+import { PasskeyModal } from "../../Passkey/PassKeyModal";
 
 export const OnboardOptions = ({ children }: PropsWithChildren) => {
   const color = useColor();

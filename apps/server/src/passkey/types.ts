@@ -46,6 +46,11 @@ import type {
     transports?: AuthenticatorTransportFuture[];
   };
 
+  export type PublicKey = {
+    id: Base64URLString;
+    publicKey: string;
+  }
+
   export interface RegistrationResponseJSON {
     id: Base64URLString;
     rawId: Base64URLString;

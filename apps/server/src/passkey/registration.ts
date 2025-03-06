@@ -6,7 +6,6 @@ import {
 import { rpID, rpName, origin } from './config';
 import { Passkey, User, verifyBody } from './types';
 import { db } from './db';
-import { uint8ArrayToBase64 } from "./utils";
 
 
 export const getRegistrationOptions =  async (userName: string) => {
@@ -76,6 +75,7 @@ export const verifyRegistration = async ({userId, registrationResponse}: verifyB
 
     if(verification && verified) {
       const passkey = await createPasskey(user, verification, currentOptions, publicKey);
+      await db.storePublicKey(passkey, publicKey);
     }
     return {verified: verification.verified, publicKey: verification.verified ? publicKey : undefined};
   }
