@@ -4,11 +4,6 @@ import { verifyBody } from "./types";
 import  {
     verifyAuthenticationResponse
   } from '@simplewebauthn/server'
-// const { body } = req;
-
-// (Pseudocode) Retrieve the logged-in user
-// const user: UserModel = getUserFromDB(loggedInUserId);
-// // (Pseudocode) Get `options.challenge` that was saved above
 
 
 export const verify = async ({userId, registrationResponse}: verifyBody): Promise<boolean> => {
