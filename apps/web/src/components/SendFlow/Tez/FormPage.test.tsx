@@ -61,7 +61,7 @@ describe("<Form />", () => {
     it("renders an empty form by default", async () => {
       await renderInModal(<FormPage />, store);
 
-      expect(screen.getByTestId("available-balance")).toBeInTheDocument();
+      expect(screen.queryByTestId("available-balance")).not.toBeInTheDocument();
       expect(screen.getByTestId("real-address-input-recipient")).toHaveValue("");
       expect(screen.getByLabelText("Amount")).toHaveValue(null);
     });
