@@ -48,7 +48,7 @@ export const RecordSeedphraseModal = ({ seedPhrase }: CopySeedphraseModalProps) 
 
       <ModalBody>
         <Grid
-          gridRowGap={{ base: "12px", md: "18px" }}
+          gridRowGap={{ base: "8px", md: "18px" }}
           gridColumnGap={{ base: "8px", md: "12px" }}
           gridTemplateColumns={{ base: "repeat(3, 1fr)", md: "repeat(4, 1fr)" }}
           userSelect="none"
@@ -74,7 +74,7 @@ export const RecordSeedphraseModal = ({ seedPhrase }: CopySeedphraseModalProps) 
             />
           ))}
         </Grid>
-        <Flex gap="16px" width="100%" marginTop="16px">
+        <Flex gap="16px" width="100%" marginTop="10px">
           <Button
             gap="4px"
             display="flex"
