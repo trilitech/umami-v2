@@ -1,0 +1,10 @@
+{
+  "extends": "@umami/typescript-config/tsconfig.json",
+  "include": [
+    "src",
+    "jest.config.ts",
+    ".eslintrc.cjs",
+    "../../apps/desktop/src/components/AddressPill/AddressPill.test.tsx",
+    "../../apps/desktop/src/components/AddressPill/AddressPill.tsx"
+  ]
+}
