@@ -10,6 +10,7 @@ import type {
     id: any;
     userName: string;
     currentRegistrationOptions?: PublicKeyCredentialCreationOptionsJSON;
+    currentAuthenticationOptions?: PublicKeyCredentialRequestOptionsJSON;
   };
   
   /**
@@ -32,7 +33,7 @@ import type {
     user: User;
     // SQL: Store as `TEXT`. Index this column. A UNIQUE constraint on
     //      (webAuthnUserID + user) also achieves maximum user privacy
-    webauthnUserID: Base64URLString;
+    webAuthnUserID: Base64URLString;
     // SQL: Consider `BIGINT` since some authenticators return atomic timestamps as counters
     counter: number;
     // SQL: `VARCHAR(32)` or similar, longest possible value is currently 12 characters
@@ -56,5 +57,5 @@ import type {
 
 export type verifyBody = {
   userId: number;
-  registrationResponse: AuthenticationResponseJSON
+  registrationResponse: RegistrationResponseJSON
 };

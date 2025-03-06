@@ -26,15 +26,16 @@ class Database {
 
   async storeUser(userName: string): Promise<User> {
     const user: User = {
-      id: Math.random(),
+      // id: Math.random(),
+      id: 123,
       userName,
     };
     this.users.push(user);
     return user;
   }
 
-  async storePasskey(user: User, passkey: Passkey): Promise<void> {
-    this.passkeys.push({ ...passkey, user });
+  async storePasskey(passkey: Passkey): Promise<void> {
+    this.passkeys.push(passkey);
   }
 
   async setCurrentRegistrationOptions(user: User, options: PublicKeyCredentialCreationOptionsJSON): Promise<void> {
@@ -43,7 +44,17 @@ class Database {
       foundUser.currentRegistrationOptions = options;
     }
   }
+  async setCurrentAuthenticationOptions(user: User, options: PublicKeyCredentialRequestOptionsJSON): Promise<void> {
+    const foundUser = await this.getUserById(user.id);
+    if (foundUser) {
+      foundUser.currentAuthenticationOptions = options;
+    }
+  }
 
+   async getCurrentAuthenticationOptions(user: User): Promise<PublicKeyCredentialRequestOptionsJSON | undefined> {
+    const foundUser = await this.getUserById(user.id);
+    return foundUser?.currentAuthenticationOptions;
+  }
    async getCurrentRegistrationOptions(user: User): Promise<PublicKeyCredentialCreationOptionsJSON | undefined> {
     const foundUser = await this.getUserById(user.id);
     return foundUser?.currentRegistrationOptions;

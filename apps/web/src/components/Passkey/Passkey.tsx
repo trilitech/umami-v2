@@ -10,16 +10,16 @@ import { trackAccountEvent, trackOnboardingEvent } from "../../utils/analytics";
 import { AccountTileWrapper } from "../AccountTile";
 import { useIsAccountVerified } from "../Onboarding/VerificationFlow";
 import { clearConfigCache } from "prettier";
-import { startRegistration } from "@simplewebauthn/browser";
+import { startAuthentication, startRegistration } from "@simplewebauthn/browser";
 
 export const Passkey = ({ children }: PropsWithChildren) => {
   const color = useColor();
   const { openWith } = useDynamicModalContext();
   const isAccountVerified = useIsAccountVerified();
 
+  const domain = "http://localhost:3000/api";
   const handleRegisterPasskey = async () => {
-    const domain = "http://localhost:3000/api";
-    const response = await fetch(`${domain}/register`, {
+    const response = await fetch(`${domain}/generate-registration-options`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -35,10 +35,11 @@ export const Passkey = ({ children }: PropsWithChildren) => {
       registrationResponse = await startRegistration({ optionsJSON: options });
     } catch (error) {
       console.log(error);
-      // throw error;
+      // throw new Error("Registration failed");
     }
 
     if (registrationResponse) {
+      console.log('registrationResponse', registrationResponse);
       const verificationResp = await fetch(`${domain}/verify-registration`, {
         method: "POST",
         headers: {
@@ -49,7 +50,7 @@ export const Passkey = ({ children }: PropsWithChildren) => {
           registrationResponse,
         }),
       });
-
+      console.log('PublicKey', registrationResponse.response.publicKey);
       // Wait for the results of verification
       const verificationJSON = await verificationResp.json();
       if (verificationJSON.verified) {
@@ -60,8 +61,46 @@ export const Passkey = ({ children }: PropsWithChildren) => {
     }
   };
 
-  const handleLoginPasskey = () => {
-    // todo
+  const handleLoginPasskey = async () => {
+    const resp = await fetch(`${domain}/generate-authentication-options`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userName: "test",
+      }),
+    });
+    const optionsJSON = await resp.json();
+
+    let asseResp;
+    try {
+      // Pass the options to the authenticator and wait for a response
+      asseResp = await startAuthentication({ optionsJSON });
+    } catch (error) {
+      console.log(error)
+      throw error;
+    }
+console.log('asseResp', asseResp);
+    // POST the response to the endpoint that calls
+    // @simplewebauthn/server -> verifyAuthenticationResponse()
+    const verificationResp = await fetch(`${domain}/verify-authentication`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(asseResp),
+    });
+
+    // Wait for the results of verification
+    const verificationJSON = await verificationResp.json();
+
+    // Show UI appropriate for the `verified` status
+    if (verificationJSON && verificationJSON.verified) {
+      console.log('authenticated');
+    } else {
+      console.log('not authenticated');
+    }
   };
 
   return (

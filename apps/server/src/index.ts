@@ -1,8 +1,9 @@
 import express from 'express';
-import { getConfig } from './passkey/registration';
+import { getRegistrationOptions, verifyRegistration } from './passkey/registration';
 import cors from 'cors';
 import { RegistrationResponseJSON, verifyBody } from './passkey/types';
-import { verify } from './passkey/verification';
+import { getAuthenticationOptions, verifyAuthentication } from './passkey/authentication';
+import { AuthenticationResponseJSON } from '@simplewebauthn/server';
 
 const app = express();
 const router = express.Router()
@@ -11,20 +12,36 @@ router.use(express.json());
 router.use(cors())
 const port = 3000;
 
-router.post('/register', async (req, res) => {
+router.post('/generate-registration-options', async (req, res) => {
   const userName = req.body?.userName as string;
-  console.log(req.body);
   if (!userName) {
     res.status(400).send('userName is required');
     return;
   }
-  const config = await getConfig(userName);
-  res.json(config);
+  const options = await getRegistrationOptions(userName);
+  res.json(options);
 });
+
 router.post('/verify-registration', async (req, res) => {
   const response = req.body as verifyBody;
-  const verified = await verify(response);
-  res.json({verified});
+  const verification = await verifyRegistration(response);
+  res.json({verified: verification.verified, PublicKey: verification.registrationInfo?.credential.publicKey});
+});
+
+router.post('/generate-authentication-options', async (req, res) => {
+  const userName = req.body?.userName as string;
+  if (!userName) {
+    res.status(400).send('userName is required');
+    return;
+  }
+  const options = await getAuthenticationOptions(userName);
+  res.json(options);
+});
+
+router.post('/verify-authentication', async (req, res) => {
+  const response = req.body as AuthenticationResponseJSON;
+  const verification = await verifyAuthentication(123, response);
+  res.json({verified: verification.verified});
 });
 
 app.listen(port, () => {
