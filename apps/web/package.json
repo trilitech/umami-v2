@@ -46,6 +46,7 @@
     "@taquito/signer": "^21.0.0",
     "@taquito/taquito": "^21.0.0",
     "@tzkt/sdk-api": "^2.2.1",
+    "@umami/passkey": "workspace:^",
     "@umami/components": "workspace:^",
     "@umami/core": "workspace:^",
     "@umami/crypto": "workspace:^",

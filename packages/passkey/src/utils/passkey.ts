@@ -15,7 +15,6 @@ const domain = "http://localhost:3000/api";
     const { options, userId } = await response.json();
     let registrationResponse;
     try {
-      // Pass the options to the authenticator and wait for a response
       registrationResponse = await startRegistration({ optionsJSON: options });
     } catch (error) {
       console.log(error);
@@ -34,7 +33,6 @@ const domain = "http://localhost:3000/api";
           registrationResponse,
         }),
       });
-      // Wait for the results of verification
       const verificationJSON = await verificationResp.json();
       if (verificationJSON.verified) {
         verified = true;
@@ -63,15 +61,12 @@ const domain = "http://localhost:3000/api";
     optionsJSON.challenge = optionsJSON.challenge
     let asseResp;
     try {
-      // Pass the options to the authenticator and wait for a response
       asseResp = await startAuthentication({ optionsJSON });
     } catch (error) {
       console.log(error)
       throw error;
     }
 
-    // POST the response to the endpoint that calls
-    // @simplewebauthn/server -> verifyAuthenticationResponse()
     const verificationResp = await fetch(`${domain}/verify-authentication`, {
       method: "POST",
       headers: {
@@ -80,10 +75,8 @@ const domain = "http://localhost:3000/api";
       body: JSON.stringify(asseResp),
     });
 
-    // Wait for the results of verification
     const verificationJSON = await verificationResp.json();
 
-    // Show UI appropriate for the `verified` status
     if (verificationJSON && verificationJSON.verified) {
       console.log("authenticated");
     } else {
