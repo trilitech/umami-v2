@@ -28,6 +28,7 @@ import {
   useRemoveNonMnemonic,
 } from "@umami/state";
 import { prettyTezAmount } from "@umami/tezos";
+import { CustomError } from "@umami/utils";
 import { groupBy } from "lodash";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -40,7 +41,7 @@ import { AccountTile } from "../AccountTile";
 import { ModalCloseButton } from "../CloseButton";
 import { DeriveMnemonicAccountModal } from "./DeriveMnemonicAccountModal";
 import { ConfirmationModal } from "../ConfirmationModal";
-import { HandleRemoveDefaultAccount, removeDefaultAccountDescription } from "./RemoveAccountModal";
+import { handleRemoveDefaultAccount, removeDefaultAccountDescription } from "./RemoveAccountModal";
 import { OnboardOptionsModal } from "../Onboarding/OnboardOptions";
 import { useIsAccountVerified } from "../Onboarding/VerificationFlow";
 
@@ -54,7 +55,7 @@ export const AccountSelectorModal = () => {
   const { openWith, goBack, onClose } = useDynamicModalContext();
   const defaultAccount = useDefaultAccount();
   if (!defaultAccount) {
-    throw new Error("Default account not found");
+    throw new CustomError("Default account not found");
   }
 
   const lastItemRef = useRef<HTMLDivElement>(null);
@@ -116,7 +117,7 @@ export const AccountSelectorModal = () => {
         description={description(isDefaultAccount, type)}
         onSubmit={async () => {
           if (isDefaultAccount) {
-            await HandleRemoveDefaultAccount();
+            await handleRemoveDefaultAccount();
           } else {
             if (account.type === "mnemonic") {
               removeMnemonic(account.seedFingerPrint);

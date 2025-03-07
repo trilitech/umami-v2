@@ -112,7 +112,7 @@ describe("<AccountSelectorModal />", () => {
     );
 
     it("removes mnemonic accounts when confirmed", async () => {
-      jest.spyOn(RemoveAccountModal, "HandleRemoveDefaultAccount");
+      jest.spyOn(RemoveAccountModal, "handleRemoveDefaultAccount");
       const user = userEvent.setup();
       await renderInModal(<AccountSelectorModal />, store);
       const account = mockMnemonicAccount(0);
@@ -128,7 +128,7 @@ describe("<AccountSelectorModal />", () => {
       expect(store.getState().accounts.seedPhrases[account.seedFingerPrint]).toBe(undefined);
       if (isDefaultAccount) {
         await waitFor(() =>
-          expect(RemoveAccountModal.HandleRemoveDefaultAccount).toHaveBeenCalled()
+          expect(RemoveAccountModal.handleRemoveDefaultAccount).toHaveBeenCalled()
         );
       } else {
         expect(store.getState().accounts.items.length).toBe(2);

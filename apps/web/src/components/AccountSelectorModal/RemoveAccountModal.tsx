@@ -9,7 +9,7 @@ type RemoveAccountModalProps = {
   account: SocialAccount | LedgerAccount | SecretKeyAccount;
 };
 
-export const HandleRemoveDefaultAccount = async () => {
+export const handleRemoveDefaultAccount = async () => {
   persistor && (await logout(persistor));
 };
 
@@ -47,7 +47,7 @@ export const RemoveAccountModal = ({ account }: RemoveAccountModalProps) => {
     account: SocialAccount | LedgerAccount | SecretKeyAccount
   ) => {
     if (isDefaultAccount) {
-      persistor && (await logout(persistor));
+      await handleRemoveDefaultAccount();
     } else {
       removeAccount(account);
       onClose();
