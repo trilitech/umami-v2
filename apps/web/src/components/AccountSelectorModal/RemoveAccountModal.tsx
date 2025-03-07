@@ -13,7 +13,7 @@ export const handleRemoveDefaultAccount = async () => {
   persistor && (await logout(persistor));
 };
 
-export const removeDefaultAccountDescription = (type: string): string => {
+export const getRemoveDefaultAccountDescription = (type: string): string => {
   const isMnemonic = type.toLowerCase().includes("seedphrase");
   let description =
     "Removing your default account will off-board you from Umami.\n\n" +
@@ -38,7 +38,7 @@ export const RemoveAccountModal = ({ account }: RemoveAccountModalProps) => {
   let buttonLabel = "Remove";
 
   if (isDefaultAccount) {
-    description = removeDefaultAccountDescription(account.type);
+    description = getRemoveDefaultAccountDescription(account.type);
     buttonLabel = "Remove & off-board";
   }
 

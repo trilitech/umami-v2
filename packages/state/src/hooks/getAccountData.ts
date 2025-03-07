@@ -204,14 +204,9 @@ export const useCurrentAccount = (): ImplicitAccount | undefined => {
 
 export const useDefaultAccount = (): ImplicitAccount | undefined => {
   const defaultAccount = useAppSelector(s => s.accounts.defaultAccount);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (!defaultAccount) {
-      dispatch(accountsActions.setDefaultAccount());
-    }
-  }, [defaultAccount, dispatch]);
-
+  if (!defaultAccount) {
+    throw new CustomError("Default account not found. This should never happen.");
+  }
   return defaultAccount;
 };
 

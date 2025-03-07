@@ -28,7 +28,6 @@ import {
   useRemoveNonMnemonic,
 } from "@umami/state";
 import { prettyTezAmount } from "@umami/tezos";
-import { CustomError } from "@umami/utils";
 import { groupBy } from "lodash";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -41,7 +40,10 @@ import { AccountTile } from "../AccountTile";
 import { ModalCloseButton } from "../CloseButton";
 import { DeriveMnemonicAccountModal } from "./DeriveMnemonicAccountModal";
 import { ConfirmationModal } from "../ConfirmationModal";
-import { handleRemoveDefaultAccount, removeDefaultAccountDescription } from "./RemoveAccountModal";
+import {
+  getRemoveDefaultAccountDescription,
+  handleRemoveDefaultAccount,
+} from "./RemoveAccountModal";
 import { OnboardOptionsModal } from "../Onboarding/OnboardOptions";
 import { useIsAccountVerified } from "../Onboarding/VerificationFlow";
 
@@ -54,10 +56,6 @@ export const AccountSelectorModal = () => {
   const removeNonMnemonic = useRemoveNonMnemonic();
   const { openWith, goBack, onClose } = useDynamicModalContext();
   const defaultAccount = useDefaultAccount();
-  if (!defaultAccount) {
-    throw new CustomError("Default account not found");
-  }
-
   const lastItemRef = useRef<HTMLDivElement>(null);
   const [showShadow, setShowShadow] = useState(false);
 
@@ -91,7 +89,7 @@ export const AccountSelectorModal = () => {
     const isMnemonic = type.toLowerCase().includes("seedphrase");
 
     if (isDefaultAccount) {
-      return removeDefaultAccountDescription(type);
+      return getRemoveDefaultAccountDescription(type);
     } else if (isMnemonic) {
       return `Are you sure you want to remove all accounts derived from the ${type}? You will need to manually import them again. \n\n<b>Make sure your mnemonic phrase is securely saved. Losing this phrase could result in permanent loss of access to your data.</b>`;
     } else {
