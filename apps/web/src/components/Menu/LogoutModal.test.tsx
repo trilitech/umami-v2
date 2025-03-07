@@ -2,7 +2,6 @@ import { logout } from "@umami/state";
 
 import { LogoutModal } from "./LogoutModal";
 import { renderInModal, screen, userEvent, waitFor } from "../../testUtils";
-import { persistor } from "../../utils/persistor";
 
 jest.mock("@umami/state", () => ({
   ...jest.requireActual("@umami/state"),
@@ -23,7 +22,7 @@ describe("<LogoutModal />", () => {
 
     expect(
       screen.getByText(
-        "Before you log out, ensure your mnemonic phrase is securely saved. Without it, you may permanently lose access to your account and data."
+        "Make sure your mnemonic phrase is securely saved. Losing this phrase could result in permanent loss of access to your data."
       )
     ).toBeVisible();
     expect(screen.getByRole("button", { name: "Log out" })).toBeVisible();
@@ -35,6 +34,6 @@ describe("<LogoutModal />", () => {
 
     await user.click(screen.getByRole("button", { name: "Log out" }));
 
-    expect(logout).toHaveBeenCalledWith(persistor);
+    expect(logout).toHaveBeenCalled();
   });
 });

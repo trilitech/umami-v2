@@ -1,12 +1,13 @@
 import { logout } from "@umami/state";
 
 import { persistor } from "../../utils/persistor";
+import { getRemoveDefaultAccountDescription } from "../AccountSelectorModal/RemoveAccountModal";
 import { ConfirmationModal } from "../ConfirmationModal";
 
 export const LogoutModal = () => (
   <ConfirmationModal
     buttonLabel="Log out"
-    description="Before you log out, ensure your mnemonic phrase is securely saved. Without it, you may permanently lose access to your account and data."
+    description={getRemoveDefaultAccountDescription("seedphrase")}
     onSubmit={() => persistor && logout(persistor)}
     title="Log out"
   />

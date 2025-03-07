@@ -202,6 +202,14 @@ export const useCurrentAccount = (): ImplicitAccount | undefined => {
   return currentAccount;
 };
 
+export const useDefaultAccount = (): ImplicitAccount | undefined => {
+  const defaultAccount = useAppSelector(s => s.accounts.defaultAccount);
+  if (!defaultAccount) {
+    throw new CustomError("Default account not found. This should never happen.");
+  }
+  return defaultAccount;
+};
+
 export const useGetDecryptedMnemonic = () => {
   const seedPhrases = useSeedPhrases();
 

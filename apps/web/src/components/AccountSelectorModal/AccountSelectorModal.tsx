@@ -21,12 +21,14 @@ import {
 } from "@umami/core";
 import {
   accountsActions,
+  useDefaultAccount,
   useGetAccountBalance,
   useImplicitAccounts,
   useRemoveMnemonic,
   useRemoveNonMnemonic,
 } from "@umami/state";
 import { prettyTezAmount } from "@umami/tezos";
+import { CustomError } from "@umami/utils";
 import { groupBy } from "lodash";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -39,6 +41,10 @@ import { AccountTile } from "../AccountTile";
 import { ModalCloseButton } from "../CloseButton";
 import { DeriveMnemonicAccountModal } from "./DeriveMnemonicAccountModal";
 import { ConfirmationModal } from "../ConfirmationModal";
+import {
+  getRemoveDefaultAccountDescription,
+  handleRemoveDefaultAccount,
+} from "./RemoveAccountModal";
 import { OnboardOptionsModal } from "../Onboarding/OnboardOptions";
 import { useIsAccountVerified } from "../Onboarding/VerificationFlow";
 
@@ -50,9 +56,13 @@ export const AccountSelectorModal = () => {
   const removeMnemonic = useRemoveMnemonic();
   const removeNonMnemonic = useRemoveNonMnemonic();
   const { openWith, goBack, onClose } = useDynamicModalContext();
-
+  const defaultAccount = useDefaultAccount();
   const lastItemRef = useRef<HTMLDivElement>(null);
   const [showShadow, setShowShadow] = useState(false);
+
+  if (!defaultAccount) {
+    throw new CustomError("Default account not found. This should never happen.");
+  }
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -78,12 +88,13 @@ export const AccountSelectorModal = () => {
   const showDeriveAccountButton = (account?: ImplicitAccount) =>
     account && account.type === "mnemonic";
 
-  const buttonLabel = (isLast: boolean) => (isLast ? "Remove & off-board" : "Remove");
-  const description = (isLast: boolean, type: string) => {
+  const buttonLabel = (isDefaultAccount: boolean) =>
+    isDefaultAccount ? "Remove & off-board" : "Remove";
+  const description = (isDefaultAccount: boolean, type: string) => {
     const isMnemonic = type.toLowerCase().includes("seedphrase");
 
-    if (isLast) {
-      return "Removing all your accounts will off-board you from Umami. This will remove or reset all customized settings to their defaults. Personal data (including saved contacts, password and accounts) won't be affected. \n\n<b>Make sure your mnemonic phrase is securely saved. Losing this phrase could result in permanent loss of access to your data.</b>";
+    if (isDefaultAccount) {
+      return getRemoveDefaultAccountDescription(type);
     } else if (isMnemonic) {
       return `Are you sure you want to remove all accounts derived from the ${type}? You will need to manually import them again. \n\n<b>Make sure your mnemonic phrase is securely saved. Losing this phrase could result in permanent loss of access to your data.</b>`;
     } else {
@@ -99,20 +110,25 @@ export const AccountSelectorModal = () => {
 
   const onRemove = (type: string, accounts: Account[]) => {
     const account = accounts[0];
-    const isLast = accounts.length === implicitAccounts.length;
+
+    const isDefaultAccount = accounts.some(a => a.address.pkh === defaultAccount.address.pkh);
 
     return openWith(
       <ConfirmationModal
-        buttonLabel={buttonLabel(isLast)}
-        closeOnSubmit={isLast}
-        description={description(isLast, type)}
-        onSubmit={() => {
-          if (account.type === "mnemonic") {
-            removeMnemonic(account.seedFingerPrint);
-          } else if (account.type !== "multisig") {
-            removeNonMnemonic(account.type);
+        buttonLabel={buttonLabel(isDefaultAccount)}
+        closeOnSubmit={isDefaultAccount}
+        description={description(isDefaultAccount, type)}
+        onSubmit={async () => {
+          if (isDefaultAccount) {
+            await handleRemoveDefaultAccount();
+          } else {
+            if (account.type === "mnemonic") {
+              removeMnemonic(account.seedFingerPrint);
+            } else if (account.type !== "multisig") {
+              removeNonMnemonic(account.type);
+            }
+            goBack();
           }
-          goBack();
         }}
         title="Remove all accounts"
       />
