@@ -1,0 +1,26 @@
+name: Check Format and Lint
+
+on: push
+
+jobs:
+  check-format-and-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: jwalton/gh-find-current-pr@v1
+        id: findPr
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.9.0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: "pnpm"
+
+      - run: pnpm install
+
+      - run: pnpm run ci
