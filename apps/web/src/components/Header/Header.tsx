@@ -8,6 +8,7 @@ import { FileCopyIcon, LogoLightIcon, SelectorIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
 import { AccountSelectorModal } from "../AccountSelectorModal";
 import { AccountTile } from "../AccountTile";
+import { CopyButton } from "../CopyButton";
 
 export const Header = () => {
   const color = useColor();
@@ -70,7 +71,7 @@ export const Header = () => {
       <SlideFade
         in={isVisible}
         offsetY="20px"
-        style={{ display: "flex", justifyContent: "space-evenly", flex: 1 }}
+        style={{ display: "flex", flex: 1, gap: "8px", justifyContent: "center" }}
         unmountOnExit
       >
         <AccountTile
@@ -84,17 +85,20 @@ export const Header = () => {
             width="fit-content"
             marginLeft="auto"
             aria-label="Account Selector"
-            icon={<SelectorIcon color={color("400")} />}
+            icon={<Icon as={SelectorIcon} boxSize="18px" color={color("400")} />}
             size="xs"
             variant="empty"
           />
         </AccountTile>
-        <IconButton
+        <CopyButton
+          width="42px"
           aria-label="Copy Address"
-          icon={<Icon as={FileCopyIcon} boxSize="24px" />}
           size="md"
+          value={currentAccount.address.pkh}
           variant="iconButtonSolid"
-        />
+        >
+          <Icon as={FileCopyIcon} boxSize="24px" />
+        </CopyButton>
       </SlideFade>
       <Actions />
     </Card>
