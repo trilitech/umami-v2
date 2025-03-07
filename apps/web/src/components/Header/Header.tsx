@@ -1,10 +1,10 @@
-import { Card, Icon, SlideFade, useBreakpointValue } from "@chakra-ui/react";
+import { Card, Icon, IconButton, SlideFade, useBreakpointValue } from "@chakra-ui/react";
 import { useDynamicModalContext } from "@umami/components";
 import { useCurrentAccount } from "@umami/state";
 import { useEffect, useState } from "react";
 
 import { Actions } from "./Actions";
-import { LogoLightIcon } from "../../assets/icons";
+import { FileCopyIcon, LogoLightIcon, SelectorIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
 import { AccountSelectorModal } from "../AccountSelectorModal";
 import { AccountTile } from "../AccountTile";
@@ -57,13 +57,43 @@ export const Header = () => {
         md: "2px 4px 12px 0px rgba(45, 55, 72, 0.05)",
       }}
     >
-      <Icon as={LogoLightIcon} {...size} />
-      <SlideFade in={isVisible} offsetY="20px" unmountOnExit>
+      <IconButton
+        pointerEvents={{ base: "auto", md: "none" }}
+        aria-label="Logo"
+        icon={<Icon as={LogoLightIcon} {...size} />}
+        onClick={() => {
+          scrollTo({ top: 0, behavior: "smooth" });
+        }}
+        size="xs"
+        variant="empty"
+      />
+      <SlideFade
+        in={isVisible}
+        offsetY="20px"
+        style={{ display: "flex", justifyContent: "space-evenly", flex: 1 }}
+        unmountOnExit
+      >
         <AccountTile
           background={color("100")}
           account={currentAccount}
           onClick={() => openWith(<AccountSelectorModal />, { canBeOverridden: true })}
           size="xs"
+        >
+          <IconButton
+            alignSelf="center"
+            width="fit-content"
+            marginLeft="auto"
+            aria-label="Account Selector"
+            icon={<SelectorIcon color={color("400")} />}
+            size="xs"
+            variant="empty"
+          />
+        </AccountTile>
+        <IconButton
+          aria-label="Copy Address"
+          icon={<Icon as={FileCopyIcon} boxSize="24px" />}
+          size="md"
+          variant="iconButtonSolid"
         />
       </SlideFade>
       <Actions />
