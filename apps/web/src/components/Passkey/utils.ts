@@ -1,4 +1,4 @@
-import { startRegistration, startAuthentication } from "@simplewebauthn/browser";
+import { startAuthentication, startRegistration } from "@simplewebauthn/browser";
 
 const domain = "http://localhost:3000/api";
 
@@ -44,7 +44,7 @@ const domain = "http://localhost:3000/api";
       }
     }
     return {
-        publicKey: registrationResponse?.response.publicKey,
+        publicKey: registrationResponse.response.publicKey,
         verified
     }
   };
@@ -73,9 +73,9 @@ const domain = "http://localhost:3000/api";
     // POST the response to the endpoint that calls
     // @simplewebauthn/server -> verifyAuthenticationResponse()
     const verificationResp = await fetch(`${domain}/verify-authentication`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(asseResp),
     });
@@ -85,9 +85,9 @@ const domain = "http://localhost:3000/api";
 
     // Show UI appropriate for the `verified` status
     if (verificationJSON && verificationJSON.verified) {
-      console.log('authenticated');
+      console.log("authenticated");
     } else {
-      console.log('not authenticated');
+      console.log("not authenticated");
     }
     return verificationJSON
   };

@@ -24,7 +24,6 @@ const options: PublicKeyCredentialRequestOptionsJSON = await generateAuthenticat
   challenge: 'this is a challenge'
 });
 
-console.log({options});
 
 // (Pseudocode) Remember this challenge for this user
 await db.setCurrentAuthenticationOptions(user, options);

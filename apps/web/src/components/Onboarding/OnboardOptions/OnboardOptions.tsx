@@ -11,10 +11,10 @@ import { useColor } from "../../../styles/useColor";
 import { trackAccountEvent, trackOnboardingEvent } from "../../../utils/analytics";
 import { AccountTileWrapper } from "../../AccountTile";
 import { NameAccountModal } from "../../NameAccountModal";
+import { PasskeyModal } from "../../Passkey/PassKeyModal";
 import { ImportWallet } from "../ImportWallet";
 import { SetupPassword } from "../SetupPassword";
 import { useIsAccountVerified } from "../VerificationFlow";
-import { PasskeyModal } from "../../Passkey/PassKeyModal";
 
 export const OnboardOptions = ({ children }: PropsWithChildren) => {
   const color = useColor();
@@ -83,11 +83,9 @@ export const OnboardOptions = ({ children }: PropsWithChildren) => {
         <Flex flexDirection="column" gap="12px" width="full">
           <Button
             width="full"
-            onClick={() => {
-              return openWith(<PasskeyModal />, {
+            onClick={() => openWith(<PasskeyModal />, {
                 size: "xl",
-              });
-            }}
+              })}
             size="lg"
             variant="secondary"
           >

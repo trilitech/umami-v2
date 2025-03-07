@@ -12,12 +12,12 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import hj from "@hotjar/browser";
+import { useState } from "react";
 
 import { PasskeyIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
 import { ModalCloseButton } from "../CloseButton";
 import { authenticatePasskey, registerPasskey } from "./utils";
-import { useState } from "react";
 
 
 export const PasskeyModal = () => {
@@ -79,7 +79,7 @@ export const PasskeyModal = () => {
             Register
           </Button>
           <Button width="full" onClick={() => handlePasskey(handleAuthenticatePasskey)} size="lg" variant="secondary">
-            Login
+           Authenticate
           </Button>
           {verified && <Text>User is logged in</Text>}
           {publicKey && <Text>Public Key: {publicKey}</Text>}
