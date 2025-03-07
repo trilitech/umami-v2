@@ -18,7 +18,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { SignPage } from "./SignPage";
 import { useColor } from "../../../styles/useColor";
 import { KnownAccountsAutocomplete } from "../../AddressAutocomplete";
-import { TezTile } from "../../AssetTiles";
+import { AddressTile } from "../../AddressTile";
 import { FormPageHeader } from "../FormPageHeader";
 import {
   useAddToBatchFormAction,
@@ -92,10 +92,12 @@ export const FormPage = ({ ...props }: FormPageProps<FormValues>) => {
         <form onSubmit={handleSubmit(onSingleSubmit)}>
           <FormPageHeader />
           <ModalBody gap="24px">
-            <FormControl data-testid="available-balance" isInvalid={!!errors.sender}>
-              <FormLabel>Available balance</FormLabel>
-              <TezTile address={props.sender?.address.pkh} />
-            </FormControl>
+            {props.sender && (
+              <FormControl data-testid="available-balance" isInvalid={!!errors.sender}>
+                <FormLabel>From</FormLabel>
+                <AddressTile address={props.sender.address} hideBalance={false} />
+              </FormControl>
+            )}
             <FormControl isInvalid={!!errors.prettyAmount}>
               <FormLabel>Amount</FormLabel>
               <InputGroup>
