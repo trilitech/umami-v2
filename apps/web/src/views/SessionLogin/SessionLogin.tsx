@@ -6,6 +6,7 @@ import {
   useAsyncActionHandler,
   useLoginToWallet,
 } from "@umami/state";
+import { CustomError } from "@umami/utils";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
@@ -34,6 +35,10 @@ export const SessionLogin = () => {
   const defaultAccount = accounts?.defaultAccount
     ? (JSON.parse(accounts.defaultAccount as unknown as string) as ImplicitAccount)
     : null;
+  if (!accounts || !defaultAccount || !defaultAccount.address.pkh) {
+    clearSessionKey();
+    throw new CustomError("Default account not found in localstorage");
+  }
   const { isLoading, handleLogin } = useLoginToWallet(defaultAccount, setupPersistence);
   const { handleAsyncAction } = useAsyncActionHandler();
 
@@ -46,7 +51,7 @@ export const SessionLogin = () => {
 
   const handleSubmit = () =>
     handleAsyncAction(async () => {
-      if (defaultAccount?.type === "social") {
+      if (defaultAccount.type === "social") {
         await handleLogin<SocialAccount>()();
       } else {
         await handleLogin()(accounts, { password: form.getValues().password });
@@ -80,7 +85,7 @@ export const SessionLogin = () => {
               You need to sign back in to use your wallet.
             </Text>
           </Flex>
-          {defaultAccount?.type === "social" ? (
+          {defaultAccount.type === "social" ? (
             <LoginButton
               idp={defaultAccount.idp}
               isLoading={isLoading}

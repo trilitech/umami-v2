@@ -1,7 +1,8 @@
 import { type ImplicitAccount, type SocialAccount, withTimeout } from "@umami/core";
 import { type EncryptedData, decrypt } from "@umami/crypto";
 import { type IDP, forIDP } from "@umami/social-auth";
-import { type RawPkh } from "@umami/tezos";
+import { type RawPkh, getPublicKeyPairFromSk } from "@umami/tezos";
+import { CustomError } from "@umami/utils";
 
 import { useAppSelector } from "./useAppSelector";
 import { useAsyncActionHandler } from "./useAsyncActionHandler";
@@ -36,18 +37,14 @@ export const clearSessionKey = () => {
 };
 
 const useLoginWithPassword = (
-  defaultAccount: ImplicitAccount | null,
+  defaultAccount: ImplicitAccount,
   setupPersistence: (key: string) => void
 ) => {
   const { isLoading, handleAsyncActionUnsafe } = useAsyncActionHandler();
 
   // login function throws an error so the caller needs to handle it or wrap it in handleAsyncAction
-  const login = (accounts: AccountsState | null, data: { password: string }) =>
+  const login = (accounts: AccountsState, data: { password: string }) =>
     handleAsyncActionUnsafe(async () => {
-      if (!defaultAccount || !accounts) {
-        clearSessionKey();
-        return;
-      }
       if (defaultAccount.type === "mnemonic") {
         const mnemonic = (
           JSON.parse(accounts.seedPhrases as unknown as string) as Record<string, EncryptedData>
@@ -68,13 +65,23 @@ const useLoginWithPassword = (
   return { isLoading, login };
 };
 
-const useLoginWithSocial = (setupPersistence: (key: string) => void) => {
+const useLoginWithSocial = (
+  defaultAccount: ImplicitAccount,
+  setupPersistence: (key: string) => void
+) => {
   const { isLoading, handleAsyncAction } = useAsyncActionHandler();
 
   const login = (idp: IDP) =>
     handleAsyncAction(
       async () => {
         const { secretKey } = await withTimeout(() => forIDP(idp).getCredentials(), LOGIN_TIMEOUT);
+        const publicKey = await getPublicKeyPairFromSk(secretKey);
+        if (
+          idp !== (defaultAccount as SocialAccount).idp ||
+          publicKey.pkh !== defaultAccount.address.pkh
+        ) {
+          throw new CustomError("Social account is not the same as the default account");
+        }
         setupPersistence(secretKey);
       },
       { title: "Social login failed" }
@@ -85,20 +92,22 @@ const useLoginWithSocial = (setupPersistence: (key: string) => void) => {
 
 type LoginFn<T> = T extends SocialAccount
   ? () => Promise<void>
-  : (accounts: AccountsState | null, data: { password: string }) => Promise<void>;
+  : (accounts: AccountsState, data: { password: string }) => Promise<void>;
 
 export const useLoginToWallet = (
-  defaultAccount: ImplicitAccount | null,
+  defaultAccount: ImplicitAccount,
   setupPersistence: (key: string) => void
 ) => {
   const { isLoading: isLoadingWithPassword, login: loginWithPassword } = useLoginWithPassword(
     defaultAccount,
     setupPersistence
   );
-  const { isLoading: isLoadingWithSocial, login: loginWithSocial } =
-    useLoginWithSocial(setupPersistence);
+  const { isLoading: isLoadingWithSocial, login: loginWithSocial } = useLoginWithSocial(
+    defaultAccount,
+    setupPersistence
+  );
 
-  const isSocialAccount = defaultAccount?.type === "social";
+  const isSocialAccount = defaultAccount.type === "social";
 
   return {
     isLoading: isSocialAccount ? isLoadingWithSocial : isLoadingWithPassword,
