@@ -2,20 +2,13 @@ name: Test
 
 on: push
 
-permissions:
-  pull-requests: write
-  checks: write
-  contents: write
-
 concurrency:
   group: ${{ github.ref_name }}
   cancel-in-progress: true
 
 jobs:
   test:
-    runs-on: ubuntu-latest-m
-    env:
-      NODE_OPTIONS: "--max_old_space_size=4096"
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
@@ -33,9 +26,7 @@ jobs:
           cache: "pnpm"
 
       - run: pnpm install
-
-      - run: pnpm run ci
-
+      
       - run: pnpm run test -- --runInBand
 
       - name: Post Jest Coverage Comment
