@@ -21,7 +21,7 @@ import {
 } from "@umami/core";
 import {
   accountsActions,
-  useAppSelector,
+  useDefaultAccount,
   useGetAccountBalance,
   useImplicitAccounts,
   useRemoveMnemonic,
@@ -52,7 +52,7 @@ export const AccountSelectorModal = () => {
   const removeMnemonic = useRemoveMnemonic();
   const removeNonMnemonic = useRemoveNonMnemonic();
   const { openWith, goBack, onClose } = useDynamicModalContext();
-  const defaultAccount = useAppSelector(state => state.accounts.defaultAccount);
+  const defaultAccount = useDefaultAccount();
   if (!defaultAccount) {
     throw new Error("Default account not found");
   }
