@@ -14,6 +14,10 @@ type ToastContextType = {
 
 const ToastContext = createContext<ToastContextType | undefined>(undefined);
 
+/**
+ * Hook to get the toast component depending on the environment (web or mobile)
+ * @returns the toast instance
+ */
 export const useCustomToast = () => {
   const toastContext = useContext(ToastContext);
   if (!toastContext) {

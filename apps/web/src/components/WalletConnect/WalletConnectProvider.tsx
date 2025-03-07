@@ -1,7 +1,6 @@
 import type EventEmitter from "events";
 
 import { type NetworkType } from "@airgap/beacon-wallet";
-import { useToast } from "@chakra-ui/react";
 import { type WalletKitTypes } from "@reown/walletkit";
 import { useDynamicModalContext } from "@umami/components";
 import {
@@ -12,7 +11,13 @@ import {
   walletKit,
 } from "@umami/state";
 import { type Network } from "@umami/tezos";
-import { CustomError, WalletConnectError, WcErrorCode, getWcErrorResponse } from "@umami/utils";
+import {
+  CustomError,
+  WalletConnectError,
+  WcErrorCode,
+  getWcErrorResponse,
+  useCustomToast,
+} from "@umami/utils";
 import { formatJsonRpcError } from "@walletconnect/jsonrpc-utils";
 import { type SessionTypes } from "@walletconnect/types";
 import { type PropsWithChildren, useCallback, useEffect, useRef } from "react";
@@ -32,7 +37,7 @@ export const WalletConnectProvider = ({ children }: PropsWithChildren) => {
   const { handleAsyncActionUnsafe } = useAsyncActionHandler();
   const { openWith, isOpen, canBeOverridden } = useDynamicModalContext();
   const toggleWcPeerListUpdated = useToggleWcPeerListUpdated();
-  const toast = useToast();
+  const toast = useCustomToast();
 
   const availableNetworks: Network[] = useAvailableNetworks();
 

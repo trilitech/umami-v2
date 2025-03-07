@@ -1,4 +1,3 @@
-import { useToast } from "@chakra-ui/react";
 import { useDynamicModalContext } from "@umami/components";
 import { DEFAULT_ACCOUNT_LABEL, type MnemonicAccount } from "@umami/core";
 import {
@@ -7,6 +6,7 @@ import {
   useAsyncActionHandler,
   useDeriveMnemonicAccount,
 } from "@umami/state";
+import { useCustomToast } from "@umami/utils";
 
 import { trackAccountEvent } from "../../../utils/analytics";
 import { MasterPasswordModal } from "../../MasterPasswordModal";
@@ -22,7 +22,7 @@ export const DeriveMnemonicAccountModal = ({ account }: DeriveMnemonicAccountMod
   const { handleAsyncAction } = useAsyncActionHandler();
   const deriveMnemonicAccount = useDeriveMnemonicAccount();
   const dispatch = useAppDispatch();
-  const toast = useToast();
+  const toast = useCustomToast();
 
   const handleNameSubmit = ({ accountName }: { accountName: string }) => {
     const handlePasswordSubmit = (password?: string) =>

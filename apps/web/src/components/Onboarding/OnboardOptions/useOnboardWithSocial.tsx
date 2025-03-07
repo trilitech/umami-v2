@@ -1,8 +1,8 @@
-import { useToast } from "@chakra-ui/react";
 import { withTimeout } from "@umami/core";
 import * as Auth from "@umami/social-auth";
 import { useAsyncActionHandler, useRestoreSocial } from "@umami/state";
 import { getPublicKeyPairFromSk } from "@umami/tezos";
+import { useCustomToast } from "@umami/utils";
 import { minutesToMilliseconds } from "date-fns";
 import { useCallback } from "react";
 
@@ -22,7 +22,7 @@ const LOGIN_TIMEOUT = minutesToMilliseconds(1);
  * @param onAuth - callback which will be called on a successful authentication
  */
 export const useOnboardWithSocial = (idp: Auth.IDP, onAuth?: () => void) => {
-  const toast = useToast();
+  const toast = useCustomToast();
   const { isLoading, handleAsyncAction } = useAsyncActionHandler();
   const restoreSocial = useRestoreSocial();
 

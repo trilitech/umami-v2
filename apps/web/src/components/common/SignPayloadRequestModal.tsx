@@ -11,12 +11,12 @@ import {
   ModalFooter,
   Switch,
   Text,
-  useToast,
 } from "@chakra-ui/react";
 import { type TezosToolkit } from "@taquito/taquito";
 import { useDynamicModalContext } from "@umami/components";
 import { decodeBeaconPayload } from "@umami/core";
 import { WalletClient, WcScenarioType, useValidateWcRequest, walletKit } from "@umami/state";
+import { useCustomToast } from "@umami/utils";
 import { formatJsonRpcResult } from "@walletconnect/jsonrpc-utils";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
@@ -31,7 +31,7 @@ import { VerifyInfobox } from "../WalletConnect/VerifyInfobox";
 export const SignPayloadRequestModal = ({ opts }: { opts: SignPayloadProps }) => {
   const { goBack } = useDynamicModalContext();
   const validateWcRequest = useValidateWcRequest();
-  const toast = useToast();
+  const toast = useCustomToast();
   const form = useForm();
   const color = useColor();
   const [showRaw, setShowRaw] = useState(false);
