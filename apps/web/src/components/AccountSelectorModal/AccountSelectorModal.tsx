@@ -28,6 +28,7 @@ import {
   useRemoveNonMnemonic,
 } from "@umami/state";
 import { prettyTezAmount } from "@umami/tezos";
+import { CustomError } from "@umami/utils";
 import { groupBy } from "lodash";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -58,6 +59,10 @@ export const AccountSelectorModal = () => {
   const defaultAccount = useDefaultAccount();
   const lastItemRef = useRef<HTMLDivElement>(null);
   const [showShadow, setShowShadow] = useState(false);
+
+  if (!defaultAccount) {
+    throw new CustomError("Default account not found. This should never happen.");
+  }
 
   useEffect(() => {
     const observer = new IntersectionObserver(
