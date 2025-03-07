@@ -37,7 +37,7 @@ export const NFTDrawerCard = ({ nft }: { nft: NFTBalance }) => {
             size="full"
           >
             {isVideo ? (
-              <ReactPlayer data-testid="nft-video" loop playing url={url} />
+              <ReactPlayer controls data-testid="nft-video" loop playing playsinline url={url} />
             ) : (
               <Image
                 maxHeight={{ base: "366px", md: "446px" }}
