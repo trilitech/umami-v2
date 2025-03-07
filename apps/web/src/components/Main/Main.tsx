@@ -14,7 +14,7 @@ export const Main = () => (
     paddingTop={{ md: "75px" }}
     borderRadius="30px"
   >
-    <Card minHeight={{ base: "initial", md: "full" }} borderRadius="30px">
+    <Card height="100%" minHeight={{ base: "initial", md: "full" }} borderRadius="30px">
       <CardBody
         as={Flex}
         padding={{
