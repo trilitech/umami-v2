@@ -44,7 +44,12 @@ export const AccountTile = ({
         <AccountTileIcon account={account} size={sizes[size]} />
       </AccountTileWrapper>
 
-      <Flex justifyContent="space-between" width="100%" marginRight={isSmall ? 0 : "20px"}>
+      <Flex
+        justifyContent="space-between"
+        gap={isSmall ? "6px" : "unset"}
+        width="100%"
+        marginRight={isSmall ? 0 : "20px"}
+      >
         <Flex justifyContent="center" flexDirection="column" gap="2px">
           {!isSmall && (
             <Heading color={color("900")} size="sm">
