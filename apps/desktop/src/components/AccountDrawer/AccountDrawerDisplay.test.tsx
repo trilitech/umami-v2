@@ -78,7 +78,7 @@ describe("<AccountDrawerDisplay />", () => {
 
     render(<AccountCard accountPkh={pkh} />, { store });
 
-    await waitFor(() => expect(screen.getByText("1,234.554321 ꜩ")).toBeVisible());
+    await waitFor(() => expect(screen.getByText("1,234.554321 XTZ")).toBeVisible());
   });
 
   describe("tzkt link", () => {
@@ -152,8 +152,8 @@ describe("<AccountDrawerDisplay />", () => {
 
       const operations = await screen.findAllByTestId(/^operation-tile/);
       expect(operations).toHaveLength(2);
-      expect(operations[0]).toHaveTextContent("- 1.000000 ꜩ");
-      expect(operations[1]).toHaveTextContent("+ 2.000000 ꜩ");
+      expect(operations[0]).toHaveTextContent("- 1.000000 XTZ");
+      expect(operations[1]).toHaveTextContent("+ 2.000000 XTZ");
     });
   });
 
@@ -333,7 +333,7 @@ describe("<AccountDrawerDisplay />", () => {
       const { getAllByTestId } = within(screen.getByTestId("account-card-pending-tab-panel"));
       const pendingOps = getAllByTestId(/multisig-pending-operation/i);
       expect(pendingOps).toHaveLength(1);
-      expect(pendingOps[0]).toHaveTextContent(/-0.100000 ꜩ/i);
+      expect(pendingOps[0]).toHaveTextContent(/-0.100000 XTZ/i);
       expect(pendingOps[0]).toHaveTextContent(/Send to:tz1UN...oBUB3/i);
     });
 
@@ -356,8 +356,8 @@ describe("<AccountDrawerDisplay />", () => {
       expect(screen.getByTestId("account-card-operations-tab")).toBeVisible();
       const operations = await screen.findAllByTestId(/^operation-tile/);
       expect(operations).toHaveLength(2);
-      expect(operations[0]).toHaveTextContent("- 1.000000 ꜩ");
-      expect(operations[1]).toHaveTextContent("- 2.000000 ꜩ");
+      expect(operations[0]).toHaveTextContent("- 1.000000 XTZ");
+      expect(operations[1]).toHaveTextContent("- 2.000000 XTZ");
     });
   });
 });

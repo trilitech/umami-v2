@@ -84,7 +84,9 @@ export const FormPage = ({ ...props }: FormPageProps<FormValues>) => {
               Available Balance
             </Label>
             <Text>
-              {getCurrentBalance() !== undefined ? prettyTezAmount(getCurrentBalance()!) : "0.00 ꜩ"}
+              {getCurrentBalance() !== undefined
+                ? prettyTezAmount(getCurrentBalance()!)
+                : "0.00 XTZ"}
             </Text>
             {getDollarBalance() && <Text>{getDollarBalance()}</Text>}
           </YStack>

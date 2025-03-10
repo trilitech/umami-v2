@@ -76,7 +76,7 @@ export const AdvancedSettingsAccordion = ({ index = 0 }: AdvancedSettingsAccordi
                 maxWidth="fit-content"
                 height="46px"
                 paddingRight="12px"
-                children="ꜩ"
+                children="XTZ"
               />
             </InputGroup>
           </FormControl>

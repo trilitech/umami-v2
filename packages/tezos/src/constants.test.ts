@@ -1,8 +1,8 @@
 import { TEZ } from "./constants";
 
 describe("TEZ", () => {
-  it("should return ꜩ by default", () => {
-    expect(TEZ).toBe("ꜩ");
+  it("should return XTZ by default", () => {
+    expect(TEZ).toBe("XTZ");
   });
 
   it("should return XTZ for iOS", () => {

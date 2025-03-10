@@ -11,17 +11,17 @@ describe("truncate", () => {
 });
 
 test("prettyTezAmount displays 6 digits after the decimal point", () => {
-  expect(prettyTezAmount("1000000")).toBe("1.000000 ꜩ");
-  expect(prettyTezAmount("123")).toBe("0.000123 ꜩ");
-  expect(prettyTezAmount("10000123")).toBe("10.000123 ꜩ");
-  expect(prettyTezAmount("1000000123")).toBe("1,000.000123 ꜩ");
+  expect(prettyTezAmount("1000000")).toBe("1.000000 XTZ");
+  expect(prettyTezAmount("123")).toBe("0.000123 XTZ");
+  expect(prettyTezAmount("10000123")).toBe("10.000123 XTZ");
+  expect(prettyTezAmount("1000000123")).toBe("1,000.000123 XTZ");
 });
 
 test("formatTezAmountMin0Decimals displays 0 decimals", () => {
-  expect(formatTezAmountMin0Decimals("1000000")).toBe("1 ꜩ");
-  expect(formatTezAmountMin0Decimals("123")).toBe("0.000123 ꜩ");
-  expect(formatTezAmountMin0Decimals("10001230")).toBe("10.00123 ꜩ");
-  expect(formatTezAmountMin0Decimals("1000012300")).toBe("1,000.0123 ꜩ");
+  expect(formatTezAmountMin0Decimals("1000000")).toBe("1 XTZ");
+  expect(formatTezAmountMin0Decimals("123")).toBe("0.000123 XTZ");
+  expect(formatTezAmountMin0Decimals("10001230")).toBe("10.00123 XTZ");
+  expect(formatTezAmountMin0Decimals("1000012300")).toBe("1,000.0123 XTZ");
 });
 
 test("formatUsdAmount displays USD currency", () => {

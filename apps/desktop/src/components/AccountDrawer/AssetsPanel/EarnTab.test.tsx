@@ -20,7 +20,7 @@ describe("<EarnTab />", () => {
       render(<EarnTab account={account} />, { store });
 
       expect(screen.getByTestId("delegation-status")).toHaveTextContent("Inactive");
-      expect(screen.getByTestId("staked-balance")).toHaveTextContent("0.000000 ꜩ");
+      expect(screen.getByTestId("staked-balance")).toHaveTextContent("0.000000 XTZ");
 
       expect(screen.getByRole("button", { name: "Delegate" })).toBeVisible();
       expect(screen.getByRole("button", { name: "Delegate" })).toBeEnabled();
@@ -72,7 +72,7 @@ describe("<EarnTab />", () => {
       render(<EarnTab account={account} />, { store });
 
       expect(screen.getByTestId("delegation-status")).toHaveTextContent("Active");
-      expect(screen.getByTestId("staked-balance")).toHaveTextContent("0.001234 ꜩ");
+      expect(screen.getByTestId("staked-balance")).toHaveTextContent("0.001234 XTZ");
 
       expect(screen.queryByRole("button", { name: "Delegate" })).not.toBeInTheDocument();
 

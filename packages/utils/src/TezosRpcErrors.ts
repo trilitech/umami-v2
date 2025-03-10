@@ -210,7 +210,7 @@ export const TezosRpcErrors = {
     category: "temporary",
   },
   "contract.empty_transaction": {
-    description: "Empty transaction. Forbidden to credit 0ꜩ to a contract without code. ",
+    description: "Empty transaction. Forbidden to credit 0 XTZ to a contract without code. ",
     category: "temporary",
   },
   "contract.failure": {
@@ -2323,7 +2323,7 @@ export const TezosRpcErrors = {
     category: "permanent",
   },
   "client.alpha.badTezArg": {
-    description: "Bad Tez Arg. Invalid ꜩ notation in parameter. ",
+    description: "Bad Tez Arg. Invalid XTZ notation in parameter. ",
     category: "permanent",
   },
   "client.alpha.bytesDeserialisation": {

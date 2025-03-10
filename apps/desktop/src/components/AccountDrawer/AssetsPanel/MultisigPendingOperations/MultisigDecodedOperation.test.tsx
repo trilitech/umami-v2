@@ -58,7 +58,7 @@ describe("<MultisigDecodedOperation />", () => {
       { store }
     );
 
-    expect(screen.getByTestId("decoded-tez-amount")).toHaveTextContent("-1.000000 ꜩ");
+    expect(screen.getByTestId("decoded-tez-amount")).toHaveTextContent("-1.000000 XTZ");
   });
 
   it("Non NFT FA tokens amount renders correctly", () => {

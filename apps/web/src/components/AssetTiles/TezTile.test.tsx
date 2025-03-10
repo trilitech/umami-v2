@@ -48,6 +48,6 @@ describe("<TezTile />", () => {
   it("renders with address prop", () => {
     const address = "tz1VSUr8wwNhLAzempoch5d6hLRiTh8Cjcjb";
     render(<TezTile address={address} />);
-    expect(screen.getByText("0.00 ꜩ")).toBeInTheDocument();
+    expect(screen.getByText("0.00 XTZ")).toBeInTheDocument();
   });
 });
