@@ -8,6 +8,7 @@ import {
   useAsyncActionHandler,
 } from "@umami/state";
 import { useCustomToast } from "@umami/utils";
+import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { PasswordInput } from "../../PasswordInput";
@@ -30,7 +31,14 @@ export const ChangePasswordMenu = () => {
     formState: { isValid },
     getValues,
     reset,
+    trigger,
+    watch,
   } = form;
+  const newPassword = watch("newPassword");
+
+  useEffect(() => {
+    void trigger("newPasswordConfirmation"); // Revalidate confirmation field when newPassword changes
+  }, [newPassword, trigger]);
 
   hj.stateChange("menu/change_password");
 
