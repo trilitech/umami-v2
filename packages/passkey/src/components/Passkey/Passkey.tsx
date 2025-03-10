@@ -43,7 +43,10 @@ export const Passkey = () => {
 
   const handleRegisterPasskey = async () => {
     const result = await registerPasskey(userName as string);
-      handleResult(result);
+    handleResult(result);
+    if(result.verified){
+      const walletAddress = getWalletAddress(result.publicKey);
+    }
   }
   const handleAuthenticatePasskey = async () => {
     const result = await authenticatePasskey(userName as string);

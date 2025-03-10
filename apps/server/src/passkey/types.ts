@@ -49,6 +49,7 @@ import type {
   export type PublicKey = {
     id: Base64URLString;
     publicKey: string;
+    tezosAddress?: string;
   }
 
   export interface RegistrationResponseJSON {
