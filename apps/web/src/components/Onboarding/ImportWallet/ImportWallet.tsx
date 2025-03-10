@@ -19,6 +19,7 @@ import { SecretKeyTab } from "./SecretKeyTab";
 import { SeedPhraseTab } from "./SeedPhraseTab";
 import { LoginIcon } from "../../../assets/icons";
 import { useColor } from "../../../styles/useColor";
+import { ModalBackButton } from "../../BackButton";
 import { ModalCloseButton } from "../../CloseButton";
 import { TabSwitch } from "../../TabSwitch/TabSwitch";
 
@@ -44,6 +45,7 @@ export const ImportWallet = () => {
   return (
     <ModalContent>
       <ModalHeader>
+        <ModalBackButton />
         <ModalCloseButton />
         <Center flexDirection="row" gap="16px">
           <Icon as={LoginIcon} width="24px" height="24px" color={color("400")} />

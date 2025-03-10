@@ -52,25 +52,28 @@ export const useRestoreFromMnemonic = () => {
     mnemonic,
     password,
     derivationPathTemplate,
+    derivationPath,
     label,
     curve,
     isVerified = true,
   }: {
     mnemonic: string;
     password: string;
+    derivationPath: string;
     derivationPathTemplate: string;
     label: string;
     curve: Curves;
     isVerified?: boolean;
   }) => {
-    const accounts = await restoreRevealedMnemonicAccounts(
+    const accounts = await restoreRevealedMnemonicAccounts({
       mnemonic,
       network,
       derivationPathTemplate,
+      derivationPath,
       label,
       curve,
-      isVerified
-    );
+      isVerified,
+    });
     const encryptedMnemonic = await encrypt(mnemonic, password);
 
     dispatch(
@@ -96,6 +99,7 @@ export const useRestoreFromMnemonic = () => {
  * @param fingerPrint - Hash of the mnemonic. Generated with {@link generateHash}. We use it to group together accounts derived from the same mnemonic
  * @param password - User's password, used for decrypting the mnemonic.
  * @param label - Account name prefix, used to create a unique account name.
+ * @param derivationPath - Derivation path for the account that's being added.
  */
 export const useDeriveMnemonicAccount = () => {
   const encryptedMnemonics = useSeedPhrases();
@@ -107,10 +111,14 @@ export const useDeriveMnemonicAccount = () => {
     fingerPrint,
     password,
     label,
+    derivationPath,
+    curve,
   }: {
     fingerPrint: string;
     password: string;
     label: string;
+    derivationPath?: string;
+    curve?: Curves;
   }) => {
     const encryptedSeedphrase = encryptedMnemonics[fingerPrint];
     if (!encryptedSeedphrase) {
@@ -126,15 +134,18 @@ export const useDeriveMnemonicAccount = () => {
     const nextIndex = existingGroupAccounts.length;
 
     // Newly derived accounts use a derivation path in the same pattern as the first account
-    const { derivationPathTemplate, curve } = existingGroupAccounts[0];
+    const { derivationPathTemplate, curve: existingCurve } = existingGroupAccounts[0];
 
-    const nextDerivationPath = makeDerivationPath(derivationPathTemplate, nextIndex);
-    const { pk, pkh } = await derivePublicKeyPair(seedphrase, nextDerivationPath, curve);
+    const nextDerivationPath =
+      derivationPath || makeDerivationPath(derivationPathTemplate, nextIndex);
+    const nextCurve = curve || existingCurve;
+
+    const { pk, pkh } = await derivePublicKeyPair(seedphrase, nextDerivationPath, nextCurve);
 
     const uniqueLabel = getNextAvailableAccountLabels(label, 1)[0];
     const account: MnemonicAccount = {
       type: "mnemonic",
-      curve,
+      curve: nextCurve,
       pk,
       address: { type: "implicit", pkh },
       derivationPath: nextDerivationPath,

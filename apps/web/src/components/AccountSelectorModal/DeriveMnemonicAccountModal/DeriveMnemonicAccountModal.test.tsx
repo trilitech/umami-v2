@@ -39,6 +39,8 @@ describe("<DeriveMnemonicAccountModal />", () => {
     expect(
       screen.getByText(`Name the new account derived from seedphrase ${account.seedFingerPrint}`)
     ).toBeVisible();
+
+    expect(screen.getByTestId("advanced-section")).toBeVisible();
   });
 
   it("handles name submission and opens confirm password modal", async () => {

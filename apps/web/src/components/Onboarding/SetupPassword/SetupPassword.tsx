@@ -10,7 +10,7 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
-import { useMultiForm } from "@umami/components";
+import { useDynamicModalContext, useMultiForm } from "@umami/components";
 import { useHandleSession, useIsPasswordSet } from "@umami/state";
 import { defaultDerivationPathTemplate } from "@umami/tezos";
 import { FormProvider } from "react-hook-form";
@@ -67,12 +67,13 @@ export const SetupPassword = ({ mode }: SetupPasswordProps) => {
   const { onSubmit, isLoading } = useGetSetupPasswordSubmitHandler(mode);
   const isPasswordSet = useIsPasswordSet();
   const { setupSessionTimeout } = useHandleSession();
+  const { allFormValues } = useDynamicModalContext();
 
   const form = useMultiForm<FormFields>({
     mode: "all",
     defaultValues: {
-      derivationPath: defaultDerivationPathTemplate,
-      curve: "ed25519",
+      derivationPath: allFormValues.current?.derivationPath || defaultDerivationPathTemplate,
+      curve: allFormValues.current?.curve || "ed25519",
     },
   });
 
@@ -85,10 +86,13 @@ export const SetupPassword = ({ mode }: SetupPasswordProps) => {
 
   const handleSubmit = async (values: FormFields) => {
     await onSubmit(values);
+
     if (mode === "new_mnemonic") {
       setupSessionTimeout();
     }
   };
+
+  const isAdvancedAccountSettingsVisible = mode === "mnemonic" || mode === "new_mnemonic";
 
   return (
     <ModalContent>
@@ -126,7 +130,7 @@ export const SetupPassword = ({ mode }: SetupPasswordProps) => {
                 />
               )}
 
-              {mode === "mnemonic" && <AdvancedAccountSettings />}
+              {isAdvancedAccountSettingsVisible && <AdvancedAccountSettings />}
             </Flex>
           </ModalBody>
           <ModalFooter>

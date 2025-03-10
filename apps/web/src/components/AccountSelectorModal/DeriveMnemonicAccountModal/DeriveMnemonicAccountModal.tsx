@@ -1,3 +1,4 @@
+import { type Curves } from "@taquito/signer";
 import { useDynamicModalContext } from "@umami/components";
 import { DEFAULT_ACCOUNT_LABEL, type MnemonicAccount } from "@umami/core";
 import {
@@ -24,7 +25,15 @@ export const DeriveMnemonicAccountModal = ({ account }: DeriveMnemonicAccountMod
   const dispatch = useAppDispatch();
   const toast = useCustomToast();
 
-  const handleNameSubmit = ({ accountName }: { accountName: string }) => {
+  const handleNameSubmit = ({
+    accountName,
+    derivationPath,
+    curve,
+  }: {
+    accountName: string;
+    derivationPath?: string;
+    curve?: Curves;
+  }) => {
     const handlePasswordSubmit = (password?: string) =>
       handleAsyncAction(
         async () => {
@@ -34,6 +43,8 @@ export const DeriveMnemonicAccountModal = ({ account }: DeriveMnemonicAccountMod
             fingerPrint: account.seedFingerPrint,
             password: password || "",
             label: accountName.trim() || DEFAULT_ACCOUNT_LABEL,
+            derivationPath,
+            curve,
           });
 
           dispatch(accountsActions.setCurrent(newAccount.address.pkh));
@@ -53,6 +64,7 @@ export const DeriveMnemonicAccountModal = ({ account }: DeriveMnemonicAccountMod
     <NameAccountModal
       onSubmit={handleNameSubmit}
       subtitle={`Name the new account derived from seedphrase ${account.seedFingerPrint}`}
+      withAdvancedSettings
     />
   );
 };
