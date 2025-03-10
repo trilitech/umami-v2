@@ -38,11 +38,15 @@ class Database {
   async storePasskey(passkey: Passkey): Promise<void> {
     this.passkeys.push(passkey);
   }
-  async storePublicKey(passkey: Passkey, publicKey: string): Promise<void> {
-    this.publicKeys.push({publicKey: publicKey, id: passkey.id});
+  async storePublicKey(passkey: Passkey, publicKey: string, tezosAddress?: string): Promise<void> {
+    this.publicKeys.push({
+      publicKey: publicKey, 
+      id: passkey.id,
+      tezosAddress: tezosAddress
+    });
   }
-  async getPublicKey(passkey: Passkey): Promise<string | undefined> {
-    return this.publicKeys.find(publicKey => publicKey.id === passkey.id)?.publicKey;
+  async getPublicKey(passkey: Passkey): Promise<PublicKey | undefined> {
+    return this.publicKeys.find(publicKey => publicKey.id === passkey.id);
   }
 
   async setCurrentRegistrationOptions(user: User, options: PublicKeyCredentialCreationOptionsJSON): Promise<void> {

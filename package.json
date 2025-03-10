@@ -43,5 +43,9 @@
     "micromatch": "^4.0.8",
     "cookie": "^0.7.2",
     "elliptic": "^6.6.1"
+  },
+  "dependencies": {
+    "blakejs": "^1.2.1",
+    "bs58check": "^4.0.0"
   }
 }
