@@ -146,9 +146,9 @@ describe("<AccountBalanceDetails />", () => {
 
       render(<AccountBalanceDetails />, { store });
 
-      expect(screen.getByTestId("total-balance")).toHaveTextContent("1.234567 ꜩ");
+      expect(screen.getByTestId("total-balance")).toHaveTextContent("1.234567 XTZ");
       expect(screen.getByTestId("staked-balance")).toHaveTextContent("Staked");
-      expect(screen.getByTestId("staked-balance")).toHaveTextContent("1 ꜩ");
+      expect(screen.getByTestId("staked-balance")).toHaveTextContent("1 XTZ");
       expect(screen.queryByTestId("frozen-unstaked-balance")).not.toBeInTheDocument();
       expect(screen.queryByTestId("finalizable-balance")).not.toBeInTheDocument();
     });
@@ -183,11 +183,11 @@ describe("<AccountBalanceDetails />", () => {
 
       render(<AccountBalanceDetails />, { store });
 
-      expect(screen.getByTestId("total-balance")).toHaveTextContent("1.354567 ꜩ");
+      expect(screen.getByTestId("total-balance")).toHaveTextContent("1.354567 XTZ");
       expect(screen.queryByTestId("staked-balance")).not.toBeInTheDocument();
       expect(screen.queryByTestId("finalizable-balance")).not.toBeInTheDocument();
       expect(screen.getByTestId("frozen-unstaked-balance")).toHaveTextContent("Frozen unstaked");
-      expect(screen.getByTestId("frozen-unstaked-balance")).toHaveTextContent("0.12 ꜩ");
+      expect(screen.getByTestId("frozen-unstaked-balance")).toHaveTextContent("0.12 XTZ");
     });
 
     it("renders finalizable balance when greater than 0", () => {
@@ -214,11 +214,11 @@ describe("<AccountBalanceDetails />", () => {
       render(<AccountBalanceDetails />, { store });
 
       expect(screen.getByTestId("total-balance")).toHaveTextContent("Total");
-      expect(screen.getByTestId("total-balance")).toHaveTextContent("1.534567 ꜩ");
+      expect(screen.getByTestId("total-balance")).toHaveTextContent("1.534567 XTZ");
       expect(screen.queryByTestId("staked-balance")).not.toBeInTheDocument();
       expect(screen.queryByTestId("frozen-unstaked-balance")).not.toBeInTheDocument();
       expect(screen.getByTestId("finalizable-balance")).toHaveTextContent("Finalizable");
-      expect(screen.getByTestId("finalizable-balance")).toHaveTextContent("0.3 ꜩ");
+      expect(screen.getByTestId("finalizable-balance")).toHaveTextContent("0.3 XTZ");
     });
 
     it("renders combination of staked, unstaked and frozen", () => {
@@ -264,13 +264,13 @@ describe("<AccountBalanceDetails />", () => {
       render(<AccountBalanceDetails />, { store });
 
       expect(screen.getByTestId("total-balance")).toHaveTextContent("Total");
-      expect(screen.getByTestId("total-balance")).toHaveTextContent("4.444567 ꜩ");
+      expect(screen.getByTestId("total-balance")).toHaveTextContent("4.444567 XTZ");
       expect(screen.getByTestId("staked-balance")).toHaveTextContent("Staked");
-      expect(screen.getByTestId("staked-balance")).toHaveTextContent("1 ꜩ");
+      expect(screen.getByTestId("staked-balance")).toHaveTextContent("1 XTZ");
       expect(screen.getByTestId("frozen-unstaked-balance")).toHaveTextContent("Frozen unstaked");
-      expect(screen.getByTestId("frozen-unstaked-balance")).toHaveTextContent("0.21 ꜩ");
+      expect(screen.getByTestId("frozen-unstaked-balance")).toHaveTextContent("0.21 XTZ");
       expect(screen.getByTestId("finalizable-balance")).toHaveTextContent("Finalizable");
-      expect(screen.getByTestId("finalizable-balance")).toHaveTextContent("3 ꜩ");
+      expect(screen.getByTestId("finalizable-balance")).toHaveTextContent("3 XTZ");
     });
   });
 });

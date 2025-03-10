@@ -52,6 +52,6 @@ describe("<AccountSmallTile />", () => {
 
     render(<AccountSmallTile account={account} />, { store });
 
-    expect(screen.getByTestId("account-small-tile-balance")).toHaveTextContent("1.234567 ꜩ");
+    expect(screen.getByTestId("account-small-tile-balance")).toHaveTextContent("1.234567 XTZ");
   });
 });

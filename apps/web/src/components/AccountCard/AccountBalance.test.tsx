@@ -34,7 +34,7 @@ describe("<AccountBalance />", () => {
 
       render(<AccountBalance />, { store });
 
-      expect(screen.getByTestId("tez-balance")).toHaveTextContent("1.234567 ꜩ");
+      expect(screen.getByTestId("tez-balance")).toHaveTextContent("1.234567 XTZ");
       expect(screen.getByTestId("usd-balance")).toHaveTextContent("$3.02");
     });
 
@@ -50,14 +50,14 @@ describe("<AccountBalance />", () => {
 
       render(<AccountBalance />, { store });
 
-      expect(screen.getByTestId("tez-balance")).toHaveTextContent("1.234567 ꜩ");
+      expect(screen.getByTestId("tez-balance")).toHaveTextContent("1.234567 XTZ");
       expect(screen.queryByTestId("usd-balance")).not.toBeInTheDocument();
     });
 
     it("doesn't render balance if it's not available", () => {
       render(<AccountBalance />, { store });
 
-      expect(screen.getByTestId("tez-balance")).toHaveTextContent("0 ꜩ");
+      expect(screen.getByTestId("tez-balance")).toHaveTextContent("0 XTZ");
       expect(screen.getByTestId("usd-balance")).toHaveTextContent("$0.00");
     });
   });

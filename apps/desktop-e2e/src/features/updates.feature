@@ -7,5 +7,5 @@ Feature: Automatic updates
     And I am on an Accounts page
     When "Account 1" is topped-up with "1.123"
     And I wait until the next refetch
-    Then "Account 1" balance should be "1.123000 ꜩ"
-    And Total balance should be "1.123000 ꜩ"
+    Then "Account 1" balance should be "1.123000 XTZ"
+    And Total balance should be "1.123000 XTZ"

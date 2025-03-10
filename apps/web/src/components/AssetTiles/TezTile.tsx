@@ -46,7 +46,7 @@ export const TezTile = ({ address, mutezAmount }: TezTileProps) => {
         />
         <Box>
           <Heading color={color("900")} size="md">
-            {getCurrentBalance() !== undefined ? prettyTezAmount(getCurrentBalance()!) : "0.00 ꜩ"}
+            {getCurrentBalance() !== undefined ? prettyTezAmount(getCurrentBalance()!) : "0.00 XTZ"}
           </Heading>
           {getDollarBalance() && (
             <Text color={color("700")} data-testid="tez-dollar-amount" size="sm">

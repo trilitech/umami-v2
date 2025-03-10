@@ -90,7 +90,7 @@ describe("<AddressTileIcon />", () => {
 
       expect(screen.getByTestId("pretty-number")).toBeVisible();
       expect(screen.getByText("5")).toBeVisible();
-      expect(screen.getByText(".000000 ꜩ")).toBeVisible();
+      expect(screen.getByText(".000000 XTZ")).toBeVisible();
     });
 
     it('is hidden when "hideBalance" is true', () => {
