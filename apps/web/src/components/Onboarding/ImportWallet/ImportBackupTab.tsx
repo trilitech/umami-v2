@@ -27,6 +27,27 @@ import { trackOnboardingEvent, trackSuccessfulConnection } from "../../../utils/
 import { setupPersistence } from "../../../utils/store";
 import { MasterPasswordModal } from "../../MasterPasswordModal";
 
+const useOptionalLogin = (
+  account: ImplicitAccount | null,
+  setupPersistence: (key: string) => void
+) => {
+  const loginResult = useLoginToWallet(
+    account ||
+      ({
+        type: "mnemonic",
+        address: { pkh: "" },
+        derivationPath: "",
+      } as ImplicitAccount),
+    setupPersistence
+  );
+
+  if (!account) {
+    return { isLoading: false, handleLogin: () => () => Promise.resolve() };
+  }
+
+  return loginResult;
+};
+
 export const ImportBackupTab = () => {
   const color = useColor();
 
@@ -56,7 +77,7 @@ export const ImportBackupTab = () => {
     return JSON.parse(backup["persist:accounts"]) as AccountsState;
   };
 
-  const { isLoading, handleLogin } = useLoginToWallet(defaultAccount, setupPersistence);
+  const { isLoading, handleLogin } = useOptionalLogin(defaultAccount, setupPersistence);
 
   useEffect(() => {
     const parseBackup = async () => {
@@ -89,7 +110,11 @@ export const ImportBackupTab = () => {
       restoreBackup(backup);
 
       if (password) {
-        await handleLogin()(getAccounts(), { password });
+        const accounts = getAccounts();
+        if (!accounts) {
+          throw new Error("No accounts found in backup");
+        }
+        await handleLogin()(accounts as AccountsState, { password });
       } else {
         await handleLogin<SocialAccount>()();
       }
