@@ -7,7 +7,7 @@ import { InMemorySigner } from '@taquito/signer';
 import { PasskeySigner } from "./signer";
 
 // const tezos = new TezosToolkit('https://mainnet.api.tez.ie');
-const tezos = new TezosToolkit('https://api.ghostnet.tzkt.io');
+const tezos = new TezosToolkit('https://ghostnet.tezos.ecadinfra.com');
 
 export const broadcastTransaction = async ({transactionData, credentialId, publicKeyBuffer}: {transactionData: any, credentialId: string, publicKeyBuffer: ArrayBuffer }) => {
   console.log('broadcastTransaction'), {transactionData, credentialId, publicKeyBuffer};
