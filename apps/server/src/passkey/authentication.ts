@@ -79,5 +79,5 @@ export const verifyAuthentication = async (userId: number, authenticationRespons
   if(verification.verified) {
     publicKey = await db.getPublicKey(passkey);
   }
-  return {verified: verification.verified, publicKey: publicKey};
+  return {verified: verification.verified, publicKey: publicKey, passkeyId: passkey.id, passkeyPublicKey: passkey.publicKey};
 }

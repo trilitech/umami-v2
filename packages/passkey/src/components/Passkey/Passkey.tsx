@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 
-import { authenticatePasskey, registerPasskey } from "../../utils";
+import { authenticatePasskey, exampleSignTransaction, registerPasskey } from "../../utils";
 
 
 export const Passkey = () => {
@@ -28,11 +28,11 @@ export const Passkey = () => {
     }
   }
 
-  const handlePasskey = async (callback: () => Promise<any>) => {
+  const handlePasskey = async (callback: (userName: string) => Promise<any>) => {
     if(userName){
       try {
 
-        await callback();
+        await callback(userName);
       } catch (error: any) {
         toast({ description: "an error occurred", status: "error" });
       }
@@ -44,9 +44,6 @@ export const Passkey = () => {
   const handleRegisterPasskey = async () => {
     const result = await registerPasskey(userName as string);
     handleResult(result);
-    if(result.verified){
-      const walletAddress = getWalletAddress(result.publicKey);
-    }
   }
   const handleAuthenticatePasskey = async () => {
     const result = await authenticatePasskey(userName as string);
@@ -62,6 +59,9 @@ export const Passkey = () => {
           </Button>
           <Button width="full" onClick={() => handlePasskey(handleAuthenticatePasskey)} size="lg" variant="secondary">
            Authenticate
+          </Button>
+          <Button width="full" onClick={() => handlePasskey(exampleSignTransaction)} size="lg" variant="secondary">
+           SignTransaction
           </Button>
           {verified && <Text>User is logged in</Text>}
           {publicKey && <Text>Public Key: {publicKey}</Text>}
