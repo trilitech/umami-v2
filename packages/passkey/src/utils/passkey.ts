@@ -2,15 +2,13 @@ import { startAuthentication, startRegistration } from "@simplewebauthn/browser"
 import nacl from 'tweetnacl';
 import naclUtil from 'tweetnacl-util';
 import { TezosToolkit } from '@taquito/taquito';
-// import { importKey } from '@taquito/utils';
 import { InMemorySigner } from '@taquito/signer';
 import { PasskeySigner } from "./signer";
 
-// const tezos = new TezosToolkit('https://mainnet.api.tez.ie');
 const tezos = new TezosToolkit('https://ghostnet.tezos.ecadinfra.com');
 
 export const broadcastTransaction = async ({transactionData, credentialId, publicKeyBuffer}: {transactionData: any, credentialId: string, publicKeyBuffer: ArrayBuffer }) => {
-  console.log('broadcastTransaction'), {transactionData, credentialId, publicKeyBuffer};
+  console.log('broadcastTransaction', {transactionData, credentialId, publicKeyBuffer});
   try {
     // Create an InMemorySigner with the public key and signature
     const credentialIdBuffer = new Uint8Array(Buffer.from(credentialId, 'base64'));
@@ -21,7 +19,8 @@ export const broadcastTransaction = async ({transactionData, credentialId, publi
     const passkeySigner = new PasskeySigner(credentialIdBuffer, publicKeyBuffer, transactionData.from);
 
     tezos.setProvider({ signer: passkeySigner });
-console.log('Prepare the transaction');
+
+    console.log('Prepare the transaction');
     // Prepare the transaction
     // Send the transaction
     const result = await tezos.contract.transfer({
@@ -37,7 +36,6 @@ console.log('Prepare the transaction');
     throw error;
   }
 };
-
 
 const domain = "http://localhost:3000/api";
 
@@ -158,7 +156,7 @@ async function generateKeyFromPasskey(passkey: string) {
 }
 
 // Function to sign a transaction using the derived key pair
-export const signTransaction = async (passkey: string, transactionData: any) => {
+export const signTransaction = async (passkey: string, transactionData: any, publicKey: string) => {
   // Derive the key pair from the passkey
   const keyPair = await generateKeyFromPasskey(passkey);
 
@@ -175,9 +173,8 @@ export const signTransaction = async (passkey: string, transactionData: any) => 
   // Return the signature and public key, both encoded in Base64 for easy transport/verification
   return {
     signature: naclUtil.encodeBase64(signature),
-    publicKey: naclUtil.encodeBase64(keyPair.publicKey),
+    publicKey: publicKey, // Use the provided public key
     privateKey: privateKey // Include the private key in the response
-
   };
 }
 
@@ -186,24 +183,25 @@ export const exampleSignTransaction = async (userName: string) => {
   try {
     // Authenticate the user to get the passkey
     const authResult = await authenticatePasskey(userName);
-console.log({authResult});
+    console.log({authResult});
     if (authResult && authResult.verified) {
       const passkey = authResult.passkey; // Retrieve the passkey from the authentication result
+      const publicKey = authResult.tezosData.publicKey; // Retrieve the Tezos wallet public key
 
-      const tzdemoAddress= "tz1Ypv5akUsBf5Aay3Xj8QaZjqw24YZSJS7g";
+      // const tzdemoAddress= "tz1Ypv5akUsBf5Aay3Xj8QaZjqw24YZSJS7g";
       const transactionData = {
-        from: tzdemoAddress,
-        to: tzdemoAddress,
+        from: authResult.tezosData.address,
+        to:  authResult.tezosData.address,
         amount: 2,
         counter: 1,
         // ... include any additional transaction fields required by Tezos
       };
 
-      const result = await signTransaction(passkey, transactionData);
+      const result = await signTransaction(passkey, transactionData, publicKey);
       console.log("Signature:", result.signature);
       console.log("Public Key:", result.publicKey);
 
-       await broadcastTransaction({transactionData, publicKeyBuffer: authResult.passkeyPublicKey , credentialId: authResult.passkeyId});
+      await broadcastTransaction({transactionData, publicKeyBuffer: authResult.passkeyPublicKey , credentialId: authResult.passkeyId});
     } else {
       console.log("Authentication failed");
     }

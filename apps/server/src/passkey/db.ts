@@ -38,9 +38,9 @@ class Database {
   async storePasskey(passkey: Passkey): Promise<void> {
     this.passkeys.push(passkey);
   }
-  async storePublicKey(passkey: Passkey, publicKey: string, tezosAddress?: string): Promise<void> {
+  async storePublicKey(passkey: Passkey, tezosPublicKey: string, tezosAddress?: string): Promise<void> {
     this.publicKeys.push({
-      publicKey: publicKey, 
+      tezosPublicKey,
       id: passkey.id,
       tezosAddress: tezosAddress
     });

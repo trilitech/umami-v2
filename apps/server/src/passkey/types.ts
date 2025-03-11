@@ -48,7 +48,7 @@ import type {
 
   export type PublicKey = {
     id: Base64URLString;
-    publicKey: string;
+    tezosPublicKey: string;
     tezosAddress?: string;
   }
 
