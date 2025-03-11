@@ -21,7 +21,7 @@ export const broadcastTransaction = async ({transactionData, credentialId, publi
     const passkeySigner = new PasskeySigner(credentialIdBuffer, publicKeyBuffer, transactionData.from);
 
     tezos.setProvider({ signer: passkeySigner });
-
+console.log('Prepare the transaction');
     // Prepare the transaction
     // Send the transaction
     const result = await tezos.contract.transfer({
