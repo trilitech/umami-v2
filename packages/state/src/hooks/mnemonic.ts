@@ -51,7 +51,7 @@ export const restoreRevealedPublicKeyPairs = async ({
   let accountIndex = 0;
   let pubKeyPair = await derivePublicKeyPair(
     mnemonic,
-    derivationPath || makeDerivationPath(derivationPathTemplate, accountIndex),
+    makeDerivationPath(derivationPathTemplate, accountIndex, derivationPath),
     curve
   );
   do {
@@ -59,7 +59,7 @@ export const restoreRevealedPublicKeyPairs = async ({
     accountIndex += 1;
     pubKeyPair = await derivePublicKeyPair(
       mnemonic,
-      derivationPath || makeDerivationPath(derivationPathTemplate, accountIndex),
+      makeDerivationPath(derivationPathTemplate, accountIndex, derivationPath),
       curve
     );
   } while (await isAccountRevealed(pubKeyPair.pkh, network));
@@ -115,7 +115,7 @@ export const useRestoreRevealedMnemonicAccounts = () => {
       curve,
       pk,
       address: { type: "implicit", pkh },
-      derivationPath: derivationPath || makeDerivationPath(derivationPathTemplate, accountIndex),
+      derivationPath: makeDerivationPath(derivationPathTemplate, accountIndex, derivationPath),
       derivationPathTemplate,
       seedFingerPrint,
       label: accountLabels[accountIndex],

@@ -8,7 +8,7 @@ import {
 } from "@umami/core";
 import { decrypt, encrypt } from "@umami/crypto";
 import { type IDP } from "@umami/social-auth";
-import { derivePublicKeyPair, makeDerivationPath } from "@umami/tezos";
+import { derivePublicKeyPair, getDerivationPathNextIndex, makeDerivationPath } from "@umami/tezos";
 import { CustomError } from "@umami/utils";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
@@ -130,14 +130,20 @@ export const useDeriveMnemonicAccount = () => {
       (acc): acc is MnemonicAccount =>
         acc.type === "mnemonic" && acc.seedFingerPrint === fingerPrint
     );
-    // We can only delete the whole group, so skipped indexes are not possible.
-    const nextIndex = existingGroupAccounts.length;
-
     // Newly derived accounts use a derivation path in the same pattern as the first account
     const { derivationPathTemplate, curve: existingCurve } = existingGroupAccounts[0];
 
-    const nextDerivationPath =
-      derivationPath || makeDerivationPath(derivationPathTemplate, nextIndex);
+    // We can only delete the whole group, so skipped indexes are not possible.
+    const nextIndex = getDerivationPathNextIndex(
+      existingGroupAccounts[existingGroupAccounts.length - 1].derivationPath,
+      derivationPathTemplate
+    );
+
+    const nextDerivationPath = makeDerivationPath(
+      derivationPathTemplate,
+      nextIndex,
+      derivationPath
+    );
     const nextCurve = curve || existingCurve;
 
     const { pk, pkh } = await derivePublicKeyPair(seedphrase, nextDerivationPath, nextCurve);

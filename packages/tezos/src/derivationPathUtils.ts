@@ -1,5 +1,4 @@
 export const defaultDerivationPathTemplate = "44'/1729'/?'/0'";
-
 export const DEFAULT_DERIVATION_PATH_TEMPLATE = {
   label: "Default - m/44'/1729'/?'/0'",
   value: defaultDerivationPathTemplate,
@@ -15,5 +14,26 @@ export const AVAILABLE_DERIVATION_PATH_TEMPLATES = [
 export const getDefaultDerivationPath = (index: number) =>
   makeDerivationPath(defaultDerivationPathTemplate, index);
 
-export const makeDerivationPath = (pattern: string, index: number) =>
-  pattern.replace("?", index.toString());
+export const makeDerivationPath = (
+  template: string,
+  index: number,
+  currentPath?: string
+): string => {
+  if (!currentPath || currentPath === template) {
+    return template.replace("?", index.toString());
+  } else {
+    return currentPath;
+  }
+};
+
+export const getDerivationPathNextIndex = (
+  derivationPath: string,
+  derivationPathTemplate: string
+) => {
+  const currentPathParts = derivationPath.split("/");
+  const templateParts = derivationPathTemplate.split("/");
+  const index = templateParts.findLastIndex(part => part.includes("?"));
+
+  const currentValueNumber = parseInt(currentPathParts[index]);
+  return currentValueNumber + 1;
+};
