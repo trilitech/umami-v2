@@ -85,6 +85,54 @@ describe("<ChangePasswordMenu />", () => {
         );
       });
     });
+
+    it("requires same password and clears error when fixed", async () => {
+      const user = userEvent.setup();
+      await renderInDrawer(<ChangePasswordMenu />);
+
+      const newPasswordInput = screen.getByTestId("new-password");
+      const newPasswordConfirmationInput = screen.getByTestId("new-password-confirmation");
+
+      // Step 1: Enter mismatched passwords
+      await user.type(newPasswordInput, "myPassword");
+      await user.type(newPasswordConfirmationInput, "myWrongPassword");
+      fireEvent.blur(newPasswordConfirmationInput);
+
+      await waitFor(() => {
+        expect(screen.getByTestId("new-password-confirmation-error")).toHaveTextContent(
+          "Your new passwords do not match"
+        );
+      });
+
+      // Step 2: Fix the password confirmation
+      await user.clear(newPasswordConfirmationInput);
+      await user.type(newPasswordConfirmationInput, "myPassword");
+      fireEvent.blur(newPasswordConfirmationInput);
+
+      await waitFor(() => {
+        expect(screen.queryByTestId("new-password-confirmation-error")).not.toBeInTheDocument();
+      });
+
+      // Step 3: Change `newPassword` after confirmation
+      await user.clear(newPasswordInput);
+      await user.type(newPasswordInput, "newSecurePassword");
+      fireEvent.blur(newPasswordInput);
+
+      await waitFor(() => {
+        expect(screen.getByTestId("new-password-confirmation-error")).toHaveTextContent(
+          "Your new passwords do not match"
+        );
+      });
+
+      // Step 4: Fix the confirmation again
+      await user.clear(newPasswordConfirmationInput);
+      await user.type(newPasswordConfirmationInput, "newSecurePassword");
+      fireEvent.blur(newPasswordConfirmationInput);
+
+      await waitFor(() => {
+        expect(screen.queryByTestId("new-password-confirmation-error")).not.toBeInTheDocument();
+      });
+    });
   });
 
   describe("Submit Button", () => {
