@@ -43,6 +43,10 @@ export const verifyAuthentication = async (userId: number, authenticationRespons
   // should match the `id` in the returned credential
   //TODO: credential does it comes from the browser request??
   const passkey = await db.getPasskeyById(authenticationResponse.id);
+  if(!passkey) {
+    throw new Error(`Could not find passkey ${authenticationResponse.id} for user ${user.id}`);
+  }
+  const tezosData = await db.getPublicKey(passkey);
   if (!passkey) {
       throw new Error(`Could not find passkey ${authenticationResponse.id} for user ${user.id}`);
     }
@@ -79,5 +83,5 @@ export const verifyAuthentication = async (userId: number, authenticationRespons
   if(verification.verified) {
     publicKey = await db.getPublicKey(passkey);
   }
-  return {verified: verification.verified, publicKey: publicKey, passkeyId: passkey.id, passkeyPublicKey: passkey.publicKey};
+  return {verified: verification.verified, publicKey: publicKey, passkeyId: passkey.id, passkeyPublicKey: passkey.publicKey, tezosData};
 }
