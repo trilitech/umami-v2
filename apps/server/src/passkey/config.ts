@@ -16,7 +16,7 @@ export const rpName = 'SimpleWebAuthn Example';
 // export const origin = `https://${rpID}`;
 
 // for localhost
-export const rpID = 'umami-v2-d87pos9qt-trili-tech.vercel.app';
-export const origin = "https://umami-v2-d87pos9qt-trili-tech.vercel.app";
+export const rpID = 'umami-v2-iz0di991f-trili-tech.vercel.app';
+export const origin = "https://umami-v2-iz0di991f-trili-tech.vercel.app";
 // export const rpID = 'localhost';
 // export const origin = `http://${rpID}:5173`;
