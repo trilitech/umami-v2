@@ -46,12 +46,12 @@
     "@taquito/signer": "^21.0.0",
     "@taquito/taquito": "^21.0.0",
     "@tzkt/sdk-api": "^2.2.1",
-    "@umami/passkey": "workspace:^",
     "@umami/components": "workspace:^",
     "@umami/core": "workspace:^",
     "@umami/crypto": "workspace:^",
     "@umami/data-polling": "workspace:^",
     "@umami/multisig": "workspace:^",
+    "@umami/passkey": "workspace:^",
     "@umami/social-auth": "workspace:^",
     "@umami/state": "workspace:^",
     "@umami/tezos": "workspace:^",
@@ -88,6 +88,8 @@
     "redux": "^5.0.1",
     "redux-persist": "^6.0.0",
     "sanitize-html": "^2.14.0",
+    "tweetnacl": "^1.0.3",
+    "tweetnacl-util": "^0.15.1",
     "zod": "^3.24.1"
   },
   "devDependencies": {

@@ -56,8 +56,8 @@ router.post('/generate-authentication-options', async (req, res) => {
 router.post('/verify-authentication', async (req, res) => {
   try {
     const response = req.body as AuthenticationResponseJSON;
-    const {verified, publicKey} = await verifyAuthentication(123, response);
-    res.json({verified, publicKey});
+    const { verified, publicKey, passkeyId, passkeyPublicKey} = await verifyAuthentication(123, response);
+    res.json({ verified, publicKey, passkeyId, passkeyPublicKey });
   } catch (error) {
     console.error(error);
     res.status(500).send('An error occurred');
