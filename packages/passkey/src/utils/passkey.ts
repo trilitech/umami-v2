@@ -26,6 +26,17 @@ export const broadcastTransaction = async ({transactionData, credentialId, publi
     const result = await tezos.contract.transfer({
       to: transactionData.to,
       amount: transactionData.amount,
+      parameter: {
+        entrypoint: 'default',
+        value: {
+          prim: 'Pair',
+          args: [
+            { string: transactionData.to },
+            { int: transactionData.amount.toString() },
+            { string: publicKeyBuffer } // Add the public key here
+          ]
+        }
+      }
     });
     await result.confirmation();
 
@@ -186,12 +197,12 @@ export const exampleSignTransaction = async (userName: string) => {
     console.log({authResult});
     if (authResult && authResult.verified) {
       const passkey = authResult.passkey; // Retrieve the passkey from the authentication result
-      const publicKey = authResult.tezosData.publicKey; // Retrieve the Tezos wallet public key
+      const publicKey = authResult.tezosData.tezosPublicKey; // Retrieve the Tezos wallet public key
 
       // const tzdemoAddress= "tz1Ypv5akUsBf5Aay3Xj8QaZjqw24YZSJS7g";
       const transactionData = {
-        from: authResult.tezosData.address,
-        to:  authResult.tezosData.address,
+        from: authResult.tezosData.tezosAddress,
+        to:  authResult.tezosData.tezosAddress,
         amount: 2,
         counter: 1,
         // ... include any additional transaction fields required by Tezos
