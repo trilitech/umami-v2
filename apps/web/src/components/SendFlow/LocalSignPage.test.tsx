@@ -1,7 +1,5 @@
 import { Modal } from "@chakra-ui/react";
 import {
-  type FA12TokenBalance,
-  type FA2TokenBalance,
   makeAccountOperations,
   mockFA2Token,
   mockImplicitAccount,
@@ -9,20 +7,20 @@ import {
 } from "@umami/core";
 import { type UmamiStore, addTestAccount, makeStore } from "@umami/state";
 import { executeParams } from "@umami/test-utils";
-import { TEZ, parseContractPkh } from "@umami/tezos";
+import { TEZ, mockImplicitAddress, parseContractPkh } from "@umami/tezos";
 
-import { SignPage } from "./SignPage";
-import { render, screen, waitFor } from "../../../testUtils";
-import { type SignPageProps } from "../utils";
+import { LocalSignPage } from "./LocalSignPage";
+import { type LocalSignPageProps } from "./utils";
+import { render, screen, waitFor } from "../../testUtils";
 
 jest.mock("@chakra-ui/react", () => ({
   ...jest.requireActual("@chakra-ui/react"),
   useBreakpointValue: jest.fn(),
 }));
 
-const fixture = (props: SignPageProps<{ token: FA12TokenBalance | FA2TokenBalance }>) => (
+const fixture = (props: LocalSignPageProps) => (
   <Modal isOpen={true} onClose={() => {}}>
-    <SignPage {...props} />
+    <LocalSignPage {...props} />
   </Modal>
 );
 
@@ -35,7 +33,33 @@ beforeEach(() => {
 
 const mockAccount = mockMnemonicAccount(0);
 const mockFAToken = mockFA2Token(0, mockAccount);
-describe("<SignPage />", () => {
+
+describe("<LocalSignPage tez/>", () => {
+  describe("fee", () => {
+    it("displays the fee in tez", async () => {
+      const store = makeStore();
+      addTestAccount(store, mockMnemonicAccount(0));
+      const props: LocalSignPageProps = {
+        operations: {
+          ...makeAccountOperations(mockImplicitAccount(0), mockImplicitAccount(0), [
+            {
+              type: "tez",
+              amount: "1000000",
+              recipient: mockImplicitAddress(1),
+            },
+          ]),
+          estimates: [executeParams({ fee: 1234567 })],
+        },
+        operationType: "tez",
+      };
+      render(fixture(props), { store });
+
+      await waitFor(() => expect(screen.getByTestId("fee")).toHaveTextContent(`1.234567 ${TEZ}`));
+    });
+  });
+});
+
+describe("<LocalSignPage token/>", () => {
   const sender = mockImplicitAccount(0);
   const operations = {
     ...makeAccountOperations(sender, mockImplicitAccount(0), [
@@ -56,12 +80,10 @@ describe("<SignPage />", () => {
   };
   describe("fee", () => {
     it("displays the fee in tez", async () => {
-      const props: SignPageProps<{
-        token: FA12TokenBalance | FA2TokenBalance;
-      }> = {
+      const props: LocalSignPageProps = {
         operations,
-        mode: "single",
-        data: { token: mockFAToken },
+        operationType: "token",
+        token: mockFAToken,
       };
       render(fixture(props), { store });
 
@@ -71,12 +93,10 @@ describe("<SignPage />", () => {
 
   describe("token", () => {
     it("displays the correct symbol", async () => {
-      const props: SignPageProps<{
-        token: FA12TokenBalance | FA2TokenBalance;
-      }> = {
+      const props: LocalSignPageProps = {
         operations,
-        mode: "single",
-        data: { token: mockFAToken },
+        operationType: "token",
+        token: mockFAToken,
       };
       render(fixture(props), { store });
 
@@ -88,12 +108,10 @@ describe("<SignPage />", () => {
     });
 
     it("displays the correct amount", async () => {
-      const props: SignPageProps<{
-        token: FA12TokenBalance | FA2TokenBalance;
-      }> = {
+      const props: LocalSignPageProps = {
         operations,
-        mode: "single",
-        data: { token: mockFA2Token(0, mockAccount, 1, 0) },
+        operationType: "token",
+        token: mockFA2Token(0, mockAccount, 1, 0),
       };
       render(fixture(props), { store });
 

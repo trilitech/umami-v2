@@ -13,7 +13,6 @@ import { executeParams } from "@umami/test-utils";
 import { parseContractPkh } from "@umami/tezos";
 
 import { FormPage, type FormValues } from "./FormPage";
-import { SignPage } from "./SignPage";
 import {
   act,
   dynamicModalContextMock,
@@ -23,6 +22,7 @@ import {
   userEvent,
   waitFor,
 } from "../../../testUtils";
+import { LocalSignPage } from "../LocalSignPage";
 import { type FormPagePropsWithSender } from "../utils";
 
 jest.mock("@umami/core", () => ({
@@ -241,11 +241,11 @@ describe("<FormPage />", () => {
         await act(() => user.click(submitButton));
 
         expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
-          <SignPage
-            data={{ token: mockFA2Token(0, mockAccount, 2, 0) }}
+          <LocalSignPage
             goBack={expect.any(Function)}
-            mode="single"
+            operationType="token"
             operations={operations}
+            token={mockFA2Token(0, mockAccount, 2, 0)}
           />
         );
         expect(mockToast).not.toHaveBeenCalled();

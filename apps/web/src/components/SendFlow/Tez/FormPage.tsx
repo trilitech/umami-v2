@@ -15,7 +15,6 @@ import { useGetAccountBalanceDetails } from "@umami/state";
 import { type RawPkh, TEZ, TEZ_DECIMALS, parsePkh, tezToMutez } from "@umami/tezos";
 import { FormProvider, useForm } from "react-hook-form";
 
-import { SignPage } from "./SignPage";
 import { useColor } from "../../../styles/useColor";
 import { KnownAccountsAutocomplete } from "../../AddressAutocomplete";
 import { AddressTile } from "../../AddressTile";
@@ -42,8 +41,7 @@ export type FormValues = {
 export const FormPage = ({ ...props }: FormPageProps<FormValues>) => {
   const color = useColor();
   const openSignPage = useOpenSignPageFormAction({
-    SignPage,
-    signPageExtraData: undefined,
+    operationType: "tez",
     FormPage,
     defaultFormPageProps: props,
     toOperation,
