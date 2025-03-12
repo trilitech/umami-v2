@@ -10,7 +10,7 @@ import { db } from './db';
 import bs58check from 'bs58check';
 import * as blake from 'blakejs';
 // Import Taquito utilities
-import { b58cencode, prefix, Prefix } from '@taquito/utils';
+import { b58cencode, prefix, getPkhfromPk} from '@taquito/utils';
 
 export const getRegistrationOptions = async (userName: string) => {
   let user = await db.getUserByUsername(userName);
@@ -152,11 +152,7 @@ const createPasskey = async (user: User, verification: VerifiedRegistrationRespo
       
       // Generate address using Taquito
       try {
-        // Hash the public key with BLAKE2b-256
-        const publicKeyHash = Buffer.from(blake.blake2b(compressedKey, undefined, 32));
-        
-        // Take the first 20 bytes and encode with tz2 prefix
-        tezosAddress = b58cencode(publicKeyHash.subarray(0, 20), prefix.tz2);
+        tezosAddress = getPkhfromPk(tezosPublicKey);
         console.log('Tezos SECP256K1 address (tz2):', tezosAddress);
       } catch (error) {
         console.error('Error generating tz2 address:', error);
@@ -172,11 +168,7 @@ const createPasskey = async (user: User, verification: VerifiedRegistrationRespo
       
       // Generate address using Taquito
       try {
-        // Hash the public key with BLAKE2b-256
-        const publicKeyHash = Buffer.from(blake.blake2b(compressedKey, undefined, 32));
-        
-        // Take the first 20 bytes and encode with tz3 prefix
-        tezosAddress = b58cencode(publicKeyHash.subarray(0, 20), prefix.tz3);
+        tezosAddress = getPkhfromPk(tezosPublicKey);
         console.log('Tezos P-256 address (tz3):', tezosAddress);
       } catch (error) {
         console.error('Error generating tz3 address:', error);
