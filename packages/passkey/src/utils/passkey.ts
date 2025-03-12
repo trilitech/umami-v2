@@ -7,36 +7,25 @@ import { PasskeySigner } from "./signer";
 
 const tezos = new TezosToolkit('https://ghostnet.tezos.ecadinfra.com');
 
-export const broadcastTransaction = async ({transactionData, credentialId, publicKeyBuffer}: {transactionData: any, credentialId: string, publicKeyBuffer: ArrayBuffer }) => {
+export const broadcastTransaction = async ({transactionData, credentialId, publicKeyBuffer}: {transactionData: any, credentialId: string, publicKeyBuffer: string }) => {
   console.log('broadcastTransaction', {transactionData, credentialId, publicKeyBuffer});
   try {
     // Create an InMemorySigner with the public key and signature
     const credentialIdBuffer = new Uint8Array(Buffer.from(credentialId, 'base64'));
 
     console.log({
-      credentialIdBuffer, publicKeyBuffer, from:  transactionData.from
+      credentialIdBuffer, publicKeyBuffer, from:  transactionData.to
     });
-    const passkeySigner = new PasskeySigner(credentialIdBuffer, publicKeyBuffer, transactionData.from);
+    const passkeySigner = new PasskeySigner(credentialIdBuffer, publicKeyBuffer, transactionData.to);
 
     tezos.setProvider({ signer: passkeySigner });
 
-    console.log('Prepare the transaction');
+    console.log('Prepare the transaction', transactionData);
     // Prepare the transaction
     // Send the transaction
     const result = await tezos.contract.transfer({
       to: transactionData.to,
       amount: transactionData.amount,
-      parameter: {
-        entrypoint: 'default',
-        value: {
-          prim: 'Pair',
-          args: [
-            { string: transactionData.to },
-            { int: transactionData.amount.toString() },
-            { string: publicKeyBuffer } // Add the public key here
-          ]
-        }
-      }
     });
     await result.confirmation();
 
@@ -201,18 +190,12 @@ export const exampleSignTransaction = async (userName: string) => {
 
       // const tzdemoAddress= "tz1Ypv5akUsBf5Aay3Xj8QaZjqw24YZSJS7g";
       const transactionData = {
-        from: authResult.tezosData.tezosAddress,
         to:  authResult.tezosData.tezosAddress,
         amount: 2,
-        counter: 1,
         // ... include any additional transaction fields required by Tezos
       };
 
-      const result = await signTransaction(passkey, transactionData, publicKey);
-      console.log("Signature:", result.signature);
-      console.log("Public Key:", result.publicKey);
-
-      await broadcastTransaction({transactionData, publicKeyBuffer: authResult.passkeyPublicKey , credentialId: authResult.passkeyId});
+      await broadcastTransaction({transactionData, publicKeyBuffer: authResult.tezosData.tezosPublicKey, credentialId: authResult.passkeyId});
     } else {
       console.log("Authentication failed");
     }
