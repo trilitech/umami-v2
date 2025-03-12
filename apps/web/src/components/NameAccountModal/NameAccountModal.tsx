@@ -13,6 +13,7 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
+import { type Curves } from "@taquito/signer";
 import { useMultiForm } from "@umami/components";
 import { defaultDerivationPathTemplate } from "@umami/tezos";
 import { FormProvider } from "react-hook-form";
@@ -26,7 +27,7 @@ import { AdvancedAccountSettings } from "../Onboarding/AdvancedAccountSettings";
 type NameAccountModalProps = {
   title?: string;
   subtitle?: string;
-  onSubmit: (values: { accountName: string }) => void;
+  onSubmit: (values: { accountName: string; derivationPath?: string; curve?: Curves }) => void;
   withAdvancedSettings?: boolean;
   buttonLabel?: string;
 };
@@ -40,7 +41,11 @@ export const NameAccountModal = ({
 }: NameAccountModalProps) => {
   const color = useColor();
 
-  const form = useMultiForm({
+  const form = useMultiForm<{
+    accountName: string;
+    derivationPath?: string;
+    curve?: Curves;
+  }>({
     mode: "all",
     defaultValues: {
       accountName: "",

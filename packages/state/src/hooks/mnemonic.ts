@@ -30,20 +30,28 @@ export const generate24WordMnemonic = () => generateMnemonic(256);
  *
  * @param mnemonic - Space separated words making a BIP39 seed phrase.
  * @param derivationPathTemplate - Path pattern for searching for the key pairs.
+ * @param derivationPath - Derivation path for the account group that's being added.
  * @param curve - Elliptic curve used for the key pairs.
  * @returns List of revealed {@link PublicKeyPair} associated with the given parameters.
  */
-export const restoreRevealedPublicKeyPairs = async (
-  mnemonic: string,
-  derivationPathTemplate: string,
-  curve: Curves,
-  network: Network
-): Promise<PublicKeyPair[]> => {
+export const restoreRevealedPublicKeyPairs = async ({
+  mnemonic,
+  derivationPathTemplate,
+  derivationPath,
+  curve,
+  network,
+}: {
+  mnemonic: string;
+  derivationPathTemplate: string;
+  derivationPath?: string;
+  curve: Curves;
+  network: Network;
+}): Promise<PublicKeyPair[]> => {
   const result: PublicKeyPair[] = [];
   let accountIndex = 0;
   let pubKeyPair = await derivePublicKeyPair(
     mnemonic,
-    makeDerivationPath(derivationPathTemplate, accountIndex),
+    makeDerivationPath(derivationPathTemplate, accountIndex, derivationPath),
     curve
   );
   do {
@@ -51,7 +59,7 @@ export const restoreRevealedPublicKeyPairs = async (
     accountIndex += 1;
     pubKeyPair = await derivePublicKeyPair(
       mnemonic,
-      makeDerivationPath(derivationPathTemplate, accountIndex),
+      makeDerivationPath(derivationPathTemplate, accountIndex, derivationPath),
       curve
     );
   } while (await isAccountRevealed(pubKeyPair.pkh, network));
@@ -75,20 +83,30 @@ export const restoreRevealedPublicKeyPairs = async (
 export const useRestoreRevealedMnemonicAccounts = () => {
   const getNextAvailableAccountLabels = useGetNextAvailableAccountLabels();
 
-  return async (
-    mnemonic: string,
-    network: Network,
-    derivationPathTemplate: string,
-    label: string,
-    curve: Curves,
-    isVerified = true
-  ): Promise<MnemonicAccount[]> => {
-    const pubKeyPairs = await restoreRevealedPublicKeyPairs(
+  return async ({
+    mnemonic,
+    network,
+    derivationPathTemplate,
+    derivationPath,
+    label,
+    curve,
+    isVerified = true,
+  }: {
+    mnemonic: string;
+    network: Network;
+    derivationPathTemplate: string;
+    derivationPath?: string;
+    label: string;
+    curve: Curves;
+    isVerified?: boolean;
+  }): Promise<MnemonicAccount[]> => {
+    const pubKeyPairs = await restoreRevealedPublicKeyPairs({
       mnemonic,
       derivationPathTemplate,
+      derivationPath,
       curve,
-      network
-    );
+      network,
+    });
     const seedFingerPrint = generateHash();
     const accountLabels = getNextAvailableAccountLabels(label, pubKeyPairs.length);
 
@@ -97,7 +115,7 @@ export const useRestoreRevealedMnemonicAccounts = () => {
       curve,
       pk,
       address: { type: "implicit", pkh },
-      derivationPath: makeDerivationPath(derivationPathTemplate, accountIndex),
+      derivationPath: makeDerivationPath(derivationPathTemplate, accountIndex, derivationPath),
       derivationPathTemplate,
       seedFingerPrint,
       label: accountLabels[accountIndex],

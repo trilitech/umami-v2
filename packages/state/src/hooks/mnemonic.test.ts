@@ -85,12 +85,12 @@ describe.each(["ed25519", "secp256k1", "p256"] as const)("with %s curve", curve 
         .mocked(isAccountRevealed)
         .mockImplementation(fakeIsAccountRevealed(testPublicKeys[curve]));
 
-      const result = await restoreRevealedPublicKeyPairs(
-        mnemonic1,
-        defaultDerivationPathTemplate,
+      const result = await restoreRevealedPublicKeyPairs({
+        mnemonic: mnemonic1,
+        derivationPathTemplate: defaultDerivationPathTemplate,
         curve,
-        MAINNET
-      );
+        network: MAINNET,
+      });
 
       expect(result).toEqual(testPublicKeys[curve]);
     });
@@ -98,12 +98,12 @@ describe.each(["ed25519", "secp256k1", "p256"] as const)("with %s curve", curve 
     it("restores first account if none exists", async () => {
       jest.mocked(isAccountRevealed).mockImplementation(fakeIsAccountRevealed([]));
 
-      const result = await restoreRevealedPublicKeyPairs(
-        mnemonic1,
-        defaultDerivationPathTemplate,
+      const result = await restoreRevealedPublicKeyPairs({
+        mnemonic: mnemonic1,
+        derivationPathTemplate: defaultDerivationPathTemplate,
         curve,
-        MAINNET
-      );
+        network: MAINNET,
+      });
 
       expect(result).toEqual(testPublicKeys[curve].slice(0, 1));
     });
@@ -115,12 +115,12 @@ describe.each(["ed25519", "secp256k1", "p256"] as const)("with %s curve", curve 
           fakeIsAccountRevealed([testPublicKeys[curve][0], testPublicKeys[curve][2]])
         );
 
-      const result = await restoreRevealedPublicKeyPairs(
-        mnemonic1,
-        defaultDerivationPathTemplate,
+      const result = await restoreRevealedPublicKeyPairs({
+        mnemonic: mnemonic1,
+        derivationPathTemplate: defaultDerivationPathTemplate,
         curve,
-        MAINNET
-      );
+        network: MAINNET,
+      });
 
       expect(result).toEqual(testPublicKeys[curve].slice(0, 1));
     });
@@ -149,13 +149,14 @@ describe.each(["ed25519", "secp256k1", "p256"] as const)("with %s curve", curve 
       const {
         result: { current: restoreRevealedMnemonicsHook },
       } = renderHook(() => useRestoreRevealedMnemonicAccounts(), { store });
-      const result = await restoreRevealedMnemonicsHook(
-        mnemonic1,
-        MAINNET,
-        defaultDerivationPathTemplate,
-        CUSTOM_LABEL,
-        curve
-      );
+      const result = await restoreRevealedMnemonicsHook({
+        mnemonic: mnemonic1,
+        curve,
+        network: MAINNET,
+        derivationPathTemplate: defaultDerivationPathTemplate,
+        label: CUSTOM_LABEL,
+        isVerified: true,
+      });
 
       expect(result).toEqual(expected);
     });
@@ -166,13 +167,14 @@ describe.each(["ed25519", "secp256k1", "p256"] as const)("with %s curve", curve 
       const {
         result: { current: restoreRevealedMnemonicsHook },
       } = renderHook(() => useRestoreRevealedMnemonicAccounts(), { store });
-      const result = await restoreRevealedMnemonicsHook(
-        mnemonic1,
-        MAINNET,
-        defaultDerivationPathTemplate,
-        CUSTOM_LABEL,
-        curve
-      );
+      const result = await restoreRevealedMnemonicsHook({
+        mnemonic: mnemonic1,
+        curve,
+        network: MAINNET,
+        derivationPathTemplate: defaultDerivationPathTemplate,
+        label: CUSTOM_LABEL,
+        isVerified: true,
+      });
 
       const expected: ImplicitAccount[] = [
         expect.objectContaining({
@@ -199,13 +201,14 @@ describe.each(["ed25519", "secp256k1", "p256"] as const)("with %s curve", curve 
       const {
         result: { current: restoreRevealedMnemonicsHook },
       } = renderHook(() => useRestoreRevealedMnemonicAccounts(), { store });
-      const result = await restoreRevealedMnemonicsHook(
-        mnemonic1,
-        MAINNET,
-        defaultDerivationPathTemplate,
-        CUSTOM_LABEL,
-        curve
-      );
+      const result = await restoreRevealedMnemonicsHook({
+        mnemonic: mnemonic1,
+        network: MAINNET,
+        derivationPathTemplate: defaultDerivationPathTemplate,
+        label: CUSTOM_LABEL,
+        curve,
+        isVerified: true,
+      });
 
       const expected: ImplicitAccount[] = [
         expect.objectContaining({
@@ -229,13 +232,14 @@ describe.each(["ed25519", "secp256k1", "p256"] as const)("with %s curve", curve 
       const {
         result: { current: restoreRevealedMnemonicsHook },
       } = renderHook(() => useRestoreRevealedMnemonicAccounts(), { store });
-      const result = await restoreRevealedMnemonicsHook(
-        mnemonic1,
-        MAINNET,
-        "44'/1729'/?'/0'",
-        "Account",
-        curve
-      );
+      const result = await restoreRevealedMnemonicsHook({
+        mnemonic: mnemonic1,
+        network: MAINNET,
+        derivationPathTemplate: "44'/1729'/?'/0'",
+        label: "Account",
+        curve,
+        isVerified: true,
+      });
 
       const expected: ImplicitAccount[] = [
         expect.objectContaining({

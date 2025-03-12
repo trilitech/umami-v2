@@ -12,7 +12,7 @@ import {
   useRestoreFromSecretKey,
   useValidateMasterPassword,
 } from "@umami/state";
-import { decryptSecretKey } from "@umami/tezos";
+import { decryptSecretKey, defaultDerivationPathTemplate } from "@umami/tezos";
 
 import { type FormFields, type Mode } from "./types";
 import { trackAccountEvent, trackOnboardingEvent } from "../../../utils/analytics";
@@ -49,7 +49,8 @@ const useGetMnemonicHandler = () => {
     const accounts = await restoreFromMnemonic({
       mnemonic,
       password,
-      derivationPathTemplate: derivationPath,
+      derivationPath,
+      derivationPathTemplate: defaultDerivationPathTemplate,
       label: allFormValues.current?.accountName || label,
       curve,
       isVerified: !isNewMnemonic,
