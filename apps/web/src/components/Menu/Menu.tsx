@@ -5,39 +5,38 @@ import { useDynamicDrawerContext, useDynamicModalContext } from "@umami/componen
 import { useDownloadBackupFile } from "@umami/state";
 
 import { AddressBookMenu } from "./AddressBookMenu/AddressBookMenu";
-import { AdvancedMenu } from "./AdvancedMenu/AdvancedMenu";
 import { AppsMenu } from "./AppsMenu/AppsMenu";
+import { ChangePasswordMenu } from "./ChangePasswordMenu/ChangePasswordMenu";
 import { GenericMenu } from "./GenericMenu";
 import { LogoutModal } from "./LogoutModal";
 import {
+  AlertCircleIcon,
   BookIcon,
   CodeSandboxIcon,
   DownloadIcon,
+  LockIcon,
   LogoutIcon,
   MoonIcon,
-  SettingsIcon,
+  RadioIcon,
   UserPlusIcon,
 } from "../../assets/icons";
 import { OnboardOptionsModal } from "../Onboarding/OnboardOptions";
-import { useHasVerifiedAccounts } from "../Onboarding/VerificationFlow";
+import { useHasVerifiedAccounts, useIsAccountVerified } from "../Onboarding/VerificationFlow";
+import { ErrorLogsMenu } from "./ErrorLogsMenu/ErrorLogsMenu";
+import { NetworkMenu } from "./NetworkMenu/NetworkMenu";
 
 export const Menu = () => {
   const { openWith: openModal } = useDynamicModalContext();
   const { openWith: openDrawer } = useDynamicDrawerContext();
   const { colorMode, toggleColorMode } = useColorMode();
   const hasVerified = useHasVerifiedAccounts();
+  const isSelectedAccountVerified = useIsAccountVerified();
   const saveBackup = useDownloadBackupFile();
 
   const colorModeSwitchLabel = colorMode === "light" ? "Light mode" : "Dark mode";
 
   hj.stateChange("menu");
 
-  const advanced = {
-    label: "Advanced",
-    icon: <SettingsIcon />,
-    onClick: () => openDrawer(<AdvancedMenu />),
-    hasArrow: true,
-  };
   const addressBook = {
     label: "Address book",
     icon: <BookIcon />,
@@ -62,10 +61,33 @@ export const Menu = () => {
     onClick: () => openDrawer(<AppsMenu />),
     hasArrow: true,
   };
+  const changePassword = {
+    label: "Change password",
+    icon: <LockIcon />,
+    onClick: () => openDrawer(<ChangePasswordMenu />),
+    hasArrow: true,
+  };
+  const errorLogs = {
+    label: "Error logs",
+    icon: <AlertCircleIcon />,
+    onClick: () => openDrawer(<ErrorLogsMenu />),
+  };
+  const network = {
+    label: "Network",
+    icon: <RadioIcon />,
+    onClick: () => openDrawer(<NetworkMenu />),
+    hasArrow: true,
+  };
 
-  const coreMenuItems = hasVerified
-    ? [advanced, addressBook, addAccount, backup, apps]
-    : [advanced, addAccount];
+  const menuItemsIfSectedAccountIsVerified = isSelectedAccountVerified ? [network] : [];
+  const menuItemsHasAVerifiedAccount = hasVerified ? [addressBook, backup, apps] : [];
+  const coreMenuItems = [
+    addAccount,
+    changePassword,
+    errorLogs,
+    ...menuItemsIfSectedAccountIsVerified,
+    ...menuItemsHasAVerifiedAccount,
+  ];
 
   const themeMenuItems = [
     {
