@@ -23,13 +23,14 @@ export const Welcome = () => {
   const color = useColor();
   const isMobile = useBreakpointValue({ base: true, md: false });
   const { isOpen: isOnboarding } = useDynamicModalContext();
+  const isPasskey = true;
 
   return (
     <Grid
       className="welcome-view"
       justifyItems="center"
       gridGap={{ base: "36px", md: "60px" }}
-      gridTemplateRows={{ base: "130px auto", md: "auto 444px auto" }}
+      gridTemplateRows={{ base: "130px auto", md: "auto 530px auto" }}
       gridTemplateAreas={{
         base: "'header' 'main'",
         md: `
@@ -39,7 +40,7 @@ export const Welcome = () => {
     `,
       }}
       height="100vh"
-      padding={{ base: "24px 0 0 0", md: "24px 46px 46px 46px" }}
+      padding={{ base: "24px 0 0 0", md: "0px 46px 0px 46px" }}
       data-testid="welcome-view"
     >
       <Flex
