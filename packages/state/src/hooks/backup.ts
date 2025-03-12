@@ -1,13 +1,23 @@
 import { CustomError } from "@umami/utils";
 
+import { type AccountsState } from "../slices";
+
 export type Backup = {
   "persist:accounts": string;
   "persist:root": string;
   user_requirements_nonce: string;
 };
 
-const isBackupValid = (backup: any) =>
-  ["persist:accounts", "persist:root", "user_requirements_nonce"].every(key => key in backup);
+export type AccountsBackup = Record<keyof AccountsState, string>;
+
+const isBackupValid = (backup: any) => {
+  const hasRequiredKeys = ["persist:accounts", "persist:root", "user_requirements_nonce"].every(
+    key => key in backup
+  );
+  const hasDefaultAccount = JSON.parse(backup["persist:accounts"]).defaultAccount;
+
+  return hasRequiredKeys && hasDefaultAccount;
+};
 
 export const useRestoreBackup = () => (backup: Backup) => {
   if (isBackupValid(backup)) {

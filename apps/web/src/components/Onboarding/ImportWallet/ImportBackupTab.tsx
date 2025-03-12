@@ -11,7 +11,7 @@ import {
 import { useDynamicModalContext, useMultiForm } from "@umami/components";
 import { type ImplicitAccount, type SocialAccount } from "@umami/core";
 import {
-  type AccountsState,
+  type AccountsBackup,
   type Backup,
   clearStorage,
   useAsyncActionHandler,
@@ -49,13 +49,6 @@ export const ImportBackupTab = () => {
 
   const fileData = form.watch("file");
 
-  const getAccounts = () => {
-    if (!backup) {
-      return null;
-    }
-    return JSON.parse(backup["persist:accounts"]) as AccountsState;
-  };
-
   const { isLoading, handleLogin } = useLoginToWallet(defaultAccount, setupPersistence);
 
   useEffect(() => {
@@ -64,32 +57,38 @@ export const ImportBackupTab = () => {
 
       if (rawBackup) {
         const backup = JSON.parse(rawBackup);
+        const accounts = JSON.parse(backup["persist:accounts"]);
         setBackup(backup);
-        const defaultAccount = JSON.parse(JSON.parse(backup["persist:accounts"]).defaultAccount);
-        setDefaultAccount(defaultAccount);
+
+        if (accounts.defaultAccount) {
+          const defaultAccount = JSON.parse(accounts.defaultAccount);
+          setDefaultAccount(defaultAccount);
+        }
       }
     };
 
-    if (!defaultAccount && fileData?.[0]) {
+    if (!backup && fileData?.[0]) {
       void parseBackup();
     } else if (!fileData) {
       setDefaultAccount(null);
+      setBackup(null);
     }
-  }, [fileData, defaultAccount]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fileData]);
 
   const onSubmit = (password?: string) =>
     handleAsyncActionUnsafe(async () => {
-      if (!fileData) {
+      if (!fileData || !backup) {
         return;
       }
 
       trackOnboardingEvent("proceed_with_backup");
 
-      const backup = JSON.parse(await fileData[0].text());
       restoreBackup(backup);
 
       if (password) {
-        await handleLogin()(getAccounts(), { password });
+        const accounts = JSON.parse(backup["persist:accounts"]) as AccountsBackup;
+        await handleLogin()(accounts, { password });
       } else {
         await handleLogin<SocialAccount>()();
       }
@@ -159,8 +158,9 @@ export const ImportBackupTab = () => {
             <Controller
               control={form.control}
               name="file"
-              render={({ field: { onChange } }) => (
+              render={({ field: { onChange, value } }) => (
                 <Input
+                  key={value ? "has-file" : "no-file"}
                   display="none"
                   accept=".json,application/JSON"
                   data-testid="file-input"
