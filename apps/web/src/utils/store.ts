@@ -6,15 +6,9 @@ import {
 } from "@umami/state";
 
 import { persistor, setupPersistor } from "./persistor";
-import { IS_DEV } from "../env";
 
 // Start with in-memory store without persistence
 export const store = makeStore();
-
-// Put the store in the window for debugging purposes
-if (IS_DEV) {
-  window.store = store;
-}
 
 // Function to enable persistence after authentication
 export const setupPersistence = (key: string) => {
