@@ -4,6 +4,7 @@ import { type IDP, forIDP } from "@umami/social-auth";
 import { type RawPkh, getPublicKeyPairFromSk } from "@umami/tezos";
 import { CustomError } from "@umami/utils";
 
+import { type AccountsBackup } from "./backup";
 import { useAppSelector } from "./useAppSelector";
 import { useAsyncActionHandler } from "./useAsyncActionHandler";
 import { type AccountsState } from "../slices/accounts";
@@ -37,7 +38,7 @@ export const clearSessionKey = () => {
 };
 
 const useLoginWithPassword = (
-  defaultAccount: ImplicitAccount,
+  defaultAccount: ImplicitAccount | null,
   setupPersistence: (key: string) => void
 ) => {
   const { isLoading, handleAsyncActionUnsafe } = useAsyncActionHandler();
@@ -45,14 +46,14 @@ const useLoginWithPassword = (
   // login function throws an error so the caller needs to handle it or wrap it in handleAsyncAction
   const login = (accounts: AccountsState, data: { password: string }) =>
     handleAsyncActionUnsafe(async () => {
-      if (defaultAccount.type === "mnemonic") {
+      if (defaultAccount?.type === "mnemonic") {
         const mnemonic = (
           JSON.parse(accounts.seedPhrases as unknown as string) as Record<string, EncryptedData>
         )[defaultAccount.seedFingerPrint];
 
         const result = await decrypt(mnemonic, data.password);
         setupPersistence(result);
-      } else if (defaultAccount.type === "secret_key") {
+      } else if (defaultAccount?.type === "secret_key") {
         const secretKey = (
           JSON.parse(accounts.secretKeys as unknown as string) as Record<RawPkh, EncryptedData>
         )[defaultAccount.address.pkh];
@@ -66,7 +67,7 @@ const useLoginWithPassword = (
 };
 
 const useLoginWithSocial = (
-  defaultAccount: ImplicitAccount,
+  defaultAccount: ImplicitAccount | null,
   setupPersistence: (key: string) => void
 ) => {
   const { isLoading, handleAsyncAction } = useAsyncActionHandler();
@@ -76,12 +77,13 @@ const useLoginWithSocial = (
       async () => {
         const { secretKey } = await withTimeout(() => forIDP(idp).getCredentials(), LOGIN_TIMEOUT);
         const publicKey = await getPublicKeyPairFromSk(secretKey);
-        if (
-          idp !== (defaultAccount as SocialAccount).idp ||
-          publicKey.pkh !== defaultAccount.address.pkh
-        ) {
-          throw new CustomError("Social account is not the same as the default account");
+
+        if (publicKey.pkh !== defaultAccount?.address.pkh) {
+          throw new CustomError(
+            "The selected social account doesn't match your default wallet account which was used in this backup. Please make sure you're using the same account."
+          );
         }
+
         setupPersistence(secretKey);
       },
       { title: "Social login failed" }
@@ -92,10 +94,10 @@ const useLoginWithSocial = (
 
 type LoginFn<T> = T extends SocialAccount
   ? () => Promise<void>
-  : (accounts: AccountsState, data: { password: string }) => Promise<void>;
+  : (accounts: AccountsBackup, data: { password: string }) => Promise<void>;
 
 export const useLoginToWallet = (
-  defaultAccount: ImplicitAccount,
+  defaultAccount: ImplicitAccount | null,
   setupPersistence: (key: string) => void
 ) => {
   const { isLoading: isLoadingWithPassword, login: loginWithPassword } = useLoginWithPassword(
@@ -107,7 +109,7 @@ export const useLoginToWallet = (
     setupPersistence
   );
 
-  const isSocialAccount = defaultAccount.type === "social";
+  const isSocialAccount = defaultAccount?.type === "social";
 
   return {
     isLoading: isSocialAccount ? isLoadingWithSocial : isLoadingWithPassword,
@@ -123,4 +125,9 @@ export const clearStorage = () => {
   localStorage.removeItem("persist:accounts");
   localStorage.removeItem("persist:root");
   localStorage.removeItem("user_requirements_nonce");
+};
+
+export const clearStorageWithReload = () => {
+  clearStorage();
+  location.reload();
 };

@@ -1,12 +1,11 @@
 import { Button, Center, Flex, type FlexProps, Heading, Icon, Text } from "@chakra-ui/react";
 import { type ImplicitAccount, type SocialAccount } from "@umami/core";
 import {
-  type AccountsState,
-  clearSessionKey,
+  type AccountsBackup,
+  clearStorageWithReload,
   useAsyncActionHandler,
   useLoginToWallet,
 } from "@umami/state";
-import { CustomError } from "@umami/utils";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
@@ -16,29 +15,23 @@ import { PasswordInput } from "../../components/PasswordInput";
 import { useColor } from "../../styles/useColor";
 import { setupPersistence } from "../../utils/store";
 
-const getInitialAccounts = (): AccountsState | null => {
+const getInitialAccounts = (): AccountsBackup | null => {
   const accounts = localStorage.getItem("persist:accounts");
 
-  if (!accounts) {
-    clearSessionKey();
-    return null;
-  }
-
-  return JSON.parse(accounts) as AccountsState;
+  return accounts ? JSON.parse(accounts) : null;
 };
 
 export const SessionLogin = () => {
   const color = useColor();
 
-  const [accounts] = useState(getInitialAccounts);
+  const [defaultAccount] = useState(() => {
+    const accounts = getInitialAccounts();
 
-  const defaultAccount = accounts?.defaultAccount
-    ? (JSON.parse(accounts.defaultAccount as unknown as string) as ImplicitAccount)
-    : null;
-  if (!accounts || !defaultAccount || !defaultAccount.address.pkh) {
-    clearSessionKey();
-    throw new CustomError("Default account not found in localstorage");
-  }
+    return accounts?.defaultAccount
+      ? (JSON.parse(accounts.defaultAccount) as ImplicitAccount)
+      : null;
+  });
+
   const { isLoading, handleLogin } = useLoginToWallet(defaultAccount, setupPersistence);
   const { handleAsyncAction } = useAsyncActionHandler();
 
@@ -51,10 +44,14 @@ export const SessionLogin = () => {
 
   const handleSubmit = () =>
     handleAsyncAction(async () => {
+      if (!defaultAccount) {
+        return clearStorageWithReload();
+      }
+
       if (defaultAccount.type === "social") {
         await handleLogin<SocialAccount>()();
       } else {
-        await handleLogin()(accounts, { password: form.getValues().password });
+        await handleLogin()(getInitialAccounts()!, { password: form.getValues().password });
       }
     });
 
@@ -85,7 +82,7 @@ export const SessionLogin = () => {
               You need to sign back in to use your wallet.
             </Text>
           </Flex>
-          {defaultAccount.type === "social" ? (
+          {defaultAccount?.type === "social" ? (
             <LoginButton
               idp={defaultAccount.idp}
               isLoading={isLoading}
@@ -97,6 +94,7 @@ export const SessionLogin = () => {
               <PasswordInput inputName="password" />
               <Button
                 width="full"
+                isDisabled={!form.formState.isValid}
                 isLoading={isLoading}
                 onClick={handleSubmit}
                 size="lg"
