@@ -43,7 +43,7 @@ export const restoreRevealedPublicKeyPairs = async ({
 }: {
   mnemonic: string;
   derivationPathTemplate: string;
-  derivationPath: string;
+  derivationPath?: string;
   curve: Curves;
   network: Network;
 }): Promise<PublicKeyPair[]> => {
@@ -95,10 +95,10 @@ export const useRestoreRevealedMnemonicAccounts = () => {
     mnemonic: string;
     network: Network;
     derivationPathTemplate: string;
-    derivationPath: string;
+    derivationPath?: string;
     label: string;
     curve: Curves;
-    isVerified: boolean;
+    isVerified?: boolean;
   }): Promise<MnemonicAccount[]> => {
     const pubKeyPairs = await restoreRevealedPublicKeyPairs({
       mnemonic,

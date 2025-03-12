@@ -170,6 +170,7 @@ describe("<SetupPassword />", () => {
         mnemonic: mnemonic1,
         password: password,
         derivationPathTemplate: "44'/1729'/?'/0'",
+        derivationPath: "44'/1729'/?'/0'",
         label: "Account",
         curve: "ed25519",
         isVerified: true,
@@ -199,6 +200,7 @@ describe("<SetupPassword />", () => {
         mnemonic: mnemonic1,
         password: password,
         derivationPathTemplate: "44'/1729'/?'/0'",
+        derivationPath: "44'/1729'/?'/0'",
         label: "Account",
         curve,
         isVerified: true,
@@ -228,7 +230,8 @@ describe("<SetupPassword />", () => {
       expect(mockRestoreFromMnemonic).toHaveBeenCalledWith({
         mnemonic: mnemonic1,
         password: password,
-        derivationPathTemplate: "m/44'/1729'/0'/0'/0'",
+        derivationPathTemplate: "44'/1729'/?'/0'",
+        derivationPath: "m/44'/1729'/0'/0'/0'",
         label: "Account",
         curve: "ed25519",
         isVerified: true,
@@ -250,7 +253,11 @@ describe("<SetupPassword />", () => {
       async mode => {
         await renderInModal(<SetupPassword mode={mode} />);
 
-        expect(screen.queryByTestId("advanced-section")).not.toBeInTheDocument();
+        if (mode === "new_mnemonic") {
+          expect(screen.getByTestId("advanced-section")).toBeVisible();
+        } else {
+          expect(screen.queryByTestId("advanced-section")).not.toBeInTheDocument();
+        }
       }
     );
 
@@ -273,6 +280,7 @@ describe("<SetupPassword />", () => {
       expect(mockRestoreFromMnemonic).toHaveBeenCalledWith({
         mnemonic: mnemonic1,
         password,
+        derivationPath: "44'/1729'/?'/0'",
         derivationPathTemplate: "44'/1729'/?'/0'",
         label: "Account",
         curve: "ed25519",
@@ -298,6 +306,7 @@ describe("<SetupPassword />", () => {
       expect(mockRestoreFromMnemonic).toHaveBeenCalledWith({
         mnemonic: mnemonic1,
         password,
+        derivationPath: "44'/1729'/?'/0'",
         derivationPathTemplate: "44'/1729'/?'/0'",
         label: "Account",
         curve: "ed25519",

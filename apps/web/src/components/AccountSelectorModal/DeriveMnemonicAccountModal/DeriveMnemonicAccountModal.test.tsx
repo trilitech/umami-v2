@@ -77,6 +77,8 @@ describe("<DeriveMnemonicAccountModal />", () => {
       fingerPrint: account.seedFingerPrint,
       password: "test-password",
       label: newAccount.label,
+      curve: "ed25519",
+      derivationPath: "44'/1729'/?'/0'",
     });
 
     expect(store.getState().accounts.current).toBe(newAccount.address.pkh);

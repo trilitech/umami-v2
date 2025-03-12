@@ -59,7 +59,7 @@ export const useRestoreFromMnemonic = () => {
   }: {
     mnemonic: string;
     password: string;
-    derivationPath: string;
+    derivationPath?: string;
     derivationPathTemplate: string;
     label: string;
     curve: Curves;
