@@ -43,6 +43,7 @@ export { default as LogoutIcon } from "./logout.svg";
 export { default as MailIcon } from "./mail.svg";
 export { default as MenuIcon } from "./menu.svg";
 export { default as MoonIcon } from "./moon.svg";
+export { default as SunIcon } from "./sun.svg";
 export { default as MultisigIcon } from "./multisig.svg";
 export { default as OutgoingArrowIcon } from "./outgoing-arrow.svg";
 export { default as OutlineQuestionCircleIcon } from "./outline-question-circle.svg";

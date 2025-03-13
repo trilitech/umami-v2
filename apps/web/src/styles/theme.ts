@@ -292,7 +292,7 @@ const theme = extendTheme({
         track: {
           backgroundColor: mode(light.grey[300], dark.grey[300])(props),
           _checked: {
-            backgroundColor: mode(light.grey[400], dark.grey[600])(props),
+            backgroundColor: mode(light.grey[300], dark.grey[600])(props),
           },
         },
         thumb: {
