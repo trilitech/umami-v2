@@ -440,6 +440,21 @@ const theme = extendTheme({
             bg: "gray.600",
           },
         },
+        tag: {
+          height: "auto",
+          padding: "6px 10px",
+          fontSize: "14px",
+          lineHeight: "18px",
+          borderRadius: "full",
+          color: "gray.700",
+          background: "gray.100",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          _hover: {
+            background: "gray.300",
+          },
+        },
         primary: {
           bg: light.blueDark,
           color: dark.grey.black,

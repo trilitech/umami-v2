@@ -32,10 +32,12 @@ export const useNFTFilter = () => {
   }, [address]);
 
   const nfts = allNFTs.filter(nft => !selected.length || selected.includes(nft.contract));
+  const selectedOptions = options.filter(option => selected.includes(option[1]));
 
   return {
     nfts: sortedByLastUpdate(nfts),
     options,
     getCheckboxProps,
+    selected: selectedOptions,
   };
 };

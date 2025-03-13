@@ -3,6 +3,7 @@ import {
   type ButtonProps,
   Checkbox,
   CheckboxGroup,
+  Flex,
   Icon,
   Popover,
   PopoverBody,
@@ -15,18 +16,23 @@ import {
 } from "@chakra-ui/react";
 
 import { FilterIcon } from "../../../assets/icons";
+import { Tag } from "../../../components/Tag/Tag";
 import { useColor } from "../../../styles/useColor";
 
 export const NFTFilter = ({
   options,
   getCheckboxProps,
+  selected,
   ...props
 }: {
   options: [string, string][];
   getCheckboxProps: UseCheckboxGroupReturn["getCheckboxProps"];
+  selected: [string, string][];
 } & ButtonProps) => {
   const color = useColor();
   const { onOpen, onClose, isOpen } = useDisclosure();
+
+  const isChecked = (value: string) => selected.some(option => option[1] === value);
 
   return (
     <Popover
@@ -36,23 +42,41 @@ export const NFTFilter = ({
       placement="bottom-end"
       variant="dropdown"
     >
-      <PopoverTrigger>
-        <Button
-          background={isOpen ? "gray.100" : "none"}
-          data-testid="nft-filter-trigger"
-          size="sm"
-          variant="auxiliary"
-          {...props}
+      <Flex alignItems="flex-start" gap="10px">
+        <PopoverTrigger>
+          <Button
+            background={isOpen ? "gray.100" : "none"}
+            data-testid="nft-filter-trigger"
+            size="sm"
+            variant="auxiliary"
+            {...props}
+          >
+            <Icon as={FilterIcon} color={color("400")} />
+            <Text color={color("600")} fontWeight="600" size="sm">
+              Filter By
+            </Text>
+          </Button>
+        </PopoverTrigger>
+        <Flex
+          flexWrap="wrap"
+          flex="1"
+          gap="4px"
+          display={{ base: "none", md: "flex" }}
+          marginRight="auto"
         >
-          <Icon as={FilterIcon} color={color("400")} />
-          <Text color={color("600")} fontWeight="600" size="sm">
-            Filter By
-          </Text>
-        </Button>
-      </PopoverTrigger>
-
-      <PopoverContent>
-        <PopoverBody data-testid="nft-filter">
+          {selected.map(([label, value]) => (
+            <Tag
+              key={label}
+              onClick={() => {
+                getCheckboxProps({ value }).onChange(value);
+              }}
+              option={[label, value]}
+            />
+          ))}
+        </Flex>
+      </Flex>
+      <PopoverContent maxWidth="274px">
+        <PopoverBody overflowY="auto" maxHeight="312px" data-testid="nft-filter">
           <VStack alignItems="flex-start" spacing="0">
             <CheckboxGroup>
               {options.map(([label, value]) => (
@@ -60,12 +84,13 @@ export const NFTFilter = ({
                   key={label}
                   width="full"
                   padding="12px 16px"
+                  color={color("900")}
+                  fontWeight="600"
                   borderRadius="full"
                   _hover={{ backgroundColor: color("100") }}
                   data-testid="nft-filter-option"
-                  {...getCheckboxProps({ value })}
-                  color={color("900")}
-                  fontWeight="600"
+                  isChecked={isChecked(value)}
+                  onChange={() => getCheckboxProps({ value }).onChange(value)}
                   size="md"
                 >
                   {label}
