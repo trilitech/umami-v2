@@ -42,10 +42,15 @@ export const OperationTileView = ({
   return (
     <Flex flexDirection="column" gap="10px" width="100%" {...props}>
       <Wrap spacing="10px">
-        <WrapItem lineHeight="22px">
+        <WrapItem
+          sx={{ h2: { fontSize: "16px", lineHeight: "22px" } }}
+          alignItems="center"
+          fontSize="16px"
+          lineHeight="22px"
+        >
           {icon}
           {destination === "unrelated" && (
-            <Heading marginRight="4px" color={color("900")} data-testid="internal-prefix" size="sm">
+            <Heading marginRight="4px" color={color("900")} data-testid="internal-prefix" size="md">
               Internal:
             </Heading>
           )}
@@ -90,7 +95,7 @@ export const OperationTileView = ({
             <Timestamp timestamp={timestamp} />
 
             <Flex gap="4px">
-              <Text color={color("600")} data-testid="operation-type" size="sm">
+              <Text color={color("600")} data-testid="operation-type" size="md">
                 {operationType}
               </Text>
               <OperationStatusComponent status={status} />
