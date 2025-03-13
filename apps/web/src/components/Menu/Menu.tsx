@@ -1,5 +1,5 @@
 import { Switch } from "@chakra-ui/react";
-import { useColorMode } from "@chakra-ui/system";
+import { styled, useColorMode } from "@chakra-ui/system";
 import hj from "@hotjar/browser";
 import { useDynamicDrawerContext, useDynamicModalContext } from "@umami/components";
 import { useDownloadBackupFile } from "@umami/state";
@@ -17,6 +17,7 @@ import {
   LockIcon,
   LogoutIcon,
   MoonIcon,
+  SunIcon,
   RadioIcon,
   UserPlusIcon,
 } from "../../assets/icons";
@@ -24,6 +25,8 @@ import { OnboardOptionsModal } from "../Onboarding/OnboardOptions";
 import { useHasVerifiedAccounts, useIsAccountVerified } from "../Onboarding/VerificationFlow";
 import { ErrorLogsMenu } from "./ErrorLogsMenu/ErrorLogsMenu";
 import { NetworkMenu } from "./NetworkMenu/NetworkMenu";
+import { mode } from "@chakra-ui/theme-tools";
+import { light, dark } from "../../styles/colors";
 
 export const Menu = () => {
   const { openWith: openModal } = useDynamicModalContext();
@@ -33,8 +36,9 @@ export const Menu = () => {
   const isSelectedAccountVerified = useIsAccountVerified();
   const saveBackup = useDownloadBackupFile();
 
-  const colorModeSwitchLabel = colorMode === "light" ? "Light mode" : "Dark mode";
-
+  const isLightColorMode = colorMode === "light";
+  const colorModeSwitchLabel = isLightColorMode ? "Light mode" : "Dark mode";
+  const ColorModeSwitchIcon = () => (isLightColorMode ? <SunIcon /> : <MoonIcon />);
   hj.stateChange("menu");
 
   const addressBook = {
@@ -92,9 +96,9 @@ export const Menu = () => {
   const themeMenuItems = [
     {
       label: colorModeSwitchLabel,
-      icon: <MoonIcon />,
+      icon: <ColorModeSwitchIcon />,
       onClick: toggleColorMode,
-      rightElement: <Switch isChecked={colorMode === "dark"} onChange={toggleColorMode} />,
+      rightElement: <Switch isChecked={isLightColorMode} onChange={toggleColorMode} />,
     },
   ];
 
