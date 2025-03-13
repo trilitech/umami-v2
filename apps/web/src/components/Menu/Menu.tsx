@@ -1,5 +1,5 @@
 import { Switch } from "@chakra-ui/react";
-import { styled, useColorMode } from "@chakra-ui/system";
+import { useColorMode } from "@chakra-ui/system";
 import hj from "@hotjar/browser";
 import { useDynamicDrawerContext, useDynamicModalContext } from "@umami/components";
 import { useDownloadBackupFile } from "@umami/state";
@@ -17,16 +17,15 @@ import {
   LockIcon,
   LogoutIcon,
   MoonIcon,
-  SunIcon,
   RadioIcon,
+  ShieldIcon,
+  SunIcon,
   UserPlusIcon,
 } from "../../assets/icons";
 import { OnboardOptionsModal } from "../Onboarding/OnboardOptions";
 import { useHasVerifiedAccounts, useIsAccountVerified } from "../Onboarding/VerificationFlow";
 import { ErrorLogsMenu } from "./ErrorLogsMenu/ErrorLogsMenu";
 import { NetworkMenu } from "./NetworkMenu/NetworkMenu";
-import { mode } from "@chakra-ui/theme-tools";
-import { light, dark } from "../../styles/colors";
 
 export const Menu = () => {
   const { openWith: openModal } = useDynamicModalContext();
@@ -40,6 +39,11 @@ export const Menu = () => {
   const colorModeSwitchLabel = isLightColorMode ? "Light mode" : "Dark mode";
   const ColorModeSwitchIcon = () => (isLightColorMode ? <SunIcon /> : <MoonIcon />);
   hj.stateChange("menu");
+
+  const handleLockOut = () => {
+    sessionStorage.clear();
+    window.location.reload();
+  };
 
   const addressBook = {
     label: "Address book",
@@ -66,8 +70,8 @@ export const Menu = () => {
     hasArrow: true,
   };
   const changePassword = {
-    label: "Change password",
-    icon: <LockIcon />,
+    label: "Password",
+    icon: <ShieldIcon />,
     onClick: () => openDrawer(<ChangePasswordMenu />),
     hasArrow: true,
   };
@@ -82,15 +86,20 @@ export const Menu = () => {
     onClick: () => openDrawer(<NetworkMenu />),
     hasArrow: true,
   };
+  const lock = {
+    label: "Lock Umami",
+    icon: <LockIcon />,
+    onClick: handleLockOut,
+  };
 
-  const menuItemsIfSectedAccountIsVerified = isSelectedAccountVerified ? [network] : [];
-  const menuItemsHasAVerifiedAccount = hasVerified ? [addressBook, backup, apps] : [];
   const coreMenuItems = [
     addAccount,
+    ...(hasVerified ? [addressBook] : []),
     changePassword,
+    ...(hasVerified ? [backup] : []),
+    ...(hasVerified ? [apps] : []),
+    ...(isSelectedAccountVerified ? [network] : []),
     errorLogs,
-    ...menuItemsIfSectedAccountIsVerified,
-    ...menuItemsHasAVerifiedAccount,
   ];
 
   const themeMenuItems = [
@@ -103,12 +112,15 @@ export const Menu = () => {
   ];
 
   const logoutMenuItems = [
+    ...(hasVerified ? [lock] : []),
     {
-      label: "Log out",
+      label: "Sign Out",
       icon: <LogoutIcon />,
       onClick: () => openModal(<LogoutModal />),
     },
   ];
 
-  return <GenericMenu menuItems={[coreMenuItems, themeMenuItems, logoutMenuItems]} />;
+  const menuItems = [coreMenuItems, themeMenuItems, logoutMenuItems];
+
+  return <GenericMenu menuItems={menuItems} />;
 };
