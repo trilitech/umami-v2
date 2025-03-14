@@ -27,7 +27,7 @@
   "dependencies": {
     "@cucumber/cucumber": "^11.1.1",
     "@playwright/test": "^1.49.1",
-    "@taquito/signer": "^21.0.0",
+    "@taquito/signer": "^21.0.2",
     "@umami/core": "workspace:^",
     "@umami/state": "workspace:^",
     "@umami/test-utils": "workspace:^",
