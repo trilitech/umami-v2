@@ -75,9 +75,7 @@ beforeEach(() => {
   // Hack for testing HashRouter: clears URL between tests.
   window.location.hash = "";
 
-  Object.defineProperty(window, "localStorage", {
-    value: mockLocalStorage(),
-  });
+  mockLocalStorage();
 
   setupJestCanvasMock();
 });
