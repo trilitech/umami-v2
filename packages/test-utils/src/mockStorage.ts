@@ -2,13 +2,13 @@ export const mockLocalStorage = () => {
   Object.defineProperty(window, "localStorage", {
     value: mockStorage(),
   });
-}
+};
 
 export const mockSessionStorage = () => {
   Object.defineProperty(window, "sessionStorage", {
     value: mockStorage(),
   });
-}
+};
 
 const mockStorage = () => {
   let store: { [key: string]: string } = {};

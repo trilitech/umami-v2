@@ -22,6 +22,7 @@ export const MenuItem = ({
       height="auto"
       padding="20px"
       color={color("400")}
+      _last={{ marginTop: "auto" }}
       data-group
       onClick={onClick}
       variant="dropdownOption"
