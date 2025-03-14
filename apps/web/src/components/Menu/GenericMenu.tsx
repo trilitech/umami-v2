@@ -9,6 +9,11 @@ type GenericMenuProps = {
   menuItems: MenuItems;
 };
 
+const lastBoxStyle = {
+  flex: "1",
+  display: "flex",
+  flexDirection: "column" as BoxProps["flexDirection"],
+};
 export const GenericMenu = ({ title, menuItems }: GenericMenuProps) => (
   <DrawerContentWrapper title={title}>
     <VStack
@@ -20,16 +25,8 @@ export const GenericMenu = ({ title, menuItems }: GenericMenuProps) => (
     >
       {menuItems.map((items, i) => {
         const isLastMenuGroup = i === menuItems.length - 1;
-        const lastBoxStyle = {
-          ...(isLastMenuGroup && {
-            flex: "1",
-            display: "flex",
-            flexDirection: "column" as BoxProps["flexDirection"],
-          }),
-        };
-
         return (
-          <Box key={i} width="full" {...lastBoxStyle}>
+          <Box key={i} width="full" {...lastBoxStyle} _last={lastBoxStyle}>
             {items.map((item, y) => {
               const isLastMenuItem = y === items.length - 1;
               const lastMenuItemStyle = {
