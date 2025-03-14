@@ -67,6 +67,7 @@ export const NFTFilter = ({
           {selected.map(([label, value]) => (
             <Tag
               key={label}
+              data-testid={`nft-filter-tag-${value}`}
               onClick={() => {
                 getCheckboxProps({ value }).onChange(value);
               }}

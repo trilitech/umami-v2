@@ -10,7 +10,7 @@ import {
 import { MAINNET } from "@umami/tezos";
 
 import { useNFTFilter } from "./useNFTFilter";
-import { renderHook } from "../../../testUtils";
+import { act, renderHook } from "../../../testUtils";
 
 let store: UmamiStore;
 
@@ -71,5 +71,30 @@ describe("useNFTFilter", () => {
       [nfts[2].token.contract.address, nfts[2].token.contract.address],
       [nfts[0].token.contract.address, nfts[0].token.contract.address],
     ]);
+  });
+
+  it("returns selected options", () => {
+    const nfts = [
+      mockNFTToken(0, address, { lastLevel: 0 }),
+      mockNFTToken(1, address, { lastLevel: 1 }),
+    ];
+    nfts[0].token.contract.alias = "Contract A";
+    nfts[1].token.contract.alias = "Contract B";
+    store.dispatch(assetsActions.updateTokenBalance(nfts));
+    store.dispatch(
+      tokensActions.addTokens({ tokens: nfts.map(nft => nft.token), network: MAINNET })
+    );
+
+    const { result } = renderHook(() => useNFTFilter(), { store });
+
+    expect(result.current.selected).toEqual([]);
+
+    act(() => {
+      result.current
+        .getCheckboxProps({ value: nfts[0].token.contract.address })
+        .onChange(nfts[0].token.contract.address);
+    });
+
+    expect(result.current.selected).toEqual([["Contract A", nfts[0].token.contract.address]]);
   });
 });
