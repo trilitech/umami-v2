@@ -91,10 +91,10 @@ export const OperationTileView = ({
         </WrapItem>
 
         <WrapItem alignItems="center">
-          <Flex gap="10px">
+          <Flex alignItems="center" gap="10px">
             <Timestamp timestamp={timestamp} />
 
-            <Flex gap="4px">
+            <Flex alignItems="center" gap="4px">
               <Text color={color("600")} data-testid="operation-type" size="md">
                 {operationType}
               </Text>
