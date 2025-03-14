@@ -65,7 +65,7 @@
     ]
   },
   "dependencies": {
-    "@taquito/utils": "^21.0.0",
+    "@taquito/utils": "^21.0.2",
     "date-fns": "^4.1.0",
     "react-native-quick-crypto": "^0.7.11"
   }
