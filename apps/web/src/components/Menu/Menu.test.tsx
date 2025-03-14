@@ -24,6 +24,7 @@ import { OnboardOptionsModal } from "../Onboarding/OnboardOptions";
 import { ChangePasswordMenu } from "./ChangePasswordMenu/ChangePasswordMenu";
 import { ErrorLogsMenu } from "./ErrorLogsMenu/ErrorLogsMenu";
 import { NetworkMenu } from "./NetworkMenu/NetworkMenu";
+import { getAddAccountButton, getAddressBookButton, getPasswordButton, getSaveBackupButton, getAppsButton, getNetworkButton, getErrorLogsButton, getLightModeButton, getLockUmamiButton, getSignOutButton, queryAddAccountButton, queryAddressBookButton, querySaveBackupBtn, queryAppsButton, queryNetworkButton, queryLockUmamiButton } from "@umami/test-utils";
 
 jest.mock("@chakra-ui/system", () => ({
   ...jest.requireActual("@chakra-ui/system"),
@@ -48,23 +49,6 @@ jest.mock("@umami/state", () => ({
 
 let store: UmamiStore;
 const account = mockImplicitAccount(0);
-
-const getAddAccountButton = () => screen.getByRole("button", { name: "Add account" });
-const queryAddAccountButton = () => screen.queryByRole("button", { name: "Add account" });
-const getAddressBookButton = () => screen.getByRole("button", { name: "Address book" });
-const queryAddressBookButton = () => screen.queryByRole("button", { name: "Address book" });
-const getSaveBackupButton = () => screen.getByRole("button", { name: "Save backup" });
-const querySaveBackupBtn = () => screen.queryByRole("button", { name: "Save backup" });
-const getAppsButton = () => screen.getByRole("button", { name: "Apps" });
-const queryAppsButton = () => screen.queryByRole("button", { name: "Apps" });
-const getErrorLogsButton = () => screen.getByRole("button", { name: "Error logs" });
-const getNetworkButton = () => screen.getByRole("button", { name: "Network" });
-const queryNetworkButton = () => screen.queryByRole("button", { name: "Network" });
-const getLightModeButton = () => screen.getByRole("button", { name: "Light mode" });
-const getPasswordButton = () => screen.getByRole("button", { name: "Password" });
-const getSignOutButton = () => screen.getByRole("button", { name: "Sign Out" });
-const getLockUmamiButton = () => screen.getByRole("button", { name: "Lock Umami" });
-const queryLockUmamiButton = () => screen.queryByRole("button", { name: "Lock Umami" });
 
 const verifiedMenuItems = [
   getAddAccountButton,
