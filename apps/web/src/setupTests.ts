@@ -89,7 +89,6 @@ beforeEach(() => {
 
   mockLocation();
 
-
   Object.defineProperties(global, {
     crypto: { value: webcrypto, writable: true },
     TextDecoder: { value: TextDecoder, writable: true },

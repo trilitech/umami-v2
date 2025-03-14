@@ -6,6 +6,4 @@ Object.defineProperties(global, {
   crypto: { value: webcrypto, writable: true },
 });
 
-beforeEach(() =>
-  mockLocalStorage()
-);
+beforeEach(() => mockLocalStorage());

@@ -96,9 +96,9 @@ jest.doMock("@chakra-ui/react", () => ({
 jest.mock("@popperjs/core", () => ({
   createPopper: () => ({
     state: null,
-    forceUpdate: () => { },
-    destroy: () => { },
-    setOptions: () => { },
+    forceUpdate: () => {},
+    destroy: () => {},
+    setOptions: () => {},
   }),
 }));
 

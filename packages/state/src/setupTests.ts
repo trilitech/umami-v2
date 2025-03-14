@@ -51,6 +51,4 @@ jest.mock("@reown/walletkit", () => {
   };
 });
 
-beforeEach(() =>
-  mockLocalStorage()
-);
+beforeEach(() => mockLocalStorage());

@@ -8,6 +8,24 @@ import {
   useDownloadBackupFile,
   walletKit,
 } from "@umami/state";
+import {
+  getAddAccountButton,
+  getAddressBookButton,
+  getAppsButton,
+  getErrorLogsButton,
+  getLightModeButton,
+  getLockUmamiButton,
+  getNetworkButton,
+  getPasswordButton,
+  getSaveBackupButton,
+  getSignOutButton,
+  queryAddAccountButton,
+  queryAddressBookButton,
+  queryAppsButton,
+  queryLockUmamiButton,
+  queryNetworkButton,
+  querySaveBackupBtn,
+} from "@umami/test-utils";
 
 import { AddressBookMenu } from "./AddressBookMenu/AddressBookMenu";
 import { AppsMenu } from "./AppsMenu/AppsMenu";
@@ -24,7 +42,6 @@ import { OnboardOptionsModal } from "../Onboarding/OnboardOptions";
 import { ChangePasswordMenu } from "./ChangePasswordMenu/ChangePasswordMenu";
 import { ErrorLogsMenu } from "./ErrorLogsMenu/ErrorLogsMenu";
 import { NetworkMenu } from "./NetworkMenu/NetworkMenu";
-import { getAddAccountButton, getAddressBookButton, getPasswordButton, getSaveBackupButton, getAppsButton, getNetworkButton, getErrorLogsButton, getLightModeButton, getLockUmamiButton, getSignOutButton, queryAddAccountButton, queryAddressBookButton, querySaveBackupBtn, queryAppsButton, queryNetworkButton, queryLockUmamiButton } from "@umami/test-utils";
 
 jest.mock("@chakra-ui/system", () => ({
   ...jest.requireActual("@chakra-ui/system"),
@@ -222,6 +239,7 @@ describe("<Menu />", () => {
             isVerified: false,
           })
         );
+
         if (isVerifiedSelected) {
           store.dispatch(accountsActions.setCurrent(account.address.pkh));
         } else {
@@ -242,6 +260,7 @@ describe("<Menu />", () => {
         expect(getPasswordButton()).toBeVisible();
         expect(getErrorLogsButton()).toBeVisible();
         expect(getLockUmamiButton()).toBeVisible();
+
         if (isVerifiedSelected) {
           expect(getNetworkButton()).toBeVisible();
         } else {
