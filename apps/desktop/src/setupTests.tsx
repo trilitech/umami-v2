@@ -75,9 +75,7 @@ beforeEach(() => {
   // Hack for testing HashRouter: clears URL between tests.
   window.location.hash = "";
 
-  Object.defineProperty(window, "localStorage", {
-    value: mockLocalStorage(),
-  });
+  mockLocalStorage();
 
   setupJestCanvasMock();
 });
@@ -98,9 +96,9 @@ jest.doMock("@chakra-ui/react", () => ({
 jest.mock("@popperjs/core", () => ({
   createPopper: () => ({
     state: null,
-    forceUpdate: () => {},
-    destroy: () => {},
-    setOptions: () => {},
+    forceUpdate: () => { },
+    destroy: () => { },
+    setOptions: () => { },
   }),
 }));
 
