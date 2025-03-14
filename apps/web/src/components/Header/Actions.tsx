@@ -2,7 +2,6 @@ import { Flex, Icon, IconButton } from "@chakra-ui/react";
 import { useDynamicDrawerContext } from "@umami/components";
 
 import { MenuIcon } from "../../assets/icons";
-import { ColorSchemeModeToggle } from "../ColorSchemeModeToggle/ColorSchemeModeToggle";
 import { Menu } from "../Menu";
 
 export const Actions = () => {
@@ -10,7 +9,6 @@ export const Actions = () => {
 
   return (
     <Flex alignItems="center" gap="24px">
-      <ColorSchemeModeToggle />
       <IconButton
         aria-label="Open menu"
         icon={
