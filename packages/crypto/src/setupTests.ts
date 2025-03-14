@@ -7,7 +7,5 @@ Object.defineProperties(global, {
 });
 
 beforeEach(() =>
-  Object.defineProperty(window, "localStorage", {
-    value: mockLocalStorage(),
-  })
+  mockLocalStorage()
 );

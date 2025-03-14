@@ -52,7 +52,5 @@ jest.mock("@reown/walletkit", () => {
 });
 
 beforeEach(() =>
-  Object.defineProperty(window, "localStorage", {
-    value: mockLocalStorage(),
-  })
+  mockLocalStorage()
 );

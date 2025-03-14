@@ -109,6 +109,7 @@ describe("<Menu />", () => {
       for (let i = 1; i < verifiedMenuItems.length; i++) {
         const currentMenuItem = verifiedMenuItems[i]();
         const previousMenuItem = verifiedMenuItems[i - 1]();
+        expect(previousMenuItem).toBeVisible();
         try {
           expect(previousMenuItem.compareDocumentPosition(currentMenuItem)).toBe(
             Node.DOCUMENT_POSITION_FOLLOWING
@@ -170,23 +171,12 @@ describe("<Menu />", () => {
     });
 
     it("it clears the session and reload the window when 'Lock Umami' is clicked", async () => {
-      const sessionStorageClearMock = jest.fn();
-      Object.defineProperty(window, "sessionStorage", {
-        value: {
-          ...window.sessionStorage,
-          clear: sessionStorageClearMock,
-        },
-      });
-      delete (window as any).location;
-      const reloadWindowMock = jest.fn();
-      window.location = { reload: reloadWindowMock } as any;
       const user = userEvent.setup();
       await renderInDrawer(<Menu />, store);
-
       await user.click(getLockUmamiButton());
 
-      expect(sessionStorageClearMock).toHaveBeenCalled();
-      expect(reloadWindowMock).toHaveBeenCalled();
+      expect(window.sessionStorage.clear).toHaveBeenCalled();
+      expect(window.location.reload).toHaveBeenCalled();
     });
 
     it("opens Add Account modal when Add Account button is clicked", async () => {
@@ -212,7 +202,7 @@ describe("<Menu />", () => {
 
     it("renders menu items correctly", async () => {
       await renderInDrawer(<Menu />, store);
-      unverifiedUserMenuItems.forEach(getItem => getItem());
+      unverifiedUserMenuItems.forEach(getItem => expect(getItem()).toBeVisible());
 
       expect(queryAddressBookButton()).not.toBeInTheDocument();
       expect(querySaveBackupBtn()).not.toBeInTheDocument();
@@ -259,16 +249,17 @@ describe("<Menu />", () => {
         await renderInDrawer(<Menu />, store);
 
         getAddressBookButton();
+        expect(getAddressBookButton()).toBeVisible();
         getAddAccountButton();
-        getSaveBackupButton();
-        getAppsButton();
-        getLightModeButton();
-        getSignOutButton();
-        getPasswordButton();
-        getErrorLogsButton();
-        getLockUmamiButton();
+        expect(getSaveBackupButton()).toBeVisible();
+        expect(getAppsButton()).toBeVisible();
+        expect(getLightModeButton()).toBeVisible();
+        expect(getSignOutButton()).toBeVisible();
+        expect(getPasswordButton()).toBeVisible();
+        expect(getErrorLogsButton()).toBeVisible();
+        expect(getLockUmamiButton()).toBeVisible();
         if (isVerifiedSelected) {
-          getNetworkButton();
+          expect(getNetworkButton()).toBeVisible();
         } else {
           expect(queryNetworkButton()).not.toBeInTheDocument();
         }
@@ -290,7 +281,7 @@ describe("<Menu />", () => {
         expect(openWith).toHaveBeenCalledWith(<Component />);
       });
 
-      it("opens Sign Out menu correctly", async () => {
+      it("opens LogoutModal modal when Sign Out button is clicked", async () => {
         const user = userEvent.setup();
         const { openWith } = dynamicModalContextMock;
 
