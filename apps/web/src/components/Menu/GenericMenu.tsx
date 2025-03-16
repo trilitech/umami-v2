@@ -20,7 +20,7 @@ export const GenericMenu = ({ title, menuItems }: GenericMenuProps) => (
     >
       {menuItems.map((items, i) => (
         <Flex key={i} flexDirection="column" width="full" _last={{ flex: 1 }}>
-          {items.map((item, y) => (
+          {items.map((item) => (
             <MenuItem key={item.label} {...item} />
           ))}
         </Flex>
