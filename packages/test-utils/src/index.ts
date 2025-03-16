@@ -8,6 +8,7 @@ export * from "./mnemonic";
 export * from "./mockStorage";
 export * from "./mockLocation";
 export * from "./nftTokens";
+export * from "./render";
 export * from "./tzktResponse";
 export * from "./v1BackupFile";
 

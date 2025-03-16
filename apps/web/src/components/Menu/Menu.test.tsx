@@ -9,6 +9,7 @@ import {
   walletKit,
 } from "@umami/state";
 import {
+  checkElementsRenderInCorrectOrder,
   getAddAccountButton,
   getAddressBookButton,
   getAppsButton,
@@ -106,21 +107,7 @@ describe("<Menu />", () => {
   describe("when user is verified", () => {
     it("renders menu items in the correct order", async () => {
       await renderInDrawer(<Menu />, store);
-
-      for (let i = 1; i < verifiedMenuItems.length; i++) {
-        const currentMenuItem = verifiedMenuItems[i]();
-        const previousMenuItem = verifiedMenuItems[i - 1]();
-        expect(previousMenuItem).toBeVisible();
-        try {
-          expect(previousMenuItem.compareDocumentPosition(currentMenuItem)).toBe(
-            Node.DOCUMENT_POSITION_FOLLOWING
-          );
-        } catch {
-          throw new Error(
-            `"${previousMenuItem.textContent}" should appear before "${currentMenuItem.textContent}"`
-          );
-        }
-      }
+      checkElementsRenderInCorrectOrder(verifiedMenuItems);
     });
 
     it.each([
