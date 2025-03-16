@@ -20,12 +20,14 @@ import {
   getPasswordButton,
   getSaveBackupButton,
   getSignOutButton,
+  mockWindowLocation,
   queryAddAccountButton,
   queryAddressBookButton,
   queryAppsButton,
   queryLockUmamiButton,
   queryNetworkButton,
   querySaveBackupBtn,
+  restoreOriginalWindowLocation,
 } from "@umami/test-utils";
 
 import { AddressBookMenu } from "./AddressBookMenu/AddressBookMenu";
@@ -105,6 +107,13 @@ describe("<Menu />", () => {
   });
 
   describe("when user is verified", () => {
+    beforeAll(() => {
+      mockWindowLocation();
+    });
+    afterAll(() => {
+      restoreOriginalWindowLocation();
+    });
+
     it("renders menu items in the correct order", async () => {
       await renderInDrawer(<Menu />, store);
       checkElementsRenderInCorrectOrder(verifiedMenuItems);
