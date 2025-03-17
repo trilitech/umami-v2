@@ -19,6 +19,15 @@ defaultConfig.resolver.resolveRequest = (context, moduleName, platform) => {
     };
   }
 
+  if (moduleName === "redux-persist-transform-encrypt") {
+    return {
+      filePath: require.resolve(
+        `${workspaceRoot}/node_modules/redux-persist-transform-encrypt/lib`
+      ),
+      type: "sourceFile",
+    };
+  }
+
   return context.resolveRequest(context, moduleName, platform);
 };
 
