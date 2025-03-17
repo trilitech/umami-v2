@@ -84,9 +84,9 @@ const ContactItem = ({ contact }: ContactItemProps) => {
         <IconButton
           color={color("500")}
           transform="rotate(90deg)"
-          aria-label="Remove Peer"
+          aria-label="More Options"
           icon={<ThreeDotsIcon />}
-          title="Remove Peer"
+          title="More Options"
           variant="iconButtonSolid"
         />
       </ActionsDropdown>
