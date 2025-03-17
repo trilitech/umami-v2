@@ -65,9 +65,12 @@ export const AddressPill = memo(
       <Flex
         ref={elementRef}
         justifyContent="space-around"
+        overflow="hidden"
         width="fit-content"
         background={bgColor}
         borderRadius="full"
+        whiteSpace="nowrap"
+        textOverflow="ellipsis"
         cursor="pointer"
         data-testid="address-pill"
         onMouseEnter={() => setIsMouseHover(true)}
