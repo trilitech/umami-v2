@@ -110,15 +110,16 @@ const PeerRow = ({ peerInfo }: { peerInfo: ExtendedPeerSession }) => {
       height="60px"
       data-testid="peer-row"
     >
-      <Flex height="100%">
-        <Center width="60px" marginRight="12px">
+      <Flex width="100%" minWidth="0" height="100%">
+        <Center flex="0 0 auto" width="60px" marginRight="12px">
           <Image
+            borderRadius="50%"
             objectFit="cover"
             fallback={<CodeSandboxIcon width="36px" height="36px" />}
             src={peerInfo.icon}
           />
         </Center>
-        <Center alignItems="flex-start" flexDirection="column" gap="6px">
+        <Center alignItems="flex-start" flexDirection="column" gap="6px" width="100%" minWidth="0">
           <Heading color={color("900")} size="lg">
             {peerInfo.name}
           </Heading>
@@ -146,13 +147,31 @@ const StoredPeerInfo = ({ peerInfo }: { peerInfo: ExtendedPeerSession }) => {
   }
 
   return (
-    <Flex>
-      <AddressPill marginRight="10px" address={parsePkh(connectionInfo.accountPkh)} />
+    <Flex width="100%" maxWidth="100%">
+      <AddressPill
+        minWidth="15%"
+        marginRight="10px"
+        address={parsePkh(connectionInfo.accountPkh)}
+      />
       <Divider marginRight="10px" orientation="vertical" />
-      <Text marginTop="2px" marginRight="4px" fontWeight={600} size="sm">
+      <Text
+        display={{ base: "none", md: "inline" }}
+        marginTop="2px"
+        marginRight="4px"
+        fontWeight={600}
+        size="sm"
+      >
         Network:
       </Text>
-      <Text marginTop="2px" data-testid="dapp-connection-network" size="sm">
+      <Text
+        overflow="hidden"
+        minWidth="15%"
+        marginTop="2px"
+        whiteSpace="nowrap"
+        textOverflow="ellipsis"
+        data-testid="dapp-connection-network"
+        size="sm"
+      >
         {capitalize(connectionInfo.networkType)}
       </Text>
     </Flex>
