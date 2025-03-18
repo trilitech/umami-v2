@@ -92,15 +92,19 @@ export const Menu = () => {
     onClick: handleLockOut,
   };
 
-  const coreMenuItems = [
-    addAccount,
-    ...(hasVerified ? [addressBook] : []),
-    changePassword,
-    ...(hasVerified ? [backup] : []),
-    ...(hasVerified ? [apps] : []),
-    ...(isSelectedAccountVerified ? [network] : []),
-    errorLogs,
-  ];
+  const signOut = {
+    label: "Sign Out",
+    icon: <LogoutIcon />,
+    onClick: () => openModal(<LogoutModal />),
+  };
+
+  const coreMenuItems = hasVerified
+    ? [addAccount, addressBook, changePassword, backup, apps, errorLogs]
+    : [addAccount, changePassword, errorLogs];
+
+  if (isSelectedAccountVerified) {
+    coreMenuItems.splice(coreMenuItems.length - 1, 0, network);
+  }
 
   const themeMenuItems = [
     {
@@ -111,14 +115,7 @@ export const Menu = () => {
     },
   ];
 
-  const logoutMenuItems = [
-    ...(hasVerified ? [lock] : []),
-    {
-      label: "Sign Out",
-      icon: <LogoutIcon />,
-      onClick: () => openModal(<LogoutModal />),
-    },
-  ];
+  const logoutMenuItems = [...(hasVerified ? [lock] : []), signOut];
 
   const menuItems = [coreMenuItems, themeMenuItems, logoutMenuItems];
 
