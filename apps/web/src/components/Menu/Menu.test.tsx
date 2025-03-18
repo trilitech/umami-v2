@@ -10,23 +10,9 @@ import {
 } from "@umami/state";
 import {
   checkElementsRenderInCorrectOrder,
-  getAddAccountButton,
-  getAddressBookButton,
-  getAppsButton,
-  getErrorLogsButton,
-  getLightModeButton,
-  getLockUmamiButton,
-  getNetworkButton,
-  getPasswordButton,
-  getSaveBackupButton,
-  getSignOutButton,
+  getButtonByName,
   mockWindowLocation,
-  queryAddAccountButton,
-  queryAddressBookButton,
-  queryAppsButton,
-  queryLockUmamiButton,
-  queryNetworkButton,
-  querySaveBackupBtn,
+  queryButtonByName,
   restoreOriginalWindowLocation,
 } from "@umami/test-utils";
 
@@ -70,26 +56,18 @@ jest.mock("@umami/state", () => ({
 let store: UmamiStore;
 const account = mockImplicitAccount(0);
 
-const verifiedMenuItems = [
-  getAddAccountButton,
-  getAddressBookButton,
-  getPasswordButton,
-  getSaveBackupButton,
-  getAppsButton,
-  getNetworkButton,
-  getErrorLogsButton,
-  getLightModeButton,
-  getLockUmamiButton,
-  getSignOutButton,
-];
+const ADD_ACCOUNT = "Add account";
+const ADDRESS_BOOK = "Address book";
+const APPS = "Apps";
+const LIGHT_MODE = "Light mode";
+const SIGN_OUT = "Sign Out";
+const PASSWORD = "Password";
+const ERROR_LOGS = "Error logs";
+const SAVE_BACKUP = "Save backup";
+const NETWORK = "Network";
+const LOCK_UMAMI = "Lock Umami";
 
-const unverifiedUserMenuItems = [
-  queryAddAccountButton,
-  getLightModeButton,
-  getSignOutButton,
-  getPasswordButton,
-  getErrorLogsButton,
-];
+const unverifiedUserMenuItems = [ADD_ACCOUNT, LIGHT_MODE, SIGN_OUT, PASSWORD, ERROR_LOGS];
 
 beforeEach(() => {
   store = makeStore();
@@ -115,8 +93,23 @@ describe("<Menu />", () => {
     });
 
     it("renders menu items in the correct order", async () => {
+      const verifiedMenuItems = [
+        ADD_ACCOUNT,
+        ADDRESS_BOOK,
+        PASSWORD,
+        SAVE_BACKUP,
+        APPS,
+        NETWORK,
+        ERROR_LOGS,
+        LIGHT_MODE,
+        LOCK_UMAMI,
+        SIGN_OUT,
+      ];
+
       await renderInDrawer(<Menu />, store);
-      checkElementsRenderInCorrectOrder(verifiedMenuItems);
+      checkElementsRenderInCorrectOrder(
+        verifiedMenuItems.map(btnName => () => getButtonByName(btnName))
+      );
     });
 
     it.each([
@@ -142,7 +135,7 @@ describe("<Menu />", () => {
 
       await renderInDrawer(<Menu />, store);
 
-      await user.click(getSignOutButton());
+      await user.click(getButtonByName(SIGN_OUT));
       expect(openWith).toHaveBeenCalledWith(<LogoutModal />);
     });
 
@@ -153,7 +146,7 @@ describe("<Menu />", () => {
 
       await renderInDrawer(<Menu />, store);
 
-      await user.click(getSaveBackupButton());
+      await user.click(getButtonByName(SAVE_BACKUP));
 
       expect(mockDownloadBackupFile).toHaveBeenCalled();
     });
@@ -162,7 +155,7 @@ describe("<Menu />", () => {
       const user = userEvent.setup();
       await renderInDrawer(<Menu />, store);
 
-      await user.click(getLightModeButton());
+      await user.click(getButtonByName(LIGHT_MODE));
 
       expect(useColorMode().toggleColorMode).toHaveBeenCalled();
     });
@@ -170,7 +163,7 @@ describe("<Menu />", () => {
     it("it clears the session and reload the window when 'Lock Umami' is clicked", async () => {
       const user = userEvent.setup();
       await renderInDrawer(<Menu />, store);
-      await user.click(getLockUmamiButton());
+      await user.click(getButtonByName(LOCK_UMAMI));
 
       expect(window.sessionStorage.clear).toHaveBeenCalled();
       expect(window.location.reload).toHaveBeenCalled();
@@ -181,7 +174,7 @@ describe("<Menu />", () => {
       const user = userEvent.setup();
       await renderInDrawer(<Menu />, store);
 
-      await user.click(getAddAccountButton());
+      await user.click(getButtonByName(ADD_ACCOUNT));
 
       expect(openWith).toHaveBeenCalledWith(<OnboardOptionsModal />);
     });
@@ -199,13 +192,13 @@ describe("<Menu />", () => {
 
     it("renders menu items correctly", async () => {
       await renderInDrawer(<Menu />, store);
-      unverifiedUserMenuItems.forEach(getItem => expect(getItem()).toBeVisible());
+      unverifiedUserMenuItems.forEach(btnName => expect(getButtonByName(btnName)).toBeVisible());
 
-      expect(queryAddressBookButton()).not.toBeInTheDocument();
-      expect(querySaveBackupBtn()).not.toBeInTheDocument();
-      expect(queryAppsButton()).not.toBeInTheDocument();
-      expect(queryNetworkButton()).not.toBeInTheDocument();
-      expect(queryLockUmamiButton()).not.toBeInTheDocument();
+      expect(queryButtonByName(ADDRESS_BOOK)).not.toBeInTheDocument();
+      expect(queryButtonByName(SAVE_BACKUP)).not.toBeInTheDocument();
+      expect(queryButtonByName(APPS)).not.toBeInTheDocument();
+      expect(queryButtonByName(NETWORK)).not.toBeInTheDocument();
+      expect(queryButtonByName(LOCK_UMAMI)).not.toBeInTheDocument();
     });
 
     it("opens Add account modal when Add account button is clicked", async () => {
@@ -213,7 +206,7 @@ describe("<Menu />", () => {
       const user = userEvent.setup();
       await renderInDrawer(<Menu />, store);
 
-      await user.click(getAddAccountButton());
+      await user.click(getButtonByName(ADD_ACCOUNT));
 
       expect(openWith).toHaveBeenCalledWith(<OnboardOptionsModal />);
     });
@@ -246,21 +239,20 @@ describe("<Menu />", () => {
       it("renders menu items correctly", async () => {
         await renderInDrawer(<Menu />, store);
 
-        getAddressBookButton();
-        expect(getAddressBookButton()).toBeVisible();
-        getAddAccountButton();
-        expect(getSaveBackupButton()).toBeVisible();
-        expect(getAppsButton()).toBeVisible();
-        expect(getLightModeButton()).toBeVisible();
-        expect(getSignOutButton()).toBeVisible();
-        expect(getPasswordButton()).toBeVisible();
-        expect(getErrorLogsButton()).toBeVisible();
-        expect(getLockUmamiButton()).toBeVisible();
+        expect(getButtonByName(ADDRESS_BOOK)).toBeVisible();
+        expect(getButtonByName(ADD_ACCOUNT)).toBeVisible();
+        expect(getButtonByName(SAVE_BACKUP)).toBeVisible();
+        expect(getButtonByName(APPS)).toBeVisible();
+        expect(getButtonByName(LIGHT_MODE)).toBeVisible();
+        expect(getButtonByName(SIGN_OUT)).toBeVisible();
+        expect(getButtonByName(PASSWORD)).toBeVisible();
+        expect(getButtonByName(ERROR_LOGS)).toBeVisible();
+        expect(getButtonByName(LOCK_UMAMI)).toBeVisible();
 
         if (isVerifiedSelected) {
-          expect(getNetworkButton()).toBeVisible();
+          expect(getButtonByName(NETWORK)).toBeVisible();
         } else {
-          expect(queryNetworkButton()).not.toBeInTheDocument();
+          expect(queryButtonByName(NETWORK)).not.toBeInTheDocument();
         }
       });
 
@@ -286,7 +278,7 @@ describe("<Menu />", () => {
 
         await renderInDrawer(<Menu />, store);
 
-        await user.click(getSignOutButton());
+        await user.click(getButtonByName(SIGN_OUT));
         expect(openWith).toHaveBeenCalledWith(<LogoutModal />);
       });
 
@@ -297,7 +289,7 @@ describe("<Menu />", () => {
 
         await renderInDrawer(<Menu />, store);
 
-        await user.click(getSaveBackupButton());
+        await user.click(getButtonByName(SAVE_BACKUP));
 
         expect(mockDownloadBackupFile).toHaveBeenCalled();
       });
@@ -306,7 +298,7 @@ describe("<Menu />", () => {
         const user = userEvent.setup();
         await renderInDrawer(<Menu />, store);
 
-        await user.click(getLightModeButton());
+        await user.click(getButtonByName(LIGHT_MODE));
 
         expect(useColorMode().toggleColorMode).toHaveBeenCalled();
       });
@@ -316,7 +308,7 @@ describe("<Menu />", () => {
         const user = userEvent.setup();
         await renderInDrawer(<Menu />, store);
 
-        await user.click(getAddAccountButton());
+        await user.click(getButtonByName(ADD_ACCOUNT));
 
         expect(openWith).toHaveBeenCalledWith(<OnboardOptionsModal />);
       });

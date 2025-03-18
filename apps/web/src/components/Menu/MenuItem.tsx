@@ -4,14 +4,7 @@ import { type TMenuItem } from "./types";
 import { ChevronRightIcon } from "../../assets/icons";
 import { useColor } from "../../styles/useColor";
 
-export const MenuItem = ({
-  label,
-  icon,
-  onClick,
-  rightElement,
-  hasArrow,
-  style = {},
-}: TMenuItem) => {
+export const MenuItem = ({ label, icon, onClick, rightElement, hasArrow }: TMenuItem) => {
   const color = useColor();
 
   return (
@@ -26,7 +19,6 @@ export const MenuItem = ({
       data-group
       onClick={onClick}
       variant="dropdownOption"
-      {...style}
     >
       {icon}
       <Text marginRight="auto" color="gray.900" fontWeight="600" size="lg">
