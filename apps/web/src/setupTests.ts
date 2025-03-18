@@ -3,7 +3,7 @@ import { webcrypto } from "crypto";
 import { TextDecoder, TextEncoder } from "util";
 
 import { mockToast } from "@umami/state";
-import { mockLocalStorage } from "@umami/test-utils";
+import { mockLocalStorage, mockSessionStorage } from "@umami/test-utils";
 import { setupJestCanvasMock } from "jest-canvas-mock";
 
 (window as any).gtag = jest.fn();
@@ -84,9 +84,8 @@ jest.mock("./utils/persistor", () => ({
 beforeEach(() => {
   setupJestCanvasMock();
 
-  Object.defineProperty(window, "localStorage", {
-    value: mockLocalStorage(),
-  });
+  mockLocalStorage();
+  mockSessionStorage();
 
   Object.defineProperties(global, {
     crypto: { value: webcrypto, writable: true },

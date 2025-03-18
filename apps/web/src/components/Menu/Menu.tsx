@@ -5,39 +5,46 @@ import { useDynamicDrawerContext, useDynamicModalContext } from "@umami/componen
 import { useDownloadBackupFile } from "@umami/state";
 
 import { AddressBookMenu } from "./AddressBookMenu/AddressBookMenu";
-import { AdvancedMenu } from "./AdvancedMenu/AdvancedMenu";
 import { AppsMenu } from "./AppsMenu/AppsMenu";
+import { ChangePasswordMenu } from "./ChangePasswordMenu/ChangePasswordMenu";
 import { GenericMenu } from "./GenericMenu";
 import { LogoutModal } from "./LogoutModal";
 import {
+  AlertCircleIcon,
   BookIcon,
   CodeSandboxIcon,
   DownloadIcon,
+  LockIcon,
   LogoutIcon,
   MoonIcon,
-  SettingsIcon,
+  RadioIcon,
+  ShieldIcon,
+  SunIcon,
   UserPlusIcon,
 } from "../../assets/icons";
 import { OnboardOptionsModal } from "../Onboarding/OnboardOptions";
-import { useHasVerifiedAccounts } from "../Onboarding/VerificationFlow";
+import { useHasVerifiedAccounts, useIsAccountVerified } from "../Onboarding/VerificationFlow";
+import { ErrorLogsMenu } from "./ErrorLogsMenu/ErrorLogsMenu";
+import { NetworkMenu } from "./NetworkMenu/NetworkMenu";
 
 export const Menu = () => {
   const { openWith: openModal } = useDynamicModalContext();
   const { openWith: openDrawer } = useDynamicDrawerContext();
   const { colorMode, toggleColorMode } = useColorMode();
   const hasVerified = useHasVerifiedAccounts();
+  const isSelectedAccountVerified = useIsAccountVerified();
   const saveBackup = useDownloadBackupFile();
 
-  const colorModeSwitchLabel = colorMode === "light" ? "Light mode" : "Dark mode";
-
+  const isLightColorMode = colorMode === "light";
+  const colorModeSwitchLabel = isLightColorMode ? "Light mode" : "Dark mode";
+  const ColorModeSwitchIcon = () => (isLightColorMode ? <SunIcon /> : <MoonIcon />);
   hj.stateChange("menu");
 
-  const advanced = {
-    label: "Advanced",
-    icon: <SettingsIcon />,
-    onClick: () => openDrawer(<AdvancedMenu />),
-    hasArrow: true,
+  const handleLockOut = () => {
+    sessionStorage.clear();
+    window.location.reload();
   };
+
   const addressBook = {
     label: "Address book",
     icon: <BookIcon />,
@@ -62,27 +69,55 @@ export const Menu = () => {
     onClick: () => openDrawer(<AppsMenu />),
     hasArrow: true,
   };
+  const changePassword = {
+    label: "Password",
+    icon: <ShieldIcon />,
+    onClick: () => openDrawer(<ChangePasswordMenu />),
+    hasArrow: true,
+  };
+  const errorLogs = {
+    label: "Error logs",
+    icon: <AlertCircleIcon />,
+    onClick: () => openDrawer(<ErrorLogsMenu />),
+  };
+  const network = {
+    label: "Network",
+    icon: <RadioIcon />,
+    onClick: () => openDrawer(<NetworkMenu />),
+    hasArrow: true,
+  };
+  const lock = {
+    label: "Lock Umami",
+    icon: <LockIcon />,
+    onClick: handleLockOut,
+  };
+
+  const signOut = {
+    label: "Sign Out",
+    icon: <LogoutIcon />,
+    onClick: () => openModal(<LogoutModal />),
+  };
 
   const coreMenuItems = hasVerified
-    ? [advanced, addressBook, addAccount, backup, apps]
-    : [advanced, addAccount];
+    ? [addAccount, addressBook, changePassword, backup, apps, errorLogs]
+    : [addAccount, changePassword, errorLogs];
+
+  if (isSelectedAccountVerified) {
+    coreMenuItems.splice(coreMenuItems.length - 1, 0, network);
+  }
 
   const themeMenuItems = [
     {
       label: colorModeSwitchLabel,
-      icon: <MoonIcon />,
+      icon: <ColorModeSwitchIcon />,
       onClick: toggleColorMode,
-      rightElement: <Switch isChecked={colorMode === "dark"} onChange={toggleColorMode} />,
+      rightElement: <Switch isChecked={isLightColorMode} onChange={toggleColorMode} />,
     },
   ];
 
-  const logoutMenuItems = [
-    {
-      label: "Log out",
-      icon: <LogoutIcon />,
-      onClick: () => openModal(<LogoutModal />),
-    },
-  ];
+  const logoutMenuItems = [...(hasVerified ? [lock] : []), signOut];
 
-  return <GenericMenu menuItems={[coreMenuItems, themeMenuItems, logoutMenuItems]} />;
+  const menuItems = [coreMenuItems, themeMenuItems, logoutMenuItems];
+
+  return <GenericMenu menuItems={menuItems} />;
 };

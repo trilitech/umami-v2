@@ -8,9 +8,15 @@ import {
   useDownloadBackupFile,
   walletKit,
 } from "@umami/state";
+import {
+  checkElementsRenderInCorrectOrder,
+  getButtonByName,
+  mockWindowLocation,
+  queryButtonByName,
+  restoreOriginalWindowLocation,
+} from "@umami/test-utils";
 
 import { AddressBookMenu } from "./AddressBookMenu/AddressBookMenu";
-import { AdvancedMenu } from "./AdvancedMenu/AdvancedMenu";
 import { AppsMenu } from "./AppsMenu/AppsMenu";
 import { LogoutModal } from "./LogoutModal";
 import { Menu } from "./Menu";
@@ -22,6 +28,9 @@ import {
   userEvent,
 } from "../../testUtils";
 import { OnboardOptionsModal } from "../Onboarding/OnboardOptions";
+import { ChangePasswordMenu } from "./ChangePasswordMenu/ChangePasswordMenu";
+import { ErrorLogsMenu } from "./ErrorLogsMenu/ErrorLogsMenu";
+import { NetworkMenu } from "./NetworkMenu/NetworkMenu";
 
 jest.mock("@chakra-ui/system", () => ({
   ...jest.requireActual("@chakra-ui/system"),
@@ -47,6 +56,19 @@ jest.mock("@umami/state", () => ({
 let store: UmamiStore;
 const account = mockImplicitAccount(0);
 
+const ADD_ACCOUNT = "Add account";
+const ADDRESS_BOOK = "Address book";
+const APPS = "Apps";
+const LIGHT_MODE = "Light mode";
+const SIGN_OUT = "Sign Out";
+const PASSWORD = "Password";
+const ERROR_LOGS = "Error logs";
+const SAVE_BACKUP = "Save backup";
+const NETWORK = "Network";
+const LOCK_UMAMI = "Lock Umami";
+
+const unverifiedUserMenuItems = [ADD_ACCOUNT, LIGHT_MODE, SIGN_OUT, PASSWORD, ERROR_LOGS];
+
 beforeEach(() => {
   store = makeStore();
   addTestAccount(store, account);
@@ -63,23 +85,40 @@ describe("<Menu />", () => {
   });
 
   describe("when user is verified", () => {
-    it("renders menu items correctly", async () => {
-      await renderInDrawer(<Menu />, store);
+    beforeAll(() => {
+      mockWindowLocation();
+    });
+    afterAll(() => {
+      restoreOriginalWindowLocation();
+    });
 
-      expect(screen.getByText("Advanced")).toBeVisible();
-      expect(screen.getByText("Address book")).toBeVisible();
-      expect(screen.getByText("Add account")).toBeVisible();
-      expect(screen.getByText("Save backup")).toBeVisible();
-      expect(screen.getByText("Apps")).toBeVisible();
-      expect(screen.getByText("Light mode")).toBeVisible();
-      expect(screen.getByText("Log out")).toBeVisible();
+    it("renders menu items in the correct order", async () => {
+      const verifiedMenuItems = [
+        ADD_ACCOUNT,
+        ADDRESS_BOOK,
+        PASSWORD,
+        SAVE_BACKUP,
+        APPS,
+        NETWORK,
+        ERROR_LOGS,
+        LIGHT_MODE,
+        LOCK_UMAMI,
+        SIGN_OUT,
+      ];
+
+      await renderInDrawer(<Menu />, store);
+      checkElementsRenderInCorrectOrder(
+        verifiedMenuItems.map(btnName => () => getButtonByName(btnName))
+      );
     });
 
     it.each([
-      ["Advanced", AdvancedMenu],
       ["Address book", AddressBookMenu],
       ["Apps", AppsMenu],
-    ])("opens %label menu correctly", async (label, Component) => {
+      ["Password", ChangePasswordMenu],
+      ["Network", NetworkMenu],
+      ["Error logs", ErrorLogsMenu],
+    ])("opens %s menu correctly", async (label, Component) => {
       const user = userEvent.setup();
       const { openWith } = dynamicDrawerContextMock;
       jest.spyOn(walletKit, "getActiveSessions").mockImplementation(() => ({}));
@@ -96,7 +135,7 @@ describe("<Menu />", () => {
 
       await renderInDrawer(<Menu />, store);
 
-      await user.click(screen.getByText("Log out"));
+      await user.click(getButtonByName(SIGN_OUT));
       expect(openWith).toHaveBeenCalledWith(<LogoutModal />);
     });
 
@@ -107,7 +146,7 @@ describe("<Menu />", () => {
 
       await renderInDrawer(<Menu />, store);
 
-      await user.click(screen.getByText("Save backup"));
+      await user.click(getButtonByName(SAVE_BACKUP));
 
       expect(mockDownloadBackupFile).toHaveBeenCalled();
     });
@@ -116,9 +155,18 @@ describe("<Menu />", () => {
       const user = userEvent.setup();
       await renderInDrawer(<Menu />, store);
 
-      await user.click(screen.getByText("Light mode"));
+      await user.click(getButtonByName(LIGHT_MODE));
 
       expect(useColorMode().toggleColorMode).toHaveBeenCalled();
+    });
+
+    it("it clears the session and reload the window when 'Lock Umami' is clicked", async () => {
+      const user = userEvent.setup();
+      await renderInDrawer(<Menu />, store);
+      await user.click(getButtonByName(LOCK_UMAMI));
+
+      expect(window.sessionStorage.clear).toHaveBeenCalled();
+      expect(window.location.reload).toHaveBeenCalled();
     });
 
     it("opens Add Account modal when Add Account button is clicked", async () => {
@@ -126,7 +174,7 @@ describe("<Menu />", () => {
       const user = userEvent.setup();
       await renderInDrawer(<Menu />, store);
 
-      await user.click(screen.getByText("Add account"));
+      await user.click(getButtonByName(ADD_ACCOUNT));
 
       expect(openWith).toHaveBeenCalledWith(<OnboardOptionsModal />);
     });
@@ -144,14 +192,13 @@ describe("<Menu />", () => {
 
     it("renders menu items correctly", async () => {
       await renderInDrawer(<Menu />, store);
+      unverifiedUserMenuItems.forEach(btnName => expect(getButtonByName(btnName)).toBeVisible());
 
-      expect(screen.getByText("Advanced")).toBeVisible();
-      expect(screen.queryByText("Address book")).not.toBeInTheDocument();
-      expect(screen.queryByText("Add account")).toBeVisible();
-      expect(screen.queryByText("Save backup")).not.toBeInTheDocument();
-      expect(screen.queryByText("Apps")).not.toBeInTheDocument();
-      expect(screen.getByText("Light mode")).toBeVisible();
-      expect(screen.getByText("Log out")).toBeVisible();
+      expect(queryButtonByName(ADDRESS_BOOK)).not.toBeInTheDocument();
+      expect(queryButtonByName(SAVE_BACKUP)).not.toBeInTheDocument();
+      expect(queryButtonByName(APPS)).not.toBeInTheDocument();
+      expect(queryButtonByName(NETWORK)).not.toBeInTheDocument();
+      expect(queryButtonByName(LOCK_UMAMI)).not.toBeInTheDocument();
     });
 
     it("opens Add account modal when Add account button is clicked", async () => {
@@ -159,7 +206,7 @@ describe("<Menu />", () => {
       const user = userEvent.setup();
       await renderInDrawer(<Menu />, store);
 
-      await user.click(screen.getByText("Add account"));
+      await user.click(getButtonByName(ADD_ACCOUNT));
 
       expect(openWith).toHaveBeenCalledWith(<OnboardOptionsModal />);
     });
@@ -168,90 +215,103 @@ describe("<Menu />", () => {
   describe.each([
     { selectedAccount: "verified", isVerifiedSelected: true },
     { selectedAccount: "unverified", isVerifiedSelected: false },
-  ])("when user has both and $selectedAccount account is selected", ({ isVerifiedSelected }) => {
-    const unverifiedAccount = mockImplicitAccount(1);
+  ])(
+    "when the user has multiple accounts (one verified and one unverified), and the $selectedAccount account is selected",
+    ({ isVerifiedSelected }) => {
+      const unverifiedAccount = mockImplicitAccount(1);
 
-    beforeEach(() => {
-      addTestAccount(store, unverifiedAccount);
-      store.dispatch(
-        accountsActions.setIsVerified({
-          pkh: unverifiedAccount.address.pkh,
-          isVerified: false,
-        })
-      );
-      if (isVerifiedSelected) {
-        store.dispatch(accountsActions.setCurrent(account.address.pkh));
-      } else {
-        store.dispatch(accountsActions.setCurrent(unverifiedAccount.address.pkh));
-      }
-    });
+      beforeEach(() => {
+        addTestAccount(store, unverifiedAccount);
+        store.dispatch(
+          accountsActions.setIsVerified({
+            pkh: unverifiedAccount.address.pkh,
+            isVerified: false,
+          })
+        );
 
-    it("renders menu items correctly", async () => {
-      await renderInDrawer(<Menu />, store);
+        if (isVerifiedSelected) {
+          store.dispatch(accountsActions.setCurrent(account.address.pkh));
+        } else {
+          store.dispatch(accountsActions.setCurrent(unverifiedAccount.address.pkh));
+        }
+      });
 
-      expect(screen.getByText("Advanced")).toBeVisible();
-      expect(screen.getByText("Address book")).toBeVisible();
-      expect(screen.getByText("Add account")).toBeVisible();
-      expect(screen.getByText("Save backup")).toBeVisible();
-      expect(screen.getByText("Apps")).toBeVisible();
-      expect(screen.getByText("Light mode")).toBeVisible();
-      expect(screen.getByText("Log out")).toBeVisible();
-    });
+      it("renders menu items correctly", async () => {
+        await renderInDrawer(<Menu />, store);
 
-    it.each([
-      ["Advanced", AdvancedMenu],
-      ["Address book", AddressBookMenu],
-      ["Apps", AppsMenu],
-    ])("opens %s menu correctly", async (label, Component) => {
-      const user = userEvent.setup();
-      const { openWith } = dynamicDrawerContextMock;
-      jest.spyOn(walletKit, "getActiveSessions").mockImplementation(() => ({}));
+        expect(getButtonByName(ADDRESS_BOOK)).toBeVisible();
+        expect(getButtonByName(ADD_ACCOUNT)).toBeVisible();
+        expect(getButtonByName(SAVE_BACKUP)).toBeVisible();
+        expect(getButtonByName(APPS)).toBeVisible();
+        expect(getButtonByName(LIGHT_MODE)).toBeVisible();
+        expect(getButtonByName(SIGN_OUT)).toBeVisible();
+        expect(getButtonByName(PASSWORD)).toBeVisible();
+        expect(getButtonByName(ERROR_LOGS)).toBeVisible();
+        expect(getButtonByName(LOCK_UMAMI)).toBeVisible();
 
-      await renderInDrawer(<Menu />, store);
+        if (isVerifiedSelected) {
+          expect(getButtonByName(NETWORK)).toBeVisible();
+        } else {
+          expect(queryButtonByName(NETWORK)).not.toBeInTheDocument();
+        }
+      });
 
-      await user.click(screen.getByText(label));
-      expect(openWith).toHaveBeenCalledWith(<Component />);
-    });
+      it.each([
+        ["Address book", AddressBookMenu],
+        ["Apps", AppsMenu],
+        ["Password", ChangePasswordMenu],
+        ["Error logs", ErrorLogsMenu],
+      ])("opens %s menu correctly", async (label, Component) => {
+        const user = userEvent.setup();
+        const { openWith } = dynamicDrawerContextMock;
+        jest.spyOn(walletKit, "getActiveSessions").mockImplementation(() => ({}));
 
-    it("opens Log out menu correctly", async () => {
-      const user = userEvent.setup();
-      const { openWith } = dynamicModalContextMock;
+        await renderInDrawer(<Menu />, store);
 
-      await renderInDrawer(<Menu />, store);
+        await user.click(screen.getByText(label));
+        expect(openWith).toHaveBeenCalledWith(<Component />);
+      });
 
-      await user.click(screen.getByText("Log out"));
-      expect(openWith).toHaveBeenCalledWith(<LogoutModal />);
-    });
+      it("opens LogoutModal modal when Sign Out button is clicked", async () => {
+        const user = userEvent.setup();
+        const { openWith } = dynamicModalContextMock;
 
-    it("calls downloadBackupFile function when Save Backup is clicked", async () => {
-      const user = userEvent.setup();
-      const mockDownloadBackupFile = jest.fn();
-      jest.mocked(useDownloadBackupFile).mockReturnValue(mockDownloadBackupFile);
+        await renderInDrawer(<Menu />, store);
 
-      await renderInDrawer(<Menu />, store);
+        await user.click(getButtonByName(SIGN_OUT));
+        expect(openWith).toHaveBeenCalledWith(<LogoutModal />);
+      });
 
-      await user.click(screen.getByText("Save backup"));
+      it("calls downloadBackupFile function when Save Backup is clicked", async () => {
+        const user = userEvent.setup();
+        const mockDownloadBackupFile = jest.fn();
+        jest.mocked(useDownloadBackupFile).mockReturnValue(mockDownloadBackupFile);
 
-      expect(mockDownloadBackupFile).toHaveBeenCalled();
-    });
+        await renderInDrawer(<Menu />, store);
 
-    it("calls toggleColorMode function when Light mode is clicked", async () => {
-      const user = userEvent.setup();
-      await renderInDrawer(<Menu />, store);
+        await user.click(getButtonByName(SAVE_BACKUP));
 
-      await user.click(screen.getByText("Light mode"));
+        expect(mockDownloadBackupFile).toHaveBeenCalled();
+      });
 
-      expect(useColorMode().toggleColorMode).toHaveBeenCalled();
-    });
+      it("calls toggleColorMode function when Light mode is clicked", async () => {
+        const user = userEvent.setup();
+        await renderInDrawer(<Menu />, store);
 
-    it("opens Add Account modal when Add Account button is clicked", async () => {
-      const { openWith } = dynamicModalContextMock;
-      const user = userEvent.setup();
-      await renderInDrawer(<Menu />, store);
+        await user.click(getButtonByName(LIGHT_MODE));
 
-      await user.click(screen.getByText("Add account"));
+        expect(useColorMode().toggleColorMode).toHaveBeenCalled();
+      });
 
-      expect(openWith).toHaveBeenCalledWith(<OnboardOptionsModal />);
-    });
-  });
+      it("opens Add Account modal when Add Account button is clicked", async () => {
+        const { openWith } = dynamicModalContextMock;
+        const user = userEvent.setup();
+        await renderInDrawer(<Menu />, store);
+
+        await user.click(getButtonByName(ADD_ACCOUNT));
+
+        expect(openWith).toHaveBeenCalledWith(<OnboardOptionsModal />);
+      });
+    }
+  );
 });
