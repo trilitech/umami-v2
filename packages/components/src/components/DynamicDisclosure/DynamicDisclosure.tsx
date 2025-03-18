@@ -24,6 +24,7 @@ interface DynamicDisclosureContextType {
     props?: ThemingProps & {
       onClose?: () => void | Promise<void>;
       closeOnEsc?: boolean;
+      closeOnOverlayClick?: boolean;
       canBeOverridden?: boolean;
     }
   ) => Promise<void>;
@@ -67,6 +68,7 @@ type DisclosureStackItem = {
   props: ThemingProps & {
     onClose: () => void | Promise<void>;
     closeOnEsc?: boolean;
+    closeOnOverlayClick?: boolean;
     canBeOverridden?: boolean; // protects WalletConnect and Beacon modals from being overriden
   };
   formValues: Record<string, any>;
@@ -93,6 +95,7 @@ export const useDynamicDisclosure = () => {
     props: ThemingProps & {
       onClose?: () => void | Promise<void>;
       closeOnEsc?: boolean;
+      closeOnOverlayClick?: boolean;
       canBeOverridden?: boolean;
     } = {}
   ) => {
@@ -152,13 +155,14 @@ export const useDynamicDisclosure = () => {
     hasPrevious: stackRef.current.length > 1,
     allFormValues,
     canBeOverridden: !!currentItem?.props.canBeOverridden,
+    closeOnOverlayClick: !!currentItem?.props.closeOnOverlayClick,
   };
 };
 
 export const useDynamicModal = () => {
   const disclosure = useDynamicDisclosure();
 
-  const { isOpen, props, content, onClose } = disclosure;
+  const { isOpen, props, content, onClose, closeOnOverlayClick } = disclosure;
 
   return {
     ...disclosure,
@@ -166,7 +170,7 @@ export const useDynamicModal = () => {
       <Modal
         autoFocus={false}
         blockScrollOnMount={false}
-        closeOnOverlayClick={false}
+        closeOnOverlayClick={closeOnOverlayClick}
         isCentered
         isOpen={isOpen}
         motionPreset="slideInBottom"
