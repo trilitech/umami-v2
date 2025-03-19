@@ -45,6 +45,7 @@
     "elliptic": "^6.6.1"
   },
   "dependencies": {
+    "@stablelib/blake2b": "^2.0.1",
     "blakejs": "^1.2.1",
     "bs58check": "^4.0.0"
   }

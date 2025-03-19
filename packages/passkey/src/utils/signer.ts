@@ -1,11 +1,12 @@
+import { hash } from "@stablelib/blake2b";
 import { type Signer } from "@taquito/taquito";
-import { b58cencode, buf2hex, prefix } from "@taquito/utils";
+import { b58cencode, buf2hex, hex2buf, mergebuf, prefix, verifySignature } from "@taquito/utils";
 import * as asn1js from "asn1js";
 
 export class PasskeySigner implements Signer {
   constructor(private credentialId: Uint8Array, private publicKeyBuffer: string, private tezosAddress: string) {
     // Validate public key type
-    if (!this.publicKeyBuffer.startsWith("p2pk") && !this.publicKeyBuffer.startsWith('sppk')) {
+    if (!this.publicKeyBuffer.startsWith("p2pk") && !this.publicKeyBuffer.startsWith("sppk")) {
       throw new Error("Unsupported public key type");
     }
   }
@@ -25,13 +26,28 @@ export class PasskeySigner implements Signer {
     throw new Error("Secret key retrieval is not supported with passkeys.");
   }
 
-  // Sign the given bytes using the WebAuthn API
-  async sign(bytes: string, magicBytes?: Uint8Array): Promise<{ bytes: string; sig: string; prefixSig: string; sbytes: string }> {
+  /**
+   * Sign the given bytes using the WebAuthn API
+   * Following Taquito's approach from InMemorySigner and ECKey implementation
+   *  
+   * @param bytes Bytes to sign (hex string)
+   * @param watermark Optional watermark to prepend to the bytes before hashing
+   */
+  async sign(bytes: string, watermark?: Uint8Array): Promise<{ bytes: string; sig: string; prefixSig: string; sbytes: string }> {
     try {
-      // Convert the hex string into an ArrayBuffer (challenge)
-      const challengeBuffer = this.hexToArrayBuffer(bytes);
+      // Step 1: Prepare the bytes to sign, including watermark if provided
+      let bb = hex2buf(bytes);
+      if (typeof watermark !== "undefined") {
+        bb = mergebuf(watermark, bb);
+      }
+      
+      // Step 2: Create Blake2b hash of the bytes (following Taquito's approach)
+      const bytesHash = hash(bb, 32);
+      
+      // Step 3: Convert the hash into a challenge for WebAuthn
+      const challengeBuffer = bytesHash.buffer;
 
-      // Prepare the WebAuthn request
+      // Step 4: Prepare the WebAuthn request
       const publicKey: PublicKeyCredentialRequestOptions = {
         challenge: challengeBuffer,
         allowCredentials: [{
@@ -42,34 +58,34 @@ export class PasskeySigner implements Signer {
         userVerification: "preferred"
       };
 
-      // Get the assertion from WebAuthn
+      // Step 5: Get the assertion from WebAuthn
       const assertion = await navigator.credentials.get({ publicKey });
       
       if (!assertion) {
         throw new Error("Authentication failed: No credential returned.");
       }
 
-      // Extract the signature from the assertion
+      // Step 6: Extract the signature from the assertion
       const authResponse = (assertion as PublicKeyCredential).response as AuthenticatorAssertionResponse;
       
-      // Parse the DER signature
+      // Step 7: Parse the DER signature
       const derSignature = new Uint8Array(authResponse.signature);
       
-      // Use asn1js to parse the DER-encoded signature
+      // Step 8: Use asn1js to parse the DER-encoded signature
       // Note: DER is a subset of BER, and fromBER() can parse both formats
       const asn1 = asn1js.fromBER(derSignature.buffer);
       
       if (asn1.offset === -1) {
         throw new Error("Invalid DER signature encoding");
       }
-
+      
       // The signature is a SEQUENCE of two INTEGERs (r and s)
       const signatureSequence = asn1.result as asn1js.Sequence;
       
       if (signatureSequence.valueBlock.value.length !== 2) {
         throw new Error("Invalid DER signature structure");
       }
-
+      
       // Extract r and s values
       const rValue = signatureSequence.valueBlock.value[0] as asn1js.Integer;
       const sValue = signatureSequence.valueBlock.value[1] as asn1js.Integer;
@@ -91,23 +107,35 @@ export class PasskeySigner implements Signer {
       const paddedR = this.padTo32Bytes(rBuffer);
       const paddedS = this.padTo32Bytes(sBuffer);
       
-      // Concatenate r and s to create the signature
+      // Step 9: Concatenate r and s to create the signature (following ECKey approach)
       const signature = Buffer.concat([paddedR, paddedS]);
       
-      // Convert to hex string
+      // Step 10: Convert to hex string for sig value
       const signatureHex = buf2hex(signature);
       
-      // Create the prefixed signature based on key type
+      // Step 11: Create the prefixed signature based on key type (following ECKey approach)
       let prefixSig: string;
-      if (this.publicKeyBuffer.startsWith('p2pk')) {
+      if (this.publicKeyBuffer.startsWith("p2pk")) {
         prefixSig = b58cencode(signature, prefix.p2sig);
       } else {
         prefixSig = b58cencode(signature, prefix.spsig);
       }
       
-      // Create sbytes (signed bytes)
+      // Step 12: Create sbytes (signed bytes) - original bytes + signature hex
       const sbytes = bytes + signatureHex;
       
+      // Step 13: Verify the signature before returning
+      // For watermarked operations, we need to verify against the original bytes with watermark
+      console.log("verifying signature", buf2hex(bb), this.publicKeyBuffer, prefixSig);
+      const isValid = verifySignature(buf2hex(bb), this.publicKeyBuffer, prefixSig);
+      
+      if (!isValid) {
+        console.warn("Warning: Generated signature failed verification");
+        // You can choose to throw an error here or continue with the potentially invalid signature
+        throw new Error("Signature verification failed");
+      }
+      
+      // Step 14: Return the signature data in the format expected by Taquito
       return {
         bytes,
         sig: signatureHex,
