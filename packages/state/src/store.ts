@@ -49,8 +49,13 @@ export const initializePersistence = (
   // Combine persisted reducers
   const finalReducer = (state: any, action: any) => {
     const rootState = persistedRootReducer(state, action);
-    const accountsState = persistedAccountsReducer(state.accounts, action);
-    return { ...rootState, accounts: accountsState };
+
+    if (state?.accounts) {
+      const accountsState = persistedAccountsReducer(state.accounts, action);
+      return { ...rootState, accounts: accountsState };
+    }
+
+    return rootState;
   };
 
   // Update store's reducer
