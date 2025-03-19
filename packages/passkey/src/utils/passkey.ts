@@ -1,17 +1,17 @@
 import { startAuthentication, startRegistration } from "@simplewebauthn/browser";
-import nacl from 'tweetnacl';
-import naclUtil from 'tweetnacl-util';
-import { TezosToolkit } from '@taquito/taquito';
-import { InMemorySigner } from '@taquito/signer';
+import { TezosToolkit } from "@taquito/taquito";
+import nacl from "tweetnacl";
+import naclUtil from "tweetnacl-util";
+
 import { PasskeySigner } from "./signer";
 
-const tezos = new TezosToolkit('https://ghostnet.tezos.ecadinfra.com');
+const tezos = new TezosToolkit("https://ghostnet.tezos.ecadinfra.com");
 
 export const broadcastTransaction = async ({transactionData, credentialId, publicKeyBuffer}: {transactionData: any, credentialId: string, publicKeyBuffer: string }) => {
-  console.log('broadcastTransaction', {transactionData, credentialId, publicKeyBuffer});
+  console.log("broadcastTransaction", {transactionData, credentialId, publicKeyBuffer});
   try {
     // Create an InMemorySigner with the public key and signature
-    const credentialIdBuffer = new Uint8Array(Buffer.from(credentialId, 'base64'));
+    const credentialIdBuffer = new Uint8Array(Buffer.from(credentialId, "base64"));
 
     console.log({
       credentialIdBuffer, publicKeyBuffer, from:  transactionData.to
@@ -20,7 +20,7 @@ export const broadcastTransaction = async ({transactionData, credentialId, publi
 
     tezos.setProvider({ signer: passkeySigner });
 
-    console.log('Prepare the transaction', transactionData);
+    console.log("Prepare the transaction", transactionData);
     // Prepare the transaction
     // Send the transaction
     const result = await tezos.contract.transfer({
@@ -29,10 +29,10 @@ export const broadcastTransaction = async ({transactionData, credentialId, publi
     });
     await result.confirmation();
 
-    console.log('Transaction broadcasted successfully:', result);
+    console.log("Transaction broadcasted successfully:", result);
     return result;
   } catch (error) {
-    console.error('Error broadcasting transaction:', error);
+    console.error("Error broadcasting transaction:", error);
     throw error;
   }
 };
@@ -127,7 +127,7 @@ async function generateKeyFromPasskey(passkey: string) {
   const encoder = new TextEncoder();
   const passkeyBytes = encoder.encode(passkey);
   // Use a fixed salt for demonstration; in a real app, generate a random salt and store it securely.
-  const salt = encoder.encode('unique-salt-value');
+  const salt = encoder.encode("unique-salt-value");
 
   // Import the passkey as key material for PBKDF2
   const keyMaterial = await window.crypto.subtle.importKey(
