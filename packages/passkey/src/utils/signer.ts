@@ -44,12 +44,9 @@ export class PasskeySigner implements Signer {
       // Step 2: Create Blake2b hash of the bytes (following Taquito's approach)
       const bytesHash = hash(bb, 32);
       
-      // Step 3: Convert the hash into a challenge for WebAuthn
-      const challengeBuffer = bytesHash.buffer;
-
       // Step 4: Prepare the WebAuthn request
       const publicKey: PublicKeyCredentialRequestOptions = {
-        challenge: challengeBuffer,
+        challenge: bytesHash,
         allowCredentials: [{
           id: this.credentialId,
           type: "public-key"
@@ -103,42 +100,33 @@ export class PasskeySigner implements Signer {
         sBuffer = sBuffer.subarray(1);
       }
       
-      // Pad to 32 bytes if needed
-      const paddedR = this.padTo32Bytes(rBuffer);
-      const paddedS = this.padTo32Bytes(sBuffer);
+      const rHex = buf2hex(rBuffer).padStart(64, '0');
+      const sHex = buf2hex(sBuffer).padStart(64, '0');
       
-      // Step 9: Concatenate r and s to create the signature (following ECKey approach)
-      const signature = Buffer.concat([paddedR, paddedS]);
+      const signatureHex = rHex + sHex;
       
-      // Step 10: Convert to hex string for sig value
-      const signatureHex = buf2hex(signature);
+      const signatureBuffer = hex2buf(signatureHex);
       
-      // Step 11: Create the prefixed signature based on key type (following ECKey approach)
       let prefixSig: string;
       if (this.publicKeyBuffer.startsWith("p2pk")) {
-        prefixSig = b58cencode(signature, prefix.p2sig);
+        prefixSig = b58cencode(signatureBuffer, prefix.p2sig);
       } else {
-        prefixSig = b58cencode(signature, prefix.spsig);
+        prefixSig = b58cencode(signatureBuffer, prefix.spsig);
       }
       
-      // Step 12: Create sbytes (signed bytes) - original bytes + signature hex
-      const sbytes = bytes + signatureHex;
+      const sbytes = bb + signatureHex;
       
-      // Step 13: Verify the signature before returning
-      // For watermarked operations, we need to verify against the original bytes with watermark
       console.log("verifying signature", buf2hex(bb), this.publicKeyBuffer, prefixSig);
       const isValid = verifySignature(buf2hex(bb), this.publicKeyBuffer, prefixSig);
       
       if (!isValid) {
         console.warn("Warning: Generated signature failed verification");
-        // You can choose to throw an error here or continue with the potentially invalid signature
         throw new Error("Signature verification failed");
       }
       
-      // Step 14: Return the signature data in the format expected by Taquito
       return {
         bytes,
-        sig: signatureHex,
+        sig: b58cencode(signatureHex, prefix.sig),
         prefixSig,
         sbytes
       };
@@ -146,35 +134,5 @@ export class PasskeySigner implements Signer {
       console.error("Signing error:", error);
       throw error;
     }
-  }
-  
-  // Pad a byte array to 32 bytes
-  private padTo32Bytes(input: Uint8Array): Buffer {
-    if (input.length === 32) {
-      return Buffer.from(input);
-    }
-    
-    const result = Buffer.alloc(32, 0);
-    
-    if (input.length > 32) {
-      // If longer than 32 bytes, take the last 32 bytes
-      Buffer.from(input.subarray(input.length - 32)).copy(result);
-    } else {
-      // If shorter than 32 bytes, pad with leading zeros
-      Buffer.from(input).copy(result, 32 - input.length);
-    }
-    
-    return result;
-  }
-
-  // Convert hex string to ArrayBuffer
-  private hexToArrayBuffer(hexString: string): ArrayBuffer {
-    const cleanHex = hexString.startsWith("0x") ? hexString.slice(2) : hexString;
-    const pairs = [];
-    for (let i = 0; i < cleanHex.length; i += 2) {
-      pairs.push(cleanHex.substring(i, i + 2));
-    }
-    const bytes = new Uint8Array(pairs.map(hex => parseInt(hex, 16)));
-    return bytes.buffer;
   }
 }
