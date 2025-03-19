@@ -28,7 +28,9 @@ export const AccountCard = () => {
         background={color("100")}
         account={currentAccount}
         id="account-tile"
-        onClick={() => openWith(<AccountSelectorModal />, { canBeOverridden: true })}
+        onClick={() =>
+          openWith(<AccountSelectorModal />, { canBeOverridden: true, closeOnOverlayClick: true })
+        }
       >
         <IconButton
           alignSelf="center"
