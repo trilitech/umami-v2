@@ -12,6 +12,9 @@ import { ModalProvider } from "../providers/ModalProvider";
 import { persistor, store } from "../store";
 import { tamaguiConfig } from "../tamagui.config";
 
+// Set environment variable to disable theme warning
+process.env.TAMAGUI_DISABLE_NO_THEME_WARNING = '1';
+
 export default function RootLayout() {
   const colorScheme = useColorScheme();
 
@@ -21,10 +24,10 @@ export default function RootLayout() {
 
   return (
     <Provider store={store}>
-      <PersistGate loading={<PersistorLoader />} persistor={persistor}>
+      {/* <PersistGate loading={<PersistorLoader />} persistor={persistor}> */}
         <ToastProvider toast={{} as Toast}>
           <ReactQueryProvider>
-            <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme!}>
+            <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme || 'light'}>
               <ModalProvider>
                 <AuthProvider>
                   <Stack screenOptions={{ headerShown: false, gestureEnabled: false }}>
@@ -36,7 +39,7 @@ export default function RootLayout() {
             </TamaguiProvider>
           </ReactQueryProvider>
         </ToastProvider>
-      </PersistGate>
+      {/* </PersistGate> */}
     </Provider>
   );
 }
