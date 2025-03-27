@@ -21,7 +21,7 @@ import { CustomError } from "@umami/utils";
 
 import { useHandleBeaconMessage } from "./useHandleBeaconMessage";
 import { act, dynamicModalContextMock, renderHook, screen, waitFor } from "../../testUtils";
-import { SingleSignPage } from "../SendFlow/common/RequestSignPage";
+import { RequestSignPage } from "../SendFlow/common/RequestSignPage";
 import { type SdkSignPageProps, type SignHeaderProps } from "../SendFlow/utils";
 
 jest.mock("@umami/core", () => ({
@@ -352,7 +352,7 @@ describe("<useHandleBeaconMessage />", () => {
     });
 
     describe("single operation", () => {
-      it("opens a modal with the SingleSignPage for 1 operation", async () => {
+      it("opens a modal with the RequestSignPage for 1 operation", async () => {
         jest.mocked(estimate).mockResolvedValueOnce({
           ...makeAccountOperations(account, account, [
             { type: "tez", amount: "1", recipient: mockImplicitAddress(2) },
@@ -400,7 +400,7 @@ describe("<useHandleBeaconMessage />", () => {
 
         await waitFor(() =>
           expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
-            <SingleSignPage {...signProps} />,
+            <RequestSignPage {...signProps} />,
             { onClose: expect.any(Function) }
           )
         );
@@ -510,7 +510,7 @@ describe("<useHandleBeaconMessage />", () => {
 
         await waitFor(() =>
           expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
-            <SingleSignPage {...signProps} />,
+            <RequestSignPage {...signProps} />,
             { onClose: expect.any(Function) }
           )
         );
