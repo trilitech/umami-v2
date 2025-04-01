@@ -80,7 +80,7 @@
     "@umami/social-auth": "workspace:^",
     "@umami/tezos": "workspace:^",
     "@umami/tzkt": "workspace:^",
-    "@walletconnect/core": "^2.16.2",
+    "@walletconnect/core": "^2.19.2",
     "@walletconnect/jsonrpc-utils": "^1.0.8",
     "@walletconnect/types": "^2.17.3",
     "@walletconnect/utils": "^2.17.3",
