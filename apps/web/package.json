@@ -37,7 +37,7 @@
     "@reduxjs/toolkit": "^2.5.0",
     "@reown/walletkit": "^1.0.1",
     "@sentry/react": "^9.1.0",
-    "@tanstack/react-query": "^5.62.11",
+    "@tanstack/react-query": "^5.71.1",
     "@taquito/beacon-wallet": "^21.0.2",
     "@taquito/ledger-signer": "^21.0.2",
     "@taquito/michel-codec": "^21.0.2",
