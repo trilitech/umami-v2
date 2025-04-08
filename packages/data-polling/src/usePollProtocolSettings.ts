@@ -27,7 +27,7 @@ export const usePollProtocolSettings = () => {
         protocolSettingsActions.update({
           network,
           settings: {
-            maxSlashingPeriod: settings.max_slashing_period!,
+            maxSlashingPeriod: settings.denunciation_period + settings.slashing_delay!,
             consensusRightsDelay: settings.consensus_rights_delay,
           },
         })
