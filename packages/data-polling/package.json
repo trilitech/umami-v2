@@ -67,7 +67,7 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@tanstack/react-query": "^5.62.11",
-    "@taquito/rpc": "^21.0.0",
+    "@taquito/rpc": "^22.0.0-beta.0",
     "@umami/core": "workspace:^",
     "@umami/multisig": "workspace:^",
     "@umami/state": "workspace:^",

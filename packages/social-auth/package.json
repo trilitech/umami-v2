@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.26.0",
-    "@taquito/utils": "^21.0.0",
+    "@taquito/utils": "^22.0.0-beta.0",
     "@toruslabs/customauth": "16.0.6"
   },
   "devDependencies": {
