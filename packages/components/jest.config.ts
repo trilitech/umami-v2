@@ -3,7 +3,6 @@ import type { Config } from "jest";
 
 const config: Config = {
   ...baseConfig,
-  testEnvironment: "jsdom",
   setupFilesAfterEnv: ["<rootDir>/src/setupTests.ts"],
   rootDir: "./",
 };

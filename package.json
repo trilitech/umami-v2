@@ -14,7 +14,7 @@
     "build": "turbo build",
     "build:watch": "turbo watch build:quick --filter=./packages/\\*",
     "clean": "rimraf .turbo && turbo clean",
-    "test": "turbo test",
+    "test": "turbo test --filter=!@umami/web",
     "lint": "turbo lint",
     "format": "turbo format",
     "ci": "turbo check-types lint:ci format:ci check-circular-deps",

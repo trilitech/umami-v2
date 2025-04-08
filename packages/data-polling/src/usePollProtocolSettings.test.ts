@@ -10,7 +10,8 @@ describe("usePollProtocolSettings", () => {
   it("fetches the latest block and updates the state", async () => {
     const store = makeStore();
     jest.mocked(getProtocolSettings).mockResolvedValue({
-      max_slashing_period: 5,
+      denunciation_period: 1,
+      slashing_delay: 1,
       consensus_rights_delay: 123,
       adaptive_issuance_activation_vote_enable: false,
     } as any);
@@ -20,7 +21,7 @@ describe("usePollProtocolSettings", () => {
     await waitFor(() => expect(getProtocolSettings).toHaveBeenCalled());
     expect(store.getState().protocolSettings).toEqual({
       mainnet: {
-        maxSlashingPeriod: 5,
+        maxSlashingPeriod: 2,
         consensusRightsDelay: 123,
       },
       ghostnet: {
