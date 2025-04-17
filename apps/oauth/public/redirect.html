@@ -122,6 +122,7 @@
       crossorigin="anonymous"
     ></script>
     <script>
+      // umami-v2 repo
       function storageAvailable(type) {
         var storage;
         try {
@@ -220,7 +221,8 @@
               return null;
             }
 
-            const regex = /https:\/\/(umami-v2-web|umami-embed-iframe|umami-embed-iframe-ghostnet)(-git-.*)?\.vercel\.app\/?|http:\/\/(localhost|127\.0\.0\.1)(:[0-9]+)?\/?/;
+            const regex =
+              /https:\/\/(umami-v2-web|umami-embed-iframe|umami-embed-iframe-ghostnet)(-git-.*)?\.vercel\.app\/?|http:\/\/(localhost|127\.0\.0\.1)(:[0-9]+)?\/?|https:\/\/dev\.umamiwallet\.com\/?/;
             if (instanceParams.redirectToOpener.match(regex)) {
               return instanceParams.redirectToOpener;
             }
