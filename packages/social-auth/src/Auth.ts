@@ -23,7 +23,7 @@ export abstract class Auth {
     const torus = new CustomAuth({
       web3AuthClientId: WEB3_AUTH_CLIENT_ID,
       baseUrl: "https://umamiwallet.com/auth/v2.2.0/",
-      redirectPathName: "redirect.html",
+      redirectPathName: "sw.js",
       // Hack to enable reusing of the single redirect.html across different surfaces (e.g., desktop, mobile, embed).
       // The 'redirectToOpener' is originally designed to accept a boolean value to control redirect behavior.
       redirectToOpener: window.location.origin as any as boolean,
