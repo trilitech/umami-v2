@@ -9,7 +9,6 @@ export const tezToMutez = (tez: string): BigNumber =>
   format("tz", "mutez", tez) as unknown as BigNumber;
 
 export const mutezToTez = (mutez: BigNumber | string | number) =>
-  // @ts-expect-error BigNumber in @taquito/utils is different from bignumber.js even if the same version is used
   format("mutez", "tz", mutez) as unknown as BigNumber;
 
 export const formatTezAmount = (
