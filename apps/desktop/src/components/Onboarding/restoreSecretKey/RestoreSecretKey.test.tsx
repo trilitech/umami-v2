@@ -94,7 +94,7 @@ describe("<RestoreSecretKey />", () => {
     await act(() => user.click(screen.getByTestId("restore-continue-button")));
 
     expect(mockToast).toHaveBeenCalledWith({
-      description: "can't decrypt secret key",
+      description: "Key-password pair is invalid",
       status: "error",
       isClosable: true,
     });
@@ -111,7 +111,7 @@ describe("<RestoreSecretKey />", () => {
     await act(() => user.click(screen.getByTestId("restore-continue-button")));
 
     expect(mockToast).toHaveBeenCalledWith({
-      description: "Invalid private key",
+      description: "Invalid secret key: checksum doesn't match",
       status: "error",
       isClosable: true,
     });
@@ -128,7 +128,7 @@ describe("<RestoreSecretKey />", () => {
     await act(() => user.click(screen.getByTestId("restore-continue-button")));
 
     expect(mockToast).toHaveBeenCalledWith({
-      description: "Invalid private key",
+      description: "Invalid secret key: checksum doesn't match",
       status: "error",
       isClosable: true,
     });
