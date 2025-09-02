@@ -16,7 +16,7 @@
     "clean": "rimraf .turbo && turbo clean",
     "test": "turbo test --filter=!@umami/web",
     "lint": "turbo lint",
-    "format": "turbo format",
+    "format": "turbo format  --filter=!@umami/mobile",
     "ci": "turbo check-types lint:ci format:ci check-circular-deps",
     "check-types": "turbo check-types",
     "test:e2e": "turbo test:e2e",
