@@ -407,8 +407,8 @@ importers:
         specifier: ^1.49.1
         version: 1.49.1
       '@taquito/signer':
-        specifier: ^21.0.2
-        version: 21.0.3(encoding@0.1.13)
+        specifier: ^23.0.0-beta.0
+        version: 23.0.0-beta.1(encoding@0.1.13)
       '@umami/core':
         specifier: workspace:^
         version: link:../../packages/core
@@ -522,8 +522,8 @@ importers:
         specifier: ^11.14.0
         version: 11.14.0(@emotion/react@11.14.0(@types/react@18.3.12)(react@18.3.1))(@types/react@18.3.12)(react@18.3.1)
       '@taquito/signer':
-        specifier: ^21.0.2
-        version: 21.0.3(encoding@0.1.13)
+        specifier: ^23.0.0-beta.0
+        version: 23.0.0-beta.1(encoding@0.1.13)
       '@taquito/taquito':
         specifier: 21.0.2
         version: 21.0.2(encoding@0.1.13)
@@ -716,8 +716,8 @@ importers:
         specifier: ^1.123.14
         version: 1.123.14(react-dom@18.3.1(react@18.3.1))(react-native-svg@15.11.1(react-native@0.76.3(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@react-native-community/cli-server-api@15.1.3)(@types/react@18.3.12)(encoding@0.1.13)(react@18.3.1))(react@18.3.1))(react-native@0.76.3(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@react-native-community/cli-server-api@15.1.3)(@types/react@18.3.12)(encoding@0.1.13)(react@18.3.1))(react@18.3.1)
       '@taquito/utils':
-        specifier: ^21.0.2
-        version: 21.0.3
+        specifier: ^23.0.0-beta.0
+        version: 23.0.0-beta.1
       '@umami/core':
         specifier: workspace:^
         version: link:../../packages/core
@@ -1008,23 +1008,23 @@ importers:
         specifier: ^5.62.11
         version: 5.62.11(react@18.3.1)
       '@taquito/beacon-wallet':
-        specifier: ^21.0.2
-        version: 21.0.3(@testing-library/dom@10.4.0)(@types/react-dom@18.3.1)(@types/react@18.3.12)(encoding@0.1.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^23.0.0-beta.0
+        version: 23.0.0-beta.1(encoding@0.1.13)(rollup@4.26.0)
       '@taquito/ledger-signer':
-        specifier: ^21.0.2
-        version: 21.0.3(encoding@0.1.13)
+        specifier: ^23.0.0-beta.0
+        version: 23.0.0-beta.1(encoding@0.1.13)
       '@taquito/michel-codec':
-        specifier: ^21.0.2
-        version: 21.0.3
+        specifier: ^23.0.0-beta.0
+        version: 23.0.0-beta.1
       '@taquito/rpc':
-        specifier: ^21.0.2
-        version: 21.0.3(encoding@0.1.13)
+        specifier: ^23.0.0-beta.0
+        version: 23.0.0-beta.1(encoding@0.1.13)
       '@taquito/signer':
-        specifier: ^21.0.2
-        version: 21.0.3(encoding@0.1.13)
+        specifier: ^23.0.0-beta.0
+        version: 23.0.0-beta.1(encoding@0.1.13)
       '@taquito/taquito':
-        specifier: ^21.0.2
-        version: 21.0.2(encoding@0.1.13)
+        specifier: ^23.0.0-beta.0
+        version: 23.0.0-beta.1(encoding@0.1.13)
       '@tzkt/sdk-api':
         specifier: ^2.2.1
         version: 2.2.1(encoding@0.1.13)(openapi-types@12.1.3)
@@ -1524,23 +1524,23 @@ importers:
         specifier: ^4.4.0
         version: 4.4.0
       '@taquito/local-forging':
-        specifier: ^21.0.2
-        version: 21.0.3
+        specifier: ^23.0.0-beta.0
+        version: 23.0.0-beta.1
       '@taquito/michel-codec':
-        specifier: ^21.0.2
-        version: 21.0.3
+        specifier: ^23.0.0-beta.0
+        version: 23.0.0-beta.1
       '@taquito/rpc':
-        specifier: ^21.0.2
-        version: 21.0.3(encoding@0.1.13)
+        specifier: ^23.0.0-beta.0
+        version: 23.0.0-beta.1(encoding@0.1.13)
       '@taquito/signer':
-        specifier: ^21.0.2
-        version: 21.0.3(encoding@0.1.13)
+        specifier: ^23.0.0-beta.0
+        version: 23.0.0-beta.1(encoding@0.1.13)
       '@taquito/taquito':
-        specifier: ^21.0.2
-        version: 21.0.2(encoding@0.1.13)
+        specifier: ^23.0.0-beta.0
+        version: 23.0.0-beta.1(encoding@0.1.13)
       '@taquito/utils':
-        specifier: ^21.0.2
-        version: 21.0.3
+        specifier: ^23.0.0-beta.0
+        version: 23.0.0-beta.1
       '@tzkt/sdk-api':
         specifier: ^2.2.1
         version: 2.2.1(encoding@0.1.13)(openapi-types@12.1.3)
@@ -1621,8 +1621,8 @@ importers:
   packages/crypto:
     dependencies:
       '@taquito/utils':
-        specifier: ^21.0.2
-        version: 21.0.3
+        specifier: ^23.0.0-beta.0
+        version: 23.0.0-beta.1
       date-fns:
         specifier: ^4.1.0
         version: 4.1.0
@@ -1700,8 +1700,8 @@ importers:
         specifier: ^5.62.11
         version: 5.62.11(react@18.3.1)
       '@taquito/rpc':
-        specifier: ^21.0.2
-        version: 21.0.3(encoding@0.1.13)
+        specifier: ^23.0.0-beta.0
+        version: 23.0.0-beta.1(encoding@0.1.13)
       '@umami/core':
         specifier: workspace:^
         version: link:../core
@@ -1887,11 +1887,11 @@ importers:
   packages/multisig:
     dependencies:
       '@taquito/rpc':
-        specifier: ^21.0.2
-        version: 21.0.3(encoding@0.1.13)
+        specifier: ^23.0.0-beta.0
+        version: 23.0.0-beta.1(encoding@0.1.13)
       '@taquito/utils':
-        specifier: ^21.0.2
-        version: 21.0.3
+        specifier: ^23.0.0-beta.0
+        version: 23.0.0-beta.1
       '@tzkt/sdk-api':
         specifier: ^2.2.1
         version: 2.2.1(encoding@0.1.13)(openapi-types@12.1.3)
@@ -1972,8 +1972,8 @@ importers:
         specifier: ^7.26.0
         version: 7.26.0
       '@taquito/utils':
-        specifier: ^21.0.2
-        version: 21.0.3
+        specifier: ^23.0.0-beta.0
+        version: 23.0.0-beta.1
       '@toruslabs/customauth':
         specifier: 16.0.6
         version: 16.0.6(@babel/runtime@7.26.0)
@@ -2039,11 +2039,11 @@ importers:
         specifier: ^5.62.11
         version: 5.62.11(react@18.3.1)
       '@taquito/signer':
-        specifier: ^21.0.2
-        version: 21.0.3(encoding@0.1.13)
+        specifier: ^23.0.0-beta.0
+        version: 23.0.0-beta.1(encoding@0.1.13)
       '@taquito/utils':
-        specifier: ^21.0.2
-        version: 21.0.3
+        specifier: ^23.0.0-beta.0
+        version: 23.0.0-beta.1
       '@types/jest':
         specifier: ^29.5.14
         version: 29.5.14
@@ -2196,11 +2196,11 @@ importers:
   packages/test-utils:
     dependencies:
       '@taquito/rpc':
-        specifier: ^21.0.2
-        version: 21.0.3(encoding@0.1.13)
+        specifier: ^23.0.0-beta.0
+        version: 23.0.0-beta.1(encoding@0.1.13)
       '@taquito/utils':
-        specifier: ^21.0.2
-        version: 21.0.3
+        specifier: ^23.0.0-beta.0
+        version: 23.0.0-beta.1
       '@types/jest':
         specifier: ^29.5.14
         version: 29.5.14
@@ -2257,23 +2257,23 @@ importers:
         specifier: 6.27.1
         version: 6.27.1
       '@taquito/ledger-signer':
-        specifier: ^21.0.2
-        version: 21.0.3(encoding@0.1.13)
+        specifier: ^23.0.0-beta.0
+        version: 23.0.0-beta.1(encoding@0.1.13)
       '@taquito/michel-codec':
-        specifier: ^21.0.2
-        version: 21.0.3
+        specifier: ^23.0.0-beta.0
+        version: 23.0.0-beta.1
       '@taquito/rpc':
-        specifier: ^21.0.2
-        version: 21.0.3(encoding@0.1.13)
+        specifier: ^23.0.0-beta.0
+        version: 23.0.0-beta.1(encoding@0.1.13)
       '@taquito/signer':
-        specifier: ^21.0.2
-        version: 21.0.3(encoding@0.1.13)
+        specifier: ^23.0.0-beta.0
+        version: 23.0.0-beta.1(encoding@0.1.13)
       '@taquito/taquito':
-        specifier: ^21.0.2
-        version: 21.0.2(encoding@0.1.13)
+        specifier: ^23.0.0-beta.0
+        version: 23.0.0-beta.1(encoding@0.1.13)
       '@taquito/utils':
-        specifier: ^21.0.2
-        version: 21.0.3
+        specifier: ^23.0.0-beta.0
+        version: 23.0.0-beta.1
       '@umami/utils':
         specifier: workspace:^
         version: link:../utils
@@ -2506,26 +2506,41 @@ packages:
   '@airgap/beacon-core@4.4.0':
     resolution: {integrity: sha512-dMQjhuA4Jq+IMsJ5ATI5ThP1CQzIFZQikPqmE9Jhbq29wlUz1hTHi/c+0CibKO72G6MteJIVgUQVUO43LwDt1A==}
 
-  '@airgap/beacon-dapp@4.4.0':
-    resolution: {integrity: sha512-VrZiX910gGKeRT6R/gitTFN4jji4CIRcmszQ0U+ETvt/CwKcnY4hZNzlCoEQX6zEdpJqGvDq+aUuP5QGa3ncFQ==}
+  '@airgap/beacon-core@4.5.1':
+    resolution: {integrity: sha512-JJ7XvMjD6ptR55W5hEJwkiyuZ9Md5CJraGKwnm4D+4T/nc+St/DKvbaTYCksr8bpa35VHr2D46htwuCtdD2NHA==}
+
+  '@airgap/beacon-dapp@4.5.1':
+    resolution: {integrity: sha512-Nvoezl2EXViohQM5Pq/VBxW8XVrlHCGDDG2NvpVQPI9Q7DRkS7m95THnWnERlEGLGSMvbf66hITdtCcztWRRrA==}
 
   '@airgap/beacon-transport-matrix@4.4.0':
     resolution: {integrity: sha512-lREECB4nccc2XFcfTzcqoACMi7YyQbSfqnGL0i+Gu6gvrX9yvm2WJ3l2g84HoQxs6xUt+Uz57EC/iIlHb2uBvg==}
 
+  '@airgap/beacon-transport-matrix@4.5.1':
+    resolution: {integrity: sha512-gtDGdad4S3BOE0nPtqpITyn30XRN5dj9mmhvd+TAayAmDsM8tvZFSzUhWyLLXUo68YOExpdocKy83/y7YA54HA==}
+
   '@airgap/beacon-transport-postmessage@4.4.0':
     resolution: {integrity: sha512-e1RduTW7svf4rTvmUQBkLYbCMgwoo+vPvPcrsLOJvXFAI+1AEZ/MO04hAbTCdByuUe0qkljHj2/vcDU33jyt/g==}
 
-  '@airgap/beacon-transport-walletconnect@4.4.0':
-    resolution: {integrity: sha512-ehLLUOSPmZZJsm363RufntbYqepk0BiBGQNuVWl1dnci3Ym7GaxoOHZkPik7fPWZ3R9UyrKwZJOZj797s8xyXw==}
+  '@airgap/beacon-transport-postmessage@4.5.1':
+    resolution: {integrity: sha512-ZW8eNA3UE3ki2BDIEPS1VeV9iFGlzyS8//BmDy0vRBR3rmaNfsFE/hj3TYjbdHTTz8NO0OZjSfxqwsuuj/8+zA==}
+
+  '@airgap/beacon-transport-walletconnect@4.5.1':
+    resolution: {integrity: sha512-iJ1cVPl2PNIFaDgFMG6pzUWHYdtW98BDC4bOscpQoVHUWLQBMpfkwdMzxG6FweT6kKR4uF21Hozl95DVuwC8rQ==}
 
   '@airgap/beacon-types@4.4.0':
     resolution: {integrity: sha512-KZ2ZRoZcjq31eksn+o1XkYgH0G1u4Uazrw8VTElPwFTgbIY6qNXTGt+z1KzIHmLtL+q/PzmdbaW+lohrbzfTLQ==}
 
-  '@airgap/beacon-ui@4.4.0':
-    resolution: {integrity: sha512-OetwwhND3yTZTF//qeF2UZ7M6tppjRlvFFxBPLwyrHEPaG0XdqrFv4mLfqjuZKKEP7ZQMlOXPjlI8lUcPqA0KA==}
+  '@airgap/beacon-types@4.5.1':
+    resolution: {integrity: sha512-eeEwGyIyuZ9mzq5tRXQC4ZL0xbXYzGHW9cSVG1iPkvzFaxRztseOeJDqmPHL53GjldOpCX9fr2a05TDXCJ20/Q==}
+
+  '@airgap/beacon-ui@4.5.1':
+    resolution: {integrity: sha512-MsIczEBonBxOvFNEyz9/MKjZvQ98xArFjuGD1Ke0pR8Kb7V9sRiQDBARN6C0K+kXoxkJI9lCe601sdkRaVNEVA==}
 
   '@airgap/beacon-utils@4.4.0':
     resolution: {integrity: sha512-ZdV33j4UA1Wg+axOE7+O67l0714uSjY4bf++HDIxbrN4TUbd2vDyMCKL6IiDfbGbJXRj43Ci0tfjdj/M+1eS4w==}
+
+  '@airgap/beacon-utils@4.5.1':
+    resolution: {integrity: sha512-K3hUDXPuGxm75cvCOet0olYXBiQi4+EZltnkJBjZZp8v+vDdtCZ21kV6jifxq5mpGfEnyvKLUk6yS1Mk2QSRcw==}
 
   '@airgap/beacon-wallet@4.4.0':
     resolution: {integrity: sha512-WSYnH+tAJy62kLsnB3DSdBfbjFTKqSPN1p23B4wDi36YSAL6EGOWSpQ8xU4ZUYkmiuEvQhecNguRKXMjRV6/LQ==}
@@ -4576,8 +4591,20 @@ packages:
   '@motionone/utils@10.18.0':
     resolution: {integrity: sha512-3XVF7sgyTSI2KWvTf6uLlBJ5iAgRgmvp3bpuOiQJvInd4nZ19ET8lX5unn30SlmRH7hXbBbH+Gxd0m0klJ3Xtw==}
 
+  '@noble/ciphers@1.2.1':
+    resolution: {integrity: sha512-rONPWMC7PeExE077uLE4oqWrZ1IvAfz3oH9LibVAcVCopJiA9R62uavnbEzdkVmJYI6M6Zgkbeb07+tWjlq2XA==}
+    engines: {node: ^14.21.3 || >=16}
+
   '@noble/curves@1.4.2':
     resolution: {integrity: sha512-TavHr8qycMChk8UwMld0ZDRvatedkzWfH8IiaeGCfymOP5i0hSCozz9vHOL0nkwk7HRMlFnAiKpS2jrUmSybcw==}
+
+  '@noble/curves@1.8.0':
+    resolution: {integrity: sha512-j84kjAbzEnQHaSIhRPUmB3/eVXu2k3dKPl2LOrR8fSOIL+89U+7lV117EWHtq/GHM3ReGHM46iRBdZfpc4HRUQ==}
+    engines: {node: ^14.21.3 || >=16}
+
+  '@noble/curves@1.8.1':
+    resolution: {integrity: sha512-warwspo+UYUPep0Q+vtdVB4Ugn8GGQj8iyB3gnRWsztmUHTI3S1nhdiWNsPUGL0vud7JlRRk1XEu7Lq1KGTnMQ==}
+    engines: {node: ^14.21.3 || >=16}
 
   '@noble/curves@1.9.7':
     resolution: {integrity: sha512-gbKGcRUYIjA3/zCCNaWDciTMFI0dCkvou3TL8Zmy5Nc7sJ47a0jtOeZoTaMxkuqRo9cRhjOdZJXegxYE5FN/xw==}
@@ -4586,6 +4613,14 @@ packages:
   '@noble/hashes@1.4.0':
     resolution: {integrity: sha512-V1JJ1WTRUqHHrOSh597hURcMqVKVGL/ea3kv0gSnEdsEZ0/+VyPghM1lMNGc00z7CIQorSvbKpuJkxvuHbvdbg==}
     engines: {node: '>= 16'}
+
+  '@noble/hashes@1.7.0':
+    resolution: {integrity: sha512-HXydb0DgzTpDPwbVeDGCG1gIu7X6+AuU6Zl6av/E/KG8LMsvPntvq+w17CHRpKBmN6Ybdrt1eP3k4cj8DJa78w==}
+    engines: {node: ^14.21.3 || >=16}
+
+  '@noble/hashes@1.7.1':
+    resolution: {integrity: sha512-B8XBPsn4vT/KJAGqDzbwztd+6Yte3P4V7iafm24bxgDe/mlRuK6xmWPuCNrKt2vDafZ8MfJLlchDG/vYafQEjQ==}
+    engines: {node: ^14.21.3 || >=16}
 
   '@noble/hashes@1.8.0':
     resolution: {integrity: sha512-jCs9ldd7NwzpgXDIf6P3+NrHh9/sD6CQdxHyjQI+h/6rDNo88ypBxxz45UDuZHz9r3tNz7N/VInSVoVdtXEI4A==}
@@ -4998,6 +5033,15 @@ packages:
 
   '@rollup/plugin-inject@5.0.5':
     resolution: {integrity: sha512-2+DEJbNBoPROPkgTDNe8/1YXWcqxbN5DTjASVIOx8HS+pITXushyNiBV56RB08zuptzz8gT3YfkqriTBVycepg==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      rollup: ^4.22.4
+    peerDependenciesMeta:
+      rollup:
+        optional: true
+
+  '@rollup/plugin-json@6.1.0':
+    resolution: {integrity: sha512-EGI2te5ENk1coGeADSIwZ7G2Q8CJS2sF120T7jLw4xFw9n7wIOXHo+kIYRAoVpJAN+kmqZSoO3Fp4JtoNF4ReA==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
       rollup: ^4.22.4
@@ -6249,8 +6293,8 @@ packages:
     peerDependencies:
       react: ^18 || ^19
 
-  '@taquito/beacon-wallet@21.0.3':
-    resolution: {integrity: sha512-D9P/wINHrQzUSX6n0EUuSq7+I3Xe2vXIXoHBCRgCIVoUCY5h1GV8KuSIzegztXABSwfTt3hpzfQrROK/DDEMNQ==}
+  '@taquito/beacon-wallet@23.0.0-beta.1':
+    resolution: {integrity: sha512-kAkrZDYugdjwIByyMI1eCfa/G8NKVeDyFU2Ji4ooBe52Eo/CAxBVx1erqfWvvaYh4PzaS6I+Re/V+o/+Nj2L4w==}
     engines: {node: '>=18'}
 
   '@taquito/core@21.0.3':
@@ -6267,10 +6311,6 @@ packages:
 
   '@taquito/http-utils@23.0.0-beta.1':
     resolution: {integrity: sha512-sF8FEguCTm+NuILpLvtS0yHQixH+sQL9RktOyTvBwUxgBo+d0+V2V/LUjNYLtAVzO1kdHWTM2h44zLP39hvgvw==}
-    engines: {node: '>=18'}
-
-  '@taquito/ledger-signer@21.0.3':
-    resolution: {integrity: sha512-4CodVgplZEwotL/SOVmLsrcqfIcc2ScKTlyMwqDIY7kz7C6UlkzEKSC138I5qKvkkxwutOqClF0ZulbPvKYlgA==}
     engines: {node: '>=18'}
 
   '@taquito/ledger-signer@23.0.0-beta.1':
@@ -6309,20 +6349,12 @@ packages:
     resolution: {integrity: sha512-RggdLEEtAV69ULiwuHK2nAyB8KP9YonmG0eGeev9PoHGLZoO2Ic5Zpe/s5CVn++fw/yBCQUW01sKSCwwKjWIZA==}
     engines: {node: '>=18'}
 
-  '@taquito/signer@21.0.3':
-    resolution: {integrity: sha512-OZAhv/QY4Ve+IjKgIKklRE7U11G5HBxOOk1BvtLQWSnmyy9T3g0bEy0hW8RvzpyeWzX82InNoPfaw795G9WBhA==}
-    engines: {node: '>=18'}
-
   '@taquito/signer@23.0.0-beta.1':
     resolution: {integrity: sha512-fWT4aySC4fVU6Ezv4jYocXM5UyAhObWVPziUmrimIOWxAxNfcRsZJ8dlT3Xdgcf4Gk0utEZWypYIqGEl9ineYg==}
     engines: {node: '>=18'}
 
   '@taquito/taquito@21.0.2':
     resolution: {integrity: sha512-zYL8iT4dvHmFZa9pufMiy/VvQFu/lmRy2sieyN+xoJ10aQ72uJLIQ7nhl5qw8RlG6LKlicLlWC8AoVF7xfClaA==}
-    engines: {node: '>=18'}
-
-  '@taquito/taquito@21.0.3':
-    resolution: {integrity: sha512-o6isKFLrK8+TRJaaHJB7/JT+a8Tk1yGxgEZ1boYfyRbUQE2lNYKaYKI0vilV++wvI8E6f5SmdY1+PGaHNoOJvQ==}
     engines: {node: '>=18'}
 
   '@taquito/taquito@23.0.0-beta.1':
@@ -6864,6 +6896,14 @@ packages:
     peerDependencies:
       '@urql/core': ^5.0.0
 
+  '@use-gesture/core@10.3.1':
+    resolution: {integrity: sha512-WcINiDt8WjqBdUXye25anHiNxPc0VOrlT8F6LLkU6cycrOGUDyY/yyFmsg3k8i5OLvv25llc0QC45GhR/C8llw==}
+
+  '@use-gesture/react@10.3.1':
+    resolution: {integrity: sha512-Yy19y6O2GJq8f7CHf7L0nxL8bf4PZCPaVOCgJrusOeFHY1LvHgYXnmnXg6N5iwAnbgbZCDjo60SiM6IPJi9C5g==}
+    peerDependencies:
+      react: '>= 16.8.0'
+
   '@vercel/analytics@1.4.1':
     resolution: {integrity: sha512-ekpL4ReX2TH3LnrRZTUKjHHNpNy9S1I7QmS+g/RQXoSUQ8ienzosuX7T9djZ/s8zPhBx1mpHP/Rw5875N+zQIQ==}
     peerDependencies:
@@ -6934,11 +6974,12 @@ packages:
   '@vue/shared@3.4.35':
     resolution: {integrity: sha512-hvuhBYYDe+b1G8KHxsQ0diDqDMA8D9laxWZhNAjE83VZb5UDaXl9Xnz7cGdDSyiHM90qqI/CyGMcpBpiDy6VVQ==}
 
-  '@walletconnect/core@2.14.0':
-    resolution: {integrity: sha512-E/dgBM9q3judXnTfZQ5ILvDpeSdDpabBLsXtYXa3Nyc26cfNplfLJ2nXm9FgtTdhM1nZ7yx4+zDPiXawBRZl2g==}
-
   '@walletconnect/core@2.16.2':
     resolution: {integrity: sha512-Xf1SqLSB8KffNsgUGDE/CguAcKMD+3EKfqfqNhWpimxe1QDZDUw8xq+nnxfx6MAb8fdx9GYe6Lvknx2SAAeAHw==}
+    engines: {node: '>=18'}
+
+  '@walletconnect/core@2.18.0':
+    resolution: {integrity: sha512-i/olu/IwYtBiWYqyfNUMxq4b6QS5dv+ZVVGmLT2buRwdH6MGETN0Bx3/z6rXJzd1sNd+QL07fxhSFxCekL57tA==}
     engines: {node: '>=18'}
 
   '@walletconnect/environment@1.0.1':
@@ -6962,6 +7003,9 @@ packages:
   '@walletconnect/jsonrpc-ws-connection@1.0.14':
     resolution: {integrity: sha512-Jsl6fC55AYcbkNVkwNM6Jo+ufsuCQRqViOQ8ZBPH9pRREHH9welbBiszuTLqEJiQcO/6XfFDl6bzCJIkrEi8XA==}
 
+  '@walletconnect/jsonrpc-ws-connection@1.0.16':
+    resolution: {integrity: sha512-G81JmsMqh5nJheE1mPst1W0WfVv0SG3N7JggwLLGnI7iuDZJq8cRJvQwLGKHn5H1WTW7DEPCo00zz5w62AbL3Q==}
+
   '@walletconnect/keyvaluestorage@1.1.1':
     resolution: {integrity: sha512-V7ZQq2+mSxAq7MrRqDxanTzu2RcElfK1PfNYiaVnJgJ7Q7G7hTVwF8voIBx92qsRyGHZihrwNPHuZd1aKkd0rA==}
     peerDependencies:
@@ -6973,31 +7017,27 @@ packages:
   '@walletconnect/logger@2.1.2':
     resolution: {integrity: sha512-aAb28I3S6pYXZHQm5ESB+V6rDqIYfsnHaQyzFbwUUBFY4H0OXx/YtTl8lvhUNhMMfb9UxbwEBS253TlXUYJWSw==}
 
-  '@walletconnect/relay-api@1.0.10':
-    resolution: {integrity: sha512-tqrdd4zU9VBNqUaXXQASaexklv6A54yEyQQEXYOCr+Jz8Ket0dmPBDyg19LVSNUN2cipAghQc45/KVmfFJ0cYw==}
-
   '@walletconnect/relay-api@1.0.11':
     resolution: {integrity: sha512-tLPErkze/HmC9aCmdZOhtVmYZq1wKfWTJtygQHoWtgg722Jd4homo54Cs4ak2RUFUZIGO2RsOpIcWipaua5D5Q==}
 
   '@walletconnect/relay-auth@1.0.4':
     resolution: {integrity: sha512-kKJcS6+WxYq5kshpPaxGHdwf5y98ZwbfuS4EE/NkQzqrDFm5Cj+dP8LofzWvjrrLkZq7Afy7WrQMXdLy8Sx7HQ==}
 
+  '@walletconnect/relay-auth@1.1.0':
+    resolution: {integrity: sha512-qFw+a9uRz26jRCDgL7Q5TA9qYIgcNY8jpJzI1zAWNZ8i7mQjaijRnWFKsCHAU9CyGjvt6RKrRXyFtFOpWTVmCQ==}
+
   '@walletconnect/safe-json@1.0.2':
     resolution: {integrity: sha512-Ogb7I27kZ3LPC3ibn8ldyUr5544t3/STow9+lzz7Sfo808YD7SBWk7SAsdBFlYgP2zDRy2hS3sKRcuSRM0OTmA==}
-
-  '@walletconnect/sign-client@2.14.0':
-    resolution: {integrity: sha512-UrB3S3eLjPYfBLCN3WJ5u7+WcZ8kFMe/QIDqLf76Jk6TaLwkSUy563LvnSw4KW/kA+/cY1KBSdUDfX1tzYJJXg==}
-    deprecated: 'Reliability and performance improvements. See: https://github.com/WalletConnect/walletconnect-monorepo/releases'
 
   '@walletconnect/sign-client@2.16.2':
     resolution: {integrity: sha512-R/hk2P3UN5u3FV22E7h9S/Oy8IbDwaBGH7St/BzOpJCjFmf6CF5S3GZVjrXPBesvRF94CROkqMF89wz5HkZepA==}
     deprecated: 'Reliability and performance improvements. See: https://github.com/WalletConnect/walletconnect-monorepo/releases'
 
+  '@walletconnect/sign-client@2.18.0':
+    resolution: {integrity: sha512-oUjlRIsbHxMSRif2WvMRdvm6tMsQjMj07rl7YVcKVvZ1gF1/9GcbJPjzL/U87fv8qAQkVhIlbEg2vHaVYf6J/g==}
+
   '@walletconnect/time@1.0.2':
     resolution: {integrity: sha512-uzdd9woDcJ1AaBZRhqy5rNC9laqWGErfc4dxA9a87mPdKOgWMD85mcFo9dIYIts/Jwocfwn07EC6EzclKubk/g==}
-
-  '@walletconnect/types@2.14.0':
-    resolution: {integrity: sha512-vevMi4jZLJ55vLuFOicQFmBBbLyb+S0sZS4IsaBdZkQflfGIq34HkN13c/KPl4Ye0aoR4/cUcUSitmGIzEQM5g==}
 
   '@walletconnect/types@2.16.2':
     resolution: {integrity: sha512-IIV9kQh6b/WpwhfgPixpziE+8XK/FtdnfvN1oOMs5h+lgwr46OJknPY2p7eS6vvdvEP3xMEc1Kbu1i4tlnroiw==}
@@ -7005,14 +7045,17 @@ packages:
   '@walletconnect/types@2.17.3':
     resolution: {integrity: sha512-5eFxnbZGJJx0IQyCS99qz+OvozpLJJYfVG96dEHGgbzZMd+C9V1eitYqVClx26uX6V+WQVqVwjpD2Dyzie++Wg==}
 
-  '@walletconnect/utils@2.14.0':
-    resolution: {integrity: sha512-vRVomYQEtEAyCK2c5bzzEvtgxaGGITF8mWuIL+WYSAMyEJLY97mirP2urDucNwcUczwxUgI+no9RiNFbUHreQQ==}
+  '@walletconnect/types@2.18.0':
+    resolution: {integrity: sha512-g0jU+6LUuw3E/EPAQfHNK2xK/95IpRfz68tdNAFckLmefZU6kzoE1mIM1SrPJq8rT9kUPp6/APMQE+ReH2OdBA==}
 
   '@walletconnect/utils@2.16.2':
     resolution: {integrity: sha512-CEMxMCIqvwXd8YIEXfBoCiWY8DtUevJ/w14Si+cmTHWHBDWKRZll7+QUXgICIBx5kyX3GMAKNABaTlg2A2CPSg==}
 
   '@walletconnect/utils@2.17.3':
     resolution: {integrity: sha512-tG77UpZNeLYgeOwViwWnifpyBatkPlpKSSayhN0gcjY1lZAUNqtYslpm4AdTxlrA3pL61MnyybXgWYT5eZjarw==}
+
+  '@walletconnect/utils@2.18.0':
+    resolution: {integrity: sha512-6AUXIcjSxTHGRsTtmUP/oqudtwRILrQqrJsH3jS5T28FFDzZt7+On6fR4mXzi64k4nNYeWg1wMCGLEdtxmGbZQ==}
 
   '@walletconnect/window-getters@1.0.1':
     resolution: {integrity: sha512-vHp+HqzGxORPAN8gY03qnbTMnhqIwjeRJNOMOAzePRg4xVEEE2WvYsI9G2NMjOknA8hnuYbU3/hwLcKbjhc8+Q==}
@@ -10407,9 +10450,6 @@ packages:
     resolution: {integrity: sha512-u4sej9B1LPSxTGKB/HiuzvEQnXH0ECYkSVQU39koSwmFAxhlEAFl9RdTvLv4TOTQUgBS5O3O5fwUxk6byBZ+IQ==}
     engines: {node: '>=10'}
 
-  isomorphic-unfetch@3.1.0:
-    resolution: {integrity: sha512-geDJjpoZ8N0kWexiwkX8F9NkTsXhetLPVbZFQ+JTW239QNOwvB0gniuR1Wc6f0AMTn7/mFGyXvHTifrCp/GH8Q==}
-
   istanbul-lib-coverage@3.2.2:
     resolution: {integrity: sha512-O8dpsF+r0WV/8MNRKfnmrtCWhuKjxrq2w+jpzBL5UZKTi2LeVWnWOmWRxFlesJONmc+wLAGvKQZEOanko0LFTg==}
     engines: {node: '>=8'}
@@ -12894,16 +12934,6 @@ packages:
   serialize-javascript@6.0.2:
     resolution: {integrity: sha512-Saa1xPByTTq2gdeFZYLLo+RFE35NHZkAbqZeWNd3BpzppeVisAqpDjcp8dyf6uIvEqJRd46jemmyA4iFIeVk8g==}
 
-  seroval-plugins@1.1.1:
-    resolution: {integrity: sha512-qNSy1+nUj7hsCOon7AO4wdAIo9P0jrzAMp18XhiOzA6/uO5TKtP7ScozVJ8T293oRIvi5wyCHSM4TrJo/c/GJA==}
-    engines: {node: '>=10'}
-    peerDependencies:
-      seroval: ^1.0
-
-  seroval@1.1.1:
-    resolution: {integrity: sha512-rqEO6FZk8mv7Hyv4UCj3FD3b6Waqft605TLfsCe/BiaylRpyyMC0b+uA5TJKawX3KzMrdi3wsLbCaLplrQmBvQ==}
-    engines: {node: '>=10'}
-
   serve-static@1.16.2:
     resolution: {integrity: sha512-VqpjJZKadQB/PEbEwvFdO43Ax5dFBZ2UECszz8bQ7pi7wt//PWe1P6MN7eCnjsatYtBT6EuiClbjSWP2WrIoTw==}
     engines: {node: '>= 0.8.0'}
@@ -13080,9 +13110,6 @@ packages:
   socks@2.8.3:
     resolution: {integrity: sha512-l5x7VUUWbjVFbafGLxPWkYsHIhEvmF85tbIeFZWc8ZPtoMyybuEhL7Jye/ooC4/d48FgOjSJXgsF/AJPYCW8Zw==}
     engines: {node: '>= 10.0.0', npm: '>= 3.0.0'}
-
-  solid-js@1.8.19:
-    resolution: {integrity: sha512-h8z/TvTQYsf894LM9Iau/ZW2iAKrCzAWDwjPhMcXnonmW1OIIihc28wp82b1wwei1p81fH5+gnfNOe8RzLbDRQ==}
 
   sonic-boom@2.8.0:
     resolution: {integrity: sha512-kuonw1YOYYNOve5iHdSahXPOK49GqwA+LZhI6Wz/l0rP57iKyXXIHaRagOBHAPmGwJC6od2Z9zgvZ5loSgMlVg==}
@@ -13881,9 +13908,6 @@ packages:
   unenv@1.10.0:
     resolution: {integrity: sha512-wY5bskBQFL9n3Eca5XnhH6KbUo/tfvkwm9OpcdCvLaeA7piBNbavbOKJySEwQ1V0RH6HvNlSAFRTpvTqgKRQXQ==}
 
-  unfetch@4.2.0:
-    resolution: {integrity: sha512-F9p7yYCn6cIW9El1zi0HI6vqpeIvBsr3dSuRO6Xuppb1u5rXpCPmMvLSyECLhybr9isec8Ohl0hPekMVrEinDA==}
-
   unicode-canonical-property-names-ecmascript@2.0.0:
     resolution: {integrity: sha512-yY5PpDlfVIU5+y/BSCxAJRBIS1Zc2dDG3Ujq+sR0U+JjUevW2JhocOF+soROYDSaAezOzOKuyyixhD6mBknSmQ==}
     engines: {node: '>=4'}
@@ -14556,13 +14580,24 @@ snapshots:
       broadcast-channel: 7.0.0
       bs58check: 2.1.2
 
-  '@airgap/beacon-dapp@4.4.0(encoding@0.1.13)':
+  '@airgap/beacon-core@4.5.1':
     dependencies:
-      '@airgap/beacon-core': 4.4.0
-      '@airgap/beacon-transport-matrix': 4.4.0
-      '@airgap/beacon-transport-postmessage': 4.4.0
-      '@airgap/beacon-transport-walletconnect': 4.4.0(encoding@0.1.13)
-      '@airgap/beacon-ui': 4.4.0
+      '@airgap/beacon-types': 4.5.1
+      '@airgap/beacon-utils': 4.5.1
+      '@stablelib/ed25519': 1.0.3
+      '@stablelib/nacl': 1.0.4
+      '@stablelib/utf8': 1.0.2
+      '@stablelib/x25519-session': 1.0.4
+      broadcast-channel: 7.0.0
+      bs58check: 2.1.2
+
+  '@airgap/beacon-dapp@4.5.1(rollup@4.26.0)':
+    dependencies:
+      '@airgap/beacon-core': 4.5.1
+      '@airgap/beacon-transport-matrix': 4.5.1
+      '@airgap/beacon-transport-postmessage': 4.5.1
+      '@airgap/beacon-transport-walletconnect': 4.5.1
+      '@airgap/beacon-ui': 4.5.1(rollup@4.26.0)
       broadcast-channel: 7.0.0
     transitivePeerDependencies:
       - '@azure/app-configuration'
@@ -14579,8 +14614,8 @@ snapshots:
       - '@vercel/kv'
       - bufferutil
       - debug
-      - encoding
       - ioredis
+      - rollup
       - uWebSockets.js
       - utf-8-validate
 
@@ -14592,18 +14627,33 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
+  '@airgap/beacon-transport-matrix@4.5.1':
+    dependencies:
+      '@airgap/beacon-core': 4.5.1
+      '@airgap/beacon-utils': 4.5.1
+      axios: 1.7.7(debug@4.4.0)
+    transitivePeerDependencies:
+      - debug
+
   '@airgap/beacon-transport-postmessage@4.4.0':
     dependencies:
       '@airgap/beacon-core': 4.4.0
       '@airgap/beacon-types': 4.4.0
       '@airgap/beacon-utils': 4.4.0
 
-  '@airgap/beacon-transport-walletconnect@4.4.0(encoding@0.1.13)':
+  '@airgap/beacon-transport-postmessage@4.5.1':
     dependencies:
-      '@airgap/beacon-core': 4.4.0
-      '@airgap/beacon-types': 4.4.0
-      '@airgap/beacon-utils': 4.4.0
-      '@walletconnect/sign-client': 2.14.0(encoding@0.1.13)
+      '@airgap/beacon-core': 4.5.1
+      '@airgap/beacon-types': 4.5.1
+      '@airgap/beacon-utils': 4.5.1
+
+  '@airgap/beacon-transport-walletconnect@4.5.1':
+    dependencies:
+      '@airgap/beacon-core': 4.5.1
+      '@airgap/beacon-types': 4.5.1
+      '@airgap/beacon-utils': 4.5.1
+      '@walletconnect/sign-client': 2.18.0
+      elliptic: 6.6.1
     transitivePeerDependencies:
       - '@azure/app-configuration'
       - '@azure/cosmos'
@@ -14618,7 +14668,6 @@ snapshots:
       - '@upstash/redis'
       - '@vercel/kv'
       - bufferutil
-      - encoding
       - ioredis
       - uWebSockets.js
       - utf-8-validate
@@ -14627,15 +14676,22 @@ snapshots:
     dependencies:
       '@types/chrome': 0.0.246
 
-  '@airgap/beacon-ui@4.4.0':
+  '@airgap/beacon-types@4.5.1':
     dependencies:
-      '@airgap/beacon-core': 4.4.0
-      '@airgap/beacon-transport-postmessage': 4.4.0
-      '@airgap/beacon-types': 4.4.0
-      '@airgap/beacon-utils': 4.4.0
-      '@walletconnect/utils': 2.14.0
+      '@types/chrome': 0.0.246
+
+  '@airgap/beacon-ui@4.5.1(rollup@4.26.0)':
+    dependencies:
+      '@airgap/beacon-core': 4.5.1
+      '@airgap/beacon-transport-postmessage': 4.5.1
+      '@airgap/beacon-types': 4.5.1
+      '@airgap/beacon-utils': 4.5.1
+      '@rollup/plugin-json': 6.1.0(rollup@4.26.0)
+      '@use-gesture/react': 10.3.1(react@18.3.1)
+      '@walletconnect/utils': 2.18.0
       qrcode-svg: 1.1.0
-      solid-js: 1.8.19
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
     transitivePeerDependencies:
       - '@azure/app-configuration'
       - '@azure/cosmos'
@@ -14650,9 +14706,18 @@ snapshots:
       - '@upstash/redis'
       - '@vercel/kv'
       - ioredis
+      - rollup
       - uWebSockets.js
 
   '@airgap/beacon-utils@4.4.0':
+    dependencies:
+      '@stablelib/ed25519': 1.0.3
+      '@stablelib/nacl': 1.0.4
+      '@stablelib/random': 1.0.2
+      '@stablelib/utf8': 1.0.2
+      bs58check: 2.1.2
+
+  '@airgap/beacon-utils@4.5.1':
     dependencies:
       '@stablelib/ed25519': 1.0.3
       '@stablelib/nacl': 1.0.4
@@ -17693,15 +17758,29 @@ snapshots:
       hey-listen: 1.0.8
       tslib: 2.8.1
 
+  '@noble/ciphers@1.2.1': {}
+
   '@noble/curves@1.4.2':
     dependencies:
       '@noble/hashes': 1.4.0
+
+  '@noble/curves@1.8.0':
+    dependencies:
+      '@noble/hashes': 1.7.0
+
+  '@noble/curves@1.8.1':
+    dependencies:
+      '@noble/hashes': 1.7.1
 
   '@noble/curves@1.9.7':
     dependencies:
       '@noble/hashes': 1.8.0
 
   '@noble/hashes@1.4.0': {}
+
+  '@noble/hashes@1.7.0': {}
+
+  '@noble/hashes@1.7.1': {}
 
   '@noble/hashes@1.8.0': {}
 
@@ -18289,6 +18368,12 @@ snapshots:
       '@rollup/pluginutils': 5.1.3(rollup@4.26.0)
       estree-walker: 2.0.2
       magic-string: 0.30.11
+    optionalDependencies:
+      rollup: 4.26.0
+
+  '@rollup/plugin-json@6.1.0(rollup@4.26.0)':
+    dependencies:
+      '@rollup/pluginutils': 5.1.3(rollup@4.26.0)
     optionalDependencies:
       rollup: 4.26.0
 
@@ -20266,12 +20351,13 @@ snapshots:
       '@tanstack/query-core': 5.62.9
       react: 18.3.1
 
-  '@taquito/beacon-wallet@21.0.3(@testing-library/dom@10.4.0)(@types/react-dom@18.3.1)(@types/react@18.3.12)(encoding@0.1.13)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@taquito/beacon-wallet@23.0.0-beta.1(encoding@0.1.13)(rollup@4.26.0)':
     dependencies:
-      '@airgap/beacon-dapp': 4.4.0(encoding@0.1.13)
-      '@taquito/core': 21.0.3
-      '@taquito/taquito': 21.0.3(encoding@0.1.13)
-      '@testing-library/react': 16.1.0(@testing-library/dom@10.4.0)(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@airgap/beacon-dapp': 4.5.1(rollup@4.26.0)
+      '@taquito/core': 23.0.0-beta.1
+      '@taquito/taquito': 23.0.0-beta.1(encoding@0.1.13)
+      crypto-browserify: 3.12.1
+      util: 0.12.5
     transitivePeerDependencies:
       - '@azure/app-configuration'
       - '@azure/cosmos'
@@ -20283,17 +20369,13 @@ snapshots:
       - '@netlify/blobs'
       - '@planetscale/database'
       - '@react-native-async-storage/async-storage'
-      - '@testing-library/dom'
-      - '@types/react'
-      - '@types/react-dom'
       - '@upstash/redis'
       - '@vercel/kv'
       - bufferutil
       - debug
       - encoding
       - ioredis
-      - react
-      - react-dom
+      - rollup
       - uWebSockets.js
       - utf-8-validate
 
@@ -20316,17 +20398,6 @@ snapshots:
     dependencies:
       '@taquito/core': 23.0.0-beta.1
       node-fetch: 2.7.0(encoding@0.1.13)
-    transitivePeerDependencies:
-      - encoding
-
-  '@taquito/ledger-signer@21.0.3(encoding@0.1.13)':
-    dependencies:
-      '@ledgerhq/hw-transport': 6.31.4
-      '@stablelib/blake2b': 1.0.1
-      '@taquito/core': 21.0.3
-      '@taquito/taquito': 21.0.3(encoding@0.1.13)
-      '@taquito/utils': 21.0.3
-      buffer: 6.0.3
     transitivePeerDependencies:
       - encoding
 
@@ -20400,25 +20471,6 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  '@taquito/signer@21.0.3(encoding@0.1.13)':
-    dependencies:
-      '@stablelib/blake2b': 1.0.1
-      '@stablelib/ed25519': 1.0.3
-      '@stablelib/hmac': 1.0.1
-      '@stablelib/nacl': 1.0.4
-      '@stablelib/pbkdf2': 1.0.1
-      '@stablelib/sha512': 1.0.1
-      '@taquito/core': 21.0.3
-      '@taquito/taquito': 21.0.3(encoding@0.1.13)
-      '@taquito/utils': 21.0.3
-      '@types/bn.js': 5.1.5
-      bip39: 3.1.0
-      elliptic: 6.6.1
-      pbkdf2: 3.1.2
-      typedarray-to-buffer: 4.0.0
-    transitivePeerDependencies:
-      - encoding
-
   '@taquito/signer@23.0.0-beta.1(encoding@0.1.13)':
     dependencies:
       '@noble/curves': 1.9.7
@@ -20440,20 +20492,6 @@ snapshots:
       - encoding
 
   '@taquito/taquito@21.0.2(encoding@0.1.13)':
-    dependencies:
-      '@taquito/core': 21.0.3
-      '@taquito/http-utils': 21.0.3(encoding@0.1.13)
-      '@taquito/local-forging': 21.0.3
-      '@taquito/michel-codec': 21.0.3
-      '@taquito/michelson-encoder': 21.0.3(encoding@0.1.13)
-      '@taquito/rpc': 21.0.3(encoding@0.1.13)
-      '@taquito/utils': 21.0.3
-      bignumber.js: 9.1.2
-      rxjs: 7.8.1
-    transitivePeerDependencies:
-      - encoding
-
-  '@taquito/taquito@21.0.3(encoding@0.1.13)':
     dependencies:
       '@taquito/core': 21.0.3
       '@taquito/http-utils': 21.0.3(encoding@0.1.13)
@@ -21253,6 +21291,13 @@ snapshots:
       '@urql/core': 5.1.0
       wonka: 6.3.4
 
+  '@use-gesture/core@10.3.1': {}
+
+  '@use-gesture/react@10.3.1(react@18.3.1)':
+    dependencies:
+      '@use-gesture/core': 10.3.1
+      react: 18.3.1
+
   '@vercel/analytics@1.4.1(react@18.3.1)':
     optionalDependencies:
       react: 18.3.1
@@ -21334,7 +21379,7 @@ snapshots:
 
   '@vue/shared@3.4.35': {}
 
-  '@walletconnect/core@2.14.0(encoding@0.1.13)':
+  '@walletconnect/core@2.16.2':
     dependencies:
       '@walletconnect/heartbeat': 1.2.2
       '@walletconnect/jsonrpc-provider': 1.0.14
@@ -21343,14 +21388,13 @@ snapshots:
       '@walletconnect/jsonrpc-ws-connection': 1.0.14
       '@walletconnect/keyvaluestorage': 1.1.1
       '@walletconnect/logger': 2.1.2
-      '@walletconnect/relay-api': 1.0.10
+      '@walletconnect/relay-api': 1.0.11
       '@walletconnect/relay-auth': 1.0.4
       '@walletconnect/safe-json': 1.0.2
       '@walletconnect/time': 1.0.2
-      '@walletconnect/types': 2.14.0
-      '@walletconnect/utils': 2.14.0
+      '@walletconnect/types': 2.16.2
+      '@walletconnect/utils': 2.16.2
       events: 3.3.0
-      isomorphic-unfetch: 3.1.0(encoding@0.1.13)
       lodash.isequal: 4.5.0
       uint8arrays: 3.1.0
     transitivePeerDependencies:
@@ -21367,26 +21411,26 @@ snapshots:
       - '@upstash/redis'
       - '@vercel/kv'
       - bufferutil
-      - encoding
       - ioredis
       - uWebSockets.js
       - utf-8-validate
 
-  '@walletconnect/core@2.16.2':
+  '@walletconnect/core@2.18.0':
     dependencies:
       '@walletconnect/heartbeat': 1.2.2
       '@walletconnect/jsonrpc-provider': 1.0.14
       '@walletconnect/jsonrpc-types': 1.0.4
       '@walletconnect/jsonrpc-utils': 1.0.8
-      '@walletconnect/jsonrpc-ws-connection': 1.0.14
+      '@walletconnect/jsonrpc-ws-connection': 1.0.16
       '@walletconnect/keyvaluestorage': 1.1.1
       '@walletconnect/logger': 2.1.2
       '@walletconnect/relay-api': 1.0.11
-      '@walletconnect/relay-auth': 1.0.4
+      '@walletconnect/relay-auth': 1.1.0
       '@walletconnect/safe-json': 1.0.2
       '@walletconnect/time': 1.0.2
-      '@walletconnect/types': 2.16.2
-      '@walletconnect/utils': 2.16.2
+      '@walletconnect/types': 2.18.0
+      '@walletconnect/utils': 2.18.0
+      '@walletconnect/window-getters': 1.0.1
       events: 3.3.0
       lodash.isequal: 4.5.0
       uint8arrays: 3.1.0
@@ -21450,6 +21494,16 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
+  '@walletconnect/jsonrpc-ws-connection@1.0.16':
+    dependencies:
+      '@walletconnect/jsonrpc-utils': 1.0.8
+      '@walletconnect/safe-json': 1.0.2
+      events: 3.3.0
+      ws: 7.5.10
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+
   '@walletconnect/keyvaluestorage@1.1.1':
     dependencies:
       '@walletconnect/safe-json': 1.0.2
@@ -21475,10 +21529,6 @@ snapshots:
       '@walletconnect/safe-json': 1.0.2
       pino: 7.11.0
 
-  '@walletconnect/relay-api@1.0.10':
-    dependencies:
-      '@walletconnect/jsonrpc-types': 1.0.4
-
   '@walletconnect/relay-api@1.0.11':
     dependencies:
       '@walletconnect/jsonrpc-types': 1.0.4
@@ -21492,39 +21542,17 @@ snapshots:
       tslib: 1.14.1
       uint8arrays: 3.1.1
 
+  '@walletconnect/relay-auth@1.1.0':
+    dependencies:
+      '@noble/curves': 1.8.0
+      '@noble/hashes': 1.7.0
+      '@walletconnect/safe-json': 1.0.2
+      '@walletconnect/time': 1.0.2
+      uint8arrays: 3.1.1
+
   '@walletconnect/safe-json@1.0.2':
     dependencies:
       tslib: 1.14.1
-
-  '@walletconnect/sign-client@2.14.0(encoding@0.1.13)':
-    dependencies:
-      '@walletconnect/core': 2.14.0(encoding@0.1.13)
-      '@walletconnect/events': 1.0.1
-      '@walletconnect/heartbeat': 1.2.2
-      '@walletconnect/jsonrpc-utils': 1.0.8
-      '@walletconnect/logger': 2.1.2
-      '@walletconnect/time': 1.0.2
-      '@walletconnect/types': 2.14.0
-      '@walletconnect/utils': 2.14.0
-      events: 3.3.0
-    transitivePeerDependencies:
-      - '@azure/app-configuration'
-      - '@azure/cosmos'
-      - '@azure/data-tables'
-      - '@azure/identity'
-      - '@azure/keyvault-secrets'
-      - '@azure/storage-blob'
-      - '@capacitor/preferences'
-      - '@netlify/blobs'
-      - '@planetscale/database'
-      - '@react-native-async-storage/async-storage'
-      - '@upstash/redis'
-      - '@vercel/kv'
-      - bufferutil
-      - encoding
-      - ioredis
-      - uWebSockets.js
-      - utf-8-validate
 
   '@walletconnect/sign-client@2.16.2':
     dependencies:
@@ -21555,17 +21583,16 @@ snapshots:
       - uWebSockets.js
       - utf-8-validate
 
-  '@walletconnect/time@1.0.2':
+  '@walletconnect/sign-client@2.18.0':
     dependencies:
-      tslib: 1.14.1
-
-  '@walletconnect/types@2.14.0':
-    dependencies:
+      '@walletconnect/core': 2.18.0
       '@walletconnect/events': 1.0.1
       '@walletconnect/heartbeat': 1.2.2
-      '@walletconnect/jsonrpc-types': 1.0.4
-      '@walletconnect/keyvaluestorage': 1.1.1
+      '@walletconnect/jsonrpc-utils': 1.0.8
       '@walletconnect/logger': 2.1.2
+      '@walletconnect/time': 1.0.2
+      '@walletconnect/types': 2.18.0
+      '@walletconnect/utils': 2.18.0
       events: 3.3.0
     transitivePeerDependencies:
       - '@azure/app-configuration'
@@ -21580,8 +21607,14 @@ snapshots:
       - '@react-native-async-storage/async-storage'
       - '@upstash/redis'
       - '@vercel/kv'
+      - bufferutil
       - ioredis
       - uWebSockets.js
+      - utf-8-validate
+
+  '@walletconnect/time@1.0.2':
+    dependencies:
+      tslib: 1.14.1
 
   '@walletconnect/types@2.16.2':
     dependencies:
@@ -21631,22 +21664,14 @@ snapshots:
       - ioredis
       - uWebSockets.js
 
-  '@walletconnect/utils@2.14.0':
+  '@walletconnect/types@2.18.0':
     dependencies:
-      '@stablelib/chacha20poly1305': 1.0.1
-      '@stablelib/hkdf': 1.0.1
-      '@stablelib/random': 1.0.2
-      '@stablelib/sha256': 1.0.1
-      '@stablelib/x25519': 1.0.3
-      '@walletconnect/relay-api': 1.0.10
-      '@walletconnect/safe-json': 1.0.2
-      '@walletconnect/time': 1.0.2
-      '@walletconnect/types': 2.14.0
-      '@walletconnect/window-getters': 1.0.1
-      '@walletconnect/window-metadata': 1.0.1
-      detect-browser: 5.3.0
-      query-string: 7.1.3
-      uint8arrays: 3.1.0
+      '@walletconnect/events': 1.0.1
+      '@walletconnect/heartbeat': 1.2.2
+      '@walletconnect/jsonrpc-types': 1.0.4
+      '@walletconnect/keyvaluestorage': 1.1.1
+      '@walletconnect/logger': 2.1.2
+      events: 3.3.0
     transitivePeerDependencies:
       - '@azure/app-configuration'
       - '@azure/cosmos'
@@ -21713,6 +21738,41 @@ snapshots:
       '@walletconnect/safe-json': 1.0.2
       '@walletconnect/time': 1.0.2
       '@walletconnect/types': 2.17.3
+      '@walletconnect/window-getters': 1.0.1
+      '@walletconnect/window-metadata': 1.0.1
+      detect-browser: 5.3.0
+      elliptic: 6.6.1
+      query-string: 7.1.3
+      uint8arrays: 3.1.0
+    transitivePeerDependencies:
+      - '@azure/app-configuration'
+      - '@azure/cosmos'
+      - '@azure/data-tables'
+      - '@azure/identity'
+      - '@azure/keyvault-secrets'
+      - '@azure/storage-blob'
+      - '@capacitor/preferences'
+      - '@netlify/blobs'
+      - '@planetscale/database'
+      - '@react-native-async-storage/async-storage'
+      - '@upstash/redis'
+      - '@vercel/kv'
+      - ioredis
+      - uWebSockets.js
+
+  '@walletconnect/utils@2.18.0':
+    dependencies:
+      '@ethersproject/transactions': 5.7.0
+      '@noble/ciphers': 1.2.1
+      '@noble/curves': 1.8.1
+      '@noble/hashes': 1.7.1
+      '@walletconnect/jsonrpc-utils': 1.0.8
+      '@walletconnect/keyvaluestorage': 1.1.1
+      '@walletconnect/relay-api': 1.0.11
+      '@walletconnect/relay-auth': 1.1.0
+      '@walletconnect/safe-json': 1.0.2
+      '@walletconnect/time': 1.0.2
+      '@walletconnect/types': 2.18.0
       '@walletconnect/window-getters': 1.0.1
       '@walletconnect/window-metadata': 1.0.1
       detect-browser: 5.3.0
@@ -22682,7 +22742,7 @@ snapshots:
 
   bs58check@3.0.1:
     dependencies:
-      '@noble/hashes': 1.4.0
+      '@noble/hashes': 1.8.0
       bs58: 5.0.0
 
   bser@2.1.1:
@@ -26026,13 +26086,6 @@ snapshots:
 
   isomorphic-timers-promises@1.0.1: {}
 
-  isomorphic-unfetch@3.1.0(encoding@0.1.13):
-    dependencies:
-      node-fetch: 2.7.0(encoding@0.1.13)
-      unfetch: 4.2.0
-    transitivePeerDependencies:
-      - encoding
-
   istanbul-lib-coverage@3.2.2: {}
 
   istanbul-lib-instrument@5.2.1:
@@ -29154,12 +29207,6 @@ snapshots:
     dependencies:
       randombytes: 2.1.0
 
-  seroval-plugins@1.1.1(seroval@1.1.1):
-    dependencies:
-      seroval: 1.1.1
-
-  seroval@1.1.1: {}
-
   serve-static@1.16.2:
     dependencies:
       encodeurl: 2.0.0
@@ -29370,12 +29417,6 @@ snapshots:
     dependencies:
       ip-address: 9.0.5
       smart-buffer: 4.2.0
-
-  solid-js@1.8.19:
-    dependencies:
-      csstype: 3.1.3
-      seroval: 1.1.1
-      seroval-plugins: 1.1.1(seroval@1.1.1)
 
   sonic-boom@2.8.0:
     dependencies:
@@ -30320,8 +30361,6 @@ snapshots:
       mime: 3.0.0
       node-fetch-native: 1.6.4
       pathe: 1.1.2
-
-  unfetch@4.2.0: {}
 
   unicode-canonical-property-names-ecmascript@2.0.0: {}
 
