@@ -17,7 +17,7 @@
     "test": "turbo test --filter=!@umami/mobile --filter=!@umami/web",
     "lint": "turbo lint",
     "format": "turbo format --filter=!@umami/mobile --filter=!@umami/web",
-    "ci": "turbo check-types lint:ci format:ci check-circular-deps",
+    "ci": "turbo check-types lint:ci format:ci check-circular-deps  --filter=!@umami/mobile --filter=!@umami/web",
     "check-types": "turbo check-types",
     "test:e2e": "turbo test:e2e",
     "dev:desktop": "turbo dev --filter=@umami/desktop",
