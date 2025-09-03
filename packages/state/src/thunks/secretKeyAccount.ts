@@ -1,5 +1,5 @@
 import { type Curves } from "@taquito/signer";
-import { Prefix } from "@taquito/utils";
+import { PrefixV2 } from "@taquito/utils";
 import { encrypt } from "@umami/crypto";
 import { getPublicKeyPairFromSk, parseImplicitPkh } from "@umami/tezos";
 import { CustomError } from "@umami/utils";
@@ -8,13 +8,23 @@ import { accountsActions } from "../slices/accounts";
 import { type AppDispatch } from "../store";
 
 export const getCurve = (secretKey: string): Curves => {
-  if (secretKey.startsWith(Prefix.EDESK) || secretKey.startsWith(Prefix.EDSK)) {
+  // Support both old and new prefix formats for backward compatibility
+  if (
+    secretKey.startsWith(PrefixV2.Ed25519EncryptedSeed) ||
+    secretKey.startsWith(PrefixV2.Ed25519Seed)
+  ) {
     return "ed25519";
   }
-  if (secretKey.startsWith(Prefix.SPESK) || secretKey.startsWith(Prefix.SPSK)) {
+  if (
+    secretKey.startsWith(PrefixV2.Secp256k1EncryptedSecretKey) ||
+    secretKey.startsWith(PrefixV2.Secp256k1SecretKey)
+  ) {
     return "secp256k1";
   }
-  if (secretKey.startsWith(Prefix.P2ESK) || secretKey.startsWith(Prefix.P2SK)) {
+  if (
+    secretKey.startsWith(PrefixV2.P256EncryptedSecretKey) ||
+    secretKey.startsWith(PrefixV2.P256SecretKey)
+  ) {
     return "p256";
   }
   throw new CustomError("Invalid secret key");

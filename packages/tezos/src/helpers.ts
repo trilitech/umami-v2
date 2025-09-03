@@ -13,6 +13,7 @@ import { type PublicKeyPair, type SignerConfig } from "./types";
 export const generateHash = (): string => {
   const utf8 = new TextEncoder().encode(Date.now().toString());
   const hash = crypto.createHash("sha256").update(utf8).digest("hex");
+
   return hash.slice(0, 8);
 };
 
@@ -48,6 +49,7 @@ export const makeSigner = async (config: SignerConfig) => {
         false, // PK Verification not needed
         curveToDerivationType(config.account.curve)
       );
+
       return signer;
     }
     case "fake":
@@ -59,11 +61,13 @@ export const makeToolkit = async (config: SignerConfig) => {
   const toolkit = new TezosToolkit(config.network.rpcUrl);
   const signer = await makeSigner(config);
   toolkit.setSignerProvider(signer);
+
   return toolkit;
 };
 
 export const getPublicKeyPairFromSk = async (sk: string): Promise<PublicKeyPair> => {
   const signer = new InMemorySigner(sk);
+
   return { pk: await signer.publicKey(), pkh: await signer.publicKeyHash() };
 };
 
@@ -84,6 +88,7 @@ export const deriveSecretKey = (mnemonic: string, derivationPath: string, curve:
 export const isValidMichelson = (object: any): boolean => {
   try {
     new Parser().parseJSON(object);
+
     return true;
   } catch {
     return false;
@@ -104,6 +109,7 @@ export const getLedgerPublicKeyPair = async (
   const pk = await ledgerSigner.publicKey();
   const pkh = await ledgerSigner.publicKeyHash();
   await transport.close();
+
   return { pk, pkh };
 };
 
@@ -114,16 +120,17 @@ export const getIPFSurl = (ipfsPath?: string) =>
 export const decryptSecretKey = async (secretKey: string, password: string) => {
   try {
     const signer = await InMemorySigner.fromSecretKey(secretKey.trim(), password);
+
     return await signer.secretKey();
   } catch (error: any) {
     const message = error.message || "";
 
     // if the password doesn't match taquito throws this error
-    if (message.includes("Cannot read properties of null")) {
+    if (message.includes("can't decrypt secret key")) {
       throw new CustomError("Key-password pair is invalid");
     }
 
-    if (message.includes("Invalid checksum")) {
+    if (message.includes("Invalid private key")) {
       throw new CustomError("Invalid secret key: checksum doesn't match");
     }
 

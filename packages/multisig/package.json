@@ -1,22 +1,45 @@
 {
   "name": "@umami/multisig",
-  "packageManager": "pnpm@9.9.0",
   "type": "module",
-  "module": "./dist/index.js",
+  "packageManager": "pnpm@9.9.0",
   "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "@umami/source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs",
-      "types": "./dist/index.d.ts"
+      "@umami/source": "./src/index.ts"
     }
+  },
+  "scripts": {
+    "build": "tsup-node",
+    "check-circular-deps": "madge --circular src/index.ts",
+    "check-types": "tsc",
+    "check-types:watch": "pnpm check-types --watch",
+    "clean": "rimraf build dist .turbo",
+    "dev": "tsup-node --watch",
+    "format": "prettier --ignore-path ../../.gitignore --write .",
+    "format:ci": "prettier --ignore-path ../../.gitignore --check .",
+    "lint": "eslint src --ext .ts --fix",
+    "lint:ci": "eslint src --ext .ts --max-warnings=0",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "dependencies": {
+    "@taquito/rpc": "^23.0.0-beta.0",
+    "@taquito/utils": "^23.0.0-beta.0",
+    "@tzkt/sdk-api": "^2.2.1",
+    "@umami/tezos": "workspace:^",
+    "@umami/tzkt": "workspace:^",
+    "lodash": "^4.17.21",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",
     "@types/babel__core": "^7.20.5",
-    "@types/eslint": "^8",
+    "@types/eslint": "^8.56.10",
     "@types/jest": "^29.5.14",
     "@types/lodash": "^4",
     "@umami/core": "workspace:^",
@@ -31,23 +54,8 @@
     "madge": "^8.0.0",
     "prettier": "^3.4.2",
     "rimraf": "^6.0.1",
-    "tsup": "^8.3.5",
-    "typescript": "^5.7.2"
-  },
-  "scripts": {
-    "build": "tsup-node --dts",
-    "build:quick": "tsup-node",
-    "clean": "rimraf build dist .turbo",
-    "check-circular-deps": "madge --circular src/index.ts",
-    "check-types:watch": "pnpm check-types --watch",
-    "check-types": "tsc",
-    "dev": "tsup-node --watch",
-    "format:ci": "prettier --ignore-path ../../.gitignore --check .",
-    "format": "prettier --ignore-path ../../.gitignore --write .",
-    "lint:ci": "eslint src --ext .ts --max-warnings=0",
-    "lint": "eslint src --ext .ts --fix",
-    "test:watch": "jest --watch",
-    "test": "jest"
+    "tsup": "^8.5.0",
+    "typescript": "^5.8.2"
   },
   "tsup": {
     "entry": [
@@ -58,14 +66,5 @@
       "cjs",
       "esm"
     ]
-  },
-  "dependencies": {
-    "@taquito/rpc": "^21.0.2",
-    "@taquito/utils": "^21.0.2",
-    "@tzkt/sdk-api": "^2.2.1",
-    "@umami/tezos": "workspace:^",
-    "@umami/tzkt": "workspace:^",
-    "lodash": "^4.17.21",
-    "zod": "^3.24.1"
   }
 }
