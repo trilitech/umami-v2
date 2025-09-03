@@ -1,9 +1,4 @@
 import { mockToast } from "@umami/state";
-import { mockLocalStorage } from "@umami/test-utils";
-
-beforeEach(() => {
-  mockLocalStorage();
-});
 
 jest.mock("@chakra-ui/react", () => ({
   ...jest.requireActual("@chakra-ui/react"),
