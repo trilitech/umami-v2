@@ -1,1 +1,0 @@
-export { Earn } from "./Earn";

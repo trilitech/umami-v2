@@ -1,1 +1,0 @@
-export { NameAccountModal } from "./NameAccountModal";
