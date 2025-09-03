@@ -20,7 +20,7 @@ import { formatJsonRpcError, formatJsonRpcResult } from "@walletconnect/jsonrpc-
 import { type SessionTypes, type SignClientTypes, type Verify } from "@walletconnect/types";
 
 import { SignPayloadRequestModal } from "../common/SignPayloadRequestModal";
-import { SingleSignPage } from "../SendFlow/common/RequestSignPage";
+import { RequestSignPage } from "../SendFlow/common/RequestSignPage";
 import {
   type SdkSignPageProps,
   type SignHeaderProps,
@@ -183,7 +183,7 @@ export const useHandleWcRequest = () => {
             operation: estimatedOperations,
           };
 
-          modal = <SingleSignPage {...signProps} />;
+          modal = <RequestSignPage {...signProps} />;
 
           onClose = () => {
             handleUserRejected();

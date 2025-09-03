@@ -40,7 +40,7 @@ import { SignPageFee } from "../SignPageFee";
 import { type SdkSignPageProps } from "../utils";
 import { useSignWithWalletConnect } from "../WalletConnect/useSignWithWalletConnect";
 
-export const SingleSignPage = (signProps: SdkSignPageProps) => {
+export const RequestSignPage = (signProps: SdkSignPageProps) => {
   const color = useColor();
 
   const totalFinalizableAmount = useAccountTotalFinalizableUnstakeAmount(

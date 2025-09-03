@@ -39,7 +39,7 @@ import {
 } from "../../../testUtils";
 import { SuccessStep } from "../SuccessStep";
 import { type SdkSignPageProps, type SignHeaderProps } from "../utils";
-import { SingleSignPage } from "./RequestSignPage";
+import { RequestSignPage } from "./RequestSignPage";
 
 jest.mock("@umami/core", () => ({
   ...jest.requireActual("@umami/core"),
@@ -89,7 +89,7 @@ const operation: EstimatedAccountOperations = {
   estimates: [executeParams({ fee: 123 })],
 };
 
-describe("<SingleSignPage />", () => {
+describe("<RequestSignPage />", () => {
   const store = makeStore();
   const user = userEvent.setup();
 
@@ -125,7 +125,7 @@ describe("<SingleSignPage />", () => {
 
     jest.mocked(executeOperations).mockResolvedValue({ opHash: "ophash" } as BatchWalletOperation);
 
-    await renderInModal(<SingleSignPage {...signProps} />, store);
+    await renderInModal(<RequestSignPage {...signProps} />, store);
 
     expect(screen.getByText("Ghostnet")).toBeInTheDocument();
     expect(screen.queryByText("Mainnet")).not.toBeInTheDocument();
@@ -244,7 +244,7 @@ describe("batch handling", () => {
     jest.mocked(executeOperations).mockResolvedValue({ opHash: "ophash" } as BatchWalletOperation);
     jest.spyOn(WalletClient, "respond").mockResolvedValue();
 
-    await renderInModal(<SingleSignPage {...signProps} />, store);
+    await renderInModal(<RequestSignPage {...signProps} />, store);
 
     expect(screen.getByText("Ghostnet")).toBeInTheDocument();
     expect(screen.queryByText("Mainnet")).not.toBeInTheDocument();

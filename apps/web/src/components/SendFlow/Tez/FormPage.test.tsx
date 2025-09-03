@@ -17,7 +17,6 @@ import { CustomError } from "@umami/utils";
 import { BigNumber } from "bignumber.js";
 
 import { FormPage } from "./FormPage";
-import { SignPage } from "./SignPage";
 import {
   act,
   dynamicModalContextMock,
@@ -27,6 +26,7 @@ import {
   userEvent,
   waitFor,
 } from "../../../testUtils";
+import { LocalSignPage } from "../LocalSignPage";
 
 jest.mock("@umami/core", () => ({
   ...jest.requireActual("@umami/core"),
@@ -262,10 +262,9 @@ describe("<Form />", () => {
         await act(() => user.click(submitButton));
 
         expect(dynamicModalContextMock.openWith).toHaveBeenCalledWith(
-          <SignPage
-            data={undefined}
+          <LocalSignPage
             goBack={expect.any(Function)}
-            mode="single"
+            operationType="tez"
             operations={operations}
           />
         );

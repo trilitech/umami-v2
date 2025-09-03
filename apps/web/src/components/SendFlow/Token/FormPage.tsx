@@ -23,7 +23,6 @@ import {
 import { type RawPkh, parseContractPkh, parsePkh } from "@umami/tezos";
 import { FormProvider, useForm } from "react-hook-form";
 
-import { SignPage } from "./SignPage";
 import { KnownAccountsAutocomplete } from "../../AddressAutocomplete";
 import { TokenTile } from "../../AssetTiles";
 import { FormPageHeader } from "../FormPageHeader";
@@ -51,8 +50,8 @@ export const FormPage = (
 ) => {
   const { token } = props;
   const openSignPage = useOpenSignPageFormAction({
-    SignPage,
-    signPageExtraData: { token },
+    operationType: "token",
+    token,
     FormPage,
     defaultFormPageProps: props,
     toOperation: toOperation(token),

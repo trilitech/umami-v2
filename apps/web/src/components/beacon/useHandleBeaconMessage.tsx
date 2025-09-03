@@ -19,7 +19,7 @@ import { BeaconError, CustomError, getErrorContext } from "@umami/utils";
 
 import { PermissionRequestModal } from "./PermissionRequestModal";
 import { SignPayloadRequestModal } from "../common/SignPayloadRequestModal";
-import { SingleSignPage } from "../SendFlow/common/RequestSignPage";
+import { RequestSignPage } from "../SendFlow/common/RequestSignPage";
 import {
   type SdkSignPageProps,
   type SignHeaderProps,
@@ -30,7 +30,7 @@ import {
  * @returns a function that handles a beacon message and opens a modal with the appropriate content
  *
  * For operation requests it will also try to convert the operation(s) to our {@link Operation} format,
- * estimate the fee and open the SingleSignPage only if it succeeds
+ * estimate the fee and open the RequestSignPage only if it succeeds
  */
 export const useHandleBeaconMessage = () => {
   const { openWith, isOpen, canBeOverridden } = useDynamicModalContext();
@@ -147,7 +147,7 @@ export const useHandleBeaconMessage = () => {
               operation: estimatedOperations,
             };
 
-            modal = <SingleSignPage {...signProps} />;
+            modal = <RequestSignPage {...signProps} />;
 
             onClose = () => respondWithError(message.id, BeaconErrorType.ABORTED_ERROR);
 
