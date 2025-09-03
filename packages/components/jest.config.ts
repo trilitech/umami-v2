@@ -7,6 +7,8 @@ const config: Config = {
   setupFiles: ["<rootDir>/src/setupPolyfills.ts"],
   setupFilesAfterEnv: ["<rootDir>/src/setupTests.ts"],
   rootDir: "./",
-  transformIgnorePatterns: ["node_modules/(?!(redux-persist-transform-encrypt)/)"],
+  transformIgnorePatterns: [
+    "node_modules/(?!(redux-persist-transform-encrypt|@walletconnect|@reown|uint8arrays|multiformats)/)",
+  ],
 };
 export default config;
