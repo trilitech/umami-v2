@@ -1,5 +1,3 @@
-import crypto from "crypto";
-
 import TransportWebUSB from "@ledgerhq/hw-transport-webusb";
 import { DerivationType, LedgerSigner } from "@taquito/ledger-signer";
 import { Parser } from "@taquito/michel-codec";
