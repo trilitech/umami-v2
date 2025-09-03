@@ -1,1 +1,0 @@
-export { DeriveMnemonicAccountModal } from "./DeriveMnemonicAccountModal";
