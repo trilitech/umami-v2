@@ -7,6 +7,11 @@ jest.mock("@umami/utils", () => ({
   useCustomToast: () => mockToast,
 }));
 
+jest.mock("@chakra-ui/react", () => ({
+  ...jest.requireActual("@chakra-ui/react"),
+  useToast: () => mockToast,
+}));
+
 jest.mock("./beacon/WalletClient", () => ({
   WalletClient: {
     getPeers: jest.fn(),
@@ -42,4 +47,9 @@ jest.mock("@reown/walletkit", () => {
   };
 });
 
-beforeEach(() => mockLocalStorage());
+beforeEach(() => {
+  Object.defineProperty(window, "localStorage", {
+    value: mockLocalStorage(),
+    writable: true,
+  });
+});
