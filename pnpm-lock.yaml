@@ -1076,6 +1076,9 @@ importers:
       '@umami/jest-config':
         specifier: workspace:^
         version: link:../jest-config
+      '@umami/test-utils':
+        specifier: workspace:^
+        version: link:../test-utils
       '@umami/typescript-config':
         specifier: workspace:^
         version: link:../typescript-config

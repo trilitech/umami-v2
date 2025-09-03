@@ -25,6 +25,7 @@
     "@types/react-dom": "18.3.1",
     "@umami/eslint-config": "workspace:^",
     "@umami/jest-config": "workspace:^",
+    "@umami/test-utils": "workspace:^",
     "@umami/typescript-config": "workspace:^",
     "@umami/utils": "workspace:^",
     "babel-jest": "^29.7.0",
