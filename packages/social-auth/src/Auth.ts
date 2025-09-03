@@ -1,4 +1,4 @@
-import { b58cencode, prefix } from "@taquito/utils";
+import { PrefixV2, b58Encode } from "@taquito/utils";
 import CustomAuth, {
   type TorusAggregateLoginResponse,
   type TorusLoginResponse,
@@ -22,7 +22,7 @@ export abstract class Auth {
   protected async getTorusClient(): Promise<CustomAuth> {
     const torus = new CustomAuth({
       web3AuthClientId: WEB3_AUTH_CLIENT_ID,
-      baseUrl: "https://umamiwallet.com/auth/v2.2.0/",
+      baseUrl: "https://auth.umamiwallet.com/",
       redirectPathName: "redirect.html",
       // Hack to enable reusing of the single redirect.html across different surfaces (e.g., desktop, mobile, embed).
       // The 'redirectToOpener' is originally designed to accept a boolean value to control redirect behavior.
@@ -47,7 +47,7 @@ export abstract class Auth {
   }> {
     const loginResult = await this.login();
     const privateKey = loginResult.finalKeyData.privKey || loginResult.oAuthKeyData.privKey;
-    const secretKey = b58cencode(privateKey, prefix.spsk);
+    const secretKey = b58Encode(privateKey, PrefixV2.Secp256k1SecretKey);
 
     const userInfo = Array.isArray(loginResult.userInfo)
       ? loginResult.userInfo[0]
