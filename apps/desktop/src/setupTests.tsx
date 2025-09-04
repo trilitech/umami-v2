@@ -4,9 +4,6 @@
 // learn more: https://github.com/testing-library/jest-dom
 import "@testing-library/jest-dom";
 
-import { webcrypto } from "crypto";
-import { TextDecoder, TextEncoder } from "util";
-
 import { mockToast } from "@umami/state";
 import { mockLocalStorage } from "@umami/test-utils";
 import { setupJestCanvasMock } from "jest-canvas-mock";
@@ -44,9 +41,6 @@ const mockIntersectionObserver = class MockIntersectionObserver {
 jest.mock("./env", () => ({ IS_DEV: false }));
 
 Object.defineProperties(global, {
-  crypto: { value: webcrypto, writable: true },
-  TextDecoder: { value: TextDecoder, writable: true },
-  TextEncoder: { value: TextEncoder, writable: true },
   scrollTo: { value: jest.fn(), writable: true },
   fetch: { value: jest.fn(), writable: true },
 });
@@ -75,9 +69,7 @@ beforeEach(() => {
   // Hack for testing HashRouter: clears URL between tests.
   window.location.hash = "";
 
-  Object.defineProperty(window, "localStorage", {
-    value: mockLocalStorage(),
-  });
+  mockLocalStorage();
 
   setupJestCanvasMock();
 });

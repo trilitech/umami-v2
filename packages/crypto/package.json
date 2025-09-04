@@ -59,7 +59,7 @@
     ]
   },
   "dependencies": {
-    "@taquito/utils": "^22.0.0-beta.0",
+    "@taquito/utils": "^23.0.0-RC.0",
     "date-fns": "^4.1.0"
   }
 }

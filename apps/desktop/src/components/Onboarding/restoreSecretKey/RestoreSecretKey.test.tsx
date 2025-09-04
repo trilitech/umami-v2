@@ -128,8 +128,7 @@ describe("<RestoreSecretKey />", () => {
     await act(() => user.click(screen.getByTestId("restore-continue-button")));
 
     expect(mockToast).toHaveBeenCalledWith({
-      description:
-        "Invalid private key with unsupported prefix expecting one of the following 'edesk', 'edsk', 'spsk', 'spesk', 'p2sk' or 'p2esk'..",
+      description: "Invalid secret key: checksum doesn't match",
       status: "error",
       isClosable: true,
     });
