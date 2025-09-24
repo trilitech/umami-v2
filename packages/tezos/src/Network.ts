@@ -16,6 +16,14 @@ export const GHOSTNET: Network = {
   buyTezUrl: "https://faucet.ghostnet.teztnets.com/",
 };
 
+export const TEZLINK: Network = {
+  name: "tezlink",
+  rpcUrl: "http://node.tezlink.nomadic-labs.com:30009/tezlink",
+  tzktApiUrl: "http://api.tzkt.tezlink.nomadic-labs.com:30010",
+  tzktExplorerUrl: "https://ghostnet.tzkt.io",
+  buyTezUrl: "https://faucet.ghostnet.teztnets.com/",
+};
+
 export const isDefault = (network: Network) => !!DefaultNetworks.find(n => n.name === network.name);
 
-export const DefaultNetworks: Network[] = [MAINNET, GHOSTNET];
+export const DefaultNetworks: Network[] = [MAINNET, GHOSTNET, TEZLINK];
