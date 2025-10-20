@@ -25,7 +25,7 @@ jobs:
             turbo-
 
       - name: Setup Node.js environment
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 20.18.0
           cache: "pnpm"
@@ -68,7 +68,7 @@ jobs:
           version: 9.9.0
 
       - name: Setup Node.js environment
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 20.18.0
           cache: "pnpm"
@@ -137,7 +137,7 @@ jobs:
           python-version: 3.11
 
       - name: Setup Node.js environment
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 20.18.0
           cache: "pnpm"
