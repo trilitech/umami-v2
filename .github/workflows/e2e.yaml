@@ -42,7 +42,7 @@ jobs:
           path: "apps/desktop-e2e/test-results/cucumber-report.json"
           show-global-summary-report: true
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         if: always()
         with:
           name: cucumber-report
