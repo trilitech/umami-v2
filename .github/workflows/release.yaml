@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - uses: pnpm/action-setup@v4
         with:
@@ -46,7 +46,7 @@ jobs:
       issues: write
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Create Draft Release for ${{ github.ref_name }}
         run: gh release create ${{  github.ref_name }} --draft --title "${{  github.ref_name }}" --generate-notes
@@ -61,7 +61,7 @@ jobs:
     environment: "Production – umami-v2"
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - uses: pnpm/action-setup@v4
         with:
@@ -125,7 +125,7 @@ jobs:
       contents: write
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - uses: pnpm/action-setup@v4
         with:
@@ -174,7 +174,7 @@ jobs:
     needs: [create-release-linux, create-release-mac]
     steps:
       - name: Check out the code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Cleanup cache
         env:

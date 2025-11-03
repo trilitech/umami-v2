@@ -12,7 +12,7 @@ jobs:
       TZKT_API_IMAGE: serjonya/tzkt-api:1.14.5-linux
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Pull docker images
         run: docker compose pull --quiet &
