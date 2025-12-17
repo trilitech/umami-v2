@@ -16,6 +16,14 @@ export const GHOSTNET: Network = {
   buyTezUrl: "https://faucet.ghostnet.teztnets.com/",
 };
 
+export const SHADOWNET: Network = {
+  name: "shadownet",
+  rpcUrl: "https://shadownet.tezos.ecadinfra.com",
+  tzktApiUrl: "https://api.shadownet.tzkt.io",
+  tzktExplorerUrl: "https://shadownet.tzkt.io",
+  buyTezUrl: "https://faucet.shadownet.teztnets.com/",
+};
+
 export const isDefault = (network: Network) => !!DefaultNetworks.find(n => n.name === network.name);
 
-export const DefaultNetworks: Network[] = [MAINNET, GHOSTNET];
+export const DefaultNetworks: Network[] = [MAINNET, GHOSTNET, SHADOWNET];
