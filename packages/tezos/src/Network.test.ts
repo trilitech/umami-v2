@@ -1,10 +1,11 @@
-import { GHOSTNET, MAINNET, isDefault } from "./Network";
+import { GHOSTNET, MAINNET, SHADOWNET, isDefault } from "./Network";
 
 describe("Network", () => {
   describe("isDefault", () => {
-    it("returns true for MAINNET and GHOSTNET", () => {
+    it("returns true for MAINNET, GHOSTNET and SHADOWNET", () => {
       expect(isDefault(MAINNET)).toBe(true);
       expect(isDefault(GHOSTNET)).toBe(true);
+      expect(isDefault(SHADOWNET)).toBe(true);
     });
 
     it("returns false for custom networks", () => {
