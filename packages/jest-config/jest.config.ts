@@ -149,7 +149,11 @@ const config: Config = {
   testEnvironment: "jsdom",
 
   // Options that will be passed to the testEnvironment
-  // testEnvironmentOptions: {},
+  // jsdom defaults to the "browser" export condition, which resolves ESM-only builds
+  // (uint8arrays, multiformats, …) that jest cannot parse — prefer CJS entry points
+  testEnvironmentOptions: {
+    customExportConditions: ["require", "node"],
+  },
 
   // Adds a location field to test results
   testLocationInResults: true,
