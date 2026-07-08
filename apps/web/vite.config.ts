@@ -28,7 +28,7 @@ export default defineConfig({
       },
     }),
     nodePolyfills({
-      include: ["stream", "util", "crypto", "vm"],
+      include: ["stream", "util", "crypto", "vm", "http", "https"],
       globals: {
         Buffer: true,
       },
