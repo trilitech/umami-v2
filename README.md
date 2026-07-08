@@ -19,7 +19,7 @@ This is a monorepo which contains all the packages related to Umami.
 
 ## Initial setup
 
-- Node.js version is 20.x, you can use [NVM](https://github.com/nvm-sh/nvm) to install it and select for this project.
+- Node.js version is 22.x, you can use [NVM](https://github.com/nvm-sh/nvm) to install it and select for this project.
 - pnpm should be used, you can find the installation guide [here](https://pnpm.io/installation).
 - `pnpm install` to install all the dependencies
 - `npm install turbo --global` to be able to use the [turborepo](https://turbo.build/repo/docs) tooling

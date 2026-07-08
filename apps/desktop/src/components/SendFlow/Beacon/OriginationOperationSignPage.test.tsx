@@ -2,7 +2,7 @@ import { BeaconMessageType, NetworkType, type OperationRequestOutput } from "@ai
 import { TezosToolkit } from "@taquito/taquito";
 import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
 import { executeOperations, mockContractOrigination, mockImplicitAccount } from "@umami/core";
-import { WalletClient, useGetSecretKey } from "@umami/state";
+import { WalletClient, makeStore, networksActions, useGetSecretKey } from "@umami/state";
 import { executeParams } from "@umami/test-utils";
 import { GHOSTNET, makeToolkit, prettyTezAmount } from "@umami/tezos";
 
@@ -62,7 +62,12 @@ describe("<OriginationOperationSignPage />", () => {
     jest.mocked(executeOperations).mockResolvedValue({ opHash: "ophash" } as BatchWalletOperation);
     jest.spyOn(WalletClient, "respond").mockResolvedValue();
 
-    render(<OriginationOperationSignPage message={message} operation={operation} />);
+    // ghostnet is no longer a default network — simulate a user-added network
+    // matching the dApp's requested network type
+    const store = makeStore();
+    store.dispatch(networksActions.upsertNetwork(GHOSTNET));
+
+    render(<OriginationOperationSignPage message={message} operation={operation} />, { store });
 
     await act(() => user.type(screen.getByLabelText("Password"), "Password"));
 

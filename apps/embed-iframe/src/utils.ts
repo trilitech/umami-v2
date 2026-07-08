@@ -1,6 +1,6 @@
 import type { Network, ResponseMessage, UserData } from "@trilitech-umami/umami-embed";
 import { type SocialAccount } from "@umami/core";
-import { GHOSTNET, MAINNET } from "@umami/tezos";
+import { MAINNET, SHADOWNET } from "@umami/tezos";
 
 export const sendResponse = (response: ResponseMessage) =>
   window.parent.postMessage(JSON.stringify(response), "*");
@@ -39,8 +39,10 @@ export const sendSignPayloadErrorResponse = (errorMessage: string) => {
 
 export const toTezosNetwork = (network: Network) => {
   switch (network) {
+    // "ghostnet" is kept as the client-facing testnet value in @trilitech-umami/umami-embed,
+    // but ghostnet itself was sunset in May 2026 — shadownet is its successor
     case "ghostnet":
-      return GHOSTNET;
+      return SHADOWNET;
     case "mainnet":
       return MAINNET;
   }

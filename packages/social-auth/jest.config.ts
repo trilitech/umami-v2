@@ -4,5 +4,5 @@ export default {
   ...config,
 
   rootDir: "./",
-  setupFiles: ["<rootDir>/src/setupTests.ts"],
+  setupFiles: ["whatwg-fetch", "<rootDir>/src/setupTests.ts"],
 };

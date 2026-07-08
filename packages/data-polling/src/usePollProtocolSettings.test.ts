@@ -23,7 +23,7 @@ describe("usePollProtocolSettings", () => {
         unstakeFinalizationDelay: 128,
         consensusRightsDelay: 123,
       },
-      ghostnet: {
+      shadownet: {
         unstakeFinalizationDelay: 4,
         consensusRightsDelay: 2,
       },
@@ -47,7 +47,7 @@ describe("usePollProtocolSettings", () => {
         unstakeFinalizationDelay: 3,
         consensusRightsDelay: 2,
       },
-      ghostnet: {
+      shadownet: {
         unstakeFinalizationDelay: 4,
         consensusRightsDelay: 2,
       },

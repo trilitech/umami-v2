@@ -28,8 +28,8 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@taquito/rpc": "^24.3.0",
-    "@taquito/utils": "^24.3.0",
+    "@taquito/rpc": "^25.0.0",
+    "@taquito/utils": "^25.0.0",
     "@tzkt/sdk-api": "^2.2.1",
     "@umami/tezos": "workspace:^",
     "@umami/tzkt": "workspace:^",

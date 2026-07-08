@@ -1,4 +1,4 @@
-import { GHOSTNET, MAINNET } from "@umami/tezos";
+import { MAINNET, SHADOWNET } from "@umami/tezos";
 
 import { useGetProtocolSettings } from "./protocolSettings";
 import { protocolSettingsActions } from "../slices";
@@ -16,7 +16,7 @@ describe("useGetProtocolSettings", () => {
     );
     store.dispatch(
       protocolSettingsActions.update({
-        network: GHOSTNET,
+        network: SHADOWNET,
         settings: { unstakeFinalizationDelay: 2, consensusRightsDelay: 1 },
       })
     );

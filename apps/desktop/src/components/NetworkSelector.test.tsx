@@ -1,5 +1,5 @@
 import { type UmamiStore, makeStore } from "@umami/state";
-import { GHOSTNET } from "@umami/tezos";
+import { SHADOWNET } from "@umami/tezos";
 
 import { NetworkSelector } from "./NetworkSelector";
 import { act, render, screen, userEvent } from "../mocks/testUtils";
@@ -22,9 +22,9 @@ describe("<NetworkSelector />", () => {
     render(<NetworkSelector />, { store });
 
     await act(() => user.click(screen.getByTestId("network-selector")));
-    await act(() => user.click(screen.getByText("Ghostnet")));
+    await act(() => user.click(screen.getByText("Shadownet")));
 
-    expect(screen.getByTestId("network-selector")).toHaveTextContent("Ghostnet");
-    expect(store.getState().networks.current).toEqual(GHOSTNET);
+    expect(screen.getByTestId("network-selector")).toHaveTextContent("Shadownet");
+    expect(store.getState().networks.current).toEqual(SHADOWNET);
   });
 });

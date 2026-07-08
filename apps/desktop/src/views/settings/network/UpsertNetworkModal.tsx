@@ -75,7 +75,7 @@ export const UpsertNetworkModal = ({ network }: { network?: Network }) => {
           <FormControl marginBottom="24px" isInvalid={!!errors.tzktApiUrl}>
             <FormLabel>Tzkt API URL</FormLabel>
             <Input
-              placeholder="https://api.ghostnet.tzkt.io"
+              placeholder="https://api.shadownet.tzkt.io"
               {...register("tzktApiUrl", {
                 setValueAs: removeTrailingSlashes,
               })}
@@ -85,7 +85,7 @@ export const UpsertNetworkModal = ({ network }: { network?: Network }) => {
           <FormControl marginBottom="24px" isInvalid={!!errors.tzktExplorerUrl}>
             <FormLabel>Tzkt Explorer URL</FormLabel>
             <Input
-              placeholder="https://ghostnet.tzkt.io"
+              placeholder="https://shadownet.tzkt.io"
               {...register("tzktExplorerUrl", {
                 setValueAs: removeTrailingSlashes,
               })}
@@ -97,7 +97,7 @@ export const UpsertNetworkModal = ({ network }: { network?: Network }) => {
 
           <FormControl isInvalid={!!errors.buyTezUrl}>
             <FormLabel>Buy tez URL</FormLabel>
-            <Input placeholder="https://faucet.ghostnet.teztnets.com" {...register("buyTezUrl")} />
+            <Input placeholder="https://faucet.shadownet.teztnets.com" {...register("buyTezUrl")} />
             {errors.buyTezUrl && <FormErrorMessage>{errors.buyTezUrl.message}</FormErrorMessage>}
           </FormControl>
           <ModalFooter>

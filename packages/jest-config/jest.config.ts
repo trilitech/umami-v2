@@ -140,7 +140,9 @@ const config: Config = {
   // runner: "jest-runner",
 
   // The paths to modules that run some code to configure or set up the testing environment before each test
-  // setupFiles: [],
+  // @taquito/http-utils >= 25 requires globalThis.fetch at import time, which
+  // jest-environment-jsdom does not provide — polyfill it (XHR-based, jsdom-compatible)
+  setupFiles: ["whatwg-fetch"],
 
   // A list of paths to snapshot serializer modules Jest should use for snapshot testing
   // snapshotSerializers: [],
@@ -182,7 +184,8 @@ const config: Config = {
   },
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
-  transformIgnorePatterns: ["/node_modules/"],
+  // @stablelib v2 (pulled in by taquito 25) ships ESM-only — let babel transpile it for jest
+  transformIgnorePatterns: ["/node_modules/(?!(@stablelib)/)"],
 
   // An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for them
   // unmockedModulePathPatterns: undefined,

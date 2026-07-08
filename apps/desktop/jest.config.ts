@@ -5,7 +5,7 @@ export default {
   rootDir: "./",
   testTimeout: 20000,
   bail: false,
-  setupFiles: ["<rootDir>/src/setupTestsGlobal.ts"],
+  setupFiles: ["whatwg-fetch", "<rootDir>/src/setupTestsGlobal.ts"],
   setupFilesAfterEnv: ["<rootDir>/src/setupTests.tsx"],
-  transformIgnorePatterns: ["node_modules/(?!(redux-persist-transform-encrypt)/)"],
+  transformIgnorePatterns: ["node_modules/(?!(redux-persist-transform-encrypt|@stablelib)/)"],
 };

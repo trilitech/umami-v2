@@ -50,6 +50,9 @@ describe("<TezSignPage />", () => {
       operations: [mockTezOperation(0)],
       estimates: [executeParams({ fee: 123 })],
     };
+    // ghostnet is no longer a default network — simulate a user-added network
+    // matching the dApp's requested network type
+    store.dispatch(networksActions.upsertNetwork(GHOSTNET));
     store.dispatch(networksActions.setCurrent(MAINNET));
     jest.mocked(useGetSecretKey).mockImplementation(() => () => Promise.resolve("secretKey"));
 

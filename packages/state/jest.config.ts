@@ -4,9 +4,9 @@ import type { Config } from "jest";
 const config: Config = {
   ...baseConfig,
   testTimeout: 15000,
-  setupFiles: ["<rootDir>/src/setupTests.ts"],
+  setupFiles: ["whatwg-fetch", "<rootDir>/src/setupTests.ts"],
   setupFilesAfterEnv: ["<rootDir>/src/setupTestsAfterEnv.ts"],
   rootDir: "./",
-  transformIgnorePatterns: ["node_modules/(?!(redux-persist-transform-encrypt)/)"],
+  transformIgnorePatterns: ["node_modules/(?!(redux-persist-transform-encrypt|@stablelib)/)"],
 };
 export default config;

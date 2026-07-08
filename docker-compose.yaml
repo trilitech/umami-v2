@@ -16,11 +16,11 @@ services:
   tezos_node:
     container_name: "tezos-node-${CUCUMBER_WORKER_ID:-0}"
     restart: always
-    image: ghcr.io/tez-capital/tezbox:tezos-v20.3
+    image: ghcr.io/tez-capital/tezbox:tezos-v25.0
     environment:
       - USER=root
     volumes:
-      - ./sandbox-override-parameters.hjson:/tezbox/overrides/protocols/PsParisC/sandbox-parameters.hjson
+      - ./sandbox-override-parameters.hjson:/tezbox/overrides/protocols/PsUshuai/sandbox-parameters.hjson
 
   proxy:
     container_name: "tezos-node-proxy-${CUCUMBER_WORKER_ID:-0}"
@@ -34,7 +34,7 @@ services:
   sync:
     container_name: "tzkt-sync-${CUCUMBER_WORKER_ID:-0}"
     restart: always
-    image: ${TZKT_SYNC_IMAGE:-serjonya/tzkt-sync:1.14.5}
+    image: ${TZKT_SYNC_IMAGE:-bakingbad/tzkt-sync:1.17.3}
     environment:
       ConnectionStrings__DefaultConnection: host=db;port=5432;database=${POSTGRES_DB:-tzkt_db};username=${POSTGRES_USER:-tzkt};password=${POSTGRES_PASSWORD:-qwerty};command timeout=${COMMAND_TIMEOUT:-600};
       Kestrel__Endpoints__Http__Url: http://0.0.0.0:5001
@@ -48,7 +48,7 @@ services:
   api:
     container_name: "tzkt-api-${CUCUMBER_WORKER_ID:-0}"
     restart: always
-    image: ${TZKT_API_IMAGE:-serjonya/tzkt-api:1.14.5}
+    image: ${TZKT_API_IMAGE:-bakingbad/tzkt-api:1.17.3}
     depends_on:
       sync:
         condition: service_started

@@ -1,5 +1,5 @@
 import { rawAccountFixture } from "@umami/core";
-import { GHOSTNET, MAINNET, mockImplicitAddress } from "@umami/tezos";
+import { MAINNET, SHADOWNET, mockImplicitAddress } from "@umami/tezos";
 
 import {
   useAvailableNetworks,
@@ -27,12 +27,12 @@ describe("networkHooks", () => {
     });
 
     it("returns selected network", () => {
-      store.dispatch(networksActions.setCurrent(GHOSTNET));
+      store.dispatch(networksActions.setCurrent(SHADOWNET));
 
       const {
         result: { current },
       } = renderHook(() => useSelectedNetwork(), { store });
-      expect(current.name).toEqual("ghostnet");
+      expect(current.name).toEqual("shadownet");
     });
   });
 
@@ -49,12 +49,12 @@ describe("networkHooks", () => {
     });
 
     it("for others - returns url from network setting", () => {
-      store.dispatch(networksActions.setCurrent(GHOSTNET));
+      store.dispatch(networksActions.setCurrent(SHADOWNET));
 
       const {
         result: { current },
       } = renderHook(() => useBuyTezUrl("pkh123"), { store });
-      expect(current).toEqual(GHOSTNET.buyTezUrl);
+      expect(current).toEqual(SHADOWNET.buyTezUrl);
     });
   });
 
@@ -63,16 +63,16 @@ describe("networkHooks", () => {
       const {
         result: { current },
       } = renderHook(() => useAvailableNetworks(), { store });
-      expect(current).toEqual([MAINNET, GHOSTNET]);
+      expect(current).toEqual([MAINNET, SHADOWNET]);
     });
 
     it("returns custom networks if any", () => {
-      const customNetwork = { ...GHOSTNET, name: "custom" };
+      const customNetwork = { ...SHADOWNET, name: "custom" };
       store.dispatch(networksActions.upsertNetwork(customNetwork));
       const {
         result: { current },
       } = renderHook(() => useAvailableNetworks(), { store });
-      expect(current).toEqual([MAINNET, GHOSTNET, customNetwork]);
+      expect(current).toEqual([MAINNET, SHADOWNET, customNetwork]);
     });
   });
 
@@ -94,9 +94,9 @@ describe("networkHooks", () => {
       const {
         result: { current: selectNetwork },
       } = renderHook(() => useSelectNetwork(), { store });
-      selectNetwork("ghostnet");
+      selectNetwork("shadownet");
 
-      expect(store.getState().networks.current.name).toEqual("ghostnet");
+      expect(store.getState().networks.current.name).toEqual("shadownet");
       expect(store.getState().assets.accountStates).toEqual({});
     });
 
@@ -104,7 +104,7 @@ describe("networkHooks", () => {
       const {
         result: { current: selectNetwork },
       } = renderHook(() => useSelectNetwork(), { store });
-      selectNetwork("ghostnet234");
+      selectNetwork("shadownet234");
 
       expect(store.getState().networks.current.name).toEqual("mainnet");
       expect(store.getState().assets.accountStates).toEqual({
