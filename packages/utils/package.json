@@ -60,7 +60,7 @@
     ]
   },
   "dependencies": {
-    "bignumber.js": "^9.1.2",
+    "bignumber.js": "^10.0.2",
     "lodash": "^4.17.21",
     "sanitize-html": "^2.14.0"
   }

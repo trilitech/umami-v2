@@ -60,13 +60,13 @@
   },
   "dependencies": {
     "@ledgerhq/hw-transport-webusb": "6.27.1",
-    "@taquito/ledger-signer": "^23.1.0",
-    "@taquito/michel-codec": "^23.1.0",
-    "@taquito/rpc": "^23.1.0",
-    "@taquito/signer": "^23.1.0",
-    "@taquito/taquito": "^23.1.0",
-    "@taquito/utils": "^23.1.0",
+    "@taquito/ledger-signer": "^24.3.0",
+    "@taquito/michel-codec": "^24.3.0",
+    "@taquito/rpc": "^24.3.0",
+    "@taquito/signer": "^24.3.0",
+    "@taquito/taquito": "^24.3.0",
+    "@taquito/utils": "^24.3.0",
     "@umami/utils": "workspace:^",
-    "bignumber.js": "^9.1.2"
+    "bignumber.js": "^10.0.2"
   }
 }

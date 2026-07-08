@@ -1,6 +1,6 @@
 export const TEZ = "XTZ";
 export const TEZ_DECIMALS = 6;
-export const BLOCK_TIME = 8 * 1000; // 8 seconds (Quebec, protocol 021)
+export const BLOCK_TIME = 6 * 1000; // 6 seconds (Tallinn, protocol 024)
 
 export const verifiedTokens = [
   "KT1XnTn74bUtxHfDtBmm2bGZAQfhPbvKWR8o",
