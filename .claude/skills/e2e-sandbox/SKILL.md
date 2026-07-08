@@ -24,8 +24,8 @@ pnpm test:e2e:focus    # only scenarios tagged @focus — tag your scenario whil
 
 ## The sandbox stack (`docker-compose.yaml` at repo root)
 
-- `tezos_node` — tezbox sandbox (tezos v20.3), behind `proxy` (nginx CORS) on port `2000X`
-- `sync` + `api` — TzKT indexer + REST API on port `500X`
+- `tezos_node` — tezbox sandbox (tezos v25.0, protocol Ushuaia), behind `proxy` (nginx CORS) on port `2000X`
+- `sync` + `api` — TzKT indexer + REST API 1.17.x (bakingbad images) on port `500X`
 - `db` — postgres for TzKT
 - `X` = `CUCUMBER_WORKER_ID` (parallel workers get their own stack/ports; default 0 → ports 20000/5000)
 - Ready when Alice (`tz1VSUr8wwNhLAzempoch5d6hLRiTh8Cjcjb`) shows 50000 tez: `curl http://localhost:5000/v1/accounts/tz1VSUr8... `

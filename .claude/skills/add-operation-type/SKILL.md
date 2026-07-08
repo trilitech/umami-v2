@@ -26,6 +26,6 @@ Operations flow through a fixed pipeline; a new operation type must be handled a
 
 ## Gotchas
 
-- Taquito is pinned to `23.0.0-beta.0` across all packages — don't mix versions.
+- Keep `@taquito/*` versions identical across all packages (v25.x = Ushuaia/025), and `bignumber.js` on the same major as taquito's.
 - Multisig proposals execute lambdas with the **contract** as sender; fees are paid by the proposing implicit account.
 - Amounts are mutez strings/BigNumber (`bignumber.js`) — never JS floats. Formatting helpers live in `packages/tezos/src/format.ts`.

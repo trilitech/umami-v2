@@ -13,8 +13,8 @@ Turborepo monorepo — tests need upstream packages built first.
 |---|---|
 | Everything (excl. mobile & web) | `pnpm test` (repo root) |
 | One package (builds deps first) | `turbo test --filter=@umami/core` |
-| Single test file | `cd packages/core && pnpm test --testPathPattern=Account.test.ts` |
-| Match test name | `cd packages/core && pnpm test -t "estimates reveal"` |
+| Single test file | `cd packages/core && pnpm test -- --testPathPattern=Account.test.ts` (the `--` is required — pnpm rejects unknown flags) |
+| Match test name | `cd packages/core && pnpm test -- -t "estimates reveal"` |
 | Watch mode | `cd packages/<name> && pnpm test:watch` (sets `DEV=true` → disables coverage thresholds) |
 | E2E | see the e2e-sandbox skill |
 

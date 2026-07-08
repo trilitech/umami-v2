@@ -33,7 +33,7 @@ Implicit accounts (everything except multisig) share `label`, `address`, `pk`. O
 ## Data fetching & polling
 
 - `packages/tzkt` wraps `@tzkt/sdk-api` with rate limiting (`withRateLimit`) and retries: account states, token balances, combined operation history, bakers, staking ops, blocks.
-- `packages/data-polling` exposes React Query hooks polling at block time (~12s): `usePollAccountStates`, `usePollTokenBalances`, `usePollPendingOperations`, `usePollMultisigs`, `usePollBakers`, `usePollUnstakeRequests`, `usePollBlock`, `usePollConversionRate`, `usePollProtocolSettings`. `useDataPolling()` composes them all and dispatches results into Redux (`assetsActions.updateAccountStates` etc.).
+- `packages/data-polling` exposes React Query hooks polling at block time (6s since Tallinn/024): `usePollAccountStates`, `usePollTokenBalances`, `usePollPendingOperations`, `usePollMultisigs`, `usePollBakers`, `usePollUnstakeRequests`, `usePollBlock`, `usePollConversionRate`, `usePollProtocolSettings`. `useDataPolling()` composes them all and dispatches results into Redux (`assetsActions.updateAccountStates` etc.).
 
 ## dApp connections
 
