@@ -1,9 +1,4 @@
 import {
-  BeaconMessageType,
-  type BeaconResponseInputMessage,
-  type PermissionRequestOutput,
-} from "@airgap/beacon-wallet";
-import {
   Accordion,
   AccordionButton,
   AccordionIcon,
@@ -23,6 +18,11 @@ import {
   ModalHeader,
   Text,
 } from "@chakra-ui/react";
+import {
+  BeaconMessageType,
+  type BeaconResponseInputMessage,
+  type PermissionRequestOutput,
+} from "@tezos-x/octez.connect-wallet";
 import { useDynamicModalContext } from "@umami/components";
 import {
   WalletClient,

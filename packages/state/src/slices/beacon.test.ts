@@ -1,4 +1,4 @@
-import { NetworkType } from "@airgap/beacon-wallet";
+import { NetworkType } from "@tezos-x/octez.connect-wallet";
 import { mockMnemonicAccount, mockSecretKeyAccount, mockSocialAccount } from "@umami/core";
 import { type RawPkh } from "@umami/tezos";
 
@@ -42,42 +42,42 @@ describe("Beacon slice", () => {
       beaconActions.addConnection({
         dAppId: dAppId2,
         accountPkh: pkh2,
-        networkType: NetworkType.GHOSTNET,
+        networkType: NetworkType.SHADOWNET,
       })
     );
 
     expect(store.getState().beacon).toEqual({
       [dAppId1]: connectionInfo(pkh1, NetworkType.MAINNET),
-      [dAppId2]: connectionInfo(pkh2, NetworkType.GHOSTNET),
+      [dAppId2]: connectionInfo(pkh2, NetworkType.SHADOWNET),
     });
   });
 
   it("removes connections for a given dAppId", () => {
     addConnection(dAppId1, pkh1, NetworkType.MAINNET);
-    addConnection(dAppId2, pkh2, NetworkType.GHOSTNET);
+    addConnection(dAppId2, pkh2, NetworkType.SHADOWNET);
 
     store.dispatch(beaconActions.removeConnection(dAppId1));
 
     expect(store.getState().beacon).toEqual({
-      [dAppId2]: connectionInfo(pkh2, NetworkType.GHOSTNET),
+      [dAppId2]: connectionInfo(pkh2, NetworkType.SHADOWNET),
     });
   });
 
   it("removes connections for given accounts", () => {
     addConnection(dAppId1, pkh1, NetworkType.MAINNET);
-    addConnection(dAppId2, pkh2, NetworkType.GHOSTNET);
-    addConnection(dAppId2, pkh3, NetworkType.GHOSTNET);
+    addConnection(dAppId2, pkh2, NetworkType.SHADOWNET);
+    addConnection(dAppId2, pkh3, NetworkType.SHADOWNET);
 
     store.dispatch(beaconActions.removeConnections([pkh1, pkh2]));
 
     expect(store.getState().beacon).toEqual({
-      [dAppId2]: connectionInfo(pkh3, NetworkType.GHOSTNET),
+      [dAppId2]: connectionInfo(pkh3, NetworkType.SHADOWNET),
     });
   });
 
   it("replaces connections with the same dAppId", () => {
     addConnection(dAppId1, pkh1, NetworkType.MAINNET);
-    addConnection(dAppId2, pkh2, NetworkType.GHOSTNET);
+    addConnection(dAppId2, pkh2, NetworkType.SHADOWNET);
 
     store.dispatch(
       beaconActions.addConnection({
@@ -89,13 +89,13 @@ describe("Beacon slice", () => {
 
     expect(store.getState().beacon).toEqual({
       [dAppId1]: connectionInfo(pkh3, NetworkType.CUSTOM),
-      [dAppId2]: connectionInfo(pkh2, NetworkType.GHOSTNET),
+      [dAppId2]: connectionInfo(pkh2, NetworkType.SHADOWNET),
     });
   });
 
   it("resets the state", () => {
     addConnection(dAppId1, pkh1, NetworkType.MAINNET);
-    addConnection(dAppId2, pkh2, NetworkType.GHOSTNET);
+    addConnection(dAppId2, pkh2, NetworkType.SHADOWNET);
 
     store.dispatch(beaconActions.reset());
 

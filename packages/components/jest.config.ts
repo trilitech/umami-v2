@@ -7,6 +7,8 @@ const config: Config = {
   setupFiles: ["whatwg-fetch", "<rootDir>/src/setupPolyfills.ts"],
   setupFilesAfterEnv: ["<rootDir>/src/setupTests.ts"],
   rootDir: "./",
-  transformIgnorePatterns: ["node_modules/(?!(redux-persist-transform-encrypt|@stablelib)/)"],
+  transformIgnorePatterns: [
+    "node_modules/(?!(redux-persist-transform-encrypt|@stablelib|@tezos-x)/)",
+  ],
 };
 export default config;

@@ -1,6 +1,6 @@
-import { type ExtendedPeerInfo, type NetworkType } from "@airgap/beacon-wallet";
 import { Center, Divider, Flex, Heading, IconButton, Image, Text, VStack } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
+import { type ExtendedPeerInfo, type NetworkType } from "@tezos-x/octez.connect-wallet";
 import {
   useBeaconPeers,
   useDisconnectWalletConnectPeer,

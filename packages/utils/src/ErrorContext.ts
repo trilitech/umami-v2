@@ -1,6 +1,6 @@
-import { type BeaconErrorType } from "@airgap/beacon-wallet";
 import { type MichelsonV1ExpressionBase, type TezosGenericOperationError } from "@taquito/rpc";
 import { TezosOperationError, type TezosOperationErrorWithMessage } from "@taquito/taquito";
+import { type BeaconErrorType } from "@tezos-x/octez.connect-wallet";
 import { type ErrorResponse } from "@walletconnect/jsonrpc-utils";
 import { type SessionTypes } from "@walletconnect/types";
 import sanitizeHtml from "sanitize-html";

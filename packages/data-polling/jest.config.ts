@@ -7,6 +7,8 @@ const config: Config = {
   setupFilesAfterEnv: ["<rootDir>/src/setupTests.ts"],
   testEnvironment: "jsdom",
   rootDir: "./",
-  transformIgnorePatterns: ["node_modules/(?!(redux-persist-transform-encrypt|@stablelib)/)"],
+  transformIgnorePatterns: [
+    "node_modules/(?!(redux-persist-transform-encrypt|@stablelib|@tezos-x)/)",
+  ],
 };
 export default config;

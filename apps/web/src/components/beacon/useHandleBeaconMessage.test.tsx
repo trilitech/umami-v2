@@ -7,7 +7,7 @@ import {
   type SignPayloadRequestOutput,
   SigningType,
   TezosOperationType,
-} from "@airgap/beacon-wallet";
+} from "@tezos-x/octez.connect-wallet";
 import {
   type EstimatedAccountOperations,
   estimate,

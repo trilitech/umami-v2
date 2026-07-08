@@ -1,10 +1,10 @@
+import { useQuery } from "@tanstack/react-query";
 import {
   type ExtendedP2PPairingResponse,
   type ExtendedPeerInfo,
   type NetworkType,
   Serializer,
-} from "@airgap/beacon-wallet";
-import { useQuery } from "@tanstack/react-query";
+} from "@tezos-x/octez.connect-wallet";
 import { type RawPkh } from "@umami/tezos";
 import { useCustomToast } from "@umami/utils";
 import { uniq } from "lodash";

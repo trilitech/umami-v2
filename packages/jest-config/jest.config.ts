@@ -184,8 +184,10 @@ const config: Config = {
   },
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
-  // @stablelib v2 (pulled in by taquito 25) ships ESM-only — let babel transpile it for jest
-  transformIgnorePatterns: ["/node_modules/(?!(@stablelib)/)"],
+  // @stablelib v2 (pulled in by taquito 25 and octez.connect) ships ESM-only — let babel
+  // transpile it for jest. @tezos-x is exempted too so the pattern cannot match at the
+  // OUTER node_modules segment of nested copies like @tezos-x/*/node_modules/@stablelib/*.
+  transformIgnorePatterns: ["/node_modules/(?!(@stablelib|@tezos-x)/)"],
 
   // An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for them
   // unmockedModulePathPatterns: undefined,

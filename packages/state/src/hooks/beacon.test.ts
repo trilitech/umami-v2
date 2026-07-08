@@ -1,4 +1,4 @@
-import { NetworkType } from "@airgap/beacon-wallet";
+import { NetworkType } from "@tezos-x/octez.connect-wallet";
 import { mockMnemonicAccount, mockSocialAccount } from "@umami/core";
 import { type RawPkh } from "@umami/tezos";
 
@@ -40,18 +40,18 @@ describe("useGetConnectedAccount", () => {
 
   it("returns connected account pkh by given dAppId", () => {
     addConnection(dAppId1, pkh1, NetworkType.MAINNET);
-    addConnection(dAppId2, pkh2, NetworkType.GHOSTNET);
+    addConnection(dAppId2, pkh2, NetworkType.SHADOWNET);
 
     const view = renderHook(() => useGetBeaconConnectionInfo(dAppId2), { store });
 
-    expect(view.result.current).toEqual(connectionInfo(pkh2, NetworkType.GHOSTNET));
+    expect(view.result.current).toEqual(connectionInfo(pkh2, NetworkType.SHADOWNET));
   });
 });
 
 describe("useResetConnections", () => {
   it("removes all connections from BeaconSlice", () => {
     addConnection(dAppId1, pkh1, NetworkType.MAINNET);
-    addConnection(dAppId2, pkh2, NetworkType.GHOSTNET);
+    addConnection(dAppId2, pkh2, NetworkType.SHADOWNET);
 
     const {
       result: { current: resetBeaconSlice },
@@ -64,7 +64,7 @@ describe("useResetConnections", () => {
 
 describe("useAddConnection", () => {
   it("adds connection to BeaconSlice", () => {
-    addConnection(dAppId1, pkh1, NetworkType.GHOSTNET);
+    addConnection(dAppId1, pkh1, NetworkType.SHADOWNET);
 
     const {
       result: { current: addConnectionHook },
@@ -72,13 +72,13 @@ describe("useAddConnection", () => {
     addConnectionHook(dAppId2, pkh2, NetworkType.MAINNET);
 
     expect(store.getState().beacon).toEqual({
-      [dAppId1]: connectionInfo(pkh1, NetworkType.GHOSTNET),
+      [dAppId1]: connectionInfo(pkh1, NetworkType.SHADOWNET),
       [dAppId2]: connectionInfo(pkh2, NetworkType.MAINNET),
     });
   });
 
   it("overrides connection with the same dAppId", () => {
-    addConnection(dAppId1, pkh1, NetworkType.GHOSTNET);
+    addConnection(dAppId1, pkh1, NetworkType.SHADOWNET);
 
     const {
       result: { current: addConnectionHook },
@@ -94,7 +94,7 @@ describe("useAddConnection", () => {
 describe("useRemoveConnection", () => {
   it("removes connection from BeaconSlice", () => {
     addConnection(dAppId1, pkh1, NetworkType.MAINNET);
-    addConnection(dAppId2, pkh2, NetworkType.GHOSTNET);
+    addConnection(dAppId2, pkh2, NetworkType.SHADOWNET);
 
     const {
       result: { current: removeConnection },

@@ -37,7 +37,7 @@ Implicit accounts (everything except multisig) share `label`, `address`, `pk`. O
 
 ## dApp connections
 
-- **Beacon** (`@airgap/beacon-wallet`): connections stored in the `beacon` slice (dAppId → accountPkh + network). The web app's `apps/web/src/components/beacon/useHandleBeaconMessage.tsx` routes incoming messages: PermissionRequest → permission modal; OperationRequest → convert to internal `Operation`, estimate, open sign page; SignPayloadRequest → sign-payload modal. Responses go back via `WalletClient.respond()`.
+- **Beacon protocol via octez.connect** (`@tezos-x/octez.connect-wallet`, the renamed beacon-sdk fork maintained by Trilitech/Nomadic/Functori): connections stored in the `beacon` slice (dAppId → accountPkh + network). The web app's `apps/web/src/components/beacon/useHandleBeaconMessage.tsx` routes incoming messages: PermissionRequest → permission modal; OperationRequest → convert to internal `Operation`, estimate, open sign page; SignPayloadRequest → sign-payload modal. Responses go back via `WalletClient.respond()`.
 - **WalletConnect**: `@reown/walletkit` integration in `packages/state/src/walletConnect/WalletKit.ts`, with a minimal `walletConnect` slice.
 
 ## Social auth

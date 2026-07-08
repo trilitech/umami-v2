@@ -1,9 +1,4 @@
 import {
-  BeaconMessageType,
-  type SignPayloadRequestOutput,
-  type SignPayloadResponseInput,
-} from "@airgap/beacon-wallet";
-import {
   Box,
   Flex,
   Heading,
@@ -17,6 +12,11 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { type TezosToolkit } from "@taquito/taquito";
+import {
+  BeaconMessageType,
+  type SignPayloadRequestOutput,
+  type SignPayloadResponseInput,
+} from "@tezos-x/octez.connect-wallet";
 import { useDynamicModalContext } from "@umami/components";
 import { decodeBeaconPayload } from "@umami/core";
 import { WalletClient, useGetImplicitAccount } from "@umami/state";

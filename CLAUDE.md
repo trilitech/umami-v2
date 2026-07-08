@@ -46,7 +46,7 @@ Key cross-cutting flows:
 - **Operation flow**: build `AccountOperations` → `estimate()` (toolkit with FakeSigner, taquito batch estimation, auto-reveal) → sign via `makeToolkit(signerConfig)` → `executeOperations()` broadcasts. Multisig operations are compiled to Michelson lambdas and wrapped in a `propose` contract call; signers approve/execute later.
 - **State persistence** (`packages/state/src/reducer.ts`): redux-persist with two persist configs (root + accounts), encrypted via `redux-persist-transform-encrypt` with a password-derived key. **Changing any persisted slice shape requires a migration in `packages/state/src/migrations.ts` and a version bump** (currently v11, async migrations). `initializePersistence(store, password)` activates persistence after login.
 - **Data freshness**: `packages/data-polling` polls TzKT at ~block time (6s since Tallinn/024) via React Query and dispatches into Redux; UI reads only from Redux hooks (`packages/state/src/hooks/`).
-- **dApp connections**: Beacon (`beacon` slice + `apps/web/src/components/beacon/useHandleBeaconMessage.tsx`) and WalletConnect (`packages/state/src/walletConnect/WalletKit.ts`).
+- **dApp connections**: Beacon protocol via `@tezos-x/octez.connect-wallet` — the renamed beacon-sdk fork; never add `@airgap/beacon-*` deps (`beacon` slice + `apps/web/src/components/beacon/useHandleBeaconMessage.tsx`) and WalletConnect (`packages/state/src/walletConnect/WalletKit.ts`).
 - **Desktop specifics**: hash-based router (required for packaged Electron), `umami://` deeplinks for social auth.
 
 ## Gotchas

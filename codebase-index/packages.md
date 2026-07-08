@@ -79,7 +79,7 @@ Core wallet domain logic: accounts, operations, tokens, estimation/execution, Be
 - `src/Delegate.ts` — delegation logic
 - `src/beaconUtils.ts`, `src/decodeBeaconPayload.ts` — Beacon dApp protocol helpers
 - `src/Contact.ts` — address book contacts
-- Depends on: @umami/social-auth, @umami/tezos, @umami/tzkt, @umami/utils. External: @taquito/*, @airgap/beacon-wallet
+- Depends on: @umami/social-auth, @umami/tezos, @umami/tzkt, @umami/utils. External: @taquito/*, @tezos-x/octez.connect-wallet
 
 ## @umami/state — `packages/state`
 
@@ -92,7 +92,7 @@ Redux store: slices, thunks, hooks, encrypted persistence, and dApp-connection s
 - `src/migrations.ts` — redux-persist migrations for schema evolution
 - `src/walletConnect/WalletKit.ts` — WalletConnect (Reown WalletKit) integration
 - `src/utils/localEncryptionKey.ts` — encryption key management for persisted state
-- Depends on: @umami/core, @umami/crypto, @umami/multisig, @umami/social-auth, @umami/tezos, @umami/tzkt. External: @reduxjs/toolkit, redux-persist (+transform-encrypt), @walletconnect/*, @airgap/beacon-wallet
+- Depends on: @umami/core, @umami/crypto, @umami/multisig, @umami/social-auth, @umami/tezos, @umami/tzkt. External: @reduxjs/toolkit, redux-persist (+transform-encrypt), @walletconnect/*, @tezos-x/octez.connect-wallet
 
 ## @umami/data-polling — `packages/data-polling`
 

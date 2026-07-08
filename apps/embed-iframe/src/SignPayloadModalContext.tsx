@@ -1,6 +1,6 @@
 import { useDisclosure } from "@chakra-ui/react";
 import { createContext, PropsWithChildren, useContext, useState } from "react";
-import { SigningType } from "@airgap/beacon-types";
+import { SigningType } from "@tezos-x/octez.connect-types";
 
 interface SignPayloadModalContextState {
   isOpen: boolean;

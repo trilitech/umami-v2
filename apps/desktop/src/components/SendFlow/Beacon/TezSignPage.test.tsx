@@ -1,9 +1,13 @@
-import { BeaconMessageType, NetworkType, type OperationRequestOutput } from "@airgap/beacon-wallet";
 import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
+import {
+  BeaconMessageType,
+  NetworkType,
+  type OperationRequestOutput,
+} from "@tezos-x/octez.connect-wallet";
 import { executeOperations, mockImplicitAccount, mockTezOperation } from "@umami/core";
 import { WalletClient, makeStore, networksActions, useGetSecretKey } from "@umami/state";
 import { executeParams } from "@umami/test-utils";
-import { GHOSTNET, MAINNET, makeToolkit } from "@umami/tezos";
+import { MAINNET, SHADOWNET, makeToolkit } from "@umami/tezos";
 
 import { TezSignPage } from "./TezSignPage";
 import {
@@ -40,7 +44,7 @@ describe("<TezSignPage />", () => {
     const message = {
       id: "messageid",
       type: BeaconMessageType.OperationRequest,
-      network: { type: NetworkType.GHOSTNET },
+      network: { type: NetworkType.SHADOWNET },
       appMetadata: {},
     } as OperationRequestOutput;
     const operation = {
@@ -50,9 +54,6 @@ describe("<TezSignPage />", () => {
       operations: [mockTezOperation(0)],
       estimates: [executeParams({ fee: 123 })],
     };
-    // ghostnet is no longer a default network — simulate a user-added network
-    // matching the dApp's requested network type
-    store.dispatch(networksActions.upsertNetwork(GHOSTNET));
     store.dispatch(networksActions.setCurrent(MAINNET));
     jest.mocked(useGetSecretKey).mockImplementation(() => () => Promise.resolve("secretKey"));
 
@@ -61,7 +62,7 @@ describe("<TezSignPage />", () => {
 
     render(<TezSignPage message={message} operation={operation} />, { store });
 
-    expect(screen.getByText("Ghostnet")).toBeVisible();
+    expect(screen.getByText("Shadownet")).toBeVisible();
     expect(screen.queryByText("Mainnet")).not.toBeInTheDocument();
 
     await act(() => user.type(screen.getByLabelText("Password"), "Password"));
@@ -75,7 +76,7 @@ describe("<TezSignPage />", () => {
     expect(makeToolkit).toHaveBeenCalledWith({
       type: "mnemonic",
       secretKey: "secretKey",
-      network: GHOSTNET,
+      network: SHADOWNET,
     });
 
     await waitFor(() =>

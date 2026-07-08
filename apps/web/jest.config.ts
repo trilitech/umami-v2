@@ -6,5 +6,5 @@ export default {
   setupFilesAfterEnv: ["<rootDir>/src/setupTestsAfterEnv.ts"],
   rootDir: "./",
   bail: false, // TODO: remove
-  transformIgnorePatterns: ["node_modules/(?!(redux-persist-transform-encrypt|@stablelib)/)"],
+  transformIgnorePatterns: ["node_modules/(?!(redux-persist-transform-encrypt|@stablelib|@tezos-x)/)"],
 };

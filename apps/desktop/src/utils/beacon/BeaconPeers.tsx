@@ -1,4 +1,3 @@
-import { type ExtendedPeerInfo } from "@airgap/beacon-wallet";
 import {
   AspectRatio,
   Box,
@@ -10,6 +9,7 @@ import {
   Image,
   Text,
 } from "@chakra-ui/react";
+import { type ExtendedPeerInfo } from "@tezos-x/octez.connect-wallet";
 import { useBeaconPeers, useGetBeaconConnectionInfo, useRemoveBeaconPeer } from "@umami/state";
 import { parsePkh } from "@umami/tezos";
 import capitalize from "lodash/capitalize";

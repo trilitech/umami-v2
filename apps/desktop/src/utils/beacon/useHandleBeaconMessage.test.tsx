@@ -7,7 +7,7 @@ import {
   type SignPayloadRequestOutput,
   SigningType,
   TezosOperationType,
-} from "@airgap/beacon-wallet";
+} from "@tezos-x/octez.connect-wallet";
 import { estimate, makeAccountOperations, mockImplicitAccount } from "@umami/core";
 import { type UmamiStore, WalletClient, addTestAccount, makeStore, mockToast } from "@umami/state";
 import { executeParams } from "@umami/test-utils";

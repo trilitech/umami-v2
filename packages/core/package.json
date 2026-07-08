@@ -14,7 +14,7 @@
     }
   },
   "devDependencies": {
-    "@airgap/beacon-wallet": "^4.4.0",
+    "@tezos-x/octez.connect-wallet": "^4.8.6",
     "@babel/core": "^7.26.0",
     "@types/babel__core": "^7.20.5",
     "@types/eslint": "^8",
@@ -60,7 +60,7 @@
     ]
   },
   "dependencies": {
-    "@airgap/beacon-wallet": "^4.4.0",
+    "@tezos-x/octez.connect-wallet": "^4.8.6",
     "@taquito/local-forging": "^25.0.0",
     "@taquito/michel-codec": "^25.0.0",
     "@taquito/rpc": "^25.0.0",
