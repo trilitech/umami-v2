@@ -91,7 +91,7 @@ describe("stakingHooks", () => {
       protocolSettingsActions.update({
         network: MAINNET,
         settings: {
-          maxSlashingPeriod: 5,
+          unstakeFinalizationDelay: 16,
           consensusRightsDelay: 11,
         },
       })

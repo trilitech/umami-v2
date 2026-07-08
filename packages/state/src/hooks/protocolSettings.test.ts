@@ -11,13 +11,13 @@ describe("useGetProtocolSettings", () => {
     store.dispatch(
       protocolSettingsActions.update({
         network: MAINNET,
-        settings: { maxSlashingPeriod: 3, consensusRightsDelay: 3 },
+        settings: { unstakeFinalizationDelay: 6, consensusRightsDelay: 3 },
       })
     );
     store.dispatch(
       protocolSettingsActions.update({
         network: GHOSTNET,
-        settings: { maxSlashingPeriod: 1, consensusRightsDelay: 1 },
+        settings: { unstakeFinalizationDelay: 2, consensusRightsDelay: 1 },
       })
     );
 
@@ -25,6 +25,6 @@ describe("useGetProtocolSettings", () => {
       result: { current: protocolSettings },
     } = renderHook(() => useGetProtocolSettings(), { store });
 
-    expect(protocolSettings).toEqual({ maxSlashingPeriod: 3, consensusRightsDelay: 3 });
+    expect(protocolSettings).toEqual({ unstakeFinalizationDelay: 6, consensusRightsDelay: 3 });
   });
 });

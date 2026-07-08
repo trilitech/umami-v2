@@ -11,8 +11,8 @@ beforeEach(() => {
 describe("protocolSettingsSlice", () => {
   test("initial state", () => {
     expect(store.getState().protocolSettings).toEqual({
-      mainnet: { maxSlashingPeriod: 2, consensusRightsDelay: 2 },
-      ghostnet: { maxSlashingPeriod: 2, consensusRightsDelay: 2 },
+      mainnet: { unstakeFinalizationDelay: 4, consensusRightsDelay: 2 },
+      ghostnet: { unstakeFinalizationDelay: 4, consensusRightsDelay: 2 },
     });
   });
 
@@ -21,15 +21,15 @@ describe("protocolSettingsSlice", () => {
       protocolSettingsActions.update({
         network: MAINNET,
         settings: {
-          maxSlashingPeriod: 3,
+          unstakeFinalizationDelay: 6,
           consensusRightsDelay: 3,
         },
       })
     );
 
     expect(store.getState().protocolSettings).toEqual({
-      mainnet: { maxSlashingPeriod: 3, consensusRightsDelay: 3 },
-      ghostnet: { maxSlashingPeriod: 2, consensusRightsDelay: 2 },
+      mainnet: { unstakeFinalizationDelay: 6, consensusRightsDelay: 3 },
+      ghostnet: { unstakeFinalizationDelay: 4, consensusRightsDelay: 2 },
     });
   });
 });
