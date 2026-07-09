@@ -4,7 +4,7 @@ import { sendSignPayloadErrorResponse } from "./utils";
 import { useSignPayloadModalContext } from "./SignPayloadModalContext";
 import { ModalLoadingOverlay } from "./ModalLoadingOverlay";
 import { SignPayloadModalContent } from "./SignPayloadModalContent";
-import { SigningType } from "@airgap/beacon-types";
+import { SigningType } from "@tezos-x/octez.connect-types";
 
 export const useSignPayloadModal = () => {
   const { isOpen, onOpen, onClose, isLoading, setSigningType, setPayload } =

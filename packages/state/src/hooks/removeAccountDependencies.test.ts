@@ -1,4 +1,4 @@
-import { type ExtendedPeerInfo, NetworkType } from "@airgap/beacon-wallet";
+import { type ExtendedPeerInfo, NetworkType } from "@tezos-x/octez.connect-wallet";
 import {
   makeAccountOperations,
   mockImplicitAccount,
@@ -88,7 +88,7 @@ describe("useRemoveDependenciesAndMultisigs", () => {
         {
           dAppId: peersData[1].senderId,
           accountPkh: account1.address.pkh,
-          networkType: NetworkType.GHOSTNET,
+          networkType: NetworkType.SHADOWNET,
         },
         {
           dAppId: peersData[2].senderId,

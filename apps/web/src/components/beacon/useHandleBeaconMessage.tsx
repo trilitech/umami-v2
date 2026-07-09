@@ -3,7 +3,7 @@ import {
   BeaconMessageType,
   type Network as BeaconNetwork,
   type BeaconRequestOutputMessage,
-} from "@airgap/beacon-wallet";
+} from "@tezos-x/octez.connect-wallet";
 import { useDynamicModalContext } from "@umami/components";
 import { type ImplicitAccount, estimate, toAccountOperations } from "@umami/core";
 import {

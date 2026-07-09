@@ -10,9 +10,9 @@ export const useGetAccountUnstakeRequests = (pkh: string) =>
   useGetAccountState()(pkh)?.unstakeRequests || [];
 
 export const useGetFirstFinalizableCycle = () => {
-  const { maxSlashingPeriod, consensusRightsDelay } = useGetProtocolSettings();
+  const { unstakeFinalizationDelay } = useGetProtocolSettings();
 
-  return (requestedOnCycle: number) => requestedOnCycle + maxSlashingPeriod + consensusRightsDelay;
+  return (requestedOnCycle: number) => requestedOnCycle + unstakeFinalizationDelay;
 };
 
 export const useGetAccountBalanceDetails = (pkh: string) => {

@@ -1,5 +1,5 @@
-import { type NetworkType } from "@airgap/beacon-wallet";
 import { createSlice } from "@reduxjs/toolkit";
+import { type NetworkType } from "@tezos-x/octez.connect-wallet";
 import { type RawPkh } from "@umami/tezos";
 import { fromPairs } from "lodash";
 

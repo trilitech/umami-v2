@@ -1,5 +1,5 @@
-import { type SigningType } from "@airgap/beacon-wallet";
 import { type TezosToolkit } from "@taquito/taquito";
+import { type SigningType } from "@tezos-x/octez.connect-wallet";
 import {
   type Account,
   type AccountOperations,

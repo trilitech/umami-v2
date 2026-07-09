@@ -1,4 +1,4 @@
-import { WalletClient as WalletClientClass } from "@airgap/beacon-wallet";
+import { WalletClient as WalletClientClass } from "@tezos-x/octez.connect-wallet";
 import { type Persistor } from "redux-persist";
 
 export const WalletClient =

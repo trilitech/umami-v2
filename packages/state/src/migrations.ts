@@ -1,11 +1,11 @@
 import { getNetworksForContracts } from "@umami/multisig";
-import { isValidContractPkh, isValidImplicitPkh } from "@umami/tezos";
+import { SHADOWNET, isValidContractPkh, isValidImplicitPkh } from "@umami/tezos";
 import { produce } from "immer";
 import { fromPairs, identity } from "lodash";
 
 import { announcementInitialState as announcementsInitialState } from "./slices/announcement";
 
-export const VERSION = 9;
+export const VERSION = 11;
 
 export const mainStoreMigrations = {
   0: (state: any) =>
@@ -81,6 +81,31 @@ export const mainStoreMigrations = {
       }
     }),
   10: identity,
+  // ghostnet and the ecadinfra RPCs were shut down in May 2026 — move users to
+  // shadownet and the tzbeta mainnet RPC
+  11: (state: any) =>
+    produce(state, (draft: any) => {
+      const fixMainnetRpc = (network: any) => {
+        if (network.name === "mainnet" && network.rpcUrl?.includes("ecadinfra")) {
+          network.rpcUrl = "https://rpc.tzbeta.net";
+        }
+      };
+
+      const hasShadownet = draft.networks.available.some((n: any) => n.name === "shadownet");
+      draft.networks.available = draft.networks.available.flatMap((network: any) => {
+        if (network.name === "ghostnet") {
+          return hasShadownet ? [] : [SHADOWNET];
+        }
+        fixMainnetRpc(network);
+        return [network];
+      });
+
+      if (draft.networks.current.name === "ghostnet") {
+        draft.networks.current = SHADOWNET;
+      } else {
+        fixMainnetRpc(draft.networks.current);
+      }
+    }),
 } as any;
 
 export const accountsMigrations = {

@@ -1,4 +1,4 @@
-import { type PartialTezosOperation, TezosOperationType } from "@airgap/beacon-wallet";
+import { type PartialTezosOperation, TezosOperationType } from "@tezos-x/octez.connect-wallet";
 import { mockContractAddress, mockImplicitAddress } from "@umami/tezos";
 import { without } from "lodash";
 

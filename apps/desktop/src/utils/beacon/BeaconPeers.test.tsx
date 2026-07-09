@@ -1,4 +1,4 @@
-import { type ExtendedPeerInfo, NetworkType } from "@airgap/beacon-wallet";
+import { type ExtendedPeerInfo, NetworkType } from "@tezos-x/octez.connect-wallet";
 import { mockMnemonicAccount } from "@umami/core";
 import {
   type UmamiStore,
@@ -129,14 +129,14 @@ describe("<BeaconPeers />", () => {
           beaconActions.addConnection({
             dAppId: peersData[2].senderId,
             accountPkh: mockMnemonicAccount(1).address.pkh,
-            networkType: NetworkType.OXFORDNET,
+            networkType: NetworkType.USHUAIANET,
           })
         );
 
         const peerRows = await getPeerRows();
 
         const network = within(peerRows[2]).getByTestId("dapp-connection-network");
-        expect(network).toHaveTextContent("Oxfordnet");
+        expect(network).toHaveTextContent("Ushuaianet");
       });
     });
 
@@ -183,7 +183,7 @@ describe("<BeaconPeers />", () => {
         {
           dAppId: peersData[1].senderId,
           accountPkh: mockMnemonicAccount(1).address.pkh,
-          networkType: NetworkType.GHOSTNET,
+          networkType: NetworkType.SHADOWNET,
         },
         {
           dAppId: peersData[2].senderId,

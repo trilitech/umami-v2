@@ -1,10 +1,10 @@
 import { type UmamiStore, makeStore, networksActions } from "@umami/state";
-import { GHOSTNET, MAINNET } from "@umami/tezos";
+import { MAINNET, SHADOWNET } from "@umami/tezos";
 
 import { UpsertNetworkModal } from "./UpsertNetworkModal";
 import { act, fireEvent, render, screen, userEvent, waitFor } from "../../../mocks/testUtils";
 
-const customNetwork = { ...GHOSTNET, name: "custom" };
+const customNetwork = { ...SHADOWNET, name: "custom" };
 
 let store: UmamiStore;
 beforeEach(() => {
@@ -48,7 +48,7 @@ describe("<UpsertNetworkModal />", () => {
       expect(screen.getByText("Save changes")).toBeEnabled();
 
       await act(() => user.click(screen.getByText("Save changes")));
-      expect(store.getState().networks.available).toEqual([MAINNET, GHOSTNET, updatedNetwork]);
+      expect(store.getState().networks.available).toEqual([MAINNET, SHADOWNET, updatedNetwork]);
     });
 
     it("ignores trailing slashes", async () => {
@@ -73,7 +73,7 @@ describe("<UpsertNetworkModal />", () => {
       expect(screen.getByText("Save changes")).toBeEnabled();
 
       await act(() => user.click(screen.getByText("Save changes")));
-      expect(store.getState().networks.available).toEqual([MAINNET, GHOSTNET, updatedNetwork]);
+      expect(store.getState().networks.available).toEqual([MAINNET, SHADOWNET, updatedNetwork]);
     });
   });
 
@@ -186,7 +186,7 @@ describe("<UpsertNetworkModal />", () => {
 
       fireEvent.click(screen.getByText("Add network"));
       await waitFor(() => {
-        expect(store.getState().networks.available).toEqual([MAINNET, GHOSTNET, customNetwork]);
+        expect(store.getState().networks.available).toEqual([MAINNET, SHADOWNET, customNetwork]);
       });
     });
   });

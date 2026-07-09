@@ -23,7 +23,7 @@ export default ({ mode }: { mode: "development" | "production" }) => {
     },
     plugins: [
       nodePolyfills({
-        include: ["stream", "util", "crypto", "vm"],
+        include: ["stream", "util", "crypto", "vm", "http", "https"],
         globals: {
           Buffer: true,
         },

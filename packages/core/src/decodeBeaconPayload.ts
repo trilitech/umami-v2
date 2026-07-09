@@ -1,7 +1,7 @@
-import { SigningType } from "@airgap/beacon-wallet";
 import { CODEC, type ProtocolsHash, Uint8ArrayConsumer, getCodec } from "@taquito/local-forging";
 import { DefaultProtocol, type MichelsonData, unpackData } from "@taquito/michel-codec";
 import { bytesToString, hex2buf } from "@taquito/utils";
+import { SigningType } from "@tezos-x/octez.connect-wallet";
 
 import { CustomError } from "../../utils/src/ErrorContext";
 

@@ -1,4 +1,4 @@
-import { type SigningType } from "@airgap/beacon-wallet";
+import { type SigningType } from "@tezos-x/octez.connect-wallet";
 import { useDynamicModalContext } from "@umami/components";
 import {
   type ImplicitAccount,

@@ -11,7 +11,7 @@ export default defineConfig({
     react(),
     svgr(),
     nodePolyfills({
-      include: ["stream", "util", "crypto", "vm"],
+      include: ["stream", "util", "crypto", "vm", "http", "https"],
       globals: {
         Buffer: true,
       },

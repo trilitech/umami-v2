@@ -5,6 +5,6 @@ const config: Config = {
   ...baseConfig,
   testEnvironment: "jsdom",
   rootDir: "./",
-  setupFiles: ["<rootDir>/src/setupTests.ts"],
+  setupFiles: ["whatwg-fetch", "<rootDir>/src/setupTests.ts"],
 };
 export default config;

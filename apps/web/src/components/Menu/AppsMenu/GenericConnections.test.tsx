@@ -1,4 +1,4 @@
-import { type ExtendedPeerInfo, NetworkType } from "@airgap/beacon-wallet";
+import { type ExtendedPeerInfo, NetworkType } from "@tezos-x/octez.connect-wallet";
 import { mockMnemonicAccount } from "@umami/core";
 import {
   type UmamiStore,
@@ -273,7 +273,7 @@ describe("<GenericConnections />", () => {
         {
           dAppId: peersData[1].senderId,
           accountPkh: mockMnemonicAccount(1).address.pkh,
-          networkType: NetworkType.GHOSTNET,
+          networkType: NetworkType.SHADOWNET,
         },
         {
           dAppId: peersData[2].senderId,

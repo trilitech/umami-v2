@@ -1,11 +1,11 @@
+import { Modal } from "@chakra-ui/react";
+import { fireEvent } from "@testing-library/react";
 import {
   BeaconMessageType,
   NetworkType,
   type PermissionRequestOutput,
   PermissionScope,
-} from "@airgap/beacon-wallet";
-import { Modal } from "@chakra-ui/react";
-import { fireEvent } from "@testing-library/react";
+} from "@tezos-x/octez.connect-wallet";
 import { mockMnemonicAccount } from "@umami/core";
 import { type UmamiStore, WalletClient, addTestAccounts, makeStore } from "@umami/state";
 

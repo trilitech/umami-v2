@@ -1,4 +1,3 @@
-import { type NetworkType } from "@airgap/beacon-wallet";
 import {
   Box,
   Button,
@@ -15,6 +14,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { type WalletKitTypes } from "@reown/walletkit";
+import { type NetworkType } from "@tezos-x/octez.connect-wallet";
 import { useDynamicModalContext } from "@umami/components";
 import {
   WcScenarioType,

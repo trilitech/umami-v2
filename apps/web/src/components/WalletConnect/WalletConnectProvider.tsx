@@ -1,7 +1,7 @@
 import type EventEmitter from "events";
 
-import { type NetworkType } from "@airgap/beacon-wallet";
 import { type WalletKitTypes } from "@reown/walletkit";
+import { type NetworkType } from "@tezos-x/octez.connect-wallet";
 import { useDynamicModalContext } from "@umami/components";
 import {
   createWalletKit,

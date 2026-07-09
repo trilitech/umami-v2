@@ -1,5 +1,5 @@
 import { type Action, combineReducers } from "@reduxjs/toolkit";
-import { type Storage } from "redux-persist";
+import { type Storage, persistReducer } from "redux-persist";
 import createWebStorage from "redux-persist/lib/storage/createWebStorage";
 import { encryptTransform } from "redux-persist-transform-encrypt";
 
@@ -57,6 +57,54 @@ export const makeReducer = () => {
     }
     return appReducer(state, action);
   };
+};
+
+// Persistence baked in at store creation, as shipped in desktop v2.3.8: plain
+// redux-persist output (no encryptTransform), so existing desktop localStorage
+// keeps rehydrating unchanged and no login step is needed.
+export const makePersistedReducer = (storage_?: Storage) => {
+  const storage = storage_ || getTestStorage() || createWebStorage("local");
+
+  const rootPersistConfig = {
+    key: "root",
+    version: VERSION,
+    storage,
+    blacklist: ["accounts", "session"],
+    migrate: createAsyncMigrate(mainStoreMigrations, { debug: false }),
+  };
+
+  const accountsPersistConfig = {
+    key: "accounts",
+    version: VERSION,
+    storage,
+    migrate: createAsyncMigrate(accountsMigrations, { debug: false }),
+    blacklist: ["password"],
+  };
+
+  const appReducer = combineReducers({
+    accounts: persistReducer(accountsPersistConfig, accountsSlice.reducer),
+    announcement: announcementSlice.reducer,
+    assets: assetsSlice.reducer,
+    batches: batchesSlice.reducer,
+    beacon: beaconSlice.reducer,
+    walletconnect: wcSlice.reducer,
+    contacts: contactsSlice.reducer,
+    errors: errorsSlice.reducer,
+    multisigs: multisigsSlice.reducer,
+    networks: networksSlice.reducer,
+    protocolSettings: protocolSettingsSlice.reducer,
+    tokens: tokensSlice.reducer,
+    session: sessionSlice.reducer,
+  });
+
+  const rootReducer = (state: any, action: Action) => {
+    if (action.type === "RESET_ALL") {
+      state = undefined;
+    }
+    return appReducer(state, action);
+  };
+
+  return persistReducer(rootPersistConfig, rootReducer);
 };
 
 export const makePersistConfigs = (storage_: Storage | undefined, password?: string) => {

@@ -8,8 +8,8 @@ jobs:
     timeout-minutes: 35
     runs-on: ubuntu-latest-m
     env:
-      TZKT_SYNC_IMAGE: bakingbad/tzkt-sync:1.14.5
-      TZKT_API_IMAGE: serjonya/tzkt-api:1.14.5-linux
+      TZKT_SYNC_IMAGE: bakingbad/tzkt-sync:1.17.3
+      TZKT_API_IMAGE: bakingbad/tzkt-api:1.17.3
 
     steps:
       - uses: actions/checkout@v4
@@ -24,7 +24,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20.x
+          node-version: 22.x
           cache: "pnpm"
 
       - run: pnpm install

@@ -1,4 +1,4 @@
-import { type PartialTezosOperation, TezosOperationType } from "@airgap/beacon-wallet";
+import { type PartialTezosOperation, TezosOperationType } from "@tezos-x/octez.connect-wallet";
 import { isValidImplicitPkh, parseImplicitPkh, parsePkh } from "@umami/tezos";
 import { WalletConnectError, WcErrorCode } from "@umami/utils";
 

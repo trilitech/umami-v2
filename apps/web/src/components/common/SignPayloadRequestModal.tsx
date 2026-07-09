@@ -1,4 +1,3 @@
-import { BeaconMessageType, type SignPayloadResponseInput } from "@airgap/beacon-wallet";
 import { WarningIcon } from "@chakra-ui/icons";
 import {
   AspectRatio,
@@ -13,6 +12,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { type TezosToolkit } from "@taquito/taquito";
+import { BeaconMessageType, type SignPayloadResponseInput } from "@tezos-x/octez.connect-wallet";
 import { useDynamicModalContext } from "@umami/components";
 import { decodeBeaconPayload } from "@umami/core";
 import { WalletClient, WcScenarioType, useValidateWcRequest, walletKit } from "@umami/state";

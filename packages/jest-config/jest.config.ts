@@ -140,7 +140,9 @@ const config: Config = {
   // runner: "jest-runner",
 
   // The paths to modules that run some code to configure or set up the testing environment before each test
-  // setupFiles: [],
+  // @taquito/http-utils >= 25 requires globalThis.fetch at import time, which
+  // jest-environment-jsdom does not provide — polyfill it (XHR-based, jsdom-compatible)
+  setupFiles: ["whatwg-fetch"],
 
   // A list of paths to snapshot serializer modules Jest should use for snapshot testing
   // snapshotSerializers: [],
@@ -149,7 +151,11 @@ const config: Config = {
   testEnvironment: "jsdom",
 
   // Options that will be passed to the testEnvironment
-  // testEnvironmentOptions: {},
+  // jsdom defaults to the "browser" export condition, which resolves ESM-only builds
+  // (uint8arrays, multiformats, …) that jest cannot parse — prefer CJS entry points
+  testEnvironmentOptions: {
+    customExportConditions: ["require", "node"],
+  },
 
   // Adds a location field to test results
   testLocationInResults: true,
@@ -178,7 +184,10 @@ const config: Config = {
   },
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
-  transformIgnorePatterns: ["/node_modules/"],
+  // @stablelib v2 (pulled in by taquito 25 and octez.connect) ships ESM-only — let babel
+  // transpile it for jest. @tezos-x is exempted too so the pattern cannot match at the
+  // OUTER node_modules segment of nested copies like @tezos-x/*/node_modules/@stablelib/*.
+  transformIgnorePatterns: ["/node_modules/(?!(@stablelib|@tezos-x)/)"],
 
   // An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for them
   // unmockedModulePathPatterns: undefined,

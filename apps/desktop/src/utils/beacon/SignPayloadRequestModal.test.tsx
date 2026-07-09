@@ -2,7 +2,7 @@ import {
   BeaconMessageType,
   type SignPayloadRequestOutput,
   SigningType,
-} from "@airgap/beacon-wallet";
+} from "@tezos-x/octez.connect-wallet";
 import { mockImplicitAccount, mockMnemonicAccount } from "@umami/core";
 import { type UmamiStore, WalletClient, accountsActions, makeStore } from "@umami/state";
 import { encryptedMnemonic1 } from "@umami/test-utils";

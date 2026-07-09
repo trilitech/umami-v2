@@ -246,7 +246,9 @@ export const getBakers = async (
   withRateLimit(() =>
     delegatesGet(
       {
-        sort: { desc: "stakingBalance" },
+        // sorting by stakingBalance was removed from the TzKT API —
+        // bakingPower is the modern ranking metric (Quebec renamed the RPC field)
+        sort: { desc: "bakingPower" },
         active: { eq: true },
         limit: 10000,
         select: { fields: ["address,alias,stakingBalance"] },

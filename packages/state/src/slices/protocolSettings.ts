@@ -3,14 +3,19 @@ import { DefaultNetworks, type Network, type NetworkName } from "@umami/tezos";
 import { fromPairs } from "lodash";
 
 type ProtocolSettings = {
-  maxSlashingPeriod: number;
+  // cycles until an unstake request becomes finalizable; exposed directly by the RPC
+  // since Rio (022), previously max_slashing_period + consensus_rights_delay
+  unstakeFinalizationDelay: number;
   consensusRightsDelay: number;
 };
 
 type State = Record<NetworkName, ProtocolSettings>;
 
 export const protocolSettingsInitialState: State = fromPairs(
-  DefaultNetworks.map(network => [network.name, { maxSlashingPeriod: 2, consensusRightsDelay: 2 }])
+  DefaultNetworks.map(network => [
+    network.name,
+    { unstakeFinalizationDelay: 4, consensusRightsDelay: 2 },
+  ])
 );
 
 export const protocolSettingsSlice = createSlice({

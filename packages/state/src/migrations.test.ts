@@ -1,5 +1,5 @@
 import { mockLedgerAccount, mockMnemonicAccount, mockSecretKeyAccount } from "@umami/core";
-import { mockImplicitAddress } from "@umami/tezos";
+import { SHADOWNET, mockImplicitAddress } from "@umami/tezos";
 import { produce } from "immer";
 
 import { accountsMigrations, mainStoreMigrations } from "./migrations";
@@ -156,6 +156,68 @@ describe("migrations", () => {
         const migratedState = produce(initialState, (draft: any) => migration(draft));
 
         expect(migratedState).toEqual(expectedState);
+      });
+    });
+
+    describe("11", () => {
+      const migration = mainStoreMigrations[11];
+
+      it("replaces ghostnet with shadownet and fixes the mainnet RPC", () => {
+        const initialState = {
+          networks: {
+            current: { name: "ghostnet", rpcUrl: "https://ghostnet.tezos.ecadinfra.com" },
+            available: [
+              { name: "mainnet", rpcUrl: "https://mainnet.tezos.ecadinfra.com" },
+              { name: "ghostnet", rpcUrl: "https://ghostnet.tezos.ecadinfra.com" },
+              { name: "testnet", rpcUrl: "" },
+            ],
+          },
+        };
+
+        const migratedState: any = migration(initialState);
+
+        expect(migratedState.networks.current).toEqual(SHADOWNET);
+        expect(migratedState.networks.available).toEqual([
+          { name: "mainnet", rpcUrl: "https://rpc.tzbeta.net" },
+          SHADOWNET,
+          { name: "testnet", rpcUrl: "" }, // Unchanged
+        ]);
+      });
+
+      it("keeps a custom mainnet RPC and non-ghostnet current network", () => {
+        const initialState = {
+          networks: {
+            current: { name: "mainnet", rpcUrl: "https://my-own-rpc.example.com" },
+            available: [{ name: "mainnet", rpcUrl: "https://my-own-rpc.example.com" }],
+          },
+        };
+
+        const migratedState: any = migration(initialState);
+
+        expect(migratedState.networks.current.rpcUrl).toEqual("https://my-own-rpc.example.com");
+        expect(migratedState.networks.available).toEqual([
+          { name: "mainnet", rpcUrl: "https://my-own-rpc.example.com" },
+        ]);
+      });
+
+      it("drops ghostnet instead of duplicating an existing shadownet", () => {
+        const initialState = {
+          networks: {
+            current: { name: "mainnet", rpcUrl: "https://rpc.tzbeta.net" },
+            available: [
+              { name: "mainnet", rpcUrl: "https://rpc.tzbeta.net" },
+              SHADOWNET,
+              { name: "ghostnet", rpcUrl: "https://ghostnet.tezos.ecadinfra.com" },
+            ],
+          },
+        };
+
+        const migratedState: any = migration(initialState);
+
+        expect(migratedState.networks.available).toEqual([
+          { name: "mainnet", rpcUrl: "https://rpc.tzbeta.net" },
+          SHADOWNET,
+        ]);
       });
     });
   });

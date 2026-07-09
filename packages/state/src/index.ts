@@ -1,7 +1,13 @@
 // eslint-disable-next-line import/no-unused-modules
 export { addTestAccount, addTestAccounts, mockToast } from "./testUtils";
 // eslint-disable-next-line import/no-unused-modules
-export { type AppDispatch, makeStore, type UmamiStore, initializePersistence } from "./store";
+export {
+  type AppDispatch,
+  makeStore,
+  makePersistedStore,
+  type UmamiStore,
+  initializePersistence,
+} from "./store";
 
 export * from "./beacon";
 export * from "./hooks";

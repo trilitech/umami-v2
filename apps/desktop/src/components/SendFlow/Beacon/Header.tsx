@@ -1,5 +1,5 @@
-import { type OperationRequestOutput } from "@airgap/beacon-wallet";
 import { AspectRatio, Flex, Heading, Image, Text } from "@chakra-ui/react";
+import { type OperationRequestOutput } from "@tezos-x/octez.connect-wallet";
 import { type AccountOperations } from "@umami/core";
 import { capitalize } from "lodash";
 

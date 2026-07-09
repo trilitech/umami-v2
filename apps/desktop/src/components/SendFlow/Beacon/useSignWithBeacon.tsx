@@ -1,9 +1,9 @@
+import { type TezosToolkit } from "@taquito/taquito";
 import {
   BeaconMessageType,
   type OperationRequestOutput,
   type OperationResponseInput,
-} from "@airgap/beacon-wallet";
-import { type TezosToolkit } from "@taquito/taquito";
+} from "@tezos-x/octez.connect-wallet";
 import { useDynamicModalContext } from "@umami/components";
 import { type EstimatedAccountOperations, executeOperations, totalFee } from "@umami/core";
 import { WalletClient, useAsyncActionHandler, useFindNetwork } from "@umami/state";

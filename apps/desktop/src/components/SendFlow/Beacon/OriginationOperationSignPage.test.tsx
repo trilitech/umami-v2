@@ -1,10 +1,14 @@
-import { BeaconMessageType, NetworkType, type OperationRequestOutput } from "@airgap/beacon-wallet";
 import { TezosToolkit } from "@taquito/taquito";
 import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
+import {
+  BeaconMessageType,
+  NetworkType,
+  type OperationRequestOutput,
+} from "@tezos-x/octez.connect-wallet";
 import { executeOperations, mockContractOrigination, mockImplicitAccount } from "@umami/core";
 import { WalletClient, useGetSecretKey } from "@umami/state";
 import { executeParams } from "@umami/test-utils";
-import { GHOSTNET, makeToolkit, prettyTezAmount } from "@umami/tezos";
+import { SHADOWNET, makeToolkit, prettyTezAmount } from "@umami/tezos";
 
 import { OriginationOperationSignPage } from "./OriginationOperationSignPage";
 import {
@@ -20,7 +24,7 @@ import { SuccessStep } from "../SuccessStep";
 const message = {
   id: "messageid",
   type: BeaconMessageType.OperationRequest,
-  network: { type: NetworkType.GHOSTNET },
+  network: { type: NetworkType.SHADOWNET },
   appMetadata: {},
 } as OperationRequestOutput;
 const operation = {
@@ -75,7 +79,7 @@ describe("<OriginationOperationSignPage />", () => {
     expect(makeToolkit).toHaveBeenCalledWith({
       type: "mnemonic",
       secretKey: "secretKey",
-      network: GHOSTNET,
+      network: SHADOWNET,
     });
     expect(executeOperations).toHaveBeenCalledWith(operation, testToolkit);
 

@@ -1,5 +1,5 @@
-import { BeaconMessageType, NetworkType, type OperationRequestOutput } from "@airgap/beacon-wallet";
 import type { BatchWalletOperation } from "@taquito/taquito/dist/types/wallet/batch-operation";
+import { BeaconMessageType, NetworkType, type OperationRequestOutput } from "@tezos-x/octez.connect-wallet";
 import {
   type EstimatedAccountOperations,
   Hints,
@@ -96,7 +96,7 @@ describe("<SingleSignPage />", () => {
   const message = {
     id: "messageid",
     type: BeaconMessageType.OperationRequest,
-    network: { type: NetworkType.GHOSTNET },
+    network: { type: NetworkType.SHADOWNET },
     appMetadata: { name: "mockDappName", icon: "mockIcon" },
   } as OperationRequestOutput;
 
@@ -220,7 +220,7 @@ describe("batch handling", () => {
     const message = {
       id: "messageid",
       type: BeaconMessageType.OperationRequest,
-      network: { type: NetworkType.GHOSTNET },
+      network: { type: NetworkType.SHADOWNET },
       appMetadata: { name: "mockDappName", icon: "mockIcon" },
     } as OperationRequestOutput;
 

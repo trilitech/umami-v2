@@ -1,4 +1,4 @@
-import type { PartialTezosOperation } from "@airgap/beacon-types";
+import type { PartialTezosOperation } from "@tezos-x/octez.connect-types";
 import { Center, Modal, ModalCloseButton, ModalContent } from "@chakra-ui/react";
 
 import { OperationModalContent } from "./OperationModalContent";

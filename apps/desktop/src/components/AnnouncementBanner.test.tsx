@@ -13,7 +13,7 @@ beforeEach(() => {
 
 describe("<AnnouncementBanner />", () => {
   it("doesn't show up if there's no announcement", () => {
-    mockedFetch.mockResolvedValue({ text: () => Promise.resolve("") } as Response);
+    mockedFetch.mockResolvedValue({ ok: true, text: () => Promise.resolve("") } as Response);
 
     render(<AnnouncementBanner />, { store });
 
@@ -21,7 +21,7 @@ describe("<AnnouncementBanner />", () => {
   });
 
   it("doesn't show up if the message has been already seen", () => {
-    mockedFetch.mockResolvedValue({ text: () => Promise.resolve("") } as Response);
+    mockedFetch.mockResolvedValue({ ok: true, text: () => Promise.resolve("") } as Response);
 
     render(<AnnouncementBanner />, { store });
 
@@ -29,7 +29,7 @@ describe("<AnnouncementBanner />", () => {
   });
 
   it("shows up if there's an announcement and it hasn't been seen", async () => {
-    mockedFetch.mockResolvedValue({ text: () => Promise.resolve("") } as Response);
+    mockedFetch.mockResolvedValue({ ok: true, text: () => Promise.resolve("") } as Response);
     store.dispatch(announcementActions.setCurrent("announcement-text"));
 
     render(<AnnouncementBanner />, { store });
@@ -41,7 +41,7 @@ describe("<AnnouncementBanner />", () => {
 
   it("hides the announcement when the close button is clicked", async () => {
     const user = userEvent.setup();
-    mockedFetch.mockResolvedValue({ text: () => Promise.resolve("test") } as Response);
+    mockedFetch.mockResolvedValue({ ok: true, text: () => Promise.resolve("test") } as Response);
     store.dispatch(announcementActions.setCurrent("announcement-text"));
 
     render(<AnnouncementBanner />, { store });
@@ -57,6 +57,7 @@ describe("<AnnouncementBanner />", () => {
 
   it("replaces the announcement when the new one is fetched", async () => {
     mockedFetch.mockResolvedValue({
+      ok: true,
       text: () => Promise.resolve("another-announcement"),
     } as Response);
     store.dispatch(announcementActions.setCurrent("announcement-text"));
@@ -70,5 +71,21 @@ describe("<AnnouncementBanner />", () => {
     await waitFor(() => {
       expect(screen.getByTestId("announcement")).toHaveTextContent("another-announcement");
     });
+  });
+
+  it("doesn't render the error body when the announcement file is missing", async () => {
+    mockedFetch.mockResolvedValue({
+      ok: false,
+      status: 404,
+      text: () => Promise.resolve("<Error><Code>NoSuchKey</Code></Error>"),
+    } as Response);
+
+    render(<AnnouncementBanner />, { store });
+
+    await waitFor(() => {
+      expect(mockedFetch).toHaveBeenCalled();
+    });
+
+    expect(screen.queryByTestId("announcement")).not.toBeInTheDocument();
   });
 });

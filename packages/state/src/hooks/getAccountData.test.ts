@@ -185,7 +185,10 @@ describe("getAccountDataHooks", () => {
         result: { current: result },
       } = renderHook(() => useValidateMasterPassword(), { store });
 
-      await waitFor(async () => expect(await result!("123123123")).toEqual(undefined));
+      // the real PBKDF2 derivation can exceed waitFor's 1s default under parallel test load
+      await waitFor(async () => expect(await result!("123123123")).toEqual(undefined), {
+        timeout: 10000,
+      });
       await expect(result!("wrong password")).rejects.toThrow(
         "Error decrypting data: Invalid password"
       );

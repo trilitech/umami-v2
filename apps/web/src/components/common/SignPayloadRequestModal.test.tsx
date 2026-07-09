@@ -1,4 +1,4 @@
-import { SigningType } from "@airgap/beacon-wallet";
+import { SigningType } from "@tezos-x/octez.connect-wallet";
 import { mockImplicitAccount, mockMnemonicAccount } from "@umami/core";
 import {
   type UmamiStore,
