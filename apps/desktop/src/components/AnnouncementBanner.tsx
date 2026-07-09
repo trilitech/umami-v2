@@ -21,7 +21,14 @@ export const AnnouncementBanner = () => {
   useEffect(() => {
     const updateCurrentAnnouncement = () => {
       fetch(ANNOUNCEMENT_FILE_URL)
-        .then(response => response.text())
+        .then(response => {
+          // fetch resolves on HTTP errors (e.g. 404 when no announcement is
+          // published) — without this check the GCS error XML gets rendered
+          if (!response.ok) {
+            throw new Error(`Announcement fetch failed: ${response.status}`);
+          }
+          return response.text();
+        })
         .then(data => dispatch(announcementActions.setCurrent(data)))
         .catch(_ => {
           // if we can't fetch the announcement (whether it's 404 or network error)
