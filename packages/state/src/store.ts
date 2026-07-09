@@ -1,8 +1,23 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { type Storage, persistReducer, persistStore } from "redux-persist";
 
-import { makePersistConfigs, makeReducer } from "./reducer";
+import { makePersistConfigs, makePersistedReducer, makeReducer } from "./reducer";
 import { accountsSlice } from "./slices/accounts/accounts";
+
+const middleware = {
+  serializableCheck: {
+    // Needed to remove warning
+    // https://github.com/rt2zz/redux-persist/issues/988#issuecomment-552242978
+    ignoredActions: [
+      "persist/FLUSH",
+      "persist/REHYDRATE",
+      "persist/PAUSE",
+      "persist/PERSIST",
+      "persist/PURGE",
+      "persist/REGISTER",
+    ],
+  },
+};
 
 // Create initial store without persistence
 export const makeStore = () => {
@@ -10,23 +25,17 @@ export const makeStore = () => {
 
   return configureStore({
     reducer: rootReducer,
-    middleware: getDefaultMiddleware =>
-      getDefaultMiddleware({
-        serializableCheck: {
-          // Needed to remove warning
-          // https://github.com/rt2zz/redux-persist/issues/988#issuecomment-552242978
-          ignoredActions: [
-            "persist/FLUSH",
-            "persist/REHYDRATE",
-            "persist/PAUSE",
-            "persist/PERSIST",
-            "persist/PURGE",
-            "persist/REGISTER",
-          ],
-        },
-      }),
+    middleware: getDefaultMiddleware => getDefaultMiddleware(middleware),
   });
 };
+
+// Store with persistence baked in at creation (the desktop v2.3.8 model):
+// rehydrates existing plain-JSON localStorage at boot, no login step
+export const makePersistedStore = (storage?: Storage) =>
+  configureStore({
+    reducer: makePersistedReducer(storage),
+    middleware: getDefaultMiddleware => getDefaultMiddleware(middleware),
+  });
 
 // Initialize persistence after authentication
 export const initializePersistence = (

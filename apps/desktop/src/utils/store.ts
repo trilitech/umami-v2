@@ -1,3 +1,3 @@
-import { makeStore } from "@umami/state";
+import { makePersistedStore } from "@umami/state";
 
-export const store = makeStore();
+export const store = makePersistedStore();
