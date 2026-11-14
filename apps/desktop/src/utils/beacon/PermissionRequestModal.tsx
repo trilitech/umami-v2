@@ -41,7 +41,7 @@ import colors from "../../style/colors";
 export const PermissionRequestModal = ({ request }: { request: PermissionRequestOutput }) => {
   const addConnectionToBeaconSlice = useAddBeaconConnection();
   const getAccount = useGetImplicitAccount();
-  const { onClose } = useDynamicModalContext();
+  const { goBack } = useDynamicModalContext();
   const { handleAsyncAction } = useAsyncActionHandler();
   const form = useForm<{ address: string }>({
     mode: "onBlur",
@@ -67,7 +67,7 @@ export const PermissionRequestModal = ({ request }: { request: PermissionRequest
       await WalletClient.respond(response);
 
       addConnectionToBeaconSlice(request.senderId, account.address.pkh, request.network.type);
-    }).finally(onClose);
+    }).finally(goBack);
 
   return (
     <ModalContent>
